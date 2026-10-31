@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mediabook-pwa-v1';
+const CACHE_NAME = 'MyMediary-pwa-v1';
 const ASSETS = ['./index.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', e => {

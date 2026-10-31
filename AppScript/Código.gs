@@ -1,6 +1,6 @@
 const TMDB_KEY = '15d2ea6d0dc1d476efbca3eba2b9bbfb'; const RAWG_KEY = 'c542e67aec3a4340908f9de9e86038af'; const SUPABASE_URL = 'https://cpksupowjteqilsiklde.supabase.co/rest/v1';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwa3N1cG93anRlcWlsc2lrbGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NzIxMTUsImV4cCI6MjEwOTA0ODExNX0.-ojqwNdX7wXkCUGDU6wHComRNi2Uy-XrWket6zeEAVU';
-const SUPABASE_PUB_KEY = 'sb_publishable_fMwiM4Uz3zjIfpVYADlPcw_JqNiBEHo'; const doGet = () => HtmlService.createHtmlOutputFromFile('Index') .setTitle('✨ MediaBook') .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover')
+const SUPABASE_PUB_KEY = 'sb_publishable_fMwiM4Uz3zjIfpVYADlPcw_JqNiBEHo'; const doGet = () => HtmlService.createHtmlOutputFromFile('Index') .setTitle('✨ MyMediary') .addMetaTag('viewport', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover')
 .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL); function sbReq_(endpoint, method = 'get', payload = null, prefer = 'return=representation') { const opts = { method: method.toLowerCase(), muteHttpExceptions: true, headers: { 'apikey': SUPABASE_KEY,
 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json', 'Prefer': prefer
 }
@@ -18,12 +18,12 @@ const passHash = pass ? hashPass_(pass) : ''; const q = `perfiles?user_email=eq.
 if (actual && actual.preferencias?.passwordHash) { return { exito: false, error: 'Esta cuenta ya existe. Inicia sesión con tu contraseña o con Google.' }; }
 if (!pass || pass.length < 3) { return { exito: false, error: 'Crea una contraseña de al menos 3 caracteres.' }; }
 const nickDefault = (datos?.nickname || '').trim() || (email.includes('@') ? email.split('@')[0] : email); const prefs = Object.assign({}, actual?.preferencias || {}, { passwordHash: passHash, authMethod: email.endsWith('@gmail.com') ? 'google_password' : 'password' }); const nuevo = {
-user_email: email, nickname: nickDefault, bio: actual?.bio || 'Coleccionando historias en MediaBook ✨', avatar: actual?.avatar || '🎬', favoritos: actual?.favoritos || {}, favoritos_ocultos: actual?.favoritos_ocultos || {}, preferencias: prefs, updated_at: new Date().toISOString()
+user_email: email, nickname: nickDefault, bio: actual?.bio || 'Coleccionando historias en MyMediary ✨', avatar: actual?.avatar || '🎬', favoritos: actual?.favoritos || {}, favoritos_ocultos: actual?.favoritos_ocultos || {}, preferencias: prefs, updated_at: new Date().toISOString()
 }; sbReq_('perfiles?on_conflict=user_email', 'post', nuevo, 'resolution=merge-duplicates,return=representation'); return obtenerPerfilUsuario(email); }
 if (modo === 'google') { const emailG = email || obtenerEmailGoogleActivo_(); if (!emailG) { return { exito: false, necesitaInputGoogle: true, error: 'Confirma tu correo de Google para vincular tu sesión.' }; }
 if (actual && actual.preferencias?.passwordHash && passHash && actual.preferencias.passwordHash !== passHash) { return { exito: false, error: 'La contraseña de esta cuenta no coincide.' }; }
 if (!actual) { const nickG = (datos?.nickname || '').trim() || emailG.split('@')[0]; const prefsG = passHash ? { passwordHash: passHash, authMethod: 'google' } : { authMethod: 'google' }; sbReq_('perfiles?on_conflict=user_email', 'post', { user_email: emailG, nickname: nickG,
-bio: 'Coleccionando historias en MediaBook ✨', avatar: datos?.avatar || '🎬', favoritos: {}, favoritos_ocultos: {}, preferencias: prefsG, updated_at: new Date().toISOString()
+bio: 'Coleccionando historias en MyMediary ✨', avatar: datos?.avatar || '🎬', favoritos: {}, favoritos_ocultos: {}, preferencias: prefsG, updated_at: new Date().toISOString()
 }, 'resolution=merge-duplicates,return=representation'); } else if (passHash && !actual.preferencias?.passwordHash) { const prefsUpd = Object.assign({}, actual.preferencias || {}, { passwordHash: passHash, authMethod: 'google' });
 sbReq_(`perfiles?user_email=eq.${encodeURIComponent(emailG)}`, 'patch', { preferencias: prefsUpd, updated_at: new Date().toISOString() }); }
 return obtenerPerfilUsuario(emailG); }
@@ -36,18 +36,18 @@ return obtenerPerfilUsuario(email); } catch (e) { return { exito: false, error: 
 function obtenerPerfilUsuario(userEmail) { try { const email = resolverUserEmail_(userEmail); if (!email) {
 return { exito: false, sinSesion: true, emailGoogle: '', logueadoGoogle: false, nickname: 'Invitado', avatar: '👤', bio: 'Inicia sesión para guardar tus listas en Supabase ✨', favoritos: {}, favoritosOcultos: {} }; }
 const rows = sbReq_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'get'); if (rows && rows.length > 0) { const p = rows[0]; return { exito: true, emailGoogle: p.user_email, logueadoGoogle: true, nickname: p.nickname || email.split('@')[0], avatar: p.avatar || '🎬',
-bio: p.bio || 'Coleccionando historias en MediaBook ✨', favoritos: p.favoritos || {}, favoritosOcultos: p.favoritos_ocultos || {}, preferencias: p.preferencias || {}
+bio: p.bio || 'Coleccionando historias en MyMediary ✨', favoritos: p.favoritos || {}, favoritosOcultos: p.favoritos_ocultos || {}, preferencias: p.preferencias || {}
 }; }
-const nuevo = { user_email: email, nickname: email.includes('@') ? email.split('@')[0] : email, bio: 'Coleccionando historias en MediaBook ✨', avatar: '🎬', favoritos: {}, favoritos_ocultos: {}, preferencias: { authMethod: 'google' }, updated_at: new Date().toISOString()
+const nuevo = { user_email: email, nickname: email.includes('@') ? email.split('@')[0] : email, bio: 'Coleccionando historias en MyMediary ✨', avatar: '🎬', favoritos: {}, favoritos_ocultos: {}, preferencias: { authMethod: 'google' }, updated_at: new Date().toISOString()
 }; sbReq_('perfiles?on_conflict=user_email', 'post', nuevo, 'resolution=merge-duplicates,return=representation'); return { exito: true, emailGoogle: email, logueadoGoogle: true, nickname: nuevo.nickname, avatar: nuevo.avatar, bio: nuevo.bio, favoritos: {}, favoritosOcultos: {},
 preferencias: nuevo.preferencias
-}; } catch (e) { return { exito: false, error: e.toString(), emailGoogle: userEmail || '', logueadoGoogle: false, nickname: 'Usuario MediaBook', avatar: '🎬', bio: '', favoritos: {}, favoritosOcultos: {} }; }
+}; } catch (e) { return { exito: false, error: e.toString(), emailGoogle: userEmail || '', logueadoGoogle: false, nickname: 'Usuario MyMediary', avatar: '🎬', bio: '', favoritos: {}, favoritosOcultos: {} }; }
 }
 function iniciarSesionConGoogle(emailManual, passwordOpcional) { const emailDetectado = normEmail_(emailManual) || obtenerEmailGoogleActivo_(); if (!emailDetectado) { return { exito: false, necesitaInputGoogle: true }; }
 return autenticarUsuarioSupabase({ modo: 'google', email: emailDetectado, password: passwordOpcional || '' }); }
 function guardarPerfilUsuario(datos, userEmail) { try { const email = resolverUserEmail_(userEmail || datos?.emailGoogle); if (!email) return { exito: false, error: 'Inicia sesión primero para guardar tu perfil.' };
 const existentes = sbReq_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'get'); const actual = existentes && existentes[0] ? existentes[0] : {}; const payload = { user_email: email,
-nickname: datos.nickname !== undefined ? String(datos.nickname) : (actual.nickname || email.split('@')[0]), bio: datos.bio !== undefined ? String(datos.bio) : (actual.bio || 'Coleccionando historias en MediaBook ✨'),
+nickname: datos.nickname !== undefined ? String(datos.nickname) : (actual.nickname || email.split('@')[0]), bio: datos.bio !== undefined ? String(datos.bio) : (actual.bio || 'Coleccionando historias en MyMediary ✨'),
 avatar: datos.avatar !== undefined ? String(datos.avatar) : (actual.avatar || '🎬'), favoritos: datos.favoritos !== undefined ? datos.favoritos : (actual.favoritos || {}), favoritos_ocultos: datos.favoritosOcultos !== undefined ? datos.favoritosOcultos : (actual.favoritos_ocultos || {}),
 preferencias: datos.preferencias !== undefined ? Object.assign({}, actual.preferencias || {}, datos.preferencias) : (actual.preferencias || {}), updated_at: new Date().toISOString()
 }; sbReq_('perfiles?on_conflict=user_email', 'post', payload, 'resolution=merge-duplicates,return=representation'); return { exito: true, emailGoogle: email }; } catch (e) { return { exito: false, error: e.toString() }; }
@@ -127,7 +127,7 @@ const sPerf = ss.getSheetByName('Perfil'); if (sPerf && sPerf.getLastRow() > 1) 
 try { if (mapa.favoritos) favs = JSON.parse(mapa.favoritos); } catch (e) {}
 try { if (mapa.favoritosOcultos) favsOc = JSON.parse(mapa.favoritosOcultos); } catch (e) {}
 const existentes = sbReq_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'get'); const actual = existentes && existentes[0] ? existentes[0] : {}; sbReq_('perfiles?on_conflict=user_email', 'post', { user_email: email, nickname: mapa.nickname || actual.nickname || email.split('@')[0],
-bio: mapa.bio || actual.bio || 'Coleccionando historias en MediaBook ✨', avatar: mapa.avatar || actual.avatar || '🎬', favoritos: Object.assign({}, actual.favoritos || {}, favs), favoritos_ocultos: Object.assign({}, actual.favoritos_ocultos || {}, favsOc), preferencias: actual.preferencias || {},
+bio: mapa.bio || actual.bio || 'Coleccionando historias en MyMediary ✨', avatar: mapa.avatar || actual.avatar || '🎬', favoritos: Object.assign({}, actual.favoritos || {}, favs), favoritos_ocultos: Object.assign({}, actual.favoritos_ocultos || {}, favsOc), preferencias: actual.preferencias || {},
 updated_at: new Date().toISOString()
 }, 'resolution=merge-duplicates,return=representation'); }
 return { exito: true, registrosMigrados: regCount, watchlistMigrados: wlCount }; } catch (e) { return { exito: false, error: e.toString() }; }
