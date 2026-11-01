@@ -189,7 +189,48 @@ header{padding:10px 14px}
 </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div> <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.9rem; line-height:1.25;">—</div> <div class="profile-stat-sub" id="prof-best-week-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
 <div class="profile-stat-val" id="prof-best-month-val">—</div> <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div> </div> </div> <div class="profile-section-title">✨ Curiosidades y Hábitos</div> <div class="profile-grid-fun"> <div class="profile-stat-box"> <div class="profile-stat-label">Creador/Director Favorito</div> <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
 <div class="profile-stat-sub" id="prof-fav-creator-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Tasa de Rewatch / Relectura</div> <div class="profile-stat-val" id="prof-rewatch-rate-val">0%</div> <div class="profile-stat-sub" id="prof-rewatch-rate-sub">0 re-consumos</div> </div> </div> <div class="cat-wide-card" style="margin-top:14px;">
-<label style="font-weight:700; display:block; margin-bottom:10px;" data-i18n="profile_dist_title">📊 Distribución de Contenido por Categoría:</label> <div id="profile-bars-container"></div> </div> <div style="margin-top:16px; margin-bottom:24px;"> <button type="button" class="btn-action-primary" onclick="abrirMenuWatchlistGlobal()" style="width:100%; height:46px; font-size:0.92rem; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px;"> <span class="emoji-dyn">📌</span> <span data-i18n="nav_watchlists">Mis Watchlists</span> </button> </div> </div> <!-- VISTA CATEGORÍA / WATCHLIST --> <div id="vista-categoria" style="display:none;">
+<label style="font-weight:700; display:block; margin-bottom:10px;" data-i18n="profile_dist_title">📊 Distribución de Contenido por Categoría:</label> <div id="profile-bars-container"></div> </div> <div style="margin-top:16px; margin-bottom:24px;"> <button type="button" class="btn-action-primary" onclick="abrirMenuWatchlistGlobal()" style="width:100%; height:46px; font-size:0.92rem; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px;"> <span class="emoji-dyn">📌</span> <span data-i18n="nav_watchlists">Mis Watchlists</span> </button> </div> </div>
+
+<!-- VISTA DEDICADA DE WATCHLISTS -->
+<div id="vista-watchlists" style="display:none;">
+  <div class="discover-header-bar" style="margin-bottom:14px;">
+    <div>
+      <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;">
+        <span>📌 <span data-i18n="wl_section_title">Mis Watchlists</span></span>
+      </h2>
+      <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="wl_section_desc">Tus obras pendientes organizadas y separadas por cada subcategoría.</p>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button type="button" class="btn-recommend" id="btn-recomendar-azar-wl" onclick="iniciarRecomendacionAzar()">
+        <span>🎲</span> <span>Recomiéndame</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SELECTOR DE CATEGORÍA DE WATCHLIST -->
+  <div class="all-watchlists-bar" id="wl-categorias-bar" style="margin-bottom:12px;"></div>
+
+  <!-- SELECTOR DE SUBCATEGORÍA DE WATCHLIST (PÍLDORAS CON CONTADORES EXACTOS) -->
+  <div class="subtabs" id="wl-subtabs-bar" style="margin-bottom:16px;"></div>
+
+  <!-- BUSCADOR EN VIVO DENTRO DE LA WATCHLIST ACTIVA -->
+  <div class="search-row" id="box-buscador-wl" style="margin-bottom:16px;">
+    <div class="search-box">
+      <input type="text" id="input-search-wl" class="search-input" placeholder="Buscar título para agregar a esta lista..." oninput="buscarEnVivoWl(this.value)">
+      <div id="search-results-wl" class="search-results"></div>
+    </div>
+    <button type="button" class="btn-action-manual" onclick="abrirModalIngresoManual()">
+      <span>✍️</span> <span data-i18n="btn_manual">Ingresar manualmente</span>
+    </button>
+  </div>
+
+  <div class="history-header" style="margin-bottom:12px;">
+    <div class="history-title" id="titulo-wl-dedicada">Watchlist (0)</div>
+  </div>
+  <div class="watchlist-grid" id="grid-watchlist-dedicada"></div>
+</div>
+
+<!-- VISTA CATEGORÍA / WATCHLIST --> <div id="vista-categoria" style="display:none;">
 <div class="cat-top-bar" id="cat-top-bar-row">
   <div class="subtabs" id="subtabs-bar"></div>
   <div class="watchlist-dedicated-wrap" id="watchlist-dedicated-box"></div>
@@ -788,6 +829,7 @@ function abrirVistaAmigos(pushNav = true) {
   document.getElementById('vista-categoria').style.display = 'none';
   document.getElementById('vista-discover').style.display = 'none';
   document.getElementById('vista-perfil').style.display = 'none';
+  const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
   const vAm = document.getElementById('vista-amigos');
   if (vAm) vAm.style.display = 'block';
   cargarAmigosYSolicitudes();
@@ -1107,15 +1149,17 @@ function cerrarModalRegistrosAmigo() {
   if (m) m.style.display = 'none';
 }
 const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id: 'Películas', nombre: 'Películas', emoji: '🎬', rangoFechas: false, admiteRewatch: true }, { id: 'Documentales', nombre: 'Documentales', emoji: '📹', rangoFechas: false, admiteRewatch: false },
-{ id: 'Watchlist', nombre: 'Watchlist', emoji: '📌', esWatchlist: true, rangoFechas: false } ]
+{ id: 'Watchlist', nombre: 'Watchlist: Películas', emoji: '🎬', esWatchlist: true, targetSub: 'Películas', rangoFechas: false },
+{ id: 'Watchlist: Documentales', nombre: 'Watchlist: Documentales', emoji: '📹', esWatchlist: true, targetSub: 'Documentales', rangoFechas: false } ]
 }, Series: { nombre: 'Series', emoji: '📺', subs: [ { id: 'Temporadas', nombre: 'Temporadas', emoji: '⏳', rangoFechas: true, admiteRewatch: true }, { id: 'Series Completas', nombre: 'Series Completas', emoji: '🏆', rangoFechas: true, admiteRewatch: true },
-{ id: 'Series Documentales', nombre: 'Series Documentales', emoji: '📽️', rangoFechas: true, admiteRewatch: false }, { id: 'Watchlist', nombre: 'Watchlist', emoji: '📌', esWatchlist: true, rangoFechas: false } ]
+{ id: 'Series Documentales', nombre: 'Series Documentales', emoji: '📽️', rangoFechas: true, admiteRewatch: false }, { id: 'Watchlist', nombre: 'Watchlist: Series', emoji: '📺', esWatchlist: true, targetSub: 'Series', rangoFechas: false },
+{ id: 'Watchlist: Docuseries', nombre: 'Watchlist: Docuseries', emoji: '📽️', esWatchlist: true, targetSub: 'Series Documentales', rangoFechas: false } ]
 }, Musica: { nombre: 'Música', emoji: '🎵', subs: [ { id: 'Discos', nombre: 'Discos', emoji: '💿', rangoFechas: false, admiteRewatch: false }, { id: 'Artistas/Grupos', nombre: 'Artistas/Grupos', emoji: '🎙️', rangoFechas: true, admiteRewatch: false },
-{ id: 'Conciertos', nombre: 'Conciertos', emoji: '🎸', rangoFechas: false, admiteRewatch: false }, { id: 'To Listen', nombre: 'To Listen', emoji: '🎧', esWatchlist: true, rangoFechas: false } ]
-}, Juegos: { nombre: 'Juegos', emoji: '🎮', subs: [ { id: 'Videojuegos', nombre: 'Videojuegos', emoji: '🎮', rangoFechas: true, admiteRewatch: true }, { id: 'To Play', nombre: 'To Play', emoji: '🕹️', esWatchlist: true, rangoFechas: false } ]
+{ id: 'Conciertos', nombre: 'Conciertos', emoji: '🎸', rangoFechas: false, admiteRewatch: false }, { id: 'To Listen', nombre: 'To Listen', emoji: '🎧', esWatchlist: true, targetSub: 'Discos', rangoFechas: false } ]
+}, Juegos: { nombre: 'Juegos', emoji: '🎮', subs: [ { id: 'Videojuegos', nombre: 'Videojuegos', emoji: '🎮', rangoFechas: true, admiteRewatch: true }, { id: 'To Play', nombre: 'To Play', emoji: '🕹️', esWatchlist: true, targetSub: 'Videojuegos', rangoFechas: false } ]
 }, Lecturas: { nombre: 'Lecturas', emoji: '📚', subs: [ { id: 'Libros', nombre: 'Libros', emoji: '📖', rangoFechas: true, admiteRewatch: true }, { id: 'Cómics', nombre: 'Cómics', emoji: '💥', rangoFechas: true, admiteRewatch: true },
-{ id: 'Mangas', nombre: 'Mangas', emoji: '⛩️', rangoFechas: true, admiteRewatch: true }, { id: 'To Read: Libros', nombre: 'To Read: Libros', emoji: '🔖', esWatchlist: true, targetSub: 'Libros', rangoFechas: false },
-{ id: 'To Read: Cómics', nombre: 'To Read: Cómics', emoji: '🔖', esWatchlist: true, targetSub: 'Cómics', rangoFechas: false }, { id: 'To Read: Mangas', nombre: 'To Read: Mangas', emoji: '🔖', esWatchlist: true, targetSub: 'Mangas', rangoFechas: false } ]
+{ id: 'Mangas', nombre: 'Mangas', emoji: '⛩️', rangoFechas: true, admiteRewatch: true }, { id: 'To Read: Libros', nombre: 'To Read: Libros', emoji: '📖', esWatchlist: true, targetSub: 'Libros', rangoFechas: false },
+{ id: 'To Read: Cómics', nombre: 'To Read: Cómics', emoji: '💥', esWatchlist: true, targetSub: 'Cómics', rangoFechas: false }, { id: 'To Read: Mangas', nombre: 'To Read: Mangas', emoji: '⛩️', esWatchlist: true, targetSub: 'Mangas', rangoFechas: false } ]
 }
 }; const I18N = { es: { nav_inicio: "Inicio", nav_peliculas: "Películas", nav_series: "Series", nav_musica: "Música", nav_juegos: "Juegos", nav_lecturas: "Lecturas", nav_perfil: "Perfil", nav_amigos: "Amigos", nav_watchlists: "Mis Watchlists", nav_discover: "Discover", home_title: "Índice General", home_subtitle: "Resumen exhaustivo de tus hábitos y favoritos", wl_global_btn: "Ver mis Watchlists y Pendientes", amigos_title: "Comunidad y Amigos", amigos_subtitle: "Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.", amigos_search_title: "Agregar Amigo por ID", amigos_search_hint: "Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:", btn_copiar_mi_id: "Copiar mi ID", btn_actualizar: "Actualizar", btn_enviar_solicitud: "Enviar Solicitud", btn_edit: "Editar", profile_title: "Perfil y Estadísticas", profile_favs_title: "Mis Favoritos por Categoría", btn_cfg_favs: "Configurar cuáles mostrar", profile_metrics_title: "Métricas Globales", profile_records_title: "Récords de Ritmo", profile_curiosities_title: "Curiosidades y Hábitos", stat_total_regs: "Total Registros", stat_items_completed: "items completados", stat_avg_rating: "Calificación Promedio", stat_of_stars: "de 5.0 estrellas", stat_game_hours: "Horas en Juegos", stat_time_invested: "tiempo invertido", stat_fav_creator: "Creador/Director Favorito", stat_rewatch_rate: "Tasa de Rewatch / Relectura",
 btn_manual: "Ingresar manualmente", btn_guardar: "Guardar en Mediary", historial_title: "Historial", btn_ocultar_rw: "Ocultar Rewatches", btn_mostrar_rw: "Mostrar Rewatches", badge_rewatch: "Rewatch",
@@ -1159,9 +1203,9 @@ lbl_edit_hours: "Editar Horas Jugadas",
 
 meses: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"], dias: ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"],
 cats: { Peliculas: "Películas", Series: "Series", Musica: "Música", Juegos: "Juegos", Lecturas: "Lecturas" }, subs: { 'Películas': 'Películas', 'Documentales': 'Documentales', 'Temporadas': 'Temporadas', 'Series Completas': 'Series Completas', 'Series Documentales': 'Series Documentales',
-'Discos': 'Discos', 'Artistas/Grupos': 'Artistas/Grupos', 'Conciertos': 'Conciertos', 'Videojuegos': 'Videojuegos', 'Libros': 'Libros', 'Cómics': 'Cómics', 'Mangas': 'Mangas', 'Watchlist': 'Watchlist', 'To Listen': 'To Listen', 'To Play': 'To Play',
+'Discos': 'Discos', 'Artistas/Grupos': 'Artistas/Grupos', 'Conciertos': 'Conciertos', 'Videojuegos': 'Videojuegos', 'Libros': 'Libros', 'Cómics': 'Cómics', 'Mangas': 'Mangas', 'Watchlist': 'Watchlist: Películas', 'Watchlist: Películas': 'Watchlist: Películas', 'Watchlist: Documentales': 'Watchlist: Documentales', 'Watchlist: Series': 'Watchlist: Series', 'Watchlist: Docuseries': 'Watchlist: Docuseries', 'To Listen': 'To Listen', 'To Play': 'To Play',
 'To Read: Libros': 'To Read: Libros', 'To Read: Cómics': 'To Read: Cómics', 'To Read: Mangas': 'To Read: Mangas'
-}
+}, wl_section_title: "Mis Watchlists", wl_section_desc: "Tus obras pendientes organizadas y separadas por cada subcategoría.", btn_volver_historial: "Volver al Historial"
 }, en: { nav_inicio: "Home", nav_peliculas: "Movies", nav_series: "Series", nav_musica: "Music", nav_juegos: "Games", nav_lecturas: "Books & Comics", nav_perfil: "Profile", nav_amigos: "Friends", nav_watchlists: "My Watchlists", nav_discover: "Discover", home_title: "General Dashboard", home_subtitle: "Exhaustive overview of your habits and favorites", wl_global_btn: "View my Watchlists & Pending Items", amigos_title: "Community & Friends", amigos_subtitle: "Add friends by their unique ID and explore their tastes, favorites, and statistics in real time.", amigos_search_title: "Add Friend by ID", amigos_search_hint: "Ask your friend for their profile ID (visible on their Profile tab) and enter it here:", btn_copiar_mi_id: "Copy my ID", btn_actualizar: "Refresh", btn_enviar_solicitud: "Send Request", btn_edit: "Edit", profile_title: "Profile & Statistics", profile_favs_title: "My Favorites by Category", btn_cfg_favs: "Configure which to display", profile_metrics_title: "Global Metrics", profile_records_title: "Pacing Records", profile_curiosities_title: "Habits & Trivia", stat_total_regs: "Total Entries", stat_items_completed: "completed items", stat_avg_rating: "Average Rating", stat_of_stars: "out of 5.0 stars", stat_game_hours: "Gaming Playtime", stat_time_invested: "hours logged", stat_fav_creator: "Top Creator/Director", stat_rewatch_rate: "Rewatch / Reread Rate",
 btn_manual: "Manual Entry", btn_guardar: "Save to Mediary", historial_title: "History", btn_ocultar_rw: "Hide Rewatches", btn_mostrar_rw: "Show Rewatches", badge_rewatch: "Rewatch", lbl_temporada_num: "Season Number:", chk_temporada_unica: "Standalone Season? (Save also in Series)",
 lbl_arco: "Story Arc Name:", lbl_numeros: "Issues / Chapters Covered:", lbl_horas: "Playtime (Hours):", lbl_fecha_ini: "Start Date:", lbl_fecha_fin: "End Date:", lbl_fecha_vis: "Date:", chk_no_fecha: "Unregistered / Can't recall exact date", lbl_calificacion: "Rating:",
@@ -1203,21 +1247,51 @@ lbl_edit_hours: "Edit Playtime (Hours)",
 meses: ["January","February","March","April","May","June","July","August","September","October","November","December"],
 dias: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], cats: { Peliculas: "Movies", Series: "Series", Musica: "Music", Juegos: "Games", Lecturas: "Books & Comics" }, subs: {
 'Películas': 'Movies', 'Documentales': 'Documentaries', 'Temporadas': 'Seasons', 'Series Completas': 'Complete Series', 'Series Documentales': 'Docuseries',
-'Discos': 'Albums', 'Artistas/Grupos': 'Artists/Bands', 'Conciertos': 'Concerts', 'Videojuegos': 'Video Games', 'Libros': 'Books', 'Cómics': 'Comics', 'Mangas': 'Manga', 'Watchlist': 'Watchlist', 'To Listen': 'To Listen', 'To Play': 'To Play',
+'Discos': 'Albums', 'Artistas/Grupos': 'Artists/Bands', 'Conciertos': 'Concerts', 'Videojuegos': 'Video Games', 'Libros': 'Books', 'Cómics': 'Comics', 'Mangas': 'Manga', 'Watchlist': 'Watchlist: Movies', 'Watchlist: Películas': 'Watchlist: Movies', 'Watchlist: Documentales': 'Watchlist: Documentaries', 'Watchlist: Series': 'Watchlist: Series', 'Watchlist: Docuseries': 'Watchlist: Docuseries', 'To Listen': 'To Listen', 'To Play': 'To Play',
 'To Read: Libros': 'To Read: Books', 'To Read: Cómics': 'To Read: Comics', 'To Read: Mangas': 'To Read: Manga'
-}
+}, wl_section_title: "My Watchlists", wl_section_desc: "Your pending items organized and separated by each subcategory.", btn_volver_historial: "Back to History"
 }
 }; let userPrefs = { font: "'Plus Jakarta Sans', sans-serif", fontSize: "100%", theme: "default", showEmojis: true, lang: "es"
 }; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary ✨', avatar: '🎬', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
-}; const AVATARES_PRESET = ['🎬', '🍿', '🎮', '📚', '🎵', '🎸', '⛩️', '🦊', '🐱', '🚀', '🌙', '👑']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas']; const TODAS_LAS_WATCHLISTS = [
-{ cat: 'todas_watchlists', sub: 'todas_watchlists', emoji: '🌟', label: 'Todas las Listas' },
-{ cat: 'Peliculas', sub: 'Watchlist', emoji: '📌', label: 'Películas' }, { cat: 'Series', sub: 'Watchlist', emoji: '📺', label: 'Series' }, { cat: 'Musica', sub: 'To Listen', emoji: '🎧', label: 'To Listen (Música)' }, { cat: 'Juegos', sub: 'To Play', emoji: '🕹️', label: 'To Play (Juegos)' },
-{ cat: 'Lecturas', sub: 'To Read: Libros', emoji: '📖', label: 'To Read: Libros' }, { cat: 'Lecturas', sub: 'To Read: Cómics', emoji: '💥', label: 'To Read: Cómics' }, { cat: 'Lecturas', sub: 'To Read: Mangas', emoji: '⛩️', label: 'To Read: Mangas' } ];
-let estado = { userEmail: '', modoAuthModal: 'login', categoria: 'inicio', subcategoria: 'Películas', ultimaWatchlist: { cat: 'Peliculas', sub: 'Watchlist' }, registros: [], watchlist: [], discoverData: null, discoverSeed: 1, discoverCatsActivas: [...TODAS_CATS_DISCOVER], discoverLimites: {},
+}; const AVATARES_PRESET = ['🎬', '🍿', '🎮', '📚', '🎵', '🎸', '⛩️', '🦊', '🐱', '🚀', '🌙', '👑']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
+const WATCHLIST_ESTRUCTURA = [
+  { cat: 'Peliculas', nombre: 'Películas', emoji: '🎬', subs: [
+    { id: 'Películas', subWl: 'Watchlist', nombre: 'Películas', emoji: '🎬' },
+    { id: 'Documentales', subWl: 'Watchlist: Documentales', nombre: 'Documentales', emoji: '📹' }
+  ] },
+  { cat: 'Series', nombre: 'Series', emoji: '📺', subs: [
+    { id: 'Series', subWl: 'Watchlist', nombre: 'Series', emoji: '📺' },
+    { id: 'Series Documentales', subWl: 'Watchlist: Docuseries', nombre: 'Docuseries', emoji: '📽️' }
+  ] },
+  { cat: 'Musica', nombre: 'Música', emoji: '🎵', subs: [
+    { id: 'Discos', subWl: 'To Listen', nombre: 'Discos / Música', emoji: '💿' }
+  ] },
+  { cat: 'Juegos', nombre: 'Juegos', emoji: '🎮', subs: [
+    { id: 'Videojuegos', subWl: 'To Play', nombre: 'Videojuegos', emoji: '🎮' }
+  ] },
+  { cat: 'Lecturas', nombre: 'Lecturas', emoji: '📚', subs: [
+    { id: 'Libros', subWl: 'To Read: Libros', nombre: 'Libros', emoji: '📖' },
+    { id: 'Cómics', subWl: 'To Read: Cómics', nombre: 'Cómics', emoji: '💥' },
+    { id: 'Mangas', subWl: 'To Read: Mangas', nombre: 'Mangas', emoji: '⛩️' }
+  ] }
+];
+const TODAS_LAS_WATCHLISTS = [
+  { cat: 'Peliculas', sub: 'Watchlist', emoji: '🎬', label: 'Películas' },
+  { cat: 'Peliculas', sub: 'Watchlist: Documentales', emoji: '📹', label: 'Documentales' },
+  { cat: 'Series', sub: 'Watchlist', emoji: '📺', label: 'Series' },
+  { cat: 'Series', sub: 'Watchlist: Docuseries', emoji: '📽️', label: 'Docuseries' },
+  { cat: 'Musica', sub: 'To Listen', emoji: '🎧', label: 'To Listen (Música)' },
+  { cat: 'Juegos', sub: 'To Play', emoji: '🕹️', label: 'To Play (Juegos)' },
+  { cat: 'Lecturas', sub: 'To Read: Libros', emoji: '📖', label: 'To Read: Libros' },
+  { cat: 'Lecturas', sub: 'To Read: Cómics', emoji: '💥', label: 'To Read: Cómics' },
+  { cat: 'Lecturas', sub: 'To Read: Mangas', emoji: '⛩️', label: 'To Read: Mangas' }
+];
+let estado = { userEmail: '', modoAuthModal: 'login', categoria: 'inicio', subcategoria: 'Películas', wlCategoria: 'Peliculas', wlSubcategoria: 'Películas', ultimaWatchlist: { cat: 'Peliculas', sub: 'Watchlist' }, registros: [], watchlist: [], discoverData: null, discoverSeed: 1, discoverCatsActivas: [...TODAS_CATS_DISCOVER], discoverLimites: {},
 discoverAutoRefresh: true, modoConfigurarFavs: false, seleccionado: null, calificacion: 0, tipoEventoConcierto: 'Concierto', artistasConciertoSeleccionados: [], ocultarRewatches: false, ultimoTerminoBuscado: '', artistaPendienteSugerido: null, subFavEnEdicion: null, registrosImportarPendientes: []
 }; let cropState = { img: null, scale: 1, minScale: 1, offsetX: 0, offsetY: 0, dragging: false, startX: 0, startY: 0, confirmedDataUrl: null, listenersReady: false };
 let fpInicio = null, fpFin = null; let timerDebounce = null, timerDebounceArtista = null, timerDebounceFav = null; let timerAutoDiscover = null; let carruselIntervalos = []; let serieCompletaPendiente = null, calificacionSerieCompleta = 0, idParaEliminar = null, regParaEliminar = null;
-const t = k => I18N[userPrefs.lang || 'es'][k] || k; function esSubcategoriaWatchlist(s) { return s === 'Watchlist' || s === 'To Listen' || s === 'To Play' || (s && s.startsWith('To Read')) || s === 'todas_watchlists'; }
+const t = k => I18N[userPrefs.lang || 'es'][k] || k;
+function esSubcategoriaWatchlist(s) { if (!s) return false; return s === 'Watchlist' || s.startsWith('Watchlist:') || s === 'To Listen' || s === 'To Play' || s.startsWith('To Read') || s === 'todas_watchlists'; }
 function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) userPrefs = Object.assign(userPrefs, JSON.parse(p)); } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
 try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); } } catch (e) {}
@@ -1414,9 +1488,9 @@ function manejarEnterComentario(e) { if (e.key === 'Enter' && !e.shiftKey) { e.p
 function asegurarPuntoFinal(str) { if (!str) return ''; const s = str.trim(); if (!s) return ''; if (!/[.!?:;]$/.test(s)) return `${s}.`; return s; }
 function actualizarNavWebActiva() { const c = estado.categoria, s = estado.subcategoria, enWl = !!CONFIG[c] && esSubcategoriaWatchlist(s); document.querySelectorAll('.nav-sec-btn').forEach(b => b.classList.remove('active'));
 document.querySelectorAll('.nav-cat-card').forEach(b => b.classList.toggle('active', b.dataset.cat === c)); if (c === 'inicio') document.getElementById('tab-btn-inicio')?.classList.add('active'); else if (c === 'discover') document.getElementById('tab-btn-discover')?.classList.add('active');
-else if (c === 'amigos') document.getElementById('tab-btn-amigos')?.classList.add('active'); else if (c === 'perfil') document.getElementById('tab-btn-perfil')?.classList.add('active'); else if (enWl) document.getElementById('tab-btn-listas')?.classList.add('active'); }
+else if (c === 'amigos') document.getElementById('tab-btn-amigos')?.classList.add('active'); else if (c === 'perfil') document.getElementById('tab-btn-perfil')?.classList.add('active'); else if (c === 'watchlists' || enWl) document.getElementById('tab-btn-listas')?.classList.add('active'); }
 function abrirVistaPerfil(pushNav = true) { if (pushNav) registrarNavegacionApp('perfil'); resetearBuscadoresYFormularios(); estado.categoria = 'perfil'; actualizarBarraNavegacionMovil('m-btn-perfil'); actualizarNavWebActiva();
-document.getElementById('vista-inicio').style.display = 'none'; document.getElementById('vista-categoria').style.display = 'none'; document.getElementById('vista-discover').style.display = 'none'; const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
+document.getElementById('vista-inicio').style.display = 'none'; document.getElementById('vista-categoria').style.display = 'none'; document.getElementById('vista-discover').style.display = 'none'; const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none'; const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
 document.getElementById('vista-perfil').style.display = 'block'; renderizarCabeceraPerfil(); renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 function abrirModalPerfil() { abrirVistaPerfil(); }
 const cerrarModalPerfil = () => {}; function parsearFechaAObjeto(str) { if (!str || str === 'Sin fecha') return null; const p = str.split('/'); if (p.length === 3) return new Date(Number(p[2]), Number(p[1]) - 1, Number(p[0])); const d = new Date(str); return isNaN(d.getTime()) ? null : d; }
@@ -1651,6 +1725,7 @@ function ejecutarCambioVista(vista) {
   else if (vista === 'discover') abrirVistaDiscover(false);
   else if (vista === 'amigos') abrirVistaAmigos(false);
   else if (vista === 'perfil') abrirVistaPerfil(false);
+  else if (vista === 'watchlists') abrirMenuWatchlistGlobal(false);
   else cambiarCat(vista, null, false);
 }
 function inicializarManejoBotonAtras() {
@@ -1747,32 +1822,103 @@ const cerrarModalFicha = () => document.getElementById('modal-ficha-tecnica').st
 ocultarFormulario(); cerrarModalManual(); cerrarModalFicha(); cerrarModalNuevoArtista(); cerrarModalShuffle(); cerrarModalAgregadoRapido(); limpiarCarruselTimers(); }
 function limpiarCarruselTimers() { carruselIntervalos.forEach(t => clearInterval(t)); carruselIntervalos = []; }
 function cambiarCat(cat, subDestino = null, pushNav = true) { if (pushNav) registrarNavegacionApp(cat); resetearBuscadoresYFormularios(); estado.categoria = cat;
-const vIni = document.getElementById('vista-inicio'), vCat = document.getElementById('vista-categoria'), vDisc = document.getElementById('vista-discover'), vPerf = document.getElementById('vista-perfil');
-vDisc.style.display = 'none'; if (vPerf) vPerf.style.display = 'none'; const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none'; if (cat === 'inicio') { estado.subcategoria = ''; actualizarNavWebActiva(); vIni.style.display = 'block'; vCat.style.display = 'none'; renderizarStats();
-} else { vIni.style.display = 'none'; vCat.style.display = 'block'; estado.subcategoria = subDestino || CONFIG[cat].subs[0].id; if (esSubcategoriaWatchlist(estado.subcategoria)) { estado.ultimaWatchlist = { cat, sub: estado.subcategoria }; }
+const vIni = document.getElementById('vista-inicio'), vCat = document.getElementById('vista-categoria'), vDisc = document.getElementById('vista-discover'), vPerf = document.getElementById('vista-perfil'), vAm = document.getElementById('vista-amigos'), vWl = document.getElementById('vista-watchlists');
+if (vDisc) vDisc.style.display = 'none'; if (vPerf) vPerf.style.display = 'none'; if (vAm) vAm.style.display = 'none'; if (vWl) vWl.style.display = 'none'; if (cat === 'inicio') { estado.subcategoria = ''; actualizarNavWebActiva(); if (vIni) vIni.style.display = 'block'; if (vCat) vCat.style.display = 'none'; renderizarStats();
+} else { if (vIni) vIni.style.display = 'none'; if (vCat) vCat.style.display = 'block'; estado.subcategoria = subDestino || CONFIG[cat].subs[0].id; if (esSubcategoriaWatchlist(estado.subcategoria)) { estado.ultimaWatchlist = { cat, sub: estado.subcategoria }; }
 actualizarNavWebActiva(); renderizarSubtabs(); actualizarVisibilidadCamposEspeciales(); configurarFormularioFechas(); if (esSubcategoriaWatchlist(estado.subcategoria)) { renderizarWatchlist(); } else { filtrarYMostrarHistorial(); }
 }
 window.scrollTo({ top: 0, behavior: 'smooth' }); }
 function navegarARegistroDesdeInicio(id, cat, sub) { cambiarCat(cat, sub); setTimeout(() => { const el = document.getElementById(`fila-${id}`) || document.getElementById(`card-${id}`);
 if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('row-highlighted'); setTimeout(() => el.classList.remove('row-highlighted'), 2600); }
 abrirFichaTecnica(id); }, 350); }
-function contarItemsWatchlistDe(cat, subWl) { if (cat === 'todas_watchlists' || subWl === 'todas_watchlists' || subWl === 'todas') return (estado.watchlist || []).length; return (estado.watchlist || []).filter(w => { if (w.categoria !== cat) return false; if (cat === 'Lecturas') { if (subWl === 'To Read: Libros') return w.subcategoria === 'Libros'; if (subWl === 'To Read: Cómics') return w.subcategoria === 'Cómics';
-if (subWl === 'To Read: Mangas') return w.subcategoria === 'Mangas'; }
-return true; }).length; }
-function obtenerSubWatchlistDeCategoria(cat, subActual) { if (cat === 'Peliculas') return 'Watchlist'; if (cat === 'Series') return 'Watchlist'; if (cat === 'Musica') return 'To Listen'; if (cat === 'Juegos') return 'To Play'; if (cat === 'Lecturas') {
-if (subActual === 'Cómics' || subActual === 'To Read: Cómics') return 'To Read: Cómics'; if (subActual === 'Mangas' || subActual === 'To Read: Mangas') return 'To Read: Mangas'; return 'To Read: Libros'; }
-return 'Watchlist'; }
-function volverAHistorialDesdeWatchlist() { const c = estado.categoria; if (!CONFIG[c]) return cambiarCat('Peliculas', 'Películas'); let subHist = CONFIG[c].subs.find(x => !x.esWatchlist)?.id || 'Películas'; if (c === 'Lecturas') { if (estado.subcategoria === 'To Read: Cómics') subHist = 'Cómics';
-else if (estado.subcategoria === 'To Read: Mangas') subHist = 'Mangas'; else subHist = 'Libros'; }
-cambiarCat(c, subHist); }
-function renderizarSubtabs() { const box = document.getElementById('subtabs-bar'); const wlBox = document.getElementById('watchlist-dedicated-box'); box.innerHTML = ''; if (wlBox) wlBox.innerHTML = ''; const l = userPrefs.lang || 'es'; const c = estado.categoria; if (!CONFIG[c]) return;
+function itemPerteneceAWatchlist(w, cat, sub) {
+  if (!w) return false;
+  const wCat = String(w.categoria || '').trim();
+  const wSub = String(w.subcategoria || '').trim().toLowerCase();
+  const subNorm = String(sub || '').trim().toLowerCase();
+  if (cat && cat !== 'todas_watchlists' && cat !== 'watchlists') {
+    if (wCat && wCat !== cat) return false;
+  }
+  if (cat === 'Peliculas' || wCat === 'Peliculas') {
+    const esDocu = wSub.includes('docu');
+    const pideDocu = subNorm.includes('docu');
+    return pideDocu ? esDocu : !esDocu;
+  }
+  if (cat === 'Series' || wCat === 'Series') {
+    const esDocu = wSub.includes('docu');
+    const pideDocu = subNorm.includes('docu');
+    return pideDocu ? esDocu : !esDocu;
+  }
+  if (cat === 'Musica' || wCat === 'Musica') {
+    return wCat === 'Musica' || cat === 'Musica';
+  }
+  if (cat === 'Juegos' || wCat === 'Juegos') {
+    return wCat === 'Juegos' || cat === 'Juegos';
+  }
+  if (cat === 'Lecturas' || wCat === 'Lecturas') {
+    if (subNorm.includes('comic') || subNorm.includes('cómic')) {
+      return wSub.includes('comic') || wSub.includes('cómic');
+    }
+    if (subNorm.includes('manga')) {
+      return wSub.includes('manga');
+    }
+    return !wSub.includes('comic') && !wSub.includes('cómic') && !wSub.includes('manga');
+  }
+  return true;
+}
+function contarItemsWatchlistDe(cat, subWl) {
+  if (!estado.watchlist || !estado.watchlist.length) return 0;
+  if (cat === 'todas_watchlists' || subWl === 'todas_watchlists' || subWl === 'todas') return estado.watchlist.length;
+  return estado.watchlist.filter(w => itemPerteneceAWatchlist(w, cat, subWl)).length;
+}
+function obtenerSubWatchlistDeCategoria(cat, subActual) {
+  if (cat === 'Peliculas') {
+    if (String(subActual).toLowerCase().includes('docu')) return 'Watchlist: Documentales';
+    return 'Watchlist';
+  }
+  if (cat === 'Series') {
+    if (String(subActual).toLowerCase().includes('docu')) return 'Watchlist: Docuseries';
+    return 'Watchlist';
+  }
+  if (cat === 'Musica') return 'To Listen';
+  if (cat === 'Juegos') return 'To Play';
+  if (cat === 'Lecturas') {
+    const sLow = String(subActual).toLowerCase();
+    if (sLow.includes('comic') || sLow.includes('cómic')) return 'To Read: Cómics';
+    if (sLow.includes('manga')) return 'To Read: Mangas';
+    return 'To Read: Libros';
+  }
+  return 'Watchlist';
+}
+function volverAHistorialDesdeWatchlist() {
+  const c = estado.categoria;
+  if (!CONFIG[c]) return cambiarCat('Peliculas', 'Películas');
+  let subHist = 'Películas';
+  if (c === 'Peliculas') {
+    subHist = String(estado.subcategoria).toLowerCase().includes('docu') ? 'Documentales' : 'Películas';
+  } else if (c === 'Series') {
+    subHist = String(estado.subcategoria).toLowerCase().includes('docu') ? 'Series Documentales' : 'Temporadas';
+  } else if (c === 'Musica') {
+    subHist = 'Discos';
+  } else if (c === 'Juegos') {
+    subHist = 'Videojuegos';
+  } else if (c === 'Lecturas') {
+    const sLow = String(estado.subcategoria).toLowerCase();
+    if (sLow.includes('comic') || sLow.includes('cómic')) subHist = 'Cómics';
+    else if (sLow.includes('manga')) subHist = 'Mangas';
+    else subHist = 'Libros';
+  }
+  cambiarCat(c, subHist);
+}
+function renderizarSubtabs() { const box = document.getElementById('subtabs-bar'); const wlBox = document.getElementById('watchlist-dedicated-box'); if (box) box.innerHTML = ''; if (wlBox) wlBox.innerHTML = ''; const l = userPrefs.lang || 'es'; const c = estado.categoria; if (!CONFIG[c]) return;
 const enWl = esSubcategoriaWatchlist(estado.subcategoria); CONFIG[c].subs.filter(s => !s.esWatchlist).forEach(s => { const btn = document.createElement('button');
-btn.className = `subtab-btn ${!enWl && estado.subcategoria === s.id ? 'active' : ''}`; btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l].subs[s.id] || s.nombre}`;
-btn.onclick = () => { resetearBuscadoresYFormularios(); estado.subcategoria = s.id; actualizarNavWebActiva(); renderizarSubtabs(); actualizarVisibilidadCamposEspeciales(); configurarFormularioFechas(); filtrarYMostrarHistorial(); }; box.appendChild(btn); }); if (wlBox) {
-const targetWl = obtenerSubWatchlistDeCategoria(c, estado.subcategoria); const wlMeta = CONFIG[c].subs.find(x => x.id === targetWl) || CONFIG[c].subs.find(x => x.esWatchlist); const totalCatWl = (estado.watchlist || []).filter(w => w.categoria === c).length; if (enWl) {
-const btnBack = document.createElement('button'); btnBack.type = 'button'; btnBack.className = 'btn-watchlist-special active-wl'; btnBack.innerHTML = `<span>⬅ Volver al Historial</span><span class="wl-count-badge">${totalCatWl} en lista</span>`;
-btnBack.onclick = () => volverAHistorialDesdeWatchlist(); wlBox.appendChild(btnBack); } else if (wlMeta) { const btnWl = document.createElement('button'); btnWl.type = 'button'; btnWl.className = 'btn-watchlist-special'; const labelWl = I18N[l].subs[wlMeta.id] || wlMeta.nombre;
-btnWl.innerHTML = `<span class="emoji-dyn">${wlMeta.emoji}</span><span>${labelWl}</span><span class="wl-count-badge">${totalCatWl}</span>`; btnWl.onclick = () => cambiarCat(c, targetWl); wlBox.appendChild(btnWl); }
+btn.className = `subtab-btn ${!enWl && estado.subcategoria === s.id ? 'active' : ''}`; btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l]?.subs?.[s.id] || s.nombre}`;
+btn.onclick = () => { resetearBuscadoresYFormularios(); estado.subcategoria = s.id; actualizarNavWebActiva(); renderizarSubtabs(); actualizarVisibilidadCamposEspeciales(); configurarFormularioFechas(); filtrarYMostrarHistorial(); }; if (box) box.appendChild(btn); }); if (wlBox) {
+const targetWl = obtenerSubWatchlistDeCategoria(c, estado.subcategoria); const wlMeta = CONFIG[c].subs.find(x => x.id === targetWl) || CONFIG[c].subs.find(x => x.esWatchlist); const countThisWl = contarItemsWatchlistDe(c, targetWl); if (enWl) {
+const btnBack = document.createElement('button'); btnBack.type = 'button'; btnBack.className = 'btn-watchlist-special active-wl';
+btnBack.innerHTML = `<span>⬅ ${I18N[l]?.btn_volver_historial || 'Volver al Historial'}</span>`;
+btnBack.onclick = () => volverAHistorialDesdeWatchlist(); wlBox.appendChild(btnBack); } else if (wlMeta) { const btnWl = document.createElement('button'); btnWl.type = 'button'; btnWl.className = 'btn-watchlist-special'; const labelWl = I18N[l]?.subs?.[wlMeta.id] || wlMeta.nombre;
+btnWl.innerHTML = `<span class="emoji-dyn">${wlMeta.emoji}</span><span>${labelWl}</span><span class="wl-count-badge">${countThisWl}</span>`; btnWl.onclick = () => cambiarCat(c, targetWl); wlBox.appendChild(btnWl); }
 }
 aplicarEstilosGlobales(); }
 function renderizarBarraTodasWatchlists() { const panel = document.getElementById('all-watchlists-panel'); if (panel) panel.style.display = esSubcategoriaWatchlist(estado.subcategoria) ? 'block' : 'none'; const bar = document.getElementById('all-watchlists-bar'); if (!bar) return; bar.innerHTML = ''; const l = userPrefs.lang || 'es'; TODAS_LAS_WATCHLISTS.forEach(w => { const cant = contarItemsWatchlistDe(w.cat, w.sub);
@@ -1798,30 +1944,198 @@ function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) 
 if (estado.categoria === 'inicio') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
 else { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 }).obtenerRegistros(estado.userEmail); }
-function cargarWatchlist() { if (!estado.watchlist?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_wl_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_wl_' + estado.userEmail.toLowerCase()); if (c) estado.watchlist = JSON.parse(c); } catch(e) {} } google.script.run.withSuccessHandler(w => { estado.watchlist = w || []; if (estado.userEmail) { try { localStorage.setItem('mediary_cache_wl_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.watchlist)); } catch(e) {} } if (CONFIG[estado.categoria]) renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); }).obtenerWatchlist(estado.userEmail); }
+function cargarWatchlist() { if (!estado.watchlist?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_wl_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_wl_' + estado.userEmail.toLowerCase()); if (c) estado.watchlist = JSON.parse(c); } catch(e) {} } google.script.run.withSuccessHandler(w => { estado.watchlist = w || []; if (estado.userEmail) { try { localStorage.setItem('mediary_cache_wl_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.watchlist)); } catch(e) {} } if (CONFIG[estado.categoria]) renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); if (estado.categoria === 'watchlists') renderizarVistaWatchlistsDedicada(); }).obtenerWatchlist(estado.userEmail); }
 // --- AGREGADO RÁPIDO (+) EN MÓVIL ---
 function abrirModalAgregadoRapido() { document.getElementById('modal-agregado-rapido').style.display = 'flex'; }
 function cerrarModalAgregadoRapido() { document.getElementById('modal-agregado-rapido').style.display = 'none'; }
 function ejecutarAgregadoRapido(cat, sub) { cerrarModalAgregadoRapido(); cambiarCat(cat, sub); setTimeout(() => { const inp = document.getElementById('input-search'); if (inp) { inp.focus(); inp.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 }, 250); }
-// --- ACCESO A TODAS LAS LISTAS DESDE MÓVIL Y WEB ---
-function abrirMenuWatchlistGlobal() {
+// --- ACCESO A WATCHLISTS DEDICADAS DESDE MÓVIL Y WEB ---
+function abrirMenuWatchlistGlobal(pushNav = true) {
+  if (pushNav) registrarNavegacionApp('watchlists');
   resetearBuscadoresYFormularios();
-  estado.categoria = 'todas_watchlists';
-  estado.subcategoria = 'todas_watchlists';
+  estado.categoria = 'watchlists';
+  estado.subcategoria = '';
+  // POINT 1: Default to Películas, NOT whatever was last open, and separate by subcategories cleanly
+  estado.wlCategoria = 'Peliculas';
+  estado.wlSubcategoria = 'Películas';
   actualizarBarraNavegacionMovil('m-btn-listas');
   actualizarNavWebActiva();
   document.getElementById('vista-inicio').style.display = 'none';
+  document.getElementById('vista-categoria').style.display = 'none';
   document.getElementById('vista-discover').style.display = 'none';
   const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none';
   const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
-  document.getElementById('vista-categoria').style.display = 'block';
-  document.getElementById('all-watchlists-panel').style.display = 'block';
-  renderizarSubtabs();
-  renderizarWatchlist();
+  const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'block';
+  renderizarVistaWatchlistsDedicada();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function abrirMenuWatchlistMovil() { actualizarBarraNavegacionMovil('m-btn-listas'); abrirMenuWatchlistGlobal(); }
+
+function seleccionarCategoriaWl(cat) {
+  estado.wlCategoria = cat;
+  const cfg = WATCHLIST_ESTRUCTURA.find(x => x.cat === cat);
+  estado.wlSubcategoria = cfg?.subs[0]?.id || 'Películas';
+  const inSearch = document.getElementById('input-search-wl');
+  if (inSearch) inSearch.value = '';
+  const resBox = document.getElementById('search-results-wl');
+  if (resBox) { resBox.innerHTML = ''; resBox.style.display = 'none'; }
+  renderizarVistaWatchlistsDedicada();
+}
+
+function seleccionarSubcategoriaWl(subId) {
+  estado.wlSubcategoria = subId;
+  const inSearch = document.getElementById('input-search-wl');
+  if (inSearch) inSearch.value = '';
+  const resBox = document.getElementById('search-results-wl');
+  if (resBox) { resBox.innerHTML = ''; resBox.style.display = 'none'; }
+  renderizarVistaWatchlistsDedicada();
+}
+
+function renderizarVistaWatchlistsDedicada() {
+  const catBar = document.getElementById('wl-categorias-bar');
+  const subBar = document.getElementById('wl-subtabs-bar');
+  const grid = document.getElementById('grid-watchlist-dedicada');
+  const titEl = document.getElementById('titulo-wl-dedicada');
+  const inSearch = document.getElementById('input-search-wl');
+  if (!catBar || !subBar || !grid) return;
+
+  const l = userPrefs.lang || 'es';
+  const catActual = estado.wlCategoria || 'Peliculas';
+  const subActualId = estado.wlSubcategoria || 'Películas';
+
+  // 1. Renderizar Barra de Categorías con conteos totales de cada una
+  catBar.innerHTML = '';
+  WATCHLIST_ESTRUCTURA.forEach(c => {
+    const totalCat = c.subs.reduce((acc, s) => acc + contarItemsWatchlistDe(c.cat, s.id), 0);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `wl-cat-pill ${c.cat === catActual ? 'active' : ''}`;
+    btn.innerHTML = `<span class="emoji-dyn">${c.emoji}</span><span>${I18N[l]?.cats?.[c.cat] || c.nombre}</span><span class="wl-pill-count">${totalCat}</span>`;
+    btn.onclick = () => seleccionarCategoriaWl(c.cat);
+    catBar.appendChild(btn);
+  });
+
+  // 2. Renderizar Subpestañas de la Categoría Activa
+  subBar.innerHTML = '';
+  const cfgCat = WATCHLIST_ESTRUCTURA.find(x => x.cat === catActual) || WATCHLIST_ESTRUCTURA[0];
+  let subObjActual = cfgCat.subs.find(s => s.id === subActualId);
+  if (!subObjActual) {
+    subObjActual = cfgCat.subs[0];
+    estado.wlSubcategoria = subObjActual.id;
+  }
+
+  cfgCat.subs.forEach(s => {
+    const cant = contarItemsWatchlistDe(catActual, s.id);
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = `subtab-btn ${s.id === estado.wlSubcategoria ? 'active' : ''}`;
+    btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l]?.subs?.[s.id] || s.nombre} <span class="wl-count-badge" style="margin-left:5px;">${cant}</span>`;
+    btn.onclick = () => seleccionarSubcategoriaWl(s.id);
+    subBar.appendChild(btn);
+  });
+
+  // 3. Actualizar Placeholder del buscador
+  const nomSub = I18N[l]?.subs?.[subObjActual.id] || subObjActual.nombre;
+  if (inSearch) {
+    inSearch.placeholder = userPrefs.lang === 'en'
+      ? `Search and add to Watchlist: ${nomSub}...`
+      : `Buscar título para agregar a Watchlist de ${nomSub}...`;
+  }
+
+  // 4. Renderizar Items de la subcategoría seleccionada
+  const items = obtenerItemsWatchlistActuales();
+  if (titEl) {
+    titEl.innerHTML = `<span class="emoji-dyn">${subObjActual.emoji}</span> Watchlist: ${nomSub} (${items.length})`;
+  }
+
+  grid.innerHTML = '';
+  if (!items.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:36px 20px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border); line-height:1.6;">No tienes elementos pendientes en <strong>Watchlist: ${nomSub}</strong>.<br><span style="font-size:0.85rem;">¡Usa el buscador de arriba para agregar uno a esta lista o explora Discover! ✨</span></div>`;
+    aplicarEstilosGlobales();
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  items.forEach(it => {
+    const card = document.createElement('div');
+    card.className = 'watchlist-card';
+    card.innerHTML = `
+      <img class="watchlist-poster" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'170\' height=\'255\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'170\\' height=\\'255\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'" onclick="abrirFichaTecnica('${it.id}')" title="Ver ficha técnica">
+      <div class="watchlist-body">
+        <div>
+          <div class="watchlist-item-title" onclick="abrirFichaTecnica('${it.id}')" style="cursor:pointer;">${it.titulo}</div>
+          <div class="watchlist-item-meta">${it.categoria ? `<span style="color:var(--accent);font-weight:700;">${it.categoria}</span> · ` : ''}${it.creador} ${it.anio ? '(' + it.anio + ')' : ''}</div>
+          ${obtenerBadgeAmigoActividad(it.titulo, it.categoria)}
+        </div>
+        <div class="watchlist-actions">
+          <button type="button" class="btn-wl-play" onclick="consumirDesdeWatchlist('${it.id}')">✓ Registrar</button>
+          <button type="button" class="btn-wl-del" title="Eliminar de lista" onclick="borrarItemWatchlist('${it.id}')">✕</button>
+        </div>
+      </div>
+    `;
+    frag.appendChild(card);
+  });
+  grid.appendChild(frag);
+  aplicarEstilosGlobales();
+}
+
+function buscarEnVivoWl(q) {
+  clearTimeout(timerDebounce);
+  const res = document.getElementById('search-results-wl');
+  if (!res) return;
+  estado.ultimoTerminoBuscado = q;
+  if (!q || q.trim().length < 2) { res.style.display = 'none'; return; }
+  const qClean = q.trim().toLowerCase();
+  const cat = estado.wlCategoria || 'Peliculas';
+  const sub = estado.wlSubcategoria || 'Películas';
+  const cacheKey = `${cat}_${sub}_${qClean}`;
+  if (_CLIENT_SEARCH_CACHE.has(cacheKey)) {
+    mostrarResultadosBuscadorWl(_CLIENT_SEARCH_CACHE.get(cacheKey));
+    return;
+  }
+  if (res.style.display !== 'block') {
+    res.innerHTML = '<div style="padding:14px; color:var(--muted); font-size:.9rem;">Buscando... ⏳</div>';
+    res.style.display = 'block';
+  }
+  const currentReqId = ++_searchRequestId;
+  timerDebounce = setTimeout(() => {
+    google.script.run.withSuccessHandler(items => {
+      if (currentReqId === _searchRequestId) {
+        if (items && items.length && _CLIENT_SEARCH_CACHE.size < 400) _CLIENT_SEARCH_CACHE.set(cacheKey, items);
+        mostrarResultadosBuscadorWl(items);
+      }
+    }).buscarEnServidor(q.trim(), cat, sub);
+  }, 120);
+}
+
+function mostrarResultadosBuscadorWl(items) {
+  const res = document.getElementById('search-results-wl');
+  if (!res) return;
+  res.innerHTML = '';
+  if (!items?.length) {
+    res.innerHTML = `<div style="padding:14px; color:var(--muted); font-size:.9rem; text-align:center;">No se encontraron coincidencias.<br><button type="button" class="btn-action-manual" style="margin-top:8px;" onclick="abrirModalIngresoManual(estado.ultimoTerminoBuscado)">✍️ ${t('btn_manual')}</button></div>`;
+    res.style.display = 'block';
+    return;
+  }
+  const cat = estado.wlCategoria || 'Peliculas';
+  const sub = estado.wlSubcategoria || 'Películas';
+  const frag = document.createDocumentFragment();
+  items.forEach(it => {
+    const itemConCat = { ...it, categoria: cat, subcategoria: sub };
+    const d = document.createElement('div');
+    d.className = 'result-item';
+    d.setAttribute('role', 'button');
+    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${it.creador || ''} ${it.anio ? '('+it.anio+')' : ''}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, cat)}</div><button type="button" class="btn-wl-play" style="max-width:90px;" onclick="event.stopPropagation(); agregarAWatchlistDirecto(${JSON.stringify(itemConCat).replace(/"/g, '&quot;')})">+ Lista</button>`;
+    d.onclick = e => {
+      e.stopPropagation();
+      agregarAWatchlistDirecto(itemConCat);
+    };
+    frag.appendChild(d);
+  });
+  res.appendChild(frag);
+  res.style.display = 'block';
+}
 // --- VISTA DISCOVER MEJORADA Y RÁPIDA ---
 function precargarDiscoverEnSegundoPlano(seed, resetearLimites = false) { if (!estado.discoverData) { try { const c = localStorage.getItem('mediary_cache_disc_v1') || localStorage.getItem('mymediary_cache_disc_v1'); if (c) { estado.discoverData = JSON.parse(c); if (estado.categoria === 'discover') renderizarDiscoverVista(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { if (!d) return; estado.discoverData = d; try { localStorage.setItem('mediary_cache_disc_v1', JSON.stringify(d)); } catch(e) {} if (resetearLimites) estado.discoverLimites = {}; const stEl = document.getElementById('discover-status-txt');
 if (stEl) stEl.textContent = `Actualizado ${d.timestamp || 'ahora'}`; if (estado.categoria === 'discover') renderizarDiscoverVista(); }).obtenerDescubrimientos(seed || estado.discoverSeed); }
@@ -1844,7 +2158,7 @@ estado.discoverCatsActivas = [catKey]; } else { if (estado.discoverCatsActivas.i
 actualizarBotonesFiltroDiscoverUI(); renderizarDiscoverVista(); }
 function mostrarMasDiscover(secKey) { const actual = estado.discoverLimites[secKey] || 6; estado.discoverLimites[secKey] = Math.min(24, actual + 6); renderizarDiscoverVista(); }
 function abrirVistaDiscover(pushNav = true) { if (pushNav) registrarNavegacionApp('discover'); resetearBuscadoresYFormularios(); estado.categoria = 'discover'; actualizarBarraNavegacionMovil('m-btn-discover'); actualizarNavWebActiva();
-document.getElementById('vista-inicio').style.display = 'none'; document.getElementById('vista-categoria').style.display = 'none'; const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none'; const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
+document.getElementById('vista-inicio').style.display = 'none'; document.getElementById('vista-categoria').style.display = 'none'; const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none'; const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none'; const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
 document.getElementById('vista-discover').style.display = 'block'; actualizarBotonesFiltroDiscoverUI(); if (!estado.discoverData) { precargarDiscoverEnSegundoPlano(estado.discoverSeed); } else { renderizarDiscoverVista(); }
 window.scrollTo({ top: 0, behavior: 'smooth' }); }
 function registrarDirectoDesdeDiscover(it) { let destCat = it.categoria || 'Peliculas'; let destSub = it.subcategoria || 'Películas'; if (destCat === 'Series' && destSub === 'Series Completas') destSub = 'Temporadas'; cambiarCat(destCat, destSub); setTimeout(() => { seleccionarItem({
@@ -1868,25 +2182,65 @@ if (limiteActual < maxDisponible) { const sigCantidad = Math.min(24, limiteActua
 moreWrap.innerHTML = `<button type="button" class="btn-discover-more" onclick="mostrarMasDiscover('${sec.key}')">➕ Mostrar más (+6 · ver ${sigCantidad} de ${maxDisponible})</button>`; discFrag.appendChild(moreWrap); }
 }); box.appendChild(discFrag); aplicarEstilosGlobales(); }
 // --- FUNCIONES WATCHLIST ---
-function obtenerItemsWatchlistActuales() { const c = estado.categoria, s = estado.subcategoria; if (s === 'todas_watchlists' || c === 'todas_watchlists' || s === 'todas') return estado.watchlist || []; return estado.watchlist.filter(w => { if (w.categoria !== c) return false;
-if (c === 'Lecturas') { if (s === 'To Read: Libros') return w.subcategoria === 'Libros'; if (s === 'To Read: Cómics') return w.subcategoria === 'Cómics'; if (s === 'To Read: Mangas') return w.subcategoria === 'Mangas'; }
-return true; }); }
-function renderizarWatchlist() { renderizarBarraTodasWatchlists(); const c = estado.categoria, s = estado.subcategoria; const grid = document.getElementById('grid-watchlist-items'); grid.innerHTML = ''; const items = obtenerItemsWatchlistActuales(); const l = userPrefs.lang || 'es';
-const catNom = I18N[l].cats[c] || CONFIG[c]?.nombre || c; const titNombre = s === 'Watchlist' ? `Watchlist de ${catNom}` : (I18N[l].subs[s] || s); document.getElementById('titulo-watchlist-nombre').textContent = `${titNombre} (${items.length})`; if (!items.length) {
-grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:32px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border);">No tienes elementos pendientes en <strong>${titNombre}</strong>. ¡Usa el buscador de arriba, cambia de lista o explora Discover para agregar uno! ✨</div>`; aplicarEstilosGlobales(); return; }
+function obtenerItemsWatchlistActuales() {
+  if (estado.categoria === 'watchlists') {
+    const cat = estado.wlCategoria || 'Peliculas';
+    const sub = estado.wlSubcategoria || 'Películas';
+    return (estado.watchlist || []).filter(w => itemPerteneceAWatchlist(w, cat, sub));
+  }
+  const c = estado.categoria, s = estado.subcategoria;
+  return (estado.watchlist || []).filter(w => itemPerteneceAWatchlist(w, c, s));
+}
+function renderizarWatchlist() { const c = estado.categoria, s = estado.subcategoria; const grid = document.getElementById('grid-watchlist-items'); if (!grid) return; grid.innerHTML = ''; const items = obtenerItemsWatchlistActuales(); const l = userPrefs.lang || 'es';
+const catNom = I18N[l]?.cats?.[c] || CONFIG[c]?.nombre || c; let titNombre = I18N[l]?.subs?.[s] || s; if (s === 'Watchlist') titNombre = `Watchlist: ${catNom}`; const titEl = document.getElementById('titulo-watchlist-nombre'); if (titEl) titEl.textContent = `${titNombre} (${items.length})`; if (!items.length) {
+grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:32px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border);">No tienes elementos pendientes en <strong>${titNombre}</strong>. ¡Usa el buscador de arriba o explora Discover para agregar uno! ✨</div>`; aplicarEstilosGlobales(); return; }
 const favFrag = document.createDocumentFragment(); items.forEach(it => { const card = document.createElement('div'); card.className = 'watchlist-card'; card.innerHTML = ` <img class="watchlist-poster" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'170\' height=\'255\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'170\\' height=\\'255\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'" onclick="abrirFichaTecnica('${it.id}')" title="Ver ficha técnica"> <div class="watchlist-body"> <div> <div class="watchlist-item-title" onclick="abrirFichaTecnica('${it.id}')" style="cursor:pointer;">${it.titulo}</div> <div class="watchlist-item-meta">${it.categoria ? `<span style="color:var(--accent);font-weight:700;">${it.categoria}</span> · ` : ''}${it.creador} ${it.anio ? '(' + it.anio + ')' : ''}</div> ${obtenerBadgeAmigoActividad(it.titulo, it.categoria)} </div> <div class="watchlist-actions"> <button type="button" class="btn-wl-play" onclick="consumirDesdeWatchlist('${it.id}')">✓ Registrar</button> <button type="button" class="btn-wl-del" title="Eliminar de lista" onclick="borrarItemWatchlist('${it.id}')">✕</button> </div> </div> `;
 favFrag.appendChild(card); }); grid.appendChild(favFrag); aplicarEstilosGlobales(); }
 function agregarAWatchlistDirecto(it) { if (!estado.userEmail) { abrirModalAuthSupabase('login'); return alert('Inicia sesión en tu cuenta primero para guardar en tu Watchlist.'); }
-let targetCat = it.categoria || estado.categoria; let targetSub = it.subcategoria || estado.subcategoria; if (targetCat === 'Peliculas') targetSub = 'Películas'; else if (targetCat === 'Series') targetSub = 'Series Completas';
-else if (targetCat === 'Musica') targetSub = 'Artistas/Grupos'; else if (targetCat === 'Juegos') targetSub = 'Videojuegos'; else if (targetCat === 'Lecturas') { if (targetSub === 'To Read: Libros') targetSub = 'Libros'; else if (targetSub === 'To Read: Cómics') targetSub = 'Cómics';
-else if (targetSub === 'To Read: Mangas') targetSub = 'Mangas'; }
+let targetCat = it.categoria || (estado.categoria === 'watchlists' ? estado.wlCategoria : estado.categoria);
+if (!targetCat || targetCat === 'inicio' || targetCat === 'watchlists' || targetCat === 'todas_watchlists' || targetCat === 'discover') {
+  targetCat = 'Peliculas';
+}
+let targetSub = it.subcategoria || (estado.categoria === 'watchlists' ? estado.wlSubcategoria : estado.subcategoria);
+if (targetCat === 'Peliculas') {
+  if (String(targetSub).toLowerCase().includes('docu')) targetSub = 'Documentales';
+  else targetSub = 'Películas';
+} else if (targetCat === 'Series') {
+  if (String(targetSub).toLowerCase().includes('docu')) targetSub = 'Series Documentales';
+  else targetSub = 'Temporadas';
+} else if (targetCat === 'Musica') {
+  targetSub = 'Discos';
+} else if (targetCat === 'Juegos') {
+  targetSub = 'Videojuegos';
+} else if (targetCat === 'Lecturas') {
+  const sLow = String(targetSub).toLowerCase();
+  if (sLow.includes('comic') || sLow.includes('cómic')) targetSub = 'Cómics';
+  else if (sLow.includes('manga')) targetSub = 'Mangas';
+  else targetSub = 'Libros';
+}
 const payload = { categoria: targetCat, subcategoria: targetSub, titulo: it.tituloOriginal || it.titulo, subtitulo: it.tituloIngles || it.subtitulo || '', creador: it.creador || 'Desconocido', anio: it.anio || '', poster: it.poster || ''
-}; const resBox = document.getElementById('search-results'); if (resBox) resBox.style.display = 'none'; const inSearch = document.getElementById('input-search'); if (inSearch) inSearch.value = ''; google.script.run.withSuccessHandler(res => { if (res?.exito) {
+}; ['search-results', 'search-results-wl'].forEach(id => { const resBox = document.getElementById(id); if (resBox) { resBox.innerHTML = ''; resBox.style.display = 'none'; } });
+['input-search', 'input-search-wl'].forEach(id => { const inSearch = document.getElementById(id); if (inSearch) inSearch.value = ''; });
+google.script.run.withSuccessHandler(res => { if (res?.exito) {
 mostrarToastPersonalizado(`¡"${payload.titulo}" añadido a pendientes en Supabase! 📌`); cargarWatchlist(); } else { alert('Error: ' + res?.error); }
 }).guardarEnWatchlist(payload, estado.userEmail); }
 function borrarItemWatchlist(id) { google.script.run.withSuccessHandler(() => { mostrarToastPersonalizado('Eliminado de la lista'); cargarWatchlist(); }).eliminarDeWatchlist(id, estado.userEmail); }
-function consumirDesdeWatchlist(id) { const item = estado.watchlist.find(w => w.id === id); if (!item) return; let destSub = item.subcategoria;
-if (item.categoria === 'Series') destSub = 'Temporadas'; cambiarCat(item.categoria, destSub); setTimeout(() => { seleccionarItem({ tituloOriginal: item.titulo, tituloIngles: item.subtitulo, creador: item.creador, anio: item.anio, sinopsis: '', poster: item.poster
+function consumirDesdeWatchlist(id) { const item = estado.watchlist.find(w => w.id === id); if (!item) return; let destCat = item.categoria || 'Peliculas'; let destSub = item.subcategoria;
+if (destCat === 'Peliculas') {
+  destSub = (String(destSub).toLowerCase().includes('docu')) ? 'Documentales' : 'Películas';
+} else if (destCat === 'Series') {
+  destSub = (String(destSub).toLowerCase().includes('docu')) ? 'Series Documentales' : 'Temporadas';
+} else if (destCat === 'Musica') {
+  destSub = 'Discos';
+} else if (destCat === 'Juegos') {
+  destSub = 'Videojuegos';
+} else if (destCat === 'Lecturas') {
+  const sLow = String(destSub).toLowerCase();
+  if (sLow.includes('comic') || sLow.includes('cómic')) destSub = 'Cómics';
+  else if (sLow.includes('manga')) destSub = 'Mangas';
+  else destSub = 'Libros';
+}
+cambiarCat(destCat, destSub); setTimeout(() => { seleccionarItem({ tituloOriginal: item.titulo, tituloIngles: item.subtitulo, creador: item.creador, anio: item.anio, sinopsis: '', poster: item.poster
 }); establecerFechaHoy(); }, 200); }
 function cerrarModalFelicitacionWatchlist() { document.getElementById('modal-felicitaciones-watchlist').style.display = 'none'; }
 function iniciarRecomendacionAzar() { const items = obtenerItemsWatchlistActuales(); if (!items.length) return alert('No tienes elementos en esta lista para recomendar.'); document.getElementById('modal-shuffle-recomendar').style.display = 'flex'; ejecutarShuffleAnimado(); }
@@ -2394,6 +2748,13 @@ function inicializarEventosBuscadores() {
         // Deja intacto lo que el usuario haya escrito en input-buscar-artista-concierto
       }
     }
+    // 3. Buscador en vista dedicada de watchlists
+    const resWl = document.getElementById('search-results-wl');
+    if (resWl && resWl.style.display !== 'none') {
+      if (!e.target.closest('#box-buscador-wl')) {
+        resWl.style.display = 'none';
+      }
+    }
   };
   document.addEventListener('click', manejarCierreFuera);
   document.addEventListener('touchstart', manejarCierreFuera, { passive: true });
@@ -2403,6 +2764,13 @@ function inicializarEventosBuscadores() {
     inSearch.addEventListener('focus', () => {
       const v = inSearch.value.trim();
       if (v.length >= 2) buscarEnVivo(v);
+    });
+  }
+  const inSearchWl = document.getElementById('input-search-wl');
+  if (inSearchWl) {
+    inSearchWl.addEventListener('focus', () => {
+      const v = inSearchWl.value.trim();
+      if (v.length >= 2) buscarEnVivoWl(v);
     });
   }
   const inArt = document.getElementById('input-buscar-artista-concierto');
