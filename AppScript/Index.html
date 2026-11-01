@@ -9,7 +9,7 @@
 <link rel="icon" type="image/png" sizes="512x512" href="./icon-512.png">
 <link rel="shortcut icon" href="./favicon.ico">
 <link rel="apple-touch-icon" href="./icon-192.png">
-
+<link rel="manifest" href="./manifest.json">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="MyMediary">
@@ -194,8 +194,8 @@ header{padding:10px 14px}
   <div class="subtabs" id="subtabs-bar"></div>
   <div class="watchlist-dedicated-wrap" id="watchlist-dedicated-box"></div>
 </div>
-<div class="search-box"> <input type="text" id="input-search" class="search-input" placeholder="Buscar título en tiempo real..." oninput="buscarEnVivo(this.value)"> <div id="search-results" class="search-results"></div> </div> <button type="button" class="btn-action-manual" id="btn-trigger-manual" onclick="abrirModalIngresoManual()"><span>✍️</span> <span data-i18n="btn_manual">Ingresar manualmente</span></button>
-</div> <div id="modulo-concierto-manual" class="concierto-box" style="display:none;"> <button type="button" class="btn-close-concierto" title="Cerrar módulo" onclick="cerrarModuloConcierto()">✕</button> <h3 style="color:var(--accent); margin-bottom:12px; font-size:1.1rem;"><span class="emoji-dyn">🎸 </span><span data-i18n="concierto_title">Registrar Concierto / Festival</span></h3>
+<div class="search-row" id="box-buscador-general"> <div class="search-box"> <input type="text" id="input-search" class="search-input" placeholder="Buscar título en tiempo real..." oninput="buscarEnVivo(this.value)"> <div id="search-results" class="search-results"></div> </div> <button type="button" class="btn-action-manual" id="btn-trigger-manual" onclick="abrirModalIngresoManual()"><span>✍️</span> <span data-i18n="btn_manual">Ingresar manualmente</span></button> </div>
+<div id="modulo-concierto-manual" class="concierto-box" style="display:none;"> <button type="button" class="btn-close-concierto" title="Cerrar módulo" onclick="cerrarModuloConcierto()">✕</button> <h3 style="color:var(--accent); margin-bottom:12px; font-size:1.1rem;"><span class="emoji-dyn">🎸 </span><span data-i18n="concierto_title">Registrar Concierto / Festival</span></h3>
 <div class="form-group"> <label data-i18n="concierto_gira">Nombre de la gira o evento:</label> <input type="text" id="concierto-gira" class="form-input" placeholder="Ej: The Eras Tour / Lollapalooza Chile"> </div> <div class="form-group"> <label data-i18n="concierto_tipo_q">¿Fue concierto o festival?:</label> <div style="display:flex; gap:10px;"> <button type="button" class="btn-toggle-tipo active" id="btn-tipo-concierto" onclick="seleccionarTipoEvento('Concierto')"><span class="emoji-dyn">🎤 </span><span data-i18n="concierto_btn_concierto">Concierto</span></button>
 <button type="button" class="btn-toggle-tipo" id="btn-tipo-festival" onclick="seleccionarTipoEvento('Festival')"><span class="emoji-dyn">🎪 </span><span data-i18n="concierto_btn_festival">Festival</span></button> </div> </div> <div class="form-group" style="position:relative;"> <label data-i18n="concierto_buscar_art">Buscar y agregar artistas que tocaron:</label> <input type="text" id="input-buscar-artista-concierto" class="form-input" placeholder="Escribe el nombre del artista..." oninput="buscarArtistaEnVivoConcierto(this.value)">
 <div id="search-results-artistas" class="search-results"></div> </div> <div class="form-group"> <label data-i18n="concierto_agregados">Artistas agregados:</label> <div id="contenedor-artistas-etiquetas" class="artistas-seleccionados-wrap"><span style="color:var(--muted); font-size:.85rem; font-style:italic;" data-i18n="concierto_vacio">No has agregado artistas aún.</span></div>
@@ -601,12 +601,12 @@ if (dz) { res.poster = dz.album?.cover_big || dz.artist?.picture_big || ''; res.
 }
 } catch (e) {}
 return res; }, async buscarEnServidor(qRaw, cat, sub) { if (!qRaw || qRaw.trim().length < 2) return []; const qTrim = qRaw.trim(); const cacheKey = `${cat}_${sub || ''}_${qTrim.toLowerCase()}`; if (!SERVER_API._searchMemCache) SERVER_API._searchMemCache = new Map(); if (SERVER_API._searchMemCache.has(cacheKey)) return SERVER_API._searchMemCache.get(cacheKey); const q = encodeURIComponent(qTrim); const _exec = async () => { if (cat === 'Peliculas') {
-const list = ((await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}`))?.results || []).slice(0, 6); return await Promise.all(list.map(async m => { const cr = await getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`);
+const list = ((await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}`))?.results || []).slice(0, 6); return await Promise.all(list.map(async m => { let dirs = []; try { const cr = await Promise.race([getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`), new Promise(r => setTimeout(() => r(null), 850))]); dirs = (cr?.crew || []).filter(x => x.job === "Director").map(x => x.name); } catch(e){}
 const dirs = (cr?.crew || []).filter(x => x.job === 'Director').map(x => x.name); const noEs = m.original_language !== 'es' && m.original_language !== 'en';
 return { idRef: m.id, tituloOriginal: m.original_title || m.title || '', tituloIngles: (noEs && m.title && m.title !== m.original_title) ? m.title : '', creador: dirs.length ? dirs.join(', ') : 'Director desconocido', anio: m.release_date?.substring(0, 4) || '', sinopsis: m.overview || 'Sin sinopsis disponible.', poster: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '' };
 })); }
 if (cat === 'Series') { const list = ((await getJson_(`https://api.tvmaze.com/search/shows?q=${q}`)) || []).slice(0, 6); return await Promise.all(list.map(async it => { const s = it.show;
-const [crew, sList] = await Promise.all([getJson_(`https://api.tvmaze.com/shows/${s.id}/crew`), getJson_(`https://api.tvmaze.com/shows/${s.id}/seasons`)]);
+let crew = null, sList = null; try { [crew, sList] = await Promise.all([Promise.race([getJson_(`https://api.tvmaze.com/shows/${s.id}/crew`), new Promise(r => setTimeout(() => r(null), 850))]), Promise.race([getJson_(`https://api.tvmaze.com/shows/${s.id}/seasons`), new Promise(r => setTimeout(() => r(null), 850))])]); } catch(e){}
 const crs = Array.from(new Set((crew || []).filter(x => x.type === 'Creator' || x.type === 'Showrunner').map(x => x.person?.name).filter(Boolean))); const aIni = s.premiered ? s.premiered.substring(0, 4) : '', aFin = s.ended ? s.ended.substring(0, 4) : (s.status === 'Running' ? 'presente' : '');
 return { idRef: s.id, tituloOriginal: s.name || '', tituloIngles: '', creador: crs.length ? crs.join(', ') : (s.network?.name || 'Showrunner desconocido'), anio: (aIni && aFin && aIni !== aFin) ? `${aIni}-${aFin}` : aIni, totalSeasons: sList?.length || 0, estadoSerie: s.status || '', sinopsis: s.summary ? s.summary.replace(/<[^>]*>?/gm, '') : 'Sin sinopsis disponible.', poster: s.image?.medium || s.image?.original || '' };
 })); }
@@ -622,12 +622,12 @@ tituloOriginal: (end === 'artist' ? it.name : it.title) || '', tituloIngles: '',
 sinopsis: end === 'artist' ? `Seguidores: ${(it.nb_fan || 0).toLocaleString()}` : 'Álbum discográfico', poster: end === 'artist' ? (it.picture_medium || it.picture_big || '') : (it.cover_medium || it.cover_big || '')
 })); }
 if (cat === 'Juegos') { const list = ((await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=6`))?.results || []); return await Promise.all(list.map(async g => { let dev = 'Estudio desarrollador';
-try { const det = await getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`); if (det?.developers?.length) dev = det.developers.map(d => d.name).join(', '); } catch (e) {}
+try { const det = await Promise.race([getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`), new Promise(r => setTimeout(() => r(null), 800))]); if (det?.developers?.length) dev = det.developers.map(d => d.name).join(', '); } catch (e) {}
 const plats = (g.platforms || []).map(p => p.platform?.name).slice(0, 3).join(', ');
 return { tituloOriginal: g.name || '', tituloIngles: '', creador: dev, anio: g.released?.substring(0, 4) || '', sinopsis: plats ? `Plataformas: ${plats} | Calificación: ${g.rating || 'N/D'}/5` : 'Videojuego', poster: g.background_image || '' }; })); }
 if (cat === 'Lecturas') { if (sub === 'Mangas' || sub === 'Manga' || sub === 'To Read: Mangas') { const list = ((await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&page[limit]=6`))?.data || []); return await Promise.all(list.map(async it => {
 const a = it.attributes || {}, titles = a.titles || {}, tRom = titles.en_jp || a.canonicalTitle || '', tEng = titles.en || '', mangakas = []; try { const st = await getJson_(`https://kitsu.io/api/edge/manga/${it.id}/staff`);
-const rel = (st?.data || []).filter(s => /story|art|original|author/i.test(s.attributes?.role || '')); const targets = (rel.length ? rel : (st?.data || [])).slice(0, 2); for (const x of targets) { const p = await getJson_(x.relationships?.person?.links?.related);
+const rel = (st?.data || []).filter(s => /story|art|original|author/i.test(s.attributes?.role || '')); const targets = (rel.length ? rel : (st?.data || [])).slice(0, 2); const pList = await Promise.all(targets.map(x => x.relationships?.person?.links?.related ? Promise.race([getJson_(x.relationships.person.links.related), new Promise(r => setTimeout(() => r(null), 600))]) : Promise.resolve(null))); for (const p of pList) {
 if (p?.data?.attributes?.name && !mangakas.includes(p.data.attributes.name)) mangakas.push(p.data.attributes.name); }
 } catch (e) {}
 return { tituloOriginal: tRom || 'Manga', tituloIngles: (tEng && tEng.toLowerCase() !== tRom.toLowerCase()) ? tEng : '', creador: mangakas.length ? mangakas.join(', ') : 'Mangaka', anio: a.startDate?.substring(0, 4) || '', sinopsis: a.synopsis ? a.synopsis.substring(0, 160) + '...' : 'Manga japonés.', poster: a.posterImage?.medium || a.posterImage?.small || '' };
@@ -1348,7 +1348,7 @@ clearTimeout(timerDebounceFav); if (qNorm.length >= 2) { const loadingMsg = docu
 box.appendChild(loadingMsg); timerDebounceFav = setTimeout(() => { google.script.run.withSuccessHandler(items => { if (loadingMsg.parentNode) loadingMsg.remove();
 (items || []).forEach(it => { const k = (it.tituloOriginal || '').toLowerCase(); if (vistos.has(k)) return; vistos.add(k); const row = document.createElement('div'); row.className = 'result-item'; row.style.borderRadius = '8px'; row.style.border = '1px dashed var(--border)'; row.innerHTML = ` <img class="result-thumb" src="${it.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'42\' height=\'60\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div style="flex:1;"> <div style="font-weight:700; font-size:0.9rem;">${it.tituloOriginal}</div> <div style="font-size:0.78rem; color:var(--muted);">${it.creador || ''} ${it.anio ? '(' + it.anio + ')' : ''} <span style="color:var(--accent);">(Catálogo online)</span></div> </div> <button type="button" class="btn-wl-play" style="max-width:85px;">Elegir 👑</button> `;
 row.onclick = () => asignarFavoritoSubcategoria({ titulo: it.tituloOriginal, creador: it.creador, anio: it.anio, poster: it.poster, calificacion: 5
-}); box.appendChild(row); }); }).buscarEnServidor(q.trim(), cat, sub); }, 380); }
+}); box.appendChild(row); }); }).buscarEnServidor(q.trim(), cat, sub); }, 150); }
 }
 function asignarFavoritoSubcategoria(favObj) { if (!estado.subFavEnEdicion) return; const { cat, sub } = estado.subFavEnEdicion; if (!perfilUsuario.favoritos) perfilUsuario.favoritos = {}; perfilUsuario.favoritos[`${cat}__${sub}`] = favObj;
 guardarPerfilLocal(); renderizarFavoritosPerfil(); cerrarModalSeleccionarFavorito(); google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail); mostrarToastPersonalizado(`👑 "${favObj.titulo}" elegido como favorito de ${sub}`); }
@@ -1723,7 +1723,7 @@ window.onload = () => {
   if (estado.userEmail) { cargarRegistros(); cargarWatchlist(); } else { renderizarStats(); }
   precargarDiscoverEnSegundoPlano(1);
   iniciarLoopAutoActualizacionDiscover();
-  inicializarManejoBotonAtras();
+  inicializarManejoBotonAtras(); inicializarEventosBuscadores();
 };
 const irInicio = (pushNav = true) => {
   if (pushNav) registrarNavegacionApp('inicio');
@@ -1780,7 +1780,7 @@ const activo = estado.categoria === w.cat && estado.subcategoria === w.sub; cons
 btn.innerHTML = `<span class="emoji-dyn">${w.emoji}</span><span>${nom}</span><span class="wl-pill-count">${cant}</span>`; btn.onclick = () => { estado.ultimaWatchlist = { cat: w.cat, sub: w.sub }; cambiarCat(w.cat, w.sub); }; bar.appendChild(btn); }); }
 function actualizarVisibilidadCamposEspeciales() { const c = estado.categoria, s = estado.subcategoria; const esWl = esSubcategoriaWatchlist(s);
 const isCon = c === 'Musica' && (s === 'Conciertos' || s === 'Concierto'); document.getElementById('seccion-historial-contenido').style.display = esWl ? 'none' : 'block'; document.getElementById('seccion-watchlist-contenido').style.display = esWl ? 'block' : 'none';
-document.getElementById('box-buscador-general').style.display = isCon ? 'none' : 'flex'; document.getElementById('modulo-concierto-manual').style.display = isCon ? 'block' : 'none'; if (isCon) limpiarModuloConcierto();
+const bBusc = document.getElementById('box-buscador-general'); if (bBusc) bBusc.style.display = isCon ? 'none' : 'flex'; const mCon = document.getElementById('modulo-concierto-manual'); if (mCon) mCon.style.display = isCon ? 'block' : 'none'; if (isCon) limpiarModuloConcierto();
 const esTemp = c === 'Series' && (s === 'Temporadas' || s.includes('Temporada')); document.getElementById('grupo-temporada').style.display = esTemp ? 'block' : 'none';
 if (!esTemp) { document.getElementById('input-temporada-num').value = ''; document.getElementById('chk-temporada-unica').checked = false; }
 const admiteRw = subAdmiteRewatch(c, s); const boxRw = document.getElementById('grupo-rewatch-checkbox'); if (boxRw) { boxRw.style.display = admiteRw ? 'block' : 'none'; document.getElementById('chk-es-rewatch').checked = false; }
@@ -1933,13 +1933,51 @@ box.appendChild(c); }); aplicarEstilosGlobales(); }
 function seleccionarTipoEvento(tVal) { estado.tipoEventoConcierto = tVal; document.getElementById('btn-tipo-concierto').classList.toggle('active', tVal === 'Concierto'); document.getElementById('btn-tipo-festival').classList.toggle('active', tVal === 'Festival'); }
 function limpiarModuloConcierto() { document.getElementById('concierto-gira').value = ''; document.getElementById('input-buscar-artista-concierto').value = '';
 document.getElementById('search-results-artistas').style.display = 'none'; estado.artistasConciertoSeleccionados = []; renderizarEtiquetasArtistas(); }
-const cerrarModuloConcierto = () => { document.getElementById('modulo-concierto-manual').style.display = 'none'; limpiarModuloConcierto(); }; function buscarArtistaEnVivoConcierto(q) { clearTimeout(timerDebounceArtista); const res = document.getElementById('search-results-artistas');
-if (!q || q.trim().length < 2) { res.style.display = 'none'; return; }
-res.innerHTML = '<div style="padding:12px; color:var(--muted); font-size:.85rem;">Buscando artista... ⏳</div>'; res.style.display = 'block'; timerDebounceArtista = setTimeout(() => { google.script.run.withSuccessHandler(items => { res.innerHTML = ''; if (!items?.length) {
-res.innerHTML = `<div style="padding:12px; color:var(--muted); font-size:.85rem;">No encontrado. <button type="button" class="btn-manual" onclick="agregarArtistaManualConcierto('${encodeURIComponent(q.trim())}')">+ Agregar "${q.trim()}"</button></div>`; return; }
-const frag = document.createDocumentFragment(); items.forEach(a => { const d = document.createElement('div'); d.className = 'result-item';
-d.innerHTML = `<img class="result-thumb" style="width:36px; height:36px; border-radius:50%;" src="${a.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'36\' fill=\'%23334155\'><circle cx=\'18\' cy=\'18\' r=\'18\'/></svg>'}"><div><div style="font-weight:600; font-size:.9rem;">${a.tituloOriginal}</div><div style="font-size:.75rem; color:var(--muted);">${a.sinopsis||'Artista'}</div></div>`;
-d.onclick = () => { agregarArtistaConcierto(a.tituloOriginal, a.poster); res.style.display = 'none'; document.getElementById('input-buscar-artista-concierto').value = ''; }; frag.appendChild(d); }); res.appendChild(frag); }).buscarEnServidor(q.trim(), 'Musica', 'Artistas/Grupos'); }, 240); }
+const _CLIENT_ARTISTA_CACHE = new Map();
+function buscarArtistaEnVivoConcierto(q) {
+  clearTimeout(timerDebounceArtista);
+  const res = document.getElementById('search-results-artistas');
+  if (!q || q.trim().length < 2) { res.style.display = 'none'; return; }
+  const qClean = q.trim().toLowerCase();
+  if (_CLIENT_ARTISTA_CACHE.has(qClean)) {
+    renderizarResultadosArtistasConcierto(_CLIENT_ARTISTA_CACHE.get(qClean), q);
+    return;
+  }
+  res.innerHTML = '<div style="padding:12px; color:var(--muted); font-size:.85rem;">Buscando artista... â³</div>';
+  res.style.display = 'block';
+  timerDebounceArtista = setTimeout(() => {
+    google.script.run.withSuccessHandler(items => {
+      if (items && items.length && _CLIENT_ARTISTA_CACHE.size < 300) _CLIENT_ARTISTA_CACHE.set(qClean, items);
+      renderizarResultadosArtistasConcierto(items, q);
+    }).buscarEnServidor(q.trim(), 'Musica', 'Artistas/Grupos');
+  }, 120);
+}
+function renderizarResultadosArtistasConcierto(items, q) {
+  const res = document.getElementById('search-results-artistas');
+  if (!res) return;
+  res.innerHTML = '';
+  if (!items?.length) {
+    res.innerHTML = `<div style="padding:12px; color:var(--muted); font-size:.85rem;">No encontrado. <button type="button" class="btn-manual" onclick="agregarArtistaManualConcierto('${encodeURIComponent(q.trim())}')">+ Agregar "${q.trim()}"</button></div>`;
+    res.style.display = 'block';
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  items.forEach(a => {
+    const d = document.createElement('div');
+    d.className = 'result-item';
+    d.innerHTML = `<img class="result-thumb" style="width:36px; height:36px; border-radius:50%;" src="${a.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'36\' fill=\'%23334155\'><circle cx=\'18\' cy=\'18\' r=\'18\'/></svg>'}"><div><div style="font-weight:600; font-size:.9rem;">${a.tituloOriginal}</div><div style="font-size:.75rem; color:var(--muted);">${a.sinopsis||'Artista'}</div></div>`;
+    d.onclick = e => {
+      e.stopPropagation();
+      agregarArtistaConcierto(a.tituloOriginal, a.poster);
+      res.style.display = 'none';
+      document.getElementById('input-buscar-artista-concierto').value = '';
+    };
+    frag.appendChild(d);
+  });
+  res.appendChild(frag);
+  res.style.display = 'block';
+}
+const cerrarModuloConcierto = () => { document.getElementById('modulo-concierto-manual').style.display = 'none'; limpiarModuloConcierto(); };
 const agregarArtistaManualConcierto = qEnc => { agregarArtistaConcierto(decodeURIComponent(qEnc), ''); document.getElementById('search-results-artistas').style.display = 'none'; document.getElementById('input-buscar-artista-concierto').value = ''; };
 function agregarArtistaConcierto(n, f) { if (!estado.artistasConciertoSeleccionados.some(x => x.nombre.toLowerCase() === n.toLowerCase())) { estado.artistasConciertoSeleccionados.push({ nombre: n, foto: f }); renderizarEtiquetasArtistas(); }
 }
@@ -1950,15 +1988,71 @@ d.innerHTML = `${a.foto ? `<img src="${a.foto}">` : `<span class="emoji-dyn">�
 function prepararFormularioConcierto() { const g = document.getElementById('concierto-gira').value.trim(); if (!g) return alert('Por favor ingresa el nombre de la gira o festival.');
 if (!estado.artistasConciertoSeleccionados.length) return alert('Por favor agrega al menos un artista usando el buscador.'); const cStr = estado.artistasConciertoSeleccionados.map(a => a.nombre).join(', ');
 seleccionarItem({ tituloOriginal: g, tituloIngles: '', creador: cStr, anio: '2026', sinopsis: `Evento: ${estado.tipoEventoConcierto} | Artistas: ${cStr}`, poster: estado.artistasConciertoSeleccionados[0].foto || '' }); }
-let _searchRequestId = 0; const _CLIENT_SEARCH_CACHE = new Map(); function buscarEnVivo(q) { clearTimeout(timerDebounce); const res = document.getElementById('search-results'); estado.ultimoTerminoBuscado = q; if (!q || q.trim().length < 2) { res.style.display = 'none'; return; } const qClean = q.trim().toLowerCase(); const cacheKey = `${estado.categoria}_${estado.subcategoria || ''}_${qClean}`; if (_CLIENT_SEARCH_CACHE.has(cacheKey)) { mostrarResultadosBuscador(_CLIENT_SEARCH_CACHE.get(cacheKey)); return; }
-res.innerHTML = '<div style="padding:14px; color:var(--muted); font-size:.9rem;">Buscando... ⏳</div>'; res.style.display = 'block'; const currentReqId = ++_searchRequestId; timerDebounce = setTimeout(() => {
-google.script.run.withSuccessHandler(items => { if (currentReqId === _searchRequestId) { if (items && items.length && _CLIENT_SEARCH_CACHE.size < 350) _CLIENT_SEARCH_CACHE.set(cacheKey, items); mostrarResultadosBuscador(items); } }).buscarEnServidor(q.trim(), estado.categoria, estado.subcategoria); }, 240); }
-function mostrarResultadosBuscador(items) { const res = document.getElementById('search-results'); res.innerHTML = ''; const esWl = esSubcategoriaWatchlist(estado.subcategoria); if (!items?.length) {
-res.innerHTML = `<div style="padding:14px; color:var(--muted); font-size:.9rem; text-align:center;">No se encontraron coincidencias.<br><button type="button" class="btn-action-manual" style="margin-top:8px;" onclick="abrirModalIngresoManual(estado.ultimoTerminoBuscado)">✍️ ${t('btn_manual')}</button></div>`;
-return; }
-const frag = document.createDocumentFragment(); items.forEach(it => { const d = document.createElement('div'); d.className = 'result-item';
-d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${it.creador} ${it.anio ? '('+it.anio+')' : ''}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, estado.categoria)}</div>${esWl ? `<button type="button" class="btn-wl-play" style="max-width:90px;" onclick="event.stopPropagation(); agregarAWatchlistDirecto(${JSON.stringify(it).replace(/"/g, '&quot;')})">+ Lista</button>` : ''}`;
-d.onclick = () => { if (esWl) agregarAWatchlistDirecto(it); else seleccionarItem(it); }; frag.appendChild(d); }); res.appendChild(frag); }
+let _searchRequestId = 0;
+const _CLIENT_SEARCH_CACHE = new Map();
+function buscarEnVivo(q) {
+  clearTimeout(timerDebounce);
+  const res = document.getElementById('search-results');
+  estado.ultimoTerminoBuscado = q;
+  if (!q || q.trim().length < 2) { res.style.display = 'none'; return; }
+  const qClean = q.trim().toLowerCase();
+  const cacheKey = `${estado.categoria}_${estado.subcategoria || ''}_${qClean}`;
+  if (_CLIENT_SEARCH_CACHE.has(cacheKey)) {
+    mostrarResultadosBuscador(_CLIENT_SEARCH_CACHE.get(cacheKey));
+    return;
+  }
+  if (qClean.length >= 3) {
+    for (let len = qClean.length - 1; len >= 2; len--) {
+      const pKey = `${estado.categoria}_${estado.subcategoria || ''}_${qClean.slice(0, len)}`;
+      if (_CLIENT_SEARCH_CACHE.has(pKey)) {
+        const match = (_CLIENT_SEARCH_CACHE.get(pKey) || []).filter(it => (it.tituloOriginal || it.titulo || '').toLowerCase().includes(qClean) || (it.creador || '').toLowerCase().includes(qClean));
+        if (match.length) {
+          mostrarResultadosBuscador(match);
+          break;
+        }
+      }
+    }
+  }
+  if (res.style.display !== 'block') {
+    res.innerHTML = '<div style="padding:14px; color:var(--muted); font-size:.9rem;">Buscando... â³</div>';
+    res.style.display = 'block';
+  }
+  const currentReqId = ++_searchRequestId;
+  timerDebounce = setTimeout(() => {
+    google.script.run.withSuccessHandler(items => {
+      if (currentReqId === _searchRequestId) {
+        if (items && items.length && _CLIENT_SEARCH_CACHE.size < 400) _CLIENT_SEARCH_CACHE.set(cacheKey, items);
+        mostrarResultadosBuscador(items);
+      }
+    }).buscarEnServidor(q.trim(), estado.categoria, estado.subcategoria);
+  }, 120);
+}
+function mostrarResultadosBuscador(items) {
+  const res = document.getElementById('search-results');
+  if (!res) return;
+  res.innerHTML = '';
+  const esWl = esSubcategoriaWatchlist(estado.subcategoria);
+  if (!items?.length) {
+    res.innerHTML = `<div style="padding:14px; color:var(--muted); font-size:.9rem; text-align:center;">No se encontraron coincidencias.<br><button type="button" class="btn-action-manual" style="margin-top:8px;" onclick="abrirModalIngresoManual(estado.ultimoTerminoBuscado)">âœï¸ ${t('btn_manual')}</button></div>`;
+    res.style.display = 'block';
+    return;
+  }
+  const frag = document.createDocumentFragment();
+  items.forEach(it => {
+    const d = document.createElement('div');
+    d.className = 'result-item';
+    d.setAttribute('role', 'button');
+    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${it.creador || ''} ${it.anio ? '('+it.anio+')' : ''}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, estado.categoria)}</div>${esWl ? `<button type="button" class="btn-wl-play" style="max-width:90px;" onclick="event.stopPropagation(); agregarAWatchlistDirecto(${JSON.stringify(it).replace(/"/g, '&quot;')})">+ Lista</button>` : ''}`;
+    d.onclick = e => {
+      e.stopPropagation();
+      if (esWl) agregarAWatchlistDirecto(it);
+      else seleccionarItem(it);
+    };
+    frag.appendChild(d);
+  });
+  res.appendChild(frag);
+  res.style.display = 'block';
+}
 function abrirModalIngresoManual(tIni = '') { const c = estado.categoria, s = estado.subcategoria; let lbl = t('manual_lbl_creador'); if (c === 'Peliculas') lbl = 'Director(es):'; else if (c === 'Series') lbl = 'Showrunner(s) / Creator(s):';
 else if (c === 'Musica') lbl = (s === 'Discos' || s === 'Disco') ? 'Artista / Banda:' : 'Artista / Grupo:'; else if (c === 'Juegos') lbl = 'Developer Studio(s):';
 else if (c === 'Lecturas') lbl = (s === 'Mangas' || s === 'Manga' || s === 'To Read: Mangas') ? 'Mangaka(s):' : ((s === 'Cómics' || s === 'Cómic' || s === 'To Read: Cómics') ? 'Writer(s) / Artist(s):' : 'Author(s):');
@@ -1970,14 +2064,60 @@ const anio = document.getElementById('manual-input-anio').value.trim(); const bt
 btn.textContent = 'Buscando portada... 🎨'; btn.disabled = true; const finish = p => { btn.textContent = txt; btn.disabled = false; cerrarModalManual(); const obj = { tituloOriginal: tit, tituloIngles: sub, creador: cr, anio: anio, sinopsis: 'Registro manual.', poster: p || '' };
 if (esSubcategoriaWatchlist(estado.subcategoria)) { agregarAWatchlistDirecto(obj); } else { seleccionarItem(obj); }
 }; google.script.run .withSuccessHandler(p => finish(p)) .withFailureHandler(() => finish('')) .buscarPortadaGenerica(tit, cr, estado.categoria); }
-function seleccionarItem(it) { estado.seleccionado = it; document.getElementById('search-results').style.display = 'none'; document.getElementById('input-search').value = ''; document.getElementById('form-titulo').innerHTML = `<strong>${it.tituloOriginal}</strong>`;
-const sEl = document.getElementById('form-subtitulo'); sEl.textContent = (it.tituloIngles && it.tituloIngles !== it.tituloOriginal) ? `(${it.tituloIngles})` : ''; sEl.style.display = sEl.textContent ? 'block' : 'none';
-document.getElementById('form-creador-anio').textContent = `(${it.creador}${it.anio ? ', ' + it.anio : ''})`; document.getElementById('form-sinopsis').textContent = it.sinopsis || ''; const fAmAct = document.getElementById('form-amigos-actividad'); if (fAmAct) { const b = obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, estado.categoria); fAmAct.innerHTML = b; fAmAct.style.display = b ? 'block' : 'none'; }
-document.getElementById('form-poster').src = it.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'110\' height=\'160\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
-document.getElementById('chk-no-fecha').checked = false; toggleSinFecha(false); if (fpInicio) fpInicio.clear(); if (fpFin) fpFin.clear();
-['input-comentario','input-temporada-num','input-arco','input-numeros-abarcados','input-horas-jugadas'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-document.getElementById('chk-temporada-unica').checked = false; const chkRw = document.getElementById('chk-es-rewatch'); if (chkRw) chkRw.checked = false;
-actualizarVisibilidadCamposEspeciales(); configurarFormularioFechas(); crearEstrellasInteractivas(); document.getElementById('detail-form').style.display = 'block'; if (window.innerWidth <= 768) document.getElementById('detail-form').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+function seleccionarItem(it) {
+  if (!it) return;
+  try {
+    estado.seleccionado = it;
+    const resBox = document.getElementById('search-results');
+    if (resBox) resBox.style.display = 'none';
+    const inSearch = document.getElementById('input-search');
+    if (inSearch) inSearch.value = '';
+    const formTit = document.getElementById('form-titulo');
+    if (formTit) formTit.innerHTML = `<strong>${it.tituloOriginal || it.titulo || ''}</strong>`;
+    const sEl = document.getElementById('form-subtitulo');
+    if (sEl) {
+      sEl.textContent = (it.tituloIngles && it.tituloIngles !== it.tituloOriginal) ? `(${it.tituloIngles})` : '';
+      sEl.style.display = sEl.textContent ? 'block' : 'none';
+    }
+    const crAnio = document.getElementById('form-creador-anio');
+    if (crAnio) crAnio.textContent = `(${it.creador || ''}${it.anio ? ', ' + it.anio : ''})`;
+    const sinEl = document.getElementById('form-sinopsis');
+    if (sinEl) sinEl.textContent = it.sinopsis || '';
+    const fAmAct = document.getElementById('form-amigos-actividad');
+    if (fAmAct) {
+      const b = obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, estado.categoria);
+      fAmAct.innerHTML = b;
+      fAmAct.style.display = b ? 'block' : 'none';
+    }
+    const formPost = document.getElementById('form-poster');
+    if (formPost) formPost.src = it.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'110\' height=\'160\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
+    const chkNoF = document.getElementById('chk-no-fecha');
+    if (chkNoF) chkNoF.checked = false;
+    toggleSinFecha(false);
+    if (fpInicio) fpInicio.clear();
+    if (fpFin) fpFin.clear();
+    ['input-comentario','input-temporada-num','input-arco','input-numeros-abarcados','input-horas-jugadas'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    const chkTempU = document.getElementById('chk-temporada-unica');
+    if (chkTempU) chkTempU.checked = false;
+    const chkRw = document.getElementById('chk-es-rewatch');
+    if (chkRw) chkRw.checked = false;
+    actualizarVisibilidadCamposEspeciales();
+    configurarFormularioFechas();
+    crearEstrellasInteractivas();
+    const dForm = document.getElementById('detail-form');
+    if (dForm) {
+      dForm.style.display = 'block';
+      if (window.innerWidth <= 768) dForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } catch (err) {
+    console.error('Error al seleccionar item:', err);
+    const dForm = document.getElementById('detail-form');
+    if (dForm) dForm.style.display = 'block';
+  }
+}
 function ocultarFormulario() { document.getElementById('detail-form').style.display = 'none'; estado.seleccionado = null; }
 function crearEstrellasInteractivas() { estado.calificacion = 0; actualizarDisplayEstrellas(0); }
 function actualizarDisplayEstrellas(val) { const box = document.getElementById('rating-stars'); box.innerHTML = ''; for (let i = 1; i <= 5; i++) { const s = document.createElement('span'); s.className = `star-box ${val >= i ? 'full' : (val >= i - 0.5 ? 'half' : '')}`;
@@ -2233,6 +2373,47 @@ function abrirEditorComentario(id) { const reg = estado.registros.find(r => r.id
 document.getElementById('modal-contenido').innerHTML = `<div><textarea id="edit-comentario-txt" class="comment-box" style="min-height:110px;" placeholder="Escribe tu reseña...">${reg.comentario || ''}</textarea></div>`;
 document.getElementById('btn-modal-confirmar').onclick = () => { const nCom = asegurarPuntoFinal(document.getElementById('edit-comentario-txt').value); cerrarModal(); google.script.run .withSuccessHandler(res => { if (res.exito) cargarRegistros(); }) .actualizarRegistro(id, { comentario: nCom }, estado.userEmail); };
 document.getElementById('modal-edicion').style.display = 'flex'; }
+
+// === AUTO-CIERRE AL TOCAR FUERA Y RE-APERTURA INTELIGENTE DE BUSCADORES ===
+function inicializarEventosBuscadores() {
+  const manejarCierreFuera = e => {
+    // 1. Buscador general de categorÃ­as / subcategorÃ­as / watchlists
+    const resGen = document.getElementById('search-results');
+    if (resGen && resGen.style.display !== 'none') {
+      if (!e.target.closest('.search-box')) {
+        resGen.style.display = 'none';
+        // Deja intacto lo que el usuario haya escrito en input-search
+      }
+    }
+    // 2. Buscador de artistas en mÃ³dulo de conciertos
+    const resArt = document.getElementById('search-results-artistas');
+    if (resArt && resArt.style.display !== 'none') {
+      const contArt = document.getElementById('input-buscar-artista-concierto')?.closest('.form-group');
+      if (!e.target.closest('#search-results-artistas') && !e.target.closest('#input-buscar-artista-concierto') && !(contArt && contArt.contains(e.target))) {
+        resArt.style.display = 'none';
+        // Deja intacto lo que el usuario haya escrito en input-buscar-artista-concierto
+      }
+    }
+  };
+  document.addEventListener('click', manejarCierreFuera);
+  document.addEventListener('touchstart', manejarCierreFuera, { passive: true });
+
+  const inSearch = document.getElementById('input-search');
+  if (inSearch) {
+    inSearch.addEventListener('focus', () => {
+      const v = inSearch.value.trim();
+      if (v.length >= 2) buscarEnVivo(v);
+    });
+  }
+  const inArt = document.getElementById('input-buscar-artista-concierto');
+  if (inArt) {
+    inArt.addEventListener('focus', () => {
+      const v = inArt.value.trim();
+      if (v.length >= 2) buscarArtistaEnVivoConcierto(v);
+    });
+  }
+}
+inicializarEventosBuscadores();
 </script>
 </body>
 </html>
