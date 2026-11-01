@@ -1,11 +1,11 @@
 @echo off
-title Subir MyMediary a GitHub
-cd /d "C:\Users\cjtor\Desktop\MyMediary"
+title Subir Mediary a GitHub
+cd /d "%~dp0"
 echo ========================================================
-echo  Subiendo MyMediary a https://github.com/cblackmann/MyMediary
+echo  Subiendo Mediary a GitHub...
 echo ========================================================
 echo.
-"%LOCALAPPDATA%\Programs\Git\cmd\git.exe" push -u origin main
+git push -u origin main
 echo.
 echo ========================================================
 echo Proceso finalizado. Puedes cerrar esta ventana.
