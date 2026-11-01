@@ -131,6 +131,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .cropper-grid-overlay div{border-right:1px dashed #ffffff;border-bottom:1px dashed #ffffff;}
 .btn-upload-avatar-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;background:rgba(56,189,248,0.1);border:1.5px dashed var(--accent);border-radius:12px;color:var(--accent);font-weight:700;font-size:0.88rem;cursor:pointer;transition:var(--tr);}
 .btn-upload-avatar-cta:hover{background:rgba(56,189,248,0.18);transform:translateY(-1px);}
+.btn-friend-records{background:linear-gradient(135deg,rgba(56,189,248,0.16),rgba(14,165,233,0.1));border:1.5px solid var(--accent);color:var(--accent);font-weight:700;border-radius:12px;padding:12px 20px;font-size:0.92rem;cursor:pointer;transition:var(--tr);display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 12px rgba(56,189,248,0.15);width:100%;margin-bottom:14px;}
+.btn-friend-records:hover{background:var(--accent);color:#0f172a;transform:translateY(-1.5px);box-shadow:0 6px 18px rgba(56,189,248,0.35);}
+.amigo-wide-card:hover{border-color:var(--accent) !important;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.35);}
 /* PÍLDORAS Y ESTILOS SOCIALES DE AMIGOS */
 .amigo-activity-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:var(--accent);font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-top:3px;white-space:nowrap}
 .amigo-activity-pill.amigo-wl-pill{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.35);color:#fbbf24}
@@ -148,7 +151,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')">✨ Todas</button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')">🎬 Películas</button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')">📹 Documentales</button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')">📺 Series</button>
 <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')">📽️ Docuseries</button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')">🎵 Música</button>
 <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')">🎮 Juegos</button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')">📖 Libros</button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')">💥 Cómics</button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')">⛩️ Mangas</button>
-</div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);">Cargando recomendaciones recientes... ⏳</div> </div> </div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" class="favs-grid" style="grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" style="padding:18px 22px;">
+</div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);">Cargando recomendaciones recientes... ⏳</div> </div> </div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" style="padding:18px 22px;">
   <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
     <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer;flex-shrink:0;">
       <span>👤</span>
@@ -172,7 +175,14 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
       </div>
     </div>
   </div>
-</div> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin:14px 0 6px;"> <div class="profile-section-title" style="margin:0;">👑 Mis Favoritos por Categoría</div>
+</div>
+<div style="margin:12px 0 16px; display:flex; gap:10px; flex-wrap:wrap;">
+  <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:12px;">
+    <span class="emoji-dyn">📌</span>
+    <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span>
+  </button>
+</div>
+<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin:14px 0 6px;"> <div class="profile-section-title" style="margin:0;">👑 Mis Favoritos por Categoría</div>
 <button type="button" class="btn-toggle-filter" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()">👁️ Configurar cuáles mostrar</button> </div> <p style="color:var(--muted); font-size:0.83rem; margin-bottom:10px;">Elige tu favorito de cada subcategoría y usa el botón <strong>"Mostrar"</strong> para activar o desactivar los favoritos que quieras exhibir en tu perfil.</p>
 <div class="favs-grid" id="perfil-favoritos-grid"></div> <div class="profile-section-title">⚡ Métricas Globales</div> <div class="profile-grid-highlights"> <div class="profile-stat-box"> <div class="profile-stat-label">Total Registros</div> <div class="profile-stat-val" id="prof-total-val">0</div>
 <div class="profile-stat-sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Calificación Promedio</div> <div class="profile-stat-val" id="prof-rating-val">★ 0.0</div> <div class="profile-stat-sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Horas en Juegos</div> <div class="profile-stat-val" id="prof-hours-val">0 hrs</div>
@@ -180,7 +190,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div> <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.9rem; line-height:1.25;">—</div> <div class="profile-stat-sub" id="prof-best-week-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
 <div class="profile-stat-val" id="prof-best-month-val">—</div> <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div> </div> </div> <div class="profile-section-title">✨ Curiosidades y Hábitos</div> <div class="profile-grid-fun"> <div class="profile-stat-box"> <div class="profile-stat-label">Creador/Director Favorito</div> <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
 <div class="profile-stat-sub" id="prof-fav-creator-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Tasa de Rewatch / Relectura</div> <div class="profile-stat-val" id="prof-rewatch-rate-val">0%</div> <div class="profile-stat-sub" id="prof-rewatch-rate-sub">0 re-consumos</div> </div> </div> <div class="cat-wide-card" style="margin-top:14px;">
-<label style="font-weight:700; display:block; margin-bottom:10px;" data-i18n="profile_dist_title">📊 Distribución de Contenido por Categoría:</label> <div id="profile-bars-container"></div> </div> <div style="margin-top:16px; margin-bottom:24px;"> <button type="button" class="btn-action-primary" onclick="abrirMenuWatchlistGlobal()" style="width:100%; height:46px; font-size:0.92rem; border-radius:12px; display:flex; align-items:center; justify-content:center; gap:8px;"> <span class="emoji-dyn">📌</span> <span data-i18n="nav_watchlists">Mis Watchlists</span> </button> </div> </div>
+<label style="font-weight:700; display:block; margin-bottom:10px;" data-i18n="profile_dist_title">📊 Distribución de Contenido por Categoría:</label> <div id="profile-bars-container"></div> </div> </div>
 
 <!-- VISTA DEDICADA DE WATCHLISTS -->
 <div id="vista-watchlists" style="display:none;">
@@ -378,7 +388,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div class="stars-wrapper" id="rating-stars-completa" style="font-size:2.2rem; margin:8px 0;"></div> <span id="rating-label-completa" style="font-size:.9rem; color:var(--accent); font-weight:700;">0.0 / 5</span> </div> <div class="form-group"><label data-i18n="serie_comp_comment_lbl">Comentario / Reseña final de la serie:</label><textarea id="comentario-serie-completa" class="comment-box" style="min-height:90px;" placeholder="¿Qué te pareció la serie en su totalidad?"></textarea></div>
 <div class="modal-actions"><button class="btn-modal-cancel" onclick="omitirGuardadoSerieCompleta()" data-i18n="btn_skip">Omitir</button><button class="btn-modal-save" id="btn-confirmar-serie-completa" data-i18n="btn_save_full_series">Guardar Serie Completa</button></div> </div> </div> <div id="modal-confirmar-eliminar" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <div class="modal-confirm-icon" style="margin:0 auto 14px;">🗑️</div>
 <h3 style="color:var(--danger); font-size:1.15rem; margin-bottom:8px;" data-i18n="del_title">¿Eliminar este registro?</h3> <p id="confirm-eliminar-mensaje" style="color:var(--muted); font-size:.9rem; line-height:1.4; margin-bottom:14px;"></p> <div class="modal-actions" style="justify-content:center; gap:12px; margin-top:14px;"> <button class="btn-modal-cancel" onclick="cerrarModalEliminar()" data-i18n="btn_cancel">Cancelar</button><button class="btn-modal-danger" id="btn-confirmar-eliminar-si" data-i18n="btn_del_permanent">Eliminar definitivamente</button>
-</div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ Métricas de Contenido</div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub">tiempo invertido</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 Desglose por Categorías y Subcategorías</div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-action-primary" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')" style="width:100%;height:44px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:0.9rem;margin-bottom:14px;border-radius:10px;"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📑 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;" id="amigo-regs-cat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL PRIVACIDAD AMIGOS -->
+</div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ Métricas de Contenido</div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub">tiempo invertido</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 Desglose por Categorías y Subcategorías</div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📑 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;" id="amigo-regs-cat-tabs"></div> <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL PRIVACIDAD AMIGOS -->
 <div id="modal-privacidad-amigos" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPrivacidadAmigos()">
   <div class="modal-box" style="max-width:520px;max-height:90vh;overflow-y:auto;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -503,7 +513,39 @@ if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/'); return `${p[0
 if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const p = s.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; }
 const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }; const parseTs_ = v => { if (!v || v === 'Sin fecha') return 0; const p = String(v).split('/');
 return p.length === 3 ? new Date(p[2], p[1] - 1, p[0]).getTime() : (new Date(v).getTime() || 0); }; const fmtTitIdioma_ = (origTitle, engTitle, origLang) => { const tOrig = String(origTitle || engTitle || '').trim(), tEng = String(engTitle || '').trim(), lang = String(origLang || '').toLowerCase();
-const mostrarIngles = (lang && lang !== 'en' && lang !== 'es') && tEng && tEng.toLowerCase() !== tOrig.toLowerCase(); return { titulo: tOrig, tituloOriginal: tOrig, tituloIngles: mostrarIngles ? tEng : '' }; }; const SERVER_API = { async obtenerDatosAmigosUsuario(userEmail) { try { const email = normEm_(userEmail); if (!email) return { exito: false, error: 'Sin sesión' }; const myP = await SERVER_API.obtenerPerfilUsuario(email); const prefs = myP.preferencias || {}; const amigosEmails = prefs.amigos || []; const solicitudesEmails = prefs.solicitudes_recibidas || []; const [amigosRowsList, solicitudesRowsList] = await Promise.all([ Promise.all(amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*', 'GET').catch(() => []))), Promise.all(solicitudesEmails.map(sEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(sEmail) + '&select=*', 'GET').catch(() => []))) ]); const amigosData = []; amigosRowsList.forEach((rows, idx) => { const aEmail = amigosEmails[idx]; if (rows && rows.length > 0) { const p = rows[0]; amigosData.push({ email: p.user_email, nickname: p.nickname || p.user_email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🎬', userId: p.preferencias?.userId || aEmail }); } }); const solicitudesData = []; solicitudesRowsList.forEach((rows, idx) => { const sEmail = solicitudesEmails[idx]; if (rows && rows.length > 0) { const p = rows[0]; solicitudesData.push({ email: p.user_email, nickname: p.nickname || p.user_email.split('@')[0], avatar: p.avatar || '👤', userId: p.preferencias?.userId || sEmail }); } }); return { exito: true, amigos: amigosData, solicitudes: solicitudesData }; } catch (e) { return { exito: false, error: e.toString() }; } }, async enviarSolicitudAmistad(miEmail, idBuscado) { try { const miEm = normEm_(miEmail); const busq = String(idBuscado || '').trim(); if (!miEm) return { exito: false, error: 'Inicia sesión primero.' }; if (!busq) return { exito: false, error: 'Ingresa un ID válido.' }; let rows = await sbFetch_('perfiles?preferencias->>userId=eq.' + encodeURIComponent(busq) + '&select=*', 'GET'); if (!rows || !rows.length) { rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(busq.toLowerCase()) + '&select=*', 'GET'); } if (!rows || !rows.length) { const todos = await sbFetch_('perfiles?select=*', 'GET') || []; rows = todos.filter(p => { const uId = p.preferencias?.userId || ''; return uId.toLowerCase() === busq.toLowerCase() || p.user_email.toLowerCase() === busq.toLowerCase(); }); } if (!rows || !rows.length) { return { exito: false, error: 'No se encontró ningún usuario con ese ID.' }; } const targetUser = rows[0]; const targetEmail = targetUser.user_email; if (targetEmail.toLowerCase() === miEm.toLowerCase()) { return { exito: false, error: 'No puedes agregarte a ti mismo.' }; } const miPerfil = await SERVER_API.obtenerPerfilUsuario(miEm); const misPrefs = miPerfil.preferencias || {}; const misAmigos = misPrefs.amigos || []; if (misAmigos.includes(targetEmail)) { return { exito: false, error: 'Ya tienes a ' + (targetUser.nickname || 'este usuario') + ' en tu lista de amigos.' }; } const targetPrefs = targetUser.preferencias || {}; const targetRecibidas = targetPrefs.solicitudes_recibidas || []; if (!targetRecibidas.includes(miEm)) { targetRecibidas.push(miEm); targetPrefs.solicitudes_recibidas = targetRecibidas; await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(targetEmail), 'PATCH', { preferencias: targetPrefs, updated_at: new Date().toISOString() }); } return { exito: true, mensaje: '¡Solicitud enviada con éxito a ' + (targetUser.nickname || targetEmail) + '!' }; } catch (e) { return { exito: false, error: e.toString() }; } }, async procesarRespuestaSolicitud(miEmail, emailAmigo, aceptar) { try { const miEm = normEm_(miEmail); const amigoEm = normEm_(emailAmigo); if (!miEm || !amigoEm) return { exito: false, error: 'Datos incompletos' }; const miPerfil = await SERVER_API.obtenerPerfilUsuario(miEm); const misPrefs = miPerfil.preferencias || {}; misPrefs.solicitudes_recibidas = (misPrefs.solicitudes_recibidas || []).filter(e => e !== amigoEm); if (aceptar) { const misAmigos = misPrefs.amigos || []; if (!misAmigos.includes(amigoEm)) misAmigos.push(amigoEm); misPrefs.amigos = misAmigos; } await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(miEm), 'PATCH', { preferencias: misPrefs, updated_at: new Date().toISOString() }); const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEm) + '&select=*', 'GET'); if (rows && rows.length > 0) { const amigoP = rows[0]; const amigoPrefs = amigoP.preferencias || {}; if (aceptar) { const suListaAmigos = amigoPrefs.amigos || []; if (!suListaAmigos.includes(miEm)) suListaAmigos.push(miEm); amigoPrefs.amigos = suListaAmigos; } else { amigoPrefs.amigos = (amigoPrefs.amigos || []).filter(e => e !== miEm); } await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEm), 'PATCH', { preferencias: amigoPrefs, updated_at: new Date().toISOString() }); } return { exito: true }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerRegistrosAmigo(emailAmigo) {
+const mostrarIngles = (lang && lang !== 'en' && lang !== 'es') && tEng && tEng.toLowerCase() !== tOrig.toLowerCase(); return { titulo: tOrig, tituloOriginal: tOrig, tituloIngles: mostrarIngles ? tEng : '' }; }; const SERVER_API = { async obtenerDatosAmigosUsuario(userEmail) { try { const email = normEm_(userEmail); if (!email) return { exito: false, error: 'Sin sesión' }; const myP = await SERVER_API.obtenerPerfilUsuario(email); const prefs = myP.preferencias || {}; const amigosEmails = prefs.amigos || []; const solicitudesEmails = prefs.solicitudes_recibidas || []; const [amigosRowsList, solicitudesRowsList, amigosRegsList] = await Promise.all([
+  Promise.all(amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*', 'GET').catch(() => []))),
+  Promise.all(solicitudesEmails.map(sEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(sEmail) + '&select=*', 'GET').catch(() => []))),
+  Promise.all(amigosEmails.map(aEmail => sbFetch_('registros?user_email=eq.' + encodeURIComponent(aEmail) + '&select=categoria,subcategoria,calificacion', 'GET').catch(() => [])))
+]);
+const amigosData = [];
+amigosRowsList.forEach((rows, idx) => {
+  const aEmail = amigosEmails[idx];
+  if (rows && rows.length > 0) {
+    const p = rows[0];
+    const priv = p.preferencias?.privacidad || {};
+    const regs = (amigosRegsList && amigosRegsList[idx]) ? amigosRegsList[idx] : [];
+    let sumC = 0, numC = 0;
+    const catCount = {};
+    regs.forEach(r => {
+      const c = r.categoria || 'Otro';
+      catCount[c] = (catCount[c] || 0) + 1;
+      const cal = Number(r.calificacion);
+      if (cal > 0) { sumC += cal; numC++; }
+    });
+    let topCatName = '';
+    let maxCount = 0;
+    Object.keys(catCount).forEach(k => {
+      if (catCount[k] > maxCount) { maxCount = catCount[k]; topCatName = `${k} (${maxCount})`; }
+    });
+    const stats = priv.ocultarEstadisticas ? null : {
+      total: regs.length,
+      promedio: (!priv.ocultarCalificaciones && numC) ? (sumC / numC).toFixed(1) : null,
+      topCat: topCatName
+    };
+    amigosData.push({ email: p.user_email, nickname: p.nickname || p.user_email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: p.preferencias?.userId || aEmail, stats: stats });
+  }
+}); const solicitudesData = []; solicitudesRowsList.forEach((rows, idx) => { const sEmail = solicitudesEmails[idx]; if (rows && rows.length > 0) { const p = rows[0]; solicitudesData.push({ email: p.user_email, nickname: p.nickname || p.user_email.split('@')[0], avatar: p.avatar || '👤', userId: p.preferencias?.userId || sEmail }); } }); return { exito: true, amigos: amigosData, solicitudes: solicitudesData }; } catch (e) { return { exito: false, error: e.toString() }; } }, async enviarSolicitudAmistad(miEmail, idBuscado) { try { const miEm = normEm_(miEmail); const busq = String(idBuscado || '').trim(); if (!miEm) return { exito: false, error: 'Inicia sesión primero.' }; if (!busq) return { exito: false, error: 'Ingresa un ID válido.' }; let rows = await sbFetch_('perfiles?preferencias->>userId=eq.' + encodeURIComponent(busq) + '&select=*', 'GET'); if (!rows || !rows.length) { rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(busq.toLowerCase()) + '&select=*', 'GET'); } if (!rows || !rows.length) { const todos = await sbFetch_('perfiles?select=*', 'GET') || []; rows = todos.filter(p => { const uId = p.preferencias?.userId || ''; return uId.toLowerCase() === busq.toLowerCase() || p.user_email.toLowerCase() === busq.toLowerCase(); }); } if (!rows || !rows.length) { return { exito: false, error: 'No se encontró ningún usuario con ese ID.' }; } const targetUser = rows[0]; const targetEmail = targetUser.user_email; if (targetEmail.toLowerCase() === miEm.toLowerCase()) { return { exito: false, error: 'No puedes agregarte a ti mismo.' }; } const miPerfil = await SERVER_API.obtenerPerfilUsuario(miEm); const misPrefs = miPerfil.preferencias || {}; const misAmigos = misPrefs.amigos || []; if (misAmigos.includes(targetEmail)) { return { exito: false, error: 'Ya tienes a ' + (targetUser.nickname || 'este usuario') + ' en tu lista de amigos.' }; } const targetPrefs = targetUser.preferencias || {}; const targetRecibidas = targetPrefs.solicitudes_recibidas || []; if (!targetRecibidas.includes(miEm)) { targetRecibidas.push(miEm); targetPrefs.solicitudes_recibidas = targetRecibidas; await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(targetEmail), 'PATCH', { preferencias: targetPrefs, updated_at: new Date().toISOString() }); } return { exito: true, mensaje: '¡Solicitud enviada con éxito a ' + (targetUser.nickname || targetEmail) + '!' }; } catch (e) { return { exito: false, error: e.toString() }; } }, async procesarRespuestaSolicitud(miEmail, emailAmigo, aceptar) { try { const miEm = normEm_(miEmail); const amigoEm = normEm_(emailAmigo); if (!miEm || !amigoEm) return { exito: false, error: 'Datos incompletos' }; const miPerfil = await SERVER_API.obtenerPerfilUsuario(miEm); const misPrefs = miPerfil.preferencias || {}; misPrefs.solicitudes_recibidas = (misPrefs.solicitudes_recibidas || []).filter(e => e !== amigoEm); if (aceptar) { const misAmigos = misPrefs.amigos || []; if (!misAmigos.includes(amigoEm)) misAmigos.push(amigoEm); misPrefs.amigos = misAmigos; } await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(miEm), 'PATCH', { preferencias: misPrefs, updated_at: new Date().toISOString() }); const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEm) + '&select=*', 'GET'); if (rows && rows.length > 0) { const amigoP = rows[0]; const amigoPrefs = amigoP.preferencias || {}; if (aceptar) { const suListaAmigos = amigoPrefs.amigos || []; if (!suListaAmigos.includes(miEm)) suListaAmigos.push(miEm); amigoPrefs.amigos = suListaAmigos; } else { amigoPrefs.amigos = (amigoPrefs.amigos || []).filter(e => e !== miEm); } await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEm), 'PATCH', { preferencias: amigoPrefs, updated_at: new Date().toISOString() }); } return { exito: true }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerRegistrosAmigo(emailAmigo) {
   try {
     const email = normEm_(emailAmigo);
     if (!email) return { exito: false, error: 'Email inválido' };
@@ -1161,27 +1203,57 @@ function renderizarListaSolicitudes(solicitudes) {
 function renderizarListaAmigos(amigos) {
   const countEl = document.getElementById('count-mis-amigos');
   const contenedor = document.getElementById('lista-mis-amigos');
-  countEl.textContent = amigos.length;
+  if (countEl) countEl.textContent = amigos.length;
   if (!amigos.length) {
     contenedor.innerHTML = '<div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para que te agreguen!</div>';
     return;
   }
-  contenedor.innerHTML = amigos.map(a => `
-    <div class="fav-slot-card" style="cursor:pointer;" onclick="verPerfilDeAmigo('${a.email}')">
-      <div style="width:52px;height:52px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.6rem;flex-shrink:0;">
-        ${a.avatar && (a.avatar.startsWith('http') || a.avatar.startsWith('data:')) ? `<img src="${a.avatar}" style="width:100%;height:100%;object-fit:cover;">` : `<span>${a.avatar || '👤'}</span>`}
+  contenedor.innerHTML = amigos.map(a => {
+    const avatarHtml = a.avatar && (a.avatar.startsWith('http') || a.avatar.startsWith('data:'))
+      ? `<img src="${a.avatar}" style="width:100%;height:100%;object-fit:cover;">`
+      : `<span>${a.avatar || '🦊'}</span>`;
+
+    return `
+      <div class="amigo-wide-card" onclick="verPerfilDeAmigo('${a.email}')" style="cursor:pointer; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; transition:var(--tr);">
+        <div style="display:flex; align-items:center; gap:14px; min-width:220px; flex:1;">
+          <div style="width:52px; height:52px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.6rem; flex-shrink:0;">
+            ${avatarHtml}
+          </div>
+          <div style="min-width:0;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <strong style="font-size:0.98rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${a.nickname}</strong>
+              <span style="font-size:0.75rem; color:var(--accent); font-weight:700; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:6px; border:1px solid rgba(56,189,248,0.35);">🆔 ${a.userId || 'ID'}</span>
+            </div>
+            <div style="font-size:0.8rem; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:320px;">${a.bio || 'Coleccionando historias en Mediary ✨'}</div>
+          </div>
+        </div>
+
+        <div class="amigo-quick-stats" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+          <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:6px 12px; font-size:0.78rem; display:flex; align-items:center; gap:6px;">
+            <span>📚</span>
+            <span style="font-weight:700; color:var(--text);">${a.stats ? a.stats.total : 0}</span>
+            <span style="color:var(--muted);">registros</span>
+          </div>
+          ${a.stats && a.stats.promedio ? `
+          <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:6px 12px; font-size:0.78rem; display:flex; align-items:center; gap:6px;">
+            <span style="color:var(--star-active);">★</span>
+            <span style="font-weight:700; color:var(--text);">${a.stats.promedio}</span>
+            <span style="color:var(--muted);">promedio</span>
+          </div>` : ''}
+          ${a.stats && a.stats.topCat ? `
+          <div style="background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.25); border-radius:10px; padding:6px 12px; font-size:0.78rem; color:var(--accent); display:flex; align-items:center; gap:6px;">
+            <span>🔥</span>
+            <span>${a.stats.topCat}</span>
+          </div>` : ''}
+        </div>
+
+        <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
+          <button type="button" class="btn-today-pill" style="height:36px; padding:0 12px; font-size:0.78rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text);" onclick="event.stopPropagation();abrirModalRegistrosAmigo('${a.email}', '${a.nickname}')" title="Ver Registros">📑 Registros</button>
+          <button type="button" class="btn-today-pill" style="height:36px; padding:0 14px; font-size:0.78rem; margin:0;" onclick="event.stopPropagation();verPerfilDeAmigo('${a.email}')">Ver Perfil ➔</button>
+        </div>
       </div>
-      <div style="flex:1;min-width:0;">
-        <strong style="font-size:0.95rem;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${a.nickname}</strong>
-        <div style="font-size:0.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${a.bio || 'Coleccionando historias en Mediary ✨'}</div>
-        <div style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;">🆔 ${a.userId || 'ID'}</div>
-      </div>
-      <div style="display:flex;gap:6px;align-items:center;">
-        <button type="button" class="btn-today-pill" style="height:32px;padding:0 8px;font-size:0.76rem;margin:0;background:var(--card);border:1px solid var(--border);color:var(--text);" onclick="event.stopPropagation();abrirModalRegistrosAmigo('${a.email}')" title="Ver Registros">📑 Registros</button>
-        <button type="button" class="btn-today-pill" style="height:32px;padding:0 10px;font-size:0.76rem;margin:0;" onclick="event.stopPropagation();verPerfilDeAmigo('${a.email}')">Ver Perfil ➔</button>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 }
 function enviarSolicitudAmistadPorId() {
   const idInput = document.getElementById('input-buscar-amigo-id').value.trim();
@@ -1314,6 +1386,7 @@ function eliminarAmigoSeleccionado() {
 }
 let amigoRegistrosCache = [];
 let amigoRegsFiltroCat = 'todas';
+let amigoRegsFiltroSub = 'todas';
 function abrirModalRegistrosAmigo(email, nickname) {
   const amEmail = email || (amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '');
   const amFriend = (estado.amigos || []).find(x => x.email === amEmail);
@@ -1324,6 +1397,7 @@ function abrirModalRegistrosAmigo(email, nickname) {
   const title = document.getElementById('amigo-regs-modal-title');
   const grid = document.getElementById('amigo-regs-grid');
   const tabs = document.getElementById('amigo-regs-cat-tabs');
+  const subTabs = document.getElementById('amigo-regs-subcat-tabs');
   const inSearch = document.getElementById('input-buscar-regs-amigo');
   if (title) title.innerHTML = `📑 <span>${l === 'en' ? `Records of ${amNick}` : `Registros de ${amNick}`}</span>`;
   if (inSearch) {
@@ -1331,7 +1405,12 @@ function abrirModalRegistrosAmigo(email, nickname) {
     inSearch.placeholder = l === 'en' ? "Search in this friend's records..." : "Buscar en los registros de este amigo...";
   }
   amigoRegsFiltroCat = 'todas';
+  amigoRegsFiltroSub = 'todas';
   amigoRegistrosCache = [];
+  if (subTabs) {
+    subTabs.style.display = 'none';
+    subTabs.innerHTML = '';
+  }
   if (tabs) {
     const cats = [
       { id: 'todas', label: l === 'en' ? 'All' : 'Todas', emoji: '🌟' },
@@ -1361,16 +1440,88 @@ function abrirModalRegistrosAmigo(email, nickname) {
       return;
     }
     amigoRegistrosCache = res.registros || [];
+    renderizarTabsSubcategoriasAmigo();
     filtrarRegistrosAmigoModal();
   }).obtenerRegistrosAmigo(amEmail);
 }
+function renderizarTabsSubcategoriasAmigo() {
+  const subTabsEl = document.getElementById('amigo-regs-subcat-tabs');
+  if (!subTabsEl) return;
+  const l = userPrefs.lang || 'es';
+  const pool = amigoRegsFiltroCat === 'todas'
+    ? amigoRegistrosCache
+    : amigoRegistrosCache.filter(r => r.categoria === amigoRegsFiltroCat);
+
+  let subList = [];
+  if (amigoRegsFiltroCat !== 'todas' && CONFIG[amigoRegsFiltroCat]) {
+    const cfgSubs = (CONFIG[amigoRegsFiltroCat].subs || []).filter(s => !s.esWatchlist);
+    cfgSubs.forEach(s => {
+      const count = pool.filter(r => r.subcategoria === s.id).length;
+      subList.push({ id: s.id, label: s.nombre, emoji: s.emoji || '📁', count });
+    });
+    const knownIds = new Set(cfgSubs.map(s => s.id));
+    const extraSubs = [...new Set(pool.map(r => r.subcategoria).filter(Boolean))].filter(s => !knownIds.has(s));
+    extraSubs.forEach(s => {
+      const count = pool.filter(r => r.subcategoria === s).length;
+      subList.push({ id: s, label: s, emoji: '📁', count });
+    });
+  } else {
+    const distinctSubs = [...new Set(amigoRegistrosCache.map(r => r.subcategoria).filter(Boolean))];
+    distinctSubs.forEach(s => {
+      let emoji = '📁';
+      for (const catKey in CONFIG) {
+        const found = (CONFIG[catKey].subs || []).find(x => x.id === s);
+        if (found && found.emoji) { emoji = found.emoji; break; }
+      }
+      const count = amigoRegistrosCache.filter(r => r.subcategoria === s).length;
+      subList.push({ id: s, label: s, emoji, count });
+    });
+  }
+
+  if (subList.length === 0) {
+    subTabsEl.style.display = 'none';
+    subTabsEl.innerHTML = '';
+    return;
+  }
+
+  if (amigoRegsFiltroSub !== 'todas' && !subList.some(s => s.id === amigoRegsFiltroSub)) {
+    amigoRegsFiltroSub = 'todas';
+  }
+
+  subTabsEl.style.display = 'flex';
+  const todasCount = pool.length;
+  let html = `
+    <button type="button" class="subtab-btn ${amigoRegsFiltroSub === 'todas' ? 'active' : ''}" onclick="cambiarFiltroSubAmigo('todas', this)" style="flex-shrink:0;font-size:0.8rem;padding:5px 10px;">
+      <span class="emoji-dyn">🌟</span> ${l === 'en' ? 'All' : 'Todas'} <span style="opacity:0.7;font-size:0.75rem;">(${todasCount})</span>
+    </button>
+  `;
+  subList.forEach(s => {
+    html += `
+      <button type="button" class="subtab-btn ${amigoRegsFiltroSub === s.id ? 'active' : ''}" onclick="cambiarFiltroSubAmigo('${s.id.replace(/'/g, "\\'")}', this)" style="flex-shrink:0;font-size:0.8rem;padding:5px 10px;">
+        <span class="emoji-dyn">${s.emoji}</span> ${s.label} <span style="opacity:0.7;font-size:0.75rem;">(${s.count})</span>
+      </button>
+    `;
+  });
+  subTabsEl.innerHTML = html;
+}
+function cambiarFiltroSubAmigo(subId, btnEl) {
+  amigoRegsFiltroSub = subId;
+  const subTabs = document.getElementById('amigo-regs-subcat-tabs');
+  if (subTabs) {
+    subTabs.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
+  }
+  if (btnEl) btnEl.classList.add('active');
+  filtrarRegistrosAmigoModal();
+}
 function cambiarFiltroCatAmigo(catId, btnEl) {
   amigoRegsFiltroCat = catId;
+  amigoRegsFiltroSub = 'todas';
   const tabs = document.getElementById('amigo-regs-cat-tabs');
   if (tabs) {
     tabs.querySelectorAll('.subtab-btn').forEach(b => b.classList.remove('active'));
   }
   if (btnEl) btnEl.classList.add('active');
+  renderizarTabsSubcategoriasAmigo();
   filtrarRegistrosAmigoModal();
 }
 function filtrarRegistrosAmigoModal() {
@@ -1381,6 +1532,9 @@ function filtrarRegistrosAmigoModal() {
   let lista = amigoRegistrosCache;
   if (amigoRegsFiltroCat !== 'todas') {
     lista = lista.filter(r => r.categoria === amigoRegsFiltroCat);
+  }
+  if (amigoRegsFiltroSub !== 'todas') {
+    lista = lista.filter(r => r.subcategoria === amigoRegsFiltroSub);
   }
   if (q) {
     lista = lista.filter(r => {
@@ -2891,8 +3045,8 @@ function abrirEditorRegistroCompleto(id) {
   if (!reg) return;
   const l = userPrefs.lang || 'es';
   const c = reg.categoria, s = reg.subcategoria;
-  let r = subTieneRango(c, s, reg);
-  if (reg.fechaFin && reg.fechaFin !== 'Sin fecha') r = true;
+  const admiteRango = subTieneRango(c, s);
+  let r = admiteRango && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio;
   const isJ = c === 'Juegos';
   document.getElementById('modal-titulo').textContent = l === 'en' ? 'Edit Entry' : 'Editar Registro';
   let html = '<div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;background:var(--bg);padding:10px;border-radius:10px;border:1px solid var(--border);">';
@@ -2912,7 +3066,7 @@ function abrirEditorRegistroCompleto(id) {
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">';
   html += '<div class="checkbox-row" style="margin:0;"><input type="checkbox" id="edit-compl-sin-fecha" ' + (reg.fechaInicio === 'Sin fecha' ? 'checked' : '') + '>';
   html += '<label for="edit-compl-sin-fecha" style="font-size:0.8rem;color:var(--muted);">' + (l === 'en' ? 'No registered date' : 'No registrada / Sin fecha') + '</label></div>';
-  if (!r) {
+  if (admiteRango && !r) {
     html += '<button type="button" id="btn-toggle-fin-compl" class="btn-ghost" style="font-size:0.75rem;padding:3px 8px;color:var(--accent);" onclick="mostrarFechaFinEnEditorCompl()">+ ' + (l === 'en' ? 'Add end date' : 'Agregar fecha de término') + '</button>';
   }
   html += '</div></div>';
@@ -2988,13 +3142,13 @@ function abrirEditorFecha(id) {
   const reg = estado.registros.find(r => r.id === id);
   if (!reg) return;
   const l = userPrefs.lang || 'es';
-  let r = subTieneRango(reg.categoria, reg.subcategoria, reg);
-  if (reg.fechaFin && reg.fechaFin !== 'Sin fecha') r = true;
+  const admiteRango = subTieneRango(reg.categoria, reg.subcategoria);
+  let r = admiteRango && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio;
   document.getElementById('modal-titulo').textContent = l === 'en' ? 'Edit Date' : 'Editar Fecha';
   let html = `<div style="margin-bottom:12px;"><label style="font-size:.85rem; color:var(--muted);">${r ? t('lbl_fecha_ini') : t('lbl_fecha_vis')}</label><input type="text" id="edit-fecha-ini" class="form-input date-input" placeholder="dd/mm/aaaa" value="${reg.fechaInicio !== 'Sin fecha' ? reg.fechaInicio : ''}"></div>`;
   html += `<div id="wrap-edit-fecha-fin" style="margin-bottom:12px;${r ? '' : 'display:none;'}"><label style="font-size:.85rem; color:var(--muted);">${t('lbl_fecha_fin')}</label><input type="text" id="edit-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" value="${reg.fechaFin && reg.fechaFin !== 'Sin fecha' ? reg.fechaFin : ''}"></div>`;
   html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;"><div class="checkbox-row"><input type="checkbox" id="edit-sin-fecha" ${reg.fechaInicio === 'Sin fecha' ? 'checked' : ''}><label for="edit-sin-fecha">${t('chk_no_fecha')}</label></div>`;
-  if (!r) {
+  if (admiteRango && !r) {
     html += `<button type="button" id="btn-toggle-fin-simple" class="btn-ghost" style="font-size:0.75rem;padding:3px 8px;color:var(--accent);" onclick="mostrarFechaFinSimple()">+ ${l === 'en' ? 'Add end date' : 'Agregar fecha de término'}</button>`;
   }
   html += `</div>`;
@@ -3010,9 +3164,13 @@ function abrirEditorFecha(id) {
     let fF = fI;
     if (sinF) {
       fF = 'Sin fecha';
-    } else if (wrapFin && wrapFin.style.display !== 'none' && inputFin && inputFin.value.trim()) {
-      fF = sanitizarFechaFrontend(inputFin.value.trim());
-    } else if (r && inputFin && inputFin.value.trim()) {
+    } else if (admiteRango) {
+      if (wrapFin && wrapFin.style.display !== 'none' && inputFin && inputFin.value.trim()) {
+        fF = sanitizarFechaFrontend(inputFin.value.trim());
+      } else if (r && inputFin && inputFin.value.trim()) {
+        fF = sanitizarFechaFrontend(inputFin.value.trim());
+      }
+    }
       fF = sanitizarFechaFrontend(inputFin.value.trim());
     }
     cerrarModal();

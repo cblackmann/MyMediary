@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mediary-pwa-v7';
+const CACHE_NAME = 'mediary-pwa-v8';
 const ASSETS = ['./index.html', './manifest.json', './icon.png', './icon-192.png', './icon-512.png', './icon.svg'];
 
 self.addEventListener('install', e => {
