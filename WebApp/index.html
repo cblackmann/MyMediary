@@ -121,15 +121,16 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .size-line-node:hover{border-color:var(--accent);transform:scale(1.12)}.size-line-node.reached{border-color:var(--accent)}.size-line-node.active{width:32px;height:32px;background:var(--accent);border-color:var(--text);color:#0f172a;box-shadow:0 0 14px rgba(56,189,248,0.6);transform:scale(1.15)}
 .size-line-labels{display:flex;justify-content:space-between;margin-top:8px}.size-line-lbl-btn{background:none;border:none;color:var(--muted);cursor:pointer;text-align:center;flex:1;transition:var(--tr);padding:4px;border-radius:8px}.size-line-lbl-btn:hover{color:var(--text);background:rgba(56,189,248,0.06)}.size-line-lbl-btn.active{color:var(--accent);font-weight:700}/* CÍRCULO ÚNICO BICOLOR PARA TEMAS (100% VECTORIAL SIN ESPACIOS EN BLANCO NI CUADRADOS) */
 .theme-card-row{display:flex;align-items:center;gap:12px;flex-direction:row !important}.theme-dual-circle{width:38px;height:38px;min-width:38px;min-height:38px;border-radius:50%;overflow:hidden;flex-shrink:0;display:block;padding:0;margin:0;border:none;background:none;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.45))}.import-export-box{background:var(--bg);border:1px dashed var(--accent);border-radius:12px;padding:14px;margin-top:14px}
-/* ESTILOS DE RECORTADOR ESTILO GALERÍA 1:1 */
-.gallery-crop-stage-wrap{position:relative;display:inline-block;margin:0 auto;overflow:hidden;user-select:none;max-width:100%;border-radius:12px;background:#000;box-shadow:0 8px 24px rgba(0,0,0,0.5)}
-.crop-shade{position:absolute;background:rgba(0,0,0,0.65);pointer-events:none;z-index:2}
-.crop-box-gallery{position:absolute;box-sizing:border-box;border:2px solid #ffffff;cursor:move;touch-action:none;box-shadow:0 0 14px rgba(0,0,0,0.7);z-index:3}
-.crop-corner-handle{position:absolute;width:26px;height:26px;background:#ffffff;border:2.5px solid var(--accent);border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.6);touch-action:none;z-index:10}
-.handle-tl{top:-13px;left:-13px;cursor:nwse-resize}
-.handle-tr{top:-13px;right:-13px;cursor:nesw-resize}
-.handle-bl{bottom:-13px;left:-13px;cursor:nesw-resize}
-.handle-br{bottom:-13px;right:-13px;cursor:nwse-resize}
+/* VISOR Y RECORTADOR INTERACTIVO 1:1 DE AVATAR */
+.cropper-modal-box{max-width:380px;width:92%;text-align:center;padding:18px 20px;}
+.cropper-stage-wrap{position:relative;width:280px;height:280px;max-width:100%;aspect-ratio:1/1;margin:12px auto;border-radius:16px;overflow:hidden;background:#090d16;border:2px solid var(--accent);box-shadow:0 8px 28px rgba(0,0,0,0.6);cursor:grab;touch-action:none;user-select:none;}
+.cropper-stage-wrap:active{cursor:grabbing;}
+.cropper-stage-wrap canvas{width:100%;height:100%;display:block;}
+.cropper-overlay-guide{position:absolute;inset:0;pointer-events:none;border-radius:50%;border:2px dashed rgba(56,189,248,0.9);box-shadow:0 0 0 9999px rgba(10,15,29,0.55);}
+.cropper-grid-overlay{position:absolute;inset:0;pointer-events:none;display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr 1fr;opacity:0.22;}
+.cropper-grid-overlay div{border-right:1px dashed #ffffff;border-bottom:1px dashed #ffffff;}
+.btn-upload-avatar-cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 16px;background:rgba(56,189,248,0.1);border:1.5px dashed var(--accent);border-radius:12px;color:var(--accent);font-weight:700;font-size:0.88rem;cursor:pointer;transition:var(--tr);}
+.btn-upload-avatar-cta:hover{background:rgba(56,189,248,0.18);transform:translateY(-1px);}
 /* PÍLDORAS Y ESTILOS SOCIALES DE AMIGOS */
 .amigo-activity-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:var(--accent);font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-top:3px;white-space:nowrap}
 .amigo-activity-pill.amigo-wl-pill{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.35);color:#fbbf24}
@@ -253,45 +254,89 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div id="shuffle-sub" style="font-size:0.85rem; color:var(--muted);">¿Qué tocará hoy?</div> </div> </div> <div class="modal-actions" style="justify-content:center; gap:10px; margin-top:14px;"> <button type="button" class="btn-modal-cancel" id="btn-shuffle-otro" style="display:none;" onclick="ejecutarShuffleAnimado()">Tirar de nuevo 🎲</button> <button type="button" class="btn-modal-save" id="btn-shuffle-listo" style="display:none;" onclick="cerrarModalShuffle()">¡A disfrutar!</button>
 </div> </div> </div> <!-- MODAL SUGERENCIA NUEVO ARTISTA --> <div id="modal-nuevo-artista" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <h3 style="color:var(--accent); font-size:1.15rem; margin-bottom:10px;">🎙️ ¿Registrar nuevo Artista/Grupo?</h3> <p id="msg-nuevo-artista" style="color:var(--text); font-size:.9rem; line-height:1.5; margin-bottom:14px;"></p>
 <p style="color:var(--muted); font-size:.8rem; margin-bottom:16px;">Se iniciará su seguimiento en Música ➔ Artistas/Grupos con fecha de inicio hoy/disco.</p> <div class="modal-actions" style="justify-content:center; gap:12px;"> <button class="btn-modal-cancel" onclick="cerrarModalNuevoArtista()">No, solo el disco</button> <button class="btn-modal-save" id="btn-confirmar-nuevo-artista">Sí, comenzar registro</button>
-</div> </div> </div> <!-- MODAL EDITAR PERFIL (FOTO Y NICKNAME) --> <div id="modal-editar-perfil" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:480px;"> <h3>👤 Personalizar Perfil</h3> <div class="form-group"> <label>Nickname / Nombre visible:</label> <input type="text" id="input-perfil-nickname" class="form-input" placeholder="Ej: CJ / Cinéfilo2026">
-</div> <div class="form-group"> <label>Lema o Biografía corta:</label> <input type="text" id="input-perfil-bio" class="form-input" placeholder="Ej: Coleccionando historias en Mediary ✨"> </div> <div class="form-group"> <label>Elige un avatar rápido:</label> <div class="avatar-presets-grid" id="avatar-presets-box"></div> </div> <div class="form-group"> <label>O sube una foto desde tu dispositivo / pega URL:</label>
-<div style="display:flex; gap:8px; align-items:center;"> <input type="text" id="input-perfil-avatar-url" class="form-input" placeholder="URL de imagen o emoji..." oninput="previsualizarAvatarInput(this.value)"> <label class="btn-today-pill" style="cursor:pointer; margin:0; flex-shrink:0;"> 📷 Subir foto <input type="file" id="input-perfil-avatar-file" accept="image/*" style="display:none;" onchange="procesarSubidaFotoPerfil(event)">
-</label> </div> <div id="gallery-cropper-container" style="display:none; margin-top:12px; background:rgba(15,23,42,0.85); border-radius:14px; padding:12px; border:1px solid var(--accent); text-align:center;">
-  <div style="font-weight:700; color:var(--accent); font-size:0.9rem; margin-bottom:3px;">✂️ Recortador de Foto de Perfil (1:1)</div>
-  <p style="color:var(--muted); font-size:0.75rem; margin-bottom:10px;">Arrastra el recuadro para encuadrar o usa las esquinas para cambiar el tamaño:</p>
-  <div id="gallery-crop-stage-wrap" class="gallery-crop-stage-wrap">
-    <img id="gallery-crop-img" src="" alt="Vista previa" style="display:block; max-width:100%; max-height:340px; object-fit:contain; pointer-events:none;">
-    <div id="crop-shade-top" class="crop-shade"></div>
-    <div id="crop-shade-bottom" class="crop-shade"></div>
-    <div id="crop-shade-left" class="crop-shade"></div>
-    <div id="crop-shade-right" class="crop-shade"></div>
-    <div id="gallery-crop-box" class="crop-box-gallery">
-      <!-- Malla de tercios -->
-      <div style="position:absolute; inset:0; pointer-events:none; display:grid; grid-template-columns:1fr 1fr 1fr; grid-template-rows:1fr 1fr 1fr; opacity:0.35;">
-        <div style="border-right:1px dashed #fff; border-bottom:1px dashed #fff;"></div>
-        <div style="border-right:1px dashed #fff; border-bottom:1px dashed #fff;"></div>
-        <div style="border-bottom:1px dashed #fff;"></div>
-        <div style="border-right:1px dashed #fff; border-bottom:1px dashed #fff;"></div>
-        <div style="border-right:1px dashed #fff; border-bottom:1px dashed #fff;"></div>
-        <div style="border-bottom:1px dashed #fff;"></div>
-        <div style="border-right:1px dashed #fff;"></div>
-        <div style="border-right:1px dashed #fff;"></div>
-        <div></div>
+</div> </div> </div> <!-- MODAL EDITAR PERFIL (FOTO Y NICKNAME) -->
+<div id="modal-editar-perfil" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalEditarPerfil()">
+  <div class="modal-box" style="max-width:480px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="margin:0;">👤 Personalizar Perfil</h3>
+      <button type="button" class="btn-close-form" onclick="cerrarModalEditarPerfil()" style="position:static;">✕</button>
+    </div>
+    <div class="form-group">
+      <label>Nickname / Nombre visible:</label>
+      <input type="text" id="input-perfil-nickname" class="form-input" placeholder="Ej: CJ / Cinéfilo2026">
+    </div>
+    <div class="form-group">
+      <label>Lema o Biografía corta:</label>
+      <input type="text" id="input-perfil-bio" class="form-input" placeholder="Ej: Coleccionando historias en Mediary ✨">
+    </div>
+    <div class="form-group">
+      <label>Elige un avatar de animal rápido:</label>
+      <div class="avatar-presets-grid" id="avatar-presets-box"></div>
+    </div>
+    <div class="form-group">
+      <label>O sube una imagen personalizada:</label>
+      <label class="btn-upload-avatar-cta">
+        <span>📷</span>
+        <span>Subir Imagen desde tu dispositivo</span>
+        <input type="file" id="input-perfil-avatar-file" accept="image/*" style="display:none;" onchange="procesarSubidaFotoPerfil(event)">
+      </label>
+      <div id="crop-confirmed-preview" style="display:none; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; padding:10px 14px; background:var(--bg); border:1px solid var(--accent); border-radius:12px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <img id="crop-confirmed-img" src="" alt="Avatar" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid var(--accent); flex-shrink:0;">
+          <div>
+            <div style="font-size:0.84rem; color:var(--text); font-weight:700;">Foto 1:1 seleccionada</div>
+            <div style="font-size:0.75rem; color:var(--muted);">Recortada y lista para guardar</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:4px 10px;" onclick="document.getElementById('input-perfil-avatar-file').click()">Cambiar</button>
+          <button type="button" class="btn-modal-cancel" style="font-size:0.75rem; padding:4px 8px; border-color:rgba(239,68,68,0.4); color:#f87171;" onclick="quitarFotoPersonalizada()">Quitar</button>
+        </div>
       </div>
-      <!-- Guía circular de silueta de perfil -->
-      <div style="position:absolute; inset:0; border-radius:50%; border:1.5px dashed rgba(56,189,248,0.85); pointer-events:none;"></div>
-      <!-- 4 esquinas interactivas -->
-      <div class="crop-corner-handle handle-tl" data-handle="tl"></div>
-      <div class="crop-corner-handle handle-tr" data-handle="tr"></div>
-      <div class="crop-corner-handle handle-bl" data-handle="bl"></div>
-      <div class="crop-corner-handle handle-br" data-handle="br"></div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalEditarPerfil()">Cancelar</button>
+      <button type="button" class="btn-modal-save" onclick="guardarCambiosPerfilUsuario()">Guardar Perfil</button>
     </div>
   </div>
-  <div style="display:flex; justify-content:center; gap:10px; margin-top:12px;">
-    <button type="button" class="btn-modal-cancel" style="padding:8px 16px; font-size:0.82rem;" onclick="cancelarRecorteGaleria()">Cancelar</button>
-    <button type="button" class="btn-modal-save" style="padding:8px 18px; font-size:0.82rem;" onclick="confirmarRecorteGaleria()">✅ Aplicar Recorte 1:1</button>
+</div>
+
+<!-- MODAL RECORTADOR DE AVATAR 1:1 -->
+<div id="modal-recortar-avatar" class="modal-overlay" style="display:none; z-index:10001;" onclick="if(event.target===this) cerrarModalRecorteAvatar()">
+  <div class="modal-box cropper-modal-box">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+      <h3 style="margin:0; font-size:1.15rem; color:var(--accent);">✂️ Recortar Foto de Perfil</h3>
+      <button type="button" class="btn-close-form" onclick="cerrarModalRecorteAvatar()" style="position:static;">✕</button>
+    </div>
+    <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px; line-height:1.4;">
+      Arrastra la foto para encuadrarla y usa la barra o rueda para zoom (relación 1:1 fija):
+    </p>
+    <div class="cropper-stage-wrap" id="avatar-cropper-stage">
+      <canvas id="canvas-crop-avatar" width="280" height="280"></canvas>
+      <div class="cropper-grid-overlay">
+        <div></div><div></div><div></div>
+        <div></div><div></div><div></div>
+        <div></div><div></div><div></div>
+      </div>
+      <div class="cropper-overlay-guide"></div>
+    </div>
+    <!-- Controles de Zoom -->
+    <div style="display:flex; align-items:center; justify-content:center; gap:10px; margin:10px auto 6px; max-width:280px;">
+      <button type="button" class="btn-today-pill" style="padding:4px 8px; font-size:0.85rem;" onclick="ajustarZoomAvatar(-0.15)" title="Alejar">🔍−</button>
+      <input type="range" id="slider-crop-avatar-zoom" min="1" max="4" step="0.02" value="1" style="flex:1; accent-color:var(--accent); cursor:pointer;" oninput="onCambiarZoomSliderAvatar(parseFloat(this.value))">
+      <button type="button" class="btn-today-pill" style="padding:4px 8px; font-size:0.85rem;" onclick="ajustarZoomAvatar(0.15)" title="Acercar">+🔍</button>
+    </div>
+    <!-- Herramientas auxiliares -->
+    <div style="display:flex; justify-content:center; gap:8px; margin-bottom:16px;">
+      <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:5px 12px;" onclick="rotarAvatarCropper(90)">🔄 Girar 90°</button>
+      <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:5px 12px;" onclick="centrarAvatarCropper()">🎯 Centrar</button>
+    </div>
+    <div class="modal-actions" style="justify-content:flex-end; gap:10px;">
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalRecorteAvatar()">Cancelar</button>
+      <button type="button" class="btn-modal-save" onclick="confirmarRecorteAvatar()">✅ Aplicar Recorte 1:1</button>
+    </div>
   </div>
-</div> <div id="crop-confirmed-preview" style="display:none; align-items:center; gap:10px; margin-top:10px; padding:8px 12px; background:var(--bg); border:1px solid var(--accent); border-radius:10px;"> <img id="crop-confirmed-img" src="" style="width:44px; height:44px; border-radius:50%; object-fit:cover; border:2px solid var(--accent);"> <div style="font-size:0.8rem; color:var(--text); font-weight:600;">Foto 1:1 recortada y lista para guardar</div> </div> </div> <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="cerrarModalEditarPerfil()">Cancelar</button> <button type="button" class="btn-modal-save" onclick="guardarCambiosPerfilUsuario()">Guardar Perfil</button> </div> </div> </div> <!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
+</div> <!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
 <h3 id="titulo-modal-fav">👑 Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="text" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)">
 </div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()">Cerrar</button>
 </div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0;">⚙️ Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;">✕</button></div> <div class="form-group"> <label data-i18n="cfg_lang_label">Idioma de la Interfaz:</label> <select id="cfg-lang" class="settings-select" onchange="cambiarIdiomaEnVivo()">
@@ -769,19 +814,258 @@ async obtenerActividadAmigos(userEmail) {
 }; const makeRunner_ = (onSuccess = null, onFailure = null) => new Proxy({}, { get(_, prop) { if (prop === 'withSuccessHandler') return fn => makeRunner_(fn, onFailure); if (prop === 'withFailureHandler') return fn => makeRunner_(onSuccess, fn); return (...args) => {
 Promise.resolve().then(() => SERVER_API[prop](...args)).then(res => { if (onSuccess) onSuccess(res); }).catch(err => { console.error(`Error en ${String(prop)}:`, err); if (onFailure) onFailure(err); }); }; }
 }); window.google = { script: { run: makeRunner_() } }; }
-// === RECORTADOR ESTILO GALERÍA 1:1, PRIVACIDAD Y FUNCIONES SOCIALES ===
-let galleryCropState = { img: null, mode: null, handle: null, boxX: 0, boxY: 0, boxSize: 100, displayWidth: 100, displayHeight: 100 };
-function procesarSubidaFotoPerfil(e) { const file = e.target.files?.[0]; if (!file) return; const reader = new FileReader(); reader.onload = ev => { const img = new Image(); img.onload = () => iniciarRecorteGaleria(img, ev.target.result); img.src = ev.target.result; }; reader.readAsDataURL(file); }
-function iniciarRecorteGaleria(imgObj, srcUrl) { galleryCropState.img = imgObj; const container = document.getElementById('gallery-cropper-container'); const cropImg = document.getElementById('gallery-crop-img'); if (!container || !cropImg) return; cropImg.src = srcUrl; container.style.display = 'block'; setTimeout(() => { const rect = cropImg.getBoundingClientRect(); const w = rect.width || cropImg.clientWidth || 300; const h = rect.height || cropImg.clientHeight || 300; galleryCropState.displayWidth = w; galleryCropState.displayHeight = h; const initialSize = Math.max(70, Math.min(w, h) * 0.82); galleryCropState.boxSize = Math.round(initialSize); galleryCropState.boxX = Math.round((w - galleryCropState.boxSize) / 2); galleryCropState.boxY = Math.round((h - galleryCropState.boxSize) / 2); actualizarVistaRecuadroGaleria(); inicializarEventosRecorteGaleria(); container.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 120); }
-function actualizarVistaRecuadroGaleria() { const box = document.getElementById('gallery-crop-box'); const sTop = document.getElementById('crop-shade-top'); const sBottom = document.getElementById('crop-shade-bottom'); const sLeft = document.getElementById('crop-shade-left'); const sRight = document.getElementById('crop-shade-right'); if (!box) return; const x = galleryCropState.boxX, y = galleryCropState.boxY, s = galleryCropState.boxSize, W = galleryCropState.displayWidth, H = galleryCropState.displayHeight; box.style.left = `${x}px`; box.style.top = `${y}px`; box.style.width = `${s}px`; box.style.height = `${s}px`; if (sTop) { sTop.style.top = '0'; sTop.style.left = '0'; sTop.style.width = `${W}px`; sTop.style.height = `${y}px`; } if (sBottom) { sBottom.style.top = `${y + s}px`; sBottom.style.left = '0'; sBottom.style.width = `${W}px`; sBottom.style.height = `${Math.max(0, H - (y + s))}px`; } if (sLeft) { sLeft.style.top = `${y}px`; sLeft.style.left = '0'; sLeft.style.width = `${x}px`; sLeft.style.height = `${s}px`; } if (sRight) { sRight.style.top = `${y}px`; sRight.style.left = `${x + s}px`; sRight.style.width = `${Math.max(0, W - (x + s))}px`; sRight.style.height = `${s}px`; } }
-let galleryCropEventsAttached = false;
-function inicializarEventosRecorteGaleria() { if (galleryCropEventsAttached) return; galleryCropEventsAttached = true; const box = document.getElementById('gallery-crop-box'); const stage = document.getElementById('gallery-crop-stage-wrap'); if (!box || !stage) return; let dragInitX = 0, dragInitY = 0, dragInitSize = 0, startMouseX = 0, startMouseY = 0;
-const onPointerMove = e => { if (!galleryCropState.mode) return; e.preventDefault(); const clientX = e.touches ? e.touches[0].clientX : e.clientX; const clientY = e.touches ? e.touches[0].clientY : e.clientY; const dx = clientX - startMouseX; const dy = clientY - startMouseY; const W = galleryCropState.displayWidth; const H = galleryCropState.displayHeight; const minSize = 45; if (galleryCropState.mode === 'drag') { const maxX = W - galleryCropState.boxSize; const maxY = H - galleryCropState.boxSize; galleryCropState.boxX = Math.max(0, Math.min(maxX, dragInitX + dx)); galleryCropState.boxY = Math.max(0, Math.min(maxY, dragInitY + dy)); actualizarVistaRecuadroGaleria(); } else if (galleryCropState.mode === 'resize') { const h = galleryCropState.handle; let newSize = dragInitSize, newX = dragInitX, newY = dragInitY; if (h === 'br') { const delta = Math.max(dx, dy); newSize = Math.max(minSize, Math.min(W - dragInitX, H - dragInitY, dragInitSize + delta)); } else if (h === 'tl') { const delta = Math.min(dx, dy); newSize = Math.max(minSize, Math.min(dragInitX + dragInitSize, dragInitY + dragInitSize, dragInitSize - delta)); newX = dragInitX + (dragInitSize - newSize); newY = dragInitY + (dragInitSize - newSize); } else if (h === 'tr') { const delta = Math.max(dx, -dy); newSize = Math.max(minSize, Math.min(W - dragInitX, dragInitY + dragInitSize, dragInitSize + delta)); newY = dragInitY + (dragInitSize - newSize); } else if (h === 'bl') { const delta = Math.max(-dx, dy); newSize = Math.max(minSize, Math.min(dragInitX + dragInitSize, H - dragInitY, dragInitSize + delta)); newX = dragInitX + (dragInitSize - newSize); } galleryCropState.boxSize = Math.round(newSize); galleryCropState.boxX = Math.round(newX); galleryCropState.boxY = Math.round(newY); actualizarVistaRecuadroGaleria(); } };
-const onPointerUp = () => { galleryCropState.mode = null; galleryCropState.handle = null; window.removeEventListener('mousemove', onPointerMove); window.removeEventListener('mouseup', onPointerUp); window.removeEventListener('touchmove', onPointerMove); window.removeEventListener('touchend', onPointerUp); };
-const onPointerDown = e => { const handleEl = e.target.closest('.crop-corner-handle'); const isBox = e.target === box || box.contains(e.target); if (!handleEl && !isBox) return; e.preventDefault(); const clientX = e.touches ? e.touches[0].clientX : e.clientX; const clientY = e.touches ? e.touches[0].clientY : e.clientY; startMouseX = clientX; startMouseY = clientY; dragInitX = galleryCropState.boxX; dragInitY = galleryCropState.boxY; dragInitSize = galleryCropState.boxSize; if (handleEl) { galleryCropState.mode = 'resize'; galleryCropState.handle = handleEl.dataset.handle; } else { galleryCropState.mode = 'drag'; galleryCropState.handle = null; } window.addEventListener('mousemove', onPointerMove); window.addEventListener('mouseup', onPointerUp); window.addEventListener('touchmove', onPointerMove, { passive: false }); window.addEventListener('touchend', onPointerUp); };
-stage.addEventListener('mousedown', onPointerDown); stage.addEventListener('touchstart', onPointerDown, { passive: false }); }
-function confirmarRecorteGaleria() { const img = galleryCropState.img; if (!img) return; const cropImg = document.getElementById('gallery-crop-img'); const rect = cropImg.getBoundingClientRect(); const W = rect.width || galleryCropState.displayWidth || 300; const H = rect.height || galleryCropState.displayHeight || 300; const scaleX = img.naturalWidth / W; const scaleY = img.naturalHeight / H; const sx = Math.max(0, galleryCropState.boxX * scaleX); const sy = Math.max(0, galleryCropState.boxY * scaleY); const sSize = Math.min(img.naturalWidth - sx, img.naturalHeight - sy, galleryCropState.boxSize * Math.min(scaleX, scaleY)); const outCanvas = document.createElement('canvas'); outCanvas.width = 320; outCanvas.height = 320; const ctx = outCanvas.getContext('2d'); ctx.drawImage(img, sx, sy, sSize, sSize, 0, 0, 320, 320); const dataUrl = outCanvas.toDataURL('image/jpeg', 0.88); cropState.confirmedDataUrl = dataUrl; perfilUsuario.avatar = dataUrl; cancelarRecorteGaleria(); const prevBox = document.getElementById('crop-confirmed-preview'); const prevImg = document.getElementById('crop-confirmed-img'); if (prevImg) prevImg.src = dataUrl; if (prevBox) prevBox.style.display = 'flex'; document.getElementById('input-perfil-avatar-url').value = '[Foto 1:1 recortada lista]'; document.querySelectorAll('#avatar-presets-box .avatar-preset-btn').forEach(x => x.classList.remove('selected')); mostrarToastPersonalizado('✂️ Recorte 1:1 listo. Pulsa "Guardar Perfil" para aplicar.'); }
-function cancelarRecorteGaleria() { galleryCropState.img = null; const container = document.getElementById('gallery-cropper-container'); if (container) container.style.display = 'none'; const fInp = document.getElementById('input-file-avatar'); if (fInp) fInp.value = ''; }
+// === RECORTADOR INTERACTIVO 1:1 DE AVATAR (PAN, ZOOM, ROTACIÓN Y ENCUADRE) ===
+let avatarCropperState = {
+  img: null,
+  canvas: null,
+  ctx: null,
+  stageSize: 280,
+  scale: 1,
+  minScale: 1,
+  maxScale: 4,
+  offsetX: 140,
+  offsetY: 140,
+  rotation: 0,
+  dragging: false,
+  dragStartX: 0,
+  dragStartY: 0,
+  initialTouchDist: 0,
+  initialScale: 1,
+  eventsAttached: false
+};
+let avatarSeleccionadoTemp = null;
+
+function procesarSubidaFotoPerfil(e) {
+  const file = e.target?.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => abrirModalRecorteAvatar(img);
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function abrirModalRecorteAvatar(imgObj) {
+  avatarCropperState.img = imgObj;
+  avatarCropperState.rotation = 0;
+  const canvas = document.getElementById('canvas-crop-avatar');
+  if (!canvas) return;
+  avatarCropperState.canvas = canvas;
+  avatarCropperState.ctx = canvas.getContext('2d');
+  
+  const stageSize = 280;
+  canvas.width = stageSize;
+  canvas.height = stageSize;
+  avatarCropperState.stageSize = stageSize;
+  
+  centrarAvatarCropper(true);
+  
+  const modal = document.getElementById('modal-recortar-avatar');
+  if (modal) modal.style.display = 'flex';
+  
+  conectarEventosCropperAvatar();
+  redibujarCropperAvatar();
+}
+
+function cerrarModalRecorteAvatar() {
+  const modal = document.getElementById('modal-recortar-avatar');
+  if (modal) modal.style.display = 'none';
+  avatarCropperState.img = null;
+}
+
+function obtenerDimensionesRotadas(img, rot) {
+  const isRotated = (rot % 180 !== 0);
+  return {
+    w: isRotated ? img.naturalHeight : img.naturalWidth,
+    h: isRotated ? img.naturalWidth : img.naturalHeight
+  };
+}
+
+function centrarAvatarCropper(resetScale = false) {
+  const img = avatarCropperState.img;
+  if (!img) return;
+  const { w, h } = obtenerDimensionesRotadas(img, avatarCropperState.rotation);
+  const S = avatarCropperState.stageSize;
+  
+  const coverScale = Math.max(S / w, S / h);
+  avatarCropperState.minScale = Math.max(0.2, coverScale * 0.7);
+  avatarCropperState.maxScale = Math.max(coverScale * 4, 3.5);
+  
+  if (resetScale || avatarCropperState.scale < avatarCropperState.minScale) {
+    avatarCropperState.scale = coverScale;
+  }
+  
+  avatarCropperState.offsetX = S / 2;
+  avatarCropperState.offsetY = S / 2;
+  
+  actualizarSliderZoomAvatar();
+  redibujarCropperAvatar();
+}
+
+function redibujarCropperAvatar() {
+  const { canvas, ctx, img, scale, offsetX, offsetY, rotation, stageSize } = avatarCropperState;
+  if (!canvas || !ctx || !img) return;
+  
+  ctx.save();
+  ctx.clearRect(0, 0, stageSize, stageSize);
+  
+  ctx.fillStyle = '#090d16';
+  ctx.fillRect(0, 0, stageSize, stageSize);
+  
+  ctx.translate(offsetX, offsetY);
+  ctx.rotate((rotation * Math.PI) / 180);
+  ctx.scale(scale, scale);
+  
+  ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+  ctx.restore();
+}
+
+function actualizarSliderZoomAvatar() {
+  const slider = document.getElementById('slider-crop-avatar-zoom');
+  if (!slider) return;
+  slider.min = avatarCropperState.minScale;
+  slider.max = avatarCropperState.maxScale;
+  slider.step = ((avatarCropperState.maxScale - avatarCropperState.minScale) / 100).toFixed(4);
+  slider.value = avatarCropperState.scale;
+}
+
+function onCambiarZoomSliderAvatar(val) {
+  avatarCropperState.scale = Math.max(avatarCropperState.minScale, Math.min(avatarCropperState.maxScale, val));
+  redibujarCropperAvatar();
+}
+
+function ajustarZoomAvatar(delta) {
+  const nuevo = avatarCropperState.scale + delta * (avatarCropperState.maxScale - avatarCropperState.minScale);
+  onCambiarZoomSliderAvatar(nuevo);
+  actualizarSliderZoomAvatar();
+}
+
+function rotarAvatarCropper(grados = 90) {
+  avatarCropperState.rotation = (avatarCropperState.rotation + grados) % 360;
+  centrarAvatarCropper(false);
+}
+
+function conectarEventosCropperAvatar() {
+  if (avatarCropperState.eventsAttached) return;
+  avatarCropperState.eventsAttached = true;
+  
+  const stage = document.getElementById('avatar-cropper-stage');
+  if (!stage) return;
+  
+  stage.addEventListener('mousedown', e => {
+    e.preventDefault();
+    avatarCropperState.dragging = true;
+    avatarCropperState.dragStartX = e.clientX - avatarCropperState.offsetX;
+    avatarCropperState.dragStartY = e.clientY - avatarCropperState.offsetY;
+  });
+  
+  window.addEventListener('mousemove', e => {
+    if (!avatarCropperState.dragging) return;
+    avatarCropperState.offsetX = e.clientX - avatarCropperState.dragStartX;
+    avatarCropperState.offsetY = e.clientY - avatarCropperState.dragStartY;
+    redibujarCropperAvatar();
+  });
+  
+  window.addEventListener('mouseup', () => {
+    avatarCropperState.dragging = false;
+  });
+  
+  stage.addEventListener('wheel', e => {
+    e.preventDefault();
+    const factor = e.deltaY < 0 ? 1.08 : 0.92;
+    avatarCropperState.scale = Math.max(avatarCropperState.minScale, Math.min(avatarCropperState.maxScale, avatarCropperState.scale * factor));
+    actualizarSliderZoomAvatar();
+    redibujarCropperAvatar();
+  }, { passive: false });
+  
+  stage.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) {
+      avatarCropperState.dragging = true;
+      avatarCropperState.dragStartX = e.touches[0].clientX - avatarCropperState.offsetX;
+      avatarCropperState.dragStartY = e.touches[0].clientY - avatarCropperState.offsetY;
+    } else if (e.touches.length === 2) {
+      avatarCropperState.dragging = false;
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      avatarCropperState.initialTouchDist = Math.hypot(dx, dy);
+      avatarCropperState.initialScale = avatarCropperState.scale;
+    }
+  }, { passive: false });
+  
+  stage.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (e.touches.length === 1 && avatarCropperState.dragging) {
+      avatarCropperState.offsetX = e.touches[0].clientX - avatarCropperState.dragStartX;
+      avatarCropperState.offsetY = e.touches[0].clientY - avatarCropperState.dragStartY;
+      redibujarCropperAvatar();
+    } else if (e.touches.length === 2 && avatarCropperState.initialTouchDist > 0) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      const ratio = dist / avatarCropperState.initialTouchDist;
+      avatarCropperState.scale = Math.max(avatarCropperState.minScale, Math.min(avatarCropperState.maxScale, avatarCropperState.initialScale * ratio));
+      actualizarSliderZoomAvatar();
+      redibujarCropperAvatar();
+    }
+  }, { passive: false });
+  
+  stage.addEventListener('touchend', e => {
+    if (e.touches.length === 0) {
+      avatarCropperState.dragging = false;
+      avatarCropperState.initialTouchDist = 0;
+    } else if (e.touches.length === 1) {
+      avatarCropperState.dragging = true;
+      avatarCropperState.dragStartX = e.touches[0].clientX - avatarCropperState.offsetX;
+      avatarCropperState.dragStartY = e.touches[0].clientY - avatarCropperState.offsetY;
+      avatarCropperState.initialTouchDist = 0;
+    }
+  });
+}
+
+function confirmarRecorteAvatar() {
+  const { img, scale, offsetX, offsetY, rotation, stageSize } = avatarCropperState;
+  if (!img) return;
+  
+  const outSize = 360;
+  const factor = outSize / stageSize;
+  const outCanvas = document.createElement('canvas');
+  outCanvas.width = outSize;
+  outCanvas.height = outSize;
+  const outCtx = outCanvas.getContext('2d');
+  
+  outCtx.fillStyle = '#090d16';
+  outCtx.fillRect(0, 0, outSize, outSize);
+  
+  outCtx.translate(offsetX * factor, offsetY * factor);
+  outCtx.rotate((rotation * Math.PI) / 180);
+  outCtx.scale(scale * factor, scale * factor);
+  outCtx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2);
+  
+  const dataUrl = outCanvas.toDataURL('image/jpeg', 0.9);
+  avatarSeleccionadoTemp = dataUrl;
+  
+  const prevBox = document.getElementById('crop-confirmed-preview');
+  const prevImg = document.getElementById('crop-confirmed-img');
+  if (prevImg) prevImg.src = dataUrl;
+  if (prevBox) prevBox.style.display = 'flex';
+  
+  document.querySelectorAll('#avatar-presets-box .avatar-preset-btn').forEach(b => b.classList.remove('selected'));
+  
+  cerrarModalRecorteAvatar();
+  mostrarToastPersonalizado('✂️ Recorte 1:1 listo. Pulsa "Guardar Perfil" para aplicar.');
+}
+
+function quitarFotoPersonalizada() {
+  avatarSeleccionadoTemp = '🦊';
+  const prevBox = document.getElementById('crop-confirmed-preview');
+  if (prevBox) prevBox.style.display = 'none';
+  document.querySelectorAll('#avatar-presets-box .avatar-preset-btn').forEach(b => {
+    b.classList.toggle('selected', b.textContent === '🦊');
+  });
+}
 function cerrarModalConfiguracion() { document.getElementById('modal-configuracion').style.display = 'none'; }
 function toggleSubOpcionesPrivacidad() { const chkRegs = document.getElementById('priv-opt-regs'); const subBox = document.getElementById('sub-opciones-priv-regs'); if (subBox && chkRegs) subBox.style.opacity = chkRegs.checked ? '1' : '0.4'; }
 function abrirModalPrivacidadAmigos() { const priv = perfilUsuario.preferencias?.privacidad || {}; document.getElementById('priv-opt-stats').checked = priv.ocultarEstadisticas !== true; document.getElementById('priv-opt-wl').checked = priv.ocultarWatchlist !== true; document.getElementById('priv-opt-favs').checked = priv.ocultarFavoritos !== true; document.getElementById('priv-opt-regs').checked = priv.ocultarRegistros !== true; document.getElementById('priv-opt-calif').checked = priv.ocultarCalificaciones !== true; document.getElementById('priv-opt-comentarios').checked = priv.ocultarComentarios !== true; toggleSubOpcionesPrivacidad(); document.getElementById('modal-privacidad-amigos').style.display = 'flex'; }
@@ -1246,8 +1530,8 @@ dias: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], 
 }, wl_section_title: "My Watchlists", wl_section_desc: "Your pending items organized and separated by each subcategory.", btn_volver_historial: "Back to History"
 }
 }; let userPrefs = { font: "'Plus Jakarta Sans', sans-serif", fontSize: "100%", theme: "default", showEmojis: true, lang: "es"
-}; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary ✨', avatar: '🎬', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
-}; const AVATARES_PRESET = ['🎬', '🍿', '🎮', '📚', '🎵', '🎸', '⛩️', '🦊', '🐱', '🚀', '🌙', '👑']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
+}; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary ✨', avatar: '🦊', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
+}; const AVATARES_PRESET = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐯', '🐨', '🐸', '🦉', '🐻', '🐵', '🐰']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
 const WATCHLIST_ESTRUCTURA = [
   { cat: 'Peliculas', nombre: 'Películas', emoji: '🎬', subs: [
     { id: 'Películas', subWl: 'Watchlist', nombre: 'Películas', emoji: '🎬' },
@@ -1349,19 +1633,59 @@ if (res && res.exito) { sincronizarPerfilDesdeServidor(); cargarRegistros(); car
 alert('Error en la migración: ' + (res?.error || 'Desconocido')); }
 }).withFailureHandler(err => { if (btn) { btn.textContent = txtOrig; btn.disabled = false; }
 alert('Error al migrar: ' + (err?.message || err)); }).migrarDatosSheetsASupabase(estado.userEmail); }
-function abrirModalEditarPerfil() { document.getElementById('input-perfil-nickname').value = perfilUsuario.nickname || ''; document.getElementById('input-perfil-bio').value = perfilUsuario.bio || ''; const esData = (perfilUsuario.avatar || '').startsWith('data:image');
-document.getElementById('input-perfil-avatar-url').value = esData ? '' : (perfilUsuario.avatar || ''); cropState.confirmedDataUrl = null; cropState.img = null; const cPanel = document.getElementById('gallery-cropper-container'); if (cPanel) cPanel.style.display = 'none';
-const cPrev = document.getElementById('crop-confirmed-preview'); if (cPrev) cPrev.style.display = 'none'; const fInp = document.getElementById('input-perfil-avatar-file'); if (fInp) fInp.value = '';
-const box = document.getElementById('avatar-presets-box'); box.innerHTML = ''; AVATARES_PRESET.forEach(emo => { const b = document.createElement('button'); b.type = 'button';
-b.className = `avatar-preset-btn ${perfilUsuario.avatar === emo ? 'selected' : ''}`; b.textContent = emo; b.onclick = () => { cropState.confirmedDataUrl = null; if (cPrev) cPrev.style.display = 'none'; document.getElementById('input-perfil-avatar-url').value = emo;
-document.querySelectorAll('#avatar-presets-box .avatar-preset-btn').forEach(x => x.classList.remove('selected')); b.classList.add('selected'); }; box.appendChild(b); }); document.getElementById('modal-editar-perfil').style.display = 'flex'; }
-function cerrarModalEditarPerfil() { document.getElementById('modal-editar-perfil').style.display = 'none'; }
-function previsualizarAvatarInput(val) { cropState.confirmedDataUrl = null; const cPrev = document.getElementById('crop-confirmed-preview'); if (cPrev) cPrev.style.display = 'none'; document.querySelectorAll('#avatar-presets-box .avatar-preset-btn').forEach(x => { x.classList.toggle('selected', x.textContent === val.trim()); }); }
-function guardarCambiosPerfilUsuario() { const panelCrop = document.getElementById('gallery-cropper-container'); if (panelCrop && panelCrop.style.display !== 'none' && galleryCropState.img && !cropState.confirmedDataUrl) { confirmarRecorteGaleria(); }
-const nick = document.getElementById('input-perfil-nickname').value.trim() || 'Cinéfilo & Lector'; const bio = document.getElementById('input-perfil-bio').value.trim() || 'Coleccionando historias en Mediary ✨';
-const avInput = document.getElementById('input-perfil-avatar-url').value.trim(); perfilUsuario.nickname = nick; perfilUsuario.bio = bio;
-if (cropState.confirmedDataUrl) { perfilUsuario.avatar = cropState.confirmedDataUrl; } else if (avInput && !avInput.startsWith('[Foto')) { perfilUsuario.avatar = avInput; }
-guardarPerfilLocal(); registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar); renderizarCabeceraPerfil(); cerrarModalEditarPerfil(); google.script.run.withSuccessHandler(() => { mostrarToastPersonalizado('¡Perfil actualizado en Supabase! 👤'); }).guardarPerfilUsuario(perfilUsuario, estado.userEmail); }
+function abrirModalEditarPerfil() {
+  document.getElementById('input-perfil-nickname').value = perfilUsuario.nickname || '';
+  document.getElementById('input-perfil-bio').value = perfilUsuario.bio || '';
+  avatarSeleccionadoTemp = perfilUsuario.avatar || '🦊';
+  const esFoto = avatarSeleccionadoTemp.startsWith('data:image') || avatarSeleccionadoTemp.startsWith('http');
+  const prevBox = document.getElementById('crop-confirmed-preview');
+  const prevImg = document.getElementById('crop-confirmed-img');
+  if (esFoto) {
+    if (prevImg) prevImg.src = avatarSeleccionadoTemp;
+    if (prevBox) prevBox.style.display = 'flex';
+  } else {
+    if (prevBox) prevBox.style.display = 'none';
+  }
+  const fInp = document.getElementById('input-perfil-avatar-file');
+  if (fInp) fInp.value = '';
+  const box = document.getElementById('avatar-presets-box');
+  if (box) {
+    box.innerHTML = '';
+    AVATARES_PRESET.forEach(emo => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = `avatar-preset-btn ${(!esFoto && avatarSeleccionadoTemp === emo) ? 'selected' : ''}`;
+      b.textContent = emo;
+      b.onclick = () => {
+        avatarSeleccionadoTemp = emo;
+        if (prevBox) prevBox.style.display = 'none';
+        document.querySelectorAll('#avatar-presets-box .avatar-preset-btn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+      };
+      box.appendChild(b);
+    });
+  }
+  document.getElementById('modal-editar-perfil').style.display = 'flex';
+}
+function cerrarModalEditarPerfil() {
+  document.getElementById('modal-editar-perfil').style.display = 'none';
+}
+function guardarCambiosPerfilUsuario() {
+  const nick = document.getElementById('input-perfil-nickname').value.trim() || 'Cinéfilo & Lector';
+  const bio = document.getElementById('input-perfil-bio').value.trim() || 'Coleccionando historias en Mediary ✨';
+  perfilUsuario.nickname = nick;
+  perfilUsuario.bio = bio;
+  if (avatarSeleccionadoTemp) {
+    perfilUsuario.avatar = avatarSeleccionadoTemp;
+  }
+  guardarPerfilLocal();
+  registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar);
+  renderizarCabeceraPerfil();
+  cerrarModalEditarPerfil();
+  google.script.run.withSuccessHandler(() => {
+    mostrarToastPersonalizado('¡Perfil actualizado en Supabase! 👤');
+  }).guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+}
 function obtenerTodasLasSubcategoriasFavoritos() { const lista = []; Object.keys(CONFIG).forEach(catKey => { CONFIG[catKey].subs.forEach(s => {
 // Excluir Watchlists, Temporadas y Conciertos
 if (!s.esWatchlist && s.id !== 'Temporadas' && s.id !== 'Conciertos') { lista.push({ cat: catKey, catNombre: CONFIG[catKey].nombre, sub: s.id, subNombre: s.nombre, emoji: s.emoji }); }
