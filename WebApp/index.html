@@ -990,8 +990,8 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
     `https://api.deezer.com/chart/0/artists?index=${offOl}&limit=14`,
     `https://api.rawg.io/api/games?key=${RAWG_K}&dates=2024-01-01,2026-12-31&ordering=-added&page_size=24&page=${p1}`,
     `https://openlibrary.org/search.json?q=bestseller+fiction&sort=new&limit=24&offset=${offOl}`,
-    `https://openlibrary.org/search.json?q=marvel+comics&sort=editions&limit=24&offset=${offOl}`,
-    `https://openlibrary.org/search.json?q=dc+comics&sort=editions&limit=24&offset=${offOl}`,
+    `https://openlibrary.org/search.json?publisher=Marvel+Comics&sort=new&limit=35&offset=${offOl}`,
+    `https://openlibrary.org/search.json?publisher=DC+Comics&sort=new&limit=35&offset=${offOl}`,
     `https://kitsu.io/api/edge/manga?sort=-user_count&page[limit]=20&page[offset]=${offK1}`
   ];
 
@@ -1225,30 +1225,53 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
     customLibro.forEach(b => agregarLibro(b, favLibro?.cr ? `⭐ Porque te gusta ${favLibro.cr}` : '✨ Recomendado'));
     olBooks.forEach(b => agregarLibro(b, '📖 Novedad'));
 
-    // --- 8. CÓMICS (Exclusivamente MARVEL y DC) ---
+    // --- 8. CÓMICS (Exclusivamente MARVEL y DC - Recientes y Tendencias) ---
     const COMICS_FALLBACK = [
-      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Spider-Man: Blue', tituloOriginal: 'Spider-Man: Blue', tituloIngles: '', creador: 'Jeph Loeb, Tim Sale', anio: '2002', poster: 'https://covers.openlibrary.org/b/id/8459715-M.jpg', motivo: '🔴 Marvel Comics' },
-      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Batman: The Long Halloween', tituloOriginal: 'Batman: The Long Halloween', tituloIngles: '', creador: 'Jeph Loeb, Tim Sale', anio: '1998', poster: 'https://covers.openlibrary.org/b/id/8235111-M.jpg', motivo: '🔵 DC Comics' },
-      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Infinity Gauntlet', tituloOriginal: 'Infinity Gauntlet', tituloIngles: '', creador: 'Jim Starlin, George Pérez', anio: '1991', poster: 'https://covers.openlibrary.org/b/id/10413147-M.jpg', motivo: '🔴 Marvel Comics' },
-      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Watchmen', tituloOriginal: 'Watchmen', tituloIngles: '', creador: 'Alan Moore, Dave Gibbons', anio: '1987', poster: 'https://covers.openlibrary.org/b/id/1284386-M.jpg', motivo: '🔵 DC Comics' },
-      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Marvel Zombies', tituloOriginal: 'Marvel Zombies', tituloIngles: '', creador: 'Robert Kirkman, Sean Phillips', anio: '2007', poster: 'https://covers.openlibrary.org/b/id/14494738-M.jpg', motivo: '🔴 Marvel Comics' },
-      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Batman: Year One', tituloOriginal: 'Batman: Year One', tituloIngles: '', creador: 'Frank Miller, David Mazzucchelli', anio: '1988', poster: 'https://covers.openlibrary.org/b/id/8228691-M.jpg', motivo: '🔵 DC Comics' },
-      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Civil War', tituloOriginal: 'Civil War', tituloIngles: '', creador: 'Mark Millar, Steve McNiven', anio: '2007', poster: 'https://covers.openlibrary.org/b/id/8460051-M.jpg', motivo: '🔴 Marvel Comics' },
-      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Kingdom Come', tituloOriginal: 'Kingdom Come', tituloIngles: '', creador: 'Mark Waid, Alex Ross', anio: '1996', poster: 'https://covers.openlibrary.org/b/id/8234856-M.jpg', motivo: '🔵 DC Comics' }
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Absolute Batman Vol. 1', tituloOriginal: 'Absolute Batman Vol. 1', tituloIngles: '', creador: 'Scott Snyder, Nick Dragotta', anio: '2025', poster: 'https://covers.openlibrary.org/b/id/15113626-M.jpg', motivo: '🔵 DC Comics • Novedad' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Thunderbolts', tituloOriginal: 'Thunderbolts', tituloIngles: '', creador: 'Collin Kelly, Jackson Lanzing', anio: '2024', poster: 'https://covers.openlibrary.org/b/id/15203284-M.jpg', motivo: '🔴 Marvel Comics • Tendencia' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Absolute Superman, Vol. 1', tituloOriginal: 'Absolute Superman, Vol. 1', tituloIngles: '', creador: 'Jason Aaron, Rafa Sandoval', anio: '2025', poster: 'https://covers.openlibrary.org/b/id/15138771-M.jpg', motivo: '🔵 DC Comics • Novedad' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Daredevil by Chip Zdarsky Omnibus, Vol. 1', tituloOriginal: 'Daredevil by Chip Zdarsky Omnibus, Vol. 1', tituloIngles: '', creador: 'Chip Zdarsky, Marco Checchetto', anio: '2024', poster: 'https://covers.openlibrary.org/b/id/15249017-M.jpg', motivo: '🔴 Marvel Comics • Aclamado' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Absolute Wonder Woman, Vol. 1', tituloOriginal: 'Absolute Wonder Woman, Vol. 1', tituloIngles: '', creador: 'Kelly Thompson, Hayden Sherman', anio: '2025', poster: 'https://covers.openlibrary.org/b/id/15108588-M.jpg', motivo: '🔵 DC Comics • Novedad' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'King in Black', tituloOriginal: 'King in Black', tituloIngles: '', creador: 'Donny Cates, Ryan Stegman', anio: '2021', poster: 'https://covers.openlibrary.org/b/id/12381210-M.jpg', motivo: '🔴 Marvel Comics • Tendencia' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Supergirl: Woman of Tomorrow', tituloOriginal: 'Supergirl: Woman of Tomorrow', tituloIngles: '', creador: 'Tom King, Bilquis Evely', anio: '2022', poster: 'https://covers.openlibrary.org/b/id/13195853-M.jpg', motivo: '🔵 DC Comics • Aclamado' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'House of X / Powers of X', tituloOriginal: 'House of X / Powers of X', tituloIngles: '', creador: 'Jonathan Hickman, Pepe Larraz', anio: '2020', poster: 'https://covers.openlibrary.org/b/id/9409849-M.jpg', motivo: '🔴 Marvel Comics • Hito' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Nightwing Vol. 1: Leaping into the Light', tituloOriginal: 'Nightwing Vol. 1: Leaping into the Light', tituloIngles: '', creador: 'Tom Taylor, Bruno Redondo', anio: '2021', poster: 'https://covers.openlibrary.org/b/id/12649586-M.jpg', motivo: '🔵 DC Comics • Top Ventas' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Moon Knight Vol. 1: Midnight Mission', tituloOriginal: 'Moon Knight Vol. 1: Midnight Mission', tituloIngles: '', creador: 'Jed MacKay, Alessandro Cappuccio', anio: '2022', poster: 'https://covers.openlibrary.org/b/id/12780721-M.jpg', motivo: '🔴 Marvel Comics • Novedad' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Dark Nights: Death Metal', tituloOriginal: 'Dark Nights: Death Metal', tituloIngles: '', creador: 'Scott Snyder, Greg Capullo', anio: '2022', poster: 'https://covers.openlibrary.org/b/id/13167440-M.jpg', motivo: '🔵 DC Comics • Evento' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Immortal Hulk Vol. 1', tituloOriginal: 'Immortal Hulk Vol. 1', tituloIngles: '', creador: 'Al Ewing, Joe Bennett', anio: '2019', poster: 'https://covers.openlibrary.org/b/id/8813267-M.jpg', motivo: '🔴 Marvel Comics • Aclamado' }
     ];
 
     const vistosComics = new Set();
     const mapearDocComic = (b, editorial, defCr) => {
       const cId = b?.cover_i || b?.cover_id;
       if (!b || !b.title || !cId) return null;
+      const tit = (b.title || '').trim();
+      const tLow = tit.toLowerCase();
+      // Excluir libros que no correspondan a cómics reales o literatura clásica
+      if (tLow.includes('coloring book') || tLow.includes('calendar') || tLow.includes('stationery') || tLow.includes('notebook') || tLow.includes('sensibility') || tLow.includes('treasure island') || tLow.includes('land of oz') || tLow.includes('war of the worlds') || tLow.includes('screwtape') || tLow.includes('novelization')) return null;
+
+      const anioPub = Number(b.first_publish_year);
+      // REGLA: Exclusivamente cómics recientes (>= 2018) o lanzamientos muy recientes sin año
+      if (anioPub && anioPub < 2018) return null;
+
+      let creador = '';
+      if (b.author_name?.length) {
+        creador = b.author_name.slice(0, 2).join(', ');
+      } else if (b.authors?.[0]?.name) {
+        creador = b.authors[0].name;
+      } else {
+        creador = defCr;
+      }
+      if (!creador || creador.length > 50) creador = defCr;
+
       return {
         categoria: 'Lecturas',
         subcategoria: 'Cómics',
-        titulo: b.title,
-        tituloOriginal: b.title,
+        titulo: tit,
+        tituloOriginal: tit,
         tituloIngles: '',
-        creador: b.author_name?.length ? b.author_name.slice(0, 2).join(', ') : (b.authors?.[0]?.name || defCr),
-        anio: b.first_publish_year ? String(b.first_publish_year) : '',
+        creador: creador,
+        anio: b.first_publish_year ? String(b.first_publish_year) : '2025',
         poster: `https://covers.openlibrary.org/b/id/${cId}-M.jpg`,
         motivo: editorial === 'Marvel' ? '🔴 Marvel Comics' : '🔵 DC Comics'
       };
@@ -1269,6 +1292,15 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         datos.comics.push(comicsDc[i]);
       }
     }
+
+    // Complementar con cómics recientes y tendencias emblemáticas para asegurar variedad y alta calidad
+    COMICS_FALLBACK.forEach(fb => {
+      const k = fb.titulo.toLowerCase();
+      if (!vistosComics.has(k) && datos.comics.length < 24) {
+        vistosComics.add(k);
+        datos.comics.push(fb);
+      }
+    });
 
     if (datos.comics.length === 0) {
       datos.comics = [...COMICS_FALLBACK];
@@ -3607,16 +3639,18 @@ function mostrarResultadosBuscadorWl(items) {
 }
 // --- VISTA DISCOVER MEJORADA Y RÁPIDA ---
 function obtenerResumenGustosUsuario() {
-  const gustos = { peliculas: [], series: [], musica: [], libros: [], juegos: [] };
+  const gustos = { peliculas: [], series: [], musica: [], libros: [], comics: [], juegos: [] };
   const regs = Array.isArray(estado.registros) ? estado.registros : [];
   const buenos = regs.filter(r => (Number(r.calificacion) >= 4) || (Number(r.mi_calificacion) >= 4));
   buenos.forEach(r => {
     const c = r.categoria || '';
+    const sub = (r.subcategoria || '').toLowerCase();
     const cr = (r.creador && r.creador !== 'Desconocido') ? r.creador.trim() : '';
     const tit = (r.titulo || r.tituloOriginal || '').trim();
     if (c === 'Peliculas' && cr) gustos.peliculas.push({ cr, tit });
     else if (c === 'Series' && (cr || tit)) gustos.series.push({ cr, tit });
     else if (c === 'Musica' && cr) gustos.musica.push({ cr, tit });
+    else if (c === 'Lecturas' && (sub.includes('comic') || sub.includes('cómic')) && (cr || tit)) gustos.comics.push({ cr, tit });
     else if (c === 'Lecturas' && cr) gustos.libros.push({ cr, tit });
     else if (c === 'Juegos' && (cr || tit)) gustos.juegos.push({ cr, tit });
   });
@@ -3667,24 +3701,38 @@ function estaEnWatchlist(it) {
 }
 
 const COMICS_FALLBACK_DEFAULT = [
-  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Spider-Man: Blue', tituloOriginal: 'Spider-Man: Blue', tituloIngles: '', creador: 'Jeph Loeb, Tim Sale', anio: '2002', poster: 'https://covers.openlibrary.org/b/id/8459715-M.jpg', motivo: '🔴 Marvel Comics' },
-  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Batman: The Long Halloween', tituloOriginal: 'Batman: The Long Halloween', tituloIngles: '', creador: 'Jeph Loeb, Tim Sale', anio: '1998', poster: 'https://covers.openlibrary.org/b/id/8235111-M.jpg', motivo: '🔵 DC Comics' },
-  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Infinity Gauntlet', tituloOriginal: 'Infinity Gauntlet', tituloIngles: '', creador: 'Jim Starlin, George Pérez', anio: '1991', poster: 'https://covers.openlibrary.org/b/id/10413147-M.jpg', motivo: '🔴 Marvel Comics' },
-  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Watchmen', tituloOriginal: 'Watchmen', tituloIngles: '', creador: 'Alan Moore, Dave Gibbons', anio: '1987', poster: 'https://covers.openlibrary.org/b/id/1284386-M.jpg', motivo: '🔵 DC Comics' },
-  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Marvel Zombies', tituloOriginal: 'Marvel Zombies', tituloIngles: '', creador: 'Robert Kirkman, Sean Phillips', anio: '2007', poster: 'https://covers.openlibrary.org/b/id/14494738-M.jpg', motivo: '🔴 Marvel Comics' },
-  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Batman: Year One', tituloOriginal: 'Batman: Year One', tituloIngles: '', creador: 'Frank Miller, David Mazzucchelli', anio: '1988', poster: 'https://covers.openlibrary.org/b/id/8228691-M.jpg', motivo: '🔵 DC Comics' },
-  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Civil War', tituloOriginal: 'Civil War', tituloIngles: '', creador: 'Mark Millar, Steve McNiven', anio: '2007', poster: 'https://covers.openlibrary.org/b/id/8460051-M.jpg', motivo: '🔴 Marvel Comics' },
-  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Kingdom Come', tituloOriginal: 'Kingdom Come', tituloIngles: '', creador: 'Mark Waid, Alex Ross', anio: '1996', poster: 'https://covers.openlibrary.org/b/id/8234856-M.jpg', motivo: '🔵 DC Comics' }
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Absolute Batman Vol. 1', tituloOriginal: 'Absolute Batman Vol. 1', tituloIngles: '', creador: 'Scott Snyder, Nick Dragotta', anio: '2025', poster: 'https://covers.openlibrary.org/b/id/15113626-M.jpg', motivo: '🔵 DC Comics • Novedad' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Thunderbolts', tituloOriginal: 'Thunderbolts', tituloIngles: '', creador: 'Collin Kelly, Jackson Lanzing', anio: '2024', poster: 'https://covers.openlibrary.org/b/id/15203284-M.jpg', motivo: '🔴 Marvel Comics • Tendencia' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Absolute Superman, Vol. 1', tituloOriginal: 'Absolute Superman, Vol. 1', tituloIngles: '', creador: 'Jason Aaron, Rafa Sandoval', anio: '2025', poster: 'https://covers.openlibrary.org/b/id/15138771-M.jpg', motivo: '🔵 DC Comics • Novedad' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Daredevil by Chip Zdarsky Omnibus, Vol. 1', tituloOriginal: 'Daredevil by Chip Zdarsky Omnibus, Vol. 1', tituloIngles: '', creador: 'Chip Zdarsky, Marco Checchetto', anio: '2024', poster: 'https://covers.openlibrary.org/b/id/15249017-M.jpg', motivo: '🔴 Marvel Comics • Aclamado' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Absolute Wonder Woman, Vol. 1', tituloOriginal: 'Absolute Wonder Woman, Vol. 1', tituloIngles: '', creador: 'Kelly Thompson, Hayden Sherman', anio: '2025', poster: 'https://covers.openlibrary.org/b/id/15108588-M.jpg', motivo: '🔵 DC Comics • Novedad' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'King in Black', tituloOriginal: 'King in Black', tituloIngles: '', creador: 'Donny Cates, Ryan Stegman', anio: '2021', poster: 'https://covers.openlibrary.org/b/id/12381210-M.jpg', motivo: '🔴 Marvel Comics • Tendencia' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Supergirl: Woman of Tomorrow', tituloOriginal: 'Supergirl: Woman of Tomorrow', tituloIngles: '', creador: 'Tom King, Bilquis Evely', anio: '2022', poster: 'https://covers.openlibrary.org/b/id/13195853-M.jpg', motivo: '🔵 DC Comics • Aclamado' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'House of X / Powers of X', tituloOriginal: 'House of X / Powers of X', tituloIngles: '', creador: 'Jonathan Hickman, Pepe Larraz', anio: '2020', poster: 'https://covers.openlibrary.org/b/id/9409849-M.jpg', motivo: '🔴 Marvel Comics • Hito' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Nightwing Vol. 1: Leaping into the Light', tituloOriginal: 'Nightwing Vol. 1: Leaping into the Light', tituloIngles: '', creador: 'Tom Taylor, Bruno Redondo', anio: '2021', poster: 'https://covers.openlibrary.org/b/id/12649586-M.jpg', motivo: '🔵 DC Comics • Top Ventas' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Moon Knight Vol. 1: Midnight Mission', tituloOriginal: 'Moon Knight Vol. 1: Midnight Mission', tituloIngles: '', creador: 'Jed MacKay, Alessandro Cappuccio', anio: '2022', poster: 'https://covers.openlibrary.org/b/id/12780721-M.jpg', motivo: '🔴 Marvel Comics • Novedad' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Dark Nights: Death Metal', tituloOriginal: 'Dark Nights: Death Metal', tituloIngles: '', creador: 'Scott Snyder, Greg Capullo', anio: '2022', poster: 'https://covers.openlibrary.org/b/id/13167440-M.jpg', motivo: '🔵 DC Comics • Evento' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Immortal Hulk Vol. 1', tituloOriginal: 'Immortal Hulk Vol. 1', tituloIngles: '', creador: 'Al Ewing, Joe Bennett', anio: '2019', poster: 'https://covers.openlibrary.org/b/id/8813267-M.jpg', motivo: '🔴 Marvel Comics • Aclamado' }
 ];
 
 function precargarDiscoverEnSegundoPlano(seed, resetearLimites = false) {
   if (!estado.discoverData) {
     try {
-      const c = localStorage.getItem('mediary_cache_disc_v2') || localStorage.getItem('mediary_cache_disc_v1');
+      const c = localStorage.getItem('mediary_cache_disc_v3') || localStorage.getItem('mediary_cache_disc_v2');
       if (c) {
         estado.discoverData = JSON.parse(c);
-        if (!estado.discoverData.comics || !estado.discoverData.comics.length) {
-          estado.discoverData.comics = [...COMICS_FALLBACK_DEFAULT];
+        if (estado.discoverData?.comics) {
+          estado.discoverData.comics = estado.discoverData.comics.filter(it => {
+            if (!it || !it.titulo || !it.poster) return false;
+            const y = parseInt(it.anio, 10);
+            if (y && y < 2018) return false;
+            const t = (it.titulo || '').toLowerCase();
+            if (t.includes('sensibility') || t.includes('treasure island') || t.includes('land of oz') || t.includes('war of the worlds') || t.includes('screwtape') || t.includes('coloring book')) return false;
+            return true;
+          });
+        }
+        if (!estado.discoverData?.comics || !estado.discoverData.comics.length) {
+          if (estado.discoverData) estado.discoverData.comics = [...COMICS_FALLBACK_DEFAULT];
         }
         if (estado.categoria === 'discover') renderizarDiscoverVista();
       }
@@ -3693,11 +3741,21 @@ function precargarDiscoverEnSegundoPlano(seed, resetearLimites = false) {
   const gustos = obtenerResumenGustosUsuario();
   google.script.run.withSuccessHandler(d => {
     if (!d) return;
+    if (d.comics) {
+      d.comics = d.comics.filter(it => {
+        if (!it || !it.titulo || !it.poster) return false;
+        const y = parseInt(it.anio, 10);
+        if (y && y < 2018) return false;
+        const t = (it.titulo || '').toLowerCase();
+        if (t.includes('sensibility') || t.includes('treasure island') || t.includes('land of oz') || t.includes('war of the worlds') || t.includes('screwtape') || t.includes('coloring book')) return false;
+        return true;
+      });
+    }
     if (!d.comics || !d.comics.length) {
       d.comics = [...COMICS_FALLBACK_DEFAULT];
     }
     estado.discoverData = d;
-    try { localStorage.setItem('mediary_cache_disc_v2', JSON.stringify(d)); } catch(e) {}
+    try { localStorage.setItem('mediary_cache_disc_v3', JSON.stringify(d)); } catch(e) {}
     if (resetearLimites) estado.discoverLimites = {};
     const stEl = document.getElementById('discover-status-txt');
     if (stEl) stEl.textContent = `Actualizado ${d.timestamp || 'ahora'}`;
@@ -3764,8 +3822,18 @@ function renderizarDiscoverVista() {
     if (sec.key === 'musica' && !items.length && (estado.discoverData.discos || estado.discoverData.artistas)) {
       items = [...(estado.discoverData.discos || []), ...(estado.discoverData.artistas || [])];
     }
-    if (sec.key === 'comics' && !items.length) {
-      items = [...COMICS_FALLBACK_DEFAULT];
+    if (sec.key === 'comics') {
+      items = (items || []).filter(it => {
+        if (!it || !it.titulo || !it.poster) return false;
+        const anio = parseInt(it.anio, 10);
+        if (anio && anio < 2018) return false;
+        const t = (it.titulo || '').toLowerCase();
+        if (t.includes('sensibility') || t.includes('treasure island') || t.includes('land of oz') || t.includes('war of the worlds') || t.includes('screwtape') || t.includes('coloring book')) return false;
+        return true;
+      });
+      if (!items.length) {
+        items = [...COMICS_FALLBACK_DEFAULT];
+      }
     }
     if (!items.length) return;
     const maxDisponible = Math.min(items.length, 24);
