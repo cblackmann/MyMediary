@@ -735,13 +735,195 @@ await sbFetch_('watchlist', 'POST', { id: uuid_(), user_email: email, categoria:
 return { exito: true }; } catch (e) { return { exito: false, error: e.toString() }; }
 }, async eliminarDeWatchlist(id, userEmail) { try { const email = normEm_(userEmail); const fEm = email ? `&user_email=eq.${encodeURIComponent(email)}` : ''; await sbFetch_(`watchlist?id=eq.${encodeURIComponent(String(id))}${fEm}`, 'DELETE'); return { exito: true };
 } catch (e) { return { exito: false, error: e.toString() }; }
-}, async sincronizarYRepararRegistros(userEmail) { try { const email = normEm_(userEmail); if (!email) return { reparados: 0 }; const data = await sbFetch_(`registros?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET') || []; let reparados = 0; for (const r of data) { const patch = {};
-const com = String(r.comentario || '').trim(); if (com !== '' && !/[.!?:;]$/.test(com)) patch.comentario = `${com}.`; if (r.categoria === 'Musica' && (String(r.subcategoria).includes('Artista') || String(r.subcategoria).includes('Grupos'))) {
-const fI = fmtFecha_(r.fecha_inicio), fF = fmtFecha_(r.fecha_fin); if (fI === 'Sin fecha' && fF !== 'Sin fecha') { patch.fecha_inicio = fF; patch.fecha_fin = 'Sin fecha'; }
-}
-if (Object.keys(patch).length > 0) { await sbFetch_(`registros?id=eq.${encodeURIComponent(r.id)}&user_email=eq.${encodeURIComponent(email)}`, 'PATCH', patch); reparados++; }
-}
-return { reparados }; } catch (e) { return { reparados: 0 }; }
+}, async sincronizarYRepararRegistros(userEmail) {
+  try {
+    const email = normEm_(userEmail);
+    if (!email) return { reparados: 0, detalles: [] };
+    const [data, wlData] = await Promise.all([
+      sbFetch_(`registros?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET').catch(() => []),
+      sbFetch_(`watchlist?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET').catch(() => [])
+    ]);
+    const registros = Array.isArray(data) ? data : [];
+    const watchlists = Array.isArray(wlData) ? wlData : [];
+    let reparados = 0;
+    const detallesReparados = [];
+
+    // Helper para detectar creadores faltantes, genéricos o erróneos
+    const esCreadorInvalido_ = (cr) => {
+      if (!cr) return true;
+      const s = String(cr).trim().toLowerCase();
+      return ['desconocido', 'sin creador', 'n/d', 'nd', 'null', 'undefined', 'cine', 'documental', 'serie tv', 'docuserie', 'videojuego', 'artista', 'autor', 'manga', 'director desconocido', 'desconocida'].includes(s);
+    };
+
+    // Helper para normalizar formato fecha ISO YYYY-MM-DD -> DD/MM/YYYY
+    const normalizarFechaFormato_ = (f) => {
+      if (!f || f === 'Sin fecha' || f === 'null' || f === 'undefined') return 'Sin fecha';
+      const mIso = /^(\d{4})-(\d{1,2})-(\d{1,2})/.exec(String(f).trim());
+      if (mIso) {
+        const dia = String(mIso[3]).padStart(2, '0');
+        const mes = String(mIso[2]).padStart(2, '0');
+        const anio = mIso[1];
+        return `${dia}/${mes}/${anio}`;
+      }
+      return String(f).trim();
+    };
+
+    // Helper para resolver creador o director real consultando las APIs correspondientes
+    const resolverCreadorFaltante_ = async (cat, sub, tit) => {
+      if (!tit) return null;
+      const q = encodeURIComponent(String(tit).replace(/\s*\[S\d+\]$/, '').split(':')[0].trim());
+      try {
+        if (cat === 'Peliculas') {
+          const m = (await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}&language=es-ES`))?.results?.[0];
+          if (m) {
+            const credits = await getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`).catch(() => null);
+            const dirs = (credits?.crew || []).filter(x => x.job === 'Director').map(x => x.name);
+            const cr = dirs.length ? dirs.slice(0, 2).join(', ') : null;
+            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null;
+            const anio = m.release_date ? m.release_date.substring(0, 4) : null;
+            return { creador: cr, poster, anio };
+          }
+        } else if (cat === 'Series') {
+          const s = (await getJson_(`https://api.themoviedb.org/3/search/tv?api_key=${TMDB_K}&query=${q}&language=es-ES`))?.results?.[0];
+          if (s) {
+            const det = await getJson_(`https://api.themoviedb.org/3/tv/${s.id}?api_key=${TMDB_K}`).catch(() => null);
+            const crs = (det?.created_by || []).map(x => x.name);
+            const net = (det?.networks || []).map(x => x.name).join(', ');
+            const cr = crs.length ? crs.slice(0, 2).join(', ') : (net || null);
+            const poster = s.poster_path ? `https://image.tmdb.org/t/p/w500${s.poster_path}` : null;
+            const anio = s.first_air_date ? s.first_air_date.substring(0, 4) : null;
+            return { creador: cr, poster, anio };
+          }
+        } else if (cat === 'Juegos') {
+          const g = (await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`))?.results?.[0];
+          if (g) {
+            const det = await getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`).catch(() => null);
+            const devs = (det?.developers || []).map(x => x.name);
+            const pubs = (det?.publishers || []).map(x => x.name);
+            const cr = devs.length ? devs.slice(0, 2).join(', ') : (pubs.slice(0, 2).join(', ') || null);
+            const poster = g.background_image || null;
+            const anio = g.released ? g.released.substring(0, 4) : null;
+            return { creador: cr, poster, anio };
+          }
+        } else if (cat === 'Lecturas') {
+          const ol = await getJson_(`https://openlibrary.org/search.json?q=${q}&limit=1`).catch(() => null);
+          const doc = ol?.docs?.[0];
+          if (doc) {
+            const cr = doc.author_name?.length ? doc.author_name.slice(0, 2).join(', ') : null;
+            const poster = doc.cover_i ? `https://covers.openlibrary.org/b/id/${doc.cover_i}-M.jpg` : null;
+            const anio = doc.first_publish_year ? String(doc.first_publish_year) : null;
+            return { creador: cr, poster, anio };
+          }
+        } else if (cat === 'Musica') {
+          const it = (await getJson_(`https://itunes.apple.com/search?term=${q}&entity=album&limit=1`))?.results?.[0];
+          if (it?.artistName) {
+            return {
+              creador: it.artistName,
+              poster: (it.artworkUrl100 || '').replace('100x100bb', '600x600bb'),
+              anio: it.releaseDate ? it.releaseDate.substring(0, 4) : null
+            };
+          }
+        }
+      } catch (err) {}
+      return null;
+    };
+
+    // 1. AUDITAR Y REPARAR TABLA DE REGISTROS
+    for (const r of registros) {
+      const patch = {};
+
+      // A. Inconsistencias de formato de fechas (ISO YYYY-MM-DD -> DD/MM/YYYY)
+      const fInorm = normalizarFechaFormato_(r.fecha_inicio);
+      const fFnorm = normalizarFechaFormato_(r.fecha_fin);
+      if (fInorm !== (r.fecha_inicio || 'Sin fecha')) patch.fecha_inicio = fInorm;
+      if (fFnorm !== (r.fecha_fin || 'Sin fecha')) patch.fecha_fin = fFnorm;
+
+      // B. Subcategorías que solo llevan 1 fecha (Películas, Documentales, Discos, Artistas/Grupos)
+      const subLow = String(r.subcategoria || '').toLowerCase();
+      const esFechaUnica = (r.categoria === 'Peliculas' && !subLow.includes('serie')) ||
+                           (r.categoria === 'Musica') ||
+                           subLow === 'película' || subLow === 'películas' || subLow === 'documental' || subLow === 'documentales' || subLow === 'discos' || subLow === 'artistas/grupos';
+      if (esFechaUnica) {
+        if (fInorm === 'Sin fecha' && fFnorm !== 'Sin fecha') {
+          patch.fecha_inicio = fFnorm;
+          patch.fecha_fin = 'Sin fecha';
+        } else if (fFnorm !== 'Sin fecha') {
+          patch.fecha_fin = 'Sin fecha';
+        }
+      }
+
+      // C. Normalizar nombres antiguos o singulares de subcategoría
+      if (subLow === 'pelicula') patch.subcategoria = 'Películas';
+      else if (subLow === 'documental') patch.subcategoria = 'Documentales';
+      else if (subLow === 'serie') patch.subcategoria = 'Series Completas';
+      else if (subLow === 'docuserie') patch.subcategoria = 'Series Documentales';
+      else if (subLow === 'videojuego') patch.subcategoria = 'Videojuegos';
+      else if (subLow === 'disco') patch.subcategoria = 'Discos';
+      else if (subLow === 'artista' || subLow === 'artistas') patch.subcategoria = 'Artistas/Grupos';
+      else if (subLow === 'comic') patch.subcategoria = 'Cómics';
+      else if (subLow === 'manga') patch.subcategoria = 'Mangas';
+      else if (subLow === 'libro') patch.subcategoria = 'Libros';
+
+      // D. Comentario con puntuación adecuada
+      const com = String(r.comentario || '').trim();
+      if (com !== '' && !/[.!?:;]$/.test(com)) {
+        patch.comentario = `${com}.`;
+      }
+
+      // E. Creador / Director ausente, erróneo o genérico
+      if (esCreadorInvalido_(r.creador)) {
+        const info = await resolverCreadorFaltante_(r.categoria, r.subcategoria, r.titulo);
+        if (info && info.creador) {
+          patch.creador = info.creador;
+          if (!r.poster && info.poster) patch.poster = info.poster;
+          if (!r.anio && info.anio) patch.anio = info.anio;
+        }
+      }
+
+      // F. Póster faltante si sigue vacío
+      if (!r.poster && !patch.poster) {
+        const pGen = await SERVER_API.buscarPortadaGenerica(r.titulo, patch.creador || r.creador, r.categoria);
+        if (pGen) patch.poster = pGen;
+      }
+
+      // Aplicar actualización si hubo correcciones
+      if (Object.keys(patch).length > 0) {
+        await sbFetch_(`registros?id=eq.${encodeURIComponent(r.id)}&user_email=eq.${encodeURIComponent(email)}`, 'PATCH', patch);
+        reparados++;
+        detallesReparados.push(r.titulo);
+      }
+    }
+
+    // 2. AUDITAR Y REPARAR TABLA WATCHLIST
+    for (const w of watchlists) {
+      const wPatch = {};
+      const subLow = String(w.subcategoria || '').toLowerCase();
+      if (subLow === 'pelicula') wPatch.subcategoria = 'Películas';
+      else if (subLow === 'comic') wPatch.subcategoria = 'Cómics';
+      else if (subLow === 'manga') wPatch.subcategoria = 'Mangas';
+      else if (subLow === 'libro') wPatch.subcategoria = 'Libros';
+
+      if (esCreadorInvalido_(w.creador)) {
+        const info = await resolverCreadorFaltante_(w.categoria, w.subcategoria, w.titulo);
+        if (info && info.creador) {
+          wPatch.creador = info.creador;
+          if (!w.poster && info.poster) wPatch.poster = info.poster;
+        }
+      }
+      if (!w.poster && !wPatch.poster) {
+        const pGen = await SERVER_API.buscarPortadaGenerica(w.titulo, wPatch.creador || w.creador, w.categoria);
+        if (pGen) wPatch.poster = pGen;
+      }
+      if (Object.keys(wPatch).length > 0) {
+        await sbFetch_(`watchlist?id=eq.${encodeURIComponent(w.id)}&user_email=eq.${encodeURIComponent(email)}`, 'PATCH', wPatch);
+        reparados++;
+      }
+    }
+
+    return { reparados, detalles: detallesReparados };
+  } catch (e) {
+    return { reparados: 0, error: e.toString() };
+  }
 }, async obtenerDescubrimientos(seedPage, gustosUsuario = null) {
   const datos = {
     peliculas: [],
@@ -781,8 +963,8 @@ return { reparados }; } catch (e) { return { reparados: 0 }; }
     `https://api.deezer.com/chart/0/artists?index=${offOl}&limit=14`,
     `https://api.rawg.io/api/games?key=${RAWG_K}&dates=2024-01-01,2026-12-31&ordering=-added&page_size=24&page=${p1}`,
     `https://openlibrary.org/search.json?q=bestseller+fiction&sort=new&limit=24&offset=${offOl}`,
-    `https://openlibrary.org/search.json?q=marvel+comics+spider-man+avengers+x-men&limit=16&offset=${offOl}`,
-    `https://openlibrary.org/search.json?q=dc+comics+batman+superman+justice+league&limit=16&offset=${offOl}`,
+    `https://openlibrary.org/search.json?q=marvel+comics&sort=editions&limit=24&offset=${offOl}`,
+    `https://openlibrary.org/search.json?q=dc+comics&sort=editions&limit=24&offset=${offOl}`,
     `https://kitsu.io/api/edge/manga?sort=-user_count&page[limit]=20&page[offset]=${offK1}`
   ];
 
@@ -1017,29 +1199,37 @@ return { reparados }; } catch (e) { return { reparados: 0 }; }
     olBooks.forEach(b => agregarLibro(b, '📖 Novedad'));
 
     // --- 8. CÓMICS (Exclusivamente MARVEL y DC) ---
+    const COMICS_FALLBACK = [
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Spider-Man: Blue', tituloOriginal: 'Spider-Man: Blue', tituloIngles: '', creador: 'Jeph Loeb, Tim Sale', anio: '2002', poster: 'https://covers.openlibrary.org/b/id/8459715-M.jpg', motivo: '🔴 Marvel Comics' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Batman: The Long Halloween', tituloOriginal: 'Batman: The Long Halloween', tituloIngles: '', creador: 'Jeph Loeb, Tim Sale', anio: '1998', poster: 'https://covers.openlibrary.org/b/id/8235111-M.jpg', motivo: '🔵 DC Comics' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Infinity Gauntlet', tituloOriginal: 'Infinity Gauntlet', tituloIngles: '', creador: 'Jim Starlin, George Pérez', anio: '1991', poster: 'https://covers.openlibrary.org/b/id/10413147-M.jpg', motivo: '🔴 Marvel Comics' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Watchmen', tituloOriginal: 'Watchmen', tituloIngles: '', creador: 'Alan Moore, Dave Gibbons', anio: '1987', poster: 'https://covers.openlibrary.org/b/id/1284386-M.jpg', motivo: '🔵 DC Comics' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Marvel Zombies', tituloOriginal: 'Marvel Zombies', tituloIngles: '', creador: 'Robert Kirkman, Sean Phillips', anio: '2007', poster: 'https://covers.openlibrary.org/b/id/14494738-M.jpg', motivo: '🔴 Marvel Comics' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Batman: Year One', tituloOriginal: 'Batman: Year One', tituloIngles: '', creador: 'Frank Miller, David Mazzucchelli', anio: '1988', poster: 'https://covers.openlibrary.org/b/id/8228691-M.jpg', motivo: '🔵 DC Comics' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Civil War', tituloOriginal: 'Civil War', tituloIngles: '', creador: 'Mark Millar, Steve McNiven', anio: '2007', poster: 'https://covers.openlibrary.org/b/id/8460051-M.jpg', motivo: '🔴 Marvel Comics' },
+      { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Kingdom Come', tituloOriginal: 'Kingdom Come', tituloIngles: '', creador: 'Mark Waid, Alex Ross', anio: '1996', poster: 'https://covers.openlibrary.org/b/id/8234856-M.jpg', motivo: '🔵 DC Comics' }
+    ];
+
     const vistosComics = new Set();
-    const comicsMarvel = (olMarvel || []).filter(b => b.cover_i).map(b => ({
-      categoria: 'Lecturas',
-      subcategoria: 'Cómics',
-      titulo: b.title,
-      tituloOriginal: b.title,
-      tituloIngles: '',
-      creador: b.author_name?.length ? b.author_name.slice(0, 2).join(', ') : 'Marvel Comics',
-      anio: b.first_publish_year ? String(b.first_publish_year) : '',
-      poster: `https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg`,
-      motivo: '🔴 Marvel Comics'
-    }));
-    const comicsDc = (olDc || []).filter(b => b.cover_i).map(b => ({
-      categoria: 'Lecturas',
-      subcategoria: 'Cómics',
-      titulo: b.title,
-      tituloOriginal: b.title,
-      tituloIngles: '',
-      creador: b.author_name?.length ? b.author_name.slice(0, 2).join(', ') : 'DC Comics',
-      anio: b.first_publish_year ? String(b.first_publish_year) : '',
-      poster: `https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg`,
-      motivo: '🔵 DC Comics'
-    }));
+    const mapearDocComic = (b, editorial, defCr) => {
+      const cId = b?.cover_i || b?.cover_id;
+      if (!b || !b.title || !cId) return null;
+      return {
+        categoria: 'Lecturas',
+        subcategoria: 'Cómics',
+        titulo: b.title,
+        tituloOriginal: b.title,
+        tituloIngles: '',
+        creador: b.author_name?.length ? b.author_name.slice(0, 2).join(', ') : (b.authors?.[0]?.name || defCr),
+        anio: b.first_publish_year ? String(b.first_publish_year) : '',
+        poster: `https://covers.openlibrary.org/b/id/${cId}-M.jpg`,
+        motivo: editorial === 'Marvel' ? '🔴 Marvel Comics' : '🔵 DC Comics'
+      };
+    };
+
+    const comicsMarvel = (olMarvel || []).map(b => mapearDocComic(b, 'Marvel', 'Marvel Comics')).filter(Boolean);
+    const comicsDc = (olDc || []).map(b => mapearDocComic(b, 'DC', 'DC Comics')).filter(Boolean);
+
     // Intercalar Marvel y DC
     const maxComics = Math.max(comicsMarvel.length, comicsDc.length);
     for (let i = 0; i < maxComics; i++) {
@@ -1051,6 +1241,10 @@ return { reparados }; } catch (e) { return { reparados: 0 }; }
         vistosComics.add(comicsDc[i].titulo.toLowerCase());
         datos.comics.push(comicsDc[i]);
       }
+    }
+
+    if (datos.comics.length === 0) {
+      datos.comics = [...COMICS_FALLBACK];
     }
 
     // --- 9. MANGAS ---
@@ -2883,12 +3077,42 @@ const irInicio = (pushNav = true) => {
   actualizarBarraNavegacionMovil('m-btn-inicio');
   cambiarCat('inicio', null, false);
 }; function actualizarBarraNavegacionMovil(btnId) { document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active')); const el = document.getElementById(btnId); if (el) el.classList.add('active'); }
-function refrescarDatosApp() { const btn = document.getElementById('btn-refresh'); if (btn) btn.classList.add('spinning'); google.script.run .withSuccessHandler(res => { cargarWatchlist(); google.script.run .withSuccessHandler(d => { if (btn) setTimeout(() => btn.classList.remove('spinning'), 500);
-estado.registros = (d || []).map(r => ({ ...r, fechaInicio: sanitizarFechaFrontend(r.fechaInicio), fechaFin: sanitizarFechaFrontend(r.fechaFin) })); if (estado.categoria === 'inicio') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista();
-else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); } else { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
-const txtMensaje = (res?.reparados > 0)
-? `¡Sincronización completa! Se actualizaron ${res.reparados} registro(s).`
-: (userPrefs.lang === 'en' ? 'Mediary is up to date!' : '¡Mediary está al día con Supabase!'); mostrarToastPersonalizado(txtMensaje); }) .obtenerRegistros(estado.userEmail); }) .withFailureHandler(() => btn && btn.classList.remove('spinning')) .sincronizarYRepararRegistros(estado.userEmail); }
+function refrescarDatosApp() {
+  const btn = document.getElementById('btn-refresh');
+  if (btn) btn.classList.add('spinning');
+  google.script.run
+    .withSuccessHandler(res => {
+      cargarWatchlist();
+      google.script.run
+        .withSuccessHandler(d => {
+          if (btn) setTimeout(() => btn.classList.remove('spinning'), 500);
+          estado.registros = (d || []).map(r => ({
+            ...r,
+            fechaInicio: sanitizarFechaFrontend(r.fechaInicio),
+            fechaFin: sanitizarFechaFrontend(r.fechaFin)
+          }));
+          if (estado.categoria === 'inicio') renderizarStats();
+          else if (estado.categoria === 'discover') renderizarDiscoverVista();
+          else if (estado.categoria === 'perfil') {
+            renderizarFavoritosPerfil();
+            calcularYMostrarEstadisticasPerfil();
+          } else {
+            if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist();
+            else filtrarYMostrarHistorial();
+          }
+          let txtMensaje = '';
+          if (res?.reparados > 0) {
+            txtMensaje = `¡Sincronización y auditoría completa! Se repararon ${res.reparados} registro(s) con directores o formatos antiguos. 🛠️`;
+          } else {
+            txtMensaje = (userPrefs.lang === 'en' ? 'Mediary is up to date! All entries verified.' : '¡Mediary verificado y al día con Supabase! Todo en orden. ✨');
+          }
+          mostrarToastPersonalizado(txtMensaje);
+        })
+        .obtenerRegistros(estado.userEmail);
+    })
+    .withFailureHandler(() => btn && btn.classList.remove('spinning'))
+    .sincronizarYRepararRegistros(estado.userEmail);
+}
 function abrirFichaTecnica(id) { const reg = estado.registros.find(r => r.id === id) || estado.watchlist.find(w => w.id === id); if (!reg) return; document.getElementById('ficha-modal-title').textContent = reg.titulo;
 document.getElementById('ficha-modal-poster').src = reg.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'125\' height=\'180\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
 ['estreno','escritores','actores','sinopsis'].forEach(k => document.getElementById(`ficha-modal-${k}`).textContent = '...'); document.getElementById('ficha-modal-directores').textContent = reg.creador || '...'; document.getElementById('modal-ficha-tecnica').style.display = 'flex'; google.script.run
@@ -3275,12 +3499,26 @@ function estaEnWatchlist(it) {
   });
 }
 
+const COMICS_FALLBACK_DEFAULT = [
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Spider-Man: Blue', tituloOriginal: 'Spider-Man: Blue', tituloIngles: '', creador: 'Jeph Loeb, Tim Sale', anio: '2002', poster: 'https://covers.openlibrary.org/b/id/8459715-M.jpg', motivo: '🔴 Marvel Comics' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Batman: The Long Halloween', tituloOriginal: 'Batman: The Long Halloween', tituloIngles: '', creador: 'Jeph Loeb, Tim Sale', anio: '1998', poster: 'https://covers.openlibrary.org/b/id/8235111-M.jpg', motivo: '🔵 DC Comics' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Infinity Gauntlet', tituloOriginal: 'Infinity Gauntlet', tituloIngles: '', creador: 'Jim Starlin, George Pérez', anio: '1991', poster: 'https://covers.openlibrary.org/b/id/10413147-M.jpg', motivo: '🔴 Marvel Comics' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Watchmen', tituloOriginal: 'Watchmen', tituloIngles: '', creador: 'Alan Moore, Dave Gibbons', anio: '1987', poster: 'https://covers.openlibrary.org/b/id/1284386-M.jpg', motivo: '🔵 DC Comics' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Marvel Zombies', tituloOriginal: 'Marvel Zombies', tituloIngles: '', creador: 'Robert Kirkman, Sean Phillips', anio: '2007', poster: 'https://covers.openlibrary.org/b/id/14494738-M.jpg', motivo: '🔴 Marvel Comics' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Batman: Year One', tituloOriginal: 'Batman: Year One', tituloIngles: '', creador: 'Frank Miller, David Mazzucchelli', anio: '1988', poster: 'https://covers.openlibrary.org/b/id/8228691-M.jpg', motivo: '🔵 DC Comics' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Civil War', tituloOriginal: 'Civil War', tituloIngles: '', creador: 'Mark Millar, Steve McNiven', anio: '2007', poster: 'https://covers.openlibrary.org/b/id/8460051-M.jpg', motivo: '🔴 Marvel Comics' },
+  { categoria: 'Lecturas', subcategoria: 'Cómics', titulo: 'Kingdom Come', tituloOriginal: 'Kingdom Come', tituloIngles: '', creador: 'Mark Waid, Alex Ross', anio: '1996', poster: 'https://covers.openlibrary.org/b/id/8234856-M.jpg', motivo: '🔵 DC Comics' }
+];
+
 function precargarDiscoverEnSegundoPlano(seed, resetearLimites = false) {
   if (!estado.discoverData) {
     try {
-      const c = localStorage.getItem('mediary_cache_disc_v1') || localStorage.getItem('mymediary_cache_disc_v1');
+      const c = localStorage.getItem('mediary_cache_disc_v2') || localStorage.getItem('mediary_cache_disc_v1');
       if (c) {
         estado.discoverData = JSON.parse(c);
+        if (!estado.discoverData.comics || !estado.discoverData.comics.length) {
+          estado.discoverData.comics = [...COMICS_FALLBACK_DEFAULT];
+        }
         if (estado.categoria === 'discover') renderizarDiscoverVista();
       }
     } catch(e) {}
@@ -3288,8 +3526,11 @@ function precargarDiscoverEnSegundoPlano(seed, resetearLimites = false) {
   const gustos = obtenerResumenGustosUsuario();
   google.script.run.withSuccessHandler(d => {
     if (!d) return;
+    if (!d.comics || !d.comics.length) {
+      d.comics = [...COMICS_FALLBACK_DEFAULT];
+    }
     estado.discoverData = d;
-    try { localStorage.setItem('mediary_cache_disc_v1', JSON.stringify(d)); } catch(e) {}
+    try { localStorage.setItem('mediary_cache_disc_v2', JSON.stringify(d)); } catch(e) {}
     if (resetearLimites) estado.discoverLimites = {};
     const stEl = document.getElementById('discover-status-txt');
     if (stEl) stEl.textContent = `Actualizado ${d.timestamp || 'ahora'}`;
@@ -3343,6 +3584,9 @@ function renderizarDiscoverVista() {
     let items = estado.discoverData[sec.key] || [];
     if (sec.key === 'musica' && !items.length && (estado.discoverData.discos || estado.discoverData.artistas)) {
       items = [...(estado.discoverData.discos || []), ...(estado.discoverData.artistas || [])];
+    }
+    if (sec.key === 'comics' && !items.length) {
+      items = [...COMICS_FALLBACK_DEFAULT];
     }
     if (!items.length) return;
     const maxDisponible = Math.min(items.length, 24);
