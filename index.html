@@ -13,15 +13,39 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mediary">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 <style>
 :root{--font-family:'Plus Jakarta Sans',sans-serif;--font-scale:100%;--bg:#0f172a;--card:#1e293b;--card-hover:#334155;--accent:#38bdf8;--accent-hover:#0ea5e9;--text:#f8fafc;--muted:#94a3b8;--star-active:#f59e0b;--star-inactive:#475569;--border:#334155;--header-bg:#111827;--separator-bg:#0c1322;--danger:#ef4444;--danger-hover:#dc2626;--b-nav:70px;--tr:all .2s cubic-bezier(.4,0,.2,1)}
-[data-theme="oled"]{--bg:#000000;--card:#121212;--card-hover:#1e1e1e;--accent:#10b981;--accent-hover:#059669;--text:#fff;--muted:#888;--star-active:#fbbf24;--star-inactive:#333;--border:#242424;--header-bg:#0a0a0a;--separator-bg:#050505}[data-theme="dracula"]{--bg:#1e1f29;--card:#282a36;--card-hover:#383a59;--accent:#ff79c6;--accent-hover:#bd93f9;--text:#f8f8f2;--muted:#6272a4;--star-active:#f1fa8c;--star-inactive:#44475a;--border:#44475a;--header-bg:#191a21;--separator-bg:#14151b}
-[data-theme="espresso"]{--bg:#1c1917;--card:#292524;--card-hover:#44403c;--accent:#f59e0b;--accent-hover:#d97706;--text:#fafaf9;--muted:#a8a29e;--star-active:#fbbf24;--star-inactive:#57534e;--border:#44403c;--header-bg:#141210;--separator-bg:#0c0a09}html{font-size:var(--font-scale)}*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body, button, input, select, textarea{font-family:var(--font-family)}
+[data-theme="oled"]{--bg:#000000;--card:#121212;--card-hover:#1e1e1e;--accent:#10b981;--accent-hover:#059669;--text:#fff;--muted:#888;--star-active:#fbbf24;--star-inactive:#333;--border:#242424;--header-bg:#0a0a0a;--separator-bg:#050505}
+[data-theme="dracula"]{--bg:#1e1f29;--card:#282a36;--card-hover:#383a59;--accent:#ff79c6;--accent-hover:#bd93f9;--text:#f8f8f2;--muted:#6272a4;--star-active:#f1fa8c;--star-inactive:#44475a;--border:#44475a;--header-bg:#191a21;--separator-bg:#14151b}
+[data-theme="espresso"]{--bg:#1c1917;--card:#292524;--card-hover:#44403c;--accent:#f59e0b;--accent-hover:#d97706;--text:#fafaf9;--muted:#a8a29e;--star-active:#fbbf24;--star-inactive:#57534e;--border:#44403c;--header-bg:#141210;--separator-bg:#0c0a09}
+[data-theme="nordic-light"]{--bg:#f8fafc;--card:#ffffff;--card-hover:#f1f5f9;--accent:#0284c7;--accent-hover:#0369a1;--text:#0f172a;--muted:#64748b;--star-active:#f59e0b;--star-inactive:#cbd5e1;--border:#e2e8f0;--header-bg:#ffffff;--separator-bg:#f1f5f9;--danger:#dc2626;--danger-hover:#b91c1c}
+[data-theme="creme-latte"]{--bg:#fdfbf7;--card:#ffffff;--card-hover:#f7f3ea;--accent:#d97706;--accent-hover:#b45309;--text:#292524;--muted:#78716c;--star-active:#f59e0b;--star-inactive:#e7e5e4;--border:#e7e5e4;--header-bg:#fbf8f2;--separator-bg:#f4eee3;--danger:#dc2626;--danger-hover:#b91c1c}
+[data-theme="nordic-light"] .form-input, [data-theme="creme-latte"] .form-input, [data-theme="nordic-light"] .comment-box, [data-theme="creme-latte"] .comment-box, [data-theme="nordic-light"] .settings-select, [data-theme="creme-latte"] .settings-select{background:var(--card);color:var(--text);border-color:var(--border)}
+[data-theme="nordic-light"] .year-display-txt, [data-theme="creme-latte"] .year-display-txt{background:linear-gradient(135deg,var(--text) 0%,var(--accent) 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+[data-theme="nordic-light"] .year-dropdown-menu, [data-theme="creme-latte"] .year-dropdown-menu{background:var(--card);border-color:var(--border);box-shadow:0 12px 30px rgba(0,0,0,0.12)}
+[data-theme="nordic-light"] .modal-box, [data-theme="creme-latte"] .modal-box{background:var(--card);color:var(--text);border-color:var(--border);box-shadow:0 20px 45px rgba(0,0,0,0.15)}
+[data-theme="nordic-light"] .nav-sec-btn, [data-theme="creme-latte"] .nav-sec-btn{background:rgba(0,0,0,0.04);color:var(--muted)}
+[data-theme="nordic-light"] .nav-sec-btn:hover, [data-theme="creme-latte"] .nav-sec-btn:hover{background:rgba(0,0,0,0.08);color:var(--text)}
+[data-theme="nordic-light"] .nav-sec-btn.active, [data-theme="creme-latte"] .nav-sec-btn.active{background:var(--accent);color:#ffffff}
+[data-theme="nordic-light"] .btn-header-icon, [data-theme="creme-latte"] .btn-header-icon{background:rgba(0,0,0,0.04);border-color:var(--border);color:var(--text)}
+[data-theme="nordic-light"] .btn-header-icon:hover, [data-theme="creme-latte"] .btn-header-icon:hover{background:var(--accent);color:#ffffff}
+[data-theme="nordic-light"] .subtab-btn, [data-theme="creme-latte"] .subtab-btn{background:rgba(0,0,0,0.04);color:var(--muted);border-color:var(--border)}
+[data-theme="nordic-light"] .subtab-btn.active, [data-theme="creme-latte"] .subtab-btn.active{background:var(--accent);color:#ffffff;border-color:var(--accent)}
+[data-theme="nordic-light"] .search-input, [data-theme="creme-latte"] .search-input{background:var(--card);color:var(--text);border-color:var(--border)}
+[data-theme="nordic-light"] .search-results, [data-theme="creme-latte"] .search-results{background:var(--card);border-color:var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+[data-theme="nordic-light"] .result-item, [data-theme="creme-latte"] .result-item{border-color:var(--border)}
+[data-theme="nordic-light"] .history-table th, [data-theme="creme-latte"] .history-table th{background:var(--card);color:var(--muted);border-color:var(--border)}
+[data-theme="nordic-light"] .history-table td, [data-theme="creme-latte"] .history-table td{border-color:var(--border)}
+[data-theme="nordic-light"] .btn-mobile-center-plus, [data-theme="creme-latte"] .btn-mobile-center-plus{color:#ffffff}
+[data-theme="nordic-light"] .nav-cat-card, [data-theme="creme-latte"] .nav-cat-card{background:var(--card);color:var(--muted);border-color:var(--border)}
+[data-theme="nordic-light"] .nav-cat-card:hover, [data-theme="creme-latte"] .nav-cat-card:hover{color:var(--text);background:var(--card-hover)}
+[data-theme="nordic-light"] .nav-cat-card.active{background:rgba(2,132,199,0.12);color:var(--accent);border-color:var(--accent)}
+[data-theme="creme-latte"] .nav-cat-card.active{background:rgba(217,119,6,0.12);color:var(--accent);border-color:var(--accent)}html{font-size:var(--font-scale)}*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body, button, input, select, textarea{font-family:var(--font-family)}
 body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px}header{background:var(--header-bg);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.header-brand, .header-actions{display:flex;align-items:center;gap:16px}.header-actions{gap:8px}.logo{font-size:1.25rem;font-weight:700;color:var(--accent);cursor:pointer;transition:var(--tr)}
 .logo:hover{filter:drop-shadow(0 0 8px rgba(56,189,248,.6))}.year-display{font-family:'Cinzel',serif;font-size:1.55rem;font-weight:700;letter-spacing:0.1em;background:linear-gradient(135deg,#f8fafc 0%,var(--accent) 65%,var(--muted) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;user-select:none;line-height:1;filter:drop-shadow(0 0 10px rgba(56,189,248,0.3))}
 .btn-header-icon{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.35);color:var(--accent);border-radius:50%;width:38px;height:38px;padding:0;margin:0;display:inline-grid;place-items:center;cursor:pointer;font-size:1.12rem;line-height:1;transition:var(--tr);outline:none;overflow:hidden}.btn-header-icon .btn-icon-glyph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;line-height:1;text-align:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;margin:0;padding:0}.btn-header-icon:hover{background:var(--accent);color:#0f172a;transform:translateY(-1px);box-shadow:0 0 14px rgba(56,189,248,0.4)}.btn-refresh.spinning{animation:spinRefresh 0.8s linear infinite}
@@ -170,16 +194,16 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .date-prec-btn{background:transparent;border:none;color:var(--muted);padding:5px 9px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:4px;}
 .date-prec-btn:hover{color:var(--text);background:rgba(56,189,248,0.08);}
 .date-prec-btn.active{background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.3);color:var(--accent);font-weight:700;}
-</style> </head> <body> <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span>🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
+</style> </head> <body> <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
-</div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-discover" onclick="abrirVistaDiscover()"><span class="emoji-dyn">🧭</span><span data-i18n="nav_discover">Discover</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <h2 style="font-size:1.3rem;" data-i18n="home_title">Índice General</h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="home_subtitle">Resumen exhaustivo de tus hábitos y favoritos</p> <div style="margin:10px 0 14px; display:flex; gap:10px; flex-wrap:wrap;"> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:12px;"><span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span></button> </div>
+</div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-discover" onclick="abrirVistaDiscover()"><span class="emoji-dyn">🧭</span><span data-i18n="nav_discover">Discover</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <h2 style="font-size:1.3rem;" data-i18n="home_title">Índice General</h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="home_subtitle">Resumen exhaustivo de tus hábitos y favoritos</p> <div style="margin:10px 0 14px; display:flex; gap:10px; flex-wrap:wrap;"> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:12px;"><span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span></button> </div>
 <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <!-- VISTA DISCOVER --> <div id="vista-discover" style="display:none;"> <div class="discover-header-bar"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>🧭 Discover</span> <span class="discover-live-badge"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span>
-</h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;">Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.</p> </div> <div class="discover-controls"> <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano">⚡ Auto-actualizar: ON</button>
-<button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="recargarDiscoverManual()">🔄 Explorar nuevos</button> </div> </div> <div style="font-size:0.78rem; color:var(--muted); margin-bottom:6px;">Selecciona qué categorías quieres ver (puedes activar o desactivar varias):</div> <div class="discover-filter-bar" id="discover-category-filters">
-<button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')">✨ Todas</button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')">🎬 Películas</button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')">📹 Documentales</button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')">📺 Series</button>
-<button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')">📽️ Docuseries</button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')">🎵 Música</button>
-<button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')">🎮 Juegos</button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')">📖 Libros</button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')">💥 Cómics</button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')">⛩️ Mangas</button>
-</div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);">Cargando recomendaciones recientes... ⏳</div> </div> </div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" style="padding:18px 22px;">
+</h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="discover_subtitle">Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.</p> </div> <div class="discover-controls"> <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano">⚡ Auto-actualizar: ON</button>
+<button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="recargarDiscoverManual()"><span data-i18n="btn_discover_explore">🔄 Explorar nuevos</span></button> </div> </div> <div style="font-size:0.78rem; color:var(--muted); margin-bottom:6px;" data-i18n="discover_filter_hint">Selecciona qué categorías quieres ver (puedes activar o desactivar varias):</div> <div class="discover-filter-bar" id="discover-category-filters">
+<button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button>
+<button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button>
+<button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button>
+</div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" style="padding:18px 22px;">
   <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
     <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer;flex-shrink:0;">
       <span>👤</span>
@@ -210,14 +234,14 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
     <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span>
   </button>
 </div>
-<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin:14px 0 6px;"> <div class="profile-section-title" style="margin:0;">👑 Mis Favoritos por Categoría</div>
-<button type="button" class="btn-toggle-filter" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()">👁️ Configurar cuáles mostrar</button> </div> <p style="color:var(--muted); font-size:0.83rem; margin-bottom:10px;">Elige tu favorito de cada subcategoría y usa el botón <strong>"Mostrar"</strong> para activar o desactivar los favoritos que quieras exhibir en tu perfil.</p>
-<div class="favs-grid" id="perfil-favoritos-grid"></div> <div class="profile-section-title">⚡ Métricas Globales</div> <div class="profile-grid-highlights"> <div class="profile-stat-box"> <div class="profile-stat-label">Total Registros</div> <div class="profile-stat-val" id="prof-total-val">0</div>
-<div class="profile-stat-sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Calificación Promedio</div> <div class="profile-stat-val" id="prof-rating-val">★ 0.0</div> <div class="profile-stat-sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Horas en Juegos</div> <div class="profile-stat-val" id="prof-hours-val">0 hrs</div>
-<div class="profile-stat-sub">tiempo invertido</div> </div> </div> <div class="profile-section-title">🏆 Récords de Ritmo</div> <div class="profile-grid-records"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div> <div class="profile-stat-val" id="prof-best-day-val">—</div> <div class="profile-stat-sub" id="prof-best-day-sub">0 registros</div>
+<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin:14px 0 6px;"> <div class="profile-section-title" style="margin:0;"><span data-i18n="profile_favs_title">👑 Mis Favoritos por Categoría</span></div>
+<button type="button" class="btn-toggle-filter" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()" data-i18n="btn_cfg_favs_show">👁️ Configurar cuáles mostrar</button> </div> <p style="color:var(--muted); font-size:0.83rem; margin-bottom:10px;" data-i18n="profile_favs_hint">Elige tu favorito de cada subcategoría y usa el botón <strong>"Mostrar"</strong> para activar o desactivar los favoritos que quieras exhibir en tu perfil.</p>
+<div class="favs-grid" id="perfil-favoritos-grid"></div> <div class="profile-section-title" data-i18n="profile_metrics_title">⚡ Métricas Globales</div> <div class="profile-grid-highlights"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_total_entries">Total Registros</div> <div class="profile-stat-val" id="prof-total-val">0</div>
+<div class="profile-stat-sub" data-i18n="stat_items_completed">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_avg_rating">Calificación Promedio</div> <div class="profile-stat-val" id="prof-rating-val">★ 0.0</div> <div class="profile-stat-sub" data-i18n="stat_out_of_stars">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_game_playtime">Horas en Juegos</div> <div class="profile-stat-val" id="prof-hours-val">0 hrs</div>
+<div class="profile-stat-sub" data-i18n="stat_time_logged">tiempo invertido</div> </div> </div> <div class="profile-section-title" data-i18n="profile_records_title">🏆 Récords de Ritmo</div> <div class="profile-grid-records"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div> <div class="profile-stat-val" id="prof-best-day-val">—</div> <div class="profile-stat-sub" id="prof-best-day-sub">0 registros</div>
 </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div> <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.9rem; line-height:1.25;">—</div> <div class="profile-stat-sub" id="prof-best-week-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
-<div class="profile-stat-val" id="prof-best-month-val">—</div> <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div> </div> </div> <div class="profile-section-title">✨ Curiosidades y Hábitos</div> <div class="profile-grid-fun"> <div class="profile-stat-box"> <div class="profile-stat-label">Creador/Director Favorito</div> <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
-<div class="profile-stat-sub" id="prof-fav-creator-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label">Tasa de Rewatch / Relectura</div> <div class="profile-stat-val" id="prof-rewatch-rate-val">0%</div> <div class="profile-stat-sub" id="prof-rewatch-rate-sub">0 re-consumos</div> </div> </div> <div class="cat-wide-card" style="margin-top:14px;">
+<div class="profile-stat-val" id="prof-best-month-val">—</div> <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div> </div> </div> <div class="profile-section-title" data-i18n="profile_curiosities_title">✨ Curiosidades y Hábitos</div> <div class="profile-grid-fun"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_fav_creator">Creador/Director Favorito</div> <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
+<div class="profile-stat-sub" id="prof-fav-creator-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_rewatch_rate">Tasa de Rewatch / Relectura</div> <div class="profile-stat-val" id="prof-rewatch-rate-val">0%</div> <div class="profile-stat-sub" id="prof-rewatch-rate-sub">0 re-consumos</div> </div> </div> <div class="cat-wide-card" style="margin-top:14px;">
 <label style="font-weight:700; display:block; margin-bottom:10px;" data-i18n="profile_dist_title">📊 Distribución de Contenido por Categoría:</label> <div id="profile-bars-container"></div> </div> </div>
 
 <!-- VISTA DEDICADA DE WATCHLISTS -->
@@ -231,7 +255,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
     </div>
     <div style="display:flex; align-items:center; gap:8px;">
       <button type="button" class="btn-recommend" id="btn-recomendar-azar-wl" onclick="iniciarRecomendacionAzar()">
-        <span>🎲</span> <span>Recomiéndame</span>
+        <span>🎲</span> <span data-i18n="btn_recommend_shuffle">Recomiéndame</span>
       </button>
     </div>
   </div>
@@ -276,12 +300,12 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div style="flex:1;"><label data-i18n="lbl_numeros">Números que abarca:</label><input type="text" id="input-numeros-abarcados" class="form-input" placeholder="Ej: 404-407 / 550-580"></div> </div> </div> <div class="form-group" id="grupo-horas-juegos" style="display:none;"> <label data-i18n="lbl_horas">¿Cuántas horas te tomó jugar?:</label> <input type="number" id="input-horas-jugadas" class="form-input" placeholder="Ej: 30" min="1" style="max-width:160px;">
 </div> <div class="form-group" id="fechas-container">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
-    <span style="font-size:0.8rem;color:var(--muted);font-weight:600;">¿Cuándo lo completaste?:</span>
+    <span style="font-size:0.8rem;color:var(--muted);font-weight:600;" data-i18n="lbl_when_completed">¿Cuándo lo completaste?:</span>
     <div class="date-precision-tabs" id="reg-prec-tabs">
-      <button type="button" class="date-prec-btn active" id="btn-reg-prec-dia" onclick="cambiarPrecisionFechaFormulario('dia')">📅 Día exacto</button>
-      <button type="button" class="date-prec-btn" id="btn-reg-prec-semana" onclick="cambiarPrecisionFechaFormulario('semana')">🗓️ Semana</button>
-      <button type="button" class="date-prec-btn" id="btn-reg-prec-mes" onclick="cambiarPrecisionFechaFormulario('mes')">🌙 Mes</button>
-      <button type="button" class="date-prec-btn" id="btn-reg-prec-anio" onclick="cambiarPrecisionFechaFormulario('anio')">📆 Año</button>
+      <button type="button" class="date-prec-btn active" id="btn-reg-prec-dia" onclick="cambiarPrecisionFechaFormulario('dia')" data-i18n="date_prec_day">📅 Día exacto</button>
+      <button type="button" class="date-prec-btn" id="btn-reg-prec-semana" onclick="cambiarPrecisionFechaFormulario('semana')" data-i18n="date_prec_week">🗓️ Semana</button>
+      <button type="button" class="date-prec-btn" id="btn-reg-prec-mes" onclick="cambiarPrecisionFechaFormulario('mes')" data-i18n="date_prec_month">🌙 Mes</button>
+      <button type="button" class="date-prec-btn" id="btn-reg-prec-anio" onclick="cambiarPrecisionFechaFormulario('anio')" data-i18n="date_prec_year">📆 Año</button>
     </div>
   </div>
   <!-- Modo Día -->
@@ -289,7 +313,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
     <div class="date-row">
       <div style="flex:1;"><label id="lbl-fecha-ini" data-i18n="lbl_fecha_ini">Fecha de inicio:</label><input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly></div>
       <div style="flex:1;" id="col-fecha-fin"><label data-i18n="lbl_fecha_fin">Fecha de término:</label><input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly></div>
-      <button type="button" class="btn-today-pill" onclick="establecerFechaHoy()" title="Poner fecha de hoy">📅 Hoy</button>
+      <button type="button" class="btn-today-pill" onclick="establecerFechaHoy()" title="Poner fecha de hoy" data-i18n="btn_today">📅 Hoy</button>
     </div>
   </div>
   <!-- Modo Semana -->
@@ -355,45 +379,45 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div id="modal-editar-perfil" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalEditarPerfil()">
   <div class="modal-box" style="max-width:480px;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-      <h3 style="margin:0;">👤 Personalizar Perfil</h3>
+      <h3 style="margin:0;" data-i18n="edit_profile_title">👤 Personalizar Perfil</h3>
       <button type="button" class="btn-close-form" onclick="cerrarModalEditarPerfil()" style="position:static;">✕</button>
     </div>
     <div class="form-group">
-      <label>Nickname / Nombre visible:</label>
+      <label data-i18n="edit_profile_nick_lbl">Nickname / Nombre visible:</label>
       <input type="text" id="input-perfil-nickname" class="form-input" placeholder="Ej: CJ / Cinéfilo2026">
     </div>
     <div class="form-group">
-      <label>Lema o Biografía corta:</label>
+      <label data-i18n="edit_profile_bio_lbl">Lema o Biografía corta:</label>
       <input type="text" id="input-perfil-bio" class="form-input" placeholder="Ej: Coleccionando historias en Mediary ✨">
     </div>
     <div class="form-group">
-      <label>Elige un avatar de animal rápido:</label>
+      <label data-i18n="edit_profile_avatar_lbl">Elige un avatar de animal rápido:</label>
       <div class="avatar-presets-grid" id="avatar-presets-box"></div>
     </div>
     <div class="form-group">
-      <label>O sube una imagen personalizada:</label>
+      <label data-i18n="edit_profile_custom_lbl">O sube una imagen personalizada:</label>
       <label class="btn-upload-avatar-cta">
         <span>📷</span>
-        <span>Subir Imagen desde tu dispositivo</span>
+        <span data-i18n="edit_profile_upload_cta">Subir Imagen desde tu dispositivo</span>
         <input type="file" id="input-perfil-avatar-file" accept="image/*" style="display:none;" onchange="procesarSubidaFotoPerfil(event)">
       </label>
       <div id="crop-confirmed-preview" style="display:none; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; padding:10px 14px; background:var(--bg); border:1px solid var(--accent); border-radius:12px;">
         <div style="display:flex; align-items:center; gap:12px;">
           <img id="crop-confirmed-img" src="" alt="Avatar" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid var(--accent); flex-shrink:0;">
           <div>
-            <div style="font-size:0.84rem; color:var(--text); font-weight:700;">Foto 1:1 seleccionada</div>
-            <div style="font-size:0.75rem; color:var(--muted);">Recortada y lista para guardar</div>
+            <div style="font-size:0.84rem; color:var(--text); font-weight:700;" data-i18n="edit_profile_selected_title">Foto 1:1 seleccionada</div>
+            <div style="font-size:0.75rem; color:var(--muted);" data-i18n="edit_profile_selected_hint">Recortada y lista para guardar</div>
           </div>
         </div>
         <div style="display:flex; gap:6px;">
-          <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:4px 10px;" onclick="document.getElementById('input-perfil-avatar-file').click()">Cambiar</button>
-          <button type="button" class="btn-modal-cancel" style="font-size:0.75rem; padding:4px 8px; border-color:rgba(239,68,68,0.4); color:#f87171;" onclick="quitarFotoPersonalizada()">Quitar</button>
+          <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:4px 10px;" onclick="document.getElementById('input-perfil-avatar-file').click()" data-i18n="btn_change_photo">Cambiar</button>
+          <button type="button" class="btn-modal-cancel" style="font-size:0.75rem; padding:4px 8px; border-color:rgba(239,68,68,0.4); color:#f87171;" onclick="quitarFotoPersonalizada()" data-i18n="btn_remove_photo">Quitar</button>
         </div>
       </div>
     </div>
     <div class="modal-actions">
-      <button type="button" class="btn-modal-cancel" onclick="cerrarModalEditarPerfil()">Cancelar</button>
-      <button type="button" class="btn-modal-save" onclick="guardarCambiosPerfilUsuario()">Guardar Perfil</button>
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalEditarPerfil()" data-i18n="btn_cancel">Cancelar</button>
+      <button type="button" class="btn-modal-save" onclick="guardarCambiosPerfilUsuario()" data-i18n="btn_save_profile">Guardar Perfil</button>
     </div>
   </div>
 </div>
@@ -402,10 +426,10 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div id="modal-recortar-avatar" class="modal-overlay" style="display:none; z-index:10001;" onclick="if(event.target===this) cerrarModalRecorteAvatar()">
   <div class="modal-box cropper-modal-box">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-      <h3 style="margin:0; font-size:1.15rem; color:var(--accent);">✂️ Recortar Foto de Perfil</h3>
+      <h3 style="margin:0; font-size:1.15rem; color:var(--accent);" data-i18n="crop_modal_title">✂️ Recortar Foto de Perfil</h3>
       <button type="button" class="btn-close-form" onclick="cerrarModalRecorteAvatar()" style="position:static;">✕</button>
     </div>
-    <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px; line-height:1.4;">
+    <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px; line-height:1.4;" data-i18n="crop_modal_hint">
       Arrastra la foto para encuadrarla y usa la barra o rueda para zoom (relación 1:1 fija):
     </p>
     <div class="cropper-stage-wrap" id="avatar-cropper-stage">
@@ -425,32 +449,35 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
     </div>
     <!-- Herramientas auxiliares -->
     <div style="display:flex; justify-content:center; gap:8px; margin-bottom:16px;">
-      <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:5px 12px;" onclick="rotarAvatarCropper(90)">🔄 Girar 90°</button>
-      <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:5px 12px;" onclick="centrarAvatarCropper()">🎯 Centrar</button>
+      <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:5px 12px;" onclick="rotarAvatarCropper(90)" data-i18n="crop_btn_rotate">🔄 Girar 90°</button>
+      <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:5px 12px;" onclick="centrarAvatarCropper()" data-i18n="crop_btn_center">🎯 Centrar</button>
     </div>
     <div class="modal-actions" style="justify-content:flex-end; gap:10px;">
-      <button type="button" class="btn-modal-cancel" onclick="cerrarModalRecorteAvatar()">Cancelar</button>
-      <button type="button" class="btn-modal-save" onclick="confirmarRecorteAvatar()">✅ Aplicar Recorte 1:1</button>
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalRecorteAvatar()" data-i18n="btn_cancel">Cancelar</button>
+      <button type="button" class="btn-modal-save" onclick="confirmarRecorteAvatar()" data-i18n="crop_btn_confirm">✅ Aplicar Recorte 1:1</button>
     </div>
   </div>
 </div> <!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
-<h3 id="titulo-modal-fav">👑 Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="text" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)">
-</div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()">Cerrar</button>
+<h3 id="titulo-modal-fav" data-i18n="fav_modal_title">👑 Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;" data-i18n="fav_modal_hint">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="text" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)">
+</div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;" data-i18n="fav_modal_remove">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()" data-i18n="btn_close">Cerrar</button>
 </div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0;">⚙️ Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;">✕</button></div> <div class="form-group"> <label data-i18n="cfg_lang_label">Idioma de la Interfaz:</label> <select id="cfg-lang" class="settings-select" onchange="cambiarIdiomaEnVivo()">
 <option value="es">Español (Predeterminado)</option> <option value="en">English</option> </select> </div> <div class="form-group"> <label data-i18n="cfg_font_label">Tipografía de la App (con muestra real):</label> <input type="hidden" id="cfg-font" value="'Plus Jakarta Sans', sans-serif"> <div class="cfg-visual-grid" id="cfg-font-cards"> <button type="button" class="cfg-option-card" data-val="'Plus Jakarta Sans', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Plus Jakarta Sans', sans-serif !important;">
 <strong style="font-size:0.95rem; color:var(--text); font-family:'Plus Jakarta Sans', sans-serif !important;">Plus Jakarta Sans</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Plus Jakarta Sans', sans-serif !important;">Aa Bb Cc — El arte del cine 123</span>
 </button> <button type="button" class="cfg-option-card" data-val="'Inter', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Inter', sans-serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Inter', sans-serif !important;">Inter Moderna</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Inter', sans-serif !important;">Aa Bb Cc — Lectura limpia 123</span>
 </button> <button type="button" class="cfg-option-card" data-val="'Cinzel', serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Cinzel', serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Cinzel', serif !important; letter-spacing:0.04em;">Cinzel Clásica</strong> <span style="font-size:0.8rem; color:var(--muted); font-family:'Cinzel', serif !important;">AA BB CC — ESTÉTICA ÉPICA 123</span>
 </button> <button type="button" class="cfg-option-card" data-val="'Outfit', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Outfit', sans-serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Outfit', sans-serif !important;">Outfit Geométrica</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Outfit', sans-serif !important;">Aa Bb Cc — Trazo moderno 123</span>
-</button> </div> </div> <div class="form-group"> <label data-i18n="cfg_size_label">Tamaño general de letra (línea interactiva de 3 niveles):</label> <input type="hidden" id="cfg-font-size" value="100%"> <div class="size-line-container" id="cfg-size-slider-box"> <div class="size-line-track-wrap" onclick="clickEnLineaTamano(event)"> <div class="size-line-track-bg"></div> <div class="size-line-track-fill" id="size-line-fill"></div>
-<div class="size-line-node" data-val="88%" data-idx="0" onclick="event.stopPropagation(); seleccionarSizeVisual('88%')" title="Compacto (88%)">1</div> <div class="size-line-node" data-val="100%" data-idx="1" onclick="event.stopPropagation(); seleccionarSizeVisual('100%')" title="Estándar (100%)">2</div>
-<div class="size-line-node" data-val="112%" data-idx="2" onclick="event.stopPropagation(); seleccionarSizeVisual('112%')" title="Grande (112%)">3</div> </div> <div class="size-line-labels" id="cfg-size-labels"> <button type="button" class="size-line-lbl-btn" data-val="88%" onclick="seleccionarSizeVisual('88%')" style="text-align:left;"> <div style="font-size:12.5px; font-weight:800;">Aa Compacto</div>
-<div style="font-size:11px; opacity:0.8;">Nivel 1 · 88%</div> </button> <button type="button" class="size-line-lbl-btn" data-val="100%" onclick="seleccionarSizeVisual('100%')" style="text-align:center;"> <div style="font-size:15px; font-weight:800;">Aa Estándar</div> <div style="font-size:11.5px; opacity:0.8;">Nivel 2 · 100%</div> </button> <button type="button" class="size-line-lbl-btn" data-val="112%" onclick="seleccionarSizeVisual('112%')" style="text-align:right;">
-<div style="font-size:17.5px; font-weight:800;">Aa Grande</div> <div style="font-size:12px; opacity:0.8;">Nivel 3 · 112%</div> </button> </div> </div> </div> <div class="form-group"> <label data-i18n="cfg_theme_label">Tema de color (color principal y secundario):</label> <input type="hidden" id="cfg-theme" value="default"> <div class="cfg-visual-grid" id="cfg-theme-cards">
+</button> <button type="button" class="cfg-option-card" data-val="'Space Grotesk', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Space Grotesk', sans-serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Space Grotesk', sans-serif !important;">Space Grotesk</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Space Grotesk', sans-serif !important;">Aa Bb Cc — Tipografía tech 123</span>
+</button> <button type="button" class="cfg-option-card" data-val="'Playfair Display', serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Playfair Display', serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Playfair Display', serif !important; letter-spacing:0.02em;">Playfair Display</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Playfair Display', serif !important;">Aa Bb Cc — Elegancia editorial 123</span>
+</button> </div> </div> <div class="form-group"> <label data-i18n="cfg_size_label">Tamaño general de letra (línea interactiva de 5 niveles):</label> <input type="hidden" id="cfg-font-size" value="100%"> <div class="size-line-container" id="cfg-size-slider-box"> <div class="size-line-track-wrap" onclick="clickEnLineaTamano(event)"> <div class="size-line-track-bg"></div> <div class="size-line-track-fill" id="size-line-fill"></div>
+<div class="size-line-node" data-val="75%" data-idx="0" onclick="event.stopPropagation(); seleccionarSizeVisual('75%')" title="Ultra Compacto (75%)">1</div>
+<div class="size-line-node" data-val="88%" data-idx="1" onclick="event.stopPropagation(); seleccionarSizeVisual('88%')" title="Compacto (88%)">2</div>
+<div class="size-line-node" data-val="100%" data-idx="2" onclick="event.stopPropagation(); seleccionarSizeVisual('100%')" title="Estándar (100%)">3</div>
+<div class="size-line-node" data-val="112%" data-idx="3" onclick="event.stopPropagation(); seleccionarSizeVisual('112%')" title="Grande (112%)">4</div>
+<div class="size-line-node" data-val="125%" data-idx="4" onclick="event.stopPropagation(); seleccionarSizeVisual('125%')" title="Extra Grande (125%)">5</div> </div> <div class="size-line-labels" id="cfg-size-labels"> <button type="button" class="size-line-lbl-btn" data-val="75%" onclick="seleccionarSizeVisual('75%')" style="text-align:left;"> <div style="font-size:11px; font-weight:800;">Aa Mínimo</div> <div style="font-size:10px; opacity:0.8;">Nivel 1 · 75%</div> </button> <button type="button" class="size-line-lbl-btn" data-val="88%" onclick="seleccionarSizeVisual('88%')"> <div style="font-size:12.5px; font-weight:800;">Aa Compacto</div> <div style="font-size:10.5px; opacity:0.8;">Nivel 2 · 88%</div> </button> <button type="button" class="size-line-lbl-btn" data-val="100%" onclick="seleccionarSizeVisual('100%')" style="text-align:center;"> <div style="font-size:14.5px; font-weight:800;">Aa Estándar</div> <div style="font-size:11px; opacity:0.8;">Nivel 3 · 100%</div> </button> <button type="button" class="size-line-lbl-btn" data-val="112%" onclick="seleccionarSizeVisual('112%')"> <div style="font-size:16px; font-weight:800;">Aa Grande</div> <div style="font-size:11.5px; opacity:0.8;">Nivel 4 · 112%</div> </button> <button type="button" class="size-line-lbl-btn" data-val="125%" onclick="seleccionarSizeVisual('125%')" style="text-align:right;"> <div style="font-size:18px; font-weight:800;">Aa Máximo</div> <div style="font-size:12px; opacity:0.8;">Nivel 5 · 125%</div> </button> </div> </div> </div> <div class="form-group"> <label data-i18n="cfg_theme_label">Tema de color (color principal y secundario):</label> <input type="hidden" id="cfg-theme" value="default"> <div class="cfg-visual-grid" id="cfg-theme-cards">
 <button type="button" class="cfg-option-card theme-card-row" data-val="default" onclick="seleccionarThemeVisual('default')" style="background:#0f172a; border-color:#334155;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Azul Pizarra | Secundario: Celeste"><circle cx="20" cy="20" r="19" fill="#1e293b"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#38bdf8" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg>
 <div> <strong style="font-size:0.88rem; color:#f8fafc; display:block;">Midnight Slate</strong> <span style="font-size:0.73rem; color:#94a3b8;">Pizarra + Celeste</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="oled" onclick="seleccionarThemeVisual('oled')" style="background:#000000; border-color:#242424;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Negro OLED | Secundario: Esmeralda"><circle cx="20" cy="20" r="19" fill="#18181b"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#10b981" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg>
 <div> <strong style="font-size:0.88rem; color:#ffffff; display:block;">OLED Pure Black</strong> <span style="font-size:0.73rem; color:#888888;">Negro + Esmeralda</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="dracula" onclick="seleccionarThemeVisual('dracula')" style="background:#1e1f29; border-color:#44475a;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Púrpura Noche | Secundario: Rosa Neón"><circle cx="20" cy="20" r="19" fill="#44475a"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#ff79c6" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg>
-<div> <strong style="font-size:0.88rem; color:#f8f8f2; display:block;">Dracula Dark</strong> <span style="font-size:0.73rem; color:#bd93f9;">Púrpura + Rosa</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="espresso" onclick="seleccionarThemeVisual('espresso')" style="background:#1c1917; border-color:#44403c;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Café Espresso | Secundario: Ámbar"><circle cx="20" cy="20" r="19" fill="#44403c"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#f59e0b" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#fafaf9; display:block;">Warm Espresso</strong> <span style="font-size:0.73rem; color:#a8a29e;">Café + Ámbar</span> </div> </button> </div> </div>
+<div> <strong style="font-size:0.88rem; color:#f8f8f2; display:block;">Dracula Dark</strong> <span style="font-size:0.73rem; color:#bd93f9;">Púrpura + Rosa</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="espresso" onclick="seleccionarThemeVisual('espresso')" style="background:#1c1917; border-color:#44403c;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Café Espresso | Secundario: Ámbar"><circle cx="20" cy="20" r="19" fill="#44403c"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#f59e0b" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#fafaf9; display:block;">Warm Espresso</strong> <span style="font-size:0.73rem; color:#a8a29e;">Café + Ámbar</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="nordic-light" onclick="seleccionarThemeVisual('nordic-light')" style="background:#f8fafc; border-color:#cbd5e1;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Blanco Nórdico | Secundario: Azul Cielo"><circle cx="20" cy="20" r="19" fill="#f1f5f9"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#0284c7" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#0f172a; display:block;">Nordic Snow</strong> <span style="font-size:0.73rem; color:#64748b;">Blanco + Azul Cielo</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="creme-latte" onclick="seleccionarThemeVisual('creme-latte')" style="background:#fdfbf7; border-color:#e7e5e4;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Crema Cálido | Secundario: Ámbar Caramelo"><circle cx="20" cy="20" r="19" fill="#f7f3ea"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#d97706" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#292524; display:block;">Cozy Latte</strong> <span style="font-size:0.73rem; color:#78716c;">Marfil + Ámbar Cálido</span> </div> </button> </div> </div>
 <div class="form-group"> <div class="switch-wrap"> <span class="switch-label" data-i18n="cfg_emojis_label">Mostrar emojis en la interfaz</span>
 <label class="switch-toggle"> <input type="checkbox" id="cfg-emojis" checked onchange="aplicarConfiguracionEnVivo()"> <span class="switch-slider"></span> </label> </div> </div> <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;"> <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;"> <div style="display:flex; align-items:center; gap:8px;"> <span>☁️</span> <span data-i18n="cfg_account_title">Cuenta y Sincronización Supabase Cloud</span> </div> <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;">✓ Supabase Cloud Activo</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;" id="cfg-account-status" data-i18n="cfg_account_hint">Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.</p> <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;"> <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span> </button> <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:rgba(16,185,129,0.45); color:#34d399; background:rgba(16,185,129,0.1); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets"> <span data-i18n="cfg_btn_migrar">☁️ Migrar mis datos de Google Sheets a Supabase</span> </button> </div>
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
@@ -1788,9 +1815,10 @@ function renderizarListaSolicitudes(solicitudes) {
 function renderizarListaAmigos(amigos) {
   const countEl = document.getElementById('count-mis-amigos');
   const contenedor = document.getElementById('lista-mis-amigos');
+  const l = userPrefs.lang || 'es';
   if (countEl) countEl.textContent = amigos.length;
   if (!amigos.length) {
-    contenedor.innerHTML = '<div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para que te agreguen!</div>';
+    contenedor.innerHTML = `<div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">${l === 'en' ? 'You have no friends added yet. Share your ID so they can add you!' : 'No tienes amigos agregados aún. ¡Comparte tu ID para que te agreguen!'}</div>`;
     return;
   }
   contenedor.innerHTML = amigos.map(a => {
@@ -1817,24 +1845,24 @@ function renderizarListaAmigos(amigos) {
           <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:6px 12px; font-size:0.78rem; display:flex; align-items:center; gap:6px;">
             <span>📚</span>
             <span style="font-weight:700; color:var(--text);">${a.stats ? a.stats.total : 0}</span>
-            <span style="color:var(--muted);">registros</span>
+            <span style="color:var(--muted);">${l === 'en' ? 'records' : 'registros'}</span>
           </div>
           ${a.stats && a.stats.promedio ? `
           <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:6px 12px; font-size:0.78rem; display:flex; align-items:center; gap:6px;">
             <span style="color:var(--star-active);">★</span>
             <span style="font-weight:700; color:var(--text);">${a.stats.promedio}</span>
-            <span style="color:var(--muted);">promedio</span>
+            <span style="color:var(--muted);">${l === 'en' ? 'average' : 'promedio'}</span>
           </div>` : ''}
           ${a.stats && a.stats.topCat ? `
           <div style="background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.25); border-radius:10px; padding:6px 12px; font-size:0.78rem; color:var(--accent); display:flex; align-items:center; gap:6px;">
             <span>🔥</span>
-            <span>${a.stats.topCat}</span>
+            <span>${I18N[l]?.cats?.[a.stats.topCat] || a.stats.topCat}</span>
           </div>` : ''}
         </div>
 
         <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
-          <button type="button" class="btn-today-pill" style="height:36px; padding:0 12px; font-size:0.78rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text);" onclick="event.stopPropagation();abrirModalRegistrosAmigo('${a.email}', '${a.nickname}')" title="Ver Registros">📑 Registros</button>
-          <button type="button" class="btn-today-pill" style="height:36px; padding:0 14px; font-size:0.78rem; margin:0;" onclick="event.stopPropagation();verPerfilDeAmigo('${a.email}')">Ver Perfil ➔</button>
+          <button type="button" class="btn-today-pill" style="height:36px; padding:0 12px; font-size:0.78rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text);" onclick="event.stopPropagation();abrirModalRegistrosAmigo('${a.email}', '${a.nickname}')" title="${l === 'en' ? 'View Records' : 'Ver Registros'}">📑 ${l === 'en' ? 'Records' : 'Registros'}</button>
+          <button type="button" class="btn-today-pill" style="height:36px; padding:0 14px; font-size:0.78rem; margin:0;" onclick="event.stopPropagation();verPerfilDeAmigo('${a.email}')">${l === 'en' ? 'View Profile ➔' : 'Ver Perfil ➔'}</button>
         </div>
       </div>
     `;
@@ -1928,26 +1956,29 @@ function verPerfilDeAmigo(emailAmigo) {
     const desgloseBox = document.getElementById('amigo-desglose-categorias');
     if (desgloseBox) {
       if (res.privacidad?.ocultarEstadisticas) {
-        desgloseBox.innerHTML = '<div style="color:var(--muted);font-size:0.8rem;font-style:italic;">🔒 Este amigo ha configurado sus estadísticas como privadas.</div>';
+        desgloseBox.innerHTML = `<div style="color:var(--muted);font-size:0.8rem;font-style:italic;">🔒 ${l === 'en' ? 'This friend has set their statistics to private.' : 'Este amigo ha configurado sus estadísticas como privadas.'}</div>`;
       } else {
         const cats = [
-          { k: 'Peliculas', n: 'Películas', e: '🎬' },
+          { k: 'Peliculas', n: l === 'en' ? 'Movies' : 'Películas', e: '🎬' },
           { k: 'Series', n: 'Series', e: '📺' },
-          { k: 'Musica', n: 'Música', e: '🎵' },
-          { k: 'Juegos', n: 'Juegos', e: '🎮' },
-          { k: 'Lecturas', n: 'Lecturas', e: '📖' }
+          { k: 'Musica', n: l === 'en' ? 'Music' : 'Música', e: '🎵' },
+          { k: 'Juegos', n: l === 'en' ? 'Games' : 'Juegos', e: '🎮' },
+          { k: 'Lecturas', n: l === 'en' ? 'Books' : 'Lecturas', e: '📖' }
         ];
         const desg = res.desglose || {};
         desgloseBox.innerHTML = cats.map(c => {
           const d = desg[c.k] || { total: 0, subs: {} };
-          const subPills = Object.keys(d.subs).map(s => `<span class="amigo-sub-pill" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}', '${s.replace(/'/g, "\\'")}')" title="Ver registros de ${s}">${s}: <strong>${d.subs[s]}</strong></span>`).join(' ');
+          const subPills = Object.keys(d.subs).map(s => {
+            const nomSubI18n = I18N[l]?.subs?.[s] || s;
+            return `<span class="amigo-sub-pill" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}', '${s.replace(/'/g, "\\'")}')" title="${l === 'en' ? `View records of ${nomSubI18n}` : `Ver registros de ${nomSubI18n}`}">${nomSubI18n}: <strong>${d.subs[s]}</strong></span>`;
+          }).join(' ');
           return `
-            <div class="amigo-cat-stat-card" style="cursor:pointer;transition:var(--tr);" onclick="abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}')" title="Ver registros de ${c.n}">
+            <div class="amigo-cat-stat-card" style="cursor:pointer;transition:var(--tr);" onclick="abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}')" title="${l === 'en' ? `View records of ${c.n}` : `Ver registros de ${c.n}`}">
               <div class="amigo-cat-stat-head">
                 <span>${c.e} ${c.n}</span>
-                <span style="font-size:0.8rem;color:var(--text);display:flex;align-items:center;gap:4px;">${d.total} registros <span style="font-size:0.75rem;opacity:0.7;">➔</span></span>
+                <span style="font-size:0.8rem;color:var(--text);display:flex;align-items:center;gap:4px;">${d.total} ${l === 'en' ? 'records' : 'registros'} <span style="font-size:0.75rem;opacity:0.7;">➔</span></span>
               </div>
-              <div class="amigo-sub-pills-wrap">${subPills || '<span style="font-size:0.75rem;color:var(--muted);">Sin registros aún</span>'}</div>
+              <div class="amigo-sub-pills-wrap">${subPills || `<span style="font-size:0.75rem;color:var(--muted);">${l === 'en' ? 'No records yet' : 'Sin registros aún'}</span>`}</div>
             </div>
           `;
         }).join('');
@@ -2340,6 +2371,16 @@ lbl_edit_date: "Editar Fecha",
 lbl_edit_calif: "Editar Calificación",
 lbl_edit_comment: "Editar Comentario",
 lbl_edit_hours: "Editar Horas Jugadas",
+year_picker_header: "Mostrar registros de:", year_current_badge: "Actual", year_all_time: "🌐 Todos los Tiempos", nav_cats_label: "Categorías:",
+btn_install_title: "Instalar aplicación Mediary en tu dispositivo", btn_refresh_title: "Sincronizar y reparar datos", btn_settings_title: "Configuración", btn_profile_title: "Perfil y Estadísticas",
+lbl_when_completed: "¿Cuándo lo completaste?:", date_prec_day: "📅 Día exacto", date_prec_week: "🗓️ Semana", date_prec_month: "🌙 Mes", date_prec_year: "📆 Año", btn_today: "📅 Hoy",
+discover_subtitle: "Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.", btn_discover_explore: "🔄 Explorar nuevos", discover_filter_hint: "Selecciona qué categorías quieres ver (puedes activar o desactivar varias):",
+dcat_todos: "✨ Todas", dcat_peliculas: "🎬 Películas", dcat_documentales: "📹 Documentales", dcat_series: "📺 Series", dcat_docuseries: "📽️ Docuseries", dcat_musica: "🎵 Música", dcat_juegos: "🎮 Juegos", dcat_libros: "📖 Libros", dcat_comics: "💥 Cómics", dcat_mangas: "⛩️ Mangas", discover_loading: "Cargando recomendaciones recientes... ⏳",
+btn_cfg_favs_show: "👁️ Configurar cuáles mostrar", btn_cfg_favs_done: "✓ Listo", profile_favs_hint: "Elige tu favorito de cada subcategoría y usa el botón \"Mostrar\" para activar o desactivar los favoritos que quieras exhibir en tu perfil.",
+stat_total_entries: "Total Registros", stat_out_of_stars: "de 5.0 estrellas", stat_game_playtime: "Horas en Juegos", stat_time_logged: "tiempo invertido",
+edit_profile_title: "👤 Personalizar Perfil", edit_profile_nick_lbl: "Nickname / Nombre visible:", edit_profile_bio_lbl: "Lema o Biografía corta:", edit_profile_avatar_lbl: "Elige un avatar de animal rápido:", edit_profile_custom_lbl: "O sube una imagen personalizada:", edit_profile_upload_cta: "Subir Imagen desde tu dispositivo", edit_profile_selected_title: "Foto 1:1 seleccionada", edit_profile_selected_hint: "Recortada y lista para guardar", btn_change_photo: "Cambiar", btn_remove_photo: "Quitar", btn_save_profile: "Guardar Perfil",
+crop_modal_title: "✂️ Recortar Foto de Perfil", crop_modal_hint: "Arrastra la foto para encuadrarla y usa la barra o rueda para zoom (relación 1:1 fija):", crop_btn_rotate: "🔄 Girar 90°", crop_btn_center: "🎯 Centrar", crop_btn_confirm: "✅ Aplicar Recorte 1:1", btn_recommend_shuffle: "Recomiéndame",
+fav_modal_title: "👑 Elegir Favorito", fav_modal_hint: "Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:", fav_modal_remove: "Quitar favorito",
 
 meses: ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"], dias: ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"],
 cats: { Peliculas: "Películas", Series: "Series", Musica: "Música", Juegos: "Juegos", Lecturas: "Lecturas" }, subs: { 'Películas': 'Películas', 'Documentales': 'Documentales', 'Temporadas': 'Temporadas', 'Series Completas': 'Series Completas', 'Series Documentales': 'Series Documentales',
@@ -2383,6 +2424,16 @@ lbl_edit_date: "Edit Date",
 lbl_edit_calif: "Edit Rating",
 lbl_edit_comment: "Edit Review",
 lbl_edit_hours: "Edit Playtime (Hours)",
+year_picker_header: "Show records for:", year_current_badge: "Current", year_all_time: "🌐 All Time", nav_cats_label: "Categories:",
+btn_install_title: "Install Mediary app on your device", btn_refresh_title: "Sync & repair data", btn_settings_title: "Settings", btn_profile_title: "Profile & Statistics",
+lbl_when_completed: "When did you complete it?:", date_prec_day: "📅 Exact Day", date_prec_week: "🗓️ Week", date_prec_month: "🌙 Month", date_prec_year: "📆 Year", btn_today: "📅 Today",
+discover_subtitle: "Recent releases, trending hits, and recommendations updated constantly.", btn_discover_explore: "🔄 Explore new", discover_filter_hint: "Select categories to display (you can toggle several):",
+dcat_todos: "✨ All", dcat_peliculas: "🎬 Movies", dcat_documentales: "📹 Documentaries", dcat_series: "📺 Series", dcat_docuseries: "📽️ Docuseries", dcat_musica: "🎵 Music", dcat_juegos: "🎮 Games", dcat_libros: "📖 Books", dcat_comics: "💥 Comics", dcat_mangas: "⛩️ Manga", discover_loading: "Loading recent recommendations... ⏳",
+btn_cfg_favs_show: "👁️ Configure which to show", btn_cfg_favs_done: "✓ Done", profile_favs_hint: "Choose your favorite in each subcategory and use the \"Show\" button to toggle favorites on your profile.",
+stat_total_entries: "Total Entries", stat_out_of_stars: "out of 5.0 stars", stat_game_playtime: "Gaming Playtime", stat_time_logged: "time invested",
+edit_profile_title: "👤 Customize Profile", edit_profile_nick_lbl: "Nickname / Display name:", edit_profile_bio_lbl: "Motto or Short Bio:", edit_profile_avatar_lbl: "Choose a quick animal avatar:", edit_profile_custom_lbl: "Or upload a custom image:", edit_profile_upload_cta: "Upload Image from your device", edit_profile_selected_title: "1:1 Photo selected", edit_profile_selected_hint: "Cropped and ready to save", btn_change_photo: "Change", btn_remove_photo: "Remove", btn_save_profile: "Save Profile",
+crop_modal_title: "✂️ Crop Profile Photo", crop_modal_hint: "Drag photo to frame and use slider or wheel to zoom (fixed 1:1 aspect ratio):", crop_btn_rotate: "🔄 Rotate 90°", crop_btn_center: "🎯 Center", crop_btn_confirm: "✅ Apply 1:1 Crop", btn_recommend_shuffle: "Pick for me",
+fav_modal_title: "👑 Choose Favorite", fav_modal_hint: "Select one of your saved records in this subcategory or search below:", fav_modal_remove: "Remove favorite",
 
 meses: ["January","February","March","April","May","June","July","August","September","October","November","December"],
 dias: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], cats: { Peliculas: "Movies", Series: "Series", Musica: "Music", Juegos: "Games", Lecturas: "Books & Comics" }, subs: {
@@ -2450,10 +2501,11 @@ function cerrarMenuAniosApp() {
   if (arr) arr.style.transform = 'rotate(0deg)';
 }
 function actualizarUISelectorAnio() {
+  const l = userPrefs.lang || 'es';
   const label = document.getElementById('label-anio-activo');
-  if (label) label.textContent = estado.anioActivo === 'todos' ? 'Todos' : estado.anioActivo;
+  if (label) label.textContent = estado.anioActivo === 'todos' ? (l === 'en' ? 'All' : 'Todos') : estado.anioActivo;
   const btn = document.getElementById('btn-selector-anio');
-  if (btn) btn.title = `Filtrar registros por año (Activo: ${estado.anioActivo === 'todos' ? 'Todos los Tiempos' : estado.anioActivo})`;
+  if (btn) btn.title = l === 'en' ? `Filter records by year (Active: ${estado.anioActivo === 'todos' ? 'All Time' : estado.anioActivo})` : `Filtrar registros por año (Activo: ${estado.anioActivo === 'todos' ? 'Todos los Tiempos' : estado.anioActivo})`;
   document.querySelectorAll('#menu-desplegable-anios .year-dropdown-item').forEach(btn => {
     btn.classList.toggle('active', btn.getAttribute('data-year') === estado.anioActivo);
   });
@@ -2466,7 +2518,8 @@ function cambiarAnioVisualizacion(anio) {
   if (estado.categoria === 'inicio') renderizarStats();
   else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
   else if (!esSubcategoriaWatchlist(estado.subcategoria)) filtrarYMostrarHistorial();
-  mostrarToastPersonalizado(anio === 'todos' ? '🌐 Mostrando registros de Todos los Tiempos' : `📅 Mostrando registros del año ${anio}`);
+  const l = userPrefs.lang || 'es';
+  mostrarToastPersonalizado(anio === 'todos' ? (l === 'en' ? '🌐 Displaying records of All Time' : '🌐 Mostrando registros de Todos los Tiempos') : (l === 'en' ? `📅 Displaying records from year ${anio}` : `📅 Mostrando registros del año ${anio}`));
 }
 function extraerAnioDeRegistro(r) {
   if (!r) return '';
@@ -2661,6 +2714,8 @@ function actualizarTextosInterfaz() {
   });
   const inSearch = document.getElementById('input-search');
   if (inSearch) inSearch.placeholder = l === 'en' ? 'Search title in real-time...' : 'Buscar título en tiempo real...';
+  const inSearchWl = document.getElementById('input-search-wl');
+  if (inSearchWl) inSearchWl.placeholder = l === 'en' ? 'Search title to add to this list...' : 'Buscar título para agregar a esta lista...';
   const inCom = document.getElementById('input-comentario');
   if (inCom) inCom.placeholder = l === 'en' ? 'Write your review (Enter to save)...' : 'Escribe lo que te pareció (Enter para guardar)...';
   const inFriendId = document.getElementById('input-buscar-amigo-id');
@@ -2673,25 +2728,49 @@ function actualizarTextosInterfaz() {
   if (inManualSub) inManualSub.placeholder = l === 'en' ? 'English translated title (optional)' : 'Ej: Attack on Titan';
   const inManualCreador = document.getElementById('manual-input-creador');
   if (inManualCreador) inManualCreador.placeholder = l === 'en' ? 'Director / Author / Artist full name' : 'Nombre(s) completo(s)';
+  const inManualAnio = document.getElementById('manual-input-anio');
+  if (inManualAnio) inManualAnio.placeholder = l === 'en' ? 'Release year (e.g. 2024 or 2011-2019)' : 'Ej: 2024 o 2011-2019';
+  const inConciertoGira = document.getElementById('concierto-gira');
+  if (inConciertoGira) inConciertoGira.placeholder = l === 'en' ? 'Tour or event name (e.g. The Eras Tour)' : 'Ej: The Eras Tour / Lollapalooza Chile';
+  const inArtConcierto = document.getElementById('input-buscar-artista-concierto');
+  if (inArtConcierto) inArtConcierto.placeholder = l === 'en' ? 'Type artist name...' : 'Escribe el nombre del artista...';
+  const inNick = document.getElementById('input-perfil-nickname');
+  if (inNick) inNick.placeholder = l === 'en' ? 'e.g. CJ / FilmBuff2026' : 'Ej: CJ / Cinéfilo2026';
+  const inBio = document.getElementById('input-perfil-bio');
+  if (inBio) inBio.placeholder = l === 'en' ? 'e.g. Collecting stories in Mediary ✨' : 'Ej: Coleccionando historias en Mediary ✨';
+  const inFavFilter = document.getElementById('input-filtro-fav');
+  if (inFavFilter) inFavFilter.placeholder = l === 'en' ? 'Filter in your records or search online...' : 'Filtrar en tu historial o buscar online...';
+
+  // 6 Font Cards titles and subtitles
   const fontCards = document.querySelectorAll('#cfg-font-cards .cfg-option-card');
-  if (fontCards.length >= 4) {
-    const spans = [
-      l === 'en' ? 'Aa Bb Cc — The art of cinema 123' : 'Aa Bb Cc — El arte del cine 123',
-      l === 'en' ? 'Aa Bb Cc — Clean reading 123' : 'Aa Bb Cc — Lectura limpia 123',
-      l === 'en' ? 'AA BB CC — EPIC AESTHETIC 123' : 'AA BB CC — ESTÉTICA ÉPICA 123',
-      l === 'en' ? 'Aa Bb Cc — Modern stroke 123' : 'Aa Bb Cc — Trazo moderno 123'
+  if (fontCards.length >= 6) {
+    const fontData = [
+      { t: 'Plus Jakarta Sans', s: l === 'en' ? 'Aa Bb Cc — The art of cinema 123' : 'Aa Bb Cc — El arte del cine 123' },
+      { t: l === 'en' ? 'Inter Modern' : 'Inter Moderna', s: l === 'en' ? 'Aa Bb Cc — Clean reading 123' : 'Aa Bb Cc — Lectura limpia 123' },
+      { t: l === 'en' ? 'Cinzel Classic' : 'Cinzel Clásica', s: l === 'en' ? 'AA BB CC — EPIC AESTHETIC 123' : 'AA BB CC — ESTÉTICA ÉPICA 123' },
+      { t: l === 'en' ? 'Outfit Geometric' : 'Outfit Geométrica', s: l === 'en' ? 'Aa Bb Cc — Modern stroke 123' : 'Aa Bb Cc — Trazo moderno 123' },
+      { t: 'Space Grotesk', s: l === 'en' ? 'Aa Bb Cc — Tech typography 123' : 'Aa Bb Cc — Tipografía tech 123' },
+      { t: 'Playfair Display', s: l === 'en' ? 'Aa Bb Cc — Editorial elegance 123' : 'Aa Bb Cc — Elegancia editorial 123' }
     ];
     fontCards.forEach((card, idx) => {
-      const span = card.querySelector('span');
-      if (span && spans[idx]) span.textContent = spans[idx];
+      if (fontData[idx]) {
+        const strong = card.querySelector('strong');
+        const span = card.querySelector('span');
+        if (strong) strong.textContent = fontData[idx].t;
+        if (span) span.textContent = fontData[idx].s;
+      }
     });
   }
+
+  // 5 Size Labels
   const sizeLabels = document.querySelectorAll('#cfg-size-labels .size-line-lbl-btn');
-  if (sizeLabels.length >= 3) {
+  if (sizeLabels.length >= 5) {
     const sTexts = [
-      { t: l === 'en' ? 'Aa Compact' : 'Aa Compacto', sub: l === 'en' ? 'Level 1 · 88%' : 'Nivel 1 · 88%' },
-      { t: l === 'en' ? 'Aa Standard' : 'Aa Estándar', sub: l === 'en' ? 'Level 2 · 100%' : 'Nivel 2 · 100%' },
-      { t: l === 'en' ? 'Aa Large' : 'Aa Grande', sub: l === 'en' ? 'Level 3 · 112%' : 'Nivel 3 · 112%' }
+      { t: l === 'en' ? 'Aa Minimum' : 'Aa Mínimo', sub: l === 'en' ? 'Level 1 · 75%' : 'Nivel 1 · 75%' },
+      { t: l === 'en' ? 'Aa Compact' : 'Aa Compacto', sub: l === 'en' ? 'Level 2 · 88%' : 'Nivel 2 · 88%' },
+      { t: l === 'en' ? 'Aa Standard' : 'Aa Estándar', sub: l === 'en' ? 'Level 3 · 100%' : 'Nivel 3 · 100%' },
+      { t: l === 'en' ? 'Aa Large' : 'Aa Grande', sub: l === 'en' ? 'Level 4 · 112%' : 'Nivel 4 · 112%' },
+      { t: l === 'en' ? 'Aa Maximum' : 'Aa Máximo', sub: l === 'en' ? 'Level 5 · 125%' : 'Nivel 5 · 125%' }
     ];
     sizeLabels.forEach((btn, idx) => {
       const divs = btn.querySelectorAll('div');
@@ -2699,6 +2778,65 @@ function actualizarTextosInterfaz() {
       if (divs[1] && sTexts[idx]) divs[1].textContent = sTexts[idx].sub;
     });
   }
+
+  // 6 Themes descriptions
+  const themeCards = document.querySelectorAll('#cfg-theme-cards .cfg-option-card');
+  if (themeCards.length >= 6) {
+    const tTexts = [
+      { t: 'Midnight Slate', s: l === 'en' ? 'Slate + Sky Blue' : 'Pizarra + Celeste' },
+      { t: 'OLED Pure Black', s: l === 'en' ? 'Pure Black + Emerald' : 'Negro + Esmeralda' },
+      { t: 'Dracula Dark', s: l === 'en' ? 'Purple + Neon Pink' : 'Púrpura + Rosa' },
+      { t: 'Warm Espresso', s: l === 'en' ? 'Coffee + Amber' : 'Café + Ámbar' },
+      { t: 'Nordic Snow', s: l === 'en' ? 'Nordic White + Sky Blue' : 'Blanco + Azul Cielo' },
+      { t: 'Cozy Latte', s: l === 'en' ? 'Warm Ivory + Amber' : 'Marfil + Ámbar Cálido' }
+    ];
+    themeCards.forEach((card, idx) => {
+      if (tTexts[idx]) {
+        const strong = card.querySelector('strong');
+        const span = card.querySelector('span');
+        if (strong) strong.textContent = tTexts[idx].t;
+        if (span) span.textContent = tTexts[idx].s;
+      }
+    });
+  }
+
+  // Supabase badge
+  const sbBadge = document.getElementById('cfg-supabase-badge');
+  if (sbBadge) sbBadge.textContent = l === 'en' ? '✓ Supabase Cloud Active' : '✓ Supabase Cloud Activo';
+
+  // Discover Live status & Auto-update
+  const dStatus = document.getElementById('discover-status-txt');
+  if (dStatus) dStatus.textContent = l === 'en' ? 'Live Updated' : 'Actualizado';
+  const btnAuto = document.getElementById('btn-discover-autoupdate');
+  if (btnAuto) {
+    btnAuto.textContent = estado.discoverAutoRefresh
+      ? (l === 'en' ? '⚡ Auto-update: ON' : '⚡ Auto-actualizar: ON')
+      : (l === 'en' ? '⚡ Auto-update: OFF' : '⚡ Auto-actualizar: OFF');
+  }
+
+  // Profile email & configure favs button
+  const pEmail = document.getElementById('perfil-email-txt');
+  if (pEmail && (!perfilUsuario.emailGoogle || !perfilUsuario.logueadoGoogle)) {
+    pEmail.textContent = l === 'en' ? 'No linked account' : 'Sin cuenta vinculada';
+  }
+  const btnModoFavs = document.getElementById('btn-modo-mostrar-favs');
+  if (btnModoFavs) {
+    btnModoFavs.textContent = estado.modoConfigurarFavs
+      ? (l === 'en' ? '✓ Done' : '✓ Listo')
+      : (l === 'en' ? '👁️ Configure which to show' : '👁️ Configurar cuáles mostrar');
+  }
+
+  // Tooltips / Titles of icon buttons
+  const bRefresh = document.getElementById('btn-refresh');
+  if (bRefresh) bRefresh.title = l === 'en' ? 'Sync & repair data' : 'Sincronizar y reparar datos';
+  const bSet = document.getElementById('btn-settings');
+  if (bSet) bSet.title = l === 'en' ? 'Settings' : 'Configuración';
+  const bProf = document.getElementById('btn-profile');
+  if (bProf) bProf.title = l === 'en' ? 'Profile & Statistics' : 'Perfil y Estadísticas';
+  const bInst = document.getElementById('btn-install-pwa');
+  if (bInst) bInst.title = l === 'en' ? 'Install Mediary app on your device' : 'Instalar aplicación Mediary en tu dispositivo';
+
+  actualizarUISelectorAnio();
 }
 
 
@@ -2754,13 +2892,34 @@ const rewatchPct = totalRegs ? Math.round((rewatchesTotales / totalRegs) * 100) 
 const maxCatCount = Math.max(...Object.values(conteoCategorias), 1); const bWrap = document.getElementById('profile-bars-container'); bWrap.innerHTML = ''; Object.keys(conteoCategorias).forEach(cKey => { const cant = conteoCategorias[cKey]; const pct = Math.round((cant / maxCatCount) * 100);
 const nom = I18N[l].cats[cKey] || cKey; const emo = CONFIG[cKey]?.emoji || ''; const pctReal = totalRegs ? Math.round((cant / totalRegs) * 100) : 0; const row = document.createElement('div'); row.className = 'profile-bar-row'; row.innerHTML = ` <div class="profile-bar-name"><span class="emoji-dyn">${emo} </span>${nom}</div> <div class="profile-bar-track"><div class="profile-bar-fill" style="width:${pct}%;"></div></div> <div class="profile-bar-count">${cant} <span style="font-size:.7rem; color:var(--muted);">(${pctReal}%)</span></div> `;
 bWrap.appendChild(row); }); aplicarEstilosGlobales(); }
-function actualizarTarjetasVisualesConfig() { document.querySelectorAll('#cfg-font-cards .cfg-option-card').forEach(btn => { btn.classList.toggle('active', btn.dataset.val === userPrefs.font); }); const sizeOrder = ['88%', '100%', '112%'];
-const curIdx = Math.max(0, sizeOrder.indexOf(userPrefs.fontSize || '100%')); const fillEl = document.getElementById('size-line-fill'); if (fillEl) fillEl.style.width = `${curIdx * 50}%`;
-document.querySelectorAll('#cfg-size-slider-box .size-line-node').forEach(node => { const nIdx = Number(node.dataset.idx); node.classList.toggle('active', nIdx === curIdx);
-node.classList.toggle('reached', nIdx <= curIdx); }); document.querySelectorAll('#cfg-size-labels .size-line-lbl-btn').forEach(lbl => { lbl.classList.toggle('active', lbl.dataset.val === userPrefs.fontSize); }); document.querySelectorAll('#cfg-theme-cards .cfg-option-card').forEach(btn => {
-btn.classList.toggle('active', btn.dataset.val === userPrefs.theme); }); }
-function clickEnLineaTamano(e) { const wrap = e.currentTarget; const rect = wrap.getBoundingClientRect(); const relX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width)); const sizes = ['88%', '100%', '112%']; const idx = relX < 0.33 ? 0 : (relX < 0.67 ? 1 : 2);
-seleccionarSizeVisual(sizes[idx]); }
+function actualizarTarjetasVisualesConfig() {
+  document.querySelectorAll('#cfg-font-cards .cfg-option-card').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.val === userPrefs.font);
+  });
+  const sizeOrder = ['75%', '88%', '100%', '112%', '125%'];
+  const curIdx = Math.max(0, sizeOrder.indexOf(userPrefs.fontSize || '100%'));
+  const fillEl = document.getElementById('size-line-fill');
+  if (fillEl) fillEl.style.width = `${(curIdx / 4) * 100}%`;
+  document.querySelectorAll('#cfg-size-slider-box .size-line-node').forEach(node => {
+    const nIdx = Number(node.dataset.idx);
+    node.classList.toggle('active', nIdx === curIdx);
+    node.classList.toggle('reached', nIdx <= curIdx);
+  });
+  document.querySelectorAll('#cfg-size-labels .size-line-lbl-btn').forEach(lbl => {
+    lbl.classList.toggle('active', lbl.dataset.val === userPrefs.fontSize);
+  });
+  document.querySelectorAll('#cfg-theme-cards .cfg-option-card').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.val === userPrefs.theme);
+  });
+}
+function clickEnLineaTamano(e) {
+  const wrap = e.currentTarget;
+  const rect = wrap.getBoundingClientRect();
+  const relX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+  const sizes = ['75%', '88%', '100%', '112%', '125%'];
+  const idx = Math.min(4, Math.floor(relX * 5));
+  seleccionarSizeVisual(sizes[idx]);
+}
 function seleccionarFontVisual(val) { document.getElementById('cfg-font').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarSizeVisual(val) { document.getElementById('cfg-font-size').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarThemeVisual(val) { document.getElementById('cfg-theme').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
@@ -2768,8 +2927,16 @@ function abrirModalConfiguracion() { document.getElementById('cfg-lang').value =
 document.getElementById('cfg-emojis').checked = userPrefs.showEmojis; actualizarTarjetasVisualesConfig(); document.getElementById('modal-configuracion').style.display = 'flex'; }
 function aplicarConfiguracionEnVivo() { userPrefs.font = document.getElementById('cfg-font').value; userPrefs.fontSize = document.getElementById('cfg-font-size').value;
 userPrefs.theme = document.getElementById('cfg-theme').value; userPrefs.showEmojis = document.getElementById('cfg-emojis').checked; aplicarEstilosGlobales(); }
-function cambiarIdiomaEnVivo() { userPrefs.lang = document.getElementById('cfg-lang').value; actualizarTextosInterfaz(); if (estado.categoria === 'inicio') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista();
-else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); } else { renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
+function cambiarIdiomaEnVivo() {
+  userPrefs.lang = document.getElementById('cfg-lang').value;
+  actualizarTextosInterfaz();
+  inicializarSelectoresFechasAproximadas();
+  actualizarUISelectorAnio();
+  if (estado.categoria === 'inicio') renderizarStats();
+  else if (estado.categoria === 'discover') renderizarDiscoverVista();
+  else if (estado.categoria === 'amigos') cargarAmigosYSolicitudes(false);
+  else if (estado.categoria === 'perfil') { renderizarCabeceraPerfil(); renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
+  else { renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 }
 function guardarYCerrarConfiguracion() { aplicarConfiguracionEnVivo(); userPrefs.lang = document.getElementById('cfg-lang').value; guardarPreferenciasLocales();
 document.getElementById('modal-configuracion').style.display = 'none'; mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Settings saved!' : '¡Configuración guardada!'); }
@@ -3353,7 +3520,7 @@ function renderizarVistaWatchlistsDedicada() {
 
   grid.innerHTML = '';
   if (!items.length) {
-    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:36px 20px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border); line-height:1.6;">No tienes elementos pendientes en <strong>Watchlist: ${nomSub}</strong>.<br><span style="font-size:0.85rem;">¡Usa el buscador de arriba para agregar uno a esta lista o explora Discover! ✨</span></div>`;
+    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:36px 20px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border); line-height:1.6;">${l === 'en' ? `No pending items in <strong>Watchlist: ${nomSub}</strong>.<br><span style="font-size:0.85rem;">Use the search bar above to add one to this list or explore Discover! ✨</span>` : `No tienes elementos pendientes en <strong>Watchlist: ${nomSub}</strong>.<br><span style="font-size:0.85rem;">¡Usa el buscador de arriba para agregar uno a esta lista o explora Discover! ✨</span>`}</div>`;
     aplicarEstilosGlobales();
     return;
   }
@@ -3371,8 +3538,8 @@ function renderizarVistaWatchlistsDedicada() {
           ${obtenerBadgeAmigoActividad(it.titulo, it.categoria)}
         </div>
         <div class="watchlist-actions">
-          <button type="button" class="btn-wl-play" onclick="consumirDesdeWatchlist('${it.id}')">✓ Registrar</button>
-          <button type="button" class="btn-wl-del" title="Eliminar de lista" onclick="borrarItemWatchlist('${it.id}')">✕</button>
+          <button type="button" class="btn-wl-play" onclick="consumirDesdeWatchlist('${it.id}')">${l === 'en' ? '✓ Log' : '✓ Registrar'}</button>
+          <button type="button" class="btn-wl-del" title="${l === 'en' ? 'Remove from list' : 'Eliminar de lista'}" onclick="borrarItemWatchlist('${it.id}')">✕</button>
         </div>
       </div>
     `;
@@ -3566,16 +3733,28 @@ function renderizarDiscoverVista() {
   const box = document.getElementById('contenedor-discover-secciones');
   if (!estado.discoverData) return;
   box.innerHTML = '';
+  const l = userPrefs.lang || 'es';
+  const secTitulos = {
+    peliculas: l === 'en' ? '🎬 Trending Movies & Releases' : '🎬 Películas en Tendencia y Estrenos',
+    documentales: l === 'en' ? '📹 Recent & Featured Documentaries' : '📹 Documentales Recientes y Destacados',
+    series: l === 'en' ? '📺 Airing & Trending Series' : '📺 Series en Emisión y Tendencia',
+    docuseries: l === 'en' ? '📽️ Acclaimed Docuseries' : '📽️ Docuseries Aclamadas',
+    musica: l === 'en' ? '🎵 Music (Trending Albums & Artists)' : '🎵 Música (Álbumes y Artistas en Tendencia)',
+    juegos: l === 'en' ? '🎮 Recent & Popular Games' : '🎮 Juegos Recientes y Populares',
+    libros: l === 'en' ? '📖 Featured Books & New Releases' : '📖 Libros Destacados y Novedades',
+    comics: l === 'en' ? '💥 Comics & Graphic Novels (Marvel & DC)' : '💥 Cómics y Novelas Gráficas (Marvel & DC)',
+    mangas: l === 'en' ? '⛩️ Trending & Ongoing Manga' : '⛩️ Mangas Más Leídos y en Publicación'
+  };
   const secciones = [
-    { key: 'peliculas', titulo: '🎬 Películas en Tendencia y Estrenos', cat: 'Peliculas', sub: 'Películas' },
-    { key: 'documentales', titulo: '📹 Documentales Recientes y Destacados', cat: 'Peliculas', sub: 'Documentales' },
-    { key: 'series', titulo: '📺 Series en Emisión y Tendencia', cat: 'Series', sub: 'Series Completas' },
-    { key: 'docuseries', titulo: '📽️ Docuseries Aclamadas', cat: 'Series', sub: 'Series Documentales' },
-    { key: 'musica', titulo: '🎵 Música (Álbumes y Artistas en Tendencia)', cat: 'Musica', sub: 'Discos' },
-    { key: 'juegos', titulo: '🎮 Juegos Recientes y Populares', cat: 'Juegos', sub: 'Videojuegos' },
-    { key: 'libros', titulo: '📖 Libros Destacados y Novedades', cat: 'Lecturas', sub: 'Libros' },
-    { key: 'comics', titulo: '💥 Cómics y Novelas Gráficas (Marvel & DC)', cat: 'Lecturas', sub: 'Cómics' },
-    { key: 'mangas', titulo: '⛩️ Mangas Más Leídos y en Publicación', cat: 'Lecturas', sub: 'Mangas' }
+    { key: 'peliculas', titulo: secTitulos.peliculas, cat: 'Peliculas', sub: 'Películas' },
+    { key: 'documentales', titulo: secTitulos.documentales, cat: 'Peliculas', sub: 'Documentales' },
+    { key: 'series', titulo: secTitulos.series, cat: 'Series', sub: 'Series Completas' },
+    { key: 'docuseries', titulo: secTitulos.docuseries, cat: 'Series', sub: 'Series Documentales' },
+    { key: 'musica', titulo: secTitulos.musica, cat: 'Musica', sub: 'Discos' },
+    { key: 'juegos', titulo: secTitulos.juegos, cat: 'Juegos', sub: 'Videojuegos' },
+    { key: 'libros', titulo: secTitulos.libros, cat: 'Lecturas', sub: 'Libros' },
+    { key: 'comics', titulo: secTitulos.comics, cat: 'Lecturas', sub: 'Cómics' },
+    { key: 'mangas', titulo: secTitulos.mangas, cat: 'Lecturas', sub: 'Mangas' }
   ];
   const activas = estado.discoverCatsActivas || TODAS_CATS_DISCOVER;
   const discFrag = document.createDocumentFragment();
@@ -3594,7 +3773,7 @@ function renderizarDiscoverVista() {
     const itemsVisibles = items.slice(0, limiteActual);
     const sTitle = document.createElement('div');
     sTitle.className = 'discover-section-title';
-    sTitle.innerHTML = `<span>${sec.titulo}</span><span style="font-size:0.75rem; color:var(--muted); font-weight:600;">Mostrando ${itemsVisibles.length} de ${maxDisponible}</span>`;
+    sTitle.innerHTML = `<span>${sec.titulo}</span><span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${l === 'en' ? `Showing ${itemsVisibles.length} of ${maxDisponible}` : `Mostrando ${itemsVisibles.length} de ${maxDisponible}`}</span>`;
     discFrag.appendChild(sTitle);
     const grid = document.createElement('div');
     grid.className = 'discover-grid';
@@ -3607,6 +3786,8 @@ function renderizarDiscoverVista() {
       const posterFallback = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='240' fill='%23334155'><rect width='100%' height='100%'/></svg>";
       const yaEnLista = estaEnWatchlist(it);
       const creadorConRol = formatearCreadorConRol(sec.cat, sec.sub, it.creador);
+      const btnAddTxt = yaEnLista ? (l === 'en' ? '✓ In List' : '✓ En Lista') : (l === 'en' ? '+ Watchlist' : '+ Lista');
+      const btnLogTitle = l === 'en' ? 'Log in my history now' : 'Registrar ahora en mi historial';
 
       card.innerHTML = `
         ${it.motivo ? `<div class="discover-rec-badge">${it.motivo}</div>` : ''}
@@ -3623,8 +3804,8 @@ function renderizarDiscoverVista() {
             ${obtenerBadgeAmigoActividad(titOrig, sec.cat)}
           </div>
           <div class="discover-actions">
-            <button type="button" class="btn-add-discover ${yaEnLista ? 'added' : ''}">${yaEnLista ? '✓ En Lista' : '+ Lista'}</button>
-            <button type="button" class="btn-log-discover" title="Registrar ahora en mi historial">✓</button>
+            <button type="button" class="btn-add-discover ${yaEnLista ? 'added' : ''}">${btnAddTxt}</button>
+            <button type="button" class="btn-log-discover" title="${btnLogTitle}">✓</button>
           </div>
         </div>
       `;
@@ -3632,7 +3813,7 @@ function renderizarDiscoverVista() {
       btnAdd.onclick = () => {
         if (btnAdd.classList.contains('added')) return;
         btnAdd.classList.add('added');
-        btnAdd.textContent = '✓ Agregado';
+        btnAdd.textContent = l === 'en' ? '✓ Added' : '✓ Agregado';
         agregarAWatchlistDirecto(it, btnAdd);
       };
       card.querySelector('.btn-log-discover').onclick = () => registrarDirectoDesdeDiscover(it);
@@ -3644,7 +3825,7 @@ function renderizarDiscoverVista() {
       const sigCantidad = Math.min(24, limiteActual + 6);
       const moreWrap = document.createElement('div');
       moreWrap.className = 'discover-more-wrap';
-      moreWrap.innerHTML = `<button type="button" class="btn-discover-more" onclick="mostrarMasDiscover('${sec.key}')">➕ Mostrar más (+6 · ver ${sigCantidad} de ${maxDisponible})</button>`;
+      moreWrap.innerHTML = `<button type="button" class="btn-discover-more" onclick="mostrarMasDiscover('${sec.key}')">➕ ${l === 'en' ? `Show more (+6 · view ${sigCantidad} of ${maxDisponible})` : `Mostrar más (+6 · ver ${sigCantidad} de ${maxDisponible})`}</button>`;
       discFrag.appendChild(moreWrap);
     }
   });
@@ -3663,8 +3844,8 @@ function obtenerItemsWatchlistActuales() {
 }
 function renderizarWatchlist() { const c = estado.categoria, s = estado.subcategoria; const grid = document.getElementById('grid-watchlist-items'); if (!grid) return; grid.innerHTML = ''; const items = obtenerItemsWatchlistActuales(); const l = userPrefs.lang || 'es';
 const catNom = I18N[l]?.cats?.[c] || CONFIG[c]?.nombre || c; let titNombre = I18N[l]?.subs?.[s] || s; if (s === 'Watchlist') titNombre = `Watchlist: ${catNom}`; const titEl = document.getElementById('titulo-watchlist-nombre'); if (titEl) titEl.textContent = `${titNombre} (${items.length})`; if (!items.length) {
-grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:32px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border);">No tienes elementos pendientes en <strong>${titNombre}</strong>. ¡Usa el buscador de arriba o explora Discover para agregar uno! ✨</div>`; aplicarEstilosGlobales(); return; }
-const wlFrag = document.createDocumentFragment(); items.forEach(it => { const card = document.createElement('div'); card.className = 'watchlist-card'; card.innerHTML = ` <img class="watchlist-poster" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'170\' height=\'255\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'170\\' height=\\'255\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'" onclick="abrirFichaTecnica('${it.id}')" title="Ver ficha técnica"> <div class="watchlist-body"> <div> <div class="watchlist-item-title" onclick="abrirFichaTecnica('${it.id}')" style="cursor:pointer;">${it.titulo}</div> <div class="watchlist-item-meta">${it.categoria ? `<span style="color:var(--accent);font-weight:700;">${it.categoria}</span> · ` : ''}${it.creador} ${it.anio ? '(' + it.anio + ')' : ''}</div> ${obtenerBadgeAmigoActividad(it.titulo, it.categoria)} </div> <div class="watchlist-actions"> <button type="button" class="btn-wl-play" onclick="consumirDesdeWatchlist('${it.id}')">✓ Registrar</button> <button type="button" class="btn-wl-del" title="Eliminar de lista" onclick="borrarItemWatchlist('${it.id}')">✕</button> </div> </div> `;
+grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:32px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border);">${l === 'en' ? `No pending items in <strong>${titNombre}</strong>. Use the search bar above or explore Discover to add one! ✨` : `No tienes elementos pendientes en <strong>${titNombre}</strong>. ¡Usa el buscador de arriba o explora Discover para agregar uno! ✨`}</div>`; aplicarEstilosGlobales(); return; }
+const wlFrag = document.createDocumentFragment(); items.forEach(it => { const card = document.createElement('div'); card.className = 'watchlist-card'; card.innerHTML = ` <img class="watchlist-poster" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'170\' height=\'255\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'170\\' height=\\'255\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'" onclick="abrirFichaTecnica('${it.id}')" title="Ver ficha técnica"> <div class="watchlist-body"> <div> <div class="watchlist-item-title" onclick="abrirFichaTecnica('${it.id}')" style="cursor:pointer;">${it.titulo}</div> <div class="watchlist-item-meta">${it.categoria ? `<span style="color:var(--accent);font-weight:700;">${it.categoria}</span> · ` : ''}${it.creador} ${it.anio ? '(' + it.anio + ')' : ''}</div> ${obtenerBadgeAmigoActividad(it.titulo, it.categoria)} </div> <div class="watchlist-actions"> <button type="button" class="btn-wl-play" onclick="consumirDesdeWatchlist('${it.id}')">${l === 'en' ? '✓ Log' : '✓ Registrar'}</button> <button type="button" class="btn-wl-del" title="${l === 'en' ? 'Remove from list' : 'Eliminar de lista'}" onclick="borrarItemWatchlist('${it.id}')">✕</button> </div> </div> `;
 wlFrag.appendChild(card); }); grid.appendChild(wlFrag); aplicarEstilosGlobales(); }
 function agregarAWatchlistDirecto(it, btnEl = null) {
   if (!estado.userEmail) {
@@ -3984,30 +4165,39 @@ document.getElementById('rating-label').textContent = `${val.toFixed(1)} / 5`; }
 function dibujarHoverEstrellas(val) { document.querySelectorAll('#rating-stars .star-box').forEach((s, idx) => { s.className = `star-box ${val >= idx + 1 ? 'full' : (val >= idx + 0.5 ? 'half' : '')}`; }); document.getElementById('rating-label').textContent = `${val.toFixed(1)} / 5`; }
 let regPrecisionActual = 'dia';
 function inicializarSelectoresFechasAproximadas() {
+  const l = userPrefs.lang || 'es';
   const anios = ['2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2010', '2005', '2000'];
-  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const meses = I18N[l]?.meses || ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   const selSemAnio = document.getElementById('sel-semana-anio');
   const selSemMes = document.getElementById('sel-semana-mes');
   if (selSemAnio && selSemMes) {
+    const curValAnio = selSemAnio.value;
+    const curValMes = selSemMes.value;
     selSemAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
     selSemMes.innerHTML = meses.map((m, idx) => `<option value="${idx}">${m}</option>`).join('');
     const hoy = new Date();
-    selSemMes.value = String(hoy.getMonth());
+    selSemMes.value = (curValMes !== '' && curValMes !== null && curValMes !== undefined) ? curValMes : String(hoy.getMonth());
+    if (curValAnio) selSemAnio.value = curValAnio;
     poblarSemanasDelMes();
     actualizarFechaDesdeSemana();
   }
   const selMesNom = document.getElementById('sel-mes-nombre');
   const selMesAnio = document.getElementById('sel-mes-anio');
   if (selMesNom && selMesAnio) {
+    const curValMesNom = selMesNom.value;
+    const curValMesAnio = selMesAnio.value;
     selMesNom.innerHTML = meses.map(m => `<option value="${m}">${m}</option>`).join('');
     selMesAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
     const hoy = new Date();
-    selMesNom.value = meses[hoy.getMonth()];
+    selMesNom.value = curValMesNom || meses[hoy.getMonth()];
+    if (curValMesAnio) selMesAnio.value = curValMesAnio;
     actualizarFechaDesdeMes();
   }
   const selSoloAnio = document.getElementById('sel-solo-anio');
   if (selSoloAnio) {
+    const curValSolo = selSoloAnio.value;
     selSoloAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
+    if (curValSolo) selSoloAnio.value = curValSolo;
     actualizarFechaDesdeSoloAnio();
   }
 }
@@ -4016,6 +4206,7 @@ function poblarSemanasDelMes() {
   const selMes = document.getElementById('sel-semana-mes');
   const selNum = document.getElementById('sel-semana-num');
   if (!selAnio || !selMes || !selNum) return;
+  const l = userPrefs.lang || 'es';
   const anio = parseInt(selAnio.value, 10) || 2026;
   const mes = parseInt(selMes.value, 10) || 0;
   const totalDias = new Date(anio, mes + 1, 0).getDate();
@@ -4031,7 +4222,7 @@ function poblarSemanasDelMes() {
   semanas.forEach(s => {
     const dIni = String(s.ini).padStart(2, '0');
     const dFin = String(s.fin).padStart(2, '0');
-    const label = `Semana ${s.num}: ${dIni}/${mm} ➔ ${dFin}/${mm}`;
+    const label = `${l === 'en' ? 'Week' : 'Semana'} ${s.num}: ${dIni}/${mm} ➔ ${dFin}/${mm}`;
     const value = `${dIni}/${mm}/${anio} ➔ ${dFin}/${mm}/${anio}`;
     const opt = document.createElement('option');
     opt.value = value;
@@ -4055,18 +4246,21 @@ function cambiarPrecisionFechaFormulario(modo) {
 function actualizarFechaDesdeSemana() {
   const selNum = document.getElementById('sel-semana-num');
   const badge = document.getElementById('semana-preview-badge');
-  if (selNum && badge) badge.textContent = `📍 Registrando en: ${selNum.value}`;
+  const l = userPrefs.lang || 'es';
+  if (selNum && badge) badge.textContent = `📍 ${l === 'en' ? 'Logging in:' : 'Registrando en:'} ${selNum.value}`;
 }
 function actualizarFechaDesdeMes() {
   const selMes = document.getElementById('sel-mes-nombre');
   const selAnio = document.getElementById('sel-mes-anio');
   const badge = document.getElementById('mes-preview-badge');
-  if (selMes && selAnio && badge) badge.textContent = `📍 Registrando en: ${selMes.value} ${selAnio.value}`;
+  const l = userPrefs.lang || 'es';
+  if (selMes && selAnio && badge) badge.textContent = `📍 ${l === 'en' ? 'Logging in:' : 'Registrando en:'} ${selMes.value} ${selAnio.value}`;
 }
 function actualizarFechaDesdeSoloAnio() {
   const selAnio = document.getElementById('sel-solo-anio');
   const badge = document.getElementById('anio-preview-badge');
-  if (selAnio && badge) badge.textContent = `📍 Registrando en el año: ${selAnio.value}`;
+  const l = userPrefs.lang || 'es';
+  if (selAnio && badge) badge.textContent = `📍 ${l === 'en' ? 'Logging in year:' : 'Registrando en el año:'} ${selAnio.value}`;
 }
 function obtenerFechasParaGuardarNuevo() {
   const sinF = document.getElementById('chk-no-fecha')?.checked;
