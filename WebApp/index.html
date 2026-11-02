@@ -154,7 +154,22 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .amigo-subcat-group-badge{font-size:0.72rem;color:var(--muted);font-weight:600;}
 .amigo-reg-item-card{display:flex;align-items:flex-start;padding:11px 13px;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:10px;transition:var(--tr);}
 .amigo-reg-item-card:hover{border-color:rgba(56,189,248,0.4);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.25);}
-</style> </head> <body> <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <span class="year-display">2026</span> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
+/* SELECTOR DE AÑO Y PRECISIÓN DE FECHAS */
+.btn-year-picker{background:none;border:none;cursor:pointer;padding:2px 8px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;transition:var(--tr);outline:none;}
+.btn-year-picker:hover{background:rgba(56,189,248,0.1);transform:scale(1.02);filter:drop-shadow(0 0 14px rgba(56,189,248,0.6));}
+.year-picker-arrow{font-size:0.85rem;background:none;-webkit-text-fill-color:var(--accent);color:var(--accent);transition:transform 0.25s ease;}
+.year-dropdown-menu{position:absolute;top:calc(100% + 8px);left:0;background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 12px 36px rgba(0,0,0,0.6);padding:6px;min-width:185px;z-index:9999;backdrop-filter:blur(12px);}
+.year-dropdown-header{font-size:0.72rem;color:var(--muted);font-weight:700;text-transform:uppercase;padding:6px 10px 4px;letter-spacing:0.5px;}
+.year-dropdown-item{display:flex;align-items:center;justify-content:space-between;width:100%;padding:9px 12px;border:none;background:transparent;color:var(--text);border-radius:8px;font-size:0.88rem;cursor:pointer;text-align:left;transition:var(--tr);}
+.year-dropdown-item:hover{background:rgba(56,189,248,0.12);color:var(--accent);}
+.year-dropdown-item.active{background:rgba(56,189,248,0.18);color:var(--accent);font-weight:700;}
+.year-dropdown-divider{height:1px;background:var(--border);margin:4px 0;}
+.year-badge-active{font-size:0.68rem;background:rgba(56,189,248,0.2);color:var(--accent);border-radius:6px;padding:2px 6px;font-weight:700;}
+.date-precision-tabs{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:2px;gap:2px;}
+.date-prec-btn{background:transparent;border:none;color:var(--muted);padding:5px 9px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:4px;}
+.date-prec-btn:hover{color:var(--text);background:rgba(56,189,248,0.08);}
+.date-prec-btn.active{background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.3);color:var(--accent);font-weight:700;}
+</style> </head> <body> <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="year-display btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span>🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
 </div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-discover" onclick="abrirVistaDiscover()"><span class="emoji-dyn">🧭</span><span data-i18n="nav_discover">Discover</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <h2 style="font-size:1.3rem;" data-i18n="home_title">Índice General</h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="home_subtitle">Resumen exhaustivo de tus hábitos y favoritos</p> <div style="margin:10px 0 14px; display:flex; gap:10px; flex-wrap:wrap;"> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border-radius:12px;"><span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span></button> </div>
 <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <!-- VISTA DISCOVER --> <div id="vista-discover" style="display:none;"> <div class="discover-header-bar"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>🧭 Discover</span> <span class="discover-live-badge"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span>
@@ -258,8 +273,65 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div style="flex:1; min-width:140px;"> <label data-i18n="lbl_temporada_num">¿Qué número de temporada es?:</label> <input type="number" id="input-temporada-num" class="form-input" placeholder="Ej: 1" min="1" oninput="actualizarAnioTemporada(this.value)"> </div> <div class="checkbox-row" style="margin-top:18px;"> <input type="checkbox" id="chk-temporada-unica"> <label for="chk-temporada-unica" data-i18n="chk_temporada_unica">¿Es temporada única? (Guardar también en Series)</label>
 </div> </div> </div> <div class="form-group" id="grupo-comic-manga" style="display:none;"> <div class="date-row"> <div style="flex:1;"><label data-i18n="lbl_arco">Nombre del Arco:</label><input type="text" id="input-arco" class="form-input" placeholder="Ej: Batman: Año Uno / Marineford"></div>
 <div style="flex:1;"><label data-i18n="lbl_numeros">Números que abarca:</label><input type="text" id="input-numeros-abarcados" class="form-input" placeholder="Ej: 404-407 / 550-580"></div> </div> </div> <div class="form-group" id="grupo-horas-juegos" style="display:none;"> <label data-i18n="lbl_horas">¿Cuántas horas te tomó jugar?:</label> <input type="number" id="input-horas-jugadas" class="form-input" placeholder="Ej: 30" min="1" style="max-width:160px;">
-</div> <div class="form-group" id="fechas-container"> <div class="date-row"> <div style="flex:1;"><label id="lbl-fecha-ini" data-i18n="lbl_fecha_ini">Fecha de inicio:</label><input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly></div>
-<div style="flex:1;" id="col-fecha-fin"><label data-i18n="lbl_fecha_fin">Fecha de término:</label><input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly></div> <button type="button" class="btn-today-pill" onclick="establecerFechaHoy()" title="Poner fecha de hoy">📅 Hoy</button> </div> <div class="checkbox-row"><input type="checkbox" id="chk-no-fecha" onchange="toggleSinFecha(this.checked)"><label for="chk-no-fecha" data-i18n="chk_no_fecha">No registrada / No recuerdo la fecha exacta</label></div>
+</div> <div class="form-group" id="fechas-container">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
+    <span style="font-size:0.8rem;color:var(--muted);font-weight:600;">¿Cuándo lo completaste?:</span>
+    <div class="date-precision-tabs" id="reg-prec-tabs">
+      <button type="button" class="date-prec-btn active" id="btn-reg-prec-dia" onclick="cambiarPrecisionFechaFormulario('dia')">📅 Día exacto</button>
+      <button type="button" class="date-prec-btn" id="btn-reg-prec-semana" onclick="cambiarPrecisionFechaFormulario('semana')">🗓️ Semana</button>
+      <button type="button" class="date-prec-btn" id="btn-reg-prec-mes" onclick="cambiarPrecisionFechaFormulario('mes')">🌙 Mes</button>
+      <button type="button" class="date-prec-btn" id="btn-reg-prec-anio" onclick="cambiarPrecisionFechaFormulario('anio')">📆 Año</button>
+    </div>
+  </div>
+  <!-- Modo Día -->
+  <div id="wrap-prec-dia" class="date-prec-wrap">
+    <div class="date-row">
+      <div style="flex:1;"><label id="lbl-fecha-ini" data-i18n="lbl_fecha_ini">Fecha de inicio:</label><input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly></div>
+      <div style="flex:1;" id="col-fecha-fin"><label data-i18n="lbl_fecha_fin">Fecha de término:</label><input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly></div>
+      <button type="button" class="btn-today-pill" onclick="establecerFechaHoy()" title="Poner fecha de hoy">📅 Hoy</button>
+    </div>
+  </div>
+  <!-- Modo Semana -->
+  <div id="wrap-prec-semana" class="date-prec-wrap" style="display:none;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <div style="flex:1;min-width:105px;">
+        <label style="font-size:0.75rem;color:var(--muted);">Año:</label>
+        <select id="sel-semana-anio" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeSemana()"></select>
+      </div>
+      <div style="flex:1.2;min-width:125px;">
+        <label style="font-size:0.75rem;color:var(--muted);">Mes:</label>
+        <select id="sel-semana-mes" class="form-input" style="height:38px;padding:4px 8px;" onchange="poblarSemanasDelMes(); actualizarFechaDesdeSemana();"></select>
+      </div>
+      <div style="flex:1.8;min-width:180px;">
+        <label style="font-size:0.75rem;color:var(--muted);">Semana del mes:</label>
+        <select id="sel-semana-num" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeSemana()"></select>
+      </div>
+    </div>
+    <div id="semana-preview-badge" style="font-size:0.78rem;color:var(--accent);margin-top:6px;font-weight:600;"></div>
+  </div>
+  <!-- Modo Mes -->
+  <div id="wrap-prec-mes" class="date-prec-wrap" style="display:none;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+      <div style="flex:1.2;min-width:140px;">
+        <label style="font-size:0.75rem;color:var(--muted);">Mes:</label>
+        <select id="sel-mes-nombre" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeMes()"></select>
+      </div>
+      <div style="flex:1;min-width:110px;">
+        <label style="font-size:0.75rem;color:var(--muted);">Año:</label>
+        <select id="sel-mes-anio" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeMes()"></select>
+      </div>
+    </div>
+    <div id="mes-preview-badge" style="font-size:0.78rem;color:var(--accent);margin-top:6px;font-weight:600;"></div>
+  </div>
+  <!-- Modo Año -->
+  <div id="wrap-prec-anio" class="date-prec-wrap" style="display:none;">
+    <div style="max-width:200px;">
+      <label style="font-size:0.75rem;color:var(--muted);">Año aproximado:</label>
+      <select id="sel-solo-anio" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeSoloAnio()"></select>
+    </div>
+    <div id="anio-preview-badge" style="font-size:0.78rem;color:var(--accent);margin-top:6px;font-weight:600;"></div>
+  </div>
+  <div class="checkbox-row" style="margin-top:8px;"><input type="checkbox" id="chk-no-fecha" onchange="toggleSinFecha(this.checked)"><label for="chk-no-fecha" data-i18n="chk_no_fecha">No registrada / No recuerdo la fecha exacta</label></div>
 </div> <div class="form-group"> <label data-i18n="lbl_calificacion">Calificación:</label> <div class="stars-wrapper" id="rating-stars" onmouseleave="restaurarHoverEstrellas()"></div> <span id="rating-label" style="font-size:.85rem; color:var(--accent); margin-left:8px;">0.0 / 5</span> </div> <div class="form-group" id="grupo-rewatch-checkbox" style="display:none; margin:10px 0 16px;">
 <div class="checkbox-row" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:8px; padding:10px 14px;"> <input type="checkbox" id="chk-es-rewatch" style="width:18px; height:18px; cursor:pointer;"> <label for="chk-es-rewatch" style="cursor:pointer; color:var(--text); font-weight:600; margin:0;" data-i18n="lbl_es_rewatch">🔁 Ya la he visto antes (Rewatch)</label> </div> </div>
 <div class="form-group"> <label data-i18n="lbl_comentario">Comentario / Reseña:</label> <textarea id="input-comentario" class="comment-box" placeholder="Escribe lo que te pareció (Enter para guardar)..." onkeydown="manejarEnterComentario(event)"></textarea> </div> <button class="btn-save" id="btn-guardar" onclick="guardarNuevoElemento()" data-i18n="btn_guardar">Guardar en Mediary</button> </div> <!-- VISTA NORMAL DE HISTORIAL -->
@@ -520,11 +592,11 @@ throw new Error(`Supabase (${r.status}): ${txt}`); }; const JSON_CACHE_ = new Ma
 const timer = setTimeout(() => { delete window[cb]; s.remove(); resolve(null); }, 4500); window[cb] = data => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(data); }; s.onerror = () => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(null); };
 s.src = u + (u.includes('?') ? '&' : '?') + 'output=jsonp&callback=' + cb; document.body.appendChild(s); }); }
 const r = await fetch(u); const d = r.ok ? await r.json() : null; if (d && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d); return d; } catch (e) { return null; }
-}; const fmtFecha_ = v => { if (!v || v === 'Sin fecha' || v === '') return 'Sin fecha'; if (v instanceof Date) return `${String(v.getDate()).padStart(2,'0')}/${String(v.getMonth()+1).padStart(2,'0')}/${v.getFullYear()}`; const s = String(v).trim(); if (s === 'Sin fecha') return 'Sin fecha';
+}; const fmtFecha_ = v => { if (!v || v === 'Sin fecha' || v === '' || v === 'undefined') return 'Sin fecha'; if (v instanceof Date) return `${String(v.getDate()).padStart(2,'0')}/${String(v.getMonth()+1).padStart(2,'0')}/${v.getFullYear()}`; const s = String(v).trim(); if (s === 'Sin fecha') return 'Sin fecha';
 if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/'); return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}/${p[2]}`; }
 if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const p = s.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; }
-const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }; const parseTs_ = v => { if (!v || v === 'Sin fecha') return 0; const p = String(v).split('/');
-return p.length === 3 ? new Date(p[2], p[1] - 1, p[0]).getTime() : (new Date(v).getTime() || 0); }; const fmtTitIdioma_ = (origTitle, engTitle, origLang) => { const tOrig = String(origTitle || engTitle || '').trim(), tEng = String(engTitle || '').trim(), lang = String(origLang || '').toLowerCase();
+if (s.includes('➔') || s.includes(' - ') || s.startsWith('Semana') || /^[a-záéíóúñ]+\s+\d{4}$/i.test(s) || /^\d{4}$/.test(s)) return s;
+const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }; const parseTs_ = v => timestampDeFecha(v); const fmtTitIdioma_ = (origTitle, engTitle, origLang) => { const tOrig = String(origTitle || engTitle || '').trim(), tEng = String(engTitle || '').trim(), lang = String(origLang || '').toLowerCase();
 const mostrarIngles = (lang && lang !== 'en' && lang !== 'es') && tEng && tEng.toLowerCase() !== tOrig.toLowerCase(); return { titulo: tOrig, tituloOriginal: tOrig, tituloIngles: mostrarIngles ? tEng : '' }; }; const SERVER_API = { async obtenerDatosAmigosUsuario(userEmail) { try { const email = normEm_(userEmail); if (!email) return { exito: false, error: 'Sin sesión' }; const myP = await SERVER_API.obtenerPerfilUsuario(email); const prefs = myP.preferencias || {}; const amigosEmails = prefs.amigos || []; const solicitudesEmails = prefs.solicitudes_recibidas || []; const [amigosRowsList, solicitudesRowsList, amigosRegsList] = await Promise.all([
   Promise.all(amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*', 'GET').catch(() => []))),
   Promise.all(solicitudesEmails.map(sEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(sEmail) + '&select=*', 'GET').catch(() => []))),
@@ -1853,17 +1925,65 @@ const TODAS_LAS_WATCHLISTS = [
   { cat: 'Lecturas', sub: 'To Read: Cómics', emoji: '💥', label: 'To Read: Cómics' },
   { cat: 'Lecturas', sub: 'To Read: Mangas', emoji: '⛩️', label: 'To Read: Mangas' }
 ];
-let estado = { userEmail: '', modoAuthModal: 'login', categoria: 'inicio', subcategoria: 'Películas', wlCategoria: 'Peliculas', wlSubcategoria: 'Películas', ultimaWatchlist: { cat: 'Peliculas', sub: 'Watchlist' }, registros: [], watchlist: [], discoverData: null, discoverSeed: 1, discoverCatsActivas: [...TODAS_CATS_DISCOVER], discoverLimites: {},
+let estado = { userEmail: '', anioActivo: '2026', modoAuthModal: 'login', categoria: 'inicio', subcategoria: 'Películas', wlCategoria: 'Peliculas', wlSubcategoria: 'Películas', ultimaWatchlist: { cat: 'Peliculas', sub: 'Watchlist' }, registros: [], watchlist: [], discoverData: null, discoverSeed: 1, discoverCatsActivas: [...TODAS_CATS_DISCOVER], discoverLimites: {},
 discoverAutoRefresh: true, modoConfigurarFavs: false, seleccionado: null, calificacion: 0, tipoEventoConcierto: 'Concierto', artistasConciertoSeleccionados: [], ocultarRewatches: false, ultimoTerminoBuscado: '', artistaPendienteSugerido: null, subFavEnEdicion: null, registrosImportarPendientes: []
 }; let cropState = { img: null, scale: 1, minScale: 1, offsetX: 0, offsetY: 0, dragging: false, startX: 0, startY: 0, confirmedDataUrl: null, listenersReady: false };
 let fpInicio = null, fpFin = null; let timerDebounce = null, timerDebounceArtista = null, timerDebounceFav = null; let timerAutoDiscover = null; let carruselIntervalos = []; let serieCompletaPendiente = null, calificacionSerieCompleta = 0, idParaEliminar = null, regParaEliminar = null;
 let _searchRequestId = 0; const _CLIENT_SEARCH_CACHE = new Map(); const _CLIENT_ARTISTA_CACHE = new Map();
 const t = k => I18N[userPrefs.lang || 'es'][k] || k;
 function esSubcategoriaWatchlist(s) { if (!s) return false; return s === 'Watchlist' || s.startsWith('Watchlist:') || s === 'To Listen' || s === 'To Play' || s.startsWith('To Read') || s === 'todas_watchlists'; }
+
+function toggleMenuAniosApp(e) {
+  if (e) { e.stopPropagation(); e.preventDefault(); }
+  const m = document.getElementById('menu-desplegable-anios');
+  const arr = document.getElementById('arrow-selector-anio');
+  if (!m) return;
+  const estaAbierto = m.style.display !== 'none';
+  m.style.display = estaAbierto ? 'none' : 'block';
+  if (arr) arr.style.transform = estaAbierto ? 'rotate(0deg)' : 'rotate(180deg)';
+}
+function cerrarMenuAniosApp() {
+  const m = document.getElementById('menu-desplegable-anios');
+  const arr = document.getElementById('arrow-selector-anio');
+  if (m) m.style.display = 'none';
+  if (arr) arr.style.transform = 'rotate(0deg)';
+}
+function actualizarUISelectorAnio() {
+  const label = document.getElementById('label-anio-activo');
+  if (label) label.textContent = estado.anioActivo === 'todos' ? 'Todos los Tiempos' : estado.anioActivo;
+  document.querySelectorAll('#menu-desplegable-anios .year-dropdown-item').forEach(btn => {
+    btn.classList.toggle('active', btn.getAttribute('data-year') === estado.anioActivo);
+  });
+}
+function cambiarAnioVisualizacion(anio) {
+  estado.anioActivo = anio;
+  try { localStorage.setItem('mediary_anio_activo', anio); } catch (e) {}
+  actualizarUISelectorAnio();
+  cerrarMenuAniosApp();
+  if (estado.categoria === 'inicio') renderizarStats();
+  else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
+  else if (!esSubcategoriaWatchlist(estado.subcategoria)) filtrarYMostrarHistorial();
+  mostrarToastPersonalizado(anio === 'todos' ? '🌐 Mostrando registros de Todos los Tiempos' : `📅 Mostrando registros del año ${anio}`);
+}
+function extraerAnioDeRegistro(r) {
+  if (!r) return '';
+  const f = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? r.fechaFin : (r.fechaInicio && r.fechaInicio !== 'Sin fecha' ? r.fechaInicio : '');
+  if (f) {
+    const m = String(f).match(/\b(20\d{2}|19\d{2})\b/);
+    if (m) return m[1];
+  }
+  return '';
+}
+function obtenerRegistrosFiltradosPorAnio() {
+  if (!estado.anioActivo || estado.anioActivo === 'todos') return estado.registros;
+  return estado.registros.filter(r => extraerAnioDeRegistro(r) === estado.anioActivo);
+}
+
 function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) userPrefs = Object.assign(userPrefs, JSON.parse(p)); } catch (e) {}
+try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) estado.anioActivo = anioG; } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
 try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); } } catch (e) {}
-aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); }
+aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); actualizarUISelectorAnio(); }
 function guardarPreferenciasLocales() { try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {} }
 function guardarPerfilLocal() { try { localStorage.setItem('Mediary_perfil_v1', JSON.stringify(perfilUsuario)); if (estado.userEmail) localStorage.setItem('Mediary_active_user_v1', estado.userEmail); } catch (e) {} }
 function registrarCuentaEnDispositivo(email, nick, avatar) { if (!email) return; try { const lista = JSON.parse((localStorage.getItem('Mediary_saved_accounts_v1') || localStorage.getItem('MyMediary_saved_accounts_v1')) || '[]').filter(x => x.email !== email); lista.unshift({ email, nickname: nick || email.split('@')[0], avatar: avatar || '🎬' });
@@ -2008,12 +2128,12 @@ if (cat === 'Musica') return sub === 'Discos' ? (x.subcategoria === 'Discos' || 
 if (cat === 'Juegos') return sub === 'Videojuegos' ? (x.subcategoria === 'Videojuegos' || x.subcategoria === 'Juegos' || x.subcategoria === 'General') : x.subcategoria === sub;
 if (cat === 'Lecturas') return sub === 'Libros' ? (x.subcategoria === 'Libros' || x.subcategoria === 'Libro') : (sub === 'Cómics' ? (x.subcategoria === 'Cómics' || x.subcategoria === 'Cómic') : (sub === 'Mangas' ? (x.subcategoria === 'Mangas' || x.subcategoria === 'Manga') : x.subcategoria === sub));
 return x.subcategoria === sub; }
-const obtenerRegistrosDeSubcategoria = (cat, sub) => estado.registros.filter(x => perteneceASub(x, cat, sub)); function abrirSelectorFavoritoSub(cat, sub) { estado.subFavEnEdicion = { cat, sub }; const keyFav = `${cat}__${sub}`;
+const obtenerRegistrosDeSubcategoria = (cat, sub, ignorarFiltroAnio = false) => { const base = (ignorarFiltroAnio || !estado.anioActivo || estado.anioActivo === 'todos') ? estado.registros : estado.registros.filter(r => extraerAnioDeRegistro(r) === estado.anioActivo); return base.filter(x => perteneceASub(x, cat, sub)); }; function abrirSelectorFavoritoSub(cat, sub) { estado.subFavEnEdicion = { cat, sub }; const keyFav = `${cat}__${sub}`;
 document.getElementById('titulo-modal-fav').textContent = `👑 Favorito en ${sub}`; document.getElementById('input-filtro-fav').value = ''; document.getElementById('btn-quitar-fav').style.display = perfilUsuario.favoritos?.[keyFav] ? 'inline-block' : 'none';
 filtrarOpcionesFavorito(''); document.getElementById('modal-seleccionar-favorito').style.display = 'flex'; }
 function cerrarModalSeleccionarFavorito() { document.getElementById('modal-seleccionar-favorito').style.display = 'none'; estado.subFavEnEdicion = null; }
 function filtrarOpcionesFavorito(q) { if (!estado.subFavEnEdicion) return; const { cat, sub } = estado.subFavEnEdicion; const box = document.getElementById('lista-candidatos-fav'); box.innerHTML = ''; const qNorm = (q || '').trim().toLowerCase();
-const propios = obtenerRegistrosDeSubcategoria(cat, sub) .filter(r => !qNorm || r.titulo.toLowerCase().includes(qNorm) || (r.creador || '').toLowerCase().includes(qNorm))
+const propios = obtenerRegistrosDeSubcategoria(cat, sub, true) .filter(r => !qNorm || r.titulo.toLowerCase().includes(qNorm) || (r.creador || '').toLowerCase().includes(qNorm))
 .sort((a, b) => (Number(b.calificacion) || 0) - (Number(a.calificacion) || 0)); const vistos = new Set(); propios.forEach(r => { const k = r.titulo.toLowerCase();
 if (vistos.has(k)) return; vistos.add(k); const row = document.createElement('div'); row.className = 'result-item'; row.style.borderRadius = '8px'; row.style.border = '1px solid var(--border)'; row.innerHTML = ` <img class="result-thumb" src="${r.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'42\' height=\'60\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div style="flex:1;"> <div style="font-weight:700; font-size:0.9rem;">${r.titulo}</div> <div style="font-size:0.78rem; color:var(--muted);">${r.creador || ''} ${r.anio ? '(' + r.anio + ')' : ''} · <span style="color:var(--star-active);">★ ${Number(r.calificacion || 0).toFixed(1)}</span></div> </div> <button type="button" class="btn-wl-play" style="max-width:85px;">Elegir 👑</button> `;
 row.onclick = () => asignarFavoritoSubcategoria({ titulo: r.titulo, creador: r.creador, anio: r.anio, poster: r.poster, calificacion: r.calificacion
@@ -2093,7 +2213,7 @@ function abrirVistaPerfil(pushNav = true) { if (pushNav) registrarNavegacionApp(
 document.getElementById('vista-inicio').style.display = 'none'; document.getElementById('vista-categoria').style.display = 'none'; document.getElementById('vista-discover').style.display = 'none'; const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none'; const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
 document.getElementById('vista-perfil').style.display = 'block'; renderizarCabeceraPerfil(); renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
 function abrirModalPerfil() { abrirVistaPerfil(); }
-const cerrarModalPerfil = () => {}; function parsearFechaAObjeto(str) { if (!str || str === 'Sin fecha') return null; const p = str.split('/'); if (p.length === 3) return new Date(Number(p[2]), Number(p[1]) - 1, Number(p[0])); const d = new Date(str); return isNaN(d.getTime()) ? null : d; }
+const cerrarModalPerfil = () => {}; function parsearFechaAObjeto(str) { if (!str || str === 'Sin fecha') return null; const s = String(str).trim(); const m = s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); if (m) return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1])); const ts = timestampDeFecha(s); return ts > 0 ? new Date(ts) : null; }
 function normalizarNombreParaDesglose(cat, sub) { const c = cat || '', s = sub || ''; if (c === 'Peliculas') { if (s.toLowerCase().includes('docu')) return 'documental'; return 'película'; }
 if (c === 'Series') { if (s.toLowerCase().includes('docu')) return 'serie documental'; if (s.toLowerCase().includes('completa')) return 'serie completa'; return 'temporada'; }
 if (c === 'Musica') { if (s.toLowerCase().includes('disco')) return 'disco'; if (s.toLowerCase().includes('concierto')) return 'concierto'; return 'artista'; }
@@ -2305,10 +2425,59 @@ function subTieneRango(c, s, reg) {
 function subAdmiteRewatch(c, s) { return !!CONFIG[c]?.subs?.find(x => x.id === s)?.admiteRewatch; }
 function sanitizarFechaFrontend(v) { if (!v || v === 'Sin fecha' || v === 'undefined') return 'Sin fecha'; const s = String(v).trim(); if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s; if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/');
 return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}/${p[2]}`; }
+if (s.includes('➔') || s.includes(' - ') || s.startsWith('Semana') || /^[a-záéíóúñ]+\s+\d{4}$/i.test(s) || /^\d{4}$/.test(s)) return s;
 const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }
-const timestampDeFecha = v => { if (!v || v === 'Sin fecha') return 0; const p = String(v).split('/'); return p.length === 3 ? new Date(p[2], p[1]-1, p[0]).getTime() : (new Date(v).getTime()||0); }; function extraerMesClave(fechaStr) {
-if (!fechaStr || fechaStr === 'Sin fecha') return { clave: 'SIN_FECHA', mesNombre: t('stat_sin_fecha') }; const p = fechaStr.split('/'); if (p.length === 3) { const m = parseInt(p[1], 10) - 1; return { clave: `${p[2]}-${m}`, mesNombre: (I18N[userPrefs.lang||'es'].meses)[m] || 'Mes' }; }
-return { clave: 'OTRO', mesNombre: 'Otras fechas' }; }
+const NOMBRES_MESES_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const NOMBRES_MESES_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const timestampDeFecha = v => {
+  if (!v || v === 'Sin fecha') return 0;
+  const s = String(v).trim();
+  const mDate = s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (mDate) return new Date(Number(mDate[3]), Number(mDate[2]) - 1, Number(mDate[1])).getTime();
+  for (let idx = 0; idx < 12; idx++) {
+    const es = NOMBRES_MESES_ES[idx].toLowerCase();
+    const en = NOMBRES_MESES_EN[idx].toLowerCase();
+    const sLower = s.toLowerCase();
+    if (sLower.includes(es) || sLower.includes(en)) {
+      const mAnio = s.match(/\b(20\d{2}|19\d{2})\b/);
+      const anio = mAnio ? Number(mAnio[1]) : 2026;
+      return new Date(anio, idx, 15).getTime();
+    }
+  }
+  const mYearOnly = s.match(/\b(20\d{2}|19\d{2})\b/);
+  if (mYearOnly) return new Date(Number(mYearOnly[1]), 5, 15).getTime();
+  return new Date(s).getTime() || 0;
+};
+function extraerMesClave(fechaStr) {
+  if (!fechaStr || fechaStr === 'Sin fecha') return { clave: 'SIN_FECHA', mesNombre: t('stat_sin_fecha'), anio: '' };
+  const s = String(fechaStr).trim();
+  const lang = userPrefs.lang || 'es';
+  const mesesLista = I18N[lang]?.meses || NOMBRES_MESES_ES;
+  const mDate = s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (mDate) {
+    const mIdx = parseInt(mDate[2], 10) - 1;
+    const anio = mDate[3];
+    const mesNom = mesesLista[mIdx] || NOMBRES_MESES_ES[mIdx] || 'Mes';
+    return { clave: `${anio}-${String(mIdx).padStart(2, '0')}`, mesNombre: mesNom, anio: anio };
+  }
+  for (let idx = 0; idx < 12; idx++) {
+    const es = NOMBRES_MESES_ES[idx].toLowerCase();
+    const en = NOMBRES_MESES_EN[idx].toLowerCase();
+    const sLower = s.toLowerCase();
+    if (sLower.includes(es) || sLower.includes(en)) {
+      const mAnio = s.match(/\b(20\d{2}|19\d{2})\b/);
+      const anio = mAnio ? mAnio[1] : '';
+      const mesNom = mesesLista[idx] || NOMBRES_MESES_ES[idx];
+      return { clave: `${anio}-${String(idx).padStart(2, '0')}`, mesNombre: mesNom, anio: anio };
+    }
+  }
+  const mYearOnly = s.match(/\b(20\d{2}|19\d{2})\b/);
+  if (mYearOnly) {
+    const anio = mYearOnly[1];
+    return { clave: `${anio}-YEAR`, mesNombre: anio, anio: anio };
+  }
+  return { clave: 'OTRO', mesNombre: 'Otras fechas', anio: '' };
+}
 function obtenerNombreColumnaTitulo(c, s) { const em = userPrefs.showEmojis, l = userPrefs.lang || 'es'; return (em ? (CONFIG[c]?.emoji + ' ' || '') : '') + (I18N[l].subs[s] || s); }
 let appNavHistory = ['inicio'];
 let isHandlingPopState = false;
@@ -2389,6 +2558,8 @@ function inicializarManejoBotonAtras() {
 }
 window.onload = () => {
   cargarPreferenciasLocales();
+  inicializarSelectoresFechasAproximadas();
+  actualizarUISelectorAnio();
   const opts = { locale: (userPrefs.lang === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true };
   fpInicio = flatpickr('#input-fecha-inicio', opts);
   fpFin = flatpickr('#input-fecha-fin', opts);
@@ -2858,10 +3029,10 @@ if (tEl && sEl) { tEl.style.opacity = '0'; sEl.style.opacity = '0'; setTimeout((
 sEl.innerHTML = `${renderEstrellasVisuales(cur.calificacion)} <span style="margin-left:4px;">(${f !== 'Sin fecha' ? f : t('stat_sin_fecha')})</span>`; if (indEl) indEl.textContent = `[${currentIndex + 1}/${items.length}]`;
 if (cardEl) cardEl.setAttribute('onclick', `navegarARegistroDesdeInicio('${cur.id}', '${catDestino}', '${subDestino}')`); tEl.style.opacity = '1'; sEl.style.opacity = '1'; }, 200); }
 }, 3000); carruselIntervalos.push(timer); }
-function renderizarStats() { limpiarCarruselTimers(); const box = document.getElementById('grid-stats'); box.innerHTML = ''; const l = userPrefs.lang || 'es'; Object.keys(CONFIG).forEach(cat => { const cfg = CONFIG[cat]; let tot = 0; if (cat === 'Series') {
-tot = estado.registros.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))).length;
-} else if (cat === 'Musica') { tot = estado.registros.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco')).length; } else { tot = estado.registros.filter(r => r.categoria === cat).length; }
-const itemsConCalif = estado.registros.filter(r => r.categoria === cat && Number(r.calificacion) > 0); const promCat = itemsConCalif.length ? (itemsConCalif.reduce((acc, x) => acc + Number(x.calificacion), 0) / itemsConCalif.length).toFixed(1) : '0.0';
+function renderizarStats() { limpiarCarruselTimers(); const box = document.getElementById('grid-stats'); box.innerHTML = ''; const l = userPrefs.lang || 'es'; const regsAnio = obtenerRegistrosFiltradosPorAnio(); Object.keys(CONFIG).forEach(cat => { const cfg = CONFIG[cat]; let tot = 0; if (cat === 'Series') {
+tot = regsAnio.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))).length;
+} else if (cat === 'Musica') { tot = regsAnio.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco')).length; } else { tot = regsAnio.filter(r => r.categoria === cat).length; }
+const itemsConCalif = regsAnio.filter(r => r.categoria === cat && Number(r.calificacion) > 0); const promCat = itemsConCalif.length ? (itemsConCalif.reduce((acc, x) => acc + Number(x.calificacion), 0) / itemsConCalif.length).toFixed(1) : '0.0';
 const catNombre = I18N[l].cats[cat] || cfg.nombre; const pills = cfg.subs.filter(s => !s.esWatchlist).map(s => { const sNombre = I18N[l].subs[s.id] || s.nombre; const regsSub = obtenerRegistrosDeSubcategoria(cat, s.id); const countTotal = regsSub.length; if (s.admiteRewatch) {
 const countRewatches = regsSub.filter(r => r.esRewatch).length; const countNuevos = countTotal - countRewatches;
 return `<div class="subtotal-pill"><span class="emoji-dyn">${s.emoji} </span>${sNombre}: <strong>${countTotal}</strong> <span style="color:var(--muted); font-size:0.75rem;">(${countNuevos} + ${countRewatches} 🔁)</span></div>`; }
@@ -2871,10 +3042,10 @@ const ult = u.length ? [...u].sort((a,b) => (timestampDeFecha(b.fechaFin) || tim
 const mej = mejores[0] || null, cId = `lectura-${s.id.toLowerCase()}-mej`; const uF = ult ? ((ult.fechaFin && ult.fechaFin !== 'Sin fecha') ? ult.fechaFin : ult.fechaInicio) : ''; const mF = mej ? ((mej.fechaFin && mej.fechaFin !== 'Sin fecha') ? mej.fechaFin : mej.fechaInicio) : '';
 if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, 'Lecturas', s.id), 50); const sNombre = I18N[l].subs[s.id] || s.nombre; return ` <div style="background:rgba(15,23,42,.6); border:1px solid var(--border); border-radius:12px; padding:12px 14px;"> <div style="font-weight:700; color:var(--accent); font-size:.9rem; margin-bottom:6px;"><span class="emoji-dyn">${s.emoji} </span>${sNombre}</div> <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"> <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''}> <div style="font-size:.7rem; color:var(--muted); text-transform:uppercase; font-weight:700;">${t('stat_ultimo')}</div> <div class="highlight-main-txt" style="font-size:.85rem;">${ult ? ult.titulo : '—'}</div> <div class="highlight-sub-txt" style="font-size:.75rem;">${ult ? (uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')) : t('stat_sin_reg')}</div> </div> <div class="highlight-card" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''}> <div style="font-size:.7rem; color:var(--muted); text-transform:uppercase; font-weight:700; display:flex; justify-content:space-between;"> <span>${t('stat_mejor')}</span>${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator">[1/${mejores.length}]</span>` : ''} </div> <div class="highlight-main-txt" id="${cId}-title" style="font-size:.85rem;">${mej ? mej.titulo : '—'}</div> <div class="highlight-sub-txt" id="${cId}-sub" style="font-size:.75rem;">${mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : t('stat_sin_reg')}</div> </div> </div> </div>`;
 }).join('') + `</div>`; } else { let uUltimo = [], uMejores = [], subDestino = CONFIG[cat].subs[0].id; if (cat === 'Peliculas') { subDestino = 'Películas';
-uUltimo = uMejores = estado.registros.filter(r => r.categoria === 'Peliculas' && !r.esRewatch && r.subcategoria !== 'Rewatches'); } else if (cat === 'Series') {
-subDestino = 'Temporadas'; uUltimo = estado.registros.filter(r => r.categoria === 'Series' && !r.esRewatch && !r.subcategoria.includes('Rewatch'));
-uMejores = estado.registros.filter(r => r.categoria === 'Series' && !r.esRewatch && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))); } else if (cat === 'Musica') { subDestino = 'Discos';
-uUltimo = uMejores = estado.registros.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco')); } else { subDestino = 'Videojuegos'; uUltimo = uMejores = estado.registros.filter(r => r.categoria === 'Juegos'); }
+uUltimo = uMejores = regsAnio.filter(r => r.categoria === 'Peliculas' && !r.esRewatch && r.subcategoria !== 'Rewatches'); } else if (cat === 'Series') {
+subDestino = 'Temporadas'; uUltimo = regsAnio.filter(r => r.categoria === 'Series' && !r.esRewatch && !r.subcategoria.includes('Rewatch'));
+uMejores = regsAnio.filter(r => r.categoria === 'Series' && !r.esRewatch && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))); } else if (cat === 'Musica') { subDestino = 'Discos';
+uUltimo = uMejores = regsAnio.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco')); } else { subDestino = 'Videojuegos'; uUltimo = uMejores = regsAnio.filter(r => r.categoria === 'Juegos'); }
 const ult = uUltimo.length ? [...uUltimo].sort((a,b) => (timestampDeFecha(b.fechaFin) || timestampDeFecha(b.fechaInicio)) - (timestampDeFecha(a.fechaFin) || timestampDeFecha(a.fechaInicio)))[0] : null;
 let mejores = uMejores.length ? uMejores.filter(x => x.calificacion === Math.max(...uMejores.map(y => y.calificacion))) : []; const mej = mejores[0] || null, cId = `cat-${cat.toLowerCase()}-mej`; const uF = ult ? ((ult.fechaFin && ult.fechaFin !== 'Sin fecha') ? ult.fechaFin : ult.fechaInicio) : '';
 const mF = mej ? ((mej.fechaFin && mej.fechaFin !== 'Sin fecha') ? mej.fechaFin : mej.fechaInicio) : ''; const tag = cat === 'Peliculas' ? '(First Time)' : (cat === 'Series' ? '(First Time / Seasons)' : (cat === 'Musica' ? '(Albums)' : ''));
@@ -3074,11 +3245,123 @@ s.textContent = '★'; s.onmousemove = e => dibujarHoverEstrellas((e.clientX - s
 s.onclick = e => { estado.calificacion = (e.clientX - s.getBoundingClientRect().left < s.getBoundingClientRect().width / 2) ? i - 0.5 : i; actualizarDisplayEstrellas(estado.calificacion); }; box.appendChild(s); }
 document.getElementById('rating-label').textContent = `${val.toFixed(1)} / 5`; }
 function dibujarHoverEstrellas(val) { document.querySelectorAll('#rating-stars .star-box').forEach((s, idx) => { s.className = `star-box ${val >= idx + 1 ? 'full' : (val >= idx + 0.5 ? 'half' : '')}`; }); document.getElementById('rating-label').textContent = `${val.toFixed(1)} / 5`; }
+let regPrecisionActual = 'dia';
+function inicializarSelectoresFechasAproximadas() {
+  const anios = ['2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2010', '2005', '2000'];
+  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const selSemAnio = document.getElementById('sel-semana-anio');
+  const selSemMes = document.getElementById('sel-semana-mes');
+  if (selSemAnio && selSemMes) {
+    selSemAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
+    selSemMes.innerHTML = meses.map((m, idx) => `<option value="${idx}">${m}</option>`).join('');
+    const hoy = new Date();
+    selSemMes.value = String(hoy.getMonth());
+    poblarSemanasDelMes();
+    actualizarFechaDesdeSemana();
+  }
+  const selMesNom = document.getElementById('sel-mes-nombre');
+  const selMesAnio = document.getElementById('sel-mes-anio');
+  if (selMesNom && selMesAnio) {
+    selMesNom.innerHTML = meses.map(m => `<option value="${m}">${m}</option>`).join('');
+    selMesAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
+    const hoy = new Date();
+    selMesNom.value = meses[hoy.getMonth()];
+    actualizarFechaDesdeMes();
+  }
+  const selSoloAnio = document.getElementById('sel-solo-anio');
+  if (selSoloAnio) {
+    selSoloAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
+    actualizarFechaDesdeSoloAnio();
+  }
+}
+function poblarSemanasDelMes() {
+  const selAnio = document.getElementById('sel-semana-anio');
+  const selMes = document.getElementById('sel-semana-mes');
+  const selNum = document.getElementById('sel-semana-num');
+  if (!selAnio || !selMes || !selNum) return;
+  const anio = parseInt(selAnio.value, 10) || 2026;
+  const mes = parseInt(selMes.value, 10) || 0;
+  const totalDias = new Date(anio, mes + 1, 0).getDate();
+  const mm = String(mes + 1).padStart(2, '0');
+  selNum.innerHTML = '';
+  const semanas = [
+    { num: 1, ini: 1, fin: 7 },
+    { num: 2, ini: 8, fin: 14 },
+    { num: 3, ini: 15, fin: 21 },
+    { num: 4, ini: 22, fin: 28 }
+  ];
+  if (totalDias > 28) semanas.push({ num: 5, ini: 29, fin: totalDias });
+  semanas.forEach(s => {
+    const dIni = String(s.ini).padStart(2, '0');
+    const dFin = String(s.fin).padStart(2, '0');
+    const label = `Semana ${s.num}: ${dIni}/${mm} ➔ ${dFin}/${mm}`;
+    const value = `${dIni}/${mm}/${anio} ➔ ${dFin}/${mm}/${anio}`;
+    const opt = document.createElement('option');
+    opt.value = value;
+    opt.textContent = label;
+    selNum.appendChild(opt);
+  });
+}
+function cambiarPrecisionFechaFormulario(modo) {
+  regPrecisionActual = modo;
+  document.querySelectorAll('#reg-prec-tabs .date-prec-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.id === `btn-reg-prec-${modo}`);
+  });
+  ['dia', 'semana', 'mes', 'anio'].forEach(w => {
+    const el = document.getElementById(`wrap-prec-${w}`);
+    if (el) el.style.display = (w === modo) ? 'block' : 'none';
+  });
+  if (modo === 'semana') actualizarFechaDesdeSemana();
+  else if (modo === 'mes') actualizarFechaDesdeMes();
+  else if (modo === 'anio') actualizarFechaDesdeSoloAnio();
+}
+function actualizarFechaDesdeSemana() {
+  const selNum = document.getElementById('sel-semana-num');
+  const badge = document.getElementById('semana-preview-badge');
+  if (selNum && badge) badge.textContent = `📍 Registrando en: ${selNum.value}`;
+}
+function actualizarFechaDesdeMes() {
+  const selMes = document.getElementById('sel-mes-nombre');
+  const selAnio = document.getElementById('sel-mes-anio');
+  const badge = document.getElementById('mes-preview-badge');
+  if (selMes && selAnio && badge) badge.textContent = `📍 Registrando en: ${selMes.value} ${selAnio.value}`;
+}
+function actualizarFechaDesdeSoloAnio() {
+  const selAnio = document.getElementById('sel-solo-anio');
+  const badge = document.getElementById('anio-preview-badge');
+  if (selAnio && badge) badge.textContent = `📍 Registrando en el año: ${selAnio.value}`;
+}
+function obtenerFechasParaGuardarNuevo() {
+  const sinF = document.getElementById('chk-no-fecha')?.checked;
+  if (sinF) return { fI: 'Sin fecha', fF: 'Sin fecha' };
+  if (regPrecisionActual === 'semana') {
+    const val = document.getElementById('sel-semana-num')?.value || '';
+    return { fI: val || 'Sin fecha', fF: val || 'Sin fecha' };
+  } else if (regPrecisionActual === 'mes') {
+    const mes = document.getElementById('sel-mes-nombre')?.value || '';
+    const anio = document.getElementById('sel-mes-anio')?.value || '2026';
+    const val = `${mes} ${anio}`.trim();
+    return { fI: val || 'Sin fecha', fF: val || 'Sin fecha' };
+  } else if (regPrecisionActual === 'anio') {
+    const anio = document.getElementById('sel-solo-anio')?.value || '2026';
+    return { fI: anio, fF: anio };
+  } else {
+    const fI = sanitizarFechaFrontend(document.getElementById('input-fecha-inicio')?.value);
+    const fF = sanitizarFechaFrontend(document.getElementById('input-fecha-fin')?.value);
+    return { fI, fF };
+  }
+}
 const restaurarHoverEstrellas = () => actualizarDisplayEstrellas(estado.calificacion); function toggleSinFecha(sinF) { [fpInicio, fpFin].forEach((fp, idx) => { const inp = document.getElementById(idx === 0 ? 'input-fecha-inicio' : 'input-fecha-fin'); if (fp) {
 if (sinF) { fp.clear(); fp.destroy(); inp.disabled = true; inp.value = 'Sin fecha'; } else { inp.disabled = false; const l = userPrefs.lang === 'en' ? 'default' : 'es'; if (idx === 0) fpInicio = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
 else fpFin = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true }); }
 }
-}); }
+});
+const tabs = document.getElementById('reg-prec-tabs');
+if (tabs) {
+  tabs.style.opacity = sinF ? '0.35' : '1';
+  tabs.style.pointerEvents = sinF ? 'none' : 'auto';
+}
+}
 function abrirModalSerieCompleta(base, fI, fF, esRw) { serieCompletaPendiente = { categoria: 'Series', subcategoria: 'Series Completas', titulo: base.tituloBase, subtitulo: '', creador: base.creador, anio: base.anio, fechaInicio: fI, fechaFin: fF, poster: base.poster, esRewatch: esRw
 }; calificacionSerieCompleta = 0; document.getElementById('msg-serie-completa').innerHTML = `Has completado <strong>${base.tituloBase}</strong> (Temporada ${base.numTempActual} de ${base.totalTempOficiales}). Califiquemos la serie completa:`;
 document.getElementById('comentario-serie-completa').value = ''; renderEstrellasSerieCompleta(0); document.getElementById('btn-confirmar-serie-completa').onclick = guardarSerieCompletaDetectada; document.getElementById('modal-serie-completa').style.display = 'flex'; }
@@ -3108,7 +3391,7 @@ let esUnica = false, esUltima = false, numT = 0, totT = estado.seleccionado.tota
 tTit = `${estado.seleccionado.tituloOriginal} [${n ? 'S' + n : 'S1'}]`; esUnica = document.getElementById('chk-temporada-unica').checked; if (totT > 0 && numT >= totT && !esUnica) esUltima = true; }
 if (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) { const a = document.getElementById('input-arco').value.trim(), num = document.getElementById('input-numeros-abarcados').value.trim(); if (a) tTit = `${estado.seleccionado.tituloOriginal}: ${a}`;
 if (num) sub = `${estado.seleccionado.tituloOriginal} #${num}`; }
-const sinF = document.getElementById('chk-no-fecha').checked; const fI = sinF ? 'Sin fecha' : sanitizarFechaFrontend(document.getElementById('input-fecha-inicio').value); const fF = sinF ? 'Sin fecha' : sanitizarFechaFrontend(document.getElementById('input-fecha-fin').value);
+const sinF = document.getElementById('chk-no-fecha').checked; const fechasG = obtenerFechasParaGuardarNuevo(); const fI = fechasG.fI; const fF = fechasG.fF;
 const esRw = subAdmiteRewatch(c, s) && document.getElementById('chk-es-rewatch').checked; const comentarioConPunto = asegurarPuntoFinal(document.getElementById('input-comentario').value); const btn = document.getElementById('btn-guardar');
 btn.textContent = 'Guardando... ⏳'; btn.disabled = true; const payload = { categoria: c, subcategoria: s, titulo: tTit, tituloBase: tBase, subtitulo: sub,
 creador: estado.seleccionado.creador, anio: estado.seleccionado.anio, fechaInicio: fI, fechaFin: fF, calificacion: Number(estado.calificacion)||0, comentario: comentarioConPunto,
@@ -3146,7 +3429,7 @@ conteosMes[mKey] = (conteosMes[mKey] || 0) + 1; }); let mesClaveActual = ''; let
 const sub = reg.subtitulo ? `<div style="font-size:.8rem; color:var(--muted); margin-top:2px;">(${reg.subtitulo})</div>` : ''; const meta = `(${reg.creador}${reg.anio ? ', ' + reg.anio : ''})`; const stars = renderEstrellasVisuales(reg.calificacion);
 const com = reg.comentario ? `"${reg.comentario}"` : '<span style="color:var(--border)">—</span>'; const badgeRwHtml = reg.esRewatch ? `<span class="badge-rewatch">🔁 ${t('badge_rewatch')}</span>` : '';
 const fechaParaMes = (r && fF && fF !== 'Sin fecha') ? fF : (fI !== 'Sin fecha' ? fI : fF); const mesData = extraerMesClave(fechaParaMes); if (mesData.clave !== mesClaveActual) { mesClaveActual = mesData.clave; mesParidad = (mesParidad + 1) % 2; const count = conteosMes[mesData.clave] || 1;
-const textoMesContador = mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : `${mesData.mesNombre} (${count})`; const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
+const textoMesContador = mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`); const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
 sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td"><span class="emoji-dyn">🗓️ </span>${textoMesContador}</td>`; tbFrag.appendChild(sepTr); const sepCard = document.createElement('div'); sepCard.className = 'month-separator-card';
 sepCard.innerHTML = `<span class="emoji-dyn">🗓️ </span>${textoMesContador}`; mBoxFrag.appendChild(sepCard); }
 const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd'; const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`; tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fF}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${(fF && fF !== 'Sin fecha') ? fF : fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;"><button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
@@ -3271,6 +3554,48 @@ function abrirEditorRegistroCompleto(id) {
   };
   document.getElementById('modal-edicion').style.display = 'flex';
 }
+let editPrecisionActual = 'dia';
+function cambiarPrecisionEdicion(modo) {
+  editPrecisionActual = modo;
+  document.querySelectorAll('#edit-prec-tabs .date-prec-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.id === `btn-edit-prec-${modo}`);
+  });
+  ['dia', 'semana', 'mes', 'anio'].forEach(w => {
+    const el = document.getElementById(`wrap-edit-prec-${w}`);
+    if (el) el.style.display = (w === modo) ? 'block' : 'none';
+  });
+}
+function poblarSemanasEdicion() {
+  const selAnio = document.getElementById('edit-sel-semana-anio');
+  const selMes = document.getElementById('edit-sel-semana-mes');
+  const selNum = document.getElementById('edit-sel-semana-num');
+  if (!selAnio || !selMes || !selNum) return;
+  const anio = parseInt(selAnio.value, 10) || 2026;
+  const mes = parseInt(selMes.value, 10) || 0;
+  const totalDias = new Date(anio, mes + 1, 0).getDate();
+  const mm = String(mes + 1).padStart(2, '0');
+  selNum.innerHTML = '';
+  const semanas = [
+    { num: 1, ini: 1, fin: 7 },
+    { num: 2, ini: 8, fin: 14 },
+    { num: 3, ini: 15, fin: 21 },
+    { num: 4, ini: 22, fin: 28 }
+  ];
+  if (totalDias > 28) semanas.push({ num: 5, ini: 29, fin: totalDias });
+  semanas.forEach(s => {
+    const dIni = String(s.ini).padStart(2, '0');
+    const dFin = String(s.fin).padStart(2, '0');
+    const label = `Semana ${s.num}: ${dIni}/${mm} ➔ ${dFin}/${mm}`;
+    const value = `${dIni}/${mm}/${anio} ➔ ${dFin}/${mm}/${anio}`;
+    const opt = document.createElement('option');
+    opt.value = value;
+    opt.textContent = label;
+    selNum.appendChild(opt);
+  });
+}
+window.cambiarPrecisionEdicion = cambiarPrecisionEdicion;
+window.poblarSemanasEdicion = poblarSemanasEdicion;
+
 function abrirEditorFecha(id) {
   const reg = estado.registros.find(r => r.id === id);
   if (!reg) return;
@@ -3278,30 +3603,117 @@ function abrirEditorFecha(id) {
   const admiteRango = subTieneRango(reg.categoria, reg.subcategoria);
   let r = admiteRango && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio;
   document.getElementById('modal-titulo').textContent = l === 'en' ? 'Edit Date' : 'Editar Fecha';
-  let html = `<div style="margin-bottom:12px;"><label style="font-size:.85rem; color:var(--muted);">${r ? t('lbl_fecha_ini') : t('lbl_fecha_vis')}</label><input type="text" id="edit-fecha-ini" class="form-input date-input" placeholder="dd/mm/aaaa" value="${reg.fechaInicio !== 'Sin fecha' ? reg.fechaInicio : ''}"></div>`;
-  html += `<div id="wrap-edit-fecha-fin" style="margin-bottom:12px;${r ? '' : 'display:none;'}"><label style="font-size:.85rem; color:var(--muted);">${t('lbl_fecha_fin')}</label><input type="text" id="edit-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" value="${reg.fechaFin && reg.fechaFin !== 'Sin fecha' ? reg.fechaFin : ''}"></div>`;
+  
+  let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
+    <span style="font-size:0.8rem;color:var(--muted);font-weight:600;">Precisión:</span>
+    <div class="date-precision-tabs" id="edit-prec-tabs">
+      <button type="button" class="date-prec-btn active" id="btn-edit-prec-dia" onclick="cambiarPrecisionEdicion('dia')">📅 Día</button>
+      <button type="button" class="date-prec-btn" id="btn-edit-prec-semana" onclick="cambiarPrecisionEdicion('semana')">🗓️ Semana</button>
+      <button type="button" class="date-prec-btn" id="btn-edit-prec-mes" onclick="cambiarPrecisionEdicion('mes')">🌙 Mes</button>
+      <button type="button" class="date-prec-btn" id="btn-edit-prec-anio" onclick="cambiarPrecisionEdicion('anio')">📆 Año</button>
+    </div>
+  </div>`;
+  html += `<div id="wrap-edit-prec-dia">
+    <div style="margin-bottom:12px;"><label style="font-size:.85rem; color:var(--muted);">${r ? t('lbl_fecha_ini') : t('lbl_fecha_vis')}</label><input type="text" id="edit-fecha-ini" class="form-input date-input" placeholder="dd/mm/aaaa" value="${(reg.fechaInicio !== 'Sin fecha' && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(reg.fechaInicio)) ? reg.fechaInicio : ''}"></div>
+    <div id="wrap-edit-fecha-fin" style="margin-bottom:12px;${r ? '' : 'display:none;'}"><label style="font-size:.85rem; color:var(--muted);">${t('lbl_fecha_fin')}</label><input type="text" id="edit-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" value="${(reg.fechaFin && reg.fechaFin !== 'Sin fecha' && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(reg.fechaFin)) ? reg.fechaFin : ''}"></div>
+  </div>`;
+  html += `<div id="wrap-edit-prec-semana" style="display:none;margin-bottom:12px;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:90px;"><label style="font-size:0.75rem;color:var(--muted);">Año:</label><select id="edit-sel-semana-anio" class="form-input" style="height:38px;padding:4px 8px;" onchange="poblarSemanasEdicion()"></select></div>
+      <div style="flex:1.2;min-width:110px;"><label style="font-size:0.75rem;color:var(--muted);">Mes:</label><select id="edit-sel-semana-mes" class="form-input" style="height:38px;padding:4px 8px;" onchange="poblarSemanasEdicion()"></select></div>
+      <div style="flex:1.8;min-width:160px;"><label style="font-size:0.75rem;color:var(--muted);">Semana:</label><select id="edit-sel-semana-num" class="form-input" style="height:38px;padding:4px 8px;"></select></div>
+    </div>
+  </div>`;
+  html += `<div id="wrap-edit-prec-mes" style="display:none;margin-bottom:12px;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <div style="flex:1.2;min-width:130px;"><label style="font-size:0.75rem;color:var(--muted);">Mes:</label><select id="edit-sel-mes-nombre" class="form-input" style="height:38px;padding:4px 8px;"></select></div>
+      <div style="flex:1;min-width:100px;"><label style="font-size:0.75rem;color:var(--muted);">Año:</label><select id="edit-sel-mes-anio" class="form-input" style="height:38px;padding:4px 8px;"></select></div>
+    </div>
+  </div>`;
+  html += `<div id="wrap-edit-prec-anio" style="display:none;margin-bottom:12px;">
+    <label style="font-size:0.75rem;color:var(--muted);">Año:</label><select id="edit-sel-solo-anio" class="form-input" style="height:38px;padding:4px 8px;max-width:160px;"></select>
+  </div>`;
+
   html += `<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;"><div class="checkbox-row"><input type="checkbox" id="edit-sin-fecha" ${reg.fechaInicio === 'Sin fecha' ? 'checked' : ''}><label for="edit-sin-fecha">${t('chk_no_fecha')}</label></div>`;
   if (admiteRango && !r) {
     html += `<button type="button" id="btn-toggle-fin-simple" class="btn-ghost" style="font-size:0.75rem;padding:3px 8px;color:var(--accent);" onclick="mostrarFechaFinSimple()">+ ${l === 'en' ? 'Add end date' : 'Agregar fecha de término'}</button>`;
   }
   html += `</div>`;
   document.getElementById('modal-contenido').innerHTML = html;
+
+  const anios = ['2026', '2025', '2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015', '2010', '2005', '2000'];
+  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  
+  const editSemAnio = document.getElementById('edit-sel-semana-anio');
+  const editSemMes = document.getElementById('edit-sel-semana-mes');
+  if (editSemAnio && editSemMes) {
+    editSemAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
+    editSemMes.innerHTML = meses.map((m, idx) => `<option value="${idx}">${m}</option>`).join('');
+    poblarSemanasEdicion();
+  }
+  const editMesNom = document.getElementById('edit-sel-mes-nombre');
+  const editMesAnio = document.getElementById('edit-sel-mes-anio');
+  if (editMesNom && editMesAnio) {
+    editMesNom.innerHTML = meses.map(m => `<option value="${m}">${m}</option>`).join('');
+    editMesAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
+  }
+  const editSoloAnio = document.getElementById('edit-sel-solo-anio');
+  if (editSoloAnio) {
+    editSoloAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
+  }
+
+  const fIniVal = String(reg.fechaInicio || '').trim();
+  if (fIniVal.includes('➔') || fIniVal.startsWith('Semana')) {
+    cambiarPrecisionEdicion('semana');
+    const mY = fIniVal.match(/\b(20\d{2}|19\d{2})\b/);
+    if (mY && editSemAnio) editSemAnio.value = mY[1];
+    poblarSemanasEdicion();
+    const selNum = document.getElementById('edit-sel-semana-num');
+    if (selNum) selNum.value = fIniVal;
+  } else if (/^[a-záéíóúñ]+\s+\d{4}$/i.test(fIniVal)) {
+    cambiarPrecisionEdicion('mes');
+    const parts = fIniVal.split(' ');
+    if (parts.length === 2) {
+      if (editMesNom) editMesNom.value = parts[0];
+      if (editMesAnio) editMesAnio.value = parts[1];
+    }
+  } else if (/^\d{4}$/.test(fIniVal)) {
+    cambiarPrecisionEdicion('anio');
+    if (editSoloAnio) editSoloAnio.value = fIniVal;
+  } else {
+    cambiarPrecisionEdicion('dia');
+  }
+
   const flatOpts = { locale: (l === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true };
   flatpickr('#edit-fecha-ini', flatOpts);
   fpFinSimple = flatpickr('#edit-fecha-fin', flatOpts);
+
   document.getElementById('btn-modal-confirmar').onclick = () => {
     const sinF = document.getElementById('edit-sin-fecha').checked;
-    const fI = sinF ? 'Sin fecha' : sanitizarFechaFrontend(document.getElementById('edit-fecha-ini').value);
-    const wrapFin = document.getElementById('wrap-edit-fecha-fin');
-    const inputFin = document.getElementById('edit-fecha-fin');
-    let fF = fI;
-    if (sinF) {
-      fF = 'Sin fecha';
-    } else if (admiteRango) {
-      if (wrapFin && wrapFin.style.display !== 'none' && inputFin && inputFin.value.trim()) {
-        fF = sanitizarFechaFrontend(inputFin.value.trim());
-      } else if (r && inputFin && inputFin.value.trim()) {
-        fF = sanitizarFechaFrontend(inputFin.value.trim());
+    let fI = 'Sin fecha', fF = 'Sin fecha';
+    if (!sinF) {
+      if (editPrecisionActual === 'semana') {
+        const val = document.getElementById('edit-sel-semana-num')?.value || '';
+        fI = fF = val || 'Sin fecha';
+      } else if (editPrecisionActual === 'mes') {
+        const m = document.getElementById('edit-sel-mes-nombre')?.value || '';
+        const y = document.getElementById('edit-sel-mes-anio')?.value || '2026';
+        fI = fF = `${m} ${y}`.trim();
+      } else if (editPrecisionActual === 'anio') {
+        const y = document.getElementById('edit-sel-solo-anio')?.value || '2026';
+        fI = fF = y;
+      } else {
+        fI = sanitizarFechaFrontend(document.getElementById('edit-fecha-ini').value);
+        const wrapFin = document.getElementById('wrap-edit-fecha-fin');
+        const inputFin = document.getElementById('edit-fecha-fin');
+        fF = fI;
+        if (admiteRango) {
+          if (wrapFin && wrapFin.style.display !== 'none' && inputFin && inputFin.value.trim()) {
+            fF = sanitizarFechaFrontend(inputFin.value.trim());
+          } else if (r && inputFin && inputFin.value.trim()) {
+            fF = sanitizarFechaFrontend(inputFin.value.trim());
+          }
+        }
       }
     }
     cerrarModal();
@@ -3360,6 +3772,11 @@ function inicializarEventosBuscadores() {
       if (!e.target.closest('#box-buscador-wl')) {
         resWl.style.display = 'none';
       }
+    }
+    // 4. Menú desplegable selector de año
+    const contYear = document.querySelector('.year-picker-container');
+    if (contYear && !contYear.contains(e.target)) {
+      cerrarMenuAniosApp();
     }
   };
   document.addEventListener('click', manejarCierreFuera);
