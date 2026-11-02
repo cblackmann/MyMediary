@@ -100,7 +100,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 }
 /* NUEVOS ESTILOS: DISCOVER MEJORADO, PERFIL COMPLETO Y CONFIGURACIÓN VISUAL */ .discover-section-title{justify-content:space-between}.btn-log-discover{background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.45);color:#34d399;font-weight:700;border-radius:6px;padding:6px 8px;font-size:0.78rem;cursor:pointer;transition:var(--tr)}
 .btn-log-discover:hover{background:#10b981;color:#0f172a}.discover-header-bar{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px}.discover-controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.discover-live-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;padding:5px 11px;border-radius:20px;font-size:0.75rem;font-weight:700}
-.discover-live-dot{width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:pulseDot 1.8s infinite}@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.45;transform:scale(0.85)}}.discover-year-badge{position:absolute;top:8px;right:8px;background:rgba(15,23,42,0.88);backdrop-filter:blur(4px);border:1px solid rgba(56,189,248,0.4);color:var(--accent);font-size:0.7rem;font-weight:700;padding:2px 7px;border-radius:6px;pointer-events:none}
+.discover-live-dot{width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:pulseDot 1.8s infinite}@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.45;transform:scale(0.85)}}.discover-year-badge{position:absolute;top:8px;right:8px;background:rgba(15,23,42,0.88);backdrop-filter:blur(4px);border:1px solid rgba(56,189,248,0.4);color:var(--accent);font-size:0.7rem;font-weight:700;padding:2px 7px;border-radius:6px;pointer-events:none}.btn-add-discover.added{background:rgba(16,185,129,0.22)!important;border-color:#10b981!important;color:#34d399!important;box-shadow:0 0 10px rgba(16,185,129,0.3)!important;cursor:default!important}.btn-add-discover.added:hover{background:rgba(16,185,129,0.22)!important;color:#34d399!important}.discover-rec-badge{position:absolute;top:8px;left:8px;background:rgba(15,23,42,0.92);backdrop-filter:blur(6px);border:1px solid rgba(168,85,247,0.55);color:#d8b4fe;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:6px;pointer-events:none;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,0.45);display:inline-flex;align-items:center;gap:4px}.discover-creator-tag{color:#38bdf8;font-weight:600;font-size:0.78rem;display:inline-block;line-height:1.25}.discover-year-sub{color:var(--muted);font-size:0.74rem;margin-left:4px}
 .discover-filter-bar{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;scrollbar-width:none;flex-wrap:wrap}.discover-filter-bar::-webkit-scrollbar{display:none}.discover-item-en-sub{font-size:0.76rem;color:var(--accent);font-style:italic;margin-bottom:4px;line-height:1.2;opacity:0.9}.discover-more-wrap{display:flex;justify-content:center;margin:14px 0 24px}
 .btn-discover-more{background:rgba(56,189,248,0.12);border:1px solid var(--accent);color:var(--accent);padding:9px 22px;border-radius:20px;font-weight:700;font-size:0.84rem;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:8px}.btn-discover-more:hover{background:var(--accent);color:#0f172a;transform:translateY(-1px);box-shadow:0 4px 14px rgba(56,189,248,0.35)}.profile-hero-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:20px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,0,0,0.25)}
 .profile-identity-wrap{display:flex;gap:18px;align-items:center;flex:1;min-width:250px}.profile-avatar-box{position:relative;width:86px;height:86px;border-radius:50%;border:3px solid var(--accent);overflow:hidden;background:var(--bg);flex-shrink:0;cursor:pointer;display:grid;place-items:center;line-height:1;font-size:2.4rem;box-shadow:0 0 18px rgba(56,189,248,0.3);transition:var(--tr)}
@@ -742,33 +742,339 @@ const fI = fmtFecha_(r.fecha_inicio), fF = fmtFecha_(r.fecha_fin); if (fI === 'S
 if (Object.keys(patch).length > 0) { await sbFetch_(`registros?id=eq.${encodeURIComponent(r.id)}&user_email=eq.${encodeURIComponent(email)}`, 'PATCH', patch); reparados++; }
 }
 return { reparados }; } catch (e) { return { reparados: 0 }; }
-}, async obtenerDescubrimientos(seedPage) { const datos = { peliculas: [], documentales: [], series: [], docuseries: [], musica: [], juegos: [], libros: [], comics: [], mangas: [], timestamp: new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) };
-const p1 = seedPage ? ((Number(seedPage) % 4) + 1) : 1, p2 = p1 + 1, offK1 = (p1 - 1) * 20, offOl = (p1 - 1) * 12; const urls = [ `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_K}&language=en-US&page=${p1}`,
-`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&primary_release_date.gte=2024-01-01&sort_by=popularity.desc&vote_count.gte=40&language=en-US&page=${p2}`,
-`https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&with_genres=99&primary_release_date.gte=2022-01-01&sort_by=popularity.desc&language=en-US&page=${p1}`, `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&with_genres=99&sort_by=vote_count.desc&language=en-US&page=${p2}`,
-`https://api.themoviedb.org/3/trending/tv/week?api_key=${TMDB_K}&language=en-US&page=${p1}`, `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&first_air_date.gte=2023-01-01&sort_by=popularity.desc&vote_count.gte=30&language=en-US&page=${p2}`,
-`https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&with_genres=99&first_air_date.gte=2021-01-01&sort_by=popularity.desc&language=en-US&page=${p1}`, `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&with_genres=99&sort_by=vote_count.desc&language=en-US&page=${p2}`,
-`https://api.deezer.com/chart/0/albums?index=${offOl}&limit=14`, `https://api.deezer.com/chart/0/artists?index=${offOl}&limit=14`, `https://api.rawg.io/api/games?key=${RAWG_K}&dates=2023-01-01,2026-12-31&ordering=-added&page_size=24&page=${p1}`,
-`https://openlibrary.org/subjects/fiction.json?limit=24&offset=${offOl}`, `https://openlibrary.org/subjects/graphic_novels.json?limit=24&offset=${offOl}`, `https://kitsu.io/api/edge/manga?sort=-user_count&page[limit]=20&page[offset]=${offK1}`,
-`https://kitsu.io/api/edge/manga?sort=-user_count&page[limit]=10&page[offset]=${offK1 + 20}` ]; try { const resps = await Promise.all(urls.map(u => getJson_(u))); const pushTmdb = (i1, i2, arr, cat, sub, defCr, isTv) => { const vistos = new Set();
-[...(resps[i1]?.results || []), ...(resps[i2]?.results || [])].forEach(x => { if (!x || !x.poster_path || vistos.has(x.id) || arr.length >= 24) return; vistos.add(x.id); const tits = fmtTitIdioma_(isTv ? x.original_name : x.original_title, isTv ? x.name : x.title, x.original_language);
-const f = isTv ? x.first_air_date : x.release_date;
-arr.push({ categoria: cat, subcategoria: sub, titulo: tits.titulo, tituloOriginal: tits.tituloOriginal, tituloIngles: tits.tituloIngles, creador: defCr, anio: f ? f.substring(0, 4) : '', sinopsis: x.overview || '', poster: `https://image.tmdb.org/t/p/w500${x.poster_path}` }); }); };
-pushTmdb(0, 1, datos.peliculas, 'Peliculas', 'Películas', 'Cine', false); pushTmdb(2, 3, datos.documentales, 'Peliculas', 'Documentales', 'Documental', false); pushTmdb(4, 5, datos.series, 'Series', 'Series Completas', 'Serie TV', true);
-pushTmdb(6, 7, datos.docuseries, 'Series', 'Series Documentales', 'Docuserie', true); const dzAlbums = resps[8]?.data || [], dzArtists = resps[9]?.data || []; for (let i = 0; i < Math.max(dzAlbums.length, dzArtists.length); i++) { if (dzAlbums[i] && datos.musica.length < 24) {
-const al = dzAlbums[i]; datos.musica.push({ categoria: 'Musica', subcategoria: 'Discos', titulo: al.title, tituloOriginal: al.title, tituloIngles: '', creador: al.artist?.name || 'Artista', anio: 'Disco', poster: al.cover_big || al.cover_medium || '' }); }
-if (dzArtists[i] && datos.musica.length < 24) { const a = dzArtists[i]; datos.musica.push({ categoria: 'Musica', subcategoria: 'Artistas/Grupos', titulo: a.name, tituloOriginal: a.name, tituloIngles: '', creador: 'Artista / Grupo', anio: '', poster: a.picture_big || a.picture_medium || '' }); }
-}
-datos.juegos = (resps[10]?.results || []).slice(0, 24).map(g => ({ categoria: 'Juegos', subcategoria: 'Videojuegos', titulo: g.name, tituloOriginal: g.name, tituloIngles: '',
-creador: (g.genres || []).map(x => x.name).slice(0, 2).join(', ') || 'Videojuego', anio: g.released ? g.released.substring(0, 4) : '', poster: g.background_image || ''
-})); const mapOl = (idx, sub, defTit, defCr) => (resps[idx]?.works || []).slice(0, 24).map(b => ({ categoria: 'Lecturas', subcategoria: sub, titulo: b.title || defTit, tituloOriginal: b.title || defTit, tituloIngles: '',
-creador: b.authors?.[0]?.name || defCr, anio: b.first_publish_year ? String(b.first_publish_year) : '', poster: b.cover_id ? `https://covers.openlibrary.org/b/id/${b.cover_id}-M.jpg` : ''
-})); datos.libros = mapOl(11, 'Libros', 'Libro', 'Autor'); datos.comics = mapOl(12, 'Cómics', 'Cómic', 'Escritor / Artista'); const mIds = new Set(); [...(resps[13]?.data || []), ...(resps[14]?.data || [])].forEach(it => { if (!it || mIds.has(it.id) || datos.mangas.length >= 24) return;
-mIds.add(it.id); const a = it.attributes || {}, tOrig = a.titles?.en_jp || a.canonicalTitle || a.titles?.ja_jp || 'Manga', tEng = a.titles?.en || ''; datos.mangas.push({
-categoria: 'Lecturas', subcategoria: 'Mangas', titulo: tOrig, tituloOriginal: tOrig, tituloIngles: (tEng && tEng.toLowerCase() !== tOrig.toLowerCase()) ? tEng : '',
-creador: a.status === 'current' ? 'Manga en publicación' : 'Manga', anio: a.startDate ? a.startDate.substring(0, 4) : '', sinopsis: a.synopsis || '', poster: a.posterImage?.medium || a.posterImage?.small || ''
-}); }); } catch (e) {}
-return datos; }, async obtenerDatosSerieInfo(showId, numTemp) { try { const seasons = await getJson_(`https://api.tvmaze.com/shows/${showId}/seasons`); if (seasons?.length) { const s = seasons.find(x => Number(x.number) === Number(numTemp));
+}, async obtenerDescubrimientos(seedPage, gustosUsuario = null) {
+  const datos = {
+    peliculas: [],
+    documentales: [],
+    series: [],
+    docuseries: [],
+    musica: [],
+    juegos: [],
+    libros: [],
+    comics: [],
+    mangas: [],
+    timestamp: new Date().toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit', second: '2-digit' })
+  };
+  const p1 = seedPage ? ((Number(seedPage) % 4) + 1) : 1;
+  const p2 = p1 + 1;
+  const offOl = (p1 - 1) * 12;
+  const offK1 = (p1 - 1) * 20;
+
+  const favPeli = gustosUsuario?.peliculas?.[0];
+  const favSerie = gustosUsuario?.series?.[0];
+  const favLibro = gustosUsuario?.libros?.[0];
+
+  const peliQuery = favPeli?.cr ? `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${encodeURIComponent(favPeli.cr)}&language=es-ES` : null;
+  const serieQuery = (favSerie?.cr || favSerie?.tit) ? `https://api.themoviedb.org/3/search/tv?api_key=${TMDB_K}&query=${encodeURIComponent(favSerie.cr || favSerie.tit)}&language=es-ES` : null;
+  const libroQuery = favLibro?.cr ? `https://openlibrary.org/search.json?author=${encodeURIComponent(favLibro.cr)}&limit=6` : null;
+
+  const urls = [
+    `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_K}&language=es-ES&page=${p1}`,
+    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&primary_release_date.gte=2024-01-01&sort_by=popularity.desc&vote_count.gte=30&language=es-ES&page=${p2}`,
+    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&with_genres=99&primary_release_date.gte=2023-01-01&sort_by=popularity.desc&language=es-ES&page=${p1}`,
+    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&with_genres=99&sort_by=vote_count.desc&language=es-ES&page=${p2}`,
+    `https://api.themoviedb.org/3/trending/tv/week?api_key=${TMDB_K}&language=es-ES&page=${p1}`,
+    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&first_air_date.gte=2023-01-01&sort_by=popularity.desc&vote_count.gte=20&language=es-ES&page=${p2}`,
+    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&with_genres=99&first_air_date.gte=2022-01-01&sort_by=popularity.desc&language=es-ES&page=${p1}`,
+    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&with_genres=99&sort_by=vote_count.desc&language=es-ES&page=${p2}`,
+    `https://api.deezer.com/chart/0/albums?index=${offOl}&limit=14`,
+    `https://api.deezer.com/chart/0/artists?index=${offOl}&limit=14`,
+    `https://api.rawg.io/api/games?key=${RAWG_K}&dates=2024-01-01,2026-12-31&ordering=-added&page_size=24&page=${p1}`,
+    `https://openlibrary.org/search.json?q=bestseller+fiction&sort=new&limit=24&offset=${offOl}`,
+    `https://openlibrary.org/search.json?q=marvel+comics+spider-man+avengers+x-men&limit=16&offset=${offOl}`,
+    `https://openlibrary.org/search.json?q=dc+comics+batman+superman+justice+league&limit=16&offset=${offOl}`,
+    `https://kitsu.io/api/edge/manga?sort=-user_count&page[limit]=20&page[offset]=${offK1}`
+  ];
+
+  try {
+    const resps = await Promise.all([
+      ...urls.map(u => getJson_(u)),
+      peliQuery ? getJson_(peliQuery) : Promise.resolve(null),
+      serieQuery ? getJson_(serieQuery) : Promise.resolve(null),
+      libroQuery ? getJson_(libroQuery) : Promise.resolve(null)
+    ]);
+
+    const tmdbPeliTrend = resps[0], tmdbPeliDisc = resps[1];
+    const tmdbDocu1 = resps[2], tmdbDocu2 = resps[3];
+    const tmdbTvTrend = resps[4], tmdbTvDisc = resps[5];
+    const tmdbDocTv1 = resps[6], tmdbDocTv2 = resps[7];
+    const dzAlbums = resps[8]?.data || [], dzArtists = resps[9]?.data || [];
+    const rawgGames = resps[10]?.results || [];
+    const olBooks = resps[11]?.docs || [];
+    const olMarvel = resps[12]?.docs || [];
+    const olDc = resps[13]?.docs || [];
+    const kitsuManga = resps[14]?.data || [];
+    const customPeli = resps[15]?.results || [];
+    const customSerie = resps[16]?.results || [];
+    const customLibro = resps[17]?.docs || [];
+
+    // --- 1. PELÍCULAS (Tendencias + Recomendación Personalizada) ---
+    const vistosPeli = new Set();
+    const agregarPeli = (m, motivo) => {
+      if (!m || !m.poster_path || vistosPeli.has(m.id) || datos.peliculas.length >= 24) return;
+      vistosPeli.add(m.id);
+      const tits = fmtTitIdioma_(m.original_title, m.title, m.original_language);
+      datos.peliculas.push({
+        idRef: m.id,
+        categoria: 'Peliculas',
+        subcategoria: 'Películas',
+        titulo: tits.titulo,
+        tituloOriginal: tits.tituloOriginal,
+        tituloIngles: tits.tituloIngles,
+        creador: 'Cine',
+        anio: m.release_date ? m.release_date.substring(0, 4) : '2026',
+        sinopsis: m.overview || '',
+        poster: `https://image.tmdb.org/t/p/w500${m.poster_path}`,
+        motivo: motivo
+      });
+    };
+    customPeli.forEach(m => agregarPeli(m, favPeli?.cr ? `⭐ Porque te gusta ${favPeli.cr}` : '✨ Recomendado'));
+    (tmdbPeliTrend?.results || []).forEach(m => agregarPeli(m, '🔥 Tendencia'));
+    (tmdbPeliDisc?.results || []).forEach(m => agregarPeli(m, '✨ Estreno reciente'));
+
+    // --- 2. DOCUMENTALES ---
+    const vistosDoc = new Set();
+    const agregarDoc = (m) => {
+      if (!m || !m.poster_path || vistosDoc.has(m.id) || datos.documentales.length >= 24) return;
+      vistosDoc.add(m.id);
+      const tits = fmtTitIdioma_(m.original_title, m.title, m.original_language);
+      datos.documentales.push({
+        idRef: m.id,
+        categoria: 'Peliculas',
+        subcategoria: 'Documentales',
+        titulo: tits.titulo,
+        tituloOriginal: tits.tituloOriginal,
+        tituloIngles: tits.tituloIngles,
+        creador: 'Documental',
+        anio: m.release_date ? m.release_date.substring(0, 4) : '2025',
+        sinopsis: m.overview || '',
+        poster: `https://image.tmdb.org/t/p/w500${m.poster_path}`,
+        motivo: '📹 Aclamado'
+      });
+    };
+    [...(tmdbDocu1?.results || []), ...(tmdbDocu2?.results || [])].forEach(agregarDoc);
+
+    // --- 3. SERIES ---
+    const vistosTv = new Set();
+    const agregarTv = (s, motivo) => {
+      if (!s || !s.poster_path || vistosTv.has(s.id) || datos.series.length >= 24) return;
+      vistosTv.add(s.id);
+      const tits = fmtTitIdioma_(s.original_name, s.name, s.original_language);
+      datos.series.push({
+        idRef: s.id,
+        categoria: 'Series',
+        subcategoria: 'Series Completas',
+        titulo: tits.titulo,
+        tituloOriginal: tits.tituloOriginal,
+        tituloIngles: tits.tituloIngles,
+        creador: 'Serie TV',
+        anio: s.first_air_date ? s.first_air_date.substring(0, 4) : '2026',
+        sinopsis: s.overview || '',
+        poster: `https://image.tmdb.org/t/p/w500${s.poster_path}`,
+        motivo: motivo
+      });
+    };
+    customSerie.forEach(s => agregarTv(s, favSerie?.cr ? `⭐ Porque te gusta ${favSerie.cr}` : '✨ Recomendado'));
+    (tmdbTvTrend?.results || []).forEach(s => agregarTv(s, '🔥 En emisión'));
+    (tmdbTvDisc?.results || []).forEach(s => agregarTv(s, '✨ Tendencia'));
+
+    // --- 4. DOCUSERIES ---
+    const vistosDocTv = new Set();
+    [...(tmdbDocTv1?.results || []), ...(tmdbDocTv2?.results || [])].forEach(s => {
+      if (!s || !s.poster_path || vistosDocTv.has(s.id) || datos.docuseries.length >= 24) return;
+      vistosDocTv.add(s.id);
+      const tits = fmtTitIdioma_(s.original_name, s.name, s.original_language);
+      datos.docuseries.push({
+        idRef: s.id,
+        categoria: 'Series',
+        subcategoria: 'Series Documentales',
+        titulo: tits.titulo,
+        tituloOriginal: tits.tituloOriginal,
+        tituloIngles: tits.tituloIngles,
+        creador: 'Docuserie',
+        anio: s.first_air_date ? s.first_air_date.substring(0, 4) : '2025',
+        sinopsis: s.overview || '',
+        poster: `https://image.tmdb.org/t/p/w500${s.poster_path}`,
+        motivo: '📽️ Docuserie'
+      });
+    });
+
+    // --- ENRIQUECER CREADORES EN PELÍCULAS, DOCUMENTALES Y SERIES EN PARALELO ---
+    try {
+      const topPelis = datos.peliculas.slice(0, 10);
+      const topDocs = datos.documentales.slice(0, 6);
+      const topTvSeries = datos.series.slice(0, 10);
+      const topDocSeries = datos.docuseries.slice(0, 6);
+
+      const [peliCredits, docCredits, tvDetails, docTvDetails] = await Promise.all([
+        Promise.all(topPelis.map(m => getJson_(`https://api.themoviedb.org/3/movie/${m.idRef}/credits?api_key=${TMDB_K}`).catch(() => null))),
+        Promise.all(topDocs.map(m => getJson_(`https://api.themoviedb.org/3/movie/${m.idRef}/credits?api_key=${TMDB_K}`).catch(() => null))),
+        Promise.all(topTvSeries.map(s => getJson_(`https://api.themoviedb.org/3/tv/${s.idRef}?api_key=${TMDB_K}`).catch(() => null))),
+        Promise.all(topDocSeries.map(s => getJson_(`https://api.themoviedb.org/3/tv/${s.idRef}?api_key=${TMDB_K}`).catch(() => null)))
+      ]);
+
+      peliCredits.forEach((c, idx) => {
+        const dirs = (c?.crew || []).filter(x => x.job === 'Director').map(x => x.name);
+        if (dirs.length) topPelis[idx].creador = dirs.slice(0, 2).join(', ');
+      });
+      docCredits.forEach((c, idx) => {
+        const dirs = (c?.crew || []).filter(x => x.job === 'Director').map(x => x.name);
+        if (dirs.length) topDocs[idx].creador = dirs.slice(0, 2).join(', ');
+      });
+      tvDetails.forEach((det, idx) => {
+        const crs = (det?.created_by || []).map(x => x.name);
+        const net = (det?.networks || []).map(x => x.name).join(', ');
+        if (crs.length) topTvSeries[idx].creador = crs.slice(0, 2).join(', ');
+        else if (net) topTvSeries[idx].creador = net;
+      });
+      docTvDetails.forEach((det, idx) => {
+        const crs = (det?.created_by || []).map(x => x.name);
+        const net = (det?.networks || []).map(x => x.name).join(', ');
+        if (crs.length) topDocSeries[idx].creador = crs.slice(0, 2).join(', ');
+        else if (net) topDocSeries[idx].creador = net;
+      });
+    } catch(e) {}
+
+    // --- 5. MÚSICA ---
+    for (let i = 0; i < Math.max(dzAlbums.length, dzArtists.length); i++) {
+      if (dzAlbums[i] && datos.musica.length < 24) {
+        const al = dzAlbums[i];
+        datos.musica.push({
+          categoria: 'Musica',
+          subcategoria: 'Discos',
+          titulo: al.title,
+          tituloOriginal: al.title,
+          tituloIngles: '',
+          creador: al.artist?.name || 'Artista',
+          anio: 'Disco',
+          poster: al.cover_big || al.cover_medium || '',
+          motivo: '💿 Álbum en Tendencia'
+        });
+      }
+      if (dzArtists[i] && datos.musica.length < 24) {
+        const a = dzArtists[i];
+        datos.musica.push({
+          categoria: 'Musica',
+          subcategoria: 'Artistas/Grupos',
+          titulo: a.name,
+          tituloOriginal: a.name,
+          tituloIngles: '',
+          creador: 'Artista / Grupo',
+          anio: '',
+          poster: a.picture_big || a.picture_medium || '',
+          motivo: '🎙️ Artista Top'
+        });
+      }
+    }
+
+    // --- 6. VIDEOJUEGOS (2024-2026 y enriquecimiento de desarrolladoras) ---
+    datos.juegos = rawgGames.slice(0, 24).map(g => ({
+      idRef: g.id,
+      categoria: 'Juegos',
+      subcategoria: 'Videojuegos',
+      titulo: g.name,
+      tituloOriginal: g.name,
+      tituloIngles: '',
+      creador: (g.genres || []).map(x => x.name).slice(0, 2).join(', ') || 'Videojuego',
+      anio: g.released ? g.released.substring(0, 4) : '2025',
+      poster: g.background_image || '',
+      motivo: '🎮 Tendencia'
+    }));
+
+    // Obtener estudio desarrollador para los mejores juegos en paralelo
+    try {
+      const topGames = datos.juegos.slice(0, 8);
+      const gameDets = await Promise.all(topGames.map(g => getJson_(`https://api.rawg.io/api/games/${g.idRef}?key=${RAWG_K}`).catch(() => null)));
+      gameDets.forEach((det, idx) => {
+        const devs = (det?.developers || []).map(d => d.name);
+        const pubs = (det?.publishers || []).map(p => p.name);
+        if (devs.length) topGames[idx].creador = devs.slice(0, 2).join(', ');
+        else if (pubs.length) topGames[idx].creador = pubs.slice(0, 2).join(', ');
+      });
+    } catch(e) {}
+
+    // --- 7. LIBROS (Exclusivamente recientes 2020-2026, sin libros antiguos) ---
+    const vistosLibros = new Set();
+    const agregarLibro = (b, motivo) => {
+      if (!b || !b.title || vistosLibros.has(b.title.toLowerCase()) || datos.libros.length >= 24) return;
+      const anioPub = Number(b.first_publish_year);
+      // REGLA ESTRICTA: Solo libros recientes (>= 2020), no de hace 200 años
+      if (anioPub && anioPub < 2020) return;
+      vistosLibros.add(b.title.toLowerCase());
+      datos.libros.push({
+        categoria: 'Lecturas',
+        subcategoria: 'Libros',
+        titulo: b.title,
+        tituloOriginal: b.title,
+        tituloIngles: '',
+        creador: b.author_name?.length ? b.author_name.slice(0, 2).join(', ') : 'Autor',
+        anio: b.first_publish_year ? String(b.first_publish_year) : '2025',
+        poster: b.cover_i ? `https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg` : '',
+        motivo: motivo || '📖 Novedad'
+      });
+    };
+    customLibro.forEach(b => agregarLibro(b, favLibro?.cr ? `⭐ Porque te gusta ${favLibro.cr}` : '✨ Recomendado'));
+    olBooks.forEach(b => agregarLibro(b, '📖 Novedad'));
+
+    // --- 8. CÓMICS (Exclusivamente MARVEL y DC) ---
+    const vistosComics = new Set();
+    const comicsMarvel = (olMarvel || []).filter(b => b.cover_i).map(b => ({
+      categoria: 'Lecturas',
+      subcategoria: 'Cómics',
+      titulo: b.title,
+      tituloOriginal: b.title,
+      tituloIngles: '',
+      creador: b.author_name?.length ? b.author_name.slice(0, 2).join(', ') : 'Marvel Comics',
+      anio: b.first_publish_year ? String(b.first_publish_year) : '',
+      poster: `https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg`,
+      motivo: '🔴 Marvel Comics'
+    }));
+    const comicsDc = (olDc || []).filter(b => b.cover_i).map(b => ({
+      categoria: 'Lecturas',
+      subcategoria: 'Cómics',
+      titulo: b.title,
+      tituloOriginal: b.title,
+      tituloIngles: '',
+      creador: b.author_name?.length ? b.author_name.slice(0, 2).join(', ') : 'DC Comics',
+      anio: b.first_publish_year ? String(b.first_publish_year) : '',
+      poster: `https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg`,
+      motivo: '🔵 DC Comics'
+    }));
+    // Intercalar Marvel y DC
+    const maxComics = Math.max(comicsMarvel.length, comicsDc.length);
+    for (let i = 0; i < maxComics; i++) {
+      if (comicsMarvel[i] && !vistosComics.has(comicsMarvel[i].titulo.toLowerCase()) && datos.comics.length < 24) {
+        vistosComics.add(comicsMarvel[i].titulo.toLowerCase());
+        datos.comics.push(comicsMarvel[i]);
+      }
+      if (comicsDc[i] && !vistosComics.has(comicsDc[i].titulo.toLowerCase()) && datos.comics.length < 24) {
+        vistosComics.add(comicsDc[i].titulo.toLowerCase());
+        datos.comics.push(comicsDc[i]);
+      }
+    }
+
+    // --- 9. MANGAS ---
+    const mIds = new Set();
+    kitsuManga.forEach(it => {
+      if (!it || mIds.has(it.id) || datos.mangas.length >= 24) return;
+      mIds.add(it.id);
+      const a = it.attributes || {}, tOrig = a.titles?.en_jp || a.canonicalTitle || a.titles?.ja_jp || 'Manga', tEng = a.titles?.en || '';
+      datos.mangas.push({
+        categoria: 'Lecturas',
+        subcategoria: 'Mangas',
+        titulo: tOrig,
+        tituloOriginal: tOrig,
+        tituloIngles: (tEng && tEng.toLowerCase() !== tOrig.toLowerCase()) ? tEng : '',
+        creador: a.status === 'current' ? 'Manga en emisión' : 'Manga popular',
+        anio: a.startDate ? a.startDate.substring(0, 4) : '2025',
+        sinopsis: a.synopsis || '',
+        poster: a.posterImage?.medium || a.posterImage?.small || '',
+        motivo: '⛩️ Manga Top'
+      });
+    });
+  } catch (e) {}
+  return datos;
+}, async obtenerDatosSerieInfo(showId, numTemp) { try { const seasons = await getJson_(`https://api.tvmaze.com/shows/${showId}/seasons`); if (seasons?.length) { const s = seasons.find(x => Number(x.number) === Number(numTemp));
 return { anioFinTemp: (s?.endDate || s?.premiereDate || '').substring(0, 4), totalTemporadas: seasons.length }; }
 } catch (e) {}
 return { anioFinTemp: '', totalTemporadas: 0 }; }, async buscarPortadaGenerica(t, cr, cat) { if (!t) return ''; const q = encodeURIComponent(t.trim()), qC = encodeURIComponent(`${t} ${cr || ''}`.trim()); try { if (cat === 'Peliculas') {
@@ -2909,8 +3215,87 @@ function mostrarResultadosBuscadorWl(items) {
   res.style.display = 'block';
 }
 // --- VISTA DISCOVER MEJORADA Y RÁPIDA ---
-function precargarDiscoverEnSegundoPlano(seed, resetearLimites = false) { if (!estado.discoverData) { try { const c = localStorage.getItem('mediary_cache_disc_v1') || localStorage.getItem('mymediary_cache_disc_v1'); if (c) { estado.discoverData = JSON.parse(c); if (estado.categoria === 'discover') renderizarDiscoverVista(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { if (!d) return; estado.discoverData = d; try { localStorage.setItem('mediary_cache_disc_v1', JSON.stringify(d)); } catch(e) {} if (resetearLimites) estado.discoverLimites = {}; const stEl = document.getElementById('discover-status-txt');
-if (stEl) stEl.textContent = `Actualizado ${d.timestamp || 'ahora'}`; if (estado.categoria === 'discover') renderizarDiscoverVista(); }).obtenerDescubrimientos(seed || estado.discoverSeed); }
+function obtenerResumenGustosUsuario() {
+  const gustos = { peliculas: [], series: [], musica: [], libros: [], juegos: [] };
+  const regs = Array.isArray(estado.registros) ? estado.registros : [];
+  const buenos = regs.filter(r => (Number(r.calificacion) >= 4) || (Number(r.mi_calificacion) >= 4));
+  buenos.forEach(r => {
+    const c = r.categoria || '';
+    const cr = (r.creador && r.creador !== 'Desconocido') ? r.creador.trim() : '';
+    const tit = (r.titulo || r.tituloOriginal || '').trim();
+    if (c === 'Peliculas' && cr) gustos.peliculas.push({ cr, tit });
+    else if (c === 'Series' && (cr || tit)) gustos.series.push({ cr, tit });
+    else if (c === 'Musica' && cr) gustos.musica.push({ cr, tit });
+    else if (c === 'Lecturas' && cr) gustos.libros.push({ cr, tit });
+    else if (c === 'Juegos' && (cr || tit)) gustos.juegos.push({ cr, tit });
+  });
+  const favs = perfilUsuario?.favoritos || {};
+  if (favs.pelicula?.creador) gustos.peliculas.unshift({ cr: favs.pelicula.creador, tit: favs.pelicula.titulo || '' });
+  if (favs.serie?.titulo) gustos.series.unshift({ cr: favs.serie.creador || '', tit: favs.serie.titulo });
+  if (favs.album?.creador) gustos.musica.unshift({ cr: favs.album.creador, tit: favs.album.titulo || '' });
+  if (favs.libro?.creador) gustos.libros.unshift({ cr: favs.libro.creador, tit: favs.libro.titulo || '' });
+  if (favs.juego?.titulo) gustos.juegos.unshift({ cr: favs.juego.creador || '', tit: favs.juego.titulo });
+  return gustos;
+}
+
+function formatearCreadorConRol(cat, sub, creador) {
+  if (!creador || creador === 'Desconocido') return '';
+  const cLow = String(cat).toLowerCase();
+  const sLow = String(sub).toLowerCase();
+  if (cLow === 'peliculas') {
+    if (sLow.includes('docu')) return `🎬 Dir: ${creador}`;
+    return `🎬 Dir: ${creador}`;
+  }
+  if (cLow === 'series') {
+    if (sLow.includes('docu')) return `📽️ Docuserie: ${creador}`;
+    return `📺 Creador: ${creador}`;
+  }
+  if (cLow === 'juegos') {
+    return `🎮 Dev: ${creador}`;
+  }
+  if (cLow === 'musica') {
+    return `🎵 Artista: ${creador}`;
+  }
+  if (cLow === 'lecturas') {
+    if (sLow.includes('comic') || sLow.includes('cómic')) return `💥 ${creador}`;
+    if (sLow.includes('manga')) return `⛩️ ${creador}`;
+    return `📖 Autor: ${creador}`;
+  }
+  return creador;
+}
+
+function estaEnWatchlist(it) {
+  if (!Array.isArray(estado.watchlist) || !it) return false;
+  const t1 = (it.tituloOriginal || it.titulo || '').toLowerCase().trim();
+  const c1 = (it.categoria || '').toLowerCase().trim();
+  return estado.watchlist.some(w => {
+    const t2 = (w.titulo || '').toLowerCase().trim();
+    const c2 = (w.categoria || '').toLowerCase().trim();
+    return t1 === t2 && (!c1 || !c2 || c1 === c2);
+  });
+}
+
+function precargarDiscoverEnSegundoPlano(seed, resetearLimites = false) {
+  if (!estado.discoverData) {
+    try {
+      const c = localStorage.getItem('mediary_cache_disc_v1') || localStorage.getItem('mymediary_cache_disc_v1');
+      if (c) {
+        estado.discoverData = JSON.parse(c);
+        if (estado.categoria === 'discover') renderizarDiscoverVista();
+      }
+    } catch(e) {}
+  }
+  const gustos = obtenerResumenGustosUsuario();
+  google.script.run.withSuccessHandler(d => {
+    if (!d) return;
+    estado.discoverData = d;
+    try { localStorage.setItem('mediary_cache_disc_v1', JSON.stringify(d)); } catch(e) {}
+    if (resetearLimites) estado.discoverLimites = {};
+    const stEl = document.getElementById('discover-status-txt');
+    if (stEl) stEl.textContent = `Actualizado ${d.timestamp || 'ahora'}`;
+    if (estado.categoria === 'discover') renderizarDiscoverVista();
+  }).obtenerDescubrimientos(seed || estado.discoverSeed, gustos);
+}
 function iniciarLoopAutoActualizacionDiscover() { if (timerAutoDiscover) clearInterval(timerAutoDiscover); timerAutoDiscover = setInterval(() => { if (estado.discoverAutoRefresh && estado.categoria === 'discover') { estado.discoverSeed = (estado.discoverSeed % 4) + 1;
 const stEl = document.getElementById('discover-status-txt'); if (stEl) stEl.textContent = 'Actualizando tendencias...'; precargarDiscoverEnSegundoPlano(estado.discoverSeed, false); }
 }, 45000); }
@@ -2936,23 +3321,92 @@ window.scrollTo({ top: 0, behavior: 'smooth' }); }
 function registrarDirectoDesdeDiscover(it) { let destCat = it.categoria || 'Peliculas'; let destSub = it.subcategoria || 'Películas'; if (destCat === 'Series' && destSub === 'Series Completas') destSub = 'Temporadas'; cambiarCat(destCat, destSub); setTimeout(() => { seleccionarItem({
 tituloOriginal: it.tituloOriginal || it.titulo, tituloIngles: it.tituloIngles || '', creador: it.creador || 'Desconocido', anio: it.anio || '', sinopsis: it.sinopsis || '', poster: it.poster || ''
 }); establecerFechaHoy(); }, 150); }
-function renderizarDiscoverVista() { const box = document.getElementById('contenedor-discover-secciones'); if (!estado.discoverData) return; box.innerHTML = ''; const secciones = [ { key: 'peliculas', titulo: '🎬 Películas en Tendencia y Estrenos', cat: 'Peliculas', sub: 'Películas' },
-{ key: 'documentales', titulo: '📹 Documentales Recientes y Destacados', cat: 'Peliculas', sub: 'Documentales' }, { key: 'series', titulo: '📺 Series en Emisión y Tendencia', cat: 'Series', sub: 'Series Completas' },
-{ key: 'docuseries', titulo: '📽️ Docuseries Aclamadas', cat: 'Series', sub: 'Series Documentales' }, { key: 'musica', titulo: '🎵 Música (Álbumes y Artistas en Tendencia)', cat: 'Musica', sub: 'Discos' },
-{ key: 'juegos', titulo: '🎮 Juegos Recientes y Populares', cat: 'Juegos', sub: 'Videojuegos' }, { key: 'libros', titulo: '📖 Libros Destacados y Novedades', cat: 'Lecturas', sub: 'Libros' }, { key: 'comics', titulo: '💥 Cómics y Novelas Gráficas', cat: 'Lecturas', sub: 'Cómics' },
-{ key: 'mangas', titulo: '⛩️ Mangas Más Leídos y en Publicación', cat: 'Lecturas', sub: 'Mangas' } ]; const activas = estado.discoverCatsActivas || TODAS_CATS_DISCOVER; const discFrag = document.createDocumentFragment(); secciones.forEach(sec => { if (!activas.includes(sec.key)) return; let items = estado.discoverData[sec.key] || [];
-// Compatibilidad si musica viene separada en discos/artistas
-if (sec.key === 'musica' && !items.length && (estado.discoverData.discos || estado.discoverData.artistas)) { items = [...(estado.discoverData.discos || []), ...(estado.discoverData.artistas || [])]; }
-if (!items.length) return; const maxDisponible = Math.min(items.length, 24); const limiteActual = Math.min(estado.discoverLimites[sec.key] || 6, maxDisponible);
-const itemsVisibles = items.slice(0, limiteActual); const sTitle = document.createElement('div'); sTitle.className = 'discover-section-title';
-sTitle.innerHTML = `<span>${sec.titulo}</span><span style="font-size:0.75rem; color:var(--muted); font-weight:600;">Mostrando ${itemsVisibles.length} de ${maxDisponible}</span>`;
-discFrag.appendChild(sTitle); const grid = document.createElement('div'); grid.className = 'discover-grid'; const dGridFrag = document.createDocumentFragment(); itemsVisibles.forEach(it => { const card = document.createElement('div'); card.className = 'discover-card'; const titOrig = it.tituloOriginal || it.titulo || 'Sin título';
-const titEn = (it.tituloIngles && it.tituloIngles.toLowerCase() !== titOrig.toLowerCase()) ? it.tituloIngles : ''; const posterFallback = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='240' fill='%23334155'><rect width='100%' height='100%'/></svg>";
-card.innerHTML = ` ${it.anio ? `<div class="discover-year-badge">${it.anio}</div>` : ''} <img class="discover-poster" loading="lazy" src="${it.poster || posterFallback}"> <div class="discover-body"> <div> <div class="discover-item-title">${titOrig}</div> ${titEn ? `<div class="discover-item-en-sub">(${titEn})</div>` : ''} <div class="discover-item-meta">${it.creador || ''} ${it.anio ? '(' + it.anio + ')' : ''}</div>${obtenerBadgeAmigoActividad(titOrig, sec.cat)} </div> <div class="discover-actions"> <button type="button" class="btn-add-discover">+ Lista</button> <button type="button" class="btn-log-discover" title="Registrar ahora en mi historial">✓</button> </div> </div> `;
-card.querySelector('.btn-add-discover').onclick = () => agregarAWatchlistDirecto(it); card.querySelector('.btn-log-discover').onclick = () => registrarDirectoDesdeDiscover(it); dGridFrag.appendChild(card); }); grid.appendChild(dGridFrag); discFrag.appendChild(grid);
-if (limiteActual < maxDisponible) { const sigCantidad = Math.min(24, limiteActual + 6); const moreWrap = document.createElement('div'); moreWrap.className = 'discover-more-wrap';
-moreWrap.innerHTML = `<button type="button" class="btn-discover-more" onclick="mostrarMasDiscover('${sec.key}')">➕ Mostrar más (+6 · ver ${sigCantidad} de ${maxDisponible})</button>`; discFrag.appendChild(moreWrap); }
-}); box.appendChild(discFrag); aplicarEstilosGlobales(); }
+function renderizarDiscoverVista() {
+  const box = document.getElementById('contenedor-discover-secciones');
+  if (!estado.discoverData) return;
+  box.innerHTML = '';
+  const secciones = [
+    { key: 'peliculas', titulo: '🎬 Películas en Tendencia y Estrenos', cat: 'Peliculas', sub: 'Películas' },
+    { key: 'documentales', titulo: '📹 Documentales Recientes y Destacados', cat: 'Peliculas', sub: 'Documentales' },
+    { key: 'series', titulo: '📺 Series en Emisión y Tendencia', cat: 'Series', sub: 'Series Completas' },
+    { key: 'docuseries', titulo: '📽️ Docuseries Aclamadas', cat: 'Series', sub: 'Series Documentales' },
+    { key: 'musica', titulo: '🎵 Música (Álbumes y Artistas en Tendencia)', cat: 'Musica', sub: 'Discos' },
+    { key: 'juegos', titulo: '🎮 Juegos Recientes y Populares', cat: 'Juegos', sub: 'Videojuegos' },
+    { key: 'libros', titulo: '📖 Libros Destacados y Novedades', cat: 'Lecturas', sub: 'Libros' },
+    { key: 'comics', titulo: '💥 Cómics y Novelas Gráficas (Marvel & DC)', cat: 'Lecturas', sub: 'Cómics' },
+    { key: 'mangas', titulo: '⛩️ Mangas Más Leídos y en Publicación', cat: 'Lecturas', sub: 'Mangas' }
+  ];
+  const activas = estado.discoverCatsActivas || TODAS_CATS_DISCOVER;
+  const discFrag = document.createDocumentFragment();
+  secciones.forEach(sec => {
+    if (!activas.includes(sec.key)) return;
+    let items = estado.discoverData[sec.key] || [];
+    if (sec.key === 'musica' && !items.length && (estado.discoverData.discos || estado.discoverData.artistas)) {
+      items = [...(estado.discoverData.discos || []), ...(estado.discoverData.artistas || [])];
+    }
+    if (!items.length) return;
+    const maxDisponible = Math.min(items.length, 24);
+    const limiteActual = Math.min(estado.discoverLimites[sec.key] || 6, maxDisponible);
+    const itemsVisibles = items.slice(0, limiteActual);
+    const sTitle = document.createElement('div');
+    sTitle.className = 'discover-section-title';
+    sTitle.innerHTML = `<span>${sec.titulo}</span><span style="font-size:0.75rem; color:var(--muted); font-weight:600;">Mostrando ${itemsVisibles.length} de ${maxDisponible}</span>`;
+    discFrag.appendChild(sTitle);
+    const grid = document.createElement('div');
+    grid.className = 'discover-grid';
+    const dGridFrag = document.createDocumentFragment();
+    itemsVisibles.forEach(it => {
+      const card = document.createElement('div');
+      card.className = 'discover-card';
+      const titOrig = it.tituloOriginal || it.titulo || 'Sin título';
+      const titEn = (it.tituloIngles && it.tituloIngles.toLowerCase() !== titOrig.toLowerCase()) ? it.tituloIngles : '';
+      const posterFallback = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='240' fill='%23334155'><rect width='100%' height='100%'/></svg>";
+      const yaEnLista = estaEnWatchlist(it);
+      const creadorConRol = formatearCreadorConRol(sec.cat, sec.sub, it.creador);
+
+      card.innerHTML = `
+        ${it.motivo ? `<div class="discover-rec-badge">${it.motivo}</div>` : ''}
+        ${it.anio ? `<div class="discover-year-badge">${it.anio}</div>` : ''}
+        <img class="discover-poster" loading="lazy" src="${it.poster || posterFallback}">
+        <div class="discover-body">
+          <div>
+            <div class="discover-item-title">${titOrig}</div>
+            ${titEn ? `<div class="discover-item-en-sub">(${titEn})</div>` : ''}
+            <div class="discover-item-meta">
+              ${creadorConRol ? `<span class="discover-creator-tag">${creadorConRol}</span>` : ''}
+              ${it.anio ? `<span class="discover-year-sub">(${it.anio})</span>` : ''}
+            </div>
+            ${obtenerBadgeAmigoActividad(titOrig, sec.cat)}
+          </div>
+          <div class="discover-actions">
+            <button type="button" class="btn-add-discover ${yaEnLista ? 'added' : ''}">${yaEnLista ? '✓ En Lista' : '+ Lista'}</button>
+            <button type="button" class="btn-log-discover" title="Registrar ahora en mi historial">✓</button>
+          </div>
+        </div>
+      `;
+      const btnAdd = card.querySelector('.btn-add-discover');
+      btnAdd.onclick = () => {
+        if (btnAdd.classList.contains('added')) return;
+        btnAdd.classList.add('added');
+        btnAdd.textContent = '✓ Agregado';
+        agregarAWatchlistDirecto(it, btnAdd);
+      };
+      card.querySelector('.btn-log-discover').onclick = () => registrarDirectoDesdeDiscover(it);
+      dGridFrag.appendChild(card);
+    });
+    grid.appendChild(dGridFrag);
+    discFrag.appendChild(grid);
+    if (limiteActual < maxDisponible) {
+      const sigCantidad = Math.min(24, limiteActual + 6);
+      const moreWrap = document.createElement('div');
+      moreWrap.className = 'discover-more-wrap';
+      moreWrap.innerHTML = `<button type="button" class="btn-discover-more" onclick="mostrarMasDiscover('${sec.key}')">➕ Mostrar más (+6 · ver ${sigCantidad} de ${maxDisponible})</button>`;
+      discFrag.appendChild(moreWrap);
+    }
+  });
+  box.appendChild(discFrag);
+  aplicarEstilosGlobales();
+}
 // --- FUNCIONES WATCHLIST ---
 function obtenerItemsWatchlistActuales() {
   if (estado.categoria === 'watchlists') {
@@ -2968,34 +3422,70 @@ const catNom = I18N[l]?.cats?.[c] || CONFIG[c]?.nombre || c; let titNombre = I18
 grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:32px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border);">No tienes elementos pendientes en <strong>${titNombre}</strong>. ¡Usa el buscador de arriba o explora Discover para agregar uno! ✨</div>`; aplicarEstilosGlobales(); return; }
 const wlFrag = document.createDocumentFragment(); items.forEach(it => { const card = document.createElement('div'); card.className = 'watchlist-card'; card.innerHTML = ` <img class="watchlist-poster" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'170\' height=\'255\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'170\\' height=\\'255\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'" onclick="abrirFichaTecnica('${it.id}')" title="Ver ficha técnica"> <div class="watchlist-body"> <div> <div class="watchlist-item-title" onclick="abrirFichaTecnica('${it.id}')" style="cursor:pointer;">${it.titulo}</div> <div class="watchlist-item-meta">${it.categoria ? `<span style="color:var(--accent);font-weight:700;">${it.categoria}</span> · ` : ''}${it.creador} ${it.anio ? '(' + it.anio + ')' : ''}</div> ${obtenerBadgeAmigoActividad(it.titulo, it.categoria)} </div> <div class="watchlist-actions"> <button type="button" class="btn-wl-play" onclick="consumirDesdeWatchlist('${it.id}')">✓ Registrar</button> <button type="button" class="btn-wl-del" title="Eliminar de lista" onclick="borrarItemWatchlist('${it.id}')">✕</button> </div> </div> `;
 wlFrag.appendChild(card); }); grid.appendChild(wlFrag); aplicarEstilosGlobales(); }
-function agregarAWatchlistDirecto(it) { if (!estado.userEmail) { abrirModalAuthSupabase('login'); return alert('Inicia sesión en tu cuenta primero para guardar en tu Watchlist.'); }
-let targetCat = it.categoria || (estado.categoria === 'watchlists' ? estado.wlCategoria : estado.categoria);
-if (!targetCat || targetCat === 'inicio' || targetCat === 'watchlists' || targetCat === 'todas_watchlists' || targetCat === 'discover') {
-  targetCat = 'Peliculas';
+function agregarAWatchlistDirecto(it, btnEl = null) {
+  if (!estado.userEmail) {
+    if (btnEl) {
+      btnEl.classList.remove('added');
+      btnEl.textContent = '+ Lista';
+    }
+    abrirModalAuthSupabase('login');
+    return alert('Inicia sesión en tu cuenta primero para guardar en tu Watchlist.');
+  }
+  let targetCat = it.categoria || (estado.categoria === 'watchlists' ? estado.wlCategoria : estado.categoria);
+  if (!targetCat || targetCat === 'inicio' || targetCat === 'watchlists' || targetCat === 'todas_watchlists' || targetCat === 'discover') {
+    targetCat = 'Peliculas';
+  }
+  let targetSub = it.subcategoria || (estado.categoria === 'watchlists' ? estado.wlSubcategoria : estado.subcategoria);
+  if (targetCat === 'Peliculas') {
+    if (String(targetSub).toLowerCase().includes('docu')) targetSub = 'Documentales';
+    else targetSub = 'Películas';
+  } else if (targetCat === 'Series') {
+    if (String(targetSub).toLowerCase().includes('docu')) targetSub = 'Series Documentales';
+    else targetSub = 'Temporadas';
+  } else if (targetCat === 'Musica') {
+    targetSub = 'Discos';
+  } else if (targetCat === 'Juegos') {
+    targetSub = 'Videojuegos';
+  } else if (targetCat === 'Lecturas') {
+    const sLow = String(targetSub).toLowerCase();
+    if (sLow.includes('comic') || sLow.includes('cómic')) targetSub = 'Cómics';
+    else if (sLow.includes('manga')) targetSub = 'Mangas';
+    else targetSub = 'Libros';
+  }
+  const payload = {
+    categoria: targetCat,
+    subcategoria: targetSub,
+    titulo: it.tituloOriginal || it.titulo,
+    subtitulo: it.tituloIngles || it.subtitulo || '',
+    creador: it.creador || 'Desconocido',
+    anio: it.anio || '',
+    poster: it.poster || ''
+  };
+  ['search-results', 'search-results-wl'].forEach(id => {
+    const resBox = document.getElementById(id);
+    if (resBox) { resBox.innerHTML = ''; resBox.style.display = 'none'; }
+  });
+  ['input-search', 'input-search-wl'].forEach(id => {
+    const inSearch = document.getElementById(id);
+    if (inSearch) inSearch.value = '';
+  });
+  google.script.run.withSuccessHandler(res => {
+    if (res?.exito) {
+      mostrarToastPersonalizado(`¡"${payload.titulo}" añadido a pendientes en Supabase! 📌`);
+      cargarWatchlist();
+      if (btnEl) {
+        btnEl.classList.add('added');
+        btnEl.textContent = '✓ En Lista';
+      }
+    } else {
+      if (btnEl) {
+        btnEl.classList.remove('added');
+        btnEl.textContent = '+ Lista';
+      }
+      alert('Error: ' + res?.error);
+    }
+  }).guardarEnWatchlist(payload, estado.userEmail);
 }
-let targetSub = it.subcategoria || (estado.categoria === 'watchlists' ? estado.wlSubcategoria : estado.subcategoria);
-if (targetCat === 'Peliculas') {
-  if (String(targetSub).toLowerCase().includes('docu')) targetSub = 'Documentales';
-  else targetSub = 'Películas';
-} else if (targetCat === 'Series') {
-  if (String(targetSub).toLowerCase().includes('docu')) targetSub = 'Series Documentales';
-  else targetSub = 'Temporadas';
-} else if (targetCat === 'Musica') {
-  targetSub = 'Discos';
-} else if (targetCat === 'Juegos') {
-  targetSub = 'Videojuegos';
-} else if (targetCat === 'Lecturas') {
-  const sLow = String(targetSub).toLowerCase();
-  if (sLow.includes('comic') || sLow.includes('cómic')) targetSub = 'Cómics';
-  else if (sLow.includes('manga')) targetSub = 'Mangas';
-  else targetSub = 'Libros';
-}
-const payload = { categoria: targetCat, subcategoria: targetSub, titulo: it.tituloOriginal || it.titulo, subtitulo: it.tituloIngles || it.subtitulo || '', creador: it.creador || 'Desconocido', anio: it.anio || '', poster: it.poster || ''
-}; ['search-results', 'search-results-wl'].forEach(id => { const resBox = document.getElementById(id); if (resBox) { resBox.innerHTML = ''; resBox.style.display = 'none'; } });
-['input-search', 'input-search-wl'].forEach(id => { const inSearch = document.getElementById(id); if (inSearch) inSearch.value = ''; });
-google.script.run.withSuccessHandler(res => { if (res?.exito) {
-mostrarToastPersonalizado(`¡"${payload.titulo}" añadido a pendientes en Supabase! 📌`); cargarWatchlist(); } else { alert('Error: ' + res?.error); }
-}).guardarEnWatchlist(payload, estado.userEmail); }
 function borrarItemWatchlist(id) { google.script.run.withSuccessHandler(() => { mostrarToastPersonalizado('Eliminado de la lista'); cargarWatchlist(); }).eliminarDeWatchlist(id, estado.userEmail); }
 function consumirDesdeWatchlist(id) { const item = estado.watchlist.find(w => w.id === id); if (!item) return; let destCat = item.categoria || 'Peliculas'; let destSub = item.subcategoria;
 if (destCat === 'Peliculas') {
