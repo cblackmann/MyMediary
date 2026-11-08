@@ -357,7 +357,26 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
     <div id="anio-preview-badge" style="font-size:0.78rem;color:var(--accent);margin-top:6px;font-weight:600;"></div>
   </div>
   <div class="checkbox-row" style="margin-top:8px;"><input type="checkbox" id="chk-no-fecha" onchange="toggleSinFecha(this.checked)"><label for="chk-no-fecha" data-i18n="chk_no_fecha">No registrada / No recuerdo la fecha exacta</label></div>
-</div> <div class="form-group"> <label data-i18n="lbl_calificacion">Calificación:</label> <div class="stars-wrapper" id="rating-stars" onmouseleave="restaurarHoverEstrellas()"></div> <span id="rating-label" style="font-size:.85rem; color:var(--accent); margin-left:8px;">0.0 / 5</span> </div> <div class="form-group" id="grupo-rewatch-checkbox" style="display:none; margin:10px 0 16px;">
+</div>
+<div class="form-group" id="grupo-en-progreso" style="display:none; margin:12px 0 16px;">
+  <div class="en-progreso-box" style="background:linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(99,102,241,0.08) 100%); border:1px solid rgba(56,189,248,0.3); border-radius:10px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer;" onclick="marcarComoEnProgreso(event)">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <input type="checkbox" id="chk-en-progreso" style="width:19px; height:19px; cursor:pointer; accent-color:var(--accent);" onchange="marcarComoEnProgreso(event)">
+      <div>
+        <label for="chk-en-progreso" id="lbl-en-progreso" style="cursor:pointer; color:var(--text); font-weight:700; font-size:0.92rem; margin:0; display:flex; align-items:center; gap:6px;">
+          <span id="icono-en-progreso">⏳</span> <span id="texto-en-progreso">Aún viendo</span>
+        </label>
+        <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;" id="desc-en-progreso" data-i18n="en_progreso_desc">
+          Guardar ahora en el historial con fecha de inicio, término en progreso y calificación/reseña pendientes
+        </div>
+      </div>
+    </div>
+    <button type="button" class="btn-ghost" style="flex-shrink:0; font-size:0.78rem; padding:6px 14px; border-radius:8px; background:rgba(56,189,248,0.15); color:var(--accent); font-weight:700; border:1px solid rgba(56,189,248,0.35); cursor:pointer;" onclick="marcarComoEnProgreso(event)">
+      ⚡ <span id="btn-txt-en-progreso" data-i18n="en_progreso_btn">Guardar</span>
+    </button>
+  </div>
+</div>
+<div class="form-group"> <label data-i18n="lbl_calificacion">Calificación:</label> <div class="stars-wrapper" id="rating-stars" onmouseleave="restaurarHoverEstrellas()"></div> <span id="rating-label" style="font-size:.85rem; color:var(--accent); margin-left:8px;">0.0 / 5</span> </div> <div class="form-group" id="grupo-rewatch-checkbox" style="display:none; margin:10px 0 16px;">
 <div class="checkbox-row" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:8px; padding:10px 14px;"> <input type="checkbox" id="chk-es-rewatch" style="width:18px; height:18px; cursor:pointer;"> <label for="chk-es-rewatch" style="cursor:pointer; color:var(--text); font-weight:600; margin:0;" data-i18n="lbl_es_rewatch">🔁 Ya la he visto antes (Rewatch)</label> </div> </div>
 <div class="form-group"> <label data-i18n="lbl_comentario">Comentario / Reseña:</label> <textarea id="input-comentario" class="comment-box" placeholder="Escribe lo que te pareció (Enter para guardar)..." onkeydown="manejarEnterComentario(event)"></textarea> </div> <button class="btn-save" id="btn-guardar" onclick="guardarNuevoElemento()" data-i18n="btn_guardar">Guardar en Mediary</button> </div> <!-- VISTA NORMAL DE HISTORIAL -->
 <div id="seccion-historial-contenido"> <div class="history-header"> <div class="history-title"><span data-i18n="historial_title">Historial</span> (<span id="total-filtro">0</span>)</div> <button type="button" class="btn-toggle-filter" id="btn-filtro-rewatches" style="display:none;" onclick="toggleOcultarRewatches()"> <span>🔁</span> <span id="txt-filtro-rewatches" data-i18n="btn_ocultar_rw">Ocultar Rewatches</span>
@@ -617,6 +636,7 @@ const timer = setTimeout(() => { delete window[cb]; s.remove(); resolve(null); }
 s.src = u + (u.includes('?') ? '&' : '?') + 'output=jsonp&callback=' + cb; document.body.appendChild(s); }); }
 const r = await fetch(u); const d = r.ok ? await r.json() : null; if (d && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d); return d; } catch (e) { return null; }
 }; const fmtFecha_ = v => { if (!v || v === 'Sin fecha' || v === '' || v === 'undefined') return 'Sin fecha'; if (v instanceof Date) return `${String(v.getDate()).padStart(2,'0')}/${String(v.getMonth()+1).padStart(2,'0')}/${v.getFullYear()}`; const s = String(v).trim(); if (s === 'Sin fecha') return 'Sin fecha';
+if (s.startsWith('Aún ') || s.startsWith('Aun ') || s.startsWith('Still ') || s.includes('viendo') || s.includes('escuchando') || s.includes('jugando') || s.includes('leyendo')) return s;
 if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/'); return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}/${p[2]}`; }
 if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const p = s.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; }
 if (s.includes('➔') || s.includes(' - ') || s.startsWith('Semana') || /^[a-záéíóúñ]+\s+\d{4}$/i.test(s) || /^\d{4}$/.test(s)) return s;
@@ -2582,7 +2602,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
 }; const I18N = { es: { nav_inicio: "Inicio", nav_peliculas: "Películas", nav_series: "Series", nav_musica: "Música", nav_juegos: "Juegos", nav_lecturas: "Lecturas", nav_perfil: "Perfil", nav_amigos: "Amigos", nav_watchlists: "Mis Watchlists", nav_discover: "Discover", home_title: "Índice General", home_subtitle: "Resumen exhaustivo de tus hábitos y favoritos", wl_global_btn: "Ver mis Watchlists y Pendientes", amigos_title: "Comunidad y Amigos", amigos_subtitle: "Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.", amigos_search_title: "Agregar Amigo por ID", amigos_search_hint: "Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:", btn_copiar_mi_id: "Copiar mi ID", btn_actualizar: "Actualizar", btn_enviar_solicitud: "Enviar Solicitud", btn_edit: "Editar", profile_title: "Perfil y Estadísticas", profile_favs_title: "Mis Favoritos por Categoría", btn_cfg_favs: "Configurar cuáles mostrar", profile_metrics_title: "Métricas Globales", profile_records_title: "Récords de Ritmo", profile_curiosities_title: "Curiosidades y Hábitos", stat_total_regs: "Total Registros", stat_items_completed: "items completados", stat_avg_rating: "Calificación Promedio", stat_of_stars: "de 5.0 estrellas", stat_game_hours: "Horas en Juegos", stat_time_invested: "tiempo invertido", stat_fav_creator: "Creador/Director Favorito", stat_rewatch_rate: "Tasa de Rewatch / Relectura",
 btn_manual: "Ingresar manualmente", btn_guardar: "Guardar en Mediary", historial_title: "Historial", btn_ocultar_rw: "Ocultar Rewatches", btn_mostrar_rw: "Mostrar Rewatches", badge_rewatch: "Rewatch",
 lbl_temporada_num: "¿Qué número de temporada es?:", chk_temporada_unica: "¿Es temporada única? (Guardar también en Series)", lbl_arco: "Nombre del Arco:", lbl_numeros: "Números que abarca:", lbl_horas: "¿Cuántas horas te tomó jugar?:",
-lbl_fecha_ini: "Fecha de inicio:", lbl_fecha_fin: "Fecha de término:", lbl_fecha_vis: "Fecha:", chk_no_fecha: "No registrada / No recuerdo la fecha exacta", lbl_calificacion: "Calificación:", lbl_es_rewatch: "🔁 Ya la he visto antes (Rewatch)", lbl_comentario: "Comentario / Reseña:",
+lbl_fecha_ini: "Fecha de inicio:", lbl_fecha_fin: "Fecha de término:", lbl_fecha_vis: "Fecha:", chk_no_fecha: "No registrada / No recuerdo la fecha exacta", lbl_calificacion: "Calificación:", lbl_es_rewatch: "🔁 Ya la he visto antes (Rewatch)", lbl_comentario: "Comentario / Reseña:", en_progreso_desc: "Guardar ahora en el historial con fecha de inicio, término en progreso y calificación/reseña pendientes", en_progreso_btn: "Guardar", pendiente: "Pendiente",
 table_th_fecha_ini: "Inicio", table_th_fecha_fin: "Término", table_th_fecha: "Fecha", table_th_horas: "Horas", table_th_calif: "Calificación", table_th_comentario: "Comentario",
 stat_ultimo: "Último", stat_mejor: "Mejor Calificado", stat_sin_reg: "Sin registros aún", stat_sin_fecha: "Sin fecha registrada", total_prefix: "Total:", concierto_title: "Registrar Concierto / Festival", concierto_gira: "Nombre de la gira o evento:",
 concierto_tipo_q: "¿Fue concierto o festival?:", concierto_btn_concierto: "Concierto", concierto_btn_festival: "Festival", concierto_buscar_art: "Buscar y agregar artistas que tocaron:", concierto_agregados: "Artistas agregados:",
@@ -2645,7 +2665,7 @@ cats: { Peliculas: "Películas", Series: "Series", Musica: "Música", Juegos: "J
 }, en: { nav_inicio: "Home", nav_peliculas: "Movies", nav_series: "Series", nav_musica: "Music", nav_juegos: "Games", nav_lecturas: "Books & Comics", nav_perfil: "Profile", nav_amigos: "Friends", nav_watchlists: "My Watchlists", nav_discover: "Discover", home_title: "General Dashboard", home_subtitle: "Exhaustive overview of your habits and favorites", wl_global_btn: "View my Watchlists & Pending Items", amigos_title: "Community & Friends", amigos_subtitle: "Add friends by their unique ID and explore their tastes, favorites, and statistics in real time.", amigos_search_title: "Add Friend by ID", amigos_search_hint: "Ask your friend for their profile ID (visible on their Profile tab) and enter it here:", btn_copiar_mi_id: "Copy my ID", btn_actualizar: "Refresh", btn_enviar_solicitud: "Send Request", btn_edit: "Edit", profile_title: "Profile & Statistics", profile_favs_title: "My Favorites by Category", btn_cfg_favs: "Configure which to display", profile_metrics_title: "Global Metrics", profile_records_title: "Pacing Records", profile_curiosities_title: "Habits & Trivia", stat_total_regs: "Total Entries", stat_items_completed: "completed items", stat_avg_rating: "Average Rating", stat_of_stars: "out of 5.0 stars", stat_game_hours: "Gaming Playtime", stat_time_invested: "hours logged", stat_fav_creator: "Top Creator/Director", stat_rewatch_rate: "Rewatch / Reread Rate",
 btn_manual: "Manual Entry", btn_guardar: "Save to Mediary", historial_title: "History", btn_ocultar_rw: "Hide Rewatches", btn_mostrar_rw: "Show Rewatches", badge_rewatch: "Rewatch", lbl_temporada_num: "Season Number:", chk_temporada_unica: "Standalone Season? (Save also in Series)",
 lbl_arco: "Story Arc Name:", lbl_numeros: "Issues / Chapters Covered:", lbl_horas: "Playtime (Hours):", lbl_fecha_ini: "Start Date:", lbl_fecha_fin: "End Date:", lbl_fecha_vis: "Date:", chk_no_fecha: "Unregistered / Can't recall exact date", lbl_calificacion: "Rating:",
-lbl_es_rewatch: "🔁 Seen it before (Rewatch)", lbl_comentario: "Review / Thoughts:", table_th_fecha_ini: "Start", table_th_fecha_fin: "End", table_th_fecha: "Date", table_th_horas: "Hours", table_th_calif: "Rating", table_th_comentario: "Review",
+lbl_es_rewatch: "🔁 Seen it before (Rewatch)", lbl_comentario: "Review / Thoughts:", en_progreso_desc: "Save now to history with start date, in-progress end status, and pending rating/review", en_progreso_btn: "Save", pendiente: "Pending", table_th_fecha_ini: "Start", table_th_fecha_fin: "End", table_th_fecha: "Date", table_th_horas: "Hours", table_th_calif: "Rating", table_th_comentario: "Review",
 stat_ultimo: "Latest", stat_mejor: "Highest Rated", stat_sin_reg: "No records yet", stat_sin_fecha: "No registered date", total_prefix: "Total:", concierto_title: "Log Concert / Festival", concierto_gira: "Tour or Event name:",
 concierto_tipo_q: "Event Type:", concierto_btn_concierto: "Concert", concierto_btn_festival: "Festival", concierto_buscar_art: "Search and add artists that performed:", concierto_agregados: "Added artists:", concierto_vacio: "No artists added yet.", concierto_continuar: "Proceed to rating & date",
 profile_title: "Profile & Statistics", stat_best_day: "Record Day", stat_best_week: "Record Week", stat_best_month: "Record Month", profile_dist_title: "Media Distribution by Category:", cfg_title: "⚙️ Settings & Theme", cfg_title_short: "Settings", cfg_lang_label: "Interface Language:", cfg_font_label: "App Typography:",
@@ -3228,7 +3248,7 @@ if (r.categoria === 'Peliculas') {
   }
 }
 const cr = (r.creador || '').trim(); if (cr && cr !== 'Desconocido' && cr !== 'Autor desconocido' && cr !== 'Director desconocido') { creadores[cr] = (creadores[cr] || 0) + 1; }
-const fechaBase = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? r.fechaFin : r.fechaInicio; const dObj = parsearFechaAObjeto(fechaBase); if (dObj) { const dStr = `${String(dObj.getDate()).padStart(2,'0')}/${String(dObj.getMonth()+1).padStart(2,'0')}/${dObj.getFullYear()}`;
+const fechaBase = (r.fechaFin && r.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(r.fechaFin)) ? r.fechaFin : r.fechaInicio; const dObj = parsearFechaAObjeto(fechaBase); if (dObj) { const dStr = `${String(dObj.getDate()).padStart(2,'0')}/${String(dObj.getMonth()+1).padStart(2,'0')}/${dObj.getFullYear()}`;
 if (!mapaDias[dStr]) mapaDias[dStr] = { fecha: new Date(dObj), items: [] }; mapaDias[dStr].items.push(r); const mStr = `${dObj.getFullYear()}-${String(dObj.getMonth()+1).padStart(2,'0')}`;
 if (!mapaMeses[mStr]) mapaMeses[mStr] = { mIdx: dObj.getMonth(), items: [] }; mapaMeses[mStr].items.push(r); const primerDiaSemana = new Date(dObj); const diaSem = (dObj.getDay() + 6) % 7; primerDiaSemana.setDate(dObj.getDate() - diaSem);
 const semKey = `${primerDiaSemana.getFullYear()}-${String(primerDiaSemana.getMonth()+1).padStart(2,'0')}-${String(primerDiaSemana.getDate()).padStart(2,'0')}`; if (!mapaSemanas[semKey]) mapaSemanas[semKey] = { inicio: new Date(primerDiaSemana), items: [] }; mapaSemanas[semKey].items.push(r); }
@@ -3451,6 +3471,40 @@ btn.disabled = true; google.script.run.withSuccessHandler(res => { btn.textConte
 }).importarRegistrosMasivos(lista, estado.userEmail); }
 function mostrarToastPersonalizado(txt) { const old = document.querySelector('.toast-popup'); if (old) old.remove(); const tBox = document.createElement('div'); tBox.className = 'toast-popup'; tBox.innerHTML = `<span>✨</span><span>${txt}</span>`;
 document.body.appendChild(tBox); setTimeout(() => { tBox.style.transition = 'opacity 0.4s ease, transform 0.4s ease'; tBox.style.opacity = '0'; tBox.style.transform = 'translateY(-20px)'; setTimeout(() => tBox.remove(), 400); }, 3000); }
+function esEnProgresoTexto(str) {
+  if (!str) return false;
+  const s = String(str).toLowerCase().trim();
+  return s.startsWith('aún ') || s.startsWith('aun ') || s.startsWith('still ') ||
+         s === 'aún viendo' || s === 'aun viendo' || s === 'still watching' ||
+         s === 'aún escuchando' || s === 'aun escuchando' || s === 'still listening' ||
+         s === 'aún jugando' || s === 'aun jugando' || s === 'still playing' ||
+         s === 'aún leyendo' || s === 'aun leyendo' || s === 'still reading';
+}
+function obtenerTextoEnProgreso(cat, sub) {
+  const c = cat || estado.categoria;
+  const s = (sub || estado.subcategoria || '').toLowerCase();
+  const l = userPrefs.lang || 'es';
+  if (c === 'Series') {
+    return l === 'en' ? 'Still watching' : 'Aún viendo';
+  }
+  if (c === 'Musica') {
+    if (s.includes('artista') || s.includes('grupo')) {
+      return l === 'en' ? 'Still listening' : 'Aún escuchando';
+    }
+  }
+  if (c === 'Juegos') {
+    return l === 'en' ? 'Still playing' : 'Aún jugando';
+  }
+  if (c === 'Lecturas') {
+    if (s.includes('libro') || s.includes('cómic') || s.includes('comic') || s.includes('manga')) {
+      return l === 'en' ? 'Still reading' : 'Aún leyendo';
+    }
+  }
+  return null;
+}
+function esSubcategoriaEnProgresoPermitida(cat, sub) {
+  return obtenerTextoEnProgreso(cat, sub) !== null;
+}
 function subTieneRango(c, s, reg) {
   if (reg && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) return true;
   if (!c) return false;
@@ -3461,14 +3515,16 @@ function subTieneRango(c, s, reg) {
   return !!sub?.rangoFechas;
 }
 function subAdmiteRewatch(c, s) { return !!CONFIG[c]?.subs?.find(x => x.id === s)?.admiteRewatch; }
-function sanitizarFechaFrontend(v) { if (!v || v === 'Sin fecha' || v === 'undefined') return 'Sin fecha'; const s = String(v).trim(); if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s; if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/');
+function sanitizarFechaFrontend(v) { if (!v || v === 'Sin fecha' || v === 'undefined') return 'Sin fecha'; const s = String(v).trim();
+if (esEnProgresoTexto(s)) return s;
+if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s; if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/');
 return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}/${p[2]}`; }
 if (s.includes('➔') || s.includes(' - ') || s.startsWith('Semana') || /^[a-záéíóúñ]+\s+\d{4}$/i.test(s) || /^\d{4}$/.test(s)) return s;
 const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }
 const NOMBRES_MESES_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const NOMBRES_MESES_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const timestampDeFecha = v => {
-  if (!v || v === 'Sin fecha') return 0;
+  if (!v || v === 'Sin fecha' || esEnProgresoTexto(v)) return 0;
   const s = String(v).trim();
   const mDate = s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if (mDate) return new Date(Number(mDate[3]), Number(mDate[2]) - 1, Number(mDate[1])).getTime();
@@ -4021,7 +4077,28 @@ const esTemp = c === 'Series' && (s === 'Temporadas' || s.includes('Temporada'))
 if (!esTemp) { document.getElementById('input-temporada-num').value = ''; document.getElementById('chk-temporada-unica').checked = false; }
 const admiteRw = subAdmiteRewatch(c, s); const boxRw = document.getElementById('grupo-rewatch-checkbox'); if (boxRw) { boxRw.style.display = admiteRw ? 'block' : 'none'; document.getElementById('chk-es-rewatch').checked = false; }
 const btnFiltroRw = document.getElementById('btn-filtro-rewatches'); if (btnFiltroRw) btnFiltroRw.style.display = admiteRw ? 'inline-flex' : 'none';
-document.getElementById('grupo-comic-manga').style.display = (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) ? 'block' : 'none'; document.getElementById('grupo-horas-juegos').style.display = (c === 'Juegos') ? 'block' : 'none'; }
+document.getElementById('grupo-comic-manga').style.display = (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) ? 'block' : 'none'; document.getElementById('grupo-horas-juegos').style.display = (c === 'Juegos') ? 'block' : 'none';
+const textoProg = obtenerTextoEnProgreso(c, s);
+const boxProg = document.getElementById('grupo-en-progreso');
+if (boxProg) {
+  if (textoProg) {
+    boxProg.style.display = 'block';
+    const txtEl = document.getElementById('texto-en-progreso');
+    if (txtEl) txtEl.textContent = textoProg;
+    const icnEl = document.getElementById('icono-en-progreso');
+    if (icnEl) {
+      if (c === 'Series') icnEl.textContent = '📺';
+      else if (c === 'Musica') icnEl.textContent = '🎧';
+      else if (c === 'Juegos') icnEl.textContent = '🎮';
+      else if (c === 'Lecturas') icnEl.textContent = '📖';
+    }
+    const chkProg = document.getElementById('chk-en-progreso');
+    if (chkProg) chkProg.checked = false;
+  } else {
+    boxProg.style.display = 'none';
+  }
+}
+}
 function toggleOcultarRewatches() { estado.ocultarRewatches = !estado.ocultarRewatches; const btn = document.getElementById('btn-filtro-rewatches'); btn.classList.toggle('active', estado.ocultarRewatches);
 document.getElementById('txt-filtro-rewatches').textContent = estado.ocultarRewatches ? t('btn_mostrar_rw') : t('btn_ocultar_rw'); filtrarYMostrarHistorial(); }
 function actualizarAnioTemporada(num) { if (estado.categoria === 'Series' && estado.seleccionado?.idRef && num) { google.script.run.withSuccessHandler(info => { if (info && estado.seleccionado) { if (info.anioFinTemp) { estado.seleccionado.anio = info.anioFinTemp;
@@ -4973,14 +5050,119 @@ function cerrarModalNuevoArtista() { document.getElementById('modal-nuevo-artist
 function confirmarCreacionNuevoArtista() { if (!estado.artistaPendienteSugerido) return; const payload = Object.assign({}, estado.artistaPendienteSugerido); document.getElementById('btn-confirmar-nuevo-artista').textContent = 'Agregando... ⏳'; google.script.run.withSuccessHandler(() => {
 document.getElementById('btn-confirmar-nuevo-artista').textContent = 'Sí, comenzar registro'; document.getElementById('modal-nuevo-artista').style.display = 'none'; estado.artistaPendienteSugerido = null; mostrarToastPersonalizado(`¡Artista "${payload.titulo}" añadido a seguimiento!`);
 cargarRegistros(); }).guardarRegistro(payload, estado.userEmail); }
+function marcarComoEnProgreso(e) {
+  if (e) {
+    if (e.target && e.target.id === 'chk-en-progreso') {
+      // activado directamente
+    } else {
+      const chk = document.getElementById('chk-en-progreso');
+      if (chk) chk.checked = true;
+    }
+  } else {
+    const chk = document.getElementById('chk-en-progreso');
+    if (chk) chk.checked = true;
+  }
+  if (!estado.userEmail) {
+    abrirModalAuthSupabase('login');
+    return alert('Por favor inicia sesión en tu cuenta para guardar registros en Supabase.');
+  }
+  if (!estado.seleccionado) {
+    return alert('Por favor selecciona primero un elemento o completa la información.');
+  }
+  const c = estado.categoria, s = estado.subcategoria;
+  const textoProgreso = obtenerTextoEnProgreso(c, s);
+  if (!textoProgreso) return;
+
+  let tTit = estado.seleccionado.tituloOriginal || estado.seleccionado.titulo || 'Sin título';
+  let sub = estado.seleccionado.tituloIngles || '';
+  let tBase = estado.seleccionado.tituloOriginal || estado.seleccionado.titulo || 'Sin título';
+
+  let esUnica = false, numT = 0, totT = estado.seleccionado.totalSeasons || 0;
+  if (c === 'Series' && (s === 'Temporadas' || s.includes('Temporada'))) {
+    const n = document.getElementById('input-temporada-num')?.value?.trim();
+    numT = Number(n) || 1;
+    tTit = `${tBase} [${n ? 'S' + n : 'S1'}]`;
+    esUnica = document.getElementById('chk-temporada-unica')?.checked || false;
+  }
+  if (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) {
+    const a = document.getElementById('input-arco')?.value?.trim();
+    const num = document.getElementById('input-numeros-abarcados')?.value?.trim();
+    if (a) tTit = `${tBase}: ${a}`;
+    if (num) sub = `${tBase} #${num}`;
+  }
+
+  const fechasG = obtenerFechasParaGuardarNuevo();
+  let fI = fechasG.fI;
+  if (!fI || fI === 'Sin fecha') {
+    fI = fmtFecha_(new Date());
+  }
+  const fF = textoProgreso;
+  const esRw = subAdmiteRewatch(c, s) && (document.getElementById('chk-es-rewatch')?.checked || false);
+
+  let horasGuardar = '';
+  if (c === 'Juegos' && document.getElementById('input-horas-jugadas')?.value?.trim()) {
+    horasGuardar = `${document.getElementById('input-horas-jugadas').value.trim()} hrs`;
+  }
+
+  const payload = {
+    categoria: c,
+    subcategoria: s,
+    titulo: tTit,
+    tituloBase: tBase,
+    subtitulo: sub,
+    creador: estado.seleccionado.creador || 'Desconocido',
+    anio: String(estado.seleccionado.anio || ''),
+    fechaInicio: fI,
+    fechaFin: fF,
+    calificacion: 0,
+    comentario: '',
+    poster: estado.seleccionado.poster || '',
+    horas: horasGuardar,
+    esTemporadaUnica: esUnica,
+    numTempActual: numT,
+    totalTempOficiales: totT,
+    esRewatch: esRw
+  };
+
+  ocultarFormulario();
+  limpiarModuloConcierto();
+
+  const l = userPrefs.lang || 'es';
+  const toastMsg = l === 'en'
+    ? `Saved to history! (${textoProgreso})`
+    : `¡Guardado en el historial! (${textoProgreso})`;
+  mostrarToastPersonalizado(toastMsg);
+
+  google.script.run.withSuccessHandler(res => {
+    if (res?.exito) {
+      if (res.removidoDeWatchlist) {
+        cargarWatchlist();
+      }
+      cargarRegistros();
+    } else {
+      alert('Error al guardar: ' + (res?.error || 'Desconocido'));
+    }
+  }).guardarRegistro(payload, estado.userEmail);
+}
 function guardarNuevoElemento() { if (!estado.userEmail) { abrirModalAuthSupabase('login'); return alert('Por favor inicia sesión en tu cuenta para guardar registros en Supabase.'); }
 if (!estado.seleccionado) return alert('Por favor selecciona primero un elemento o completa la información.'); const c = estado.categoria, s = estado.subcategoria; let tTit = estado.seleccionado.tituloOriginal, sub = estado.seleccionado.tituloIngles || '', tBase = estado.seleccionado.tituloOriginal;
 let esUnica = false, esUltima = false, numT = 0, totT = estado.seleccionado.totalSeasons || 0; if (c === 'Series' && (s === 'Temporadas' || s.includes('Temporada'))) { const n = document.getElementById('input-temporada-num').value.trim(); numT = Number(n) || 1;
 tTit = `${estado.seleccionado.tituloOriginal} [${n ? 'S' + n : 'S1'}]`; esUnica = document.getElementById('chk-temporada-unica').checked; if (totT > 0 && numT >= totT && !esUnica) esUltima = true; }
 if (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) { const a = document.getElementById('input-arco').value.trim(), num = document.getElementById('input-numeros-abarcados').value.trim(); if (a) tTit = `${estado.seleccionado.tituloOriginal}: ${a}`;
 if (num) sub = `${estado.seleccionado.tituloOriginal} #${num}`; }
-const sinF = document.getElementById('chk-no-fecha').checked; const fechasG = obtenerFechasParaGuardarNuevo(); const fI = fechasG.fI; const fF = fechasG.fF;
-const esRw = subAdmiteRewatch(c, s) && document.getElementById('chk-es-rewatch').checked; const comentarioConPunto = asegurarPuntoFinal(document.getElementById('input-comentario').value); const btn = document.getElementById('btn-guardar');
+const sinF = document.getElementById('chk-no-fecha').checked; const fechasG = obtenerFechasParaGuardarNuevo(); const fI = fechasG.fI; let fF = fechasG.fF;
+let calificacionNum = Number(estado.calificacion)||0;
+let comentarioConPunto = asegurarPuntoFinal(document.getElementById('input-comentario').value);
+const chkProgEl = document.getElementById('chk-en-progreso');
+if (chkProgEl && chkProgEl.checked) {
+  const pTxt = obtenerTextoEnProgreso(c, s);
+  if (pTxt) {
+    fF = pTxt;
+    calificacionNum = 0;
+    comentarioConPunto = '';
+  }
+}
+const esRw = subAdmiteRewatch(c, s) && document.getElementById('chk-es-rewatch').checked; const btn = document.getElementById('btn-guardar');
 btn.textContent = 'Guardando... ⏳'; btn.disabled = true;
 let horasGuardar = '';
 if (c === 'Juegos' && document.getElementById('input-horas-jugadas').value.trim()) {
@@ -4989,7 +5171,7 @@ if (c === 'Juegos' && document.getElementById('input-horas-jugadas').value.trim(
   horasGuardar = `${estado.seleccionado.duracionHoras} hrs`;
 }
 const payload = { categoria: c, subcategoria: s, titulo: tTit, tituloBase: tBase, subtitulo: sub,
-creador: estado.seleccionado.creador, anio: estado.seleccionado.anio, fechaInicio: fI, fechaFin: fF, calificacion: Number(estado.calificacion)||0, comentario: comentarioConPunto,
+creador: estado.seleccionado.creador, anio: estado.seleccionado.anio, fechaInicio: fI, fechaFin: fF, calificacion: calificacionNum, comentario: comentarioConPunto,
 poster: estado.seleccionado.poster, horas: horasGuardar, esTemporadaUnica: esUnica, numTempActual: numT, totalTempOficiales: totT, esRewatch: esRw
 }; const esDiscoMusica = c === 'Musica' && (s === 'Discos' || s === 'Disco'); const nombreArtistaDisco = estado.seleccionado.creador;
 const posterDisco = estado.seleccionado.poster; google.script.run.withSuccessHandler(res => { btn.textContent = t('btn_guardar'); btn.disabled = false; if (res?.exito) { ocultarFormulario(); limpiarModuloConcierto(); if (res.removidoDeWatchlist) {
@@ -5016,19 +5198,29 @@ function filtrarYMostrarHistorial() { const th = document.getElementById('thead-
 tb.innerHTML = ''; mBox.innerHTML = ''; const c = estado.categoria, s = estado.subcategoria, r = subTieneRango(c, s), isJ = c === 'Juegos';
 th.innerHTML = `<tr>${r ? `<th style="width:110px;">${t('table_th_fecha_ini')}</th><th style="width:110px;">${t('table_th_fecha_fin')}</th>` : `<th style="width:110px;">${t('table_th_fecha')}</th>`}${isJ ? `<th style="width:80px; text-align:center;">${t('table_th_horas')}</th>` : ''}<th>${obtenerNombreColumnaTitulo(c, s)}</th><th style="width:150px;">${t('table_th_calif')}</th><th>${t('table_th_comentario')}</th><th style="width:40px; text-align:center;"></th></tr>`;
 let l = obtenerRegistrosDeSubcategoria(c, s); if (estado.ocultarRewatches && subAdmiteRewatch(c, s)) { l = l.filter(x => !x.esRewatch && !x.subcategoria.includes('Rewatch')); }
-l.sort((a, b) => { const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha') ? timestampDeFecha(a.fechaFin) : timestampDeFecha(a.fechaInicio); const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha') ? timestampDeFecha(b.fechaFin) : timestampDeFecha(b.fechaInicio); return vA - vB; });
+l.sort((a, b) => { const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? timestampDeFecha(a.fechaFin) : timestampDeFecha(a.fechaInicio); const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? timestampDeFecha(b.fechaFin) : timestampDeFecha(b.fechaInicio); return vA - vB; });
 document.getElementById('total-filtro').textContent = l.length; const cols = (r ? 2 : 1) + (isJ ? 1 : 0) + 4; if (!l.length) { tb.innerHTML = `<tr><td colspan="${cols}" style="text-align:center; padding:24px; color:var(--muted);">${t('stat_sin_reg')}</td></tr>`;
 mBox.innerHTML = `<div style="text-align:center; padding:24px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border);">${t('stat_sin_reg')}</div>`; return; }
-const conteosMes = {}; l.forEach(reg => { const fI = sanitizarFechaFrontend(reg.fechaInicio), fF = sanitizarFechaFrontend(reg.fechaFin); const fechaParaMes = (r && fF && fF !== 'Sin fecha') ? fF : (fI !== 'Sin fecha' ? fI : fF); const mKey = extraerMesClave(fechaParaMes).clave;
+const conteosMes = {}; l.forEach(reg => { const fI = sanitizarFechaFrontend(reg.fechaInicio), fF = sanitizarFechaFrontend(reg.fechaFin); const fechaParaMes = (r && fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : (fI !== 'Sin fecha' ? fI : fF); const mKey = extraerMesClave(fechaParaMes).clave;
 conteosMes[mKey] = (conteosMes[mKey] || 0) + 1; }); let mesClaveActual = ''; let mesParidad = 0; const tbFrag = document.createDocumentFragment(); const mBoxFrag = document.createDocumentFragment(); l.forEach(reg => { const fI = sanitizarFechaFrontend(reg.fechaInicio), fF = sanitizarFechaFrontend(reg.fechaFin);
-const sub = reg.subtitulo ? `<div style="font-size:.8rem; color:var(--muted); margin-top:2px;">(${reg.subtitulo})</div>` : ''; const meta = `(${reg.creador}${reg.anio ? ', ' + reg.anio : ''})`; const stars = renderEstrellasVisuales(reg.calificacion);
-const com = reg.comentario ? `"${reg.comentario}"` : '<span style="color:var(--border)">—</span>'; const badgeRwHtml = reg.esRewatch ? `<span class="badge-rewatch">🔁 ${t('badge_rewatch')}</span>` : '';
-const fechaParaMes = (r && fF && fF !== 'Sin fecha') ? fF : (fI !== 'Sin fecha' ? fI : fF); const mesData = extraerMesClave(fechaParaMes); if (mesData.clave !== mesClaveActual) { mesClaveActual = mesData.clave; mesParidad = (mesParidad + 1) % 2; const count = conteosMes[mesData.clave] || 1;
+const enProg = esEnProgresoTexto(fF);
+const sub = reg.subtitulo ? `<div style="font-size:.8rem; color:var(--muted); margin-top:2px;">(${reg.subtitulo})</div>` : ''; const meta = `(${reg.creador}${reg.anio ? ', ' + reg.anio : ''})`;
+const stars = (enProg && (!reg.calificacion || Number(reg.calificacion) === 0))
+  ? `<span style="color:var(--accent); font-size:0.8rem; font-weight:700; font-style:italic;">⏳ ${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>`
+  : renderEstrellasVisuales(reg.calificacion);
+const com = reg.comentario
+  ? `"${reg.comentario}"`
+  : (enProg ? `<span style="color:var(--muted); font-size:0.8rem; font-style:italic;">${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>` : '<span style="color:var(--border)">—</span>');
+const badgeRwHtml = reg.esRewatch ? `<span class="badge-rewatch">🔁 ${t('badge_rewatch')}</span>` : '';
+const fFDisplay = enProg
+  ? `<span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:12px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">⏳ ${fF}</span>`
+  : fF;
+const fechaParaMes = (r && fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : (fI !== 'Sin fecha' ? fI : fF); const mesData = extraerMesClave(fechaParaMes); if (mesData.clave !== mesClaveActual) { mesClaveActual = mesData.clave; mesParidad = (mesParidad + 1) % 2; const count = conteosMes[mesData.clave] || 1;
 const textoMesContador = mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`); const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
 sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td"><span class="emoji-dyn">🗓️ </span>${textoMesContador}</td>`; tbFrag.appendChild(sepTr); const sepCard = document.createElement('div'); sepCard.className = 'month-separator-card';
 sepCard.innerHTML = `<span class="emoji-dyn">🗓️ </span>${textoMesContador}`; mBoxFrag.appendChild(sepCard); }
-const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd'; const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`; tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fF}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${(fF && fF !== 'Sin fecha') ? fF : fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;"><button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
-tbFrag.appendChild(tr); const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`; m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fF}` : `<span class="emoji-dyn">📅 </span>${(fF && fF !== 'Sin fecha') ? fF : fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div>`;
+const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd'; const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`; tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;"><button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
+tbFrag.appendChild(tr); const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`; m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div>`;
 mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales(); }
 const cerrarModal = () => { document.getElementById('modal-edicion').style.display = 'none'; document.getElementById('modal-contenido').innerHTML = ''; };
 let fpComplFin = null;
@@ -5057,7 +5249,8 @@ function abrirEditorRegistroCompleto(id) {
   const l = userPrefs.lang || 'es';
   const c = reg.categoria, s = reg.subcategoria;
   const admiteRango = subTieneRango(c, s);
-  let r = admiteRango && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio;
+  const enProg = esEnProgresoTexto(reg.fechaFin);
+  let r = (admiteRango && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) || enProg;
   const isJ = c === 'Juegos';
   document.getElementById('modal-titulo').textContent = l === 'en' ? 'Edit Entry' : 'Editar Registro';
   let html = '<div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;background:var(--bg);padding:10px;border-radius:10px;border:1px solid var(--border);">';
@@ -5071,8 +5264,8 @@ function abrirEditorRegistroCompleto(id) {
   html += '<div class="form-group"><div class="date-row" style="display:flex;gap:10px;">';
   html += '<div style="flex:1;"><label style="font-size:.82rem;color:var(--muted);">' + (r ? (l === 'en' ? 'Start date:' : 'Fecha de inicio:') : (l === 'en' ? 'Date:' : 'Fecha:')) + '</label>';
   html += '<input type="text" id="edit-compl-fecha-ini" class="form-input date-input" placeholder="dd/mm/aaaa" value="' + (reg.fechaInicio !== 'Sin fecha' ? reg.fechaInicio : '') + '"></div>';
-  html += '<div id="wrap-edit-compl-fecha-fin" style="flex:1;' + (r ? '' : 'display:none;') + '"><label style="font-size:.82rem;color:var(--muted);">' + (l === 'en' ? 'End date:' : 'Fecha de término:') + '</label>';
-  html += '<input type="text" id="edit-compl-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" value="' + (reg.fechaFin && reg.fechaFin !== 'Sin fecha' ? reg.fechaFin : '') + '"></div>';
+  html += '<div id="wrap-edit-compl-fecha-fin" style="flex:1;' + (r ? '' : 'display:none;') + '"><label style="font-size:.82rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center;"><span>' + (l === 'en' ? 'End date:' : 'Fecha de término:') + '</span>' + (enProg ? '<button type="button" class="btn-ghost" style="padding:1px 6px;font-size:0.7rem;color:var(--accent);" onclick="document.getElementById(\'edit-compl-fecha-fin\').value = fmtFecha_(new Date());">✔ ' + (l === 'en' ? 'Finish today' : 'Terminar hoy') + '</button>' : '') + '</label>';
+  html += '<input type="text" id="edit-compl-fecha-fin" class="form-input date-input" placeholder="' + (enProg ? reg.fechaFin : 'dd/mm/aaaa') + '" value="' + (reg.fechaFin && reg.fechaFin !== 'Sin fecha' && !enProg ? reg.fechaFin : '') + '"></div>';
   html += '</div>';
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">';
   html += '<div class="checkbox-row" style="margin:0;"><input type="checkbox" id="edit-compl-sin-fecha" ' + (reg.fechaInicio === 'Sin fecha' ? 'checked' : '') + '>';
@@ -5119,6 +5312,8 @@ function abrirEditorRegistroCompleto(id) {
       fF = 'Sin fecha';
     } else if (wrapFin && wrapFin.style.display !== 'none' && inputFin && inputFin.value.trim()) {
       fF = sanitizarFechaFrontend(inputFin.value.trim());
+    } else if (enProg && (!inputFin || !inputFin.value.trim())) {
+      fF = reg.fechaFin;
     } else if (r && inputFin && inputFin.value.trim()) {
       fF = sanitizarFechaFrontend(inputFin.value.trim());
     }
@@ -5200,7 +5395,8 @@ function abrirEditorFecha(id) {
   if (!reg) return;
   const l = userPrefs.lang || 'es';
   const admiteRango = subTieneRango(reg.categoria, reg.subcategoria);
-  let r = admiteRango && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio;
+  const enProg = esEnProgresoTexto(reg.fechaFin);
+  let r = (admiteRango && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) || enProg;
   document.getElementById('modal-titulo').textContent = l === 'en' ? 'Edit Date' : 'Editar Fecha';
   
   let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
@@ -5214,7 +5410,13 @@ function abrirEditorFecha(id) {
   </div>`;
   html += `<div id="wrap-edit-prec-dia">
     <div style="margin-bottom:12px;"><label style="font-size:.85rem; color:var(--muted);">${r ? t('lbl_fecha_ini') : t('lbl_fecha_vis')}</label><input type="text" id="edit-fecha-ini" class="form-input date-input" placeholder="dd/mm/aaaa" value="${(reg.fechaInicio !== 'Sin fecha' && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(reg.fechaInicio)) ? reg.fechaInicio : ''}"></div>
-    <div id="wrap-edit-fecha-fin" style="margin-bottom:12px;${r ? '' : 'display:none;'}"><label style="font-size:.85rem; color:var(--muted);">${t('lbl_fecha_fin')}</label><input type="text" id="edit-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" value="${(reg.fechaFin && reg.fechaFin !== 'Sin fecha' && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(reg.fechaFin)) ? reg.fechaFin : ''}"></div>
+    <div id="wrap-edit-fecha-fin" style="margin-bottom:12px;${r ? '' : 'display:none;'}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <label style="font-size:.85rem; color:var(--muted); margin:0;">${t('lbl_fecha_fin')}</label>
+        ${enProg ? `<button type="button" class="btn-ghost" style="padding:1px 6px;font-size:0.72rem;color:var(--accent);" onclick="document.getElementById('edit-fecha-fin').value = fmtFecha_(new Date());">✔ ${l === 'en' ? 'Finish today' : 'Terminar hoy'}</button>` : ''}
+      </div>
+      <input type="text" id="edit-fecha-fin" class="form-input date-input" placeholder="${enProg ? reg.fechaFin : 'dd/mm/aaaa'}" value="${(reg.fechaFin && reg.fechaFin !== 'Sin fecha' && !enProg && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(reg.fechaFin)) ? reg.fechaFin : ''}">
+    </div>
   </div>`;
   html += `<div id="wrap-edit-prec-semana" style="display:none;margin-bottom:12px;">
     <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -5309,6 +5511,8 @@ function abrirEditorFecha(id) {
         if (admiteRango) {
           if (wrapFin && wrapFin.style.display !== 'none' && inputFin && inputFin.value.trim()) {
             fF = sanitizarFechaFrontend(inputFin.value.trim());
+          } else if (enProg && (!inputFin || !inputFin.value.trim())) {
+            fF = reg.fechaFin;
           } else if (r && inputFin && inputFin.value.trim()) {
             fF = sanitizarFechaFrontend(inputFin.value.trim());
           }
