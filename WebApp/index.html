@@ -113,12 +113,12 @@ textarea.comment-box:hover{border-color:rgba(56,189,248,.4)}textarea.comment-box
 .switch-wrap{display:flex;align-items:center;justify-content:space-between;padding:6px 0}.switch-label{font-size:0.92rem;color:var(--text);font-weight:500}.switch-toggle{position:relative;display:inline-block;width:46px;height:26px}.switch-toggle input{opacity:0;width:0;height:0}.switch-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:var(--card-hover);transition:.3s;border-radius:34px;border:1px solid var(--border)}
 .switch-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:var(--text);transition:.3s;border-radius:50%}.switch-toggle input:checked + .switch-slider{background-color:var(--accent);border-color:var(--accent)}.switch-toggle input:checked + .switch-slider:before{transform:translateX(20px);background-color:#0f172a}
 .toast-popup{position:fixed;top:20px;right:20px;background:var(--card);border:1px solid var(--accent);color:var(--text);padding:14px 20px;border-radius:12px;font-size:0.9rem;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;gap:10px;animation:slideDownToast 0.3s cubic-bezier(0.34, 1.3, 0.64, 1)}
-@keyframes slideDownToast{from{transform:translateY(-40px);opacity:0}to{transform:translateY(0);opacity:1}}.profile-section-title{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin:14px 0 8px}.profile-grid-records{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}.profile-grid-highlights{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+@keyframes slideDownToast{from{transform:translateY(-40px);opacity:0}to{transform:translateY(0);opacity:1}}.profile-section-title{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin:14px 0 8px}.profile-grid-records{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}.profile-grid-highlights{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
 .profile-grid-fun{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.profile-stat-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center}.profile-stat-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:0.04em}.profile-stat-val{font-size:1.05rem;font-weight:700;color:var(--text);margin-top:2px;word-break:break-word}
 .profile-stat-sub{font-size:0.75rem;color:var(--accent);margin-top:2px}.profile-bar-row{display:flex;align-items:center;gap:8px;font-size:0.82rem;margin-bottom:6px}.profile-bar-name{width:125px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
 .profile-bar-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.4s ease}.profile-bar-count{width:65px;text-align:right;font-weight:700;color:var(--text)}@keyframes fadeInModal{from{opacity:0}to{opacity:1}}@keyframes popInModal{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @media (max-width: 768px){
-body{padding-bottom:calc(var(--b-nav) + 24px)}.web-nav-wrapper{display:none}.mobile-bottom-nav{display:flex}.container{padding:0 12px;margin:12px auto}.search-row{flex-direction:column;align-items:stretch}.btn-action-manual{justify-content:center}.cat-wide-body{grid-template-columns:1fr;gap:12px}.cat-subtotals-wrap{grid-column:span 1}.date-row{flex-direction:column;gap:8px;align-items:stretch}.btn-today-pill{width:100%;height:38px}.table-container{display:none}.mobile-history-list{display:flex}.modal-overlay{align-items:flex-end}.modal-box{width:100%;max-width:100%;border-bottom-left-radius:0;border-bottom-right-radius:0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));animation:slideUpModal .25s cubic-bezier(.34,1.2,.64,1)}.ficha-grid{flex-direction:column;align-items:center;text-align:center}.ficha-poster{width:135px;height:195px}.profile-grid-records, .profile-grid-highlights, .profile-grid-fun{grid-template-columns:1fr;gap:8px}
+body{padding-bottom:calc(var(--b-nav) + 24px)}.web-nav-wrapper{display:none}.mobile-bottom-nav{display:flex}.container{padding:0 12px;margin:12px auto}.search-row{flex-direction:column;align-items:stretch}.btn-action-manual{justify-content:center}.cat-wide-body{grid-template-columns:1fr;gap:12px}.cat-subtotals-wrap{grid-column:span 1}.date-row{flex-direction:column;gap:8px;align-items:stretch}.btn-today-pill{width:100%;height:38px}.table-container{display:none}.mobile-history-list{display:flex}.modal-overlay{align-items:flex-end}.modal-box{width:100%;max-width:100%;border-bottom-left-radius:0;border-bottom-right-radius:0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));animation:slideUpModal .25s cubic-bezier(.34,1.2,.64,1)}.ficha-grid{flex-direction:column;align-items:center;text-align:center}.ficha-poster{width:135px;height:195px}.profile-grid-records, .profile-grid-fun{grid-template-columns:1fr;gap:8px}.profile-grid-highlights{grid-template-columns:repeat(2,1fr);gap:8px}
 header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-display{font-size:1.35rem}.year-display-txt{font-size:1.1rem}.btn-year-picker{padding:3px 8px;gap:4px}.header-actions{gap:6px}.btn-header-icon{width:36px;height:36px;font-size:1.05rem}.profile-hero-card{flex-direction:column;align-items:center;text-align:center;padding:18px 14px;gap:14px}.profile-identity-wrap{flex-direction:column;align-items:center;text-align:center;min-width:100%;gap:12px}.profile-avatar-box{width:90px;height:90px;margin:0 auto}.profile-nick-row{justify-content:center}.profile-info-col{display:flex;flex-direction:column;align-items:center}.profile-google-box{align-items:stretch;width:100%;gap:8px}.profile-google-box button{width:100%;justify-content:center}
 @keyframes slideUpModal{from{transform:translateY(100%)}to{transform:translateY(0)}}
 }
@@ -238,7 +238,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <button type="button" class="btn-toggle-filter" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()" data-i18n="btn_cfg_favs_show">👁️ Configurar cuáles mostrar</button> </div> <p style="color:var(--muted); font-size:0.83rem; margin-bottom:10px;" data-i18n="profile_favs_hint">Elige tu favorito de cada subcategoría y usa el botón <strong>"Mostrar"</strong> para activar o desactivar los favoritos que quieras exhibir en tu perfil.</p>
 <div class="favs-grid" id="perfil-favoritos-grid"></div> <div class="profile-section-title" data-i18n="profile_metrics_title">⚡ Métricas Globales</div> <div class="profile-grid-highlights"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_total_entries">Total Registros</div> <div class="profile-stat-val" id="prof-total-val">0</div>
 <div class="profile-stat-sub" data-i18n="stat_items_completed">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_avg_rating">Calificación Promedio</div> <div class="profile-stat-val" id="prof-rating-val">★ 0.0</div> <div class="profile-stat-sub" data-i18n="stat_out_of_stars">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_game_playtime">Horas en Juegos</div> <div class="profile-stat-val" id="prof-hours-val">0 hrs</div>
-<div class="profile-stat-sub" data-i18n="stat_time_logged">tiempo invertido</div> </div> </div> <div class="profile-section-title" data-i18n="profile_records_title">🏆 Récords de Ritmo</div> <div class="profile-grid-records"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div> <div class="profile-stat-val" id="prof-best-day-val">—</div> <div class="profile-stat-sub" id="prof-best-day-sub">0 registros</div>
+<div class="profile-stat-sub" data-i18n="stat_time_logged">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="prof-watched-hours-val">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" data-i18n="profile_records_title">🏆 Récords de Ritmo</div> <div class="profile-grid-records"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div> <div class="profile-stat-val" id="prof-best-day-val">—</div> <div class="profile-stat-sub" id="prof-best-day-sub">0 registros</div>
 </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div> <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.9rem; line-height:1.25;">—</div> <div class="profile-stat-sub" id="prof-best-week-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
 <div class="profile-stat-val" id="prof-best-month-val">—</div> <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div> </div> </div> <div class="profile-section-title" data-i18n="profile_curiosities_title">✨ Curiosidades y Hábitos</div> <div class="profile-grid-fun"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_fav_creator">Creador/Director Favorito</div> <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
 <div class="profile-stat-sub" id="prof-fav-creator-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_rewatch_rate">Tasa de Rewatch / Relectura</div> <div class="profile-stat-val" id="prof-rewatch-rate-val">0%</div> <div class="profile-stat-sub" id="prof-rewatch-rate-sub">0 re-consumos</div> </div> </div> <div class="cat-wide-card" style="margin-top:14px;">
@@ -488,11 +488,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 
 
 
-<div id="modal-ficha-tecnica" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:540px;"> <h3 id="ficha-modal-title" style="margin-bottom:14px; font-size:1.25rem;"></h3> <div class="ficha-grid"> <img id="ficha-modal-poster" class="ficha-poster" src="" alt="Póster">
-<div class="ficha-meta"> <div class="ficha-meta-item"><strong data-i18n="ficha_estreno">Estreno:</strong> <span id="ficha-modal-estreno"></span></div> <div class="ficha-meta-item" id="row-ficha-directores"><strong data-i18n="ficha_dirs">Director(es):</strong> <span id="ficha-modal-directores"></span></div>
-<div class="ficha-meta-item" id="row-ficha-escritores"><strong data-i18n="ficha_writers">Escritor(es):</strong> <span id="ficha-modal-escritores"></span></div> <div class="ficha-meta-item" id="row-ficha-actores"><strong data-i18n="ficha_cast">Protagonistas:</strong> <span id="ficha-modal-actores"></span></div>
-</div> </div> <div class="form-group"><label data-i18n="ficha_sinopsis">Sinopsis:</label><div id="ficha-modal-sinopsis" class="ficha-sinopsis-box"></div></div> <div class="modal-actions"><button type="button" class="btn-modal-save" onclick="cerrarModalFicha()" data-i18n="btn_entendido">Entendido</button></div>
-</div> </div> <div id="modal-ingreso-manual" class="modal-overlay" style="display:none;"> <div class="modal-box"> <h3 id="modal-manual-title">✍️ <span data-i18n="manual_modal_title">Ingreso Manual</span></h3> <div class="form-group"><label data-i18n="manual_lbl_titulo">Título (idioma original en alfabeto latino):</label><input type="text" id="manual-input-titulo" class="form-input" placeholder="Ej: Shingeki no Kyojin / Dune"></div>
+<div id="modal-ficha-tecnica" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalFicha()"> <div class="modal-box" style="max-width:560px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:10px;"> <h3 id="ficha-modal-title" style="margin:0;font-size:1.25rem;color:var(--text);line-height:1.3;"></h3> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalFicha()">✕</button> </div> <div class="ficha-grid" style="align-items:flex-start;"> <img id="ficha-modal-poster" class="ficha-poster" src="" alt="Póster"> <div class="ficha-meta" id="ficha-modal-meta-container" style="display:flex;flex-direction:column;gap:6px;"></div> </div> <div id="ficha-modal-bottom-container"></div> <div class="modal-actions" style="margin-top:16px;"><button type="button" class="btn-modal-save" onclick="cerrarModalFicha()" data-i18n="btn_entendido">Entendido</button></div> </div> </div> <div id="modal-ingreso-manual" class="modal-overlay" style="display:none;"> <div class="modal-box"> <h3 id="modal-manual-title">✍️ <span data-i18n="manual_modal_title">Ingreso Manual</span></h3> <div class="form-group"><label data-i18n="manual_lbl_titulo">Título (idioma original en alfabeto latino):</label><input type="text" id="manual-input-titulo" class="form-input" placeholder="Ej: Shingeki no Kyojin / Dune"></div>
 <div class="form-group"><label data-i18n="manual_lbl_subtitulo">Traducción al inglés (opcional, si el original no es inglés ni español):</label><input type="text" id="manual-input-subtitulo" class="form-input" placeholder="Ej: Attack on Titan"></div> <div class="form-group"><label id="manual-label-creador" data-i18n="manual_lbl_creador">Director / Autor / Artista:</label><input type="text" id="manual-input-creador" class="form-input" placeholder="Nombre(s) completo(s)"></div>
 <div class="form-group"><label data-i18n="manual_lbl_anio">Año de salida / emisión:</label><input type="text" id="manual-input-anio" class="form-input" placeholder="Ej: 2024 o 2011-2019"></div> <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="cerrarModalManual()" data-i18n="btn_cancel">Cancelar</button> <button type="button" class="btn-modal-save" id="btn-manual-confirmar" onclick="procesarIngresoManual()"><span data-i18n="btn_continue">Continuar</span> ➔</button>
 </div> </div> </div> <div id="modal-edicion" class="modal-overlay" style="display:none;"> <div class="modal-box"><h3 id="modal-titulo">Editar</h3><div id="modal-contenido"></div><div class="modal-actions"><button class="btn-modal-cancel" onclick="cerrarModal()" data-i18n="btn_cancel">Cancelar</button><button class="btn-modal-save" id="btn-modal-confirmar" data-i18n="btn_save_changes">Guardar cambios</button></div></div>
@@ -500,7 +496,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div class="stars-wrapper" id="rating-stars-completa" style="font-size:2.2rem; margin:8px 0;"></div> <span id="rating-label-completa" style="font-size:.9rem; color:var(--accent); font-weight:700;">0.0 / 5</span> </div> <div class="form-group"><label data-i18n="serie_comp_comment_lbl">Comentario / Reseña final de la serie:</label><textarea id="comentario-serie-completa" class="comment-box" style="min-height:90px;" placeholder="¿Qué te pareció la serie en su totalidad?"></textarea></div>
 <div class="modal-actions"><button class="btn-modal-cancel" onclick="omitirGuardadoSerieCompleta()" data-i18n="btn_skip">Omitir</button><button class="btn-modal-save" id="btn-confirmar-serie-completa" data-i18n="btn_save_full_series">Guardar Serie Completa</button></div> </div> </div> <div id="modal-confirmar-eliminar" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <div class="modal-confirm-icon" style="margin:0 auto 14px;">🗑️</div>
 <h3 style="color:var(--danger); font-size:1.15rem; margin-bottom:8px;" data-i18n="del_title">¿Eliminar este registro?</h3> <p id="confirm-eliminar-mensaje" style="color:var(--muted); font-size:.9rem; line-height:1.4; margin-bottom:14px;"></p> <div class="modal-actions" style="justify-content:center; gap:12px; margin-top:14px;"> <button class="btn-modal-cancel" onclick="cerrarModalEliminar()" data-i18n="btn_cancel">Cancelar</button><button class="btn-modal-danger" id="btn-confirmar-eliminar-si" data-i18n="btn_del_permanent">Eliminar definitivamente</button>
-</div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ <span data-i18n="amigo_stat_title">Métricas de Contenido</span></div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_total_lbl">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_total_sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_avg_lbl">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_avg_sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_hours_lbl">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="amigo_stat_hours_sub">tiempo invertido</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 <span data-i18n="amigo_breakdown_title">Desglose por Categorías y Subcategorías</span></div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📑 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;" id="amigo-regs-cat-tabs"></div> <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL PRIVACIDAD AMIGOS -->
+</div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ <span data-i18n="amigo_stat_title">Métricas de Contenido</span></div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_total_lbl">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_total_sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_avg_lbl">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_avg_sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_hours_lbl">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="amigo_stat_hours_sub">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="amigo-stat-watched-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 <span data-i18n="amigo_breakdown_title">Desglose por Categorías y Subcategorías</span></div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📑 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;" id="amigo-regs-cat-tabs"></div> <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL PRIVACIDAD AMIGOS -->
 <div id="modal-privacidad-amigos" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPrivacidadAmigos()">
   <div class="modal-box" style="max-width:520px;max-height:90vh;overflow-y:auto;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -625,7 +621,9 @@ if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/'); return `${p[0
 if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const p = s.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; }
 if (s.includes('➔') || s.includes(' - ') || s.startsWith('Semana') || /^[a-záéíóúñ]+\s+\d{4}$/i.test(s) || /^\d{4}$/.test(s)) return s;
 const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }; const parseTs_ = v => timestampDeFecha(v); const fmtTitIdioma_ = (origTitle, engTitle, origLang) => { const tOrig = String(origTitle || engTitle || '').trim(), tEng = String(engTitle || '').trim(), lang = String(origLang || '').toLowerCase();
-const mostrarIngles = (lang && lang !== 'en' && lang !== 'es') && tEng && tEng.toLowerCase() !== tOrig.toLowerCase(); return { titulo: tOrig, tituloOriginal: tOrig, tituloIngles: mostrarIngles ? tEng : '' }; }; const SERVER_API = { async obtenerDatosAmigosUsuario(userEmail) { try { const email = normEm_(userEmail); if (!email) return { exito: false, error: 'Sin sesión' }; const myP = await SERVER_API.obtenerPerfilUsuario(email); const prefs = myP.preferencias || {}; const amigosEmails = prefs.amigos || []; const solicitudesEmails = prefs.solicitudes_recibidas || []; const [amigosRowsList, solicitudesRowsList, amigosRegsList] = await Promise.all([
+const mostrarIngles = (lang && lang !== 'en' && lang !== 'es') && tEng && tEng.toLowerCase() !== tOrig.toLowerCase(); return { titulo: tOrig, tituloOriginal: tOrig, tituloIngles: mostrarIngles ? tEng : '' }; };
+const traducirRolMusical_ = (r) => { if (!r) return ''; const s = String(r).toLowerCase().trim(); if (s.includes('lead vocals') || s.includes('lead vocal')) return 'Vocalista principal'; if (s.includes('backing vocals') || s.includes('background vocal')) return 'Coros'; if (s.includes('vocal') || s.includes('singer')) return 'Vocalista'; if (s.includes('lead guitar')) return 'Guitarrista líder'; if (s.includes('rhythm guitar')) return 'Guitarrista rítmico'; if (s.includes('acoustic guitar')) return 'Guitarra acústica'; if (s.includes('bass guitar') || s.includes('bass') || s.includes('bajo')) return 'Bajista'; if (s.includes('guitar') || s.includes('guitarra')) return 'Guitarrista'; if (s.includes('drum') || s.includes('percussion') || s.includes('bater')) return 'Baterista'; if (s.includes('keyboard') || s.includes('piano') || s.includes('organ') || s.includes('synthesizer') || s.includes('teclado')) return 'Tecladista'; if (s.includes('saxophone') || s.includes('sax')) return 'Saxofonista'; if (s.includes('trumpet') || s.includes('trompeta')) return 'Trompetista'; if (s.includes('violin')) return 'Violinista'; if (s.includes('producer') || s.includes('productor')) return 'Productor'; if (s.includes('composer') || s.includes('songwriter') || s.includes('compositor')) return 'Compositor'; return r.charAt(0).toUpperCase() + r.slice(1); };
+const SERVER_API = { async obtenerDatosAmigosUsuario(userEmail) { try { const email = normEm_(userEmail); if (!email) return { exito: false, error: 'Sin sesión' }; const myP = await SERVER_API.obtenerPerfilUsuario(email); const prefs = myP.preferencias || {}; const amigosEmails = prefs.amigos || []; const solicitudesEmails = prefs.solicitudes_recibidas || []; const [amigosRowsList, solicitudesRowsList, amigosRegsList] = await Promise.all([
   Promise.all(amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*', 'GET').catch(() => []))),
   Promise.all(solicitudesEmails.map(sEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(sEmail) + '&select=*', 'GET').catch(() => []))),
   Promise.all(amigosEmails.map(aEmail => sbFetch_('registros?user_email=eq.' + encodeURIComponent(aEmail) + '&select=categoria,subcategoria,calificacion', 'GET').catch(() => [])))
@@ -688,7 +686,7 @@ amigosRowsList.forEach((rows, idx) => {
     return { exito: false, error: e.toString() };
   }
 },
-async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const favs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🎬', userId: p.preferencias?.userId || email, favoritos: favs }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
+async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const favs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🎬', userId: p.preferencias?.userId || email, favoritos: favs }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
 const email = normEm_(userEmail); if (!email) return { exito: false, sinSesion: true, emailGoogle: '', logueadoGoogle: false, nickname: 'Invitado', avatar: '👤', bio: 'Inicia sesión para guardar tus listas en Supabase ✨', favoritos: {}, favoritosOcultos: {} };
 const rows = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); if (rows && rows.length > 0) { const p = rows[0];
 return { exito: true, emailGoogle: p.user_email, logueadoGoogle: true, nickname: p.nickname || email.split('@')[0], avatar: p.avatar || '🎬', bio: p.bio || 'Coleccionando historias en Mediary ✨', favoritos: p.favoritos || {}, favoritosOcultos: p.favoritos_ocultos || {}, preferencias: p.preferencias || {} };
@@ -1337,40 +1335,247 @@ if (it?.results?.[0]?.artworkUrl100) return it.results[0].artworkUrl100.replace(
 const d = await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`); return d?.results?.[0]?.background_image || ''; } else if (cat === 'Lecturas') { const ol = await getJson_(`https://openlibrary.org/search.json?q=${qC}&limit=1`);
 if (ol?.docs?.[0]?.cover_i) return `https://covers.openlibrary.org/b/id/${ol.docs[0].cover_i}-L.jpg`; const gb = await getJson_(`https://www.googleapis.com/books/v1/volumes?q=${qC}&maxResults=1`); return (gb?.items?.[0]?.volumeInfo?.imageLinks?.thumbnail || '').replace('http://', 'https://'); }
 } catch (e) {}
-return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) { const res = { titulo: titulo || '', subtitulo: '', poster: '', fechaEstreno: 'No registrada', directores: '', escritores: '', actores: '', sinopsis: 'Sin sinopsis disponible.' };
-const q = encodeURIComponent(String(titulo || '').replace(/\s*\[S\d+\]$/, '').split(':')[0].trim()); try { if (cat === 'Peliculas') { const m = (await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}&language=es-ES`))?.results?.[0]; if (m) {
-res.poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : ''; res.fechaEstreno = m.release_date ? fmtFecha_(m.release_date) : ''; res.sinopsis = m.overview || res.sinopsis; const credits = await getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`);
-if (credits) { const dirs = (credits.crew || []).filter(x => x.job === 'Director').map(x => x.name); const writers = (credits.crew || []).filter(x => ['Screenplay', 'Writer', 'Story'].includes(x.job)).map(x => x.name); res.directores = dirs.length ? dirs.join(', ') : creador;
-res.escritores = Array.from(new Set(writers)).join(', '); res.actores = (credits.cast || []).slice(0, 5).map(x => x.name).join(', '); }
-}
-} else if (cat === 'Series') { const s = (await getJson_(`https://api.tvmaze.com/search/shows?q=${q}`))?.[0]?.show; if (s) { res.poster = s.image?.original || s.image?.medium || ''; res.fechaEstreno = s.premiered ? fmtFecha_(s.premiered) : '';
-res.sinopsis = s.summary ? s.summary.replace(/<[^>]*>?/gm, '') : res.sinopsis; const [crew, cast] = await Promise.all([getJson_(`https://api.tvmaze.com/shows/${s.id}/crew`), getJson_(`https://api.tvmaze.com/shows/${s.id}/cast`)]);
-const crs = (crew || []).filter(x => x.type === 'Creator' || x.type === 'Showrunner').map(x => x.person?.name).filter(Boolean); const wrs = (crew || []).filter(x => /writer|story/i.test(x.type || '')).map(x => x.person?.name).filter(Boolean);
-res.directores = crs.length ? Array.from(new Set(crs)).join(', ') : creador; res.escritores = Array.from(new Set(wrs)).join(', '); res.actores = (cast || []).slice(0, 5).map(x => x.person?.name).filter(Boolean).join(', '); }
-} else if (cat === 'Juegos') { const g = (await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`))?.results?.[0]; if (g) { res.poster = g.background_image || ''; res.fechaEstreno = g.released ? fmtFecha_(g.released) : '';
-const det = await getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`); if (det) { res.sinopsis = det.description_raw ? det.description_raw.substring(0, 320) + '...' : res.sinopsis; res.directores = (det.developers || []).map(x => x.name).join(', ') || creador;
-res.escritores = (det.publishers || []).map(x => x.name).join(', '); res.actores = (det.platforms || []).map(p => p.platform?.name).join(', '); }
-}
-} else if (cat === 'Lecturas') { if (sub === 'Mangas' || sub === 'Manga' || sub === 'To Read: Mangas') { const a = (await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&page[limit]=1`))?.data?.[0]?.attributes;
-if (a) { res.poster = a.posterImage?.original || a.posterImage?.medium || ''; res.fechaEstreno = a.startDate ? fmtFecha_(a.startDate) : ''; res.sinopsis = a.synopsis || res.sinopsis; res.directores = creador; }
-} else { const isC = sub === 'Cómics' || sub === 'Cómic' || sub === 'To Read: Cómics'; const d = (await getJson_(`https://openlibrary.org/search.json?${isC ? 'title=' + q : 'q=' + q}&limit=1`))?.docs?.[0];
-if (d) { res.poster = d.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg` : ''; res.fechaEstreno = d.first_publish_year ? String(d.first_publish_year) : ''; res.directores = d.author_name ? d.author_name.join(', ') : creador; res.escritores = d.publisher ? d.publisher.join(', ') : ''; }
-}
-} else if (cat === 'Musica') { const it = (await getJson_(`https://itunes.apple.com/search?term=${q}&entity=album&limit=1`))?.results?.[0]; if (it) { res.poster = (it.artworkUrl100 || '').replace('100x100bb', '600x600bb'); res.directores = it.artistName || creador;
-res.fechaEstreno = it.releaseDate ? it.releaseDate.substring(0, 4) : ''; res.sinopsis = `Álbum discográfico: ${it.collectionName}. Género: ${it.primaryGenreName || 'Música'}.`; } else { const dz = (await getJson_(`https://api.deezer.com/search?q=${q}&limit=1`))?.data?.[0];
-if (dz) { res.poster = dz.album?.cover_big || dz.artist?.picture_big || ''; res.directores = dz.artist?.name || creador; res.sinopsis = `Álbum / Pista musical. Artista: ${dz.artist?.name || creador}`; }
-}
-}
-} catch (e) {}
-return res; }, async buscarEnServidor(qRaw, cat, sub) { if (!qRaw || qRaw.trim().length < 2) return []; const qTrim = qRaw.trim(); const cacheKey = `${cat}_${sub || ''}_${qTrim.toLowerCase()}`; if (!SERVER_API._searchMemCache) SERVER_API._searchMemCache = new Map(); if (SERVER_API._searchMemCache.has(cacheKey)) return SERVER_API._searchMemCache.get(cacheKey); const q = encodeURIComponent(qTrim); const _exec = async () => { if (cat === 'Peliculas') {
-const list = ((await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}`))?.results || []).slice(0, 6); return await Promise.all(list.map(async m => { let dirs = []; try { const cr = await Promise.race([getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`), new Promise(r => setTimeout(() => r(null), 850))]); dirs = (cr?.crew || []).filter(x => x.job === "Director").map(x => x.name); } catch(e){}
+return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) {
+  const normCat = cat || '';
+  const normSub = (sub || '').toLowerCase();
+  let tipoFicha = 'peliculas';
+  if (normCat === 'Peliculas') tipoFicha = 'peliculas';
+  else if (normCat === 'Series') tipoFicha = 'series';
+  else if (normCat === 'Musica') tipoFicha = (normSub.includes('artista') || normSub.includes('concierto')) ? 'artistas' : 'discos';
+  else if (normCat === 'Juegos') tipoFicha = 'juegos';
+  else if (normCat === 'Lecturas') {
+    if (normSub.includes('manga')) tipoFicha = 'manga';
+    else if (normSub.includes('cómic') || normSub.includes('comic')) tipoFicha = 'comics';
+    else tipoFicha = 'libros';
+  }
+
+  const res = {
+    tipoFicha: tipoFicha,
+    titulo: titulo || '',
+    subtitulo: '',
+    poster: '',
+    estreno: 'No registrada',
+    fechaSalida: 'No registrada',
+    director: 'No especificado',
+    showrunner: 'No especificado',
+    escritor: 'No especificado',
+    escritores: 'No especificados',
+    protagonista: 'No especificado',
+    protagonistas: 'No especificados',
+    artista: creador || 'Artista',
+    productor: 'No especificado',
+    sello: 'No especificado',
+    genero: '',
+    integrantes: [],
+    roles: '',
+    desarrolladora: creador || 'No especificada',
+    distribuidora: 'No especificada',
+    editorial: 'No especificada',
+    dibujantes: 'No especificado',
+    mangaka: creador || 'No especificado',
+    sinopsis: 'Sin sinopsis disponible.',
+    duracionHoras: ''
+  };
+
+  const cleanTit = String(titulo || '').replace(/\s*\[S\d+\]$/i, '').split(':')[0].trim();
+  const q = encodeURIComponent(cleanTit);
+
+  try {
+    if (tipoFicha === 'peliculas') {
+      const m = (await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}&language=es-ES`))?.results?.[0];
+      if (m) {
+        res.poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '';
+        const [det, creds] = await Promise.all([
+          getJson_(`https://api.themoviedb.org/3/movie/${m.id}?api_key=${TMDB_K}&language=es-ES`),
+          getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`)
+        ]);
+        res.estreno = fmtFecha_(det?.release_date || m.release_date) || 'No registrada';
+        res.sinopsis = det?.overview || m.overview || res.sinopsis;
+        if (det?.runtime) res.duracionHoras = (det.runtime / 60).toFixed(1);
+        if (creds) {
+          const dirs = (creds.crew || []).filter(x => x.job === 'Director').map(x => x.name);
+          const wrs = Array.from(new Set((creds.crew || []).filter(x => ['Screenplay', 'Writer', 'Story', 'Characters'].includes(x.job)).map(x => x.name)));
+          const cast = (creds.cast || []).slice(0, 5).map(x => x.name);
+          res.director = dirs.length ? dirs.join(', ') : (creador || 'Director desconocido');
+          res.escritor = wrs.length ? wrs.slice(0, 3).join(', ') : 'No especificado';
+          res.protagonista = cast.length ? cast.join(', ') : 'No especificado';
+        }
+      }
+    } else if (tipoFicha === 'series') {
+      const s = (await getJson_(`https://api.tvmaze.com/search/shows?q=${q}`))?.[0]?.show;
+      if (s) {
+        res.poster = s.image?.original || s.image?.medium || '';
+        res.estreno = s.premiered ? fmtFecha_(s.premiered) : (s.premiered || 'No registrada');
+        res.sinopsis = s.summary ? s.summary.replace(/<[^>]*>?/gm, '').trim() : res.sinopsis;
+        const [crew, cast, episodes] = await Promise.all([
+          getJson_(`https://api.tvmaze.com/shows/${s.id}/crew`),
+          getJson_(`https://api.tvmaze.com/shows/${s.id}/cast`),
+          getJson_(`https://api.tvmaze.com/shows/${s.id}/episodes`)
+        ]);
+        const showrunners = Array.from(new Set((crew || []).filter(x => x.type === 'Creator' || x.type === 'Showrunner').map(x => x.person?.name).filter(Boolean)));
+        const writers = Array.from(new Set((crew || []).filter(x => /writer|story|screenplay/i.test(x.type || '')).map(x => x.person?.name).filter(Boolean)));
+        const actors = (cast || []).slice(0, 5).map(x => x.person?.name).filter(Boolean);
+        res.showrunner = showrunners.length ? showrunners.join(', ') : (creador || s.network?.name || 'No especificado');
+        res.escritores = writers.length ? writers.slice(0, 4).join(', ') : 'No especificados';
+        res.protagonistas = actors.length ? actors.join(', ') : 'No especificados';
+
+        const sMatch = String(titulo).match(/\[S(\d+)\]/i);
+        const sNum = sMatch ? parseInt(sMatch[1], 10) : 1;
+        const sEps = (episodes || []).filter(e => e.season === sNum);
+        if (sEps.length) {
+          const totM = sEps.reduce((acc, ep) => acc + (ep.runtime || s.averageRuntime || s.runtime || 45), 0);
+          res.duracionHoras = (totM / 60).toFixed(1);
+        } else if (s.averageRuntime || s.runtime) {
+          res.duracionHoras = ((8 * (s.averageRuntime || s.runtime)) / 60).toFixed(1);
+        }
+
+        if (res.showrunner === 'No especificado' || res.escritores === 'No especificados') {
+          const tmdbTv = (await getJson_(`https://api.themoviedb.org/3/search/tv?api_key=${TMDB_K}&query=${q}&language=es-ES`))?.results?.[0];
+          if (tmdbTv) {
+            const tmdbDet = await getJson_(`https://api.themoviedb.org/3/tv/${tmdbTv.id}?api_key=${TMDB_K}&append_to_response=credits&language=es-ES`);
+            if (res.showrunner === 'No especificado' && tmdbDet?.created_by?.length) {
+              res.showrunner = tmdbDet.created_by.map(x => x.name).join(', ');
+            }
+            if (res.escritores === 'No especificados' && tmdbDet?.credits?.crew?.length) {
+              const tWrs = tmdbDet.credits.crew.filter(x => ['Writer', 'Story', 'Screenplay'].includes(x.job)).map(x => x.name);
+              if (tWrs.length) res.escritores = Array.from(new Set(tWrs)).slice(0, 4).join(', ');
+            }
+            if (res.protagonistas === 'No especificados' && tmdbDet?.credits?.cast?.length) {
+              res.protagonistas = tmdbDet.credits.cast.slice(0, 5).map(x => x.name).join(', ');
+            }
+          }
+        }
+      }
+    } else if (tipoFicha === 'discos') {
+      const qDisc = encodeURIComponent(`${cleanTit} ${creador || ''}`.trim());
+      const [itData, dzData] = await Promise.all([
+        getJson_(`https://itunes.apple.com/search?term=${qDisc}&entity=album&limit=1`),
+        getJson_(`https://api.deezer.com/search/album?q=${qDisc}&limit=1`)
+      ]);
+      const it = itData?.results?.[0];
+      const dz = dzData?.data?.[0];
+      const dzDet = dz?.id ? await getJson_(`https://api.deezer.com/album/${dz.id}`) : null;
+      res.poster = (it?.artworkUrl100 || '').replace('100x100bb', '600x600bb') || dzDet?.cover_big || dz?.cover_big || '';
+      res.fechaSalida = it?.releaseDate ? fmtFecha_(it.releaseDate.split('T')[0]) : (dzDet?.release_date ? fmtFecha_(dzDet.release_date) : (it?.releaseDate?.substring(0, 4) || 'No registrada'));
+      res.artista = it?.artistName || dzDet?.artist?.name || creador || 'Artista desconocido';
+      res.sello = dzDet?.label || (it?.copyright ? it.copyright.replace(/^[℗©\d\s]+/i, '').trim() : '') || 'Discográfica no especificada';
+      res.genero = it?.primaryGenreName || dzDet?.genres?.data?.[0]?.name || 'Música';
+      let prod = '';
+      if (dzDet?.contributors) {
+        const prods = dzDet.contributors.filter(c => /producer/i.test(c.role || '')).map(c => c.name);
+        if (prods.length) prod = prods.join(', ');
+      }
+      res.productor = prod || 'No especificado';
+    } else if (tipoFicha === 'artistas') {
+      const qArt = encodeURIComponent(String(cleanTit || creador || '').trim());
+      const [mbRes, dzRes, wikiRes] = await Promise.all([
+        getJson_(`https://musicbrainz.org/ws/2/artist?query=artist:${qArt}&fmt=json&limit=1`),
+        getJson_(`https://api.deezer.com/search/artist?q=${qArt}&limit=1`),
+        getJson_(`https://es.wikipedia.org/api/rest_v1/page/summary/${qArt}`)
+      ]);
+      const artObj = mbRes?.artists?.[0];
+      let integrantes = [];
+      if (artObj?.id) {
+        const mbRel = await getJson_(`https://musicbrainz.org/ws/2/artist/${artObj.id}?inc=artist-rels&fmt=json`);
+        const rels = (mbRel?.relations || []).filter(r => r.type === 'member of band' && r.artist);
+        const memberMap = new Map();
+        rels.forEach(r => {
+          const mName = r.artist.name;
+          const attrs = (r.attributes || []).map(traducirRolMusical_).filter(Boolean);
+          if (!memberMap.has(mName)) memberMap.set(mName, new Set(attrs));
+          else attrs.forEach(a => memberMap.get(mName).add(a));
+        });
+        for (const [name, set] of memberMap.entries()) {
+          const roles = Array.from(set);
+          const roleTxt = roles.length ? roles.join(', ') : 'Integrante';
+          integrantes.push(`${roleTxt}: ${name}`);
+        }
+      }
+      if (dzRes?.data?.[0]?.picture_big) res.poster = dzRes.data[0].picture_big;
+      if (!integrantes.length) {
+        const mainRole = wikiRes?.description || 'Voz principal, composición e instrumentos';
+        integrantes.push(`${mainRole}: ${titulo || creador}`);
+      }
+      res.artista = titulo || creador;
+      res.integrantes = integrantes;
+      res.sinopsis = wikiRes?.extract || (artObj?.disambiguation ? `Artista musical (${artObj.disambiguation})` : 'Artista musical.');
+    } else if (tipoFicha === 'juegos') {
+      const g = (await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`))?.results?.[0];
+      if (g) {
+        const [det, team] = await Promise.all([
+          getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`),
+          getJson_(`https://api.rawg.io/api/games/${g.id}/development-team?key=${RAWG_K}`)
+        ]);
+        res.poster = g.background_image || '';
+        res.fechaSalida = det?.released ? fmtFecha_(det.released) : 'No registrada';
+        res.desarrolladora = (det?.developers || []).map(x => x.name).join(', ') || creador || 'No especificada';
+        res.distribuidora = (det?.publishers || []).map(x => x.name).join(', ') || 'No especificada';
+        const dirs = (team?.results || []).filter(p => (p.positions || []).some(pos => /director/i.test(pos.name))).map(p => p.name);
+        res.director = dirs.length ? dirs.slice(0, 2).join(', ') : 'No especificado';
+        res.genero = (det?.genres || []).map(x => x.name).join(', ') || 'Videojuego';
+        res.sinopsis = det?.description_raw ? det.description_raw.substring(0, 360) + '...' : res.sinopsis;
+      }
+    } else if (tipoFicha === 'libros') {
+      const gb = await getJson_(`https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=1`);
+      const b = gb?.items?.[0]?.volumeInfo || {};
+      res.poster = (b.imageLinks?.thumbnail || b.imageLinks?.smallThumbnail || '').replace('http://', 'https://');
+      res.fechaSalida = b.publishedDate ? fmtFecha_(b.publishedDate) : 'No registrada';
+      res.escritor = b.authors?.join(', ') || creador || 'Autor desconocido';
+      res.genero = b.categories?.join(', ') || 'Literatura';
+      res.sinopsis = b.description ? b.description.substring(0, 380) + '...' : res.sinopsis;
+    } else if (tipoFicha === 'comics') {
+      const [olDoc, gbItem] = await Promise.all([
+        getJson_(`https://openlibrary.org/search.json?title=${q}&limit=1`),
+        getJson_(`https://www.googleapis.com/books/v1/volumes?q=${q}+comic&maxResults=1`)
+      ]);
+      const d = olDoc?.docs?.[0];
+      const b = gbItem?.items?.[0]?.volumeInfo || {};
+      res.poster = (b.imageLinks?.thumbnail || '').replace('http://', 'https://') || (d?.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg` : '');
+      res.fechaSalida = b.publishedDate ? fmtFecha_(b.publishedDate) : (d?.first_publish_year ? String(d.first_publish_year) : 'No registrada');
+      res.editorial = b.publisher || d?.publisher?.[0] || (/marvel/i.test(cleanTit) ? 'Marvel Comics' : (/dc/i.test(cleanTit) ? 'DC Comics' : 'Editorial de cómics'));
+      const authors = b.authors || d?.author_name || [];
+      res.escritores = authors[0] || creador || 'No especificado';
+      res.dibujantes = authors.length > 1 ? authors.slice(1).join(', ') : 'No especificado';
+      res.sinopsis = b.description || (d?.subject ? d.subject.slice(0, 4).join(', ') : 'Cómic / Novela gráfica.');
+    } else if (tipoFicha === 'manga') {
+      const kRes = await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&include=genres,categories&page[limit]=1`);
+      const mItem = kRes?.data?.[0];
+      const a = mItem?.attributes || {};
+      let mangakas = [];
+      if (mItem?.id) {
+        const st = await getJson_(`https://kitsu.io/api/edge/manga/${mItem.id}/staff`);
+        const targets = (st?.data || []).slice(0, 2);
+        for (const t of targets) {
+          if (t.relationships?.person?.links?.related) {
+            const p = await getJson_(t.relationships.person.links.related);
+            if (p?.data?.attributes?.name) mangakas.push(p.data.attributes.name);
+          }
+        }
+      }
+      res.poster = a.posterImage?.original || a.posterImage?.medium || '';
+      res.fechaSalida = a.startDate ? fmtFecha_(a.startDate) : 'No registrada';
+      res.mangaka = mangakas.length ? mangakas.join(', ') : (creador || 'Mangaka desconocido');
+      const genres = (kRes?.included || []).filter(x => x.type === 'genres' || x.type === 'categories').map(x => x.attributes?.title || x.attributes?.name).slice(0, 4).join(', ');
+      res.genero = genres || 'Manga, Shonen / Seinen';
+      res.sinopsis = a.synopsis || res.sinopsis;
+    }
+  } catch (e) {}
+  return res; }, async buscarEnServidor(qRaw, cat, sub) { if (!qRaw || qRaw.trim().length < 2) return []; const qTrim = qRaw.trim(); const cacheKey = `${cat}_${sub || ''}_${qTrim.toLowerCase()}`; if (!SERVER_API._searchMemCache) SERVER_API._searchMemCache = new Map(); if (SERVER_API._searchMemCache.has(cacheKey)) return SERVER_API._searchMemCache.get(cacheKey); const q = encodeURIComponent(qTrim); const _exec = async () => { if (cat === 'Peliculas') {
+const list = ((await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}`))?.results || []).slice(0, 6); return await Promise.all(list.map(async m => { let dirs = [], durHoras = null; try { const [cr, det] = await Promise.all([Promise.race([getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`), new Promise(r => setTimeout(() => r(null), 850))]), Promise.race([getJson_(`https://api.themoviedb.org/3/movie/${m.id}?api_key=${TMDB_K}&language=es-ES`), new Promise(r => setTimeout(() => r(null), 850))])]); dirs = (cr?.crew || []).filter(x => x.job === "Director").map(x => x.name); if (det?.runtime) durHoras = (det.runtime / 60).toFixed(1); } catch(e){}
 const noEs = m.original_language !== 'es' && m.original_language !== 'en';
-return { idRef: m.id, tituloOriginal: m.original_title || m.title || '', tituloIngles: (noEs && m.title && m.title !== m.original_title) ? m.title : '', creador: dirs.length ? dirs.join(', ') : 'Director desconocido', anio: m.release_date?.substring(0, 4) || '', sinopsis: m.overview || 'Sin sinopsis disponible.', poster: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '' };
+return { idRef: m.id, tituloOriginal: m.original_title || m.title || '', tituloIngles: (noEs && m.title && m.title !== m.original_title) ? m.title : '', creador: dirs.length ? dirs.join(', ') : 'Director desconocido', anio: m.release_date?.substring(0, 4) || '', sinopsis: m.overview || 'Sin sinopsis disponible.', poster: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '', duracionHoras: durHoras };
 })); }
 if (cat === 'Series') { const list = ((await getJson_(`https://api.tvmaze.com/search/shows?q=${q}`)) || []).slice(0, 6); return await Promise.all(list.map(async it => { const s = it.show;
 let crew = null, sList = null; try { [crew, sList] = await Promise.all([Promise.race([getJson_(`https://api.tvmaze.com/shows/${s.id}/crew`), new Promise(r => setTimeout(() => r(null), 850))]), Promise.race([getJson_(`https://api.tvmaze.com/shows/${s.id}/seasons`), new Promise(r => setTimeout(() => r(null), 850))])]); } catch(e){}
 const crs = Array.from(new Set((crew || []).filter(x => x.type === 'Creator' || x.type === 'Showrunner').map(x => x.person?.name).filter(Boolean))); const aIni = s.premiered ? s.premiered.substring(0, 4) : '', aFin = s.ended ? s.ended.substring(0, 4) : (s.status === 'Running' ? 'presente' : '');
-return { idRef: s.id, tituloOriginal: s.name || '', tituloIngles: '', creador: crs.length ? crs.join(', ') : (s.network?.name || 'Showrunner desconocido'), anio: (aIni && aFin && aIni !== aFin) ? `${aIni}-${aFin}` : aIni, totalSeasons: sList?.length || 0, estadoSerie: s.status || '', sinopsis: s.summary ? s.summary.replace(/<[^>]*>?/gm, '') : 'Sin sinopsis disponible.', poster: s.image?.medium || s.image?.original || '' };
+const avgRun = s.averageRuntime || s.runtime || 45;
+let durHoras = null;
+if (sList && sList.length && sList[0].episodeOrder) {
+  durHoras = ((sList[0].episodeOrder * avgRun) / 60).toFixed(1);
+} else {
+  durHoras = ((8 * avgRun) / 60).toFixed(1);
+}
+return { idRef: s.id, tituloOriginal: s.name || '', tituloIngles: '', creador: crs.length ? crs.join(', ') : (s.network?.name || 'Showrunner desconocido'), anio: (aIni && aFin && aIni !== aFin) ? `${aIni}-${aFin}` : aIni, totalSeasons: sList?.length || 0, estadoSerie: s.status || '', sinopsis: s.summary ? s.summary.replace(/<[^>]*>?/gm, '') : 'Sin sinopsis disponible.', poster: s.image?.medium || s.image?.original || '', duracionHoras: durHoras, seasonsList: sList || [], avgRuntime: avgRun };
 })); }
 if (cat === 'Musica') { if (sub === 'Discos' || sub === 'Disco') { const resultados = [], vistos = new Set(); const itRes = (await getJson_(`https://itunes.apple.com/search?term=${q}&entity=album&limit=10`))?.results || []; itRes.forEach(al => {
 const tit = al.collectionName || '', art = al.artistName || 'Artista', k = `${tit.toLowerCase()}_${art.toLowerCase()}`;
@@ -1965,6 +2170,8 @@ function verPerfilDeAmigo(emailAmigo) {
     document.getElementById('amigo-stat-total').textContent = res.metricas?.total || 0;
     document.getElementById('amigo-stat-promedio').textContent = `★ ${(res.metricas?.promedio || 0).toFixed(1)}`;
     document.getElementById('amigo-stat-horas').textContent = `${res.metricas?.horasJuegos || 0} hrs`;
+    const elAmigoWatched = document.getElementById('amigo-stat-watched-horas');
+    if (elAmigoWatched) elAmigoWatched.textContent = `${res.metricas?.horasVistas || 0} hrs`;
     // Favoritos del amigo
     const favGrid = document.getElementById('amigo-grid-favoritos');
     const favs = a.favoritos || {};
@@ -2425,7 +2632,7 @@ lbl_when_completed: "¿Cuándo lo completaste?:", date_prec_day: "📅 Día exac
 discover_subtitle: "Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.", btn_discover_explore: "🔄 Explorar nuevos", discover_filter_hint: "Selecciona qué categorías quieres ver (puedes activar o desactivar varias):",
 dcat_todos: "✨ Todas", dcat_peliculas: "🎬 Películas", dcat_documentales: "📹 Documentales", dcat_series: "📺 Series", dcat_docuseries: "📽️ Docuseries", dcat_musica: "🎵 Música", dcat_juegos: "🎮 Juegos", dcat_libros: "📖 Libros", dcat_comics: "💥 Cómics", dcat_mangas: "⛩️ Mangas", discover_loading: "Cargando recomendaciones recientes... ⏳",
 btn_cfg_favs_show: "👁️ Configurar cuáles mostrar", btn_cfg_favs_done: "✓ Listo", profile_favs_hint: "Elige tu favorito de cada subcategoría y usa el botón \"Mostrar\" para activar o desactivar los favoritos que quieras exhibir en tu perfil.",
-stat_total_entries: "Total Registros", stat_out_of_stars: "de 5.0 estrellas", stat_game_playtime: "Horas en Juegos", stat_time_logged: "tiempo invertido",
+stat_total_entries: "Total Registros", stat_out_of_stars: "de 5.0 estrellas", stat_game_playtime: "Horas en Juegos", stat_time_logged: "tiempo invertido", stat_watched_hours: "Horas Vistas", stat_watched_sub: "películas y series",
 edit_profile_title: "👤 Personalizar Perfil", edit_profile_nick_lbl: "Nickname / Nombre visible:", edit_profile_bio_lbl: "Lema o Biografía corta:", edit_profile_avatar_lbl: "Elige un avatar de animal rápido:", edit_profile_custom_lbl: "O sube una imagen personalizada:", edit_profile_upload_cta: "Subir Imagen desde tu dispositivo", edit_profile_selected_title: "Foto 1:1 seleccionada", edit_profile_selected_hint: "Recortada y lista para guardar", btn_change_photo: "Cambiar", btn_remove_photo: "Quitar", btn_save_profile: "Guardar Perfil",
 crop_modal_title: "✂️ Recortar Foto de Perfil", crop_modal_hint: "Arrastra la foto para encuadrarla y usa la barra o rueda para zoom (relación 1:1 fija):", crop_btn_rotate: "🔄 Girar 90°", crop_btn_center: "🎯 Centrar", crop_btn_confirm: "✅ Aplicar Recorte 1:1", btn_recommend_shuffle: "Recomiéndame",
 fav_modal_title: "👑 Elegir Favorito", fav_modal_hint: "Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:", fav_modal_remove: "Quitar favorito",
@@ -2486,7 +2693,7 @@ lbl_when_completed: "When did you complete it?:", date_prec_day: "📅 Exact Day
 discover_subtitle: "Recent releases, trending hits, and recommendations updated constantly.", btn_discover_explore: "🔄 Explore new", discover_filter_hint: "Select categories to display (you can toggle several):",
 dcat_todos: "✨ All", dcat_peliculas: "🎬 Movies", dcat_documentales: "📹 Documentaries", dcat_series: "📺 Series", dcat_docuseries: "📽️ Docuseries", dcat_musica: "🎵 Music", dcat_juegos: "🎮 Games", dcat_libros: "📖 Books", dcat_comics: "💥 Comics", dcat_mangas: "⛩️ Manga", discover_loading: "Loading recent recommendations... ⏳",
 btn_cfg_favs_show: "👁️ Configure which to show", btn_cfg_favs_done: "✓ Done", profile_favs_hint: "Choose your favorite in each subcategory and use the \"Show\" button to toggle favorites on your profile.",
-stat_total_entries: "Total Entries", stat_out_of_stars: "out of 5.0 stars", stat_game_playtime: "Gaming Playtime", stat_time_logged: "time invested",
+stat_total_entries: "Total Entries", stat_out_of_stars: "out of 5.0 stars", stat_game_playtime: "Gaming Playtime", stat_time_logged: "time invested", stat_watched_hours: "Watched Hours", stat_watched_sub: "movies & series",
 edit_profile_title: "👤 Customize Profile", edit_profile_nick_lbl: "Nickname / Display name:", edit_profile_bio_lbl: "Motto or Short Bio:", edit_profile_avatar_lbl: "Choose a quick animal avatar:", edit_profile_custom_lbl: "Or upload a custom image:", edit_profile_upload_cta: "Upload Image from your device", edit_profile_selected_title: "1:1 Photo selected", edit_profile_selected_hint: "Cropped and ready to save", btn_change_photo: "Change", btn_remove_photo: "Remove", btn_save_profile: "Save Profile",
 crop_modal_title: "✂️ Crop Profile Photo", crop_modal_hint: "Drag photo to frame and use slider or wheel to zoom (fixed 1:1 aspect ratio):", crop_btn_rotate: "🔄 Rotate 90°", crop_btn_center: "🎯 Center", crop_btn_confirm: "✅ Apply 1:1 Crop", btn_recommend_shuffle: "Pick for me",
 fav_modal_title: "👑 Choose Favorite", fav_modal_hint: "Select one of your saved records in this subcategory or search below:", fav_modal_remove: "Remove favorite",
@@ -2918,10 +3125,108 @@ if (c === 'Juegos') return 'videojuego'; if (c === 'Lecturas') { if (s.toLowerCa
 return 'registro'; }
 function formatearDesgloseItems(items) { if (!items || !items.length) return '0 registros'; const conteo = {}; items.forEach(it => { const nom = normalizarNombreParaDesglose(it.categoria, it.subcategoria); conteo[nom] = (conteo[nom] || 0) + 1; });
 const partes = Object.entries(conteo).map(([nom, cant]) => `${cant} ${nom}`); return `${items.length} registros (${partes.join(', ')})`; }
+function extraerHorasRegistro(r) {
+  if (!r) return 0;
+  if (r.horas) {
+    const h = parseFloat(String(r.horas).replace('hrs', '').replace(',', '.').trim());
+    if (!isNaN(h) && h > 0) return h;
+  }
+  try {
+    const key = `mediary_dur_${r.id || (r.categoria + '_' + r.titulo)}`;
+    const cached = localStorage.getItem(key);
+    if (cached) {
+      const h = parseFloat(cached);
+      if (!isNaN(h) && h > 0) return h;
+    }
+  } catch (e) {}
+  return 0;
+}
+let _resolviendoHorasVistas = false;
+async function resolverHorasVistasFaltantes(regs) {
+  if (_resolviendoHorasVistas || !regs || !regs.length) return;
+  const faltantes = regs.filter(r => (r.categoria === 'Peliculas' || r.categoria === 'Series') && extraerHorasRegistro(r) === 0);
+  if (!faltantes.length) return;
+  _resolviendoHorasVistas = true;
+  let cambio = false;
+  for (const r of faltantes.slice(0, 5)) {
+    try {
+      const dur = await resolverDuracionObraApi_(r.categoria, r.subcategoria, r.titulo, r.creador, r.anio);
+      if (dur && dur > 0) {
+        r.horas = `${dur} hrs`;
+        cambio = true;
+        try {
+          localStorage.setItem(`mediary_dur_${r.id || (r.categoria + '_' + r.titulo)}`, String(dur));
+        } catch(e) {}
+        if (r.id && estado.userEmail) {
+          google.script.run.actualizarRegistro(r.id, { horas: `${dur} hrs` }, estado.userEmail);
+        }
+      }
+    } catch(err) {
+      console.warn('Error resolviendo duracion para:', r.titulo, err);
+    }
+  }
+  _resolviendoHorasVistas = false;
+  if (cambio) {
+    calcularYMostrarEstadisticasPerfil();
+  }
+}
+async function resolverDuracionObraApi_(cat, sub, titulo, creador, anio) {
+  try {
+    const titLimpio = (titulo || '').replace(/\s*\[S\d+\].*$/, '').trim();
+    if (cat === 'Peliculas') {
+      const q = encodeURIComponent(titLimpio);
+      const m = (await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}&language=es-ES`))?.results?.[0];
+      if (m?.id) {
+        const det = await getJson_(`https://api.themoviedb.org/3/movie/${m.id}?api_key=${TMDB_K}&language=es-ES`);
+        if (det?.runtime) return parseFloat((det.runtime / 60).toFixed(1));
+      }
+    } else if (cat === 'Series') {
+      const q = encodeURIComponent(titLimpio);
+      const matchS = (titulo || '').match(/\[S(\d+)\]/i);
+      const seasonNum = matchS ? parseInt(matchS[1], 10) : 1;
+      const sh = (await getJson_(`https://api.tvmaze.com/singlesearch/shows?q=${q}&embed=episodes`));
+      if (sh?._embedded?.episodes?.length) {
+        const eps = sh._embedded.episodes.filter(e => e.season === seasonNum);
+        if (eps.length) {
+          const totMin = eps.reduce((acc, e) => acc + (e.runtime || sh.averageRuntime || sh.runtime || 45), 0);
+          return parseFloat((totMin / 60).toFixed(1));
+        }
+      }
+      const tmdbTv = (await getJson_(`https://api.themoviedb.org/3/search/tv?api_key=${TMDB_K}&query=${q}&language=es-ES`))?.results?.[0];
+      if (tmdbTv?.id) {
+        const sDet = await getJson_(`https://api.themoviedb.org/3/tv/${tmdbTv.id}/season/${seasonNum}?api_key=${TMDB_K}&language=es-ES`).catch(() => null);
+        if (sDet?.episodes?.length) {
+          const avg = tmdbTv.episode_run_time?.[0] || 45;
+          const totMin = sDet.episodes.reduce((acc, ep) => acc + (ep.runtime || avg), 0);
+          return parseFloat((totMin / 60).toFixed(1));
+        }
+      }
+    }
+  } catch(e) {}
+  return 0;
+}
 function calcularYMostrarEstadisticasPerfil() { const regs = estado.registros; const mapaDias = {}, mapaSemanas = {}, mapaMeses = {}, creadores = {};
-const conteoCategorias = { Peliculas: 0, Series: 0, Musica: 0, Juegos: 0, Lecturas: 0 }; let totalCalifs = 0, numCalifs = 0, totalHorasJuegos = 0, rewatchesTotales = 0;
+const conteoCategorias = { Peliculas: 0, Series: 0, Musica: 0, Juegos: 0, Lecturas: 0 }; let totalCalifs = 0, numCalifs = 0, totalHorasJuegos = 0, totalHorasVistas = 0, rewatchesTotales = 0;
+const seriesConTemporadas = new Set();
+regs.forEach(r => {
+  if (r.categoria === 'Series' && ((r.subcategoria && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))) || /\[S\d+\]/i.test(r.titulo || ''))) {
+    const base = (r.tituloBase || (r.titulo || '').replace(/\s*\[S\d+\].*$/, '')).trim().toLowerCase();
+    if (base) seriesConTemporadas.add(base);
+  }
+});
 regs.forEach(r => { if (conteoCategorias[r.categoria] !== undefined) conteoCategorias[r.categoria]++; if (r.esRewatch) rewatchesTotales++; if (Number(r.calificacion) > 0) { totalCalifs += Number(r.calificacion); numCalifs++; }
 if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasJuegos += h; }
+if (r.categoria === 'Peliculas') {
+  totalHorasVistas += extraerHorasRegistro(r);
+} else if (r.categoria === 'Series') {
+  const isSeason = (r.subcategoria && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))) || /\[S\d+\]/i.test(r.titulo || '');
+  const base = (r.tituloBase || (r.titulo || '').replace(/\s*\[S\d+\].*$/, '')).trim().toLowerCase();
+  if (isSeason) {
+    totalHorasVistas += extraerHorasRegistro(r);
+  } else if (!seriesConTemporadas.has(base)) {
+    totalHorasVistas += extraerHorasRegistro(r);
+  }
+}
 const cr = (r.creador || '').trim(); if (cr && cr !== 'Desconocido' && cr !== 'Autor desconocido' && cr !== 'Director desconocido') { creadores[cr] = (creadores[cr] || 0) + 1; }
 const fechaBase = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? r.fechaFin : r.fechaInicio; const dObj = parsearFechaAObjeto(fechaBase); if (dObj) { const dStr = `${String(dObj.getDate()).padStart(2,'0')}/${String(dObj.getMonth()+1).padStart(2,'0')}/${dObj.getFullYear()}`;
 if (!mapaDias[dStr]) mapaDias[dStr] = { fecha: new Date(dObj), items: [] }; mapaDias[dStr].items.push(r); const mStr = `${dObj.getFullYear()}-${String(dObj.getMonth()+1).padStart(2,'0')}`;
@@ -2943,11 +3248,18 @@ let favCreator = '—', favCreatorCount = 0; for (const [k, v] of Object.entries
 const totalRegs = regs.length; document.getElementById('prof-total-val').textContent = totalRegs; document.getElementById('prof-best-day-val').textContent = maxDiaTxt;
 document.getElementById('prof-best-day-sub').textContent = maxDiaSub; document.getElementById('prof-best-week-val').textContent = maxSemTxt; document.getElementById('prof-best-week-sub').textContent = maxSemSub; document.getElementById('prof-best-month-val').textContent = maxMesTxt;
 document.getElementById('prof-best-month-sub').textContent = maxMesSub; const avgCalif = numCalifs ? (totalCalifs / numCalifs).toFixed(1) : '0.0'; document.getElementById('prof-rating-val').textContent = `★ ${avgCalif}`;
-document.getElementById('prof-hours-val').textContent = `${totalHorasJuegos} hrs`; document.getElementById('prof-fav-creator-val').textContent = favCreator; document.getElementById('prof-fav-creator-sub').textContent = `${favCreatorCount} registros`;
+const horasJuegosFmt = (totalHorasJuegos % 1 === 0) ? totalHorasJuegos : totalHorasJuegos.toFixed(1);
+document.getElementById('prof-hours-val').textContent = `${horasJuegosFmt} hrs`;
+const horasVistasFmt = (totalHorasVistas % 1 === 0) ? totalHorasVistas : totalHorasVistas.toFixed(1);
+const elWatchedHours = document.getElementById('prof-watched-hours-val');
+if (elWatchedHours) elWatchedHours.textContent = `${horasVistasFmt} hrs`;
+document.getElementById('prof-fav-creator-val').textContent = favCreator; document.getElementById('prof-fav-creator-sub').textContent = `${favCreatorCount} registros`;
 const rewatchPct = totalRegs ? Math.round((rewatchesTotales / totalRegs) * 100) : 0; document.getElementById('prof-rewatch-rate-val').textContent = `${rewatchPct}%`; document.getElementById('prof-rewatch-rate-sub').textContent = `${rewatchesTotales} re-consumos`;
 const maxCatCount = Math.max(...Object.values(conteoCategorias), 1); const bWrap = document.getElementById('profile-bars-container'); bWrap.innerHTML = ''; Object.keys(conteoCategorias).forEach(cKey => { const cant = conteoCategorias[cKey]; const pct = Math.round((cant / maxCatCount) * 100);
 const nom = I18N[l].cats[cKey] || cKey; const emo = CONFIG[cKey]?.emoji || ''; const pctReal = totalRegs ? Math.round((cant / totalRegs) * 100) : 0; const row = document.createElement('div'); row.className = 'profile-bar-row'; row.innerHTML = ` <div class="profile-bar-name"><span class="emoji-dyn">${emo} </span>${nom}</div> <div class="profile-bar-track"><div class="profile-bar-fill" style="width:${pct}%;"></div></div> <div class="profile-bar-count">${cant} <span style="font-size:.7rem; color:var(--muted);">(${pctReal}%)</span></div> `;
-bWrap.appendChild(row); }); aplicarEstilosGlobales(); }
+bWrap.appendChild(row); });
+setTimeout(() => resolverHorasVistasFaltantes(regs), 150);
+aplicarEstilosGlobales(); }
 function actualizarTarjetasVisualesConfig() {
   document.querySelectorAll('#cfg-font-cards .cfg-option-card').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.val === userPrefs.font);
@@ -3336,12 +3648,265 @@ function refrescarDatosApp() {
     .withFailureHandler(() => btn && btn.classList.remove('spinning'))
     .sincronizarYRepararRegistros(estado.userEmail);
 }
+function obtenerTipoFicha(categoria, subcategoria) {
+  const c = categoria || '';
+  const s = (subcategoria || '').toLowerCase();
+  if (c === 'Peliculas') return 'peliculas';
+  if (c === 'Series') return 'series';
+  if (c === 'Musica') {
+    if (s.includes('artista') || s.includes('concierto')) return 'artistas';
+    return 'discos';
+  }
+  if (c === 'Juegos') return 'juegos';
+  if (c === 'Lecturas') {
+    if (s.includes('manga')) return 'manga';
+    if (s.includes('cómic') || s.includes('comic')) return 'comics';
+    return 'libros';
+  }
+  return 'peliculas';
+}
+
+function renderizarFichaTecnicaEsqueleto(reg, l) {
+  const tipo = obtenerTipoFicha(reg.categoria, reg.subcategoria);
+  const metaBox = document.getElementById('ficha-modal-meta-container');
+  const bottomBox = document.getElementById('ficha-modal-bottom-container');
+  if (!metaBox || !bottomBox) return;
+
+  let metaHtml = '';
+  let bottomHtml = '';
+
+  if (tipo === 'peliculas') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release:' : 'Estreno:'}</strong> <span>${reg.anio || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>Director:</strong> <span>${reg.creador || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Writer:' : 'Escritor:'}</strong> <span>...</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Protagonist:' : 'Protagonista:'}</strong> <span>...</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">Cargando sinopsis...</div>
+      </div>
+    `;
+  } else if (tipo === 'series') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release:' : 'Estreno:'}</strong> <span>${reg.anio || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>Showrunner:</strong> <span>${reg.creador || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Writers:' : 'Escritores:'}</strong> <span>...</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Protagonists:' : 'Protagonistas:'}</strong> <span>...</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">Cargando sinopsis...</div>
+      </div>
+    `;
+  } else if (tipo === 'discos') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${reg.anio || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Artist/Band:' : 'Artista/Grupo:'}</strong> <span>${reg.creador || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Producer:' : 'Productor:'}</strong> <span>...</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Record Label:' : 'Sello/Discográfica:'}</strong> <span>...</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Genre:' : 'Género:'}</strong> <span>...</span></div>
+    `;
+    bottomHtml = '';
+  } else if (tipo === 'artistas') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Artist/Band:' : 'Artista/Grupo:'}</strong> <span>${reg.titulo || reg.creador}</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--accent);margin-bottom:6px;">${l === 'en' ? 'Members and Roles:' : 'Integrantes y roles:'}</label>
+        <div class="ficha-sinopsis-box" style="max-height:160px; line-height:1.6;">Cargando integrantes y roles...</div>
+      </div>
+    `;
+  } else if (tipo === 'juegos') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${reg.anio || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Developer:' : 'Desarrolladora:'}</strong> <span>${reg.creador || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>Director:</strong> <span>...</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Publisher:' : 'Distribuidora:'}</strong> <span>...</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Genre:' : 'Género:'}</strong> <span>...</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">Cargando sinopsis...</div>
+      </div>
+    `;
+  } else if (tipo === 'libros') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${reg.anio || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Writer:' : 'Escritor:'}</strong> <span>${reg.creador || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Genre:' : 'Género:'}</strong> <span>...</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">Cargando sinopsis...</div>
+      </div>
+    `;
+  } else if (tipo === 'comics') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${reg.anio || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Publisher:' : 'Editorial:'}</strong> <span>...</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Writer(s):' : 'Escritor(es):'}</strong> <span>${reg.creador || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Artist(s):' : 'Dibujante(s):'}</strong> <span>...</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">Cargando sinopsis...</div>
+      </div>
+    `;
+  } else if (tipo === 'manga') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${reg.anio || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>Mangaka:</strong> <span>${reg.creador || '...'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Genre:' : 'Género:'}</strong> <span>...</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">Cargando sinopsis...</div>
+      </div>
+    `;
+  }
+
+  metaBox.innerHTML = metaHtml;
+  bottomBox.innerHTML = bottomHtml;
+}
+
+function renderizarFichaTecnicaContenido(reg, info, l) {
+  const tipo = info.tipoFicha || obtenerTipoFicha(reg.categoria, reg.subcategoria);
+  const metaBox = document.getElementById('ficha-modal-meta-container');
+  const bottomBox = document.getElementById('ficha-modal-bottom-container');
+  if (!metaBox || !bottomBox) return;
+
+  let metaHtml = '';
+  let bottomHtml = '';
+
+  if (tipo === 'peliculas') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release:' : 'Estreno:'}</strong> <span>${info.estreno || info.fechaEstreno || reg.anio || 'No registrada'}</span></div>
+      <div class="ficha-meta-item"><strong>Director:</strong> <span>${info.director || info.directores || reg.creador || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Writer:' : 'Escritor:'}</strong> <span>${info.escritor || info.escritores || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Protagonist:' : 'Protagonista:'}</strong> <span>${info.protagonista || info.protagonistas || info.actores || 'No especificado'}</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">${info.sinopsis || 'Sin sinopsis disponible.'}</div>
+      </div>
+    `;
+  } else if (tipo === 'series') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release:' : 'Estreno:'}</strong> <span>${info.estreno || info.fechaEstreno || reg.anio || 'No registrada'}</span></div>
+      <div class="ficha-meta-item"><strong>Showrunner:</strong> <span>${info.showrunner || info.directores || reg.creador || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Writers:' : 'Escritores:'}</strong> <span>${info.escritores || 'No especificados'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Protagonists:' : 'Protagonistas:'}</strong> <span>${info.protagonistas || info.actores || 'No especificados'}</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">${info.sinopsis || 'Sin sinopsis disponible.'}</div>
+      </div>
+    `;
+  } else if (tipo === 'discos') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${info.fechaSalida || info.estreno || reg.anio || 'No registrada'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Artist/Band:' : 'Artista/Grupo:'}</strong> <span>${info.artista || reg.creador || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Producer:' : 'Productor:'}</strong> <span>${info.productor || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Record Label:' : 'Sello/Discográfica:'}</strong> <span>${info.sello || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Genre:' : 'Género:'}</strong> <span>${info.genero || 'Música'}</span></div>
+    `;
+    bottomHtml = '';
+  } else if (tipo === 'artistas') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Artist/Band:' : 'Artista/Grupo:'}</strong> <span>${info.artista || reg.titulo}</span></div>
+    `;
+    const integrantesList = (info.integrantes && info.integrantes.length)
+      ? info.integrantes.map(it => {
+          const parts = it.split(':');
+          const rol = parts[0]?.trim();
+          const nom = parts.slice(1).join(':')?.trim();
+          return `<div style="margin-bottom:4px;">• <strong>${rol}:</strong> ${nom || rol}</div>`;
+        }).join('')
+      : `<div>${info.roles || 'Voz e instrumentación: ' + reg.titulo}</div>`;
+
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--accent);margin-bottom:6px;">${l === 'en' ? 'Members and Roles:' : 'Integrantes y roles:'}</label>
+        <div class="ficha-sinopsis-box" style="max-height:160px; line-height:1.6;">
+          ${integrantesList}
+        </div>
+      </div>
+    `;
+  } else if (tipo === 'juegos') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${info.fechaSalida || reg.anio || 'No registrada'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Developer:' : 'Desarrolladora:'}</strong> <span>${info.desarrolladora || reg.creador || 'No especificada'}</span></div>
+      <div class="ficha-meta-item"><strong>Director:</strong> <span>${info.director || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Publisher:' : 'Distribuidora:'}</strong> <span>${info.distribuidora || 'No especificada'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Genre:' : 'Género:'}</strong> <span>${info.genero || 'Videojuego'}</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">${info.sinopsis || 'Sin sinopsis disponible.'}</div>
+      </div>
+    `;
+  } else if (tipo === 'libros') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${info.fechaSalida || reg.anio || 'No registrada'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Writer:' : 'Escritor:'}</strong> <span>${info.escritor || reg.creador || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Genre:' : 'Género:'}</strong> <span>${info.genero || 'Literatura'}</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">${info.sinopsis || 'Sin sinopsis disponible.'}</div>
+      </div>
+    `;
+  } else if (tipo === 'comics') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${info.fechaSalida || reg.anio || 'No registrada'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Publisher:' : 'Editorial:'}</strong> <span>${info.editorial || 'No especificada'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Writer(s):' : 'Escritor(es):'}</strong> <span>${info.escritores || reg.creador || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Artist(s):' : 'Dibujante(s):'}</strong> <span>${info.dibujantes || 'No especificado'}</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">${info.sinopsis || 'Sin sinopsis disponible.'}</div>
+      </div>
+    `;
+  } else if (tipo === 'manga') {
+    metaHtml = `
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Release Date:' : 'Fecha de salida:'}</strong> <span>${info.fechaSalida || reg.anio || 'No registrada'}</span></div>
+      <div class="ficha-meta-item"><strong>Mangaka:</strong> <span>${info.mangaka || reg.creador || 'No especificado'}</span></div>
+      <div class="ficha-meta-item"><strong>${l === 'en' ? 'Genre:' : 'Género:'}</strong> <span>${info.genero || 'Manga'}</span></div>
+    `;
+    bottomHtml = `
+      <div class="form-group" style="margin-top:12px;">
+        <label style="font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:6px;">${l === 'en' ? 'Synopsis:' : 'Sinopsis:'}</label>
+        <div class="ficha-sinopsis-box">${info.sinopsis || 'Sin sinopsis disponible.'}</div>
+      </div>
+    `;
+  }
+
+  metaBox.innerHTML = metaHtml;
+  bottomBox.innerHTML = bottomHtml;
+}
+
 function abrirFichaTecnica(id) { const reg = estado.registros.find(r => r.id === id) || estado.watchlist.find(w => w.id === id); if (!reg) return; document.getElementById('ficha-modal-title').textContent = reg.titulo;
 document.getElementById('ficha-modal-poster').src = reg.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'125\' height=\'180\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
-['estreno','escritores','actores','sinopsis'].forEach(k => document.getElementById(`ficha-modal-${k}`).textContent = '...'); document.getElementById('ficha-modal-directores').textContent = reg.creador || '...'; document.getElementById('modal-ficha-tecnica').style.display = 'flex'; google.script.run
-.withSuccessHandler(info => { if (!info) return; if (info.poster) document.getElementById('ficha-modal-poster').src = info.poster; document.getElementById('ficha-modal-estreno').textContent = info.fechaEstreno || reg.anio || 'N/D';
-document.getElementById('ficha-modal-directores').textContent = info.directores || reg.creador || 'N/D'; document.getElementById('ficha-modal-escritores').textContent = info.escritores || 'N/D'; document.getElementById('ficha-modal-actores').textContent = info.actores || 'N/D';
-document.getElementById('ficha-modal-sinopsis').textContent = info.sinopsis || 'Sin sinopsis disponible.'; }) .obtenerDetalleTecnicoModal(reg.titulo, reg.creador, reg.categoria, reg.subcategoria); }
+const l = userPrefs.lang || 'es';
+renderizarFichaTecnicaEsqueleto(reg, l);
+document.getElementById('modal-ficha-tecnica').style.display = 'flex';
+google.script.run
+.withSuccessHandler(info => { if (!info) return; if (info.poster) document.getElementById('ficha-modal-poster').src = info.poster; renderizarFichaTecnicaContenido(reg, info, l); })
+.obtenerDetalleTecnicoModal(reg.titulo, reg.creador, reg.categoria, reg.subcategoria); }
 const cerrarModalFicha = () => document.getElementById('modal-ficha-tecnica').style.display = 'none'; function resetearBuscadoresYFormularios() { ['input-search', 'input-buscar-artista-concierto'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 ['search-results', 'search-results-artistas'].forEach(id => { const el = document.getElementById(id); if (el) { el.innerHTML = ''; el.style.display = 'none'; } });
 ocultarFormulario(); cerrarModalManual(); cerrarModalFicha(); cerrarModalNuevoArtista(); cerrarModalShuffle(); cerrarModalAgregadoRapido(); limpiarCarruselTimers(); }
@@ -4416,9 +4981,16 @@ if (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || 
 if (num) sub = `${estado.seleccionado.tituloOriginal} #${num}`; }
 const sinF = document.getElementById('chk-no-fecha').checked; const fechasG = obtenerFechasParaGuardarNuevo(); const fI = fechasG.fI; const fF = fechasG.fF;
 const esRw = subAdmiteRewatch(c, s) && document.getElementById('chk-es-rewatch').checked; const comentarioConPunto = asegurarPuntoFinal(document.getElementById('input-comentario').value); const btn = document.getElementById('btn-guardar');
-btn.textContent = 'Guardando... ⏳'; btn.disabled = true; const payload = { categoria: c, subcategoria: s, titulo: tTit, tituloBase: tBase, subtitulo: sub,
+btn.textContent = 'Guardando... ⏳'; btn.disabled = true;
+let horasGuardar = '';
+if (c === 'Juegos' && document.getElementById('input-horas-jugadas').value.trim()) {
+  horasGuardar = `${document.getElementById('input-horas-jugadas').value.trim()} hrs`;
+} else if ((c === 'Peliculas' || c === 'Series') && estado.seleccionado.duracionHoras) {
+  horasGuardar = `${estado.seleccionado.duracionHoras} hrs`;
+}
+const payload = { categoria: c, subcategoria: s, titulo: tTit, tituloBase: tBase, subtitulo: sub,
 creador: estado.seleccionado.creador, anio: estado.seleccionado.anio, fechaInicio: fI, fechaFin: fF, calificacion: Number(estado.calificacion)||0, comentario: comentarioConPunto,
-poster: estado.seleccionado.poster, horas: (c === 'Juegos' && document.getElementById('input-horas-jugadas').value.trim()) ? `${document.getElementById('input-horas-jugadas').value.trim()} hrs` : '', esTemporadaUnica: esUnica, numTempActual: numT, totalTempOficiales: totT, esRewatch: esRw
+poster: estado.seleccionado.poster, horas: horasGuardar, esTemporadaUnica: esUnica, numTempActual: numT, totalTempOficiales: totT, esRewatch: esRw
 }; const esDiscoMusica = c === 'Musica' && (s === 'Discos' || s === 'Disco'); const nombreArtistaDisco = estado.seleccionado.creador;
 const posterDisco = estado.seleccionado.poster; google.script.run.withSuccessHandler(res => { btn.textContent = t('btn_guardar'); btn.disabled = false; if (res?.exito) { ocultarFormulario(); limpiarModuloConcierto(); if (res.removidoDeWatchlist) {
 document.getElementById('msg-felicitacion-watchlist').innerHTML = `¡Felicidades! Acabas de completar <strong>"${res.tituloRemovido || tBase}"</strong>, que estaba anotado en tus pendientes.`; document.getElementById('modal-felicitaciones-watchlist').style.display = 'flex'; cargarWatchlist(); }
@@ -4509,9 +5081,12 @@ function abrirEditorRegistroCompleto(id) {
     html += '<button type="button" id="btn-toggle-fin-compl" class="btn-ghost" style="font-size:0.75rem;padding:3px 8px;color:var(--accent);" onclick="mostrarFechaFinEnEditorCompl()">+ ' + (l === 'en' ? 'Add end date' : 'Agregar fecha de término') + '</button>';
   }
   html += '</div></div>';
-  if (isJ) {
-    html += '<div class="form-group"><label style="font-size:.82rem;color:var(--muted);">' + (l === 'en' ? 'Hours played:' : 'Horas jugadas:') + '</label>';
-    html += '<input type="number" id="edit-compl-horas" class="form-input" style="max-width:140px;" value="' + (parseFloat(String(reg.horas || '').replace('hrs','').trim()) || '') + '"></div>';
+  const isVideo = (c === 'Peliculas' || c === 'Series');
+  if (isJ || isVideo) {
+    const lblHoras = isJ ? (l === 'en' ? 'Hours played:' : 'Horas jugadas:') : (l === 'en' ? 'Duration / Watched hours (hrs):' : 'Duración / Horas vistas (hrs):');
+    const curH = parseFloat(String(reg.horas || '').replace('hrs','').trim()) || '';
+    html += '<div class="form-group"><label style="font-size:.82rem;color:var(--muted);">' + lblHoras + '</label>';
+    html += '<input type="number" step="0.1" id="edit-compl-horas" class="form-input" style="max-width:140px;" value="' + curH + '"></div>';
   }
   if (subAdmiteRewatch(c, s)) {
     html += '<div class="checkbox-row" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:8px 12px;margin-bottom:12px;">';
@@ -4549,10 +5124,11 @@ function abrirEditorRegistroCompleto(id) {
     }
     const calif = Number(document.getElementById('edit-val-calif').value) || 0;
     const com = document.getElementById('edit-compl-comentario').value.trim();
-    let horas = '';
-    if (isJ) {
+    let horas = reg.horas || '';
+    if (isJ || isVideo) {
       const hVal = document.getElementById('edit-compl-horas')?.value?.trim();
       if (hVal && !isNaN(Number(hVal))) horas = hVal + ' hrs';
+      else if (hVal === '') horas = '';
     }
     const chkRw = document.getElementById('edit-compl-rewatch');
     const esRw = chkRw ? chkRw.checked : reg.esRewatch;
@@ -4749,8 +5325,12 @@ function abrirEditorFecha(id) {
     }).actualizarRegistro(id, { fechaInicio: fI, fechaFin: fF }, estado.userEmail);
   };
   document.getElementById('modal-edicion').style.display = 'flex';
-}function abrirEditorHoras(id) { const reg = estado.registros.find(r => r.id === id); if (!reg) return; document.getElementById('modal-titulo').textContent = 'Editar Horas Jugadas';
-document.getElementById('modal-contenido').innerHTML = `<div style="margin-bottom:12px;"><label style="font-size:.85rem; color:var(--muted);">${t('lbl_horas')}</label><input type="number" id="edit-horas-input" class="form-input" placeholder="Ej: 30" value="${(reg.horas||'').replace(' hrs','').trim()}" min="1"></div>`;
+}function abrirEditorHoras(id) { const reg = estado.registros.find(r => r.id === id); if (!reg) return;
+const l = userPrefs.lang || 'es'; const isJ = reg.categoria === 'Juegos';
+const titModal = isJ ? (l === 'en' ? 'Edit Hours Played' : 'Editar Horas Jugadas') : (l === 'en' ? 'Edit Watched Hours' : 'Editar Horas Vistas');
+const lblModal = isJ ? t('lbl_horas') : (l === 'en' ? 'Duration / Watched hours (hrs):' : 'Duración / Horas vistas (hrs):');
+document.getElementById('modal-titulo').textContent = titModal;
+document.getElementById('modal-contenido').innerHTML = `<div style="margin-bottom:12px;"><label style="font-size:.85rem; color:var(--muted);">${lblModal}</label><input type="number" step="0.1" id="edit-horas-input" class="form-input" placeholder="Ej: 2.5" value="${(reg.horas||'').replace(' hrs','').trim()}" min="0.1"></div>`;
 document.getElementById('btn-modal-confirmar').onclick = () => { const hVal = document.getElementById('edit-horas-input').value.trim(); cerrarModal(); google.script.run.withSuccessHandler(res => { if (res.exito) cargarRegistros(); }).actualizarRegistro(id, { horas: hVal ? `${hVal} hrs` : '' }, estado.userEmail);
 }; document.getElementById('modal-edicion').style.display = 'flex'; }
 function abrirEditorCalificacion(id) { const reg = estado.registros.find(r => r.id === id); if (!reg) return; let tempCal = Number(reg.calificacion) || 0; document.getElementById('modal-titulo').textContent = 'Editar Calificación';
