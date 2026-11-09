@@ -190,6 +190,39 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .amigo-subcat-group-badge{font-size:0.72rem;color:var(--muted);font-weight:600;}
 .amigo-reg-item-card{display:flex;align-items:flex-start;padding:11px 13px;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:10px;transition:var(--tr);}
 .amigo-reg-item-card:hover{border-color:rgba(56,189,248,0.4);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.25);}
+/* FEED DE NOVEDADES Y ACTIVIDAD DE AMIGOS */
+.amigo-feed-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;transition:var(--tr);display:flex;flex-direction:column;gap:12px;box-shadow:0 3px 12px rgba(0,0,0,0.18);position:relative;}
+.amigo-feed-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.28);}
+.feed-card-header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:10px;}
+[data-theme="nordic-light"] .feed-card-header, [data-theme="creme-latte"] .feed-card-header, [data-theme="parchment"] .feed-card-header, [data-theme="sage-garden"] .feed-card-header{border-bottom-color:var(--border);}
+.feed-card-user-info{display:flex;align-items:center;gap:12px;min-width:0;flex:1;}
+.feed-user-avatar{width:44px;height:44px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.45rem;flex-shrink:0;cursor:pointer;transition:transform 0.2s;}
+.feed-user-avatar:hover{transform:scale(1.08);}
+.feed-card-phrase{font-size:0.96rem;font-weight:700;color:var(--text);line-height:1.3;}
+.feed-card-time{font-size:0.75rem;color:var(--muted);display:flex;align-items:center;gap:6px;margin-top:2px;}
+.feed-card-body{display:flex;gap:14px;align-items:flex-start;}
+.feed-card-poster-wrap{width:70px;min-width:70px;height:102px;border-radius:8px;overflow:hidden;background:var(--bg);border:1px solid var(--border);flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,0.22);position:relative;cursor:pointer;}
+.feed-card-poster-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.2s;}
+.feed-card-poster-wrap:hover img{transform:scale(1.06);}
+.feed-card-info{flex:1;min-width:0;}
+.feed-card-title{font-size:1.02rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px;}
+.feed-card-meta{font-size:0.8rem;color:var(--muted);margin-bottom:8px;}
+.feed-cat-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(56,189,248,0.12);color:var(--accent);font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid rgba(56,189,248,0.25);text-transform:uppercase;letter-spacing:0.03em;}
+.feed-status-badge{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:700;padding:2px 8px;border-radius:6px;}
+.feed-status-inprog{background:rgba(245,158,11,0.14);color:#fbbf24;border:1px solid rgba(245,158,11,0.35);}
+.feed-review-box{margin-top:10px;padding:10px 14px;background:rgba(56,189,248,0.06);border-left:3px solid var(--accent);border-radius:4px 8px 8px 4px;font-size:0.86rem;color:var(--text);line-height:1.45;word-break:break-word;position:relative;}
+[data-theme="nordic-light"] .feed-review-box, [data-theme="creme-latte"] .feed-review-box, [data-theme="parchment"] .feed-review-box, [data-theme="sage-garden"] .feed-review-box{background:rgba(0,0,0,0.03);}
+.feed-review-title{font-size:0.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
+.feed-review-text{font-style:italic;}
+.feed-actions{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap;}
+.btn-feed-action{background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:5px;}
+.btn-feed-action:hover{border-color:var(--accent);color:var(--accent);background:rgba(56,189,248,0.1);}
+.btn-feed-action.added{background:rgba(16,185,129,0.15);border-color:rgba(16,185,129,0.35);color:#34d399;}
+@media (max-width: 600px){
+  .feed-card-body{gap:12px;}
+  .feed-card-poster-wrap{width:56px;min-width:56px;height:84px;}
+  .feed-card-title{font-size:0.95rem;}
+}
 /* SELECTOR DE AÑO Y PRECISIÓN DE FECHAS */
 .btn-year-picker{background:var(--card);border:1px solid var(--border);cursor:pointer;padding:4px 10px;border-radius:10px;display:inline-flex;align-items:center;gap:6px;transition:var(--tr);outline:none;}
 .btn-year-picker:hover{background:rgba(56,189,248,0.12);border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 14px rgba(56,189,248,0.25);}
@@ -215,7 +248,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button>
 <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button>
 <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button>
-</div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" style="padding:18px 22px;">
+</div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- SECCIÓN: NOVEDADES Y ÚLTIMOS AGREGADOS DE AMIGOS --> <div class="cat-wide-card" style="margin-bottom:22px; padding:18px 20px;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(51,65,85,0.45); padding-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--accent); display:flex; align-items:center; gap:8px;"> <span>⚡</span> <span data-i18n="feed_amigos_title">Últimos Agregados de Amigos</span> <span id="badge-feed-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:800;">0</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-top:3px;" data-i18n="feed_amigos_desc">Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.</p> </div> <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.75rem; margin:0;" onclick="cargarFeedActividadAmigos(true)" title="Refrescar feed"> <span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span> </button> </div> <div class="discover-filter-bar" id="feed-amigos-filtros" style="margin-bottom:14px;"> <button type="button" class="subtab-btn active" data-fcat="todas" onclick="filtrarFeedAmigos('todas')">🌟 <span data-i18n="feed_filtro_todos">Todos</span> (<span id="count-feed-todas">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Peliculas" onclick="filtrarFeedAmigos('Peliculas')">🎬 <span data-i18n="nav_peliculas">Películas</span> (<span id="count-feed-pelis">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Series" onclick="filtrarFeedAmigos('Series')">📺 <span data-i18n="nav_series">Series</span> (<span id="count-feed-series">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Musica" onclick="filtrarFeedAmigos('Musica')">🎵 <span data-i18n="nav_musica">Música</span> (<span id="count-feed-musica">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Juegos" onclick="filtrarFeedAmigos('Juegos')">🎮 <span data-i18n="nav_juegos">Juegos</span> (<span id="count-feed-juegos">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Lecturas" onclick="filtrarFeedAmigos('Lecturas')">📖 <span data-i18n="nav_lecturas">Lecturas</span> (<span id="count-feed-lecturas">0</span>)</button> </div> <div id="lista-feed-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%;"> <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;">Cargando novedades de tus amigos... ⏳</div> </div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" style="padding:18px 22px;">
   <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
     <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer;flex-shrink:0;">
       <span>👤</span>
@@ -2179,6 +2212,69 @@ async obtenerActividadAmigos(userEmail) {
   } catch (e) {
     return { exito: false, actividad: {} };
   }
+},
+async obtenerFeedAmigos(userEmail, limite = 30) {
+  try {
+    const email = normEm_(userEmail);
+    if (!email) return { exito: false, feed: [] };
+    const myP = await SERVER_API.obtenerPerfilUsuario(email);
+    const prefs = myP.preferencias || {};
+    const amigosEmails = prefs.amigos || [];
+    if (!amigosEmails.length) return { exito: true, feed: [] };
+
+    const pRowsList = await Promise.all(
+      amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*', 'GET').catch(() => []))
+    );
+
+    const amigosMap = {};
+    pRowsList.forEach((rows, idx) => {
+      const aEmail = amigosEmails[idx];
+      if (rows && rows.length > 0) {
+        amigosMap[aEmail] = rows[0];
+      }
+    });
+
+    const feedPromises = amigosEmails.map(async aEmail => {
+      const p = amigosMap[aEmail];
+      if (!p) return [];
+      const priv = p.preferencias?.privacidad || {};
+      if (priv.ocultarRegistros) return [];
+      const data = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*&order=created_at.desc&limit=15', 'GET').catch(() => []) || [];
+      return data.map(r => ({
+        id: r.id,
+        userEmail: aEmail,
+        amigoNickname: p.nickname || aEmail.split('@')[0],
+        amigoAvatar: p.avatar || '🦊',
+        amigoUserId: p.preferencias?.userId || aEmail,
+        titulo: r.titulo,
+        subtitulo: r.subtitulo || '',
+        creador: r.creador || '',
+        anio: r.anio || '',
+        categoria: r.categoria,
+        subcategoria: r.subcategoria,
+        poster: r.poster || '',
+        calificacion: priv.ocultarCalificaciones ? 0 : (Number(r.calificacion) || 0),
+        comentario: priv.ocultarComentarios ? '' : (r.comentario || ''),
+        horas: r.horas || '',
+        esRewatch: !!r.es_rewatch,
+        fechaInicio: sanitizarFechaFrontend(r.fecha_inicio || r.fechaInicio),
+        fechaFin: sanitizarFechaFrontend(r.fecha_fin || r.fechaFin),
+        createdAt: r.created_at || ''
+      }));
+    });
+
+    const allResults = await Promise.all(feedPromises);
+    const feed = allResults.flat();
+    feed.sort((a, b) => {
+      const tA = a.createdAt ? new Date(a.createdAt).getTime() : timestampDeFecha(a.fechaFin || a.fechaInicio);
+      const tB = b.createdAt ? new Date(b.createdAt).getTime() : timestampDeFecha(b.fechaFin || b.fechaInicio);
+      return (tB || 0) - (tA || 0);
+    });
+
+    return { exito: true, feed: feed.slice(0, limite) };
+  } catch (e) {
+    return { exito: false, error: e.toString(), feed: [] };
+  }
 }
 }; const makeRunner_ = (onSuccess = null, onFailure = null) => new Proxy({}, { get(_, prop) { if (prop === 'withSuccessHandler') return fn => makeRunner_(fn, onFailure); if (prop === 'withFailureHandler') return fn => makeRunner_(onSuccess, fn); return (...args) => {
 Promise.resolve().then(() => SERVER_API[prop](...args)).then(res => { if (onSuccess) onSuccess(res); }).catch(err => { console.error(`Error en ${String(prop)}:`, err); if (onFailure) onFailure(err); }); }; }
@@ -2486,10 +2582,13 @@ function cargarAmigosYSolicitudes(mostrarToast = false) {
   if (!estado.userEmail) {
     document.getElementById('lista-mis-amigos').innerHTML = '<div style="color:var(--muted);padding:20px 0;">Inicia sesión con tu cuenta para ver y agregar amigos.</div>';
     document.getElementById('seccion-solicitudes-pendientes').style.display = 'none';
+    const feedCont = document.getElementById('lista-feed-amigos');
+    if (feedCont) feedCont.innerHTML = '<div style="color:var(--muted);padding:20px 0;text-align:center;">Inicia sesión con tu cuenta para ver la actividad de tus amigos.</div>';
     return;
   }
   google.script.run.withSuccessHandler(res => {
     if (!res || !res.exito) return;
+    estado.amigos = res.amigos || [];
     renderizarListaSolicitudes(res.solicitudes || []);
     renderizarListaAmigos(res.amigos || []);
     const selAm = document.getElementById('select-amigo-historial');
@@ -2497,9 +2596,355 @@ function cargarAmigosYSolicitudes(mostrarToast = false) {
       selAm.innerHTML = '<option value="">(Mis registros - Yo)</option>' + (res.amigos || []).map(a => `<option value="${a.email}">👤 ${a.nickname}</option>`).join('');
     }
     cargarActividadAmigos();
-    if (mostrarToast) mostrarToastPersonalizado('Lista de amigos actualizada 👥');
+    cargarFeedActividadAmigos();
+    if (mostrarToast) mostrarToastPersonalizado('Lista de amigos y novedades actualizada 👥');
   }).obtenerDatosAmigosUsuario(estado.userEmail);
 }
+function cargarFeedActividadAmigos(mostrarToast = false) {
+  const contenedor = document.getElementById('lista-feed-amigos');
+  const l = userPrefs.lang || 'es';
+  if (!estado.userEmail) {
+    if (contenedor) contenedor.innerHTML = `<div style="color:var(--muted);padding:20px 0;text-align:center;">${l === 'en' ? 'Log in to see your friends\' recent activity.' : 'Inicia sesión con tu cuenta para ver la actividad de tus amigos.'}</div>`;
+    return;
+  }
+  if (contenedor && (!estado.amigosFeedCache || !estado.amigosFeedCache.length)) {
+    contenedor.innerHTML = `<div style="color:var(--muted);font-size:0.86rem;padding:24px 0;text-align:center;"><span class="spinning" style="display:inline-block;margin-bottom:8px;">⏳</span><div>${l === 'en' ? 'Loading friends updates...' : 'Cargando novedades de tus amigos...'}</div></div>`;
+  }
+  google.script.run.withSuccessHandler(res => {
+    if (!res || !res.exito) {
+      if (contenedor) contenedor.innerHTML = `<div style="color:var(--muted);font-size:0.86rem;padding:20px 0;text-align:center;">${l === 'en' ? 'Could not load friends activity.' : 'No se pudo cargar la actividad de amigos.'}</div>`;
+      return;
+    }
+    estado.amigosFeedCache = res.feed || [];
+    actualizarContadoresFeedAmigos();
+    renderizarFeedAmigos();
+    if (mostrarToast) mostrarToastPersonalizado(l === 'en' ? 'Friends feed updated ⚡' : 'Novedades de amigos actualizadas ⚡');
+  }).obtenerFeedAmigos(estado.userEmail);
+}
+function actualizarContadoresFeedAmigos() {
+  const feed = estado.amigosFeedCache || [];
+  const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setTxt('badge-feed-count', feed.length);
+  setTxt('count-feed-todas', feed.length);
+  setTxt('count-feed-pelis', feed.filter(x => x.categoria === 'Peliculas').length);
+  setTxt('count-feed-series', feed.filter(x => x.categoria === 'Series').length);
+  setTxt('count-feed-musica', feed.filter(x => x.categoria === 'Musica').length);
+  setTxt('count-feed-juegos', feed.filter(x => x.categoria === 'Juegos').length);
+  setTxt('count-feed-lecturas', feed.filter(x => x.categoria === 'Lecturas').length);
+}
+function filtrarFeedAmigos(cat) {
+  estado.amigosFeedFiltro = cat || 'todas';
+  const btns = document.querySelectorAll('#feed-amigos-filtros .subtab-btn');
+  btns.forEach(b => {
+    if (b.getAttribute('data-fcat') === estado.amigosFeedFiltro) {
+      b.classList.add('active');
+    } else {
+      b.classList.remove('active');
+    }
+  });
+  renderizarFeedAmigos();
+}
+function escHtmlFeed_(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+function formatearTiempoRelativoFeed(val, lang = 'es') {
+  if (!val || val === 'Sin fecha') return '';
+  const l = lang || 'es';
+  let dateObj = null;
+  if (typeof val === 'string' && val.includes('T')) {
+    dateObj = new Date(val);
+  } else if (typeof val === 'string' && val.includes('/')) {
+    const parts = val.split('/');
+    if (parts.length === 3) {
+      dateObj = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+    }
+  } else {
+    dateObj = new Date(val);
+  }
+  if (!dateObj || isNaN(dateObj.getTime())) return String(val);
+
+  const diffMs = Date.now() - dateObj.getTime();
+  if (diffMs < 0) return dateObj.toLocaleDateString(l === 'en' ? 'en-US' : 'es-ES', { month: 'short', day: 'numeric' });
+  const diffSec = Math.floor(diffMs / 1000);
+  const diffMin = Math.floor(diffSec / 60);
+  const diffHrs = Math.floor(diffMin / 60);
+  const diffDays = Math.floor(diffHrs / 24);
+
+  if (diffMin < 2) return l === 'en' ? 'Just now' : 'Hace un momento';
+  if (diffMin < 60) return l === 'en' ? `${diffMin}m ago` : `Hace ${diffMin} min`;
+  if (diffHrs < 24) return l === 'en' ? `${diffHrs}h ago` : `Hace ${diffHrs} h`;
+  if (diffDays === 1) return l === 'en' ? 'Yesterday' : 'Ayer';
+  if (diffDays < 7) return l === 'en' ? `${diffDays}d ago` : `Hace ${diffDays} días`;
+  return dateObj.toLocaleDateString(l === 'en' ? 'en-US' : 'es-ES', { month: 'short', day: 'numeric', year: dateObj.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined });
+}
+function generarFraseActividadAmigo(item, lang = 'es') {
+  const l = lang || 'es';
+  const nick = escHtmlFeed_(item.amigoNickname || (item.userEmail ? item.userEmail.split('@')[0] : 'Un amigo'));
+  const enProg = esEnProgresoTexto(item.fechaFin);
+  const cat = item.categoria || '';
+  const sub = (item.subcategoria || '').toLowerCase();
+  const rw = !!item.esRewatch;
+
+  if (l === 'en') {
+    if (cat === 'Musica') {
+      if (sub.includes('canc') || sub.includes('single') || sub.includes('song')) {
+        return enProg ? `<strong>${nick}</strong> is listening to a new song!` : `<strong>${nick}</strong> listened to a new song!`;
+      }
+      if (sub.includes('concierto') || sub.includes('festival') || sub.includes('concert')) {
+        return `<strong>${nick}</strong> attended a concert!`;
+      }
+      if (sub.includes('ep')) {
+        return `<strong>${nick}</strong> listened to a new EP!`;
+      }
+      return enProg ? `<strong>${nick}</strong> is listening to a new album!` : `<strong>${nick}</strong> listened to a new album!`;
+    }
+    if (cat === 'Lecturas') {
+      if (sub.includes('comic') || sub.includes('manga') || sub.includes('novela gr') || sub.includes('graphic')) {
+        return enProg ? `<strong>${nick}</strong> started reading a new comic/manga!` : (rw ? `<strong>${nick}</strong> re-read a comic/manga!` : `<strong>${nick}</strong> read a new comic/manga!`);
+      }
+      if (sub.includes('audio')) {
+        return enProg ? `<strong>${nick}</strong> started listening to an audiobook!` : `<strong>${nick}</strong> finished an audiobook!`;
+      }
+      return enProg ? `<strong>${nick}</strong> started reading a new book!` : (rw ? `<strong>${nick}</strong> re-read a book!` : `<strong>${nick}</strong> finished reading a new book!`);
+    }
+    if (cat === 'Peliculas') {
+      if (sub.includes('docu')) {
+        return enProg ? `<strong>${nick}</strong> is watching a documentary!` : (rw ? `<strong>${nick}</strong> rewatched a documentary!` : `<strong>${nick}</strong> watched a documentary!`);
+      }
+      if (sub.includes('corto') || sub.includes('short')) {
+        return rw ? `<strong>${nick}</strong> rewatched a short film!` : `<strong>${nick}</strong> watched a short film!`;
+      }
+      return enProg ? `<strong>${nick}</strong> started watching a movie!` : (rw ? `<strong>${nick}</strong> rewatched a movie!` : `<strong>${nick}</strong> watched a new movie!`);
+    }
+    if (cat === 'Series') {
+      if (sub.includes('anime')) {
+        return enProg ? `<strong>${nick}</strong> started watching an anime!` : (rw ? `<strong>${nick}</strong> rewatched an anime!` : `<strong>${nick}</strong> finished an anime!`);
+      }
+      if (sub.includes('docu')) {
+        return enProg ? `<strong>${nick}</strong> started watching a docuseries!` : `<strong>${nick}</strong> completed a docuseries!`;
+      }
+      return enProg ? `<strong>${nick}</strong> started watching a series!` : (rw ? `<strong>${nick}</strong> rewatched a series!` : `<strong>${nick}</strong> completed a series!`);
+    }
+    if (cat === 'Juegos') {
+      if (sub.includes('mesa') || sub.includes('board')) {
+        return enProg ? `<strong>${nick}</strong> is playing a board game!` : `<strong>${nick}</strong> played a board game!`;
+      }
+      if (sub.includes('dlc') || sub.includes('expansi')) {
+        return enProg ? `<strong>${nick}</strong> is playing a new DLC/expansion!` : `<strong>${nick}</strong> completed an expansion!`;
+      }
+      return enProg ? `<strong>${nick}</strong> started playing a new game!` : `<strong>${nick}</strong> completed a new video game!`;
+    }
+    return `<strong>${nick}</strong> added a new item!`;
+  }
+
+  // Español
+  if (cat === 'Musica') {
+    if (sub.includes('canc') || sub.includes('single')) {
+      return enProg ? `¡<strong>${nick}</strong> está escuchando una nueva canción!` : `¡<strong>${nick}</strong> escuchó una nueva canción!`;
+    }
+    if (sub.includes('concierto') || sub.includes('festival')) {
+      return `¡<strong>${nick}</strong> asistió a un concierto/festival!`;
+    }
+    if (sub.includes('ep')) {
+      return `¡<strong>${nick}</strong> escuchó un nuevo EP!`;
+    }
+    if (sub.includes('artista')) {
+      return `¡<strong>${nick}</strong> ha comenzado a escuchar a un nuevo artista!`;
+    }
+    return enProg ? `¡<strong>${nick}</strong> está escuchando un nuevo álbum!` : `¡<strong>${nick}</strong> escuchó un nuevo disco!`;
+  }
+  if (cat === 'Lecturas') {
+    if (sub.includes('comic') || sub.includes('manga') || sub.includes('novela gr')) {
+      return enProg ? `¡<strong>${nick}</strong> ha comenzado a leer un nuevo cómic/manga!` : (rw ? `¡<strong>${nick}</strong> volvió a leer un cómic/manga!` : `¡<strong>${nick}</strong> leyó un nuevo cómic/manga!`);
+    }
+    if (sub.includes('audio')) {
+      return enProg ? `¡<strong>${nick}</strong> ha comenzado a escuchar un audiolibro!` : `¡<strong>${nick}</strong> terminó de escuchar un audiolibro!`;
+    }
+    return enProg ? `¡<strong>${nick}</strong> ha comenzado a leer un libro nuevo!` : (rw ? `¡<strong>${nick}</strong> volvió a leer un libro!` : `¡<strong>${nick}</strong> terminó de leer un libro nuevo!`);
+  }
+  if (cat === 'Peliculas') {
+    if (sub.includes('docu')) {
+      return enProg ? `¡<strong>${nick}</strong> está viendo un documental!` : (rw ? `¡<strong>${nick}</strong> volvió a ver un documental!` : `¡<strong>${nick}</strong> vio un nuevo documental!`);
+    }
+    if (sub.includes('corto')) {
+      return rw ? `¡<strong>${nick}</strong> volvió a ver un cortometraje!` : `¡<strong>${nick}</strong> vio un nuevo cortometraje!`;
+    }
+    return enProg ? `¡<strong>${nick}</strong> comenzó a ver una película!` : (rw ? `¡<strong>${nick}</strong> volvió a ver una película!` : `¡<strong>${nick}</strong> vio una nueva película!`);
+  }
+  if (cat === 'Series') {
+    if (sub.includes('anime')) {
+      return enProg ? `¡<strong>${nick}</strong> ha comenzado a ver un nuevo anime!` : (rw ? `¡<strong>${nick}</strong> volvió a ver un anime!` : `¡<strong>${nick}</strong> completó un anime!`);
+    }
+    if (sub.includes('docu')) {
+      return enProg ? `¡<strong>${nick}</strong> ha comenzado a ver una docuserie!` : `¡<strong>${nick}</strong> terminó una docuserie!`;
+    }
+    return enProg ? `¡<strong>${nick}</strong> ha comenzado a ver una serie!` : (rw ? `¡<strong>${nick}</strong> volvió a ver una serie!` : `¡<strong>${nick}</strong> completó una serie!`);
+  }
+  if (cat === 'Juegos') {
+    if (sub.includes('mesa')) {
+      return enProg ? `¡<strong>${nick}</strong> está jugando un juego de mesa!` : `¡<strong>${nick}</strong> jugó un juego de mesa!`;
+    }
+    if (sub.includes('dlc') || sub.includes('expansi')) {
+      return enProg ? `¡<strong>${nick}</strong> está jugando una nueva expansión!` : `¡<strong>${nick}</strong> completó una expansión!`;
+    }
+    return enProg ? `¡<strong>${nick}</strong> ha comenzado a jugar un nuevo juego!` : `¡<strong>${nick}</strong> completó un videojuego!`;
+  }
+  return `¡<strong>${nick}</strong> agregó un nuevo registro!`;
+}
+function renderizarFeedAmigos() {
+  const contenedor = document.getElementById('lista-feed-amigos');
+  if (!contenedor) return;
+  const l = userPrefs.lang || 'es';
+  const filtro = estado.amigosFeedFiltro || 'todas';
+  const todos = estado.amigosFeedCache || [];
+  const items = todos.filter(it => filtro === 'todas' || it.categoria === filtro);
+
+  if (!todos.length) {
+    contenedor.innerHTML = `
+      <div style="background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:32px 20px;text-align:center;color:var(--muted);">
+        <div style="font-size:2rem;margin-bottom:8px;">👥✨</div>
+        <div style="font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:4px;">${l === 'en' ? 'No friends activity yet' : 'Aún no hay actividad de amigos'}</div>
+        <div style="font-size:0.82rem;max-width:420px;margin:0 auto 14px;">${l === 'en' ? 'When you and your friends add movies, books, music or games, their latest reviews and ratings will show up here!' : 'Cuando tus amigos agreguen películas, discos, libros o juegos, verás aquí qué opinan, qué calificaron y qué están disfrutando.'}</div>
+        <button type="button" class="btn-today-pill" style="height:34px;padding:0 14px;font-size:0.8rem;margin:0 auto;" onclick="copiarMiIdUsuario()">📋 ${l === 'en' ? 'Copy My ID to Share' : 'Copiar mi ID para compartir'}</button>
+      </div>
+    `;
+    return;
+  }
+
+  if (!items.length) {
+    contenedor.innerHTML = `
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:26px 20px;text-align:center;color:var(--muted);font-size:0.88rem;">
+        ${l === 'en' ? `No recent activity in <strong>${I18N[l]?.cats?.[filtro] || filtro}</strong>.` : `No hay actividad reciente en <strong>${I18N[l]?.cats?.[filtro] || filtro}</strong>.`}
+      </div>
+    `;
+    return;
+  }
+
+  const catIcons = { Peliculas: '🎬', Series: '📺', Musica: '🎵', Juegos: '🎮', Lecturas: '📖' };
+
+  contenedor.innerHTML = items.map((it, idx) => {
+    const frase = generarFraseActividadAmigo(it, l);
+    const timeStr = formatearTiempoRelativoFeed(it.createdAt || it.fechaFin || it.fechaInicio, l);
+    const enProg = esEnProgresoTexto(it.fechaFin);
+    const avatarHtml = it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:'))
+      ? `<img src="${it.amigoAvatar}" alt="Avatar" style="width:100%;height:100%;object-fit:cover;">`
+      : `<span>${it.amigoAvatar || '👤'}</span>`;
+    const catNom = I18N[l]?.cats?.[it.categoria] || it.categoria || '';
+    const subNom = I18N[l]?.subs?.[it.subcategoria] || it.subcategoria || '';
+    const catIcon = catIcons[it.categoria] || '✨';
+
+    const posterHtml = it.poster
+      ? `<img src="${it.poster}" loading="lazy" alt="${escHtmlFeed_(it.titulo)}" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\\'width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);\\\'>${catIcon}</div>';">`
+      : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`;
+
+    const califNum = Number(it.calificacion) || 0;
+    let ratingOrStatusHtml = '';
+    if (enProg) {
+      ratingOrStatusHtml = `<span class="feed-status-badge feed-status-inprog">⏳ ${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span>`;
+    } else if (califNum > 0) {
+      ratingOrStatusHtml = `
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);padding:3px 8px;border-radius:8px;">
+          <span style="font-size:0.85rem;line-height:1;">${renderEstrellasVisuales(califNum)}</span>
+          <span style="font-weight:800;color:var(--star-active);font-size:0.82rem;">${califNum.toFixed(1)}</span>
+        </div>
+      `;
+    }
+
+    const horasHtml = (it.horas && String(it.horas).trim() !== '' && it.horas !== '0')
+      ? `<span class="feed-cat-badge" style="background:rgba(16,185,129,0.12);color:#34d399;border-color:rgba(16,185,129,0.3);">⏱️ ${it.horas} hrs</span>`
+      : '';
+
+    const reviewHtml = (it.comentario && it.comentario.trim() !== '')
+      ? `
+        <div class="feed-review-box">
+          <div class="feed-review-title"><span>💬</span> <span>${l === 'en' ? 'Review & Notes' : 'Reseña y Opinión'}</span></div>
+          <div class="feed-review-text">"${escHtmlFeed_(it.comentario)}"</div>
+        </div>
+      `
+      : '';
+
+    return `
+      <div class="amigo-feed-card">
+        <div class="feed-card-header">
+          <div class="feed-card-user-info">
+            <div class="feed-user-avatar" onclick="verPerfilDeAmigo('${it.userEmail}')" title="${l === 'en' ? 'View Profile' : 'Ver Perfil'}">
+              ${avatarHtml}
+            </div>
+            <div style="min-width:0;flex:1;">
+              <div class="feed-card-phrase">${frase}</div>
+              <div class="feed-card-time">
+                <span>🕒 ${timeStr}</span>
+                <span style="opacity:0.5;">•</span>
+                <span style="color:var(--accent);font-weight:600;cursor:pointer;" onclick="verPerfilDeAmigo('${it.userEmail}')">@${escHtmlFeed_(it.amigoNickname)}</span>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn-today-pill" style="height:30px;padding:0 10px;font-size:0.72rem;margin:0;flex-shrink:0;" onclick="abrirModalRegistrosAmigo('${it.userEmail}', '${escHtmlFeed_(it.amigoNickname)}', '${it.categoria}')" title="${l === 'en' ? 'View all records of this friend' : 'Ver registros de este amigo'}">
+            👤 <span>${l === 'en' ? 'Records' : 'Registros'}</span>
+          </button>
+        </div>
+
+        <div class="feed-card-body">
+          <div class="feed-card-poster-wrap" onclick="abrirModalRegistrosAmigo('${it.userEmail}', '${escHtmlFeed_(it.amigoNickname)}', '${it.categoria}')">
+            ${posterHtml}
+          </div>
+          <div class="feed-card-info">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;">
+              <span class="feed-cat-badge">${catIcon} ${subNom || catNom}</span>
+              ${it.esRewatch ? `<span class="feed-cat-badge" style="background:rgba(168,85,247,0.14);border-color:rgba(168,85,247,0.35);color:#c084fc;">🔁 Rewatch</span>` : ''}
+              ${horasHtml}
+            </div>
+            <div class="feed-card-title">${escHtmlFeed_(it.titulo)}</div>
+            ${it.subtitulo && it.subtitulo !== it.titulo ? `<div style="font-size:0.78rem;color:var(--muted);font-style:italic;margin-top:-2px;margin-bottom:3px;">${escHtmlFeed_(it.subtitulo)}</div>` : ''}
+            <div class="feed-card-meta">${escHtmlFeed_(it.creador || '')} ${it.anio ? '(' + escHtmlFeed_(it.anio) + ')' : ''}</div>
+            ${ratingOrStatusHtml ? `<div style="margin-top:6px;">${ratingOrStatusHtml}</div>` : ''}
+            ${reviewHtml}
+            <div class="feed-actions">
+              <button type="button" class="btn-feed-action" onclick="agregarFeedItemAWatchlist(${idx}, this)" title="${l === 'en' ? 'Add to my Watchlist' : 'Agregar a mis pendientes'}">
+                <span>📌</span> <span>+ Watchlist</span>
+              </button>
+              <button type="button" class="btn-feed-action" onclick="abrirModalRegistrosAmigo('${it.userEmail}', '${escHtmlFeed_(it.amigoNickname)}', '${it.categoria}')">
+                <span>📑</span> <span>${l === 'en' ? 'Friend\'s Records' : 'Registros de ' + escHtmlFeed_(it.amigoNickname)}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+function agregarFeedItemAWatchlist(idx, btnEl) {
+  const feed = estado.amigosFeedCache || [];
+  const filtro = estado.amigosFeedFiltro || 'todas';
+  const items = feed.filter(it => filtro === 'todas' || it.categoria === filtro);
+  const it = items[idx];
+  if (!it) return;
+  const itemConCat = {
+    titulo: it.titulo,
+    tituloOriginal: it.titulo,
+    tituloIngles: it.subtitulo || '',
+    creador: it.creador || '',
+    anio: it.anio || '',
+    categoria: it.categoria,
+    subcategoria: it.subcategoria || (it.categoria === 'Peliculas' ? 'Película' : (it.categoria === 'Series' ? 'Serie' : (it.categoria === 'Musica' ? 'Álbum' : (it.categoria === 'Juegos' ? 'Videojuego' : 'Libro')))),
+    poster: it.poster || ''
+  };
+  if (btnEl) {
+    btnEl.classList.add('added');
+    btnEl.innerHTML = `<span>✓</span> <span>${userPrefs.lang === 'en' ? 'Added' : 'Agregado'}</span>`;
+  }
+  agregarAWatchlistDirecto(itemConCat, btnEl);
+}
+window.cargarFeedActividadAmigos = cargarFeedActividadAmigos;
+window.filtrarFeedAmigos = filtrarFeedAmigos;
+window.renderizarFeedAmigos = renderizarFeedAmigos;
+window.agregarFeedItemAWatchlist = agregarFeedItemAWatchlist;
 function renderizarListaSolicitudes(solicitudes) {
   const seccion = document.getElementById('seccion-solicitudes-pendientes');
   const countEl = document.getElementById('count-solicitudes-amigos');
@@ -3055,7 +3500,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
 { id: 'Mangas', nombre: 'Mangas', emoji: '⛩️', rangoFechas: true, admiteRewatch: true }, { id: 'To Read: Libros', nombre: 'To Read: Libros', emoji: '📖', esWatchlist: true, targetSub: 'Libros', rangoFechas: false },
 { id: 'To Read: Cómics', nombre: 'To Read: Cómics', emoji: '💥', esWatchlist: true, targetSub: 'Cómics', rangoFechas: false }, { id: 'To Read: Mangas', nombre: 'To Read: Mangas', emoji: '⛩️', esWatchlist: true, targetSub: 'Mangas', rangoFechas: false } ]
 }
-}; const I18N = { es: { nav_inicio: "Inicio", nav_peliculas: "Películas", nav_series: "Series", nav_musica: "Música", nav_juegos: "Juegos", nav_lecturas: "Lecturas", nav_perfil: "Perfil", nav_amigos: "Amigos", nav_watchlists: "Mis Watchlists", nav_discover: "Discover", home_title: "Índice General", home_subtitle: "Resumen exhaustivo de tus hábitos y favoritos", wl_global_btn: "Ver mis Watchlists y Pendientes", amigos_title: "Comunidad y Amigos", amigos_subtitle: "Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.", amigos_search_title: "Agregar Amigo por ID", amigos_search_hint: "Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:", btn_copiar_mi_id: "Copiar mi ID", btn_actualizar: "Actualizar", btn_enviar_solicitud: "Enviar Solicitud", btn_edit: "Editar", profile_title: "Perfil y Estadísticas", profile_favs_title: "Mis Favoritos por Categoría", btn_cfg_favs: "Configurar cuáles mostrar", profile_metrics_title: "Métricas Globales", profile_records_title: "Récords de Ritmo", profile_curiosities_title: "Curiosidades y Hábitos", stat_total_regs: "Total Registros", stat_items_completed: "items completados", stat_avg_rating: "Calificación Promedio", stat_of_stars: "de 5.0 estrellas", stat_game_hours: "Horas en Juegos", stat_time_invested: "tiempo invertido", stat_fav_creator: "Creador/Director Favorito", stat_rewatch_rate: "Tasa de Rewatch / Relectura",
+}; const I18N = { es: { nav_inicio: "Inicio", nav_peliculas: "Películas", nav_series: "Series", nav_musica: "Música", nav_juegos: "Juegos", nav_lecturas: "Lecturas", nav_perfil: "Perfil", nav_amigos: "Amigos", nav_watchlists: "Mis Watchlists", nav_discover: "Discover", home_title: "Índice General", home_subtitle: "Resumen exhaustivo de tus hábitos y favoritos", wl_global_btn: "Ver mis Watchlists y Pendientes", amigos_title: "Comunidad y Amigos", amigos_subtitle: "Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.", feed_amigos_title: "Últimos Agregados de Amigos", feed_amigos_desc: "Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.", feed_filtro_todos: "Todos", amigos_search_title: "Agregar Amigo por ID", amigos_search_hint: "Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:", btn_copiar_mi_id: "Copiar mi ID", btn_actualizar: "Actualizar", btn_enviar_solicitud: "Enviar Solicitud", btn_edit: "Editar", profile_title: "Perfil y Estadísticas", profile_favs_title: "Mis Favoritos por Categoría", btn_cfg_favs: "Configurar cuáles mostrar", profile_metrics_title: "Métricas Globales", profile_records_title: "Récords de Ritmo", profile_curiosities_title: "Curiosidades y Hábitos", stat_total_regs: "Total Registros", stat_items_completed: "items completados", stat_avg_rating: "Calificación Promedio", stat_of_stars: "de 5.0 estrellas", stat_game_hours: "Horas en Juegos", stat_time_invested: "tiempo invertido", stat_fav_creator: "Creador/Director Favorito", stat_rewatch_rate: "Tasa de Rewatch / Relectura",
 btn_manual: "Ingresar manualmente", btn_guardar: "Guardar en Mediary", historial_title: "Historial", btn_ocultar_rw: "Ocultar Rewatches", btn_mostrar_rw: "Mostrar Rewatches", badge_rewatch: "Rewatch",
 lbl_temporada_num: "¿Qué número de temporada es?:", chk_temporada_unica: "¿Es temporada única? (Guardar también en Series)", lbl_arco: "Nombre del Arco:", lbl_numeros: "Números que abarca:", lbl_horas: "¿Cuántas horas te tomó jugar?:",
 lbl_fecha_ini: "Fecha de inicio:", lbl_fecha_fin: "Fecha de término:", lbl_fecha_vis: "Fecha:", chk_no_fecha: "No registrada / No recuerdo la fecha exacta", lbl_calificacion: "Calificación:", lbl_es_rewatch: "🔁 Ya la he visto antes (Rewatch)", lbl_comentario: "Comentario / Reseña:", en_progreso_desc: "Guardar ahora en el historial con fecha de inicio, término en progreso y calificación/reseña pendientes", en_progreso_btn: "Guardar", pendiente: "Pendiente",
@@ -3118,7 +3563,7 @@ cats: { Peliculas: "Películas", Series: "Series", Musica: "Música", Juegos: "J
 'Discos': 'Discos', 'Artistas/Grupos': 'Artistas/Grupos', 'Conciertos': 'Conciertos', 'Videojuegos': 'Videojuegos', 'Libros': 'Libros', 'Cómics': 'Cómics', 'Mangas': 'Mangas', 'Watchlist': 'Watchlist: Películas', 'Watchlist: Películas': 'Watchlist: Películas', 'Watchlist: Documentales': 'Watchlist: Documentales', 'Watchlist: Series': 'Watchlist: Series', 'Watchlist: Docuseries': 'Watchlist: Docuseries', 'To Listen': 'To Listen', 'To Play': 'To Play',
 'To Read: Libros': 'To Read: Libros', 'To Read: Cómics': 'To Read: Cómics', 'To Read: Mangas': 'To Read: Mangas'
 }, wl_section_title: "Mis Watchlists", wl_section_desc: "Tus obras pendientes organizadas y separadas por cada subcategoría.", btn_volver_historial: "Volver al Historial"
-}, en: { nav_inicio: "Home", nav_peliculas: "Movies", nav_series: "Series", nav_musica: "Music", nav_juegos: "Games", nav_lecturas: "Books & Comics", nav_perfil: "Profile", nav_amigos: "Friends", nav_watchlists: "My Watchlists", nav_discover: "Discover", home_title: "General Dashboard", home_subtitle: "Exhaustive overview of your habits and favorites", wl_global_btn: "View my Watchlists & Pending Items", amigos_title: "Community & Friends", amigos_subtitle: "Add friends by their unique ID and explore their tastes, favorites, and statistics in real time.", amigos_search_title: "Add Friend by ID", amigos_search_hint: "Ask your friend for their profile ID (visible on their Profile tab) and enter it here:", btn_copiar_mi_id: "Copy my ID", btn_actualizar: "Refresh", btn_enviar_solicitud: "Send Request", btn_edit: "Edit", profile_title: "Profile & Statistics", profile_favs_title: "My Favorites by Category", btn_cfg_favs: "Configure which to display", profile_metrics_title: "Global Metrics", profile_records_title: "Pacing Records", profile_curiosities_title: "Habits & Trivia", stat_total_regs: "Total Entries", stat_items_completed: "completed items", stat_avg_rating: "Average Rating", stat_of_stars: "out of 5.0 stars", stat_game_hours: "Gaming Playtime", stat_time_invested: "hours logged", stat_fav_creator: "Top Creator/Director", stat_rewatch_rate: "Rewatch / Reread Rate",
+}, en: { nav_inicio: "Home", nav_peliculas: "Movies", nav_series: "Series", nav_musica: "Music", nav_juegos: "Games", nav_lecturas: "Books & Comics", nav_perfil: "Profile", nav_amigos: "Friends", nav_watchlists: "My Watchlists", nav_discover: "Discover", home_title: "General Dashboard", home_subtitle: "Exhaustive overview of your habits and favorites", wl_global_btn: "View my Watchlists & Pending Items", amigos_title: "Community & Friends", amigos_subtitle: "Add friends by their unique ID and explore their tastes, favorites, and statistics in real time.", feed_amigos_title: "Latest Friend Activity", feed_amigos_desc: "See what your friends just listened to, read, watched, or played, with ratings and reviews.", feed_filtro_todos: "All", amigos_search_title: "Add Friend by ID", amigos_search_hint: "Ask your friend for their profile ID (visible on their Profile tab) and enter it here:", btn_copiar_mi_id: "Copy my ID", btn_actualizar: "Refresh", btn_enviar_solicitud: "Send Request", btn_edit: "Edit", profile_title: "Profile & Statistics", profile_favs_title: "My Favorites by Category", btn_cfg_favs: "Configure which to display", profile_metrics_title: "Global Metrics", profile_records_title: "Pacing Records", profile_curiosities_title: "Habits & Trivia", stat_total_regs: "Total Entries", stat_items_completed: "completed items", stat_avg_rating: "Average Rating", stat_of_stars: "out of 5.0 stars", stat_game_hours: "Gaming Playtime", stat_time_invested: "hours logged", stat_fav_creator: "Top Creator/Director", stat_rewatch_rate: "Rewatch / Reread Rate",
 btn_manual: "Manual Entry", btn_guardar: "Save to Mediary", historial_title: "History", btn_ocultar_rw: "Hide Rewatches", btn_mostrar_rw: "Show Rewatches", badge_rewatch: "Rewatch", lbl_temporada_num: "Season Number:", chk_temporada_unica: "Standalone Season? (Save also in Series)",
 lbl_arco: "Story Arc Name:", lbl_numeros: "Issues / Chapters Covered:", lbl_horas: "Playtime (Hours):", lbl_fecha_ini: "Start Date:", lbl_fecha_fin: "End Date:", lbl_fecha_vis: "Date:", chk_no_fecha: "Unregistered / Can't recall exact date", lbl_calificacion: "Rating:",
 lbl_es_rewatch: "🔁 Seen it before (Rewatch)", lbl_comentario: "Review / Thoughts:", en_progreso_desc: "Save now to history with start date, in-progress end status, and pending rating/review", en_progreso_btn: "Save", pendiente: "Pending", table_th_fecha_ini: "Start", table_th_fecha_fin: "End", table_th_fecha: "Date", table_th_horas: "Hours", table_th_calif: "Rating", table_th_comentario: "Review",
@@ -3217,7 +3662,7 @@ const TODAS_LAS_WATCHLISTS = [
   { cat: 'Lecturas', sub: 'To Read: Mangas', emoji: '⛩️', label: 'To Read: Mangas' }
 ];
 let estado = { userEmail: '', anioActivo: '2026', modoAuthModal: 'login', categoria: 'inicio', subcategoria: 'Películas', wlCategoria: 'Peliculas', wlSubcategoria: 'Películas', ultimaWatchlist: { cat: 'Peliculas', sub: 'Watchlist' }, registros: [], watchlist: [], discoverData: null, discoverSeed: 1, discoverCatsActivas: [...TODAS_CATS_DISCOVER], discoverLimites: {},
-discoverAutoRefresh: true, modoConfigurarFavs: false, seleccionado: null, calificacion: 0, tipoEventoConcierto: 'Concierto', artistasConciertoSeleccionados: [], ocultarRewatches: false, ultimoTerminoBuscado: '', artistaPendienteSugerido: null, subFavEnEdicion: null, registrosImportarPendientes: []
+discoverAutoRefresh: true, modoConfigurarFavs: false, seleccionado: null, calificacion: 0, tipoEventoConcierto: 'Concierto', artistasConciertoSeleccionados: [], ocultarRewatches: false, ultimoTerminoBuscado: '', artistaPendienteSugerido: null, subFavEnEdicion: null, registrosImportarPendientes: [], amigosFeedCache: [], amigosFeedFiltro: 'todas', amigos: []
 }; let cropState = { img: null, scale: 1, minScale: 1, offsetX: 0, offsetY: 0, dragging: false, startX: 0, startY: 0, confirmedDataUrl: null, listenersReady: false };
 let fpInicio = null, fpFin = null; let timerDebounce = null, timerDebounceArtista = null, timerDebounceFav = null; let timerAutoDiscover = null; let carruselIntervalos = []; let serieCompletaPendiente = null, calificacionSerieCompleta = 0, idParaEliminar = null, regParaEliminar = null;
 let _searchRequestId = 0; const _CLIENT_SEARCH_CACHE = new Map(); const _CLIENT_ARTISTA_CACHE = new Map();
