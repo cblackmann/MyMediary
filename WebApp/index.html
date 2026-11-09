@@ -1249,6 +1249,46 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       }
     }
 
+    // 3. AUDITAR Y ACTUALIZAR PROMEDIOS DE ARTISTAS Y SERIES COMPLETAS
+    const discosMusica = registros.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco'));
+    const artistasMusica = registros.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Artistas/Grupos' || r.subcategoria === 'Artistas' || r.subcategoria.includes('Artista')));
+    for (const art of artistasMusica) {
+      const artNorm = String(art.titulo || art.creador || '').trim().toLowerCase();
+      if (!artNorm) continue;
+      const discosArt = discosMusica.filter(d => {
+        const cr = String(d.creador || '').trim().toLowerCase();
+        const ti = String(d.titulo || '').trim().toLowerCase();
+        return (cr === artNorm || ti === artNorm) && Number(d.calificacion) > 0;
+      });
+      if (discosArt.length > 0) {
+        const promArt = Math.round((discosArt.reduce((a, b) => a + Number(b.calificacion), 0) / discosArt.length) * 10) / 10;
+        if (Number(art.calificacion) !== promArt) {
+          await sbFetch_(`registros?id=eq.${encodeURIComponent(art.id)}&user_email=eq.${encodeURIComponent(email)}`, 'PATCH', { calificacion: promArt });
+          reparados++;
+          detallesReparados.push(`Calificación promedio de ${art.titulo} (★ ${promArt})`);
+        }
+      }
+    }
+
+    const temporadasSeries = registros.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada')));
+    const seriesCompletas = registros.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Series Completas' || r.subcategoria.includes('Completa')));
+    for (const sc of seriesCompletas) {
+      const titNorm = String(sc.titulo || '').trim().toLowerCase();
+      if (!titNorm) continue;
+      const tempsSc = temporadasSeries.filter(t => {
+        const tTit = String(t.titulo || '').trim().toLowerCase();
+        return (tTit.startsWith(titNorm + ' [') || tTit === titNorm) && Number(t.calificacion) > 0;
+      });
+      if (tempsSc.length > 0) {
+        const promSc = Math.round((tempsSc.reduce((a, b) => a + Number(b.calificacion), 0) / tempsSc.length) * 10) / 10;
+        if (Number(sc.calificacion) !== promSc) {
+          await sbFetch_(`registros?id=eq.${encodeURIComponent(sc.id)}&user_email=eq.${encodeURIComponent(email)}`, 'PATCH', { calificacion: promSc });
+          reparados++;
+          detallesReparados.push(`Calificación promedio de ${sc.titulo} (★ ${promSc})`);
+        }
+      }
+    }
+
     return { reparados, detalles: detallesReparados };
   } catch (e) {
     return { reparados: 0, error: e.toString() };
@@ -6414,29 +6454,221 @@ if (tabs) {
   tabs.style.pointerEvents = sinF ? 'none' : 'auto';
 }
 }
-function abrirModalSerieCompleta(base, fI, fF, esRw) { serieCompletaPendiente = { categoria: 'Series', subcategoria: 'Series Completas', titulo: base.tituloBase, subtitulo: '', creador: base.creador, anio: base.anio, fechaInicio: fI, fechaFin: fF, poster: base.poster, esRewatch: esRw
-}; calificacionSerieCompleta = 0; document.getElementById('msg-serie-completa').innerHTML = `Has completado <strong>${base.tituloBase}</strong> (Temporada ${base.numTempActual} de ${base.totalTempOficiales}). Califiquemos la serie completa:`;
-document.getElementById('comentario-serie-completa').value = ''; renderEstrellasSerieCompleta(0); document.getElementById('btn-confirmar-serie-completa').onclick = guardarSerieCompletaDetectada; document.getElementById('modal-serie-completa').style.display = 'flex'; }
-function renderEstrellasSerieCompleta(val) { const box = document.getElementById('rating-stars-completa'); box.innerHTML = ''; for (let i = 1; i <= 5; i++) { const s = document.createElement('span'); s.className = `star-box ${val >= i ? 'full' : (val >= i - 0.5 ? 'half' : '')}`;
-s.textContent = '★'; s.onmousemove = e => { const p = (e.clientX - s.getBoundingClientRect().left < s.getBoundingClientRect().width / 2) ? i - 0.5 : i;
-document.querySelectorAll('#rating-stars-completa .star-box').forEach((st, idx) => st.className = `star-box ${p >= idx + 1 ? 'full' : (p >= idx + 0.5 ? 'half' : '')}`); document.getElementById('rating-label-completa').textContent = `${p.toFixed(1)} / 5`;
-}; s.onclick = e => { calificacionSerieCompleta = (e.clientX - s.getBoundingClientRect().left < s.getBoundingClientRect().width / 2) ? i - 0.5 : i; renderEstrellasSerieCompleta(calificacionSerieCompleta); }; box.appendChild(s); }
-box.onmouseleave = () => renderEstrellasSerieCompleta(calificacionSerieCompleta); document.getElementById('rating-label-completa').textContent = `${val.toFixed(1)} / 5`; }
-function omitirGuardadoSerieCompleta() { document.getElementById('modal-serie-completa').style.display = 'none'; serieCompletaPendiente = null; cargarRegistros(); }
-function guardarSerieCompletaDetectada() { if (!serieCompletaPendiente) return; const rec = Object.assign({}, serieCompletaPendiente, { calificacion: Number(calificacionSerieCompleta) || 0, comentario: asegurarPuntoFinal(document.getElementById('comentario-serie-completa').value)
-}); document.getElementById('btn-confirmar-serie-completa').textContent = 'Guardando...'; google.script.run.withSuccessHandler(() => {
-document.getElementById('btn-confirmar-serie-completa').textContent = t('btn_save_full_series'); document.getElementById('modal-serie-completa').style.display = 'none'; serieCompletaPendiente = null; cargarRegistros(); }).guardarRegistro(rec, estado.userEmail); }
-function verificarSugerenciaNuevoArtista(nombreArtista, fechaIni, posterDisco) { if (!nombreArtista) return false; const nombreNorm = nombreArtista.trim().toLowerCase();
-if (!nombreNorm || nombreNorm === 'desconocido' || nombreNorm === 'artista' || nombreNorm === 'various artists') return false; const existe = estado.registros.some(r => { if (r.categoria !== 'Musica') return false; const esSubArt = r.subcategoria.includes('Artista');
-return esSubArt && (r.titulo.toLowerCase() === nombreNorm || r.creador.toLowerCase() === nombreNorm); }); if (!existe) { estado.artistaPendienteSugerido = {
-categoria: 'Musica', subcategoria: 'Artistas/Grupos', titulo: nombreArtista.trim(), subtitulo: '', creador: nombreArtista.trim(), anio: '', fechaInicio: fechaIni, fechaFin: 'Sin fecha', calificacion: 0, comentario: '', poster: posterDisco || '', horas: '', esRewatch: false
-}; document.getElementById('msg-nuevo-artista').innerHTML = `¿Deseas comenzar el seguimiento de <strong>"${nombreArtista.trim()}"</strong> en tu lista de <em>Artistas/Grupos</em>?`;
-document.getElementById('btn-confirmar-nuevo-artista').onclick = confirmarCreacionNuevoArtista; document.getElementById('modal-nuevo-artista').style.display = 'flex'; return true; }
-return false; }
-function cerrarModalNuevoArtista() { document.getElementById('modal-nuevo-artista').style.display = 'none'; estado.artistaPendienteSugerido = null; }
-function confirmarCreacionNuevoArtista() { if (!estado.artistaPendienteSugerido) return; const payload = Object.assign({}, estado.artistaPendienteSugerido); document.getElementById('btn-confirmar-nuevo-artista').textContent = 'Agregando... ⏳'; google.script.run.withSuccessHandler(() => {
-document.getElementById('btn-confirmar-nuevo-artista').textContent = 'Sí, comenzar registro'; document.getElementById('modal-nuevo-artista').style.display = 'none'; estado.artistaPendienteSugerido = null; mostrarToastPersonalizado(`¡Artista "${payload.titulo}" añadido a seguimiento!`);
-cargarRegistros(); }).guardarRegistro(payload, estado.userEmail); }
+async function recalcularYActualizarPromedioArtista(nombreArtista, nuevoDisco = null) {
+  if (!nombreArtista || !estado.userEmail) return null;
+  const nombreNorm = String(nombreArtista).trim().toLowerCase();
+  if (!nombreNorm || nombreNorm === 'desconocido' || nombreNorm === 'artista' || nombreNorm === 'various artists') return null;
+
+  const artistaReg = (estado.registros || []).find(r => {
+    if (r.categoria !== 'Musica') return false;
+    const esSubArt = r.subcategoria && (r.subcategoria === 'Artistas/Grupos' || r.subcategoria.includes('Artista'));
+    if (!esSubArt) return false;
+    const tit = String(r.titulo || '').trim().toLowerCase();
+    const cr = String(r.creador || '').trim().toLowerCase();
+    return tit === nombreNorm || cr === nombreNorm;
+  });
+  if (!artistaReg) return null;
+
+  const discos = (estado.registros || []).filter(r => {
+    if (r.categoria !== 'Musica') return false;
+    const esDisco = r.subcategoria && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco');
+    if (!esDisco) return false;
+    const cr = String(r.creador || '').trim().toLowerCase();
+    const tit = String(r.titulo || '').trim().toLowerCase();
+    return cr === nombreNorm || tit === nombreNorm;
+  });
+
+  if (nuevoDisco) {
+    const yaEsta = discos.some(d => (nuevoDisco.id && String(d.id) === String(nuevoDisco.id)) || (d.titulo === nuevoDisco.titulo && d.creador === nuevoDisco.creador));
+    if (!yaEsta) discos.push(nuevoDisco);
+  }
+
+  const discosCalif = discos.filter(d => Number(d.calificacion) > 0);
+  if (!discosCalif.length) return null;
+
+  const suma = discosCalif.reduce((acc, d) => acc + Number(d.calificacion), 0);
+  const nuevoPromedio = Math.round((suma / discosCalif.length) * 10) / 10;
+
+  if (Number(artistaReg.calificacion) !== nuevoPromedio) {
+    artistaReg.calificacion = nuevoPromedio;
+    try {
+      await google.script.run.actualizarRegistro(artistaReg.id, { calificacion: nuevoPromedio }, estado.userEmail);
+    } catch (e) {
+      console.warn('Error al actualizar calificación del artista:', e);
+    }
+  }
+  return nuevoPromedio;
+}
+window.recalcularYActualizarPromedioArtista = recalcularYActualizarPromedioArtista;
+
+async function recalcularYActualizarPromedioSerieCompleta(tituloBase) {
+  if (!tituloBase || !estado.userEmail) return null;
+  const tNorm = String(tituloBase).trim().toLowerCase();
+  const serieCompReg = (estado.registros || []).find(r => 
+    r.categoria === 'Series' && 
+    (r.subcategoria === 'Series Completas' || r.subcategoria.includes('Completa')) &&
+    String(r.titulo || '').trim().toLowerCase() === tNorm
+  );
+  if (!serieCompReg) return null;
+
+  const temps = (estado.registros || []).filter(r => 
+    r.categoria === 'Series' && 
+    (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada')) &&
+    (String(r.titulo || '').toLowerCase().startsWith(tNorm + ' [') || String(r.titulo || '').toLowerCase() === tNorm) &&
+    Number(r.calificacion) > 0
+  );
+  if (!temps.length) return null;
+
+  const suma = temps.reduce((a, b) => a + Number(b.calificacion), 0);
+  const nuevoProm = Math.round((suma / temps.length) * 10) / 10;
+  if (Number(serieCompReg.calificacion) !== nuevoProm) {
+    serieCompReg.calificacion = nuevoProm;
+    try {
+      await google.script.run.actualizarRegistro(serieCompReg.id, { calificacion: nuevoProm }, estado.userEmail);
+    } catch(e) {
+      console.warn('Error al actualizar calificación de serie completa:', e);
+    }
+  }
+  return nuevoProm;
+}
+window.recalcularYActualizarPromedioSerieCompleta = recalcularYActualizarPromedioSerieCompleta;
+
+function abrirModalSerieCompleta(base, fI, fF, esRw, promCalif = 0, countTemps = 0) {
+  serieCompletaPendiente = {
+    categoria: 'Series',
+    subcategoria: 'Series Completas',
+    titulo: base.tituloBase,
+    subtitulo: '',
+    creador: base.creador,
+    anio: base.anio,
+    fechaInicio: fI,
+    fechaFin: fF,
+    poster: base.poster,
+    esRewatch: esRw
+  };
+  calificacionSerieCompleta = promCalif || 0;
+  const l = userPrefs.lang || 'es';
+  const txtProm = promCalif > 0
+    ? (l === 'en'
+        ? `<div style="margin-top:6px; font-weight:700; color:var(--accent);">⭐ Average rating detected across ${countTemps} seasons: ★ ${promCalif.toFixed(1)} / 5</div>`
+        : `<div style="margin-top:6px; font-weight:700; color:var(--accent);">⭐ Calificación promedio calculada de sus ${countTemps} temporadas: ★ ${promCalif.toFixed(1)} / 5</div>`)
+    : '';
+
+  document.getElementById('msg-serie-completa').innerHTML = `
+    ${l === 'en' ? `You have completed <strong>${base.tituloBase}</strong> (Season ${base.numTempActual} of ${base.totalTempOficiales}).` : `Has completado <strong>${base.tituloBase}</strong> (Temporada ${base.numTempActual} de ${base.totalTempOficiales}).`}
+    ${txtProm}
+  `;
+  document.getElementById('comentario-serie-completa').value = '';
+  renderEstrellasSerieCompleta(calificacionSerieCompleta);
+  document.getElementById('rating-label-completa').textContent = `${calificacionSerieCompleta.toFixed(1)} / 5`;
+  document.getElementById('btn-confirmar-serie-completa').onclick = guardarSerieCompletaDetectada;
+  document.getElementById('modal-serie-completa').style.display = 'flex';
+  setTimeout(() => {
+    const comEl = document.getElementById('comentario-serie-completa');
+    if (comEl) comEl.focus();
+  }, 100);
+}
+function renderEstrellasSerieCompleta(val) {
+  const box = document.getElementById('rating-stars-completa');
+  box.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const s = document.createElement('span');
+    s.className = `star-box ${val >= i ? 'full' : (val >= i - 0.5 ? 'half' : '')}`;
+    s.textContent = '★';
+    s.onmousemove = e => {
+      const p = (e.clientX - s.getBoundingClientRect().left < s.getBoundingClientRect().width / 2) ? i - 0.5 : i;
+      document.querySelectorAll('#rating-stars-completa .star-box').forEach((st, idx) => st.className = `star-box ${p >= idx + 1 ? 'full' : (p >= idx + 0.5 ? 'half' : '')}`);
+      document.getElementById('rating-label-completa').textContent = `${p.toFixed(1)} / 5`;
+    };
+    s.onclick = e => {
+      calificacionSerieCompleta = (e.clientX - s.getBoundingClientRect().left < s.getBoundingClientRect().width / 2) ? i - 0.5 : i;
+      renderEstrellasSerieCompleta(calificacionSerieCompleta);
+    };
+    box.appendChild(s);
+  }
+  box.onmouseleave = () => renderEstrellasSerieCompleta(calificacionSerieCompleta);
+  document.getElementById('rating-label-completa').textContent = `${val.toFixed(1)} / 5`;
+}
+function omitirGuardadoSerieCompleta() {
+  document.getElementById('modal-serie-completa').style.display = 'none';
+  serieCompletaPendiente = null;
+  cargarRegistros();
+}
+function guardarSerieCompletaDetectada() {
+  if (!serieCompletaPendiente) return;
+  const rec = Object.assign({}, serieCompletaPendiente, {
+    calificacion: Number(calificacionSerieCompleta) || 0,
+    comentario: asegurarPuntoFinal(document.getElementById('comentario-serie-completa').value)
+  });
+  document.getElementById('btn-confirmar-serie-completa').textContent = 'Guardando...';
+  google.script.run.withSuccessHandler(() => {
+    document.getElementById('btn-confirmar-serie-completa').textContent = t('btn_save_full_series');
+    document.getElementById('modal-serie-completa').style.display = 'none';
+    serieCompletaPendiente = null;
+    mostrarToastPersonalizado(`¡Serie completa "${rec.titulo}" guardada con promedio de ★ ${rec.calificacion.toFixed(1)}!`);
+    cargarRegistros();
+  }).guardarRegistro(rec, estado.userEmail);
+}
+function verificarSugerenciaNuevoArtista(nombreArtista, fechaIni, posterDisco, calificacionDisco = 0) {
+  if (!nombreArtista) return false;
+  const nombreNorm = nombreArtista.trim().toLowerCase();
+  if (!nombreNorm || nombreNorm === 'desconocido' || nombreNorm === 'artista' || nombreNorm === 'various artists') return false;
+  const existe = estado.registros.some(r => {
+    if (r.categoria !== 'Musica') return false;
+    const esSubArt = r.subcategoria && (r.subcategoria === 'Artistas/Grupos' || r.subcategoria.includes('Artista'));
+    return esSubArt && (r.titulo.toLowerCase() === nombreNorm || r.creador.toLowerCase() === nombreNorm);
+  });
+  if (!existe) {
+    const califInit = Number(calificacionDisco) || 0;
+    estado.artistaPendienteSugerido = {
+      categoria: 'Musica',
+      subcategoria: 'Artistas/Grupos',
+      titulo: nombreArtista.trim(),
+      subtitulo: '',
+      creador: nombreArtista.trim(),
+      anio: '',
+      fechaInicio: fechaIni,
+      fechaFin: 'Sin fecha',
+      calificacion: califInit,
+      comentario: '',
+      poster: posterDisco || '',
+      horas: '',
+      esRewatch: false
+    };
+    const l = userPrefs.lang || 'es';
+    const txtCalif = califInit > 0
+      ? (l === 'en'
+          ? `<div style="margin-top:6px; color:var(--accent); font-weight:700;">★ Initial average rating: ${califInit.toFixed(1)} / 5 (based on this album)</div>`
+          : `<div style="margin-top:6px; color:var(--accent); font-weight:700;">★ Calificación promedio inicial: ${califInit.toFixed(1)} / 5 (basada en este disco)</div>`)
+      : '';
+    document.getElementById('msg-nuevo-artista').innerHTML = `
+      ${l === 'en' ? `You have started listening to <strong>"${nombreArtista.trim()}"</strong>.` : `Has comenzado a escuchar a <strong>"${nombreArtista.trim()}"</strong>.`}
+      <br>${l === 'en' ? `Do you want to start tracking them in <em>Artists/Bands</em>?` : `¿Deseas comenzar su seguimiento en <em>Artistas/Grupos</em>?`}
+      ${txtCalif}
+    `;
+    document.getElementById('btn-confirmar-nuevo-artista').onclick = confirmarCreacionNuevoArtista;
+    document.getElementById('modal-nuevo-artista').style.display = 'flex';
+    return true;
+  }
+  return false;
+}
+function cerrarModalNuevoArtista() {
+  document.getElementById('modal-nuevo-artista').style.display = 'none';
+  estado.artistaPendienteSugerido = null;
+  cargarRegistros();
+}
+function confirmarCreacionNuevoArtista() {
+  if (!estado.artistaPendienteSugerido) return;
+  const payload = Object.assign({}, estado.artistaPendienteSugerido);
+  document.getElementById('btn-confirmar-nuevo-artista').textContent = 'Agregando... ⏳';
+  google.script.run.withSuccessHandler(() => {
+    document.getElementById('btn-confirmar-nuevo-artista').textContent = 'Sí, comenzar registro';
+    document.getElementById('modal-nuevo-artista').style.display = 'none';
+    estado.artistaPendienteSugerido = null;
+    mostrarToastPersonalizado(`¡Artista "${payload.titulo}" añadido con promedio de ★ ${Number(payload.calificacion).toFixed(1)}!`);
+    cargarRegistros();
+  }).guardarRegistro(payload, estado.userEmail);
+}
 function marcarComoEnProgreso(e) {
   if (e) {
     if (e.target && e.target.id === 'chk-en-progreso') {
@@ -6563,20 +6795,59 @@ poster: estado.seleccionado.poster, horas: horasGuardar, esTemporadaUnica: esUni
 }; const esDiscoMusica = c === 'Musica' && (s === 'Discos' || s === 'Disco'); const nombreArtistaDisco = estado.seleccionado.creador;
 const posterDisco = estado.seleccionado.poster; google.script.run.withSuccessHandler(res => { btn.textContent = t('btn_guardar'); btn.disabled = false; if (res?.exito) { ocultarFormulario(); limpiarModuloConcierto(); if (res.removidoDeWatchlist) {
 document.getElementById('msg-felicitacion-watchlist').innerHTML = `¡Felicidades! Acabas de completar <strong>"${res.tituloRemovido || tBase}"</strong>, que estaba anotado en tus pendientes.`; document.getElementById('modal-felicitaciones-watchlist').style.display = 'flex'; cargarWatchlist(); }
-if (esUltima) { const prev = estado.registros.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada')) && (r.titulo.startsWith(tBase + ' [') || r.titulo === tBase));
-const valid = prev.filter(r => r.fechaInicio && r.fechaInicio !== 'Sin fecha').sort((a,b) => timestampDeFecha(a.fechaInicio) - timestampDeFecha(b.fechaInicio)); abrirModalSerieCompleta(payload, valid.length ? valid[0].fechaInicio : fI, fF, esRw);
-} else if (esDiscoMusica && verificarSugerenciaNuevoArtista(nombreArtistaDisco, fI, posterDisco)) {
-// Se abrió modal de artista
-} else { cargarRegistros(); if (!res.removidoDeWatchlist) mostrarToastPersonalizado('¡Registro guardado en Supabase!'); }
+if (esUltima) {
+  const prev = estado.registros.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada')) && (r.titulo.startsWith(tBase + ' [') || r.titulo === tBase));
+  const valid = prev.filter(r => r.fechaInicio && r.fechaInicio !== 'Sin fecha').sort((a,b) => timestampDeFecha(a.fechaInicio) - timestampDeFecha(b.fechaInicio));
+
+  // Detectar calificaciones de todas las temporadas y calcular su promedio
+  const todasCalif = [];
+  prev.forEach(r => {
+    const cl = Number(r.calificacion);
+    if (cl > 0) todasCalif.push(cl);
+  });
+  if (Number(payload.calificacion) > 0) {
+    todasCalif.push(Number(payload.calificacion));
+  }
+  const promCalif = todasCalif.length ? Math.round((todasCalif.reduce((a, b) => a + b, 0) / todasCalif.length) * 10) / 10 : 0;
+
+  abrirModalSerieCompleta(payload, valid.length ? valid[0].fechaInicio : fI, fF, esRw, promCalif, todasCalif.length);
+} else if (esDiscoMusica && verificarSugerenciaNuevoArtista(nombreArtistaDisco, fI, posterDisco, calificacionNum)) {
+  // Se abrió modal de nuevo artista con calificación del primer disco
+} else if (esDiscoMusica) {
+  recalcularYActualizarPromedioArtista(nombreArtistaDisco, payload).then(nuevoProm => {
+    cargarRegistros();
+    if (nuevoProm !== null) {
+      mostrarToastPersonalizado(`¡Disco guardado! Calificación de ${nombreArtistaDisco} actualizada al promedio: ★ ${nuevoProm.toFixed(1)}`);
+    } else if (!res.removidoDeWatchlist) {
+      mostrarToastPersonalizado('¡Registro guardado en Supabase!');
+    }
+  });
+} else {
+  cargarRegistros();
+  if (!res.removidoDeWatchlist) mostrarToastPersonalizado('¡Registro guardado en Supabase!');
+}
 } else { alert('Error al guardar: ' + (res?.error || 'Desconocido')); }
 }).guardarRegistro(payload, estado.userEmail); }
-function confirmarEliminar(id, tTit) { idParaEliminar = id; const reg = estado.registros.find(r => String(r.id) === String(id)); regParaEliminar = reg ? { titulo: reg.titulo, categoria: reg.categoria, subcategoria: reg.subcategoria } : (tTit ? { titulo: tTit, categoria: estado.categoria } : null);
+function confirmarEliminar(id, tTit) { idParaEliminar = id; const reg = estado.registros.find(r => String(r.id) === String(id)); regParaEliminar = reg ? { titulo: reg.titulo, categoria: reg.categoria, subcategoria: reg.subcategoria, creador: reg.creador } : (tTit ? { titulo: tTit, categoria: estado.categoria } : null);
 const nombreMostrar = (reg && reg.titulo) ? reg.titulo : (tTit || 'este registro'); document.getElementById('confirm-eliminar-mensaje').innerHTML = `¿Estás seguro de que deseas eliminar permanentemente <strong>"${nombreMostrar}"</strong> del historial?`;
 document.getElementById('btn-confirmar-eliminar-si').onclick = ejecutarEliminacionDefinitiva; document.getElementById('modal-confirmar-eliminar').style.display = 'flex'; }
 function cerrarModalEliminar() { document.getElementById('modal-confirmar-eliminar').style.display = 'none'; idParaEliminar = null; regParaEliminar = null; }
 function ejecutarEliminacionDefinitiva() { if (!idParaEliminar && !regParaEliminar) return; const idTarget = idParaEliminar; const fallbackTarget = regParaEliminar;
+const eliminadoCat = fallbackTarget ? fallbackTarget.categoria : '';
+const eliminadoSub = fallbackTarget ? fallbackTarget.subcategoria : '';
+const eliminadoCreador = fallbackTarget ? fallbackTarget.creador : '';
+const eliminadoTit = fallbackTarget ? fallbackTarget.titulo : '';
 const btn = document.getElementById('btn-confirmar-eliminar-si'), txt = btn.textContent; btn.textContent = 'Eliminando... ⏳'; btn.disabled = true; google.script.run.withSuccessHandler(res => { btn.textContent = txt; btn.disabled = false; cerrarModalEliminar(); if (res?.exito) {
-estado.registros = estado.registros.filter(r => String(r.id) !== String(idTarget)); filtrarYMostrarHistorial(); cargarRegistros(); mostrarToastPersonalizado('🗑️ Registro eliminado correctamente'); } else {
+estado.registros = estado.registros.filter(r => String(r.id) !== String(idTarget));
+filtrarYMostrarHistorial();
+cargarRegistros();
+if (eliminadoCat === 'Musica' && (eliminadoSub === 'Discos' || eliminadoSub === 'Disco') && eliminadoCreador) {
+  recalcularYActualizarPromedioArtista(eliminadoCreador).then(() => cargarRegistros());
+} else if (eliminadoCat === 'Series' && (eliminadoSub === 'Temporadas' || eliminadoSub?.includes('Temporada'))) {
+  const tBase = eliminadoTit ? eliminadoTit.replace(/\s*\[S\d+\]$/i, '') : '';
+  recalcularYActualizarPromedioSerieCompleta(tBase).then(() => cargarRegistros());
+}
+mostrarToastPersonalizado('🗑️ Registro eliminado correctamente'); } else {
 alert('No se pudo eliminar el registro: ' + (res?.error || 'Intenta refrescar la página con el botón 🔄')); }
 }).withFailureHandler(err => { btn.textContent = txt; btn.disabled = false; cerrarModalEliminar(); alert('Error de conexión al eliminar: ' + (err?.message || err)); }).eliminarRegistro(idTarget, fallbackTarget, estado.userEmail); }
 function renderEstrellasVisuales(val) { let h = '<div class="rating-badge">'; for (let i = 1; i <= 5; i++) h += `<span class="h-star ${val >= i ? 'full' : (val >= i - 0.5 ? 'half' : '')}">★</span>`;
@@ -6728,6 +6999,18 @@ function abrirEditorRegistroCompleto(id) {
         reg.horas = horas;
         reg.esRewatch = esRw;
         filtrarYMostrarHistorial();
+        if (reg.categoria === 'Musica' && (reg.subcategoria === 'Discos' || reg.subcategoria === 'Disco') && reg.creador) {
+          recalcularYActualizarPromedioArtista(reg.creador).then(() => {
+            cargarRegistros();
+            filtrarYMostrarHistorial();
+          });
+        } else if (reg.categoria === 'Series' && (reg.subcategoria === 'Temporadas' || reg.subcategoria.includes('Temporada'))) {
+          const tBase = reg.tituloBase || reg.titulo.replace(/\s*\[S\d+\]$/i, '');
+          recalcularYActualizarPromedioSerieCompleta(tBase).then(() => {
+            cargarRegistros();
+            filtrarYMostrarHistorial();
+          });
+        }
       } else {
         alert(res?.error || 'Error al actualizar registro');
       }
@@ -6931,7 +7214,27 @@ s.textContent = '★'; s.onmousemove = e => { const p = (e.clientX - s.getBoundi
 document.querySelectorAll('#modal-rating-stars .star-box').forEach((st, idx) => st.className = `star-box ${p >= idx + 1 ? 'full' : (p >= idx + 0.5 ? 'half' : '')}`); document.getElementById('modal-rating-label').textContent = `${p.toFixed(1)} / 5`;
 }; s.onclick = e => { tempCal = (e.clientX - s.getBoundingClientRect().left < s.getBoundingClientRect().width / 2) ? i - 0.5 : i; render(tempCal); }; w.appendChild(s); }
 document.getElementById('modal-rating-label').textContent = `${val.toFixed(1)} / 5`; }; render(tempCal); document.getElementById('modal-rating-stars').onmouseleave = () => render(tempCal); document.getElementById('btn-modal-confirmar').onclick = () => {
-cerrarModal(); google.script.run .withSuccessHandler(res => { if (res.exito) cargarRegistros(); }) .actualizarRegistro(id, { calificacion: tempCal }, estado.userEmail); }; document.getElementById('modal-edicion').style.display = 'flex'; }
+  cerrarModal();
+  google.script.run.withSuccessHandler(res => {
+    if (res.exito) {
+      reg.calificacion = tempCal;
+      if (reg.categoria === 'Musica' && (reg.subcategoria === 'Discos' || reg.subcategoria === 'Disco') && reg.creador) {
+        recalcularYActualizarPromedioArtista(reg.creador).then(() => {
+          cargarRegistros();
+          filtrarYMostrarHistorial();
+        });
+      } else if (reg.categoria === 'Series' && (reg.subcategoria === 'Temporadas' || reg.subcategoria.includes('Temporada'))) {
+        const tBase = reg.tituloBase || reg.titulo.replace(/\s*\[S\d+\]$/i, '');
+        recalcularYActualizarPromedioSerieCompleta(tBase).then(() => {
+          cargarRegistros();
+          filtrarYMostrarHistorial();
+        });
+      } else {
+        cargarRegistros();
+      }
+    }
+  }).actualizarRegistro(id, { calificacion: tempCal }, estado.userEmail);
+}; document.getElementById('modal-edicion').style.display = 'flex'; }
 function abrirEditorComentario(id) { const reg = estado.registros.find(r => r.id === id); if (!reg) return; document.getElementById('modal-titulo').textContent = 'Editar Comentario';
 document.getElementById('modal-contenido').innerHTML = `<div><textarea id="edit-comentario-txt" class="comment-box" style="min-height:110px;" placeholder="Escribe tu reseña...">${reg.comentario || ''}</textarea></div>`;
 document.getElementById('btn-modal-confirmar').onclick = () => { const nCom = asegurarPuntoFinal(document.getElementById('edit-comentario-txt').value); cerrarModal(); google.script.run .withSuccessHandler(res => { if (res.exito) cargarRegistros(); }) .actualizarRegistro(id, { comentario: nCom }, estado.userEmail); };
