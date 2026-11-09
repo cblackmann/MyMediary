@@ -223,6 +223,38 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   .feed-card-poster-wrap{width:56px;min-width:56px;height:84px;}
   .feed-card-title{font-size:0.95rem;}
 }
+/* DISCOVER CARROUSEL HORIZONTAL & FRIEND BADGES */
+.discover-carousel-wrapper{margin-bottom:28px;}
+.discover-carousel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px;flex-wrap:wrap;}
+.discover-count-badge{font-size:0.75rem;background:rgba(56,189,248,0.12);color:var(--accent);border:1px solid rgba(56,189,248,0.3);border-radius:10px;padding:2px 8px;font-weight:700;}
+.discover-carousel-controls{display:flex;align-items:center;gap:8px;}
+.btn-carousel-nav{width:34px;height:34px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text);display:grid;place-items:center;cursor:pointer;transition:var(--tr);font-size:1.3rem;font-weight:700;line-height:1;user-select:none;outline:none;}
+.btn-carousel-nav:hover{border-color:var(--accent);color:var(--accent);background:rgba(56,189,248,0.14);transform:scale(1.08);}
+.discover-carousel-track{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:6px 4px 14px 4px;}
+.discover-carousel-track::-webkit-scrollbar{height:7px;}
+.discover-carousel-track::-webkit-scrollbar-track{background:rgba(0,0,0,0.12);border-radius:6px;}
+[data-theme="nordic-light"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="creme-latte"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="parchment"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="sage-garden"] .discover-carousel-track::-webkit-scrollbar-track{background:rgba(0,0,0,0.06);}
+.discover-carousel-track::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
+.discover-carousel-track::-webkit-scrollbar-thumb:hover{background:var(--accent);}
+.discover-carousel-track .discover-card{flex:0 0 172px;min-width:172px;max-width:172px;scroll-snap-align:start;margin:0;}
+.discover-friends-tag-row{display:flex;align-items:center;gap:6px;margin:6px 0 2px;padding:3px 6px;background:rgba(56,189,248,0.08);border-radius:8px;border:1px solid rgba(56,189,248,0.22);cursor:pointer;transition:var(--tr);}
+.discover-friends-tag-row:hover{background:rgba(56,189,248,0.16);border-color:var(--accent);}
+.discover-friends-avatars{display:flex;align-items:center;}
+.discover-friend-avatar-btn{position:relative;width:26px;height:26px;cursor:pointer;transition:transform 0.2s ease;margin-right:-6px;display:inline-flex;}
+.discover-friend-avatar-btn:hover{transform:scale(1.25);z-index:10;}
+.discover-avatar-circle{width:26px;height:26px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:0.85rem;}
+.discover-avatar-circle img{width:100%;height:100%;object-fit:cover;}
+.discover-friend-mini-badge{position:absolute;bottom:-2px;right:-3px;width:13px;height:13px;border-radius:50%;display:grid;place-items:center;font-size:0.55rem;font-weight:900;color:#fff;border:1.5px solid var(--card);}
+.discover-friend-mini-badge.badge-visto{background:#10b981;}
+.discover-friend-mini-badge.badge-pendiente{background:#f59e0b;}
+.discover-friends-caption{font-size:0.72rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:8px;flex:1;}
+.act-type-badge{font-size:0.72rem;font-weight:800;padding:2px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:0.03em;}
+.act-type-badge.visto{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.35);}
+.act-type-badge.pendiente{background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.35);}
+@media (max-width: 600px){
+  .discover-carousel-track .discover-card{flex:0 0 148px;min-width:148px;max-width:148px;}
+  .btn-carousel-nav{display:none;}
+}
 /* SELECTOR DE AÑO Y PRECISIÓN DE FECHAS */
 .btn-year-picker{background:var(--card);border:1px solid var(--border);cursor:pointer;padding:4px 10px;border-radius:10px;display:inline-flex;align-items:center;gap:6px;transition:var(--tr);outline:none;}
 .btn-year-picker:hover{background:rgba(56,189,248,0.12);border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 14px rgba(56,189,248,0.25);}
@@ -596,7 +628,66 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div class="stars-wrapper" id="rating-stars-completa" style="font-size:2.2rem; margin:8px 0;"></div> <span id="rating-label-completa" style="font-size:.9rem; color:var(--accent); font-weight:700;">0.0 / 5</span> </div> <div class="form-group"><label data-i18n="serie_comp_comment_lbl">Comentario / Reseña final de la serie:</label><textarea id="comentario-serie-completa" class="comment-box" style="min-height:90px;" placeholder="¿Qué te pareció la serie en su totalidad?"></textarea></div>
 <div class="modal-actions"><button class="btn-modal-cancel" onclick="omitirGuardadoSerieCompleta()" data-i18n="btn_skip">Omitir</button><button class="btn-modal-save" id="btn-confirmar-serie-completa" data-i18n="btn_save_full_series">Guardar Serie Completa</button></div> </div> </div> <div id="modal-confirmar-eliminar" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <div class="modal-confirm-icon" style="margin:0 auto 14px;">🗑️</div>
 <h3 style="color:var(--danger); font-size:1.15rem; margin-bottom:8px;" data-i18n="del_title">¿Eliminar este registro?</h3> <p id="confirm-eliminar-mensaje" style="color:var(--muted); font-size:.9rem; line-height:1.4; margin-bottom:14px;"></p> <div class="modal-actions" style="justify-content:center; gap:12px; margin-top:14px;"> <button class="btn-modal-cancel" onclick="cerrarModalEliminar()" data-i18n="btn_cancel">Cancelar</button><button class="btn-modal-danger" id="btn-confirmar-eliminar-si" data-i18n="btn_del_permanent">Eliminar definitivamente</button>
-</div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ <span data-i18n="amigo_stat_title">Métricas de Contenido</span></div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_total_lbl">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_total_sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_avg_lbl">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_avg_sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_hours_lbl">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="amigo_stat_hours_sub">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="amigo-stat-watched-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 <span data-i18n="amigo_breakdown_title">Desglose por Categorías y Subcategorías</span></div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📑 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;" id="amigo-regs-cat-tabs"></div> <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL PRIVACIDAD AMIGOS -->
+</div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ <span data-i18n="amigo_stat_title">Métricas de Contenido</span></div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_total_lbl">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_total_sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_avg_lbl">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_avg_sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_hours_lbl">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="amigo_stat_hours_sub">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="amigo-stat-watched-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 <span data-i18n="amigo_breakdown_title">Desglose por Categorías y Subcategorías</span></div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📑 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;" id="amigo-regs-cat-tabs"></div> <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL DETALLE DE ACTIVIDAD DE AMIGO EN DISCOVER -->
+<div id="modal-amigo-registro-detalle" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalDetalleActividadAmigo()">
+  <div class="modal-box" style="max-width:440px;padding:22px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div id="act-modal-friend-avatar" style="width:46px;height:46px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.45rem;flex-shrink:0;">
+          👤
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <strong id="act-modal-friend-nick" style="font-size:1.02rem;color:var(--text);">Amigo</strong>
+            <span id="act-modal-type-badge" class="act-type-badge visto">✓ Completado</span>
+          </div>
+          <div id="act-modal-status-phrase" style="font-size:0.8rem;color:var(--muted);margin-top:2px;">Ya vio esta obra</div>
+        </div>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalDetalleActividadAmigo()">✕</button>
+    </div>
+
+    <div style="display:flex;gap:14px;align-items:flex-start;background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:14px;">
+      <div style="width:62px;min-width:62px;height:90px;border-radius:8px;overflow:hidden;background:#334155;flex-shrink:0;">
+        <img id="act-modal-item-poster" src="" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div style="flex:1;min-width:0;">
+        <span id="act-modal-item-subcat" style="font-size:0.7rem;font-weight:700;color:var(--accent);text-transform:uppercase;">OBRA</span>
+        <div id="act-modal-item-title" style="font-size:0.98rem;font-weight:700;color:var(--text);line-height:1.25;margin:2px 0;">Título</div>
+        <div id="act-modal-item-creator" style="font-size:0.78rem;color:var(--muted);">Creador</div>
+        <div id="act-modal-item-rating" style="margin-top:6px;display:flex;align-items:center;gap:6px;"></div>
+      </div>
+    </div>
+
+    <div id="act-modal-review-section" style="display:none;margin-bottom:14px;">
+      <div style="font-size:0.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;display:flex;align-items:center;gap:5px;">
+        <span>💬</span> <span>Reseña de <span id="act-modal-review-nick"></span></span>
+      </div>
+      <div id="act-modal-review-text" style="padding:10px 14px;background:rgba(56,189,248,0.06);border-left:3px solid var(--accent);border-radius:4px 8px 8px 4px;font-size:0.86rem;font-style:italic;line-height:1.45;color:var(--text);word-break:break-word;">
+      </div>
+    </div>
+
+    <div id="act-modal-meta-row" style="display:flex;gap:12px;flex-wrap:wrap;font-size:0.78rem;color:var(--muted);margin-bottom:16px;">
+      <span id="act-modal-meta-dates"></span>
+      <span id="act-modal-meta-hours"></span>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+      <button type="button" id="act-modal-btn-friend-regs" class="btn-modal-cancel" style="padding:8px 12px;font-size:0.8rem;">
+        👤 Ver sus registros
+      </button>
+      <div style="display:flex;gap:8px;">
+        <button type="button" id="act-modal-btn-add-wl" class="btn-modal-save" style="padding:8px 14px;font-size:0.8rem;">
+          📌 + Mi Watchlist
+        </button>
+        <button type="button" class="btn-modal-cancel" style="padding:8px 12px;font-size:0.8rem;" onclick="cerrarModalDetalleActividadAmigo()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- MODAL PRIVACIDAD AMIGOS -->
 <div id="modal-privacidad-amigos" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPrivacidadAmigos()">
   <div class="modal-box" style="max-width:520px;max-height:90vh;overflow-y:auto;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -1190,17 +1281,19 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
 
   const urls = [
     `https://api.themoviedb.org/3/trending/movie/week?api_key=${TMDB_K}&language=es-ES&page=${p1}`,
-    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&primary_release_date.gte=2024-01-01&sort_by=popularity.desc&vote_count.gte=30&language=es-ES&page=${p2}`,
-    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&with_genres=99&primary_release_date.gte=2023-01-01&sort_by=popularity.desc&language=es-ES&page=${p1}`,
-    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&with_genres=99&sort_by=vote_count.desc&language=es-ES&page=${p2}`,
+    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&primary_release_date.gte=1998-01-01&sort_by=vote_count.desc&language=es-ES&page=${p1}`,
+    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&primary_release_date.gte=2024-01-01&sort_by=popularity.desc&vote_count.gte=25&language=es-ES&page=${p2}`,
+    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&with_genres=99&primary_release_date.gte=2010-01-01&sort_by=vote_count.desc&language=es-ES&page=${p1}`,
+    `https://api.themoviedb.org/3/discover/movie?api_key=${TMDB_K}&with_genres=99&primary_release_date.gte=2023-01-01&sort_by=popularity.desc&language=es-ES&page=${p2}`,
     `https://api.themoviedb.org/3/trending/tv/week?api_key=${TMDB_K}&language=es-ES&page=${p1}`,
-    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&first_air_date.gte=2023-01-01&sort_by=popularity.desc&vote_count.gte=20&language=es-ES&page=${p2}`,
-    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&with_genres=99&first_air_date.gte=2022-01-01&sort_by=popularity.desc&language=es-ES&page=${p1}`,
-    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&with_genres=99&sort_by=vote_count.desc&language=es-ES&page=${p2}`,
+    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&first_air_date.gte=1999-01-01&sort_by=vote_count.desc&language=es-ES&page=${p1}`,
+    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&first_air_date.gte=2023-01-01&sort_by=popularity.desc&vote_count.gte=15&language=es-ES&page=${p2}`,
+    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&with_genres=99&first_air_date.gte=2012-01-01&sort_by=vote_count.desc&language=es-ES&page=${p1}`,
+    `https://api.themoviedb.org/3/discover/tv?api_key=${TMDB_K}&with_genres=99&first_air_date.gte=2022-01-01&sort_by=popularity.desc&language=es-ES&page=${p2}`,
     `https://api.deezer.com/chart/0/albums?index=${offOl}&limit=14`,
     `https://api.deezer.com/chart/0/artists?index=${offOl}&limit=14`,
-    `https://api.rawg.io/api/games?key=${RAWG_K}&dates=2024-01-01,2026-12-31&ordering=-added&page_size=24&page=${p1}`,
-    `https://openlibrary.org/search.json?q=bestseller+fiction&sort=new&limit=24&offset=${offOl}`,
+    `https://api.rawg.io/api/games?key=${RAWG_K}&dates=2010-01-01,2026-12-31&ordering=-added&page_size=24&page=${p1}`,
+    `https://openlibrary.org/search.json?q=bestseller+fiction&sort=editions&limit=24&offset=${offOl}`,
     `https://openlibrary.org/search.json?publisher=Marvel+Comics&sort=new&limit=35&offset=${offOl}`,
     `https://openlibrary.org/search.json?publisher=DC+Comics&sort=new&limit=35&offset=${offOl}`,
     `https://kitsu.io/api/edge/manga?sort=-user_count&page[limit]=20&page[offset]=${offK1}`
@@ -1214,21 +1307,21 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       libroQuery ? getJson_(libroQuery) : Promise.resolve(null)
     ]);
 
-    const tmdbPeliTrend = resps[0], tmdbPeliDisc = resps[1];
-    const tmdbDocu1 = resps[2], tmdbDocu2 = resps[3];
-    const tmdbTvTrend = resps[4], tmdbTvDisc = resps[5];
-    const tmdbDocTv1 = resps[6], tmdbDocTv2 = resps[7];
-    const dzAlbums = resps[8]?.data || [], dzArtists = resps[9]?.data || [];
-    const rawgGames = resps[10]?.results || [];
-    const olBooks = resps[11]?.docs || [];
-    const olMarvel = resps[12]?.docs || [];
-    const olDc = resps[13]?.docs || [];
-    const kitsuManga = resps[14]?.data || [];
-    const customPeli = resps[15]?.results || [];
-    const customSerie = resps[16]?.results || [];
-    const customLibro = resps[17]?.docs || [];
+    const tmdbPeliTrend = resps[0], tmdbPeliPop = resps[1], tmdbPeliDisc = resps[2];
+    const tmdbDocu1 = resps[3], tmdbDocu2 = resps[4];
+    const tmdbTvTrend = resps[5], tmdbTvPop = resps[6], tmdbTvDisc = resps[7];
+    const tmdbDocTv1 = resps[8], tmdbDocTv2 = resps[9];
+    const dzAlbums = resps[10]?.data || [], dzArtists = resps[11]?.data || [];
+    const rawgGames = resps[12]?.results || [];
+    const olBooks = resps[13]?.docs || [];
+    const olMarvel = resps[14]?.docs || [];
+    const olDc = resps[15]?.docs || [];
+    const kitsuManga = resps[16]?.data || [];
+    const customPeli = resps[17]?.results || [];
+    const customSerie = resps[18]?.results || [];
+    const customLibro = resps[19]?.docs || [];
 
-    // --- 1. PELÍCULAS (Tendencias + Recomendación Personalizada) ---
+    // --- 1. PELÍCULAS (Tendencias + Populares/Aclamadas + Gustos) ---
     const vistosPeli = new Set();
     const agregarPeli = (m, motivo) => {
       if (!m || !m.poster_path || vistosPeli.has(m.id) || datos.peliculas.length >= 24) return;
@@ -1249,12 +1342,13 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       });
     };
     customPeli.forEach(m => agregarPeli(m, favPeli?.cr ? `⭐ Porque te gusta ${favPeli.cr}` : '✨ Recomendado'));
-    (tmdbPeliTrend?.results || []).forEach(m => agregarPeli(m, '🔥 Tendencia'));
+    (tmdbPeliTrend?.results || []).slice(0, 8).forEach(m => agregarPeli(m, '🔥 Tendencia'));
+    (tmdbPeliPop?.results || []).slice(0, 10).forEach(m => agregarPeli(m, '⭐ Popular / Aclamada'));
     (tmdbPeliDisc?.results || []).forEach(m => agregarPeli(m, '✨ Estreno reciente'));
 
     // --- 2. DOCUMENTALES ---
     const vistosDoc = new Set();
-    const agregarDoc = (m) => {
+    const agregarDoc = (m, motivo = '📹 Aclamado') => {
       if (!m || !m.poster_path || vistosDoc.has(m.id) || datos.documentales.length >= 24) return;
       vistosDoc.add(m.id);
       const tits = fmtTitIdioma_(m.original_title, m.title, m.original_language);
@@ -1269,12 +1363,13 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         anio: m.release_date ? m.release_date.substring(0, 4) : '2025',
         sinopsis: m.overview || '',
         poster: `https://image.tmdb.org/t/p/w500${m.poster_path}`,
-        motivo: '📹 Aclamado'
+        motivo: motivo
       });
     };
-    [...(tmdbDocu1?.results || []), ...(tmdbDocu2?.results || [])].forEach(agregarDoc);
+    (tmdbDocu1?.results || []).slice(0, 12).forEach(m => agregarDoc(m, '⭐ Documental Aclamado'));
+    (tmdbDocu2?.results || []).forEach(m => agregarDoc(m, '📹 Reciente'));
 
-    // --- 3. SERIES ---
+    // --- 3. SERIES (Tendencias + Populares/Aclamadas + Gustos) ---
     const vistosTv = new Set();
     const agregarTv = (s, motivo) => {
       if (!s || !s.poster_path || vistosTv.has(s.id) || datos.series.length >= 24) return;
@@ -1295,7 +1390,8 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       });
     };
     customSerie.forEach(s => agregarTv(s, favSerie?.cr ? `⭐ Porque te gusta ${favSerie.cr}` : '✨ Recomendado'));
-    (tmdbTvTrend?.results || []).forEach(s => agregarTv(s, '🔥 En emisión'));
+    (tmdbTvTrend?.results || []).slice(0, 8).forEach(s => agregarTv(s, '🔥 En emisión'));
+    (tmdbTvPop?.results || []).slice(0, 10).forEach(s => agregarTv(s, '⭐ Aclamada / Popular'));
     (tmdbTvDisc?.results || []).forEach(s => agregarTv(s, '✨ Tendencia'));
 
     // --- 4. DOCUSERIES ---
@@ -1355,7 +1451,18 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       });
     } catch(e) {}
 
-    // --- 5. MÚSICA ---
+    // --- 5. MÚSICA (Tendencias + Álbumes Aclamados y Populares) ---
+    const ALBUMS_ICONICOS_POPULARES = [
+      { titulo: 'Discovery', creador: 'Daft Punk', anio: '2001', poster: 'https://e-cdns-images.dzcdn.net/images/cover/2e018122cb56986277102d2041a592c8/500x500.jpg', motivo: '⭐ Álbum Aclamado' },
+      { titulo: 'DAMN.', creador: 'Kendrick Lamar', anio: '2017', poster: 'https://e-cdns-images.dzcdn.net/images/cover/9079f8fae54148e658ec9a187cbcf493/500x500.jpg', motivo: '⭐ Ganador Pulitzer' },
+      { titulo: 'OK Computer', creador: 'Radiohead', anio: '1997', poster: 'https://e-cdns-images.dzcdn.net/images/cover/018b14a8449e0c5213d2f9540b6e6815/500x500.jpg', motivo: '⭐ Clásico Moderno' },
+      { titulo: 'MOTOMAMI', creador: 'Rosalía', anio: '2022', poster: 'https://e-cdns-images.dzcdn.net/images/cover/dc657fa4cb8547285513264ec4d9be2b/500x500.jpg', motivo: '🔥 Tendencia Global' },
+      { titulo: 'Demon Days', creador: 'Gorillaz', anio: '2005', poster: 'https://e-cdns-images.dzcdn.net/images/cover/3c4e17ef749b5c3be6d7d427d14b03ea/500x500.jpg', motivo: '⭐ Álbum Aclamado' },
+      { titulo: 'AM', creador: 'Arctic Monkeys', anio: '2013', poster: 'https://e-cdns-images.dzcdn.net/images/cover/f04c6ca9c76c0ee78ddcfdbb5059d47d/500x500.jpg', motivo: '⭐ Bestseller' },
+      { titulo: 'The Dark Side of the Moon', creador: 'Pink Floyd', anio: '1973', poster: 'https://e-cdns-images.dzcdn.net/images/cover/6c62c2f6f4dcfbc0ef0528659d6e42b2/500x500.jpg', motivo: '⭐ Hito Histórico' },
+      { titulo: 'After Hours', creador: 'The Weeknd', anio: '2020', poster: 'https://e-cdns-images.dzcdn.net/images/cover/36a10738a9d166ec9d71fa5178f5f68b/500x500.jpg', motivo: '🔥 Top Mundial' }
+    ];
+
     for (let i = 0; i < Math.max(dzAlbums.length, dzArtists.length); i++) {
       if (dzAlbums[i] && datos.musica.length < 24) {
         const al = dzAlbums[i];
@@ -1385,9 +1492,23 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
           motivo: '🎙️ Artista Top'
         });
       }
+      if (ALBUMS_ICONICOS_POPULARES[i] && datos.musica.length < 24) {
+        const iconico = ALBUMS_ICONICOS_POPULARES[i];
+        datos.musica.push({
+          categoria: 'Musica',
+          subcategoria: 'Discos',
+          titulo: iconico.titulo,
+          tituloOriginal: iconico.titulo,
+          tituloIngles: '',
+          creador: iconico.creador,
+          anio: iconico.anio,
+          poster: iconico.poster,
+          motivo: iconico.motivo
+        });
+      }
     }
 
-    // --- 6. VIDEOJUEGOS (2024-2026 y enriquecimiento de desarrolladoras) ---
+    // --- 6. VIDEOJUEGOS (Populares + Tendencias) ---
     datos.juegos = rawgGames.slice(0, 24).map(g => ({
       idRef: g.id,
       categoria: 'Juegos',
@@ -1398,7 +1519,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       creador: (g.genres || []).map(x => x.name).slice(0, 2).join(', ') || 'Videojuego',
       anio: g.released ? g.released.substring(0, 4) : '2025',
       poster: g.background_image || '',
-      motivo: '🎮 Tendencia'
+      motivo: (g.rating && g.rating >= 4.2) || (g.added && g.added > 8000) ? '⭐ Popular / Aclamado' : '🎮 Tendencia'
     }));
 
     // Obtener estudio desarrollador para los mejores juegos en paralelo
@@ -1413,13 +1534,13 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       });
     } catch(e) {}
 
-    // --- 7. LIBROS (Exclusivamente recientes 2020-2026, sin libros antiguos) ---
+    // --- 7. LIBROS (Bestsellers Populares y Novedades sin obras arcaicas) ---
     const vistosLibros = new Set();
     const agregarLibro = (b, motivo) => {
       if (!b || !b.title || vistosLibros.has(b.title.toLowerCase()) || datos.libros.length >= 24) return;
       const anioPub = Number(b.first_publish_year);
-      // REGLA ESTRICTA: Solo libros recientes (>= 2020), no de hace 200 años
-      if (anioPub && anioPub < 2020) return;
+      // Obras modernas populares (>= 1975) evitando textos del siglo XIX
+      if (anioPub && anioPub < 1975) return;
       vistosLibros.add(b.title.toLowerCase());
       datos.libros.push({
         categoria: 'Lecturas',
@@ -1430,11 +1551,11 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         creador: b.author_name?.length ? b.author_name.slice(0, 2).join(', ') : 'Autor',
         anio: b.first_publish_year ? String(b.first_publish_year) : '2025',
         poster: b.cover_i ? `https://covers.openlibrary.org/b/id/${b.cover_i}-M.jpg` : '',
-        motivo: motivo || '📖 Novedad'
+        motivo: motivo || '📖 Destacado'
       });
     };
     customLibro.forEach(b => agregarLibro(b, favLibro?.cr ? `⭐ Porque te gusta ${favLibro.cr}` : '✨ Recomendado'));
-    olBooks.forEach(b => agregarLibro(b, '📖 Novedad'));
+    olBooks.forEach(b => agregarLibro(b, (b.edition_count > 60) ? '⭐ Bestseller Popular' : '📖 Destacado'));
 
     // --- 8. CÓMICS (Exclusivamente MARVEL y DC - Recientes y Tendencias) ---
     const COMICS_FALLBACK = [
@@ -2173,6 +2294,8 @@ async obtenerActividadAmigos(userEmail) {
     const amigosEmails = myP.preferencias?.amigos || [];
     const mapa = {};
     const norm = t => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+    const cleanTit = t => String(t || '').replace(/\s*\(\d{4}\)$/, '').trim();
+
     await Promise.all(amigosEmails.map(async aEmail => {
       try {
         const pRows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*', 'GET').catch(() => []);
@@ -2180,28 +2303,68 @@ async obtenerActividadAmigos(userEmail) {
         const p = pRows[0];
         const priv = p.preferencias?.privacidad || {};
         const nick = p.nickname || p.user_email.split('@')[0];
+        const avatar = p.avatar || '🦊';
         const tasks = [];
         if (!priv.ocultarRegistros) {
-          tasks.push(sbFetch_('registros?user_email=eq.' + encodeURIComponent(aEmail) + '&select=titulo,categoria,subcategoria,calificacion', 'GET').then(regs => {
+          tasks.push(sbFetch_('registros?user_email=eq.' + encodeURIComponent(aEmail) + '&select=id,titulo,subtitulo,creador,anio,categoria,subcategoria,calificacion,comentario,horas,poster,fecha_inicio,fecha_fin,created_at', 'GET').then(regs => {
             (regs || []).forEach(r => {
-              const k = norm(r.titulo);
-              if (!k) return;
-              if (!mapa[k]) mapa[k] = [];
-              if (!mapa[k].some(x => x.amigo === nick && x.tipo === 'visto')) {
-                mapa[k].push({ amigo: nick, tipo: 'visto', cat: r.categoria, sub: r.subcategoria, calificacion: (!priv.ocultarCalificaciones && r.calificacion > 0) ? r.calificacion : null });
-              }
+              const k1 = norm(r.titulo);
+              const k2 = norm(cleanTit(r.titulo));
+              const k3 = r.subtitulo ? norm(cleanTit(r.subtitulo)) : null;
+              const itemData = {
+                amigo: nick,
+                amigoEmail: aEmail,
+                amigoAvatar: avatar,
+                amigoUserId: p.preferencias?.userId || aEmail,
+                tipo: 'visto',
+                cat: r.categoria,
+                sub: r.subcategoria,
+                titulo: r.titulo,
+                subtitulo: r.subtitulo || '',
+                creador: r.creador || '',
+                anio: r.anio || '',
+                poster: r.poster || '',
+                calificacion: (!priv.ocultarCalificaciones && Number(r.calificacion) > 0) ? Number(r.calificacion) : null,
+                comentario: (!priv.ocultarComentarios && r.comentario) ? r.comentario : '',
+                horas: r.horas || '',
+                fechaInicio: sanitizarFechaFrontend(r.fecha_inicio || r.fechaInicio),
+                fechaFin: sanitizarFechaFrontend(r.fecha_fin || r.fechaFin),
+                recordId: r.id
+              };
+              [k1, k2, k3].filter(Boolean).forEach(k => {
+                if (!mapa[k]) mapa[k] = [];
+                if (!mapa[k].some(x => x.amigoEmail === aEmail && x.tipo === 'visto')) {
+                  mapa[k].push(itemData);
+                }
+              });
             });
           }).catch(() => {}));
         }
         if (!priv.ocultarWatchlist) {
-          tasks.push(sbFetch_('watchlists?user_email=eq.' + encodeURIComponent(aEmail) + '&select=titulo,categoria,subcategoria', 'GET').then(wls => {
+          tasks.push(sbFetch_('watchlists?user_email=eq.' + encodeURIComponent(aEmail) + '&select=id,titulo,categoria,subcategoria,creador,anio,poster', 'GET').then(wls => {
             (wls || []).forEach(w => {
-              const k = norm(w.titulo);
-              if (!k) return;
-              if (!mapa[k]) mapa[k] = [];
-              if (!mapa[k].some(x => x.amigo === nick)) {
-                mapa[k].push({ amigo: nick, tipo: 'pendiente', cat: w.categoria, sub: w.subcategoria });
-              }
+              const k1 = norm(w.titulo);
+              const k2 = norm(cleanTit(w.titulo));
+              const itemWlData = {
+                amigo: nick,
+                amigoEmail: aEmail,
+                amigoAvatar: avatar,
+                amigoUserId: p.preferencias?.userId || aEmail,
+                tipo: 'pendiente',
+                cat: w.categoria,
+                sub: w.subcategoria,
+                titulo: w.titulo,
+                creador: w.creador || '',
+                anio: w.anio || '',
+                poster: w.poster || '',
+                watchlistId: w.id
+              };
+              [k1, k2].filter(Boolean).forEach(k => {
+                if (!mapa[k]) mapa[k] = [];
+                if (!mapa[k].some(x => x.amigoEmail === aEmail && x.tipo === 'pendiente')) {
+                  mapa[k].push(itemWlData);
+                }
+              });
             });
           }).catch(() => {}));
         }
@@ -2536,8 +2699,231 @@ function toggleSubOpcionesPrivacidad() { const chkRegs = document.getElementById
 function abrirModalPrivacidadAmigos() { const priv = perfilUsuario.preferencias?.privacidad || {}; document.getElementById('priv-opt-stats').checked = priv.ocultarEstadisticas !== true; document.getElementById('priv-opt-wl').checked = priv.ocultarWatchlist !== true; document.getElementById('priv-opt-favs').checked = priv.ocultarFavoritos !== true; document.getElementById('priv-opt-regs').checked = priv.ocultarRegistros !== true; document.getElementById('priv-opt-calif').checked = priv.ocultarCalificaciones !== true; document.getElementById('priv-opt-comentarios').checked = priv.ocultarComentarios !== true; toggleSubOpcionesPrivacidad(); document.getElementById('modal-privacidad-amigos').style.display = 'flex'; }
 function cerrarModalPrivacidadAmigos() { document.getElementById('modal-privacidad-amigos').style.display = 'none'; }
 function guardarPrivacidadAmigos() { if (!estado.userEmail) return alert('Inicia sesión para guardar tu privacidad.'); const priv = { ocultarEstadisticas: !document.getElementById('priv-opt-stats').checked, ocultarWatchlist: !document.getElementById('priv-opt-wl').checked, ocultarFavoritos: !document.getElementById('priv-opt-favs').checked, ocultarRegistros: !document.getElementById('priv-opt-regs').checked, ocultarCalificaciones: !document.getElementById('priv-opt-calif').checked, ocultarComentarios: !document.getElementById('priv-opt-comentarios').checked }; if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {}; perfilUsuario.preferencias.privacidad = priv; guardarPerfilLocal(); google.script.run.withSuccessHandler(res => { cerrarModalPrivacidadAmigos(); mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Privacy settings saved!' : '¡Preferencias de privacidad guardadas! 🔒'); }).guardarPrivacidadUsuario(estado.userEmail, priv); }
-function cargarActividadAmigos() { if (!estado.userEmail) return; google.script.run.withSuccessHandler(res => { if (res && res.exito) { estado.amigosActividad = res.actividad || {}; } }).obtenerActividadAmigos(estado.userEmail); }
-function obtenerBadgeAmigoActividad(titulo, catFallback) { if (!titulo || !estado.amigosActividad) return ''; const norm = t => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, ''); const acts = estado.amigosActividad[norm(titulo)] || []; if (!acts.length) return ''; return acts.slice(0, 2).map(act => { if (act.tipo === 'pendiente') { return `<div class="amigo-activity-pill amigo-wl-pill">📌 <strong>${act.amigo}</strong> en pendientes</div>`; } const c = act.cat || catFallback || estado.categoria; let verbo = 'ya la vio'; if (c === 'Musica') verbo = 'ya lo escuchó'; else if (c === 'Juegos') verbo = 'ya lo jugó'; else if (c === 'Lecturas') verbo = 'ya lo leyó'; const califStr = act.calificacion ? ` (★ ${act.calificacion})` : ''; return `<div class="amigo-activity-pill">👤 <strong>${act.amigo}</strong> ${verbo}${califStr}</div>`; }).join(' '); }
+function cargarActividadAmigos() {
+  if (!estado.userEmail) return;
+  google.script.run.withSuccessHandler(res => {
+    if (res && res.exito) {
+      estado.amigosActividad = res.actividad || {};
+      if (estado.categoria === 'discover') {
+        renderizarDiscoverVista();
+      }
+    }
+  }).obtenerActividadAmigos(estado.userEmail);
+}
+function obtenerAmigosActividadItem(it, catFallback) {
+  if (!estado.amigosActividad) return [];
+  const norm = t => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
+  const cleanTit = t => String(t || '').replace(/\s*\(\d{4}\)$/, '').trim();
+  const keys = new Set();
+  if (typeof it === 'string') {
+    keys.add(norm(it));
+    keys.add(norm(cleanTit(it)));
+  } else if (it) {
+    if (it.titulo) {
+      keys.add(norm(it.titulo));
+      keys.add(norm(cleanTit(it.titulo)));
+    }
+    if (it.tituloOriginal) {
+      keys.add(norm(it.tituloOriginal));
+      keys.add(norm(cleanTit(it.tituloOriginal)));
+    }
+    if (it.tituloIngles) {
+      keys.add(norm(it.tituloIngles));
+      keys.add(norm(cleanTit(it.tituloIngles)));
+    }
+  }
+  const encontrados = [];
+  const vistos = new Set();
+  keys.forEach(k => {
+    if (!k) return;
+    const lista = estado.amigosActividad[k] || [];
+    lista.forEach(act => {
+      const uKey = `${act.amigoEmail || act.amigo}_${act.tipo}`;
+      if (!vistos.has(uKey)) {
+        vistos.add(uKey);
+        encontrados.push(act);
+      }
+    });
+  });
+  return encontrados;
+}
+function renderizarInsigniasAmigosDiscover(it, cat) {
+  const acts = obtenerAmigosActividadItem(it, cat);
+  if (!acts || !acts.length) return '';
+  const l = userPrefs.lang || 'es';
+  const visibles = acts.slice(0, 3);
+  const extra = acts.length - visibles.length;
+
+  return `
+    <div class="discover-friends-tag-row" onclick="event.stopPropagation()">
+      <div class="discover-friends-avatars">
+        ${visibles.map((act) => {
+          const isVisto = act.tipo === 'visto';
+          const subIcon = isVisto ? '✓' : '📌';
+          const badgeClass = isVisto ? 'badge-visto' : 'badge-pendiente';
+          const avHtml = act.amigoAvatar && (act.amigoAvatar.startsWith('http') || act.amigoAvatar.startsWith('data:'))
+            ? `<img src="${act.amigoAvatar}" alt="${escHtmlFeed_(act.amigo)}">`
+            : `<span>${act.amigoAvatar || '👤'}</span>`;
+          const actKey = encodeURIComponent(JSON.stringify(act));
+          const verb = isVisto
+            ? (cat === 'Musica' ? (l === 'en' ? 'listened to this' : 'ya lo escuchó')
+              : (cat === 'Juegos' ? (l === 'en' ? 'played this' : 'ya lo jugó')
+              : (cat === 'Lecturas' ? (l === 'en' ? 'read this' : 'ya lo leyó')
+              : (l === 'en' ? 'watched this' : 'ya la vio'))))
+            : (l === 'en' ? 'in their Watchlist' : 'en sus pendientes');
+          const califTxt = (isVisto && act.calificacion) ? ` ★${act.calificacion}` : '';
+          const tooltip = `${escHtmlFeed_(act.amigo)} ${verb}${califTxt}`;
+          return `
+            <div class="discover-friend-avatar-btn" data-act="${actKey}" onclick="abrirModalDetalleActividadAmigo(this)" title="${tooltip}">
+              <div class="discover-avatar-circle">${avHtml}</div>
+              <span class="discover-friend-mini-badge ${badgeClass}">${subIcon}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <span class="discover-friends-caption" onclick="this.previousElementSibling.querySelector('.discover-friend-avatar-btn')?.click()">${escHtmlFeed_(visibles[0].amigo)}${extra > 0 ? ` +${extra}` : (acts.length > 1 ? ` y ${escHtmlFeed_(acts[1].amigo)}` : '')}</span>
+    </div>
+  `;
+}
+function abrirModalDetalleActividadAmigo(btnOrAct) {
+  let act = btnOrAct;
+  if (btnOrAct && btnOrAct.dataset && btnOrAct.dataset.act) {
+    try { act = JSON.parse(decodeURIComponent(btnOrAct.dataset.act)); } catch(e){}
+  }
+  if (!act) return;
+  const l = userPrefs.lang || 'es';
+  const m = document.getElementById('modal-amigo-registro-detalle');
+  if (!m) return;
+
+  const avEl = document.getElementById('act-modal-friend-avatar');
+  if (act.amigoAvatar && (act.amigoAvatar.startsWith('http') || act.amigoAvatar.startsWith('data:'))) {
+    avEl.innerHTML = `<img src="${act.amigoAvatar}" style="width:100%;height:100%;object-fit:cover;">`;
+  } else {
+    avEl.innerHTML = `<span>${act.amigoAvatar || '👤'}</span>`;
+  }
+
+  document.getElementById('act-modal-friend-nick').textContent = act.amigo || 'Amigo';
+
+  const isVisto = act.tipo === 'visto';
+  const typeBadge = document.getElementById('act-modal-type-badge');
+  const phraseEl = document.getElementById('act-modal-status-phrase');
+
+  let verbo = '';
+  if (act.cat === 'Musica') verbo = isVisto ? (l === 'en' ? 'Listened' : 'Ya lo escuchó') : (l === 'en' ? 'Wants to listen' : 'Por escuchar');
+  else if (act.cat === 'Juegos') verbo = isVisto ? (l === 'en' ? 'Played' : 'Ya lo jugó') : (l === 'en' ? 'Wants to play' : 'Por jugar');
+  else if (act.cat === 'Lecturas') verbo = isVisto ? (l === 'en' ? 'Read' : 'Ya lo leyó') : (l === 'en' ? 'Wants to read' : 'Por leer');
+  else verbo = isVisto ? (l === 'en' ? 'Watched' : 'Ya la vio') : (l === 'en' ? 'Wants to watch' : 'Por ver');
+
+  if (isVisto) {
+    typeBadge.className = 'act-type-badge visto';
+    typeBadge.textContent = l === 'en' ? '✓ Completed' : '✓ Completado';
+    phraseEl.textContent = `${act.amigo} ${verbo.toLowerCase()} ✨`;
+  } else {
+    typeBadge.className = 'act-type-badge pendiente';
+    typeBadge.textContent = l === 'en' ? '📌 Watchlist' : '📌 En Watchlist';
+    phraseEl.textContent = l === 'en' ? `${act.amigo} has this in pending watchlist` : `${act.amigo} la tiene en su lista de pendientes`;
+  }
+
+  document.getElementById('act-modal-item-title').textContent = act.titulo || 'Sin título';
+  document.getElementById('act-modal-item-creator').textContent = act.creador ? `${act.creador} ${act.anio ? '(' + act.anio + ')' : ''}` : (act.anio ? `(${act.anio})` : '');
+  document.getElementById('act-modal-item-subcat').textContent = act.sub || act.cat || 'Mediary';
+  const postEl = document.getElementById('act-modal-item-poster');
+  if (act.poster) {
+    postEl.src = act.poster;
+    postEl.style.display = 'block';
+  } else {
+    postEl.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="88" fill="%23334155"><rect width="100%" height="100%"/></svg>';
+  }
+
+  const ratingBox = document.getElementById('act-modal-item-rating');
+  if (isVisto && act.calificacion) {
+    ratingBox.innerHTML = `
+      <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(234,179,8,0.12);border:1px solid rgba(234,179,8,0.3);padding:3px 8px;border-radius:8px;">
+        <span>${renderEstrellasVisuales(act.calificacion)}</span>
+        <strong style="color:var(--star-active);font-size:0.85rem;">${Number(act.calificacion).toFixed(1)}</strong>
+      </div>
+    `;
+    ratingBox.style.display = 'flex';
+  } else {
+    ratingBox.style.display = 'none';
+  }
+
+  const revSec = document.getElementById('act-modal-review-section');
+  if (isVisto && act.comentario && act.comentario.trim()) {
+    document.getElementById('act-modal-review-nick').textContent = act.amigo;
+    document.getElementById('act-modal-review-text').textContent = `"${act.comentario.trim()}"`;
+    revSec.style.display = 'block';
+  } else {
+    revSec.style.display = 'none';
+  }
+
+  const metaDates = document.getElementById('act-modal-meta-dates');
+  const metaHours = document.getElementById('act-modal-meta-hours');
+  if (isVisto && (act.fechaInicio || act.fechaFin)) {
+    const fStr = (act.fechaFin && act.fechaFin !== 'Sin fecha')
+      ? (act.fechaInicio && act.fechaInicio !== 'Sin fecha' ? `📅 ${act.fechaInicio} ➔ ${act.fechaFin}` : `📅 ${act.fechaFin}`)
+      : (act.fechaInicio && act.fechaInicio !== 'Sin fecha' ? `📅 Inicio: ${act.fechaInicio}` : '');
+    metaDates.textContent = fStr;
+    metaDates.style.display = fStr ? 'inline-block' : 'none';
+  } else {
+    metaDates.style.display = 'none';
+  }
+  if (isVisto && act.horas) {
+    metaHours.textContent = `⏱️ ${act.horas} hrs jugadas`;
+    metaHours.style.display = 'inline-block';
+  } else {
+    metaHours.style.display = 'none';
+  }
+
+  const btnFriendRegs = document.getElementById('act-modal-btn-friend-regs');
+  btnFriendRegs.onclick = () => {
+    cerrarModalDetalleActividadAmigo();
+    abrirModalRegistrosAmigo(act.amigoEmail, act.amigo, act.cat);
+  };
+  btnFriendRegs.textContent = l === 'en' ? `👤 View records of ${act.amigo}` : `👤 Ver registros de ${act.amigo}`;
+
+  const btnAddWl = document.getElementById('act-modal-btn-add-wl');
+  btnAddWl.onclick = () => {
+    agregarAWatchlistDirecto({
+      titulo: act.titulo,
+      tituloOriginal: act.titulo,
+      tituloIngles: act.subtitulo || '',
+      creador: act.creador || '',
+      anio: act.anio || '',
+      categoria: act.cat || 'Peliculas',
+      subcategoria: act.sub || 'Películas',
+      poster: act.poster || ''
+    }, btnAddWl);
+  };
+
+  m.style.display = 'flex';
+}
+function cerrarModalDetalleActividadAmigo() {
+  const m = document.getElementById('modal-amigo-registro-detalle');
+  if (m) m.style.display = 'none';
+}
+window.abrirModalDetalleActividadAmigo = abrirModalDetalleActividadAmigo;
+window.cerrarModalDetalleActividadAmigo = cerrarModalDetalleActividadAmigo;
+window.renderizarInsigniasAmigosDiscover = renderizarInsigniasAmigosDiscover;
+window.obtenerAmigosActividadItem = obtenerAmigosActividadItem;
+
+function obtenerBadgeAmigoActividad(titulo, catFallback) {
+  if (!titulo || !estado.amigosActividad) return '';
+  const acts = obtenerAmigosActividadItem(titulo, catFallback);
+  if (!acts.length) return '';
+  return acts.slice(0, 2).map(act => {
+    if (act.tipo === 'pendiente') {
+      return `<div class="amigo-activity-pill amigo-wl-pill">📌 <strong>${escHtmlFeed_(act.amigo)}</strong> en pendientes</div>`;
+    }
+    const c = act.cat || catFallback || estado.categoria;
+    let verbo = 'ya la vio';
+    if (c === 'Musica') verbo = 'ya lo escuchó';
+    else if (c === 'Juegos') verbo = 'ya lo jugó';
+    else if (c === 'Lecturas') verbo = 'ya lo leyó';
+    const califStr = act.calificacion ? ` (★ ${act.calificacion})` : '';
+    return `<div class="amigo-activity-pill">👤 <strong>${escHtmlFeed_(act.amigo)}</strong> ${verbo}${califStr}</div>`;
+  }).join(' ');
+}
 function cambiarAmigoRegistrosLista(emailAmigo) { if (!emailAmigo) { volverAMisRegistrosDesdeAmigo(); return; } google.script.run.withSuccessHandler(res => { if (!res || !res.exito) { document.getElementById('select-amigo-historial').value = ''; return alert(res?.error || 'No se pudieron cargar los registros de este amigo.'); } estado.registrosAmigoViendo = res.registros || []; estado.viendoAmigoNombre = res.amigoNombre || 'Amigo'; const banner = document.getElementById('amigo-lista-banner'); if (banner) { document.getElementById('amigo-nombre-banner').textContent = estado.viendoAmigoNombre; banner.style.display = 'flex'; } filtrarYMostrarHistorialAmigo(); }).obtenerRegistrosDeAmigo(emailAmigo, estado.categoria); }
 function volverAMisRegistrosDesdeAmigo() { estado.registrosAmigoViendo = null; estado.viendoAmigoNombre = null; const banner = document.getElementById('amigo-lista-banner'); if (banner) banner.style.display = 'none'; const sel = document.getElementById('select-amigo-historial'); if (sel) sel.value = ''; filtrarYMostrarHistorial(); }
 function filtrarYMostrarHistorialAmigo() { if (!estado.registrosAmigoViendo) return filtrarYMostrarHistorial(); const sub = estado.subcategoria; const regs = estado.registrosAmigoViendo.filter(r => r.subcategoria === sub); const tbody = document.getElementById('tbody-historial'); const mobileList = document.getElementById('mobile-history-cards'); document.getElementById('total-filtro').textContent = regs.length; if (tbody) { tbody.innerHTML = regs.map(r => `<tr><td style="width:48px;"><img src="${r.poster||''}" style="width:36px;height:52px;border-radius:4px;object-fit:cover;"></td><td><strong>${r.titulo}</strong><div style="font-size:0.75rem;color:var(--muted);">${r.creador} ${r.anio ? '('+r.anio+')' : ''}</div></td><td>${renderEstrellasVisuales(r.calificacion)}</td><td style="font-size:0.8rem;color:var(--muted);">${r.comentario || '—'}</td><td style="font-size:0.8rem;color:var(--muted);">${r.fechaFin !== 'Sin fecha' ? r.fechaFin : r.fechaInicio}</td></tr>`).join(''); } if (mobileList) { mobileList.innerHTML = regs.map(r => `<div class="fav-slot-card" style="padding:10px 12px;margin-bottom:8px;"><img src="${r.poster||''}" style="width:42px;height:60px;border-radius:6px;object-fit:cover;background:#334155;flex-shrink:0;"><div style="flex:1;min-width:0;"><strong style="font-size:0.88rem;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.titulo}</strong><div style="font-size:0.75rem;color:var(--muted);">${r.creador} ${r.anio ? '('+r.anio+')' : ''}</div><div style="color:var(--star-active);font-size:0.78rem;">${renderEstrellasVisuales(r.calificacion)}</div>${r.comentario ? `<div style="font-size:0.74rem;color:var(--muted);font-style:italic;margin-top:2px;">"${r.comentario}"</div>` : ''}</div></div>`).join(''); } }
@@ -5420,11 +5806,37 @@ estado.discoverCatsActivas = [catKey]; } else { if (estado.discoverCatsActivas.i
 }
 }
 actualizarBotonesFiltroDiscoverUI(); renderizarDiscoverVista(); }
-function mostrarMasDiscover(secKey) { const actual = estado.discoverLimites[secKey] || 6; estado.discoverLimites[secKey] = Math.min(24, actual + 6); renderizarDiscoverVista(); }
-function abrirVistaDiscover(pushNav = true) { if (pushNav) registrarNavegacionApp('discover'); resetearBuscadoresYFormularios(); estado.categoria = 'discover'; actualizarBarraNavegacionMovil('m-btn-discover'); actualizarNavWebActiva();
-document.getElementById('vista-inicio').style.display = 'none'; document.getElementById('vista-categoria').style.display = 'none'; const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none'; const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none'; const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
-document.getElementById('vista-discover').style.display = 'block'; actualizarBotonesFiltroDiscoverUI(); if (!estado.discoverData) { precargarDiscoverEnSegundoPlano(estado.discoverSeed); } else { renderizarDiscoverVista(); }
-window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function desplazarCarruselDiscover(secKey, dir) {
+  const el = document.getElementById('carousel-track-' + secKey);
+  if (!el) return;
+  const amt = Math.max(340, el.clientWidth * 0.75);
+  el.scrollBy({ left: amt * dir, behavior: 'smooth' });
+}
+window.desplazarCarruselDiscover = desplazarCarruselDiscover;
+
+function abrirVistaDiscover(pushNav = true) {
+  if (pushNav) registrarNavegacionApp('discover');
+  resetearBuscadoresYFormularios();
+  estado.categoria = 'discover';
+  actualizarBarraNavegacionMovil('m-btn-discover');
+  actualizarNavWebActiva();
+  document.getElementById('vista-inicio').style.display = 'none';
+  document.getElementById('vista-categoria').style.display = 'none';
+  const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none';
+  const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
+  const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
+  document.getElementById('vista-discover').style.display = 'block';
+  actualizarBotonesFiltroDiscoverUI();
+  if (estado.userEmail && (!estado.amigosActividad || !Object.keys(estado.amigosActividad).length)) {
+    cargarActividadAmigos();
+  }
+  if (!estado.discoverData) {
+    precargarDiscoverEnSegundoPlano(estado.discoverSeed);
+  } else {
+    renderizarDiscoverVista();
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 function registrarDirectoDesdeDiscover(it) { let destCat = it.categoria || 'Peliculas'; let destSub = it.subcategoria || 'Películas'; if (destCat === 'Series' && destSub === 'Series Completas') destSub = 'Temporadas'; cambiarCat(destCat, destSub); setTimeout(() => { seleccionarItem({
 tituloOriginal: it.tituloOriginal || it.titulo, tituloIngles: it.tituloIngles || '', creador: it.creador || 'Desconocido', anio: it.anio || '', sinopsis: it.sinopsis || '', poster: it.poster || ''
 }); establecerFechaHoy(); }, 150); }
@@ -5434,15 +5846,15 @@ function renderizarDiscoverVista() {
   box.innerHTML = '';
   const l = userPrefs.lang || 'es';
   const secTitulos = {
-    peliculas: l === 'en' ? '🎬 Trending Movies & Releases' : '🎬 Películas en Tendencia y Estrenos',
-    documentales: l === 'en' ? '📹 Recent & Featured Documentaries' : '📹 Documentales Recientes y Destacados',
-    series: l === 'en' ? '📺 Airing & Trending Series' : '📺 Series en Emisión y Tendencia',
-    docuseries: l === 'en' ? '📽️ Acclaimed Docuseries' : '📽️ Docuseries Aclamadas',
-    musica: l === 'en' ? '🎵 Music (Trending Albums & Artists)' : '🎵 Música (Álbumes y Artistas en Tendencia)',
-    juegos: l === 'en' ? '🎮 Recent & Popular Games' : '🎮 Juegos Recientes y Populares',
-    libros: l === 'en' ? '📖 Featured Books & New Releases' : '📖 Libros Destacados y Novedades',
-    comics: l === 'en' ? '💥 Comics & Graphic Novels (Marvel & DC)' : '💥 Cómics y Novelas Gráficas (Marvel & DC)',
-    mangas: l === 'en' ? '⛩️ Trending & Ongoing Manga' : '⛩️ Mangas Más Leídos y en Publicación'
+    peliculas: l === 'en' ? '🎬 Trending & Popular Movies' : '🎬 Películas en Tendencia y Populares',
+    documentales: l === 'en' ? '📹 Featured & Acclaimed Documentaries' : '📹 Documentales Destacados y Aclamados',
+    series: l === 'en' ? '📺 Trending & Acclaimed Series' : '📺 Series en Tendencia y Aclamadas',
+    docuseries: l === 'en' ? '📽️ Acclaimed & Popular Docuseries' : '📽️ Docuseries Aclamadas y Populares',
+    musica: l === 'en' ? '🎵 Trending Music & Modern Classics' : '🎵 Música en Tendencia y Álbumes Destacados',
+    juegos: l === 'en' ? '🎮 Trending & Acclaimed Games' : '🎮 Juegos en Tendencia y Aclamados',
+    libros: l === 'en' ? '📖 Bestsellers & Featured Books' : '📖 Libros Más Leídos y Novedades',
+    comics: l === 'en' ? '💥 Graphic Novels & Comics (Marvel & DC)' : '💥 Cómics y Novelas Gráficas (Marvel & DC)',
+    mangas: l === 'en' ? '⛩️ Popular & Trending Manga' : '⛩️ Mangas Más Leídos y Populares'
   };
   const secciones = [
     { key: 'peliculas', titulo: secTitulos.peliculas, cat: 'Peliculas', sub: 'Películas' },
@@ -5477,15 +5889,30 @@ function renderizarDiscoverVista() {
       }
     }
     if (!items.length) return;
-    const maxDisponible = Math.min(items.length, 24);
-    const limiteActual = Math.min(estado.discoverLimites[sec.key] || 6, maxDisponible);
-    const itemsVisibles = items.slice(0, limiteActual);
-    const sTitle = document.createElement('div');
-    sTitle.className = 'discover-section-title';
-    sTitle.innerHTML = `<span>${sec.titulo}</span><span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${l === 'en' ? `Showing ${itemsVisibles.length} of ${maxDisponible}` : `Mostrando ${itemsVisibles.length} de ${maxDisponible}`}</span>`;
-    discFrag.appendChild(sTitle);
-    const grid = document.createElement('div');
-    grid.className = 'discover-grid';
+
+    const itemsVisibles = items.slice(0, 24);
+
+    const secWrapper = document.createElement('div');
+    secWrapper.className = 'discover-carousel-wrapper';
+
+    const header = document.createElement('div');
+    header.className = 'discover-carousel-header';
+    header.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="discover-section-title" style="margin:0;padding:0;">${sec.titulo}</span>
+        <span class="discover-count-badge">${itemsVisibles.length}</span>
+      </div>
+      <div class="discover-carousel-controls">
+        <button type="button" class="btn-carousel-nav" onclick="desplazarCarruselDiscover('${sec.key}', -1)" title="${l === 'en' ? 'Previous' : 'Anterior'}">‹</button>
+        <button type="button" class="btn-carousel-nav" onclick="desplazarCarruselDiscover('${sec.key}', 1)" title="${l === 'en' ? 'Next' : 'Siguiente'}">›</button>
+      </div>
+    `;
+    secWrapper.appendChild(header);
+
+    const track = document.createElement('div');
+    track.className = 'discover-carousel-track';
+    track.id = `carousel-track-${sec.key}`;
+
     const dGridFrag = document.createDocumentFragment();
     itemsVisibles.forEach(it => {
       const card = document.createElement('div');
@@ -5510,7 +5937,7 @@ function renderizarDiscoverVista() {
               ${creadorConRol ? `<span class="discover-creator-tag">${creadorConRol}</span>` : ''}
               ${it.anio ? `<span class="discover-year-sub">(${it.anio})</span>` : ''}
             </div>
-            ${obtenerBadgeAmigoActividad(titOrig, sec.cat)}
+            ${renderizarInsigniasAmigosDiscover(it, sec.cat)}
           </div>
           <div class="discover-actions">
             <button type="button" class="btn-add-discover ${yaEnLista ? 'added' : ''}">${btnAddTxt}</button>
@@ -5528,15 +5955,10 @@ function renderizarDiscoverVista() {
       card.querySelector('.btn-log-discover').onclick = () => registrarDirectoDesdeDiscover(it);
       dGridFrag.appendChild(card);
     });
-    grid.appendChild(dGridFrag);
-    discFrag.appendChild(grid);
-    if (limiteActual < maxDisponible) {
-      const sigCantidad = Math.min(24, limiteActual + 6);
-      const moreWrap = document.createElement('div');
-      moreWrap.className = 'discover-more-wrap';
-      moreWrap.innerHTML = `<button type="button" class="btn-discover-more" onclick="mostrarMasDiscover('${sec.key}')">➕ ${l === 'en' ? `Show more (+6 · view ${sigCantidad} of ${maxDisponible})` : `Mostrar más (+6 · ver ${sigCantidad} de ${maxDisponible})`}</button>`;
-      discFrag.appendChild(moreWrap);
-    }
+
+    track.appendChild(dGridFrag);
+    secWrapper.appendChild(track);
+    discFrag.appendChild(secWrapper);
   });
   box.appendChild(discFrag);
   aplicarEstilosGlobales();
