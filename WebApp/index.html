@@ -654,33 +654,55 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <button type="button" class="btn-modal-save" id="btn-auth-submit" onclick="enviarFormularioAuthSupabase()">Entrar</button> </div> </div> </div> </div>
 <script>
 // === MOTOR STANDALONE WEB / PWA + CONEXIÓN DIRECTA A SUPABASE (SIN DEPENDER DE APPS SCRIPT) ===
-let deferredPwaPrompt = null; window.IS_APPS_SCRIPT = !!(window.google && window.google.script && window.google.script.run); window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPwaPrompt = e; const btn = document.getElementById('btn-install-pwa');
-if (btn) btn.style.display = 'inline-grid'; }); window.addEventListener('appinstalled', () => { deferredPwaPrompt = null; const btn = document.getElementById('btn-install-pwa'); if (btn) btn.style.display = 'none';
-if (typeof mostrarToastPersonalizado === 'function') mostrarToastPersonalizado('🎉 ¡Mediary instalada como App en tu dispositivo!'); }); function instalarAppMediary() { if (deferredPwaPrompt) { deferredPwaPrompt.prompt(); deferredPwaPrompt.userChoice.then(() => { deferredPwaPrompt = null; });
-} else { mostrarToastPersonalizado('📱 Para instalar: abre el menú de tu navegador (⋮ o Compartir) y elige "Instalar aplicación" o "Agregar a pantalla de inicio".'); }
-}
-if (!window.IS_APPS_SCRIPT && 'serviceWorker' in navigator && location.protocol.startsWith('http')) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); }); }
-if (!window.IS_APPS_SCRIPT) { window.addEventListener('DOMContentLoaded', () => { const btnMig = document.getElementById('btn-migrar-sheets'); if (btnMig) btnMig.style.display = 'none'; }); const SB_URL = 'https://cpksupowjteqilsiklde.supabase.co/rest/v1';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwa3N1cG93anRlcWlsc2lrbGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NzIxMTUsImV4cCI6MjEwOTA0ODExNX0.-ojqwNdX7wXkCUGDU6wHComRNi2Uy-XrWket6zeEAVU'; const TMDB_K = '15d2ea6d0dc1d476efbca3eba2b9bbfb';
-const RAWG_K = 'c542e67aec3a4340908f9de9e86038af';
-let COMICVINE_K = localStorage.getItem('mediary_comicvine_key') || '';
-let MARVEL_K = localStorage.getItem('mediary_marvel_key') || '';
-let IGDB_CLIENT_ID = localStorage.getItem('mediary_igdb_client_id') || '';
-let IGDB_TOKEN = localStorage.getItem('mediary_igdb_token') || '';
-const uuid_ = () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
-const normEm_ = em => String(em || '').trim().toLowerCase(); const hashP_ = async raw => { if (!raw) return ''; const buf = new TextEncoder().encode(String(raw) + '_mb_salt_v1'); const dig = await crypto.subtle.digest('SHA-256', buf);
-return Array.from(new Uint8Array(dig)).map(b => ('0' + b.toString(16)).slice(-2)).join(''); }; const sbFetch_ = async (endpoint, method = 'GET', payload = null, prefer = 'return=representation') => {
-const opts = { method: method.toUpperCase(), headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': prefer } }; if (payload !== null) opts.body = JSON.stringify(payload); const r = await fetch(`${SB_URL}/${endpoint}`, opts);
-const txt = await r.text(); if (r.ok) { if (!txt) return []; try { return JSON.parse(txt); } catch (e) { return []; } }
-throw new Error(`Supabase (${r.status}): ${txt}`); }; const JSON_CACHE_ = new Map(); const getJson_ = async u => { if (JSON_CACHE_.has(u)) return JSON_CACHE_.get(u); try { if (u.includes('api.deezer.com')) { return await new Promise(resolve => { const cb = 'dz_cb_' + Math.random().toString(36).slice(2); const s = document.createElement('script');
-const timer = setTimeout(() => { delete window[cb]; s.remove(); resolve(null); }, 4500); window[cb] = data => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(data); }; s.onerror = () => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(null); };
-s.src = u + (u.includes('?') ? '&' : '?') + 'output=jsonp&callback=' + cb; document.body.appendChild(s); }); }
-if (u.includes('comicvine.gamespot.com')) { return await new Promise(resolve => { const cb = 'cv_cb_' + Math.random().toString(36).slice(2); const s = document.createElement('script');
-const timer = setTimeout(() => { delete window[cb]; s.remove(); resolve(null); }, 5000); window[cb] = data => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(data); }; s.onerror = () => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(null); };
-s.src = u + (u.includes('?') ? '&' : '?') + 'format=jsonp&json_callback=' + cb; document.body.appendChild(s); }); }
-const r = await fetch(u); const d = r.ok ? await r.json() : null; if (d && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d); return d; } catch (e) { return null; }
+var deferredPwaPrompt = null;
+window.IS_APPS_SCRIPT = !!(window.google && window.google.script && window.google.script.run);
+
+// Variables y Claves de APIs Globales (accesibles en toda la app)
+var TMDB_K = '15d2ea6d0dc1d476efbca3eba2b9bbfb';
+var RAWG_K = 'c542e67aec3a4340908f9de9e86038af';
+var COMICVINE_K = localStorage.getItem('mediary_comicvine_key') || '';
+var MARVEL_K = localStorage.getItem('mediary_marvel_key') || '';
+var IGDB_CLIENT_ID = localStorage.getItem('mediary_igdb_client_id') || '';
+var IGDB_TOKEN = localStorage.getItem('mediary_igdb_token') || '';
+window.TMDB_K = TMDB_K; window.RAWG_K = RAWG_K;
+window.COMICVINE_K = COMICVINE_K; window.MARVEL_K = MARVEL_K;
+window.IGDB_CLIENT_ID = IGDB_CLIENT_ID; window.IGDB_TOKEN = IGDB_TOKEN;
+
+var JSON_CACHE_ = new Map();
+var getJson_ = async u => {
+  if (JSON_CACHE_.has(u)) return JSON_CACHE_.get(u);
+  try {
+    if (u.includes('api.deezer.com')) {
+      return await new Promise(resolve => {
+        const cb = 'dz_cb_' + Math.random().toString(36).slice(2);
+        const s = document.createElement('script');
+        const timer = setTimeout(() => { delete window[cb]; s.remove(); resolve(null); }, 4500);
+        window[cb] = data => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(data); };
+        s.onerror = () => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(null); };
+        s.src = u + (u.includes('?') ? '&' : '?') + 'output=jsonp&callback=' + cb;
+        document.body.appendChild(s);
+      });
+    }
+    if (u.includes('comicvine.gamespot.com')) {
+      return await new Promise(resolve => {
+        const cb = 'cv_cb_' + Math.random().toString(36).slice(2);
+        const s = document.createElement('script');
+        const timer = setTimeout(() => { delete window[cb]; s.remove(); resolve(null); }, 5000);
+        window[cb] = data => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(data); };
+        s.onerror = () => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(null); };
+        s.src = u + (u.includes('?') ? '&' : '?') + 'format=jsonp&json_callback=' + cb;
+        document.body.appendChild(s);
+      });
+    }
+    const r = await fetch(u);
+    const d = r.ok ? await r.json() : null;
+    if (d && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d);
+    return d;
+  } catch (e) { return null; }
 };
-const getSteamJson_ = async u => {
+window.getJson_ = getJson_;
+
+var getSteamJson_ = async u => {
   if (JSON_CACHE_.has(u)) return JSON_CACHE_.get(u);
   try {
     const r = await fetch(u);
@@ -701,8 +723,12 @@ const getSteamJson_ = async u => {
   } catch (e2) {}
   return null;
 };
-const getIgdbGames_ = async (query, limit = 6) => {
-  if (!IGDB_CLIENT_ID || !IGDB_TOKEN) return null;
+window.getSteamJson_ = getSteamJson_;
+
+var getIgdbGames_ = async (query, limit = 6) => {
+  const cId = window.IGDB_CLIENT_ID || IGDB_CLIENT_ID;
+  const tok = window.IGDB_TOKEN || IGDB_TOKEN;
+  if (!cId || !tok) return null;
   const cacheK = `igdb_${query}_${limit}`;
   if (JSON_CACHE_.has(cacheK)) return JSON_CACHE_.get(cacheK);
   try {
@@ -711,8 +737,8 @@ const getIgdbGames_ = async (query, limit = 6) => {
     const opts = {
       method: 'POST',
       headers: {
-        'Client-ID': IGDB_CLIENT_ID,
-        'Authorization': 'Bearer ' + IGDB_TOKEN,
+        'Client-ID': cId,
+        'Authorization': 'Bearer ' + tok,
         'Accept': 'application/json'
       },
       body: body
@@ -731,7 +757,23 @@ const getIgdbGames_ = async (query, limit = 6) => {
     }
   } catch (err) {}
   return null;
-}; const fmtFecha_ = v => { if (!v || v === 'Sin fecha' || v === '' || v === 'undefined') return 'Sin fecha'; if (v instanceof Date) return `${String(v.getDate()).padStart(2,'0')}/${String(v.getMonth()+1).padStart(2,'0')}/${v.getFullYear()}`; const s = String(v).trim(); if (s === 'Sin fecha') return 'Sin fecha';
+};
+window.getIgdbGames_ = getIgdbGames_;
+
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredPwaPrompt = e; const btn = document.getElementById('btn-install-pwa');
+if (btn) btn.style.display = 'inline-grid'; }); window.addEventListener('appinstalled', () => { deferredPwaPrompt = null; const btn = document.getElementById('btn-install-pwa'); if (btn) btn.style.display = 'none';
+if (typeof mostrarToastPersonalizado === 'function') mostrarToastPersonalizado('🎉 ¡Mediary instalada como App en tu dispositivo!'); }); function instalarAppMediary() { if (deferredPwaPrompt) { deferredPwaPrompt.prompt(); deferredPwaPrompt.userChoice.then(() => { deferredPwaPrompt = null; });
+} else { mostrarToastPersonalizado('📱 Para instalar: abre el menú de tu navegador (⋮ o Compartir) y elige "Instalar aplicación" o "Agregar a pantalla de inicio".'); }
+}
+if (!window.IS_APPS_SCRIPT && 'serviceWorker' in navigator && location.protocol.startsWith('http')) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); }); }
+if (!window.IS_APPS_SCRIPT) { window.addEventListener('DOMContentLoaded', () => { const btnMig = document.getElementById('btn-migrar-sheets'); if (btnMig) btnMig.style.display = 'none'; }); const SB_URL = 'https://cpksupowjteqilsiklde.supabase.co/rest/v1';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwa3N1cG93anRlcWlsc2lrbGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NzIxMTUsImV4cCI6MjEwOTA0ODExNX0.-ojqwNdX7wXkCUGDU6wHComRNi2Uy-XrWket6zeEAVU';
+const uuid_ = () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
+const normEm_ = em => String(em || '').trim().toLowerCase(); const hashP_ = async raw => { if (!raw) return ''; const buf = new TextEncoder().encode(String(raw) + '_mb_salt_v1'); const dig = await crypto.subtle.digest('SHA-256', buf);
+return Array.from(new Uint8Array(dig)).map(b => ('0' + b.toString(16)).slice(-2)).join(''); }; const sbFetch_ = async (endpoint, method = 'GET', payload = null, prefer = 'return=representation') => {
+const opts = { method: method.toUpperCase(), headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': prefer } }; if (payload !== null) opts.body = JSON.stringify(payload); const r = await fetch(`${SB_URL}/${endpoint}`, opts);
+const txt = await r.text(); if (r.ok) { if (!txt) return []; try { return JSON.parse(txt); } catch (e) { return []; } }
+throw new Error(`Supabase (${r.status}): ${txt}`); }; const fmtFecha_ = v => { if (!v || v === 'Sin fecha' || v === '' || v === 'undefined') return 'Sin fecha'; if (v instanceof Date) return `${String(v.getDate()).padStart(2,'0')}/${String(v.getMonth()+1).padStart(2,'0')}/${v.getFullYear()}`; const s = String(v).trim(); if (s === 'Sin fecha') return 'Sin fecha';
 if (s.startsWith('Aún ') || s.startsWith('Aun ') || s.startsWith('Still ') || s.includes('viendo') || s.includes('escuchando') || s.includes('jugando') || s.includes('leyendo')) return s;
 if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/'); return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}/${p[2]}`; }
 if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const p = s.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; }
@@ -3535,9 +3577,27 @@ function asegurarPuntoFinal(str) { if (!str) return ''; const s = str.trim(); if
 function actualizarNavWebActiva() { const c = estado.categoria, s = estado.subcategoria, enWl = !!CONFIG[c] && esSubcategoriaWatchlist(s); document.querySelectorAll('.nav-sec-btn').forEach(b => b.classList.remove('active'));
 document.querySelectorAll('.nav-cat-card').forEach(b => b.classList.toggle('active', b.dataset.cat === c)); if (c === 'inicio') document.getElementById('tab-btn-inicio')?.classList.add('active'); else if (c === 'discover') document.getElementById('tab-btn-discover')?.classList.add('active');
 else if (c === 'amigos') document.getElementById('tab-btn-amigos')?.classList.add('active'); else if (c === 'perfil') document.getElementById('tab-btn-perfil')?.classList.add('active'); else if (c === 'watchlists' || enWl) document.getElementById('tab-btn-listas')?.classList.add('active'); }
-function abrirVistaPerfil(pushNav = true) { if (pushNav) registrarNavegacionApp('perfil'); resetearBuscadoresYFormularios(); estado.categoria = 'perfil'; actualizarBarraNavegacionMovil('m-btn-perfil'); actualizarNavWebActiva();
-document.getElementById('vista-inicio').style.display = 'none'; document.getElementById('vista-categoria').style.display = 'none'; document.getElementById('vista-discover').style.display = 'none'; const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none'; const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
-document.getElementById('vista-perfil').style.display = 'block'; renderizarCabeceraPerfil(); renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function abrirVistaPerfil(pushNav = true) {
+  try {
+    if (pushNav) registrarNavegacionApp('perfil');
+    resetearBuscadoresYFormularios();
+    estado.categoria = 'perfil';
+    actualizarBarraNavegacionMovil('m-btn-perfil');
+    actualizarNavWebActiva();
+    const vIni = document.getElementById('vista-inicio'); if (vIni) vIni.style.display = 'none';
+    const vCat = document.getElementById('vista-categoria'); if (vCat) vCat.style.display = 'none';
+    const vDis = document.getElementById('vista-discover'); if (vDis) vDis.style.display = 'none';
+    const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
+    const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
+    const vPer = document.getElementById('vista-perfil'); if (vPer) vPer.style.display = 'block';
+    renderizarCabeceraPerfil();
+    renderizarFavoritosPerfil();
+    calcularYMostrarEstadisticasPerfil();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    console.error('Error al abrir vista perfil:', err);
+  }
+}
 function abrirModalPerfil() { abrirVistaPerfil(); }
 const cerrarModalPerfil = () => {}; function parsearFechaAObjeto(str) { if (!str || str === 'Sin fecha') return null; const s = String(str).trim(); const m = s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/); if (m) return new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1])); const ts = timestampDeFecha(s); return ts > 0 ? new Date(ts) : null; }
 function normalizarNombreParaDesglose(cat, sub) { const c = cat || '', s = sub || ''; if (c === 'Peliculas') { if (s.toLowerCase().includes('docu')) return 'documental'; return 'película'; }
@@ -3714,21 +3774,28 @@ function seleccionarFontVisual(val) { document.getElementById('cfg-font').value 
 function seleccionarSizeVisual(val) { document.getElementById('cfg-font-size').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarThemeVisual(val) { document.getElementById('cfg-theme').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function abrirModalConfiguracion() { 
-  document.getElementById('cfg-lang').value = userPrefs.lang; 
-  document.getElementById('cfg-font').value = userPrefs.font; 
-  document.getElementById('cfg-font-size').value = userPrefs.fontSize; 
-  document.getElementById('cfg-theme').value = userPrefs.theme;
-  document.getElementById('cfg-emojis').checked = userPrefs.showEmojis; 
-  const cvInp = document.getElementById('cfg-comicvine-key');
-  if (cvInp) cvInp.value = COMICVINE_K || '';
-  const mvInp = document.getElementById('cfg-marvel-key');
-  if (mvInp) mvInp.value = MARVEL_K || '';
-  const igdbIdInp = document.getElementById('cfg-igdb-client-id');
-  if (igdbIdInp) igdbIdInp.value = IGDB_CLIENT_ID || '';
-  const igdbTokInp = document.getElementById('cfg-igdb-token');
-  if (igdbTokInp) igdbTokInp.value = IGDB_TOKEN || '';
-  actualizarTarjetasVisualesConfig(); 
-  document.getElementById('modal-configuracion').style.display = 'flex'; 
+  try {
+    if (userPrefs) {
+      if (document.getElementById('cfg-lang')) document.getElementById('cfg-lang').value = userPrefs.lang || 'es';
+      if (document.getElementById('cfg-font')) document.getElementById('cfg-font').value = userPrefs.font || "'Plus Jakarta Sans', sans-serif";
+      if (document.getElementById('cfg-font-size')) document.getElementById('cfg-font-size').value = userPrefs.fontSize || '100%';
+      if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = userPrefs.theme || 'default';
+      if (document.getElementById('cfg-emojis')) document.getElementById('cfg-emojis').checked = !!userPrefs.showEmojis;
+    }
+    const cvInp = document.getElementById('cfg-comicvine-key');
+    if (cvInp) cvInp.value = window.COMICVINE_K || COMICVINE_K || '';
+    const mvInp = document.getElementById('cfg-marvel-key');
+    if (mvInp) mvInp.value = window.MARVEL_K || MARVEL_K || '';
+    const igdbIdInp = document.getElementById('cfg-igdb-client-id');
+    if (igdbIdInp) igdbIdInp.value = window.IGDB_CLIENT_ID || IGDB_CLIENT_ID || '';
+    const igdbTokInp = document.getElementById('cfg-igdb-token');
+    if (igdbTokInp) igdbTokInp.value = window.IGDB_TOKEN || IGDB_TOKEN || '';
+    actualizarTarjetasVisualesConfig(); 
+    const modalCfg = document.getElementById('modal-configuracion');
+    if (modalCfg) modalCfg.style.display = 'flex';
+  } catch(err) {
+    console.error('Error al abrir modal configuracion:', err);
+  }
 }
 function aplicarConfiguracionEnVivo() { userPrefs.font = document.getElementById('cfg-font').value; userPrefs.fontSize = document.getElementById('cfg-font-size').value;
 userPrefs.theme = document.getElementById('cfg-theme').value; userPrefs.showEmojis = document.getElementById('cfg-emojis').checked; aplicarEstilosGlobales(); }
@@ -3744,31 +3811,38 @@ function cambiarIdiomaEnVivo() {
   else { renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 }
 function guardarYCerrarConfiguracion() { 
-  aplicarConfiguracionEnVivo(); 
-  userPrefs.lang = document.getElementById('cfg-lang').value; 
-  guardarPreferenciasLocales();
-  const cvInp = document.getElementById('cfg-comicvine-key');
-  if (cvInp) {
-    COMICVINE_K = cvInp.value.trim();
-    localStorage.setItem('mediary_comicvine_key', COMICVINE_K);
+  try {
+    aplicarConfiguracionEnVivo(); 
+    if (document.getElementById('cfg-lang')) {
+      userPrefs.lang = document.getElementById('cfg-lang').value;
+    }
+    guardarPreferenciasLocales();
+    const cvInp = document.getElementById('cfg-comicvine-key');
+    if (cvInp) {
+      window.COMICVINE_K = COMICVINE_K = cvInp.value.trim();
+      localStorage.setItem('mediary_comicvine_key', COMICVINE_K);
+    }
+    const mvInp = document.getElementById('cfg-marvel-key');
+    if (mvInp) {
+      window.MARVEL_K = MARVEL_K = mvInp.value.trim();
+      localStorage.setItem('mediary_marvel_key', MARVEL_K);
+    }
+    const igdbIdInp = document.getElementById('cfg-igdb-client-id');
+    if (igdbIdInp) {
+      window.IGDB_CLIENT_ID = IGDB_CLIENT_ID = igdbIdInp.value.trim();
+      localStorage.setItem('mediary_igdb_client_id', IGDB_CLIENT_ID);
+    }
+    const igdbTokInp = document.getElementById('cfg-igdb-token');
+    if (igdbTokInp) {
+      window.IGDB_TOKEN = IGDB_TOKEN = igdbTokInp.value.trim();
+      localStorage.setItem('mediary_igdb_token', IGDB_TOKEN);
+    }
+    const mCfg = document.getElementById('modal-configuracion');
+    if (mCfg) mCfg.style.display = 'none'; 
+    mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Settings saved!' : '¡Configuración guardada!'); 
+  } catch(err) {
+    console.error('Error al guardar configuracion:', err);
   }
-  const mvInp = document.getElementById('cfg-marvel-key');
-  if (mvInp) {
-    MARVEL_K = mvInp.value.trim();
-    localStorage.setItem('mediary_marvel_key', MARVEL_K);
-  }
-  const igdbIdInp = document.getElementById('cfg-igdb-client-id');
-  if (igdbIdInp) {
-    IGDB_CLIENT_ID = igdbIdInp.value.trim();
-    localStorage.setItem('mediary_igdb_client_id', IGDB_CLIENT_ID);
-  }
-  const igdbTokInp = document.getElementById('cfg-igdb-token');
-  if (igdbTokInp) {
-    IGDB_TOKEN = igdbTokInp.value.trim();
-    localStorage.setItem('mediary_igdb_token', IGDB_TOKEN);
-  }
-  document.getElementById('modal-configuracion').style.display = 'none'; 
-  mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Settings saved!' : '¡Configuración guardada!'); 
 }
 function restablecerConfiguracionPorDefecto() { userPrefs = { font: "'Plus Jakarta Sans', sans-serif", fontSize: "100%", theme: "default", showEmojis: true, lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
 // --- IMPORTAR Y EXPORTAR ARCHIVOS DE TEXTO ---
@@ -5488,7 +5562,7 @@ categoria: 'Musica', subcategoria: 'Artistas/Grupos', titulo: nombreArtista.trim
 }; document.getElementById('msg-nuevo-artista').innerHTML = `¿Deseas comenzar el seguimiento de <strong>"${nombreArtista.trim()}"</strong> en tu lista de <em>Artistas/Grupos</em>?`;
 document.getElementById('btn-confirmar-nuevo-artista').onclick = confirmarCreacionNuevoArtista; document.getElementById('modal-nuevo-artista').style.display = 'flex'; return true; }
 return false; }
-function cerrarModalNuevoArtista() { document.getElementById('modal-nuevo-artista').style.display = 'none'; estado.artistaPendienteSugerido = null; cargarRegistros(); }
+function cerrarModalNuevoArtista() { document.getElementById('modal-nuevo-artista').style.display = 'none'; estado.artistaPendienteSugerido = null; }
 function confirmarCreacionNuevoArtista() { if (!estado.artistaPendienteSugerido) return; const payload = Object.assign({}, estado.artistaPendienteSugerido); document.getElementById('btn-confirmar-nuevo-artista').textContent = 'Agregando... ⏳'; google.script.run.withSuccessHandler(() => {
 document.getElementById('btn-confirmar-nuevo-artista').textContent = 'Sí, comenzar registro'; document.getElementById('modal-nuevo-artista').style.display = 'none'; estado.artistaPendienteSugerido = null; mostrarToastPersonalizado(`¡Artista "${payload.titulo}" añadido a seguimiento!`);
 cargarRegistros(); }).guardarRegistro(payload, estado.userEmail); }
