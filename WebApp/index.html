@@ -499,6 +499,22 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div> <strong style="font-size:0.88rem; color:#f8f8f2; display:block;">Dracula Dark</strong> <span style="font-size:0.73rem; color:#bd93f9;">Púrpura + Rosa</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="espresso" onclick="seleccionarThemeVisual('espresso')" style="background:#1c1917; border-color:#44403c;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Café Espresso | Secundario: Ámbar"><circle cx="20" cy="20" r="19" fill="#44403c"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#f59e0b" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#fafaf9; display:block;">Warm Espresso</strong> <span style="font-size:0.73rem; color:#a8a29e;">Café + Ámbar</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="nordic-light" onclick="seleccionarThemeVisual('nordic-light')" style="background:#f8fafc; border-color:#cbd5e1;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Blanco Nórdico | Secundario: Azul Cielo"><circle cx="20" cy="20" r="19" fill="#f1f5f9"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#0284c7" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#0f172a; display:block;">Nordic Snow</strong> <span style="font-size:0.73rem; color:#64748b;">Blanco + Azul Cielo</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="creme-latte" onclick="seleccionarThemeVisual('creme-latte')" style="background:#fdfbf7; border-color:#e7e5e4;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Crema Cálido | Secundario: Ámbar Caramelo"><circle cx="20" cy="20" r="19" fill="#f7f3ea"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#d97706" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#292524; display:block;">Cozy Latte</strong> <span style="font-size:0.73rem; color:#78716c;">Marfil + Ámbar Cálido</span> </div> </button> </div> </div>
 <div class="form-group"> <div class="switch-wrap"> <span class="switch-label" data-i18n="cfg_emojis_label">Mostrar emojis en la interfaz</span>
 <label class="switch-toggle"> <input type="checkbox" id="cfg-emojis" checked onchange="aplicarConfiguracionEnVivo()"> <span class="switch-slider"></span> </label> </div> </div> <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;"> <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;"> <div style="display:flex; align-items:center; gap:8px;"> <span>☁️</span> <span data-i18n="cfg_account_title">Cuenta y Sincronización Supabase Cloud</span> </div> <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;">✓ Supabase Cloud Activo</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;" id="cfg-account-status" data-i18n="cfg_account_hint">Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.</p> <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;"> <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span> </button> <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:rgba(16,185,129,0.45); color:#34d399; background:rgba(16,185,129,0.1); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets"> <span data-i18n="cfg_btn_migrar">☁️ Migrar mis datos de Google Sheets a Supabase</span> </button> </div>
+<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;">
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; gap:8px;">
+    <span>💥</span> <span>APIs de Cómics (Comic Vine &amp; Marvel)</span>
+  </div>
+  <p style="font-size:0.78rem; color:var(--muted); margin-bottom:10px;">
+    Conecta tus claves para habilitar búsquedas y fichas técnicas automáticas directas desde Comic Vine (GameSpot) y Marvel Comics:
+  </p>
+  <div style="margin-bottom:10px;">
+    <label style="font-size:0.75rem; color:var(--muted); font-weight:600; display:block; margin-bottom:3px;">Comic Vine API Key (GameSpot):</label>
+    <input type="text" id="cfg-comicvine-key" class="form-input" style="font-size:0.82rem;" placeholder="Pega tu API key de Comic Vine aquí..." value="">
+  </div>
+  <div>
+    <label style="font-size:0.75rem; color:var(--muted); font-weight:600; display:block; margin-bottom:3px;">Marvel Comics API Public Key:</label>
+    <input type="text" id="cfg-marvel-key" class="form-input" style="font-size:0.82rem;" placeholder="Pega tu Public Key de Marvel aquí..." value="">
+  </div>
+</div>
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
 
@@ -626,7 +642,10 @@ if (typeof mostrarToastPersonalizado === 'function') mostrarToastPersonalizado('
 if (!window.IS_APPS_SCRIPT && 'serviceWorker' in navigator && location.protocol.startsWith('http')) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); }); }
 if (!window.IS_APPS_SCRIPT) { window.addEventListener('DOMContentLoaded', () => { const btnMig = document.getElementById('btn-migrar-sheets'); if (btnMig) btnMig.style.display = 'none'; }); const SB_URL = 'https://cpksupowjteqilsiklde.supabase.co/rest/v1';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwa3N1cG93anRlcWlsc2lrbGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NzIxMTUsImV4cCI6MjEwOTA0ODExNX0.-ojqwNdX7wXkCUGDU6wHComRNi2Uy-XrWket6zeEAVU'; const TMDB_K = '15d2ea6d0dc1d476efbca3eba2b9bbfb';
-const RAWG_K = 'c542e67aec3a4340908f9de9e86038af'; const uuid_ = () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
+const RAWG_K = 'c542e67aec3a4340908f9de9e86038af';
+let COMICVINE_K = localStorage.getItem('mediary_comicvine_key') || '';
+let MARVEL_K = localStorage.getItem('mediary_marvel_key') || '';
+const uuid_ = () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
 const normEm_ = em => String(em || '').trim().toLowerCase(); const hashP_ = async raw => { if (!raw) return ''; const buf = new TextEncoder().encode(String(raw) + '_mb_salt_v1'); const dig = await crypto.subtle.digest('SHA-256', buf);
 return Array.from(new Uint8Array(dig)).map(b => ('0' + b.toString(16)).slice(-2)).join(''); }; const sbFetch_ = async (endpoint, method = 'GET', payload = null, prefer = 'return=representation') => {
 const opts = { method: method.toUpperCase(), headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': prefer } }; if (payload !== null) opts.body = JSON.stringify(payload); const r = await fetch(`${SB_URL}/${endpoint}`, opts);
@@ -634,6 +653,9 @@ const txt = await r.text(); if (r.ok) { if (!txt) return []; try { return JSON.p
 throw new Error(`Supabase (${r.status}): ${txt}`); }; const JSON_CACHE_ = new Map(); const getJson_ = async u => { if (JSON_CACHE_.has(u)) return JSON_CACHE_.get(u); try { if (u.includes('api.deezer.com')) { return await new Promise(resolve => { const cb = 'dz_cb_' + Math.random().toString(36).slice(2); const s = document.createElement('script');
 const timer = setTimeout(() => { delete window[cb]; s.remove(); resolve(null); }, 4500); window[cb] = data => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(data); }; s.onerror = () => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(null); };
 s.src = u + (u.includes('?') ? '&' : '?') + 'output=jsonp&callback=' + cb; document.body.appendChild(s); }); }
+if (u.includes('comicvine.gamespot.com')) { return await new Promise(resolve => { const cb = 'cv_cb_' + Math.random().toString(36).slice(2); const s = document.createElement('script');
+const timer = setTimeout(() => { delete window[cb]; s.remove(); resolve(null); }, 5000); window[cb] = data => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(data); }; s.onerror = () => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(null); };
+s.src = u + (u.includes('?') ? '&' : '?') + 'format=jsonp&json_callback=' + cb; document.body.appendChild(s); }); }
 const r = await fetch(u); const d = r.ok ? await r.json() : null; if (d && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d); return d; } catch (e) { return null; }
 }; const fmtFecha_ = v => { if (!v || v === 'Sin fecha' || v === '' || v === 'undefined') return 'Sin fecha'; if (v instanceof Date) return `${String(v.getDate()).padStart(2,'0')}/${String(v.getMonth()+1).padStart(2,'0')}/${v.getFullYear()}`; const s = String(v).trim(); if (s === 'Sin fecha') return 'Sin fecha';
 if (s.startsWith('Aún ') || s.startsWith('Aun ') || s.startsWith('Still ') || s.includes('viendo') || s.includes('escuchando') || s.includes('jugando') || s.includes('leyendo')) return s;
@@ -1544,19 +1566,54 @@ return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) {
       res.genero = b.categories?.join(', ') || 'Literatura';
       res.sinopsis = b.description ? b.description.substring(0, 380) + '...' : res.sinopsis;
     } else if (tipoFicha === 'comics') {
-      const [olDoc, gbItem] = await Promise.all([
-        getJson_(`https://openlibrary.org/search.json?title=${q}&limit=1`),
-        getJson_(`https://www.googleapis.com/books/v1/volumes?q=${q}+comic&maxResults=1`)
+      const [cvRes, mvRes, olDoc, gbItem] = await Promise.all([
+        COMICVINE_K ? getJson_(`https://comicvine.gamespot.com/api/search/?api_key=${COMICVINE_K}&resources=volume,issue&query=${q}&limit=1`).catch(() => null) : Promise.resolve(null),
+        MARVEL_K ? getJson_(`https://gateway.marvel.com/v1/public/comics?titleStartsWith=${q}&apikey=${MARVEL_K}&limit=1`).catch(() => null) : Promise.resolve(null),
+        getJson_(`https://openlibrary.org/search.json?title=${q}&limit=1`).catch(() => null),
+        getJson_(`https://www.googleapis.com/books/v1/volumes?q=${q}+comic&maxResults=1`).catch(() => null)
       ]);
+      const cv = cvRes?.results?.[0];
+      const mv = mvRes?.data?.results?.[0];
       const d = olDoc?.docs?.[0];
       const b = gbItem?.items?.[0]?.volumeInfo || {};
-      res.poster = (b.imageLinks?.thumbnail || '').replace('http://', 'https://') || (d?.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg` : '');
-      res.fechaSalida = b.publishedDate ? fmtFecha_(b.publishedDate) : (d?.first_publish_year ? String(d.first_publish_year) : 'No registrada');
-      res.editorial = b.publisher || d?.publisher?.[0] || (/marvel/i.test(cleanTit) ? 'Marvel Comics' : (/dc/i.test(cleanTit) ? 'DC Comics' : 'Editorial de cómics'));
-      const authors = b.authors || d?.author_name || [];
-      res.escritores = authors[0] || creador || 'No especificado';
-      res.dibujantes = authors.length > 1 ? authors.slice(1).join(', ') : 'No especificado';
-      res.sinopsis = b.description || (d?.subject ? d.subject.slice(0, 4).join(', ') : 'Cómic / Novela gráfica.');
+
+      if (mv) {
+        res.editorial = 'Marvel Comics';
+        const onSale = (mv.dates || []).find(x => x.type === 'onsaleDate')?.date;
+        if (onSale) res.fechaSalida = fmtFecha_(onSale.substring(0, 10));
+        const writers = (mv.creators?.items || []).filter(c => c.role === 'writer').map(c => c.name);
+        const pencilers = (mv.creators?.items || []).filter(c => ['penciler', 'penciller', 'artist', 'inker'].includes(c.role)).map(c => c.name);
+        if (writers.length) res.escritores = writers.join(', ');
+        if (pencilers.length) res.dibujantes = pencilers.join(', ');
+        if (mv.description) res.sinopsis = mv.description.replace(/<[^>]*>?/gm, '').trim();
+        if (mv.thumbnail?.path && mv.thumbnail?.extension) res.poster = `${mv.thumbnail.path}/portrait_incredible.${mv.thumbnail.extension}`.replace('http://', 'https://');
+      } else if (cv) {
+        if (cv.publisher?.name) res.editorial = cv.publisher.name;
+        const dateStr = cv.cover_date || (cv.start_year ? String(cv.start_year) : '');
+        if (dateStr) res.fechaSalida = fmtFecha_(dateStr);
+        if (cv.deck || cv.description) res.sinopsis = cv.deck || cv.description.replace(/<[^>]*>?/gm, '').trim();
+        if (cv.image?.medium_url || cv.image?.original_url) res.poster = cv.image.medium_url || cv.image.original_url;
+      }
+
+      if (res.poster.includes('data:image') || !res.poster) {
+        res.poster = (b.imageLinks?.thumbnail || '').replace('http://', 'https://') || (d?.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg` : res.poster);
+      }
+      if (res.fechaSalida === 'No registrada') {
+        res.fechaSalida = b.publishedDate ? fmtFecha_(b.publishedDate) : (d?.first_publish_year ? String(d.first_publish_year) : res.fechaSalida);
+      }
+      if (res.editorial === 'Editorial de cómics' || !res.editorial) {
+        res.editorial = b.publisher || d?.publisher?.[0] || (/marvel/i.test(cleanTit) ? 'Marvel Comics' : (/dc/i.test(cleanTit) ? 'DC Comics' : 'Editorial de cómics'));
+      }
+      if (res.escritores === 'No especificado' || !res.escritores) {
+        const authors = b.authors || d?.author_name || [];
+        res.escritores = authors[0] || creador || 'No especificado';
+        if (authors.length > 1 && (res.dibujantes === 'No especificado' || !res.dibujantes)) {
+          res.dibujantes = authors.slice(1).join(', ');
+        }
+      }
+      if (!res.sinopsis || res.sinopsis === 'Sin sinopsis disponible.') {
+        res.sinopsis = b.description || (d?.subject ? d.subject.slice(0, 4).join(', ') : 'Cómic / Novela gráfica.');
+      }
     } else if (tipoFicha === 'manga') {
       const kRes = await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&include=genres,categories&page[limit]=1`);
       const mItem = kRes?.data?.[0];
@@ -1619,11 +1676,118 @@ if (p?.data?.attributes?.name && !mangakas.includes(p.data.attributes.name)) man
 } catch (e) {}
 return { tituloOriginal: tRom || 'Manga', tituloIngles: (tEng && tEng.toLowerCase() !== tRom.toLowerCase()) ? tEng : '', creador: mangakas.length ? mangakas.join(', ') : 'Mangaka', anio: a.startDate?.substring(0, 4) || '', sinopsis: a.synopsis ? a.synopsis.substring(0, 160) + '...' : 'Manga japonés.', poster: a.posterImage?.medium || a.posterImage?.small || '' };
 })); }
-const isC = sub === 'Cómics' || sub === 'Cómic' || sub === 'To Read: Cómics'; const ol = await getJson_(`https://openlibrary.org/search.json?${isC ? 'title=' + q : 'q=' + q}&limit=6`); if (ol?.docs?.length) { return ol.docs.slice(0, 6).map(d => ({
-tituloOriginal: d.title || 'Sin título', tituloIngles: '', creador: d.author_name?.length ? d.author_name.join(', ') : (isC ? 'Escritor / Dibujante' : 'Autor desconocido'),
-anio: d.first_publish_year ? String(d.first_publish_year) : '', sinopsis: d.publisher ? `Editorial: ${d.publisher[0]}` : (isC ? 'Cómic / Novela gráfica' : 'Libro literario'), poster: d.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-${isC ? 'L' : 'M'}.jpg` : ''
+const isC = sub === 'Cómics' || sub === 'Cómic' || sub === 'To Read: Cómics';
+if (isC) {
+  const comicVinePromise = COMICVINE_K
+    ? getJson_(`https://comicvine.gamespot.com/api/search/?api_key=${COMICVINE_K}&resources=volume,issue&query=${q}&limit=6`).catch(() => null)
+    : Promise.resolve(null);
+  const marvelPromise = MARVEL_K
+    ? getJson_(`https://gateway.marvel.com/v1/public/comics?titleStartsWith=${q}&apikey=${MARVEL_K}&limit=6`).catch(() => null)
+    : Promise.resolve(null);
+  const olPromise = getJson_(`https://openlibrary.org/search.json?title=${q}&limit=6`).catch(() => null);
+  const gbPromise = getJson_(`https://www.googleapis.com/books/v1/volumes?q=${q}+comic&maxResults=6`).catch(() => null);
+
+  const [cvRes, mvRes, olRes, gbRes] = await Promise.all([
+    comicVinePromise, marvelPromise, olPromise, gbPromise
+  ]);
+
+  const resultadosComics = [];
+  const vistos = new Set();
+
+  if (cvRes?.results?.length) {
+    cvRes.results.forEach(it => {
+      const tit = it.name || it.volume?.name || '';
+      if (!tit) return;
+      const pub = it.publisher?.name || 'Cómic';
+      const anio = it.start_year || (it.cover_date ? it.cover_date.substring(0, 4) : '');
+      const poster = it.image?.medium_url || it.image?.small_url || it.image?.original_url || '';
+      const sin = it.deck || (it.description ? it.description.replace(/<[^>]*>?/gm, '').substring(0, 220) : `Editorial: ${pub}`);
+      const k = tit.toLowerCase().trim();
+      if (!vistos.has(k)) {
+        vistos.add(k);
+        resultadosComics.push({
+          idRef: it.id,
+          tituloOriginal: tit,
+          tituloIngles: '',
+          creador: pub,
+          anio: anio ? String(anio) : '',
+          sinopsis: sin,
+          poster: poster
+        });
+      }
+    });
+  }
+
+  if (mvRes?.data?.results?.length) {
+    mvRes.data.results.forEach(it => {
+      const tit = it.title || '';
+      if (!tit) return;
+      const creators = (it.creators?.items || []).filter(c => ['writer', 'penciler', 'penciller', 'artist'].includes(c.role)).map(c => c.name);
+      const cr = creators.length ? creators.join(', ') : 'Marvel Comics';
+      const onSale = (it.dates || []).find(d => d.type === 'onsaleDate')?.date;
+      const anio = onSale ? onSale.substring(0, 4) : '';
+      const poster = (it.thumbnail?.path && it.thumbnail?.extension) ? `${it.thumbnail.path}/portrait_incredible.${it.thumbnail.extension}`.replace('http://', 'https://') : '';
+      const sin = it.description ? it.description.replace(/<[^>]*>?/gm, '').substring(0, 220) : `Editorial: Marvel Comics`;
+      const k = tit.toLowerCase().trim();
+      if (!vistos.has(k)) {
+        vistos.add(k);
+        resultadosComics.push({
+          idRef: it.id,
+          tituloOriginal: tit,
+          tituloIngles: '',
+          creador: cr,
+          anio: anio,
+          sinopsis: sin,
+          poster: poster
+        });
+      }
+    });
+  }
+
+  if (olRes?.docs?.length) {
+    olRes.docs.forEach(d => {
+      const tit = d.title || '';
+      const k = tit.toLowerCase().trim();
+      if (!vistos.has(k) && resultadosComics.length < 8) {
+        vistos.add(k);
+        resultadosComics.push({
+          tituloOriginal: tit,
+          tituloIngles: '',
+          creador: d.author_name?.length ? d.author_name.join(', ') : 'Escritor / Dibujante',
+          anio: d.first_publish_year ? String(d.first_publish_year) : '',
+          sinopsis: d.publisher ? `Editorial: ${d.publisher[0]}` : 'Cómic / Novela gráfica',
+          poster: d.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg` : ''
+        });
+      }
+    });
+  }
+
+  if (gbRes?.items?.length) {
+    gbRes.items.forEach(b => {
+      const inf = b.volumeInfo || {};
+      const tit = inf.title || '';
+      const k = tit.toLowerCase().trim();
+      if (!vistos.has(k) && resultadosComics.length < 10) {
+        vistos.add(k);
+        resultadosComics.push({
+          tituloOriginal: tit,
+          tituloIngles: '',
+          creador: inf.authors?.length ? inf.authors.join(', ') : 'Autor de cómic',
+          anio: inf.publishedDate?.substring(0, 4) || '',
+          sinopsis: inf.description ? inf.description.substring(0, 220) : 'Cómic / Novela gráfica',
+          poster: (inf.imageLinks?.thumbnail || inf.imageLinks?.smallThumbnail || '').replace('http://', 'https://')
+        });
+      }
+    });
+  }
+
+  return resultadosComics.slice(0, 8);
+}
+const ol = await getJson_(`https://openlibrary.org/search.json?q=${q}&limit=6`); if (ol?.docs?.length) { return ol.docs.slice(0, 6).map(d => ({
+tituloOriginal: d.title || 'Sin título', tituloIngles: '', creador: d.author_name?.length ? d.author_name.join(', ') : 'Autor desconocido',
+anio: d.first_publish_year ? String(d.first_publish_year) : '', sinopsis: d.publisher ? `Editorial: ${d.publisher[0]}` : 'Libro literario', poster: d.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg` : ''
 })); }
-const gb = (await getJson_(`https://www.googleapis.com/books/v1/volumes?q=${q}${isC ? '+comic' : ''}&maxResults=6`))?.items || []; return gb.map(b => { const inf = b.volumeInfo || {};
+const gb = (await getJson_(`https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=6`))?.items || []; return gb.map(b => { const inf = b.volumeInfo || {};
 return { tituloOriginal: inf.title || 'Sin título', tituloIngles: '', creador: inf.authors?.length ? inf.authors.join(', ') : 'Autor desconocido', anio: inf.publishedDate?.substring(0, 4) || '', sinopsis: inf.description || 'Sin sinopsis disponible.', poster: (inf.imageLinks?.thumbnail || inf.imageLinks?.smallThumbnail || '').replace('http://', 'https://') };
 }); }
 return []; }; const searchRes = await _exec(); if (searchRes && searchRes.length && SERVER_API._searchMemCache.size < 350) SERVER_API._searchMemCache.set(cacheKey, searchRes); return searchRes || []; }, async migrarDatosSheetsASupabase() { return { exito: false, error: 'Para migrar desde Google Sheets por única vez, haz clic en este botón desde tu enlace de Google Apps Script o usa "Importar (.txt)" en Configuración.' }; }
@@ -3311,8 +3475,19 @@ function clickEnLineaTamano(e) {
 function seleccionarFontVisual(val) { document.getElementById('cfg-font').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarSizeVisual(val) { document.getElementById('cfg-font-size').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarThemeVisual(val) { document.getElementById('cfg-theme').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
-function abrirModalConfiguracion() { document.getElementById('cfg-lang').value = userPrefs.lang; document.getElementById('cfg-font').value = userPrefs.font; document.getElementById('cfg-font-size').value = userPrefs.fontSize; document.getElementById('cfg-theme').value = userPrefs.theme;
-document.getElementById('cfg-emojis').checked = userPrefs.showEmojis; actualizarTarjetasVisualesConfig(); document.getElementById('modal-configuracion').style.display = 'flex'; }
+function abrirModalConfiguracion() { 
+  document.getElementById('cfg-lang').value = userPrefs.lang; 
+  document.getElementById('cfg-font').value = userPrefs.font; 
+  document.getElementById('cfg-font-size').value = userPrefs.fontSize; 
+  document.getElementById('cfg-theme').value = userPrefs.theme;
+  document.getElementById('cfg-emojis').checked = userPrefs.showEmojis; 
+  const cvInp = document.getElementById('cfg-comicvine-key');
+  if (cvInp) cvInp.value = COMICVINE_K || '';
+  const mvInp = document.getElementById('cfg-marvel-key');
+  if (mvInp) mvInp.value = MARVEL_K || '';
+  actualizarTarjetasVisualesConfig(); 
+  document.getElementById('modal-configuracion').style.display = 'flex'; 
+}
 function aplicarConfiguracionEnVivo() { userPrefs.font = document.getElementById('cfg-font').value; userPrefs.fontSize = document.getElementById('cfg-font-size').value;
 userPrefs.theme = document.getElementById('cfg-theme').value; userPrefs.showEmojis = document.getElementById('cfg-emojis').checked; aplicarEstilosGlobales(); }
 function cambiarIdiomaEnVivo() {
@@ -3326,8 +3501,23 @@ function cambiarIdiomaEnVivo() {
   else if (estado.categoria === 'perfil') { renderizarCabeceraPerfil(); renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
   else { renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 }
-function guardarYCerrarConfiguracion() { aplicarConfiguracionEnVivo(); userPrefs.lang = document.getElementById('cfg-lang').value; guardarPreferenciasLocales();
-document.getElementById('modal-configuracion').style.display = 'none'; mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Settings saved!' : '¡Configuración guardada!'); }
+function guardarYCerrarConfiguracion() { 
+  aplicarConfiguracionEnVivo(); 
+  userPrefs.lang = document.getElementById('cfg-lang').value; 
+  guardarPreferenciasLocales();
+  const cvInp = document.getElementById('cfg-comicvine-key');
+  if (cvInp) {
+    COMICVINE_K = cvInp.value.trim();
+    localStorage.setItem('mediary_comicvine_key', COMICVINE_K);
+  }
+  const mvInp = document.getElementById('cfg-marvel-key');
+  if (mvInp) {
+    MARVEL_K = mvInp.value.trim();
+    localStorage.setItem('mediary_marvel_key', MARVEL_K);
+  }
+  document.getElementById('modal-configuracion').style.display = 'none'; 
+  mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Settings saved!' : '¡Configuración guardada!'); 
+}
 function restablecerConfiguracionPorDefecto() { userPrefs = { font: "'Plus Jakarta Sans', sans-serif", fontSize: "100%", theme: "default", showEmojis: true, lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
 // --- IMPORTAR Y EXPORTAR ARCHIVOS DE TEXTO ---
 function abrirModalImportarExportar() { document.getElementById('modal-configuracion').style.display = 'none'; document.getElementById('input-file-import').value = ''; document.getElementById('textarea-import-raw').value = ''; estado.registrosImportarPendientes = [];
