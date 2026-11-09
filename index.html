@@ -515,6 +515,26 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
     <input type="text" id="cfg-marvel-key" class="form-input" style="font-size:0.82rem;" placeholder="Pega tu Public Key de Marvel aquí..." value="">
   </div>
 </div>
+<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;">
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; gap:8px;">
+    <span>🎮</span> <span>APIs de Videojuegos (Steam Storefront, IGDB &amp; RAWG)</span>
+  </div>
+  <p style="font-size:0.78rem; color:var(--muted); margin-bottom:10px;">
+    Steam Storefront y RAWG se encuentran conectadas automáticamente. Opcionalmente puedes conectar tu aplicación de IGDB (Twitch Developer):
+  </p>
+  <div style="display:flex; gap:8px; margin-bottom:10px; font-size:0.75rem; flex-wrap:wrap;">
+    <span style="background:rgba(56,189,248,0.15); color:#38bdf8; padding:3px 8px; border-radius:6px; font-weight:600;">✓ Steam Storefront Activa</span>
+    <span style="background:rgba(16,185,129,0.15); color:#34d399; padding:3px 8px; border-radius:6px; font-weight:600;">✓ RAWG Activa</span>
+  </div>
+  <div style="margin-bottom:10px;">
+    <label style="font-size:0.75rem; color:var(--muted); font-weight:600; display:block; margin-bottom:3px;">IGDB Client ID (Twitch Developer):</label>
+    <input type="text" id="cfg-igdb-client-id" class="form-input" style="font-size:0.82rem;" placeholder="Pega tu Client ID de Twitch / IGDB..." value="">
+  </div>
+  <div>
+    <label style="font-size:0.75rem; color:var(--muted); font-weight:600; display:block; margin-bottom:3px;">IGDB Access Token (Bearer Token):</label>
+    <input type="password" id="cfg-igdb-token" class="form-input" style="font-size:0.82rem;" placeholder="Pega tu Access Token de IGDB..." value="">
+  </div>
+</div>
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
 
@@ -645,6 +665,8 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const RAWG_K = 'c542e67aec3a4340908f9de9e86038af';
 let COMICVINE_K = localStorage.getItem('mediary_comicvine_key') || '';
 let MARVEL_K = localStorage.getItem('mediary_marvel_key') || '';
+let IGDB_CLIENT_ID = localStorage.getItem('mediary_igdb_client_id') || '';
+let IGDB_TOKEN = localStorage.getItem('mediary_igdb_token') || '';
 const uuid_ = () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
 const normEm_ = em => String(em || '').trim().toLowerCase(); const hashP_ = async raw => { if (!raw) return ''; const buf = new TextEncoder().encode(String(raw) + '_mb_salt_v1'); const dig = await crypto.subtle.digest('SHA-256', buf);
 return Array.from(new Uint8Array(dig)).map(b => ('0' + b.toString(16)).slice(-2)).join(''); }; const sbFetch_ = async (endpoint, method = 'GET', payload = null, prefer = 'return=representation') => {
@@ -657,6 +679,58 @@ if (u.includes('comicvine.gamespot.com')) { return await new Promise(resolve => 
 const timer = setTimeout(() => { delete window[cb]; s.remove(); resolve(null); }, 5000); window[cb] = data => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(data); }; s.onerror = () => { clearTimeout(timer); delete window[cb]; s.remove(); resolve(null); };
 s.src = u + (u.includes('?') ? '&' : '?') + 'format=jsonp&json_callback=' + cb; document.body.appendChild(s); }); }
 const r = await fetch(u); const d = r.ok ? await r.json() : null; if (d && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d); return d; } catch (e) { return null; }
+};
+const getSteamJson_ = async u => {
+  if (JSON_CACHE_.has(u)) return JSON_CACHE_.get(u);
+  try {
+    const r = await fetch(u);
+    if (r.ok) {
+      const d = await r.json();
+      if (d && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d);
+      return d;
+    }
+  } catch (e) {}
+  try {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`;
+    const r2 = await fetch(proxyUrl);
+    if (r2.ok) {
+      const d2 = await r2.json();
+      if (d2 && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d2);
+      return d2;
+    }
+  } catch (e2) {}
+  return null;
+};
+const getIgdbGames_ = async (query, limit = 6) => {
+  if (!IGDB_CLIENT_ID || !IGDB_TOKEN) return null;
+  const cacheK = `igdb_${query}_${limit}`;
+  if (JSON_CACHE_.has(cacheK)) return JSON_CACHE_.get(cacheK);
+  try {
+    const cleanQ = String(query || '').replace(/"/g, '\\"').trim();
+    const body = `search "${cleanQ}"; fields name, summary, storyline, first_release_date, cover.url, involved_companies.developer, involved_companies.publisher, involved_companies.company.name, genres.name, platforms.name; limit ${limit};`;
+    const opts = {
+      method: 'POST',
+      headers: {
+        'Client-ID': IGDB_CLIENT_ID,
+        'Authorization': 'Bearer ' + IGDB_TOKEN,
+        'Accept': 'application/json'
+      },
+      body: body
+    };
+    let r = null;
+    try {
+      r = await fetch('https://api.igdb.com/v4/games', opts);
+    } catch (e) {
+      const pUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://api.igdb.com/v4/games')}`;
+      r = await fetch(pUrl, opts).catch(() => null);
+    }
+    if (r && r.ok) {
+      const data = await r.json();
+      if (data && JSON_CACHE_.size < 350) JSON_CACHE_.set(cacheK, data);
+      return data;
+    }
+  } catch (err) {}
+  return null;
 }; const fmtFecha_ = v => { if (!v || v === 'Sin fecha' || v === '' || v === 'undefined') return 'Sin fecha'; if (v instanceof Date) return `${String(v.getDate()).padStart(2,'0')}/${String(v.getMonth()+1).padStart(2,'0')}/${v.getFullYear()}`; const s = String(v).trim(); if (s === 'Sin fecha') return 'Sin fecha';
 if (s.startsWith('Aún ') || s.startsWith('Aun ') || s.startsWith('Still ') || s.includes('viendo') || s.includes('escuchando') || s.includes('jugando') || s.includes('leyendo')) return s;
 if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/'); return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}/${p[2]}`; }
@@ -870,6 +944,16 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
             const cr = devs.length ? devs.slice(0, 2).join(', ') : (pubs.slice(0, 2).join(', ') || null);
             const poster = g.background_image || null;
             const anio = g.released ? g.released.substring(0, 4) : null;
+            return { creador: cr, poster, anio };
+          }
+          const stm = (await getSteamJson_(`https://store.steampowered.com/api/storesearch/?term=${q}&l=spanish&cc=US`))?.items?.[0];
+          if (stm) {
+            const stmDet = (await getSteamJson_(`https://store.steampowered.com/api/appdetails?appids=${stm.id}&l=spanish`))?.[stm.id]?.data;
+            const devs = stmDet?.developers || [];
+            const pubs = stmDet?.publishers || [];
+            const cr = devs.length ? devs.slice(0, 2).join(', ') : (pubs.slice(0, 2).join(', ') || 'Steam');
+            const poster = stmDet?.header_image || `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${stm.id}/header.jpg`;
+            const anio = stmDet?.release_date?.date ? (stmDet.release_date.date.match(/\d{4}/)?.[0] || null) : null;
             return { creador: cr, poster, anio };
           }
         } else if (cat === 'Lecturas') {
@@ -1374,7 +1458,10 @@ return { anioFinTemp: '', totalTemporadas: 0 }; }, async buscarPortadaGenerica(t
 const d = await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}`); if (d?.results?.[0]?.poster_path) return `https://image.tmdb.org/t/p/w500${d.results[0].poster_path}`; } else if (cat === 'Series') {
 const d = await getJson_(`https://api.tvmaze.com/search/shows?q=${q}`); if (d?.[0]?.show?.image) return d[0].show.image.original || d[0].show.image.medium || ''; } else if (cat === 'Musica') { const it = await getJson_(`https://itunes.apple.com/search?term=${qC}&entity=album&limit=1`);
 if (it?.results?.[0]?.artworkUrl100) return it.results[0].artworkUrl100.replace('100x100bb', '600x600bb'); const d = await getJson_(`https://api.deezer.com/search?q=${qC}&limit=1`); return d?.data?.[0]?.album?.cover_big || d?.data?.[0]?.artist?.picture_big || ''; } else if (cat === 'Juegos') {
-const d = await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`); return d?.results?.[0]?.background_image || ''; } else if (cat === 'Lecturas') { const ol = await getJson_(`https://openlibrary.org/search.json?q=${qC}&limit=1`);
+const d = await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`); if (d?.results?.[0]?.background_image) return d.results[0].background_image;
+const stm = (await getSteamJson_(`https://store.steampowered.com/api/storesearch/?term=${q}&l=spanish&cc=US`))?.items?.[0]; if (stm?.id) return `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${stm.id}/header.jpg`;
+const igdb = await getIgdbGames_(t, 1); if (igdb?.[0]?.cover?.url) return ('https:' + igdb[0].cover.url).replace('/t_thumb/', '/t_cover_big/');
+return ''; } else if (cat === 'Lecturas') { const ol = await getJson_(`https://openlibrary.org/search.json?q=${qC}&limit=1`);
 if (ol?.docs?.[0]?.cover_i) return `https://covers.openlibrary.org/b/id/${ol.docs[0].cover_i}-L.jpg`; const gb = await getJson_(`https://www.googleapis.com/books/v1/volumes?q=${qC}&maxResults=1`); return (gb?.items?.[0]?.volumeInfo?.imageLinks?.thumbnail || '').replace('http://', 'https://'); }
 } catch (e) {}
 return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) {
@@ -1542,21 +1629,73 @@ return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) {
       res.integrantes = integrantes;
       res.sinopsis = wikiRes?.extract || (artObj?.disambiguation ? `Artista musical (${artObj.disambiguation})` : 'Artista musical.');
     } else if (tipoFicha === 'juegos') {
-      const g = (await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`))?.results?.[0];
-      if (g) {
-        const [det, team] = await Promise.all([
-          getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`),
-          getJson_(`https://api.rawg.io/api/games/${g.id}/development-team?key=${RAWG_K}`)
-        ]);
-        res.poster = g.background_image || '';
-        res.fechaSalida = det?.released ? fmtFecha_(det.released) : 'No registrada';
-        res.desarrolladora = (det?.developers || []).map(x => x.name).join(', ') || creador || 'No especificada';
-        res.distribuidora = (det?.publishers || []).map(x => x.name).join(', ') || 'No especificada';
-        const dirs = (team?.results || []).filter(p => (p.positions || []).some(pos => /director/i.test(pos.name))).map(p => p.name);
-        res.director = dirs.length ? dirs.slice(0, 2).join(', ') : 'No especificado';
-        res.genero = (det?.genres || []).map(x => x.name).join(', ') || 'Videojuego';
-        res.sinopsis = det?.description_raw ? det.description_raw.substring(0, 360) + '...' : res.sinopsis;
+      const cleanTit = String(titulo || '').replace(/\s*\[S\d+\]$/i, '').split(':')[0].trim();
+      const [steamSearch, igdbData, rawgSearch] = await Promise.all([
+        getSteamJson_(`https://store.steampowered.com/api/storesearch/?term=${q}&l=spanish&cc=US`).catch(() => null),
+        getIgdbGames_(cleanTit, 1).catch(() => null),
+        getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`).catch(() => null)
+      ]);
+
+      let steamDet = null;
+      const steamAppId = steamSearch?.items?.[0]?.id;
+      if (steamAppId) {
+        const sDetails = await getSteamJson_(`https://store.steampowered.com/api/appdetails?appids=${steamAppId}&l=spanish`).catch(() => null);
+        if (sDetails && sDetails[steamAppId]?.success) {
+          steamDet = sDetails[steamAppId].data;
+        }
       }
+
+      const igdbGame = (Array.isArray(igdbData) && igdbData.length) ? igdbData[0] : null;
+      const g = rawgSearch?.results?.[0];
+      let rawgDet = null, rawgTeam = null;
+      if (g?.id) {
+        [rawgDet, rawgTeam] = await Promise.all([
+          getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`).catch(() => null),
+          getJson_(`https://api.rawg.io/api/games/${g.id}/development-team?key=${RAWG_K}`).catch(() => null)
+        ]);
+      }
+
+      // 1. Poster
+      if (steamDet?.header_image) res.poster = steamDet.header_image;
+      else if (igdbGame?.cover?.url) res.poster = ('https:' + igdbGame.cover.url).replace('/t_thumb/', '/t_cover_big/');
+      else if (g?.background_image) res.poster = g.background_image;
+
+      // 2. Fecha de salida
+      if (steamDet?.release_date?.date) {
+        res.fechaSalida = fmtFecha_(steamDet.release_date.date);
+      } else if (igdbGame?.first_release_date) {
+        try { res.fechaSalida = fmtFecha_(new Date(igdbGame.first_release_date * 1000)); } catch(e){}
+      } else if (rawgDet?.released) {
+        res.fechaSalida = fmtFecha_(rawgDet.released);
+      }
+
+      // 3. Desarrolladora
+      const steamDevs = (steamDet?.developers || []).join(', ');
+      const igdbDevs = (igdbGame?.involved_companies || []).filter(c => c.developer).map(c => c.company?.name).filter(Boolean).join(', ');
+      const rawgDevs = (rawgDet?.developers || []).map(x => x.name).join(', ');
+      res.desarrolladora = steamDevs || igdbDevs || rawgDevs || creador || 'No especificada';
+
+      // 4. Distribuidora
+      const steamPubs = (steamDet?.publishers || []).join(', ');
+      const igdbPubs = (igdbGame?.involved_companies || []).filter(c => c.publisher).map(c => c.company?.name).filter(Boolean).join(', ');
+      const rawgPubs = (rawgDet?.publishers || []).map(x => x.name).join(', ');
+      res.distribuidora = steamPubs || igdbPubs || rawgPubs || 'No especificada';
+
+      // 5. Director
+      const dirs = (rawgTeam?.results || []).filter(p => (p.positions || []).some(pos => /director/i.test(pos.name))).map(p => p.name);
+      res.director = dirs.length ? dirs.slice(0, 2).join(', ') : 'No especificado';
+
+      // 6. Género
+      const steamGenres = (steamDet?.genres || []).map(x => x.description).join(', ');
+      const igdbGenres = (igdbGame?.genres || []).map(x => x.name).join(', ');
+      const rawgGenres = (rawgDet?.genres || []).map(x => x.name).join(', ');
+      res.genero = steamGenres || igdbGenres || rawgGenres || 'Videojuego';
+
+      // 7. Sinopsis
+      const steamSin = steamDet?.short_description || (steamDet?.detailed_description ? steamDet.detailed_description.replace(/<[^>]*>?/gm, '').substring(0, 360) + '...' : null);
+      const igdbSin = igdbGame?.summary || igdbGame?.storyline;
+      const rawgSin = rawgDet?.description_raw ? rawgDet.description_raw.substring(0, 360) + '...' : null;
+      res.sinopsis = steamSin || igdbSin || rawgSin || res.sinopsis;
     } else if (tipoFicha === 'libros') {
       const gb = await getJson_(`https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=1`);
       const b = gb?.items?.[0]?.volumeInfo || {};
@@ -1665,10 +1804,109 @@ const end = (sub.includes('Artista') || sub.includes('Concierto') || sub === 'To
 tituloOriginal: (end === 'artist' ? it.name : it.title) || '', tituloIngles: '', creador: (end === 'artist' ? it.name : it.artist?.name) || 'Artista', anio: '',
 sinopsis: end === 'artist' ? `Seguidores: ${(it.nb_fan || 0).toLocaleString()}` : 'Álbum discográfico', poster: end === 'artist' ? (it.picture_medium || it.picture_big || '') : (it.cover_medium || it.cover_big || '')
 })); }
-if (cat === 'Juegos') { const list = ((await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=6`))?.results || []); return await Promise.all(list.map(async g => { let dev = 'Estudio desarrollador';
-try { const det = await Promise.race([getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`), new Promise(r => setTimeout(() => r(null), 800))]); if (det?.developers?.length) dev = det.developers.map(d => d.name).join(', '); } catch (e) {}
-const plats = (g.platforms || []).map(p => p.platform?.name).slice(0, 3).join(', ');
-return { tituloOriginal: g.name || '', tituloIngles: '', creador: dev, anio: g.released?.substring(0, 4) || '', sinopsis: plats ? `Plataformas: ${plats} | Calificación: ${g.rating || 'N/D'}/5` : 'Videojuego', poster: g.background_image || '' }; })); }
+if (cat === 'Juegos') {
+  const qClean = qTrim;
+  const steamPromise = getSteamJson_(`https://store.steampowered.com/api/storesearch/?term=${q}&l=spanish&cc=US`).catch(() => null);
+  const igdbPromise = getIgdbGames_(qClean, 6).catch(() => null);
+  const rawgPromise = getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=6`).catch(() => null);
+
+  const [steamRes, igdbRes, rawgRes] = await Promise.all([steamPromise, igdbPromise, rawgPromise]);
+
+  const resultadosJuegos = [];
+  const vistos = new Set();
+
+  if (steamRes?.items?.length) {
+    steamRes.items.forEach(it => {
+      const tit = it.name || '';
+      if (!tit) return;
+      const k = tit.toLowerCase().trim();
+      if (!vistos.has(k)) {
+        vistos.add(k);
+        const poster = `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${it.id}/header.jpg`;
+        const meta = it.metacritic ? ` | Metacritic: ${it.metacritic}` : '';
+        resultadosJuegos.push({
+          idRef: `steam_${it.id}`,
+          tituloOriginal: tit,
+          tituloIngles: '',
+          creador: 'Steam',
+          anio: '',
+          sinopsis: `Disponible en Steam Store${meta}`,
+          poster: poster
+        });
+      }
+    });
+  }
+
+  if (Array.isArray(igdbRes) && igdbRes.length) {
+    igdbRes.forEach(g => {
+      const tit = g.name || '';
+      if (!tit) return;
+      const k = tit.toLowerCase().trim();
+      const devs = (g.involved_companies || []).filter(c => c.developer).map(c => c.company?.name).filter(Boolean);
+      const pubs = (g.involved_companies || []).filter(c => c.publisher).map(c => c.company?.name).filter(Boolean);
+      const cr = devs.length ? devs.join(', ') : (pubs.length ? pubs.join(', ') : 'IGDB');
+      let yr = '';
+      if (g.first_release_date) {
+        try { yr = String(new Date(g.first_release_date * 1000).getFullYear()); } catch(e){}
+      }
+      let cov = '';
+      if (g.cover?.url) {
+        cov = ('https:' + g.cover.url).replace('/t_thumb/', '/t_cover_big/');
+      }
+      const plats = (g.platforms || []).map(p => p.name).slice(0, 3).join(', ');
+      const sin = g.summary ? g.summary.substring(0, 180) + '...' : (plats ? `Plataformas: ${plats}` : 'Videojuego (IGDB)');
+      if (!vistos.has(k)) {
+        vistos.add(k);
+        resultadosJuegos.push({
+          idRef: `igdb_${g.id}`,
+          tituloOriginal: tit,
+          tituloIngles: '',
+          creador: cr,
+          anio: yr,
+          sinopsis: sin,
+          poster: cov
+        });
+      }
+    });
+  }
+
+  if (rawgRes?.results?.length) {
+    const listRawg = rawgRes.results.slice(0, 6);
+    await Promise.all(listRawg.map(async g => {
+      const tit = g.name || '';
+      if (!tit) return;
+      const k = tit.toLowerCase().trim();
+      let dev = 'Estudio desarrollador';
+      try {
+        const det = await Promise.race([getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`), new Promise(r => setTimeout(() => r(null), 800))]);
+        if (det?.developers?.length) dev = det.developers.map(d => d.name).join(', ');
+      } catch (e) {}
+      const plats = (g.platforms || []).map(p => p.platform?.name).slice(0, 3).join(', ');
+      const sin = plats ? `Plataformas: ${plats} | Calificación: ${g.rating || 'N/D'}/5` : 'Videojuego';
+      if (!vistos.has(k)) {
+        vistos.add(k);
+        resultadosJuegos.push({
+          idRef: g.id,
+          tituloOriginal: tit,
+          tituloIngles: '',
+          creador: dev,
+          anio: g.released?.substring(0, 4) || '',
+          sinopsis: sin,
+          poster: g.background_image || ''
+        });
+      } else {
+        const exist = resultadosJuegos.find(x => x.tituloOriginal.toLowerCase().trim() === k);
+        if (exist) {
+          if ((!exist.creador || exist.creador === 'Steam') && dev !== 'Estudio desarrollador') exist.creador = dev;
+          if (!exist.anio && g.released) exist.anio = g.released.substring(0, 4);
+          if (!exist.poster && g.background_image) exist.poster = g.background_image;
+        }
+      }
+    }));
+  }
+
+  return resultadosJuegos.slice(0, 8);
+}
 if (cat === 'Lecturas') { if (sub === 'Mangas' || sub === 'Manga' || sub === 'To Read: Mangas') { const list = ((await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&page[limit]=6`))?.data || []); return await Promise.all(list.map(async it => {
 const a = it.attributes || {}, titles = a.titles || {}, tRom = titles.en_jp || a.canonicalTitle || '', tEng = titles.en || '', mangakas = []; try { const st = await getJson_(`https://kitsu.io/api/edge/manga/${it.id}/staff`);
 const rel = (st?.data || []).filter(s => /story|art|original|author/i.test(s.attributes?.role || '')); const targets = (rel.length ? rel : (st?.data || [])).slice(0, 2); const pList = await Promise.all(targets.map(x => x.relationships?.person?.links?.related ? Promise.race([getJson_(x.relationships.person.links.related), new Promise(r => setTimeout(() => r(null), 600))]) : Promise.resolve(null))); for (const p of pList) {
@@ -3485,6 +3723,10 @@ function abrirModalConfiguracion() {
   if (cvInp) cvInp.value = COMICVINE_K || '';
   const mvInp = document.getElementById('cfg-marvel-key');
   if (mvInp) mvInp.value = MARVEL_K || '';
+  const igdbIdInp = document.getElementById('cfg-igdb-client-id');
+  if (igdbIdInp) igdbIdInp.value = IGDB_CLIENT_ID || '';
+  const igdbTokInp = document.getElementById('cfg-igdb-token');
+  if (igdbTokInp) igdbTokInp.value = IGDB_TOKEN || '';
   actualizarTarjetasVisualesConfig(); 
   document.getElementById('modal-configuracion').style.display = 'flex'; 
 }
@@ -3514,6 +3756,16 @@ function guardarYCerrarConfiguracion() {
   if (mvInp) {
     MARVEL_K = mvInp.value.trim();
     localStorage.setItem('mediary_marvel_key', MARVEL_K);
+  }
+  const igdbIdInp = document.getElementById('cfg-igdb-client-id');
+  if (igdbIdInp) {
+    IGDB_CLIENT_ID = igdbIdInp.value.trim();
+    localStorage.setItem('mediary_igdb_client_id', IGDB_CLIENT_ID);
+  }
+  const igdbTokInp = document.getElementById('cfg-igdb-token');
+  if (igdbTokInp) {
+    IGDB_TOKEN = igdbTokInp.value.trim();
+    localStorage.setItem('mediary_igdb_token', IGDB_TOKEN);
   }
   document.getElementById('modal-configuracion').style.display = 'none'; 
   mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Settings saved!' : '¡Configuración guardada!'); 
