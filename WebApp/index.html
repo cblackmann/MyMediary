@@ -775,25 +775,47 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .date-prec-btn.active{background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.3);color:var(--accent);font-weight:700;}
 
 /* APARTADOS INICIO: RESUMEN ULTRA COMPACTO & RACHAS */
-.home-quick-stats-strip{margin-top:14px;display:flex;flex-direction:column;gap:12px;}
-.home-mini-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:13px 15px;box-shadow:var(--shadow-sm);transition:var(--tr);}
+.home-quick-stats-strip{margin-top:16px;margin-bottom:32px;display:flex;flex-direction:column;gap:14px;}
+.home-mini-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);transition:var(--tr);}
 .home-mini-section:hover{border-color:rgba(56,189,248,0.35);}
-.home-mini-section-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.home-mini-section-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
 .home-mini-title{font-weight:700;font-size:0.95rem;color:var(--text);display:flex;align-items:center;gap:6px;}
 .home-mini-hint{font-size:0.74rem;color:var(--muted);}
-.home-subcats-mini-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;flex-wrap:wrap;}
-.home-subcat-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;font-size:0.83rem;font-weight:600;color:var(--text);cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:inherit;}
-.home-subcat-pill:hover{border-color:var(--accent);background:rgba(56,189,248,0.08);transform:translateY(-1px);}
-.home-subcat-pill .pill-count{font-weight:800;font-size:0.8rem;color:var(--accent);background:rgba(56,189,248,0.14);padding:2px 7px;border-radius:8px;border:1px solid rgba(56,189,248,0.25);}
+.home-subcats-mini-row{display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));gap:9px;}
+@media (max-width: 640px){.home-subcats-mini-row{grid-template-columns:repeat(2, 1fr);gap:8px;}}
+.home-subcat-pill{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;font-size:0.82rem;font-weight:600;color:var(--text);cursor:pointer;transition:var(--tr);font-family:inherit;box-shadow:0 1px 3px rgba(0,0,0,0.06);min-height:42px;}
+.home-subcat-pill:hover{border-color:var(--accent);background:rgba(56,189,248,0.08);transform:translateY(-1px);box-shadow:0 4px 12px rgba(56,189,248,0.15);}
+.home-subcat-pill .subcat-left-info{display:flex;align-items:center;gap:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.home-subcat-pill .pill-count{font-weight:800;font-size:0.78rem;color:var(--accent);background:rgba(56,189,248,0.14);padding:2px 7px;border-radius:8px;border:1px solid rgba(56,189,248,0.25);flex-shrink:0;}
 .home-streaks-cards-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;flex-wrap:wrap;align-items:center;}
-.home-streak-main-card{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.35);border-radius:12px;font-size:0.82rem;color:var(--text);}
+.home-streak-main-card{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.35);border-radius:12px;font-size:0.82rem;color:var(--text);}
 .home-streak-flame{font-size:1.25rem;line-height:1;animation:pulseFlame 2.2s ease-in-out infinite;}
 @keyframes pulseFlame{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
-.home-streak-subcat-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-size:0.79rem;color:var(--text);cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:inherit;}
+.home-streak-subcat-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-size:0.79rem;color:var(--text);cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:inherit;}
 .home-streak-subcat-pill:hover{border-color:#f59e0b;background:rgba(245,158,11,0.08);}
 .home-streak-subcat-pill .subcat-streak-count{color:#f59e0b;font-weight:800;display:inline-flex;align-items:center;gap:2px;}
 [data-theme$="-light"] .home-streak-main-card,[data-theme="nordic-light"] .home-streak-main-card,[data-theme="creme-latte"] .home-streak-main-card,[data-theme="parchment"] .home-streak-main-card,[data-theme="sage-garden"] .home-streak-main-card{background:rgba(245,158,11,0.18) !important;border-color:#d97706 !important;color:#92400e !important;}
 [data-theme$="-light"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="nordic-light"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="creme-latte"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="parchment"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="sage-garden"] .home-streak-subcat-pill .subcat-streak-count{color:#b45309 !important;}
+
+/* ESTILOS MODERNOS DEL SELECTOR DE PERSONAJE FAVORITO */
+.char-picker-tabs{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:4px;gap:4px;margin-bottom:16px;}
+.char-picker-tab-btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;border-radius:10px;border:none;background:transparent;color:var(--muted);font-size:0.83rem;font-weight:600;cursor:pointer;transition:var(--tr);font-family:inherit;}
+.char-picker-tab-btn:hover{color:var(--text);background:rgba(255,255,255,0.04);}
+.char-picker-tab-btn.active{background:var(--card);color:var(--accent);font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.2);border:1px solid var(--border);}
+.char-search-results-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));gap:10px;max-height:380px;overflow-y:auto;padding:4px 2px 8px;scrollbar-width:thin;}
+@media (max-width: 540px){.char-search-results-grid{grid-template-columns:1fr;}}
+.char-result-card{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:14px;cursor:pointer;transition:var(--tr);position:relative;box-shadow:0 1px 4px rgba(0,0,0,0.1);}
+.char-result-card:hover{border-color:#f59e0b;background:rgba(245,158,11,0.06);transform:translateY(-2px);box-shadow:0 6px 16px rgba(245,158,11,0.18);}
+.char-result-avatar{width:52px;height:52px;min-width:52px;border-radius:50%;overflow:hidden;background:#1e293b;border:2px solid rgba(245,158,11,0.4);display:grid;place-items:center;font-size:1.4rem;flex-shrink:0;}
+.char-result-avatar img{width:100%;height:100%;object-fit:cover;}
+.char-result-info{flex:1;min-width:0;}
+.char-result-name{display:block;font-size:0.92rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.char-result-origin{display:block;font-size:0.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;}
+.btn-select-char-pill{background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);color:#fbbf24;font-size:0.74rem;font-weight:700;padding:5px 10px;border-radius:8px;cursor:pointer;transition:var(--tr);flex-shrink:0;}
+.char-result-card:hover .btn-select-char-pill{background:#f59e0b;color:#000;border-color:#f59e0b;}
+[data-theme$="-light"] .btn-select-char-pill{color:#b45309;border-color:#d97706;}
+[data-theme$="-light"] .char-result-card:hover .btn-select-char-pill{background:#d97706;color:#fff;}
+.char-custom-preview-box{margin-top:14px;padding:14px;background:var(--bg);border:1.5px dashed var(--border);border-radius:14px;}
 </style> </head> <body> <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
 </div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <div class="home-hero-card"> <div class="home-hero-content"> <h2 style="font-size:1.4rem; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;"> <span>🏠</span> <span data-i18n="home_title">Inicio</span> </h2> <p style="color:var(--muted); font-size:.88rem; margin:0; text-align:center;" data-i18n="home_subtitle">Tu centro multimedia personal: registra tus obras, sigue a tus amigos y descubre nuevas recomendaciones.</p> </div> <div class="home-hero-actions"> <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()"> <span style="font-size:1.15rem;">⚡</span> <span data-i18n="btn_quick_add_hero">Agregado Rápido</span> </button> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;"> <span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Mis Watchlists</span> </button> </div> </div>
@@ -1165,7 +1187,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 
 <!-- MODAL SELECCIONAR PERSONAJE FAVORITO -->
 <div id="modal-seleccionar-personaje" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalSeleccionarPersonaje()">
-  <div class="modal-box" style="max-width:580px; max-height:90vh; overflow-y:auto;">
+  <div class="modal-box" style="max-width:620px; max-height:90vh; overflow-y:auto;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <h3 style="margin:0; display:flex; align-items:center; gap:8px;">
         <span>👑</span> <span>Mi Personaje Favorito</span>
@@ -1173,104 +1195,132 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
       <button type="button" class="btn-close-form" onclick="cerrarModalSeleccionarPersonaje()" style="position:static;">✕</button>
     </div>
     <p style="font-size:0.83rem; color:var(--muted); margin-bottom:14px; line-height:1.4;">
-      Destaca a tu personaje favorito de películas, series, anime, videojuegos o libros en la cabecera de tu perfil.
+      Elige o crea a tu personaje favorito de películas, series, anime, videojuegos o cómics para destacarlo en tu perfil.
     </p>
 
     <!-- TABS DEL SELECTOR DE PERSONAJE -->
     <div class="char-picker-tabs">
       <button type="button" class="char-picker-tab-btn active" id="tab-char-online" onclick="cambiarTabSelectorPersonaje('online')">
-        <span>🔍</span> <span>En línea</span>
+        <span>🌟</span> <span>Explorar & Buscar</span>
+      </button>
+      <button type="button" class="char-picker-tab-btn" id="tab-char-manual" onclick="cambiarTabSelectorPersonaje('manual')">
+        <span>✍️</span> <span>Crear a mi gusto</span>
       </button>
       <button type="button" class="char-picker-tab-btn" id="tab-char-misobras" onclick="cambiarTabSelectorPersonaje('misobras')">
         <span>📑</span> <span>De mis obras</span>
       </button>
-      <button type="button" class="char-picker-tab-btn" id="tab-char-manual" onclick="cambiarTabSelectorPersonaje('manual')">
-        <span>✍️</span> <span>Personalizado</span>
-      </button>
     </div>
 
-    <!-- CONTENIDO TAB 1: BÚSQUEDA EN LÍNEA -->
+    <!-- CONTENIDO TAB 1: BÚSQUEDA Y GALERÍA DE PERSONAJES ÚNICOS -->
     <div id="tab-char-content-online" class="char-picker-pane active">
       <div style="display:flex; gap:8px; margin-bottom:10px;">
-        <input type="text" id="input-buscar-personaje-online" class="form-input" style="flex:1;" placeholder="Escribe el nombre del personaje (ej: Goku, Luffy, Batman, Geralt, Spider-Man...)" onkeydown="if(event.key==='Enter'){event.preventDefault();ejecutarBuscarPersonajeOnline();}">
+        <input type="text" id="input-buscar-personaje-online" class="form-input" style="flex:1;" placeholder="Busca por nombre de personaje (ej: Batman, Luffy, Walter White, Geralt...)" onkeydown="if(event.key==='Enter'){event.preventDefault();ejecutarBuscarPersonajeOnline();}">
         <button type="button" class="btn-save" style="width:auto; min-height:42px; padding:0 18px; margin:0; display:inline-flex; align-items:center; gap:6px; font-size:0.86rem;" onclick="ejecutarBuscarPersonajeOnline()">
           <span>🔍</span> <span>Buscar</span>
         </button>
       </div>
-      <!-- Sugerencias populares de un click -->
-      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:12px; font-size:0.78rem;">
-        <span style="color:var(--muted); font-size:0.75rem;">Sugerencias rápidas:</span>
-        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Monkey D. Luffy')">🏴‍☠️ Luffy</button>
-        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Son Goku')">💥 Goku</button>
-        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Batman')">🦇 Batman</button>
-        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Spider-Man')">🕷️ Spider-Man</button>
-        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Geralt of Rivia')">🐺 Geralt</button>
+
+      <!-- Filtros rápidos por universo de personajes -->
+      <div style="display:flex; align-items:center; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:12px; font-size:0.78rem; scrollbar-width:none;">
+        <button type="button" class="subtab-btn active" id="char-filter-todos" onclick="filtrarCatalogoPersonajes('todos')">✨ Todos</button>
+        <button type="button" class="subtab-btn" id="char-filter-anime" onclick="filtrarCatalogoPersonajes('anime')">🎌 Anime & Manga</button>
+        <button type="button" class="subtab-btn" id="char-filter-comics" onclick="filtrarCatalogoPersonajes('comics')">🦇 Cómics & Héroes</button>
+        <button type="button" class="subtab-btn" id="char-filter-juegos" onclick="filtrarCatalogoPersonajes('juegos')">🎮 Videojuegos</button>
+        <button type="button" class="subtab-btn" id="char-filter-cine" onclick="filtrarCatalogoPersonajes('cine')">🎬 Cine & TV</button>
       </div>
+
       <div id="char-search-loading" style="display:none; text-align:center; padding:18px; color:var(--accent); font-size:0.85rem;">
-        🔍 Buscando personajes en bases de datos de anime, cine y series...
+        🔍 Buscando personajes únicos en tiempo real...
       </div>
       <div id="char-search-results" class="char-search-results-grid">
-        <div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.84rem; grid-column:1/-1;">
-          Escribe un nombre arriba y presiona <strong>Buscar</strong> para explorar personajes en anime, cine, videojuegos y series.
-        </div>
+        <!-- Renderizado dinámico de tarjetas de personajes -->
       </div>
     </div>
 
-    <!-- CONTENIDO TAB 2: SELECCIONAR DE OBRAS DEL USUARIO -->
+    <!-- CONTENIDO TAB 2: CREAR MI PERSONAJE A MI GUSTO -->
+    <div id="tab-char-content-manual" class="char-picker-pane" style="display:none;">
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-weight:700;">Nombre del personaje: *</label>
+        <input type="text" id="input-char-manual-nombre" class="form-input" placeholder="Ej: Arthur Morgan, Spider-Man, Walter White, Gandalf..." oninput="actualizarPreviewPersonajeManual()">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-weight:700;">Obra, universo o franquicia: *</label>
+        <input type="text" id="input-char-manual-obra" class="form-input" placeholder="Ej: Red Dead Redemption 2, Breaking Bad, The Witcher..." oninput="actualizarPreviewPersonajeManual()">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-weight:700;">Foto del personaje:</label>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
+          <label class="btn-action-manual" style="margin:0; height:38px; padding:0 14px; font-size:0.8rem; cursor:pointer; display:inline-flex; align-items:center; gap:6px;">
+            <span>📁</span> <span>Subir foto desde dispositivo</span>
+            <input type="file" id="input-char-file-upload" accept="image/*" style="display:none;" onchange="manejarSubidaFotoPersonaje(event)">
+          </label>
+          <span style="font-size:0.75rem; color:var(--muted);">o pega un enlace web abajo:</span>
+        </div>
+        <input type="text" id="input-char-manual-imagen" class="form-input" placeholder="https://ejemplo.com/foto.jpg o un emoji como 👑, ⚔️, 🤠..." oninput="actualizarPreviewPersonajeManual()">
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label style="font-weight:700;">Cita célebre o frase favorita (opcional):</label>
+        <input type="text" id="input-char-manual-cita" class="form-input" placeholder="Ej: 'I am the one who knocks' o 'With great power comes great responsibility'" oninput="actualizarPreviewPersonajeManual()">
+      </div>
+
+      <!-- VISTA PREVIA INTERACTIVA EN TIEMPO REAL -->
+      <div class="char-custom-preview-box">
+        <div style="font-size:0.74rem; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">
+          👁️ Vista previa de cómo lucirá en tu perfil:
+        </div>
+        <div class="profile-fav-char-card" style="margin-bottom:0; box-shadow:none;">
+          <div class="fav-char-card-left">
+            <div class="fav-char-poster-wrap">
+              <div id="preview-char-avatar-box" style="width:100%; height:100%; display:grid; place-items:center; font-size:2rem; background:#1e293b;">👑</div>
+              <div class="fav-char-crown-badge">👑</div>
+            </div>
+            <div class="fav-char-details">
+              <div class="fav-char-top-badge">PERSONAJE FAVORITO</div>
+              <div class="fav-char-name" id="preview-char-name">Nombre del Personaje</div>
+              <div class="fav-char-work" id="preview-char-work">Obra o Franquicia</div>
+              <div class="fav-char-quote" id="preview-char-quote" style="display:none;">""</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn-save" style="margin-top:14px;" onclick="guardarPersonajeManual()">
+        👑 Guardar y Fijar como mi Personaje Favorito
+      </button>
+    </div>
+
+    <!-- CONTENIDO TAB 3: SELECCIONAR DE OBRAS DEL USUARIO -->
     <div id="tab-char-content-misobras" class="char-picker-pane" style="display:none;">
       <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
-        Selecciona una obra de tu historial y escribe el nombre de tu personaje:
+        Selecciona una obra de tu historial y especifica qué personaje de ella es tu favorito:
       </p>
       <div style="margin-bottom:10px;">
-        <input type="text" id="input-filtrar-mis-obras-char" class="form-input" placeholder="Filtrar tus obras registradas..." oninput="filtrarMisObrasParaPersonaje(this.value)">
+        <input type="text" id="input-filtrar-mis-obras-char" class="form-input" placeholder="Filtrar por título de tu historial..." oninput="filtrarMisObrasParaPersonaje(this.value)">
       </div>
-      <div id="char-obras-lista" class="char-user-obras-list">
+      <div id="char-obras-lista" class="char-user-obras-list" style="max-height:220px; overflow-y:auto;">
         <!-- Obras registradas por el usuario -->
       </div>
       <!-- Formulario para ingresar personaje tras elegir obra -->
-      <div id="char-obra-selected-form" style="display:none; margin-top:14px; padding:12px; background:var(--bg); border:1px solid var(--accent); border-radius:12px;">
+      <div id="char-obra-selected-form" style="display:none; margin-top:14px; padding:14px; background:var(--bg); border:1px solid var(--accent); border-radius:12px;">
         <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-          <img id="char-obra-selected-img" src="" alt="Obra" style="width:40px; height:56px; border-radius:6px; object-fit:cover; background:#1e293b;">
+          <img id="char-obra-selected-img" src="" alt="Obra" style="width:44px; height:60px; border-radius:6px; object-fit:cover; background:#1e293b;">
           <div style="flex:1; min-width:0;">
             <div style="font-size:0.75rem; color:var(--accent); font-weight:700;" id="char-obra-selected-cat">OBRA</div>
             <strong style="font-size:0.92rem; color:var(--text);" id="char-obra-selected-title">Título</strong>
           </div>
         </div>
         <div class="form-group" style="margin-bottom:8px;">
-          <label style="font-size:0.8rem;">Nombre del personaje: *</label>
-          <input type="text" id="input-char-from-obra-name" class="form-input" placeholder="Ej: Spider-Man, Paul Atreides, Hermione...">
+          <label style="font-size:0.8rem; font-weight:700;">Nombre del personaje favorito en esta obra: *</label>
+          <input type="text" id="input-char-from-obra-name" class="form-input" placeholder="Ej: Walter White, Batman, Joel, Paul Atreides...">
         </div>
         <div class="form-group" style="margin-bottom:8px;">
-          <label style="font-size:0.8rem;">Cita célebre o frase (opcional):</label>
-          <input type="text" id="input-char-from-obra-quote" class="form-input" placeholder="Ej: 'Un gran poder conlleva una gran responsabilidad'">
+          <label style="font-size:0.8rem; font-weight:700;">Cita célebre o frase (opcional):</label>
+          <input type="text" id="input-char-from-obra-quote" class="form-input" placeholder="Ej: 'No half measures'">
         </div>
         <button type="button" class="btn-save" style="margin-top:6px;" onclick="confirmarPersonajeDeObra()">
           👑 Asignar este Personaje
         </button>
       </div>
-    </div>
-
-    <!-- CONTENIDO TAB 3: MANUAL / FOTO -->
-    <div id="tab-char-content-manual" class="char-picker-pane" style="display:none;">
-      <div class="form-group">
-        <label>Nombre del personaje: *</label>
-        <input type="text" id="input-char-manual-nombre" class="form-input" placeholder="Ej: Arthur Morgan, Gandalf, Daenerys...">
-      </div>
-      <div class="form-group">
-        <label>Obra / Franquicia de origen: *</label>
-        <input type="text" id="input-char-manual-obra" class="form-input" placeholder="Ej: Red Dead Redemption 2, El Señor de los Anillos...">
-      </div>
-      <div class="form-group">
-        <label>URL de imagen del personaje (o emoji):</label>
-        <input type="text" id="input-char-manual-imagen" class="form-input" placeholder="https://... o un emoji como 🤠, ⚔️, 🧙‍♂️">
-      </div>
-      <div class="form-group">
-        <label>Cita célebre o frase favorita (opcional):</label>
-        <input type="text" id="input-char-manual-cita" class="form-input" placeholder="Ej: 'May the Force be with you'">
-      </div>
-      <button type="button" class="btn-save" style="margin-top:10px;" onclick="guardarPersonajeManual()">
-        👑 Guardar y Fijar Personaje
-      </button>
     </div>
 
     <div class="modal-actions" style="margin-top:16px; justify-content:space-between;">
@@ -5490,6 +5540,24 @@ function renderizarPersonajeFavorito() {
   `;
 }
 
+const PERSONAJES_CATALOGO_CURADO = [
+  { nombre: 'Batman / Bruce Wayne', obra: 'DC Comics · Cómics & Cine', imagen: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/60/Batman_in_Justice_League_TV_series.png/330px-Batman_in_Justice_League_TV_series.png', categoria: 'comics' },
+  { nombre: 'Son Goku', obra: 'Dragon Ball · Anime & Manga', imagen: 'https://s4.anilist.co/file/anilistcdn/character/large/246-wsRRr6z1kii8.png', categoria: 'anime' },
+  { nombre: 'Monkey D. Luffy', obra: 'One Piece · Anime & Manga', imagen: 'https://s4.anilist.co/file/anilistcdn/character/large/b40-MNypXsxSRb1R.png', categoria: 'anime' },
+  { nombre: 'Spider-Man / Peter Parker', obra: 'Marvel · Cómics & Cine', imagen: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/Spiderman_%282714533036%29.jpg/330px-Spiderman_%282714533036%29.jpg', categoria: 'comics' },
+  { nombre: 'Walter White', obra: 'Breaking Bad · Serie de TV', imagen: 'https://thumb.wikimedia.org/wikipedia/en/thumb/0/03/Walter_White_S5B.png/330px-Walter_White_S5B.png', categoria: 'cine' },
+  { nombre: 'Geralt de Rivia', obra: 'The Witcher · Videojuegos & Saga', imagen: 'https://thumb.wikimedia.org/wikipedia/en/thumb/c/c9/Geralt_of_Rivia_Witcher_3.png/330px-Geralt_of_Rivia_Witcher_3.png', categoria: 'juegos' },
+  { nombre: 'Arthur Morgan', obra: 'Red Dead Redemption 2 · Videojuegos', imagen: 'https://thumb.wikimedia.org/wikipedia/en/thumb/e/e0/Arthur_Morgan_RDR2.jpg/330px-Arthur_Morgan_RDR2.jpg', categoria: 'juegos' },
+  { nombre: 'Joel Miller', obra: 'The Last of Us · Videojuegos & Serie', imagen: 'https://thumb.wikimedia.org/wikipedia/en/thumb/4/46/Video_Game_Cover_-_The_Last_of_Us.jpg/330px-Video_Game_Cover_-_The_Last_of_Us.jpg', categoria: 'juegos' },
+  { nombre: 'Darth Vader', obra: 'Star Wars · Saga Galáctica', imagen: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/Darth_Vader_%285042831388%29.jpg/330px-Darth_Vader_%285042831388%29.jpg', categoria: 'cine' },
+  { nombre: 'Satoru Gojo', obra: 'Jujutsu Kaisen · Anime & Manga', imagen: 'https://s4.anilist.co/file/anilistcdn/character/large/b127691-9zqh1xpIubn7.png', categoria: 'anime' },
+  { nombre: 'Levi Ackerman', obra: 'Shingeki no Kyojin · Anime & Manga', imagen: 'https://s4.anilist.co/file/anilistcdn/character/large/b45627-CR68RyZmddGG.png', categoria: 'anime' },
+  { nombre: 'Joker', obra: 'DC Comics · Cómics & Cine', imagen: 'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Cosplay_of_The_Joker_at_MCM_London_Comic_Con.jpg/330px-Cosplay_of_The_Joker_at_MCM_London_Comic_Con.jpg', categoria: 'comics' }
+];
+
+window.resultadosPersonajesCache = [];
+let filtroCategoriaPersonajesActivo = 'todos';
+
 function abrirModalSeleccionarPersonaje() {
   const m = document.getElementById('modal-seleccionar-personaje');
   if (!m) return;
@@ -5497,6 +5565,7 @@ function abrirModalSeleccionarPersonaje() {
   const btnQuitar = document.getElementById('btn-quitar-personaje-fav');
   const tieneChar = !!(perfilUsuario?.personajeFavorito && perfilUsuario.personajeFavorito.nombre);
   if (btnQuitar) btnQuitar.style.display = tieneChar ? 'inline-flex' : 'none';
+  cargarCatalogoPersonajesIniciales();
   m.style.display = 'flex';
 }
 
@@ -5506,42 +5575,57 @@ function cerrarModalSeleccionarPersonaje() {
 }
 
 function cambiarTabSelectorPersonaje(tab) {
-  const tabs = ['online', 'misobras', 'manual'];
+  const tabs = ['online', 'manual', 'misobras'];
   tabs.forEach(t => {
     document.getElementById(`tab-char-${t}`)?.classList.toggle('active', t === tab);
     const pane = document.getElementById(`tab-char-content-${t}`);
     if (pane) pane.style.display = (t === tab) ? 'block' : 'none';
   });
-  if (tab === 'misobras') {
+  if (tab === 'online') {
+    if (!window.resultadosPersonajesCache || !window.resultadosPersonajesCache.length) {
+      cargarCatalogoPersonajesIniciales();
+    }
+  } else if (tab === 'misobras') {
     cargarObrasParaPersonaje();
+  } else if (tab === 'manual') {
+    actualizarPreviewPersonajeManual();
   }
 }
 
-window.resultadosPersonajesCache = [];
+function cargarCatalogoPersonajesIniciales() {
+  const input = document.getElementById('input-buscar-personaje-online');
+  if (input) input.value = '';
+  filtrarCatalogoPersonajes('todos');
+}
+
+function filtrarCatalogoPersonajes(cat) {
+  filtroCategoriaPersonajesActivo = cat;
+  ['todos', 'anime', 'comics', 'juegos', 'cine'].forEach(c => {
+    const btn = document.getElementById(`char-filter-${c}`);
+    if (btn) btn.classList.toggle('active', c === cat);
+  });
+  const filtrados = (cat === 'todos')
+    ? PERSONAJES_CATALOGO_CURADO
+    : PERSONAJES_CATALOGO_CURADO.filter(p => p.categoria === cat);
+  window.resultadosPersonajesCache = filtrados;
+  renderizarResultadosBusquedaPersonaje(filtrados, '');
+}
 
 function ejecutarBuscarPersonajeOnline() {
   const input = document.getElementById('input-buscar-personaje-online');
   const q = String(input ? input.value : '').trim();
   if (q.length < 2) {
-    const resBox = document.getElementById('char-search-results');
-    if (resBox) resBox.innerHTML = '<div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.84rem; grid-column:1/-1;">Escribe al menos 2 letras para buscar personajes.</div>';
+    cargarCatalogoPersonajesIniciales();
     return;
   }
   buscarPersonajeEnVivo(q);
-}
-
-function sugerirBusquedaPersonaje(nombre) {
-  const input = document.getElementById('input-buscar-personaje-online');
-  if (input) input.value = nombre;
-  ejecutarBuscarPersonajeOnline();
 }
 
 function debouncedBuscarPersonaje(val) {
   clearTimeout(debounceTimerChar);
   const q = String(val || '').trim();
   if (q.length < 2) {
-    const resBox = document.getElementById('char-search-results');
-    if (resBox) resBox.innerHTML = '<div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.84rem; grid-column:1/-1;">Escribe al menos 2 letras para buscar personajes.</div>';
+    cargarCatalogoPersonajesIniciales();
     return;
   }
   const loadEl = document.getElementById('char-search-loading');
@@ -5568,26 +5652,22 @@ async function buscarPersonajeEnVivo(query) {
       seenNames.add(key);
       items.push({
         nombre: nomNorm,
-        obra: String(obra || 'Anime / Cine / TV').trim(),
+        obra: String(obra || 'Personaje de Ficción').trim(),
         imagen: String(img || '').trim(),
         cita: '',
         fuente
       });
     };
 
-    // 1. Coincidencias en la colección propia del usuario
-    try {
-      const qLow = query.toLowerCase();
-      (estado.registros || []).forEach(r => {
-        if (!r.titulo) return;
-        const tit = r.titulo.toLowerCase();
-        if (tit.includes(qLow)) {
-          addUnique(r.titulo, `${r.categoria} · ${r.creador || 'De tu colección'}`, r.poster || '', 'Tu Colección');
-        }
-      });
-    } catch (eLocal) {}
+    // 1. Coincidencias en el catálogo curado
+    const qLow = query.toLowerCase();
+    PERSONAJES_CATALOGO_CURADO.forEach(p => {
+      if (p.nombre.toLowerCase().includes(qLow) || p.obra.toLowerCase().includes(qLow)) {
+        addUnique(p.nombre, p.obra, p.imagen, 'Destacado');
+      }
+    });
 
-    // 2. AniList GraphQL (Personajes de anime y manga de ficción con fotos grandes)
+    // 2. AniList GraphQL (ÚNICA Y EXCLUSIVAMENTE PERSONAJES DE FICCIÓN)
     const fetchAniList = async () => {
       try {
         const queryGql = `query ($search: String) {
@@ -5614,70 +5694,52 @@ async function buscarPersonajeEnVivo(query) {
         const data = await resp.json();
         const chars = data?.data?.Page?.characters || [];
         chars.forEach(c => {
-          const nom = c.name?.full || c.name?.userPreferred || '';
+          const nom = c.name?.userPreferred || c.name?.full || '';
           const obra = c.media?.nodes?.[0]?.title?.userPreferred || c.media?.nodes?.[0]?.title?.english || 'Anime / Manga';
           const img = c.image?.large || c.image?.medium || '';
-          if (nom) addUnique(nom, obra, img, 'AniList');
+          if (nom) addUnique(nom, `${obra} · Anime`, img, 'AniList');
         });
       } catch (eAni) {}
     };
 
-    // 3. TMDb Multi Search (Personajes de cine, series, franquicias y personas)
-    const fetchTMDb = async () => {
+    // 3. Wikipedia API (Filtro estricto: SÓLO PERSONAJES, DESCARTAR PELÍCULAS Y ÁLBUMES)
+    const fetchWikipedia = async () => {
       try {
-        if (!TMDB_K) return;
-        const url = `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_K}&query=${qEnc}&language=es-ES&page=1`;
+        const url = `https://es.wikipedia.org/w/api.php?action=query&format=json&origin=*&generator=search&gsrsearch=${encodeURIComponent(query + ' personaje')}&gsrlimit=8&prop=pageimages|description&piprop=thumbnail&pithumbsize=300`;
         const resp = await fetch(url, {
           signal: (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) ? AbortSignal.timeout(4500) : undefined
         });
         if (!resp.ok) return;
         const data = await resp.json();
-        const results = data?.results || [];
-        results.forEach(p => {
-          const nom = p.name || p.title || '';
-          let obra = 'Cine & TV';
-          let img = '';
-          if (p.media_type === 'person') {
-            obra = (p.known_for || []).map(x => x.title || x.name).filter(Boolean).slice(0, 2).join(', ') || p.known_for_department || 'Cine & TV';
-            if (p.profile_path) img = `https://image.tmdb.org/t/p/w300${p.profile_path}`;
-          } else {
-            obra = p.title ? `Película (${(p.release_date || '').substring(0,4)})` : `Serie (${(p.first_air_date || '').substring(0,4)})`;
-            if (p.poster_path) img = `https://image.tmdb.org/t/p/w300${p.poster_path}`;
-            else if (p.backdrop_path) img = `https://image.tmdb.org/t/p/w300${p.backdrop_path}`;
+        const pages = Object.values(data.query?.pages || {});
+        pages.forEach(p => {
+          const title = p.title || '';
+          const desc = (p.description || '').toLowerCase();
+          const titLow = title.toLowerCase();
+
+          // Excluir si es explícitamente una película, serie completa, álbum o videojuego
+          if (titLow.includes('(película') || titLow.includes('(serie') || titLow.includes('(álbum') || titLow.includes('(videojuego')) return;
+          if (desc.includes('película de') || desc.includes('serie de televisión') || desc.includes('videojuego de')) return;
+
+          // Aceptar si la descripción o título es de personaje
+          const esPersonaje = desc.includes('personaje') || desc.includes('superhéroe') || desc.includes('supervillano') || desc.includes('protagonista') || desc.includes('ficticio') || titLow.includes('(personaje)');
+          if (esPersonaje) {
+            const nomLimpio = title.replace(/\s*\([^)]*\)/g, '').trim();
+            const obraTxt = p.description || 'Personaje de Ficción';
+            const img = p.thumbnail?.source || '';
+            addUnique(nomLimpio, obraTxt, img, 'Wikipedia');
           }
-          if (nom) addUnique(nom, obra, img, 'TMDb');
         });
-      } catch (eTmdb) {}
+      } catch (eWiki) {}
     };
 
-    // 4. TVmaze (Series y personajes de televisión)
-    const fetchTVmaze = async () => {
-      try {
-        const url = `https://api.tvmaze.com/search/shows?q=${qEnc}`;
-        const resp = await fetch(url, {
-          signal: (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) ? AbortSignal.timeout(4500) : undefined
-        });
-        if (!resp.ok) return;
-        const data = await resp.json();
-        if (Array.isArray(data)) {
-          data.slice(0, 5).forEach(item => {
-            const show = item.show || {};
-            const nom = show.name || '';
-            const gen = (show.genres || []).join(', ') || 'Serie TV';
-            const img = show.image?.medium || show.image?.original || '';
-            if (nom) addUnique(nom, `Serie · ${gen}`, img, 'TVmaze');
-          });
-        }
-      } catch (eTv) {}
-    };
-
-    await Promise.allSettled([fetchAniList(), fetchTMDb(), fetchTVmaze()]);
+    await Promise.allSettled([fetchAniList(), fetchWikipedia()]);
 
     window.resultadosPersonajesCache = items;
     renderizarResultadosBusquedaPersonaje(items, query);
   } catch (err) {
     if (resBox) {
-      resBox.innerHTML = '<div style="text-align:center; padding:20px; color:#f87171; font-size:0.84rem; grid-column:1/-1;">Error al consultar servicios de búsqueda. Puedes usar la pestaña "Personalizado" para asignarlo directamente.</div>';
+      resBox.innerHTML = '<div style="text-align:center; padding:20px; color:#f87171; font-size:0.84rem; grid-column:1/-1;">Error al buscar personajes. Puedes usar la pestaña "Crear a mi gusto" para añadirlo directamente.</div>';
     }
   } finally {
     if (loadEl) loadEl.style.display = 'none';
@@ -5689,9 +5751,11 @@ function renderizarResultadosBusquedaPersonaje(items, query) {
   if (!resBox) return;
   if (!items || !items.length) {
     resBox.innerHTML = `
-      <div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.85rem; grid-column:1/-1;">
-        No se encontraron resultados para "<strong>${query}</strong>".<br>
-        <span style="font-size:0.78rem; opacity:0.8;">Prueba con otra variante del nombre o créalo en la pestaña "Personalizado".</span>
+      <div style="text-align:center; padding:28px 14px; color:var(--muted); font-size:0.86rem; grid-column:1/-1;">
+        No se encontró ningún personaje específico para "<strong>${query}</strong>".<br>
+        <span style="font-size:0.78rem; opacity:0.8; display:inline-block; margin-top:6px;">
+          ¿No está en la lista? ¡Agrégalo tú mismo en la pestaña <strong>"Crear a mi gusto"</strong> con su foto y universo!
+        </span>
       </div>
     `;
     return;
@@ -5702,16 +5766,76 @@ function renderizarResultadosBusquedaPersonaje(items, query) {
     return `
       <div class="char-result-card" onclick="seleccionarPersonajePorIndice(${idx})">
         <div class="char-result-avatar">
-          ${esImg ? `<img src="${c.imagen}" alt="${c.nombre}" loading="lazy">` : `<span>👑</span>`}
+          ${esImg ? `<img src="${c.imagen}" alt="${c.nombre}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='👑';">` : `<span>👑</span>`}
         </div>
         <div class="char-result-info">
           <strong class="char-result-name">${c.nombre}</strong>
-          <span class="char-result-origin">${c.obra}${c.fuente ? ` · <em style="font-size:0.72rem; opacity:0.75;">${c.fuente}</em>` : ''}</span>
+          <span class="char-result-origin">${c.obra}</span>
         </div>
         <button type="button" class="btn-select-char-pill">Elegir</button>
       </div>
     `;
   }).join('');
+}
+
+function manejarSubidaFotoPersonaje(e) {
+  const file = e.target.files?.[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const maxDim = 320;
+      let w = img.width, h = img.height;
+      if (w > h) {
+        if (w > maxDim) { h = Math.round(h * maxDim / w); w = maxDim; }
+      } else {
+        if (h > maxDim) { w = Math.round(h * maxDim / h); h = maxDim; }
+      }
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+      const inpImg = document.getElementById('input-char-manual-imagen');
+      if (inpImg) inpImg.value = dataUrl;
+      actualizarPreviewPersonajeManual();
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function actualizarPreviewPersonajeManual() {
+  const nom = document.getElementById('input-char-manual-nombre')?.value.trim();
+  const obra = document.getElementById('input-char-manual-obra')?.value.trim();
+  const img = document.getElementById('input-char-manual-imagen')?.value.trim();
+  const cita = document.getElementById('input-char-manual-cita')?.value.trim();
+
+  const prevName = document.getElementById('preview-char-name');
+  const prevWork = document.getElementById('preview-char-work');
+  const prevBox = document.getElementById('preview-char-avatar-box');
+  const prevQuote = document.getElementById('preview-char-quote');
+
+  if (prevName) prevName.textContent = nom || 'Nombre del Personaje';
+  if (prevWork) prevWork.textContent = obra || 'Obra o Franquicia';
+  if (prevBox) {
+    if (img && (img.startsWith('http') || img.startsWith('data:'))) {
+      prevBox.innerHTML = `<img src="${img}" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.parentElement.innerHTML='👑';">`;
+    } else {
+      prevBox.innerHTML = img || '👑';
+    }
+  }
+  if (prevQuote) {
+    if (cita) {
+      prevQuote.style.display = 'block';
+      prevQuote.textContent = `"${cita}"`;
+    } else {
+      prevQuote.style.display = 'none';
+    }
+  }
 }
 
 function seleccionarPersonajePorIndice(idx) {
@@ -6534,8 +6658,10 @@ function renderizarSubcategoriasResumenInicio() {
       : (estado.registros || []).filter(r => perteneceASub(r, s.cat, s.sub)).length;
     return `
       <button type="button" class="home-subcat-pill" onclick="cambiarCat('${s.cat}', '${s.sub}')" title="Ver ${s.label}">
-        <span class="emoji-dyn">${s.emoji}</span>
-        <span>${s.label}</span>
+        <div class="subcat-left-info">
+          <span class="emoji-dyn">${s.emoji}</span>
+          <span>${s.label}</span>
+        </div>
         <span class="pill-count">${total}</span>
       </button>
     `;
