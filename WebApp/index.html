@@ -1196,7 +1196,7 @@ if (s.startsWith('Aún ') || s.startsWith('Aun ') || s.startsWith('Still ') || s
 if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/'); return `${p[0].padStart(2,'0')}/${p[1].padStart(2,'0')}/${p[2]}`; }
 if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const p = s.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; }
 if (s.includes('➔') || s.includes(' - ') || s.startsWith('Semana') || /^[a-záéíóúñ]+\s+\d{4}$/i.test(s) || /^\d{4}$/.test(s)) return s;
-const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }; const parseTs_ = v => timestampDeFecha(v); const fmtTitIdioma_ = (origTitle, engTitle, origLang) => { const tOrig = String(origTitle || engTitle || '').trim(), tEng = String(engTitle || '').trim(), lang = String(origLang || '').toLowerCase();
+const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }; window.fmtFecha_ = fmtFecha_; const parseTs_ = v => timestampDeFecha(v); const fmtTitIdioma_ = (origTitle, engTitle, origLang) => { const tOrig = String(origTitle || engTitle || '').trim(), tEng = String(engTitle || '').trim(), lang = String(origLang || '').toLowerCase();
 const mostrarIngles = (lang && lang !== 'en' && lang !== 'es') && tEng && tEng.toLowerCase() !== tOrig.toLowerCase(); return { titulo: tOrig, tituloOriginal: tOrig, tituloIngles: mostrarIngles ? tEng : '' }; };
 const traducirRolMusical_ = (r) => { if (!r) return ''; const s = String(r).toLowerCase().trim(); if (s.includes('lead vocals') || s.includes('lead vocal')) return 'Vocalista principal'; if (s.includes('backing vocals') || s.includes('background vocal')) return 'Coros'; if (s.includes('vocal') || s.includes('singer')) return 'Vocalista'; if (s.includes('lead guitar')) return 'Guitarrista líder'; if (s.includes('rhythm guitar')) return 'Guitarrista rítmico'; if (s.includes('acoustic guitar')) return 'Guitarra acústica'; if (s.includes('bass guitar') || s.includes('bass') || s.includes('bajo')) return 'Bajista'; if (s.includes('guitar') || s.includes('guitarra')) return 'Guitarrista'; if (s.includes('drum') || s.includes('percussion') || s.includes('bater')) return 'Baterista'; if (s.includes('keyboard') || s.includes('piano') || s.includes('organ') || s.includes('synthesizer') || s.includes('teclado')) return 'Tecladista'; if (s.includes('saxophone') || s.includes('sax')) return 'Saxofonista'; if (s.includes('trumpet') || s.includes('trompeta')) return 'Trompetista'; if (s.includes('violin')) return 'Violinista'; if (s.includes('producer') || s.includes('productor')) return 'Productor'; if (s.includes('composer') || s.includes('songwriter') || s.includes('compositor')) return 'Compositor'; return r.charAt(0).toUpperCase() + r.slice(1); };
 const SERVER_API = { async obtenerDatosAmigosUsuario(userEmail) { try { const email = normEm_(userEmail); if (!email) return { exito: false, error: 'Sin sesión' }; const myP = await SERVER_API.obtenerPerfilUsuario(email); const prefs = myP.preferencias || {}; const amigosEmails = prefs.amigos || []; const solicitudesEmails = prefs.solicitudes_recibidas || []; const [amigosRowsList, solicitudesRowsList, amigosRegsList] = await Promise.all([
@@ -5930,6 +5930,28 @@ function subTieneRango(c, s, reg) {
   return !!sub?.rangoFechas;
 }
 function subAdmiteRewatch(c, s) { return !!CONFIG[c]?.subs?.find(x => x.id === s)?.admiteRewatch; }
+function obtenerFechaHoyStr() {
+  const d = new Date();
+  return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+}
+window.obtenerFechaHoyStr = obtenerFechaHoyStr;
+
+function fmtFechaGlobal(v) {
+  if (!v || v === 'Sin fecha' || v === '' || v === 'undefined') return 'Sin fecha';
+  if (v instanceof Date) return `${String(v.getDate()).padStart(2, '0')}/${String(v.getMonth() + 1).padStart(2, '0')}/${v.getFullYear()}`;
+  const s = String(v).trim();
+  if (s === 'Sin fecha') return 'Sin fecha';
+  if (typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(s)) return s;
+  if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/'); return `${p[0].padStart(2, '0')}/${p[1].padStart(2, '0')}/${p[2]}`; }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) { const p = s.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; }
+  if (s.includes('➔') || s.includes(' - ') || s.startsWith('Semana') || /^[a-záéíóúñ]+\s+\d{4}$/i.test(s) || /^\d{4}$/.test(s)) return s;
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+}
+window.fmtFecha_ = window.fmtFecha_ || fmtFechaGlobal;
+if (typeof fmtFecha_ === 'undefined') {
+  var fmtFecha_ = window.fmtFecha_;
+}
 function sanitizarFechaFrontend(v) { if (!v || v === 'Sin fecha' || v === 'undefined') return 'Sin fecha'; const s = String(v).trim();
 if (esEnProgresoTexto(s)) return s;
 if (/^\d{2}\/\d{2}\/\d{4}$/.test(s)) return s; if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(s)) { const p = s.split('/');
@@ -7974,8 +7996,8 @@ const fechaParaMes = (r && fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ?
 const textoMesContador = mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`); const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
 sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td"><span class="emoji-dyn">🗓️ </span>${textoMesContador}</td>`; tbFrag.appendChild(sepTr); const sepCard = document.createElement('div'); sepCard.className = 'month-separator-card';
 sepCard.innerHTML = `<span class="emoji-dyn">🗓️ </span>${textoMesContador}`; mBoxFrag.appendChild(sepCard); }
-const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd'; const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`; tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'Finish entry' : 'Completar y calificar obra'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;">🎉 ${userPrefs.lang === 'en' ? 'Finished!' : '¡Terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
-tbFrag.appendChild(tr); const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`; m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="abrirModalTerminarObra('${reg.id}')" style="width:100%; height:36px; border:none; border-radius:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.84rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>🎉</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Terminé!'}</span></button></div>` : ''}`;
+const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd'; const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`; tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'Finish entry' : 'Completar y calificar obra'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;">🎉 ${userPrefs.lang === 'en' ? 'Finished!' : '¡Terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
+tbFrag.appendChild(tr); const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`; m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>🎉</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Terminé!'}</span></button></div>` : ''}`;
 mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales(); }
 const cerrarModal = () => { document.getElementById('modal-edicion').style.display = 'none'; document.getElementById('modal-contenido').innerHTML = ''; };
 let califSeleccionadaTerminar = 5;
@@ -7983,62 +8005,77 @@ let regIdParaTerminar = null;
 let fpTerminarFin = null;
 
 function abrirModalTerminarObra(id) {
-  const reg = (estado.registros || []).find(r => String(r.id) === String(id));
-  if (!reg) return;
-  regIdParaTerminar = id;
-  const l = userPrefs.lang || 'es';
+  try {
+    const reg = (estado.registros || []).find(r => String(r.id) === String(id)) ||
+                (estado.registros || []).find(r => String(r.titulo) === String(id));
+    if (!reg) {
+      console.warn('Registro no encontrado para terminar con id:', id);
+      return;
+    }
+    regIdParaTerminar = reg.id;
+    const l = userPrefs.lang || 'es';
 
-  const modalEl = document.getElementById('modal-terminar-obra');
-  if (!modalEl) return;
+    const modalEl = document.getElementById('modal-terminar-obra');
+    if (!modalEl) {
+      console.error('Modal modal-terminar-obra no encontrado en el DOM');
+      return;
+    }
 
-  const posterEl = document.getElementById('terminar-poster');
-  if (posterEl) posterEl.src = reg.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'42\' height=\'60\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
+    const posterEl = document.getElementById('terminar-poster');
+    if (posterEl) posterEl.src = reg.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'42\' height=\'60\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
 
-  const titEl = document.getElementById('terminar-titulo');
-  if (titEl) titEl.textContent = reg.titulo || 'Sin título';
+    const titEl = document.getElementById('terminar-titulo');
+    if (titEl) titEl.textContent = reg.titulo || 'Sin título';
 
-  const crEl = document.getElementById('terminar-creador');
-  if (crEl) crEl.textContent = (reg.creador || '') + (reg.anio ? ` (${reg.anio})` : '');
+    const crEl = document.getElementById('terminar-creador');
+    if (crEl) crEl.textContent = (reg.creador || '') + (reg.anio ? ` (${reg.anio})` : '');
 
-  const badgeEl = document.getElementById('terminar-subcat-badge');
-  if (badgeEl) badgeEl.textContent = `${reg.categoria} ➔ ${reg.subcategoria}${reg.fechaInicio && reg.fechaInicio !== 'Sin fecha' ? ' | Inicio: ' + reg.fechaInicio : ''}`;
+    const badgeEl = document.getElementById('terminar-subcat-badge');
+    if (badgeEl) badgeEl.textContent = `${reg.categoria} ➔ ${reg.subcategoria}${reg.fechaInicio && reg.fechaInicio !== 'Sin fecha' ? ' | Inicio: ' + reg.fechaInicio : ''}`;
 
-  const hoyStr = fmtFecha_(new Date());
-  const inputFin = document.getElementById('terminar-fecha-fin');
-  if (inputFin) inputFin.value = hoyStr;
+    const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
+    const inputFin = document.getElementById('terminar-fecha-fin');
+    if (inputFin) inputFin.value = hoyStr;
 
-  if (fpTerminarFin) {
-    try { fpTerminarFin.destroy(); } catch(e) {}
-    fpTerminarFin = null;
+    if (fpTerminarFin) {
+      try { fpTerminarFin.destroy(); } catch(e) {}
+      fpTerminarFin = null;
+    }
+    if (window.flatpickr && inputFin) {
+      try {
+        fpTerminarFin = flatpickr(inputFin, {
+          locale: (l === 'en' ? 'default' : 'es'),
+          dateFormat: 'd/m/Y',
+          defaultDate: hoyStr,
+          allowInput: false,
+          disableMobile: true
+        });
+      } catch(e) {
+        console.warn('Flatpickr init warning:', e);
+      }
+    }
+
+    califSeleccionadaTerminar = (Number(reg.calificacion) > 0) ? Number(reg.calificacion) : 5;
+    const valCalifInp = document.getElementById('terminar-val-calif');
+    if (valCalifInp) valCalifInp.value = califSeleccionadaTerminar;
+    renderEstrellasTerminar(califSeleccionadaTerminar);
+
+    const comEl = document.getElementById('terminar-comentario');
+    if (comEl) comEl.value = (reg.comentario && reg.comentario !== '—') ? reg.comentario : '';
+
+    const btnConfirm = document.getElementById('btn-guardar-terminar-obra');
+    if (btnConfirm) {
+      btnConfirm.textContent = l === 'en' ? '🎉 Save & Finish!' : '🎉 ¡Guardar y Finalizar!';
+      btnConfirm.disabled = false;
+    }
+
+    modalEl.style.display = 'flex';
+    setTimeout(() => {
+      if (comEl) comEl.focus();
+    }, 120);
+  } catch (err) {
+    console.error('Error al abrir modal terminar obra:', err);
   }
-  if (window.flatpickr && inputFin) {
-    fpTerminarFin = flatpickr(inputFin, {
-      locale: (l === 'en' ? 'default' : 'es'),
-      dateFormat: 'd/m/Y',
-      defaultDate: hoyStr,
-      allowInput: false,
-      disableMobile: true
-    });
-  }
-
-  califSeleccionadaTerminar = (Number(reg.calificacion) > 0) ? Number(reg.calificacion) : 5;
-  const valCalifInp = document.getElementById('terminar-val-calif');
-  if (valCalifInp) valCalifInp.value = califSeleccionadaTerminar;
-  renderEstrellasTerminar(califSeleccionadaTerminar);
-
-  const comEl = document.getElementById('terminar-comentario');
-  if (comEl) comEl.value = (reg.comentario && reg.comentario !== '—') ? reg.comentario : '';
-
-  const btnConfirm = document.getElementById('btn-guardar-terminar-obra');
-  if (btnConfirm) {
-    btnConfirm.textContent = l === 'en' ? '🎉 Save & Finish!' : '🎉 ¡Guardar y Finalizar!';
-    btnConfirm.disabled = false;
-  }
-
-  modalEl.style.display = 'flex';
-  setTimeout(() => {
-    if (comEl) comEl.focus();
-  }, 120);
 }
 
 function cerrarModalTerminarObra() {
@@ -8048,7 +8085,7 @@ function cerrarModalTerminarObra() {
 }
 
 function establecerFechaHoyTerminarModal() {
-  const hoyStr = fmtFecha_(new Date());
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
   const inp = document.getElementById('terminar-fecha-fin');
   if (inp) inp.value = hoyStr;
   if (fpTerminarFin) {
@@ -8102,7 +8139,7 @@ function confirmarTerminarObra() {
   }
 
   const l = userPrefs.lang || 'es';
-  const fFinVal = sanitizarFechaFrontend(document.getElementById('terminar-fecha-fin')?.value?.trim()) || fmtFecha_(new Date());
+  const fFinVal = sanitizarFechaFrontend(document.getElementById('terminar-fecha-fin')?.value?.trim()) || obtenerFechaHoyStr();
   const califVal = Number(califSeleccionadaTerminar) || 0;
   const comVal = asegurarPuntoFinal(document.getElementById('terminar-comentario')?.value?.trim() || '');
 
@@ -8138,7 +8175,39 @@ function confirmarTerminarObra() {
     } else {
       alert('Error al actualizar registro: ' + (res?.error || 'Desconocido'));
     }
+  }).withFailureHandler(err => {
+    if (btn) {
+      btn.textContent = txtOrig;
+      btn.disabled = false;
+    }
+    alert('Error al guardar: ' + (err?.message || err));
   }).actualizarRegistro(reg.id, { fechaFin: fFinVal, calificacion: califVal, comentario: comVal }, estado.userEmail);
+}
+
+function terminarHoyEnEditorCompleto() {
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
+  const inp = document.getElementById('edit-compl-fecha-fin');
+  if (inp) {
+    inp.value = hoyStr;
+  }
+  if (fpComplFin) {
+    try {
+      fpComplFin.setDate(hoyStr, true);
+    } catch(e) {}
+  }
+}
+
+function terminarHoyEnEditorFecha() {
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
+  const inp = document.getElementById('edit-fecha-fin');
+  if (inp) {
+    inp.value = hoyStr;
+  }
+  if (fpFinSimple) {
+    try {
+      fpFinSimple.setDate(hoyStr, true);
+    } catch(e) {}
+  }
 }
 
 window.abrirModalTerminarObra = abrirModalTerminarObra;
@@ -8146,6 +8215,8 @@ window.cerrarModalTerminarObra = cerrarModalTerminarObra;
 window.establecerFechaHoyTerminarModal = establecerFechaHoyTerminarModal;
 window.renderEstrellasTerminar = renderEstrellasTerminar;
 window.confirmarTerminarObra = confirmarTerminarObra;
+window.terminarHoyEnEditorCompleto = terminarHoyEnEditorCompleto;
+window.terminarHoyEnEditorFecha = terminarHoyEnEditorFecha;
 let fpComplFin = null;
 let fpFinSimple = null;
 function mostrarFechaFinEnEditorCompl() {
@@ -8187,7 +8258,7 @@ function abrirEditorRegistroCompleto(id) {
   html += '<div class="form-group"><div class="date-row" style="display:flex;gap:10px;">';
   html += '<div style="flex:1;"><label style="font-size:.82rem;color:var(--muted);">' + (r ? (l === 'en' ? 'Start date:' : 'Fecha de inicio:') : (l === 'en' ? 'Date:' : 'Fecha:')) + '</label>';
   html += '<input type="text" id="edit-compl-fecha-ini" class="form-input date-input" placeholder="dd/mm/aaaa" value="' + (reg.fechaInicio !== 'Sin fecha' ? reg.fechaInicio : '') + '"></div>';
-  html += '<div id="wrap-edit-compl-fecha-fin" style="flex:1;' + (r ? '' : 'display:none;') + '"><label style="font-size:.82rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center;"><span>' + (l === 'en' ? 'End date:' : 'Fecha de término:') + '</span>' + (enProg ? '<button type="button" class="btn-ghost" style="padding:1px 6px;font-size:0.7rem;color:var(--accent);" onclick="document.getElementById(\'edit-compl-fecha-fin\').value = fmtFecha_(new Date());">✔ ' + (l === 'en' ? 'Finish today' : 'Terminar hoy') + '</button>' : '') + '</label>';
+  html += '<div id="wrap-edit-compl-fecha-fin" style="flex:1;' + (r ? '' : 'display:none;') + '"><label style="font-size:.82rem;color:var(--muted);display:flex;justify-content:space-between;align-items:center;"><span>' + (l === 'en' ? 'End date:' : 'Fecha de término:') + '</span>' + (enProg ? '<button type="button" class="btn-ghost" style="padding:2px 8px;font-size:0.72rem;color:var(--accent);border:1px solid rgba(56,189,248,0.3);border-radius:6px;background:rgba(56,189,248,0.08);cursor:pointer;" onclick="terminarHoyEnEditorCompleto()">✔ ' + (l === 'en' ? 'Finish today' : 'Terminar hoy') + '</button>' : '') + '</label>';
   html += '<input type="text" id="edit-compl-fecha-fin" class="form-input date-input" placeholder="' + (enProg ? reg.fechaFin : 'dd/mm/aaaa') + '" value="' + (reg.fechaFin && reg.fechaFin !== 'Sin fecha' && !enProg ? reg.fechaFin : '') + '"></div>';
   html += '</div>';
   html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px;">';
@@ -8348,7 +8419,7 @@ function abrirEditorFecha(id) {
     <div id="wrap-edit-fecha-fin" style="margin-bottom:12px;${r ? '' : 'display:none;'}">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
         <label style="font-size:.85rem; color:var(--muted); margin:0;">${t('lbl_fecha_fin')}</label>
-        ${enProg ? `<button type="button" class="btn-ghost" style="padding:1px 6px;font-size:0.72rem;color:var(--accent);" onclick="document.getElementById('edit-fecha-fin').value = fmtFecha_(new Date());">✔ ${l === 'en' ? 'Finish today' : 'Terminar hoy'}</button>` : ''}
+        ${enProg ? `<button type="button" class="btn-ghost" style="padding:2px 8px;font-size:0.72rem;color:var(--accent);border:1px solid rgba(56,189,248,0.3);border-radius:6px;background:rgba(56,189,248,0.08);cursor:pointer;" onclick="terminarHoyEnEditorFecha()">✔ ${l === 'en' ? 'Finish today' : 'Terminar hoy'}</button>` : ''}
       </div>
       <input type="text" id="edit-fecha-fin" class="form-input date-input" placeholder="${enProg ? reg.fechaFin : 'dd/mm/aaaa'}" value="${(reg.fechaFin && reg.fechaFin !== 'Sin fecha' && !enProg && /^\d{1,2}\/\d{1,2}\/\d{4}$/.test(reg.fechaFin)) ? reg.fechaFin : ''}">
     </div>
