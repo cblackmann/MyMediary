@@ -148,12 +148,25 @@ textarea.comment-box:hover{border-color:rgba(56,189,248,.4)}textarea.comment-box
 .switch-wrap{display:flex;align-items:center;justify-content:space-between;padding:6px 0}.switch-label{font-size:0.92rem;color:var(--text);font-weight:500}.switch-toggle{position:relative;display:inline-block;width:46px;height:26px}.switch-toggle input{opacity:0;width:0;height:0}.switch-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:var(--card-hover);transition:.3s;border-radius:34px;border:1px solid var(--border)}
 .switch-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:var(--text);transition:.3s;border-radius:50%}.switch-toggle input:checked + .switch-slider{background-color:var(--accent);border-color:var(--accent)}.switch-toggle input:checked + .switch-slider:before{transform:translateX(20px);background-color:#0f172a}
 .toast-popup{position:fixed;top:20px;right:20px;background:var(--card);border:1px solid var(--accent);color:var(--text);padding:14px 20px;border-radius:12px;font-size:0.9rem;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;gap:10px;animation:slideDownToast 0.3s cubic-bezier(0.34, 1.3, 0.64, 1)}
-@keyframes slideDownToast{from{transform:translateY(-40px);opacity:0}to{transform:translateY(0);opacity:1}}.profile-section-title{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin:14px 0 8px}.profile-grid-records{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}.profile-grid-highlights{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+@keyframes slideDownToast{from{transform:translateY(-40px);opacity:0}to{transform:translateY(0);opacity:1}}.profile-section-title{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin:14px 0 8px}.profile-grid-records{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.profile-grid-highlights{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
 .profile-grid-fun{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.profile-stat-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center}.profile-stat-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:0.04em}.profile-stat-val{font-size:1.05rem;font-weight:700;color:var(--text);margin-top:2px;word-break:break-word}
 .profile-stat-sub{font-size:0.75rem;color:var(--accent);margin-top:2px}.profile-bar-row{display:flex;align-items:center;gap:8px;font-size:0.82rem;margin-bottom:6px}.profile-bar-name{width:125px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
 .profile-bar-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.4s ease}.profile-bar-count{width:65px;text-align:right;font-weight:700;color:var(--text)}@keyframes fadeInModal{from{opacity:0}to{opacity:1}}@keyframes popInModal{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.streak-celebration-banner{background:linear-gradient(135deg,rgba(245,158,11,0.16) 0%,rgba(234,88,12,0.08) 100%);border:1px solid rgba(245,158,11,0.45);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 18px rgba(245,158,11,0.12);animation:slideDownToast 0.35s cubic-bezier(0.34,1.2,0.64,1);position:relative;overflow:hidden;margin-bottom:14px}
+.streak-celebration-banner::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(to bottom,#f59e0b,#ef4444)}
+.streak-flame-box{width:44px;height:44px;border-radius:12px;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.4);display:flex;align-items:center;justify-content:center;font-size:1.55rem;flex-shrink:0}
+.streak-celebration-info{flex:1;min-width:0}
+.streak-celebration-title{font-size:0.96rem;font-weight:700;color:#fbbf24;margin-bottom:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.streak-celebration-desc{font-size:0.82rem;color:var(--text);line-height:1.35;opacity:0.95}
+.streak-celebration-sub{font-size:0.74rem;color:var(--muted);margin-top:2px}
+.streak-badge-pill{background:linear-gradient(135deg,#f59e0b,#d97706);color:#0f172a;font-weight:800;font-size:0.82rem;padding:5px 12px;border-radius:20px;white-space:nowrap;box-shadow:0 2px 8px rgba(245,158,11,0.4);flex-shrink:0}
+.streak-active-card{background:rgba(245,158,11,0.08);border:1px dashed rgba(245,158,11,0.35);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.streak-active-card .streak-flame-box{width:36px;height:36px;font-size:1.25rem}
+.streak-active-title{font-size:0.88rem;font-weight:700;color:#fbbf24}
+.streak-active-desc{font-size:0.78rem;color:var(--muted);margin-top:1px}
+.badge-racha-header{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.35);border-radius:12px;padding:2px 8px;font-weight:700}
 @media (max-width: 768px){
-body{padding-bottom:calc(var(--b-nav) + 24px)}.web-nav-wrapper{display:none}.mobile-bottom-nav{display:flex}.container{padding:0 12px;margin:12px auto}.search-row{flex-direction:column;align-items:stretch}.btn-action-manual{justify-content:center}.cat-wide-body{grid-template-columns:1fr;gap:12px}.cat-subtotals-wrap{grid-column:span 1}.date-row{flex-direction:column;gap:8px;align-items:stretch}.btn-today-pill{width:100%;height:38px}.table-container{display:none}.mobile-history-list{display:flex}.modal-overlay{align-items:flex-end}.modal-box{width:100%;max-width:100%;border-bottom-left-radius:0;border-bottom-right-radius:0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));animation:slideUpModal .25s cubic-bezier(.34,1.2,.64,1)}.ficha-grid{flex-direction:column;align-items:center;text-align:center}.ficha-poster{width:135px;height:195px}.profile-grid-records, .profile-grid-fun{grid-template-columns:1fr;gap:8px}.profile-grid-highlights{grid-template-columns:repeat(2,1fr);gap:8px}
+body{padding-bottom:calc(var(--b-nav) + 24px)}.web-nav-wrapper{display:none}.mobile-bottom-nav{display:flex}.container{padding:0 12px;margin:12px auto}.search-row{flex-direction:column;align-items:stretch}.btn-action-manual{justify-content:center}.cat-wide-body{grid-template-columns:1fr;gap:12px}.cat-subtotals-wrap{grid-column:span 1}.date-row{flex-direction:column;gap:8px;align-items:stretch}.btn-today-pill{width:100%;height:38px}.table-container{display:none}.mobile-history-list{display:flex}.modal-overlay{align-items:flex-end}.modal-box{width:100%;max-width:100%;border-bottom-left-radius:0;border-bottom-right-radius:0;padding:24px 20px calc(24px + env(safe-area-inset-bottom));animation:slideUpModal .25s cubic-bezier(.34,1.2,.64,1)}.ficha-grid{flex-direction:column;align-items:center;text-align:center}.ficha-poster{width:135px;height:195px}.profile-grid-records{grid-template-columns:repeat(2,1fr);gap:8px}.profile-grid-fun{grid-template-columns:1fr;gap:8px}.profile-grid-highlights{grid-template-columns:repeat(2,1fr);gap:8px}
 header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-display{font-size:1.35rem}.year-display-txt{font-size:1.1rem}.btn-year-picker{padding:3px 8px;gap:4px}.header-actions{gap:6px}.btn-header-icon{width:36px;height:36px;font-size:1.05rem}.profile-hero-card{flex-direction:column;align-items:center;text-align:center;padding:18px 14px;gap:14px}.profile-identity-wrap{flex-direction:column;align-items:center;text-align:center;min-width:100%;gap:12px}.profile-avatar-box{width:90px;height:90px;margin:0 auto}.profile-nick-row{justify-content:center}.profile-info-col{display:flex;flex-direction:column;align-items:center}.profile-google-box{align-items:stretch;width:100%;gap:8px}.profile-google-box button{width:100%;justify-content:center}
 @keyframes slideUpModal{from{transform:translateY(100%)}to{transform:translateY(0)}}
 }
@@ -355,7 +368,8 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div class="profile-stat-sub" data-i18n="stat_items_completed">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_avg_rating">Calificación Promedio</div> <div class="profile-stat-val" id="prof-rating-val">★ 0.0</div> <div class="profile-stat-sub" data-i18n="stat_out_of_stars">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_game_playtime">Horas en Juegos</div> <div class="profile-stat-val" id="prof-hours-val">0 hrs</div>
 <div class="profile-stat-sub" data-i18n="stat_time_logged">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="prof-watched-hours-val">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" data-i18n="profile_records_title">🏆 Récords de Ritmo</div> <div class="profile-grid-records"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div> <div class="profile-stat-val" id="prof-best-day-val">—</div> <div class="profile-stat-sub" id="prof-best-day-sub">0 registros</div>
 </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div> <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.9rem; line-height:1.25;">—</div> <div class="profile-stat-sub" id="prof-best-week-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
-<div class="profile-stat-val" id="prof-best-month-val">—</div> <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div> </div> </div> <div class="profile-section-title" data-i18n="profile_curiosities_title">✨ Curiosidades y Hábitos</div> <div class="profile-grid-fun"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_fav_creator">Creador/Director Favorito</div> <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
+<div class="profile-stat-val" id="prof-best-month-val">—</div> <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_streak">Racha más alta</div>
+<div class="profile-stat-val" id="prof-best-streak-val" style="color:#f59e0b;">—</div> <div class="profile-stat-sub" id="prof-best-streak-sub">0 días seguidos</div> </div> </div> <div class="profile-section-title" data-i18n="profile_curiosities_title">✨ Curiosidades y Hábitos</div> <div class="profile-grid-fun"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_fav_creator">Creador/Director Favorito</div> <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
 <div class="profile-stat-sub" id="prof-fav-creator-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_rewatch_rate">Tasa de Rewatch / Relectura</div> <div class="profile-stat-val" id="prof-rewatch-rate-val">0%</div> <div class="profile-stat-sub" id="prof-rewatch-rate-sub">0 re-consumos</div> </div> </div> <div class="cat-wide-card" style="margin-top:14px;">
 <label style="font-weight:700; display:block; margin-bottom:10px;" data-i18n="profile_dist_title">📊 Distribución de Contenido por Categoría:</label> <div id="profile-bars-container"></div> </div> </div>
 
@@ -494,7 +508,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div class="form-group"> <label data-i18n="lbl_calificacion">Calificación:</label> <div class="stars-wrapper" id="rating-stars" onmouseleave="restaurarHoverEstrellas()"></div> <span id="rating-label" style="font-size:.85rem; color:var(--accent); margin-left:8px;">0.0 / 5</span> </div> <div class="form-group" id="grupo-rewatch-checkbox" style="display:none; margin:10px 0 16px;">
 <div class="checkbox-row" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:8px; padding:10px 14px;"> <input type="checkbox" id="chk-es-rewatch" style="width:18px; height:18px; cursor:pointer;"> <label for="chk-es-rewatch" style="cursor:pointer; color:var(--text); font-weight:600; margin:0;" data-i18n="lbl_es_rewatch">🔁 Ya la he visto antes (Rewatch)</label> </div> </div>
 <div class="form-group"> <label data-i18n="lbl_comentario">Comentario / Reseña:</label> <textarea id="input-comentario" class="comment-box" placeholder="Escribe lo que te pareció (Enter para guardar)..." onkeydown="manejarEnterComentario(event)"></textarea> </div> <button class="btn-save" id="btn-guardar" onclick="guardarNuevoElemento()" data-i18n="btn_guardar">Guardar en Mediary</button> </div> <!-- VISTA NORMAL DE HISTORIAL -->
-<div id="seccion-historial-contenido"> <div class="history-header"> <div class="history-title"><span data-i18n="historial_title">Historial</span> (<span id="total-filtro">0</span>)</div> <button type="button" class="btn-toggle-filter" id="btn-filtro-rewatches" style="display:none;" onclick="toggleOcultarRewatches()"> <span>🔁</span> <span id="txt-filtro-rewatches" data-i18n="btn_ocultar_rw">Ocultar Rewatches</span>
+<div id="seccion-historial-contenido"> <div id="banner-racha-subcategoria" style="display:none; margin-bottom:14px;"></div> <div class="history-header"> <div class="history-title"><span data-i18n="historial_title">Historial</span> (<span id="total-filtro">0</span>)<span id="badge-racha-header" style="display:none; margin-left:10px;"></span></div> <button type="button" class="btn-toggle-filter" id="btn-filtro-rewatches" style="display:none;" onclick="toggleOcultarRewatches()"> <span>🔁</span> <span id="txt-filtro-rewatches" data-i18n="btn_ocultar_rw">Ocultar Rewatches</span>
 </button> </div> <div class="table-container"> <table class="history-table"><thead id="thead-historial"></thead><tbody id="tbody-historial"></tbody></table> </div> <div class="mobile-history-list" id="mobile-history-cards"></div> </div> <!-- VISTA EXCLUSIVA DE WATCHLIST --> <div id="seccion-watchlist-contenido" style="display:none;"> <div class="history-header"> <div class="history-title" id="titulo-watchlist-nombre">Watchlist (0)</div>
 <button type="button" class="btn-recommend" id="btn-recomendar-azar" onclick="iniciarRecomendacionAzar()"> <span>🎲</span> <span>Recomiéndame</span> </button> </div> <div class="watchlist-grid" id="grid-watchlist-items"></div> </div> </div> </div> <!-- BARRA MÓVIL REORGANIZADA CON 5 BOTONES --> <nav class="mobile-bottom-nav"> <button type="button" class="mobile-nav-btn active" id="m-btn-inicio" onclick="irInicio()">
 <span class="icon emoji-dyn">🏠</span> <span data-i18n="nav_inicio">Inicio</span> </button> <button type="button" class="mobile-nav-btn" id="m-btn-discover" onclick="abrirVistaDiscover()"> <span class="icon emoji-dyn">🧭</span> <span data-i18n="nav_discover">Discover</span> </button> <div class="mobile-center-btn-wrap"> <button type="button" class="btn-mobile-center-plus" title="Agregado Rápido" onclick="abrirModalAgregadoRapido()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" style="display:block;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
@@ -4087,7 +4101,7 @@ table_th_fecha_ini: "Inicio", table_th_fecha_fin: "Término", table_th_fecha: "F
 stat_ultimo: "Último", stat_mejor: "Mejor Calificado", stat_sin_reg: "Sin registros aún", stat_sin_fecha: "Sin fecha registrada", total_prefix: "Total:", concierto_title: "Registrar Concierto / Festival", concierto_gira: "Nombre de la gira o evento:",
 concierto_tipo_q: "¿Fue concierto o festival?:", concierto_btn_concierto: "Concierto", concierto_btn_festival: "Festival", concierto_buscar_art: "Buscar y agregar artistas que tocaron:", concierto_agregados: "Artistas agregados:",
 concierto_vacio: "No has agregado artistas aún.", concierto_continuar: "Continuar con calificación y fecha", profile_title: "Perfil y Estadísticas", stat_best_day: "Día récord", stat_best_week: "Semana récord",
-stat_best_month: "Mes récord", profile_dist_title: "Distribución de Contenido por Categoría:", cfg_title: "⚙️ Configuración y Estilo", cfg_title_short: "Configuración", cfg_lang_label: "Idioma de la Interfaz:", cfg_font_label: "Tipografía de la App:",
+stat_best_month: "Mes récord", stat_best_streak: "Racha más alta", profile_dist_title: "Distribución de Contenido por Categoría:", cfg_title: "⚙️ Configuración y Estilo", cfg_title_short: "Configuración", cfg_lang_label: "Idioma de la Interfaz:", cfg_font_label: "Tipografía de la App:",
 cfg_size_label: "Tamaño general de letra:", cfg_theme_label: "Tema de color (4 temas con versión Claro y Oscuro):", cfg_emojis_label: "Mostrar emojis en la interfaz", btn_defaults: "Predeterminados", btn_done: "Listo", btn_cancel: "Cancelar", btn_continue: "Continuar",
 btn_save_changes: "Guardar cambios", btn_skip: "Omitir", btn_save_full_series: "Guardar Serie Completa", del_title: "¿Eliminar este registro?", btn_del_permanent: "Eliminar definitivamente", manual_modal_title: "Ingreso Manual", manual_lbl_titulo: "Título (idioma original en alfabeto latino):",
 manual_lbl_subtitulo: "Traducción al inglés (opcional, si el original no es inglés ni español):", manual_lbl_creador: "Director / Autor / Artista:", manual_lbl_anio: "Año de salida / emisión:",
@@ -4148,7 +4162,7 @@ lbl_arco: "Story Arc Name:", lbl_numeros: "Issues / Chapters Covered:", lbl_hora
 lbl_es_rewatch: "🔁 Seen it before (Rewatch)", lbl_comentario: "Review / Thoughts:", en_progreso_desc: "Save now to history with start date, in-progress end status, and pending rating/review", en_progreso_btn: "Save", pendiente: "Pending", table_th_fecha_ini: "Start", table_th_fecha_fin: "End", table_th_fecha: "Date", table_th_horas: "Hours", table_th_calif: "Rating", table_th_comentario: "Review",
 stat_ultimo: "Latest", stat_mejor: "Highest Rated", stat_sin_reg: "No records yet", stat_sin_fecha: "No registered date", total_prefix: "Total:", concierto_title: "Log Concert / Festival", concierto_gira: "Tour or Event name:",
 concierto_tipo_q: "Event Type:", concierto_btn_concierto: "Concert", concierto_btn_festival: "Festival", concierto_buscar_art: "Search and add artists that performed:", concierto_agregados: "Added artists:", concierto_vacio: "No artists added yet.", concierto_continuar: "Proceed to rating & date",
-profile_title: "Profile & Statistics", stat_best_day: "Record Day", stat_best_week: "Record Week", stat_best_month: "Record Month", profile_dist_title: "Media Distribution by Category:", cfg_title: "⚙️ Settings & Theme", cfg_title_short: "Settings", cfg_lang_label: "Interface Language:", cfg_font_label: "App Typography:",
+profile_title: "Profile & Statistics", stat_best_day: "Record Day", stat_best_week: "Record Week", stat_best_month: "Record Month", stat_best_streak: "Highest Streak", profile_dist_title: "Media Distribution by Category:", cfg_title: "⚙️ Settings & Theme", cfg_title_short: "Settings", cfg_lang_label: "Interface Language:", cfg_font_label: "App Typography:",
 cfg_size_label: "Font Scale:", cfg_theme_label: "Color Theme (4 themes with Light & Dark versions):", cfg_emojis_label: "Show interface emojis", btn_defaults: "Defaults", btn_done: "Done", btn_cancel: "Cancel", btn_continue: "Continue",
 btn_save_changes: "Save Changes", btn_skip: "Skip", btn_save_full_series: "Save Full Series", del_title: "Delete this record?", btn_del_permanent: "Delete Permanently",
 manual_modal_title: "Manual Entry", manual_lbl_titulo: "Title (Original language, Latin script):", manual_lbl_subtitulo: "English translation (optional):", manual_lbl_creador: "Director / Author / Artist:", manual_lbl_anio: "Release Year:",
@@ -4793,6 +4807,321 @@ async function resolverDuracionObraApi_(cat, sub, titulo, creador, anio) {
   } catch(e) {}
   return 0;
 }
+
+// --- SISTEMA DE RACHAS (STREAKS) MULTI-CATEGORÍA Y PERFIL ---
+function extraerDayIndicesDeRegistro(r) {
+  const indices = new Set();
+  if (!r) return indices;
+  const fI = sanitizarFechaFrontend(r.fechaInicio);
+  const fF = sanitizarFechaFrontend(r.fechaFin);
+  const enProg = esEnProgresoTexto(fF);
+  if (enProg && (!fI || fI === 'Sin fecha')) return indices;
+
+  const dI = parsearFechaAObjeto(fI);
+  const dF = (!enProg && fF && fF !== 'Sin fecha') ? parsearFechaAObjeto(fF) : null;
+
+  if (dI && dF && dF >= dI) {
+    const dMidI = new Date(dI.getFullYear(), dI.getMonth(), dI.getDate());
+    const dMidF = new Date(dF.getFullYear(), dF.getMonth(), dF.getDate());
+    const diffDays = Math.round((dMidF.getTime() - dMidI.getTime()) / 86400000);
+    if (diffDays <= 31) {
+      const cur = new Date(dMidI);
+      while (cur <= dMidF) {
+        indices.add(Math.round(cur.getTime() / 86400000));
+        cur.setDate(cur.getDate() + 1);
+      }
+    } else {
+      indices.add(Math.round(dMidF.getTime() / 86400000));
+    }
+  } else if (dF) {
+    const dMidF = new Date(dF.getFullYear(), dF.getMonth(), dF.getDate());
+    indices.add(Math.round(dMidF.getTime() / 86400000));
+  } else if (dI) {
+    const dMidI = new Date(dI.getFullYear(), dI.getMonth(), dI.getDate());
+    indices.add(Math.round(dMidI.getTime() / 86400000));
+  }
+  return indices;
+}
+
+function obtenerTextoAccionSubcategoria(cat, sub) {
+  const l = userPrefs.lang || 'es';
+  const subNorm = (sub || '').toLowerCase().trim();
+
+  if (l === 'en') {
+    if (subNorm.includes('disco')) return 'listening to albums';
+    if (subNorm.includes('concierto')) return 'watching concerts';
+    if (subNorm.includes('película') || subNorm.includes('pelicula')) return 'watching movies';
+    if (subNorm.includes('documental')) return 'watching documentaries';
+    if (subNorm.includes('temporada')) return 'watching series seasons';
+    if (subNorm.includes('serie') && subNorm.includes('complet')) return 'completing series';
+    if (subNorm.includes('docuserie') || (subNorm.includes('serie') && subNorm.includes('doc'))) return 'watching docuseries';
+    if (subNorm.includes('videojuego') || cat === 'Juegos') return 'playing video games';
+    if (subNorm.includes('libro')) return 'reading books';
+    if (subNorm.includes('cómic') || subNorm.includes('comic')) return 'reading comics';
+    if (subNorm.includes('manga')) return 'reading manga';
+    return `logging ${sub.toLowerCase()}`;
+  }
+
+  // Español
+  if (subNorm.includes('disco')) return 'escuchando discos';
+  if (subNorm.includes('concierto')) return 'viendo conciertos';
+  if (subNorm.includes('película') || subNorm.includes('pelicula')) return 'viendo películas';
+  if (subNorm.includes('documental')) return 'viendo documentales';
+  if (subNorm.includes('temporada')) return 'viendo temporadas de series';
+  if (subNorm.includes('serie') && subNorm.includes('complet')) return 'completando series';
+  if (subNorm.includes('docuserie') || (subNorm.includes('serie') && subNorm.includes('doc'))) return 'viendo docuseries';
+  if (subNorm.includes('videojuego') || cat === 'Juegos') return 'jugando videojuegos';
+  if (subNorm.includes('libro')) return 'leyendo libros';
+  if (subNorm.includes('cómic') || subNorm.includes('comic')) return 'leyendo cómics';
+  if (subNorm.includes('manga')) return 'leyendo mangas';
+  return `registrando ${sub.toLowerCase()}`;
+}
+
+function calcularRachaSubcategoria(cat, sub) {
+  const l = userPrefs.lang || 'es';
+  const items = (typeof obtenerRegistrosDeSubcategoria === 'function')
+    ? obtenerRegistrosDeSubcategoria(cat, sub, true)
+    : (estado.registros || []).filter(r => perteneceASub(r, cat, sub));
+
+  if (!items || !items.length) {
+    return {
+      rachaActual: 0,
+      rachaMasAlta: 0,
+      esActivaHoy: false,
+      totalDias: 0,
+      textoAccion: obtenerTextoAccionSubcategoria(cat, sub)
+    };
+  }
+
+  const setDayIndices = new Set();
+  items.forEach(r => {
+    const setR = extraerDayIndicesDeRegistro(r);
+    setR.forEach(idx => setDayIndices.add(idx));
+  });
+
+  const sortedDays = Array.from(setDayIndices).sort((a, b) => a - b);
+  let bestStreak = 0;
+  let curStreak = 0;
+  let lastDayIdx = null;
+
+  for (let i = 0; i < sortedDays.length; i++) {
+    const dayIdx = sortedDays[i];
+    if (lastDayIdx === null || dayIdx === lastDayIdx + 1) {
+      curStreak++;
+    } else {
+      curStreak = 1;
+    }
+    lastDayIdx = dayIdx;
+    if (curStreak > bestStreak) {
+      bestStreak = curStreak;
+    }
+  }
+
+  const now = new Date();
+  const hoyMid = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const hoyIdx = Math.round(hoyMid.getTime() / 86400000);
+  const ayerIdx = hoyIdx - 1;
+
+  let rachaActual = 0;
+  let esActivaHoy = false;
+
+  if (setDayIndices.has(hoyIdx)) {
+    esActivaHoy = true;
+    let check = hoyIdx;
+    while (setDayIndices.has(check)) {
+      rachaActual++;
+      check--;
+    }
+  } else if (setDayIndices.has(ayerIdx)) {
+    esActivaHoy = false;
+    let check = ayerIdx;
+    while (setDayIndices.has(check)) {
+      rachaActual++;
+      check--;
+    }
+  }
+
+  return {
+    rachaActual,
+    rachaMasAlta: bestStreak,
+    esActivaHoy,
+    totalDias: setDayIndices.size,
+    textoAccion: obtenerTextoAccionSubcategoria(cat, sub)
+  };
+}
+
+function calcularRachaMasAltaGlobal(regs) {
+  const l = userPrefs.lang || 'es';
+  if (!regs || !regs.length) {
+    return {
+      maxStreak: 0,
+      valTxt: '—',
+      subTxt: (l === 'en' ? '0 consecutive days' : '0 días seguidos')
+    };
+  }
+
+  const setDayIndices = new Set();
+  regs.forEach(r => {
+    const setR = extraerDayIndicesDeRegistro(r);
+    setR.forEach(idx => setDayIndices.add(idx));
+  });
+
+  if (!setDayIndices.size) {
+    return {
+      maxStreak: 0,
+      valTxt: '—',
+      subTxt: (l === 'en' ? '0 consecutive days' : '0 días seguidos')
+    };
+  }
+
+  const sortedDays = Array.from(setDayIndices).sort((a, b) => a - b);
+  let bestStreak = 0;
+  let bestStreakStartIdx = null;
+  let bestStreakEndIdx = null;
+  let curStreak = 0;
+  let curStreakStartIdx = null;
+  let lastDayIdx = null;
+
+  for (let i = 0; i < sortedDays.length; i++) {
+    const dayIdx = sortedDays[i];
+    if (lastDayIdx === null || dayIdx === lastDayIdx + 1) {
+      if (curStreak === 0) curStreakStartIdx = dayIdx;
+      curStreak++;
+    } else {
+      curStreak = 1;
+      curStreakStartIdx = dayIdx;
+    }
+    lastDayIdx = dayIdx;
+
+    if (curStreak > bestStreak) {
+      bestStreak = curStreak;
+      bestStreakStartIdx = curStreakStartIdx;
+      bestStreakEndIdx = dayIdx;
+    }
+  }
+
+  if (bestStreak <= 0) {
+    return {
+      maxStreak: 0,
+      valTxt: '—',
+      subTxt: (l === 'en' ? '0 consecutive days' : '0 días seguidos')
+    };
+  }
+
+  const dStart = new Date(bestStreakStartIdx * 86400000);
+  const dEnd = new Date(bestStreakEndIdx * 86400000);
+  const fmtD = d => `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+
+  const valTxt = `🔥 ${bestStreak} ${bestStreak === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}`;
+  let subTxt = '';
+  if (bestStreak === 1) {
+    subTxt = (l === 'en' ? `Single day (${fmtD(dEnd)})` : `Racha de 1 día (${fmtD(dEnd)})`);
+  } else {
+    subTxt = `${fmtD(dStart)} ➔ ${fmtD(dEnd)}`;
+  }
+
+  return {
+    maxStreak: bestStreak,
+    valTxt,
+    subTxt,
+    startDate: dStart,
+    endDate: dEnd
+  };
+}
+
+function renderizarBannerRachaSubcategoria(cat, sub) {
+  const container = document.getElementById('banner-racha-subcategoria');
+  const badgeHeader = document.getElementById('badge-racha-header');
+  if (!container) return;
+
+  if (!cat || !sub || (typeof esSubcategoriaWatchlist === 'function' && esSubcategoriaWatchlist(sub))) {
+    container.style.display = 'none';
+    container.innerHTML = '';
+    if (badgeHeader) badgeHeader.style.display = 'none';
+    return;
+  }
+
+  const { rachaActual, rachaMasAlta, esActivaHoy, totalDias, textoAccion } = calcularRachaSubcategoria(cat, sub);
+  const l = userPrefs.lang || 'es';
+
+  if (badgeHeader) {
+    if (rachaActual >= 1) {
+      badgeHeader.style.display = 'inline-flex';
+      badgeHeader.className = 'badge-racha-header';
+      badgeHeader.innerHTML = `🔥 ${rachaActual}${l === 'en' ? 'd' : 'd'}`;
+      badgeHeader.title = (l === 'en' ? `Active streak: ${rachaActual} days` : `Racha activa: ${rachaActual} días`);
+    } else {
+      badgeHeader.style.display = 'none';
+    }
+  }
+
+  if (rachaActual >= 2) {
+    container.style.display = 'block';
+    const esRecord = rachaActual >= rachaMasAlta;
+    const recordSubTxt = esRecord
+      ? (l === 'en' ? '🏆 New personal record in this subcategory!' : '🏆 ¡Tu racha más alta registrada en esta subcategoría!')
+      : (l === 'en' ? `Record in this subcategory: ${rachaMasAlta} days` : `Tu racha récord en esta subcategoría: ${rachaMasAlta} días`);
+
+    container.innerHTML = `
+      <div class="streak-celebration-banner">
+        <div class="streak-flame-box">🔥</div>
+        <div class="streak-celebration-info">
+          <div class="streak-celebration-title">
+            <span>${l === 'en' ? 'Congratulations! You are on a' : '¡Felicidades! Llevas una racha de'} <strong>${rachaActual} ${l === 'en' ? 'days' : 'días'}</strong></span>
+          </div>
+          <div class="streak-celebration-desc">
+            ${l === 'en' ? 'Consecutive days ' : 'Días seguidos '}${textoAccion}. ${esActivaHoy ? (l === 'en' ? 'Logged today!' : '¡Ya registraste hoy!') : (l === 'en' ? 'Log today to extend it!' : '¡Registra hoy para aumentarla a ' + (rachaActual + 1) + '!')}
+          </div>
+          <div class="streak-celebration-sub">${recordSubTxt}</div>
+        </div>
+        <div class="streak-badge-pill">
+          🔥 ${rachaActual} ${l === 'en' ? 'DAYS' : 'DÍAS'}
+        </div>
+      </div>
+    `;
+  } else if (rachaActual === 1) {
+    container.style.display = 'block';
+    container.innerHTML = `
+      <div class="streak-active-card">
+        <div class="streak-flame-box">🔥</div>
+        <div style="flex:1; min-width:0;">
+          <div class="streak-active-title">
+            ${l === 'en' ? 'Active Streak: 1 day' : 'Racha activa: 1 día'} ${textoAccion}
+          </div>
+          <div class="streak-active-desc">
+            ${esActivaHoy 
+              ? (l === 'en' ? 'Great start! Log tomorrow to reach a 2-day streak.' : '¡Buen comienzo! Registra algo mañana para alcanzar una racha de 2 días.') 
+              : (l === 'en' ? 'You logged yesterday! Log today to keep your streak going.' : '¡Registraste ayer! Añade una obra hoy para mantener tu racha viva.')}
+          </div>
+        </div>
+        <span style="font-size:0.78rem; font-weight:700; color:#f59e0b; background:rgba(245,158,11,0.14); padding:4px 10px; border-radius:12px; border:1px solid rgba(245,158,11,0.35);">
+          🔥 1 ${l === 'en' ? 'day' : 'día'}
+        </span>
+      </div>
+    `;
+  } else if (rachaMasAlta >= 2) {
+    container.style.display = 'block';
+    container.innerHTML = `
+      <div class="streak-active-card" style="opacity:0.88; border-style:dashed;">
+        <div class="streak-flame-box" style="filter:grayscale(0.5); opacity:0.8;">⚡</div>
+        <div style="flex:1; min-width:0;">
+          <div class="streak-active-title" style="color:var(--text);">
+            ${l === 'en' ? 'No active streak today' : 'Sin racha activa hoy'}
+          </div>
+          <div class="streak-active-desc">
+            ${l === 'en' 
+              ? `Your record in this subcategory is <strong>${rachaMasAlta} days</strong> ${textoAccion}. Log an item today to light a new streak!`
+              : `Tu racha récord en esta subcategoría es de <strong>${rachaMasAlta} días</strong> ${textoAccion}. ¡Registra una obra hoy para encender tu racha!`}
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    container.style.display = 'none';
+    container.innerHTML = '';
+  }
+}
+
 function calcularYMostrarEstadisticasPerfil() { const regs = estado.registros; const mapaDias = {}, mapaSemanas = {}, mapaMeses = {}, creadores = {};
 const conteoCategorias = { Peliculas: 0, Series: 0, Musica: 0, Juegos: 0, Lecturas: 0 }; let totalCalifs = 0, numCalifs = 0, totalHorasJuegos = 0, totalHorasVistas = 0, rewatchesTotales = 0;
 const seriesConTemporadas = new Set();
@@ -4835,7 +5164,13 @@ let favCreator = '—', favCreatorCount = 0; for (const [k, v] of Object.entries
 }
 const totalRegs = regs.length; document.getElementById('prof-total-val').textContent = totalRegs; document.getElementById('prof-best-day-val').textContent = maxDiaTxt;
 document.getElementById('prof-best-day-sub').textContent = maxDiaSub; document.getElementById('prof-best-week-val').textContent = maxSemTxt; document.getElementById('prof-best-week-sub').textContent = maxSemSub; document.getElementById('prof-best-month-val').textContent = maxMesTxt;
-document.getElementById('prof-best-month-sub').textContent = maxMesSub; const avgCalif = numCalifs ? (totalCalifs / numCalifs).toFixed(1) : '0.0'; document.getElementById('prof-rating-val').textContent = `★ ${avgCalif}`;
+document.getElementById('prof-best-month-sub').textContent = maxMesSub;
+const rachaGlobal = calcularRachaMasAltaGlobal(regs);
+const elStreakVal = document.getElementById('prof-best-streak-val');
+const elStreakSub = document.getElementById('prof-best-streak-sub');
+if (elStreakVal) elStreakVal.textContent = rachaGlobal.valTxt;
+if (elStreakSub) elStreakSub.textContent = rachaGlobal.subTxt;
+const avgCalif = numCalifs ? (totalCalifs / numCalifs).toFixed(1) : '0.0'; document.getElementById('prof-rating-val').textContent = `★ ${avgCalif}`;
 const horasJuegosFmt = (totalHorasJuegos % 1 === 0) ? totalHorasJuegos : totalHorasJuegos.toFixed(1);
 document.getElementById('prof-hours-val').textContent = `${horasJuegosFmt} hrs`;
 const horasVistasFmt = (totalHorasVistas % 1 === 0) ? totalHorasVistas : totalHorasVistas.toFixed(1);
@@ -7185,6 +7520,7 @@ function renderEstrellasVisuales(val) { let h = '<div class="rating-badge">'; fo
 return `${h} <span style="font-size:.78rem; color:var(--muted); margin-left:3px;">(${Number(val).toFixed(1)})</span></div>`; }
 function filtrarYMostrarHistorial() { const th = document.getElementById('thead-historial'), tb = document.getElementById('tbody-historial'), mBox = document.getElementById('mobile-history-cards');
 tb.innerHTML = ''; mBox.innerHTML = ''; const c = estado.categoria, s = estado.subcategoria, r = subTieneRango(c, s), isJ = c === 'Juegos';
+renderizarBannerRachaSubcategoria(c, s);
 th.innerHTML = `<tr>${r ? `<th style="width:110px;">${t('table_th_fecha_ini')}</th><th style="width:110px;">${t('table_th_fecha_fin')}</th>` : `<th style="width:110px;">${t('table_th_fecha')}</th>`}${isJ ? `<th style="width:80px; text-align:center;">${t('table_th_horas')}</th>` : ''}<th>${obtenerNombreColumnaTitulo(c, s)}</th><th style="width:150px;">${t('table_th_calif')}</th><th>${t('table_th_comentario')}</th><th style="width:40px; text-align:center;"></th></tr>`;
 let l = obtenerRegistrosDeSubcategoria(c, s); if (estado.ocultarRewatches && subAdmiteRewatch(c, s)) { l = l.filter(x => !x.esRewatch && !x.subcategoria.includes('Rewatch')); }
 l.sort((a, b) => { const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? timestampDeFecha(a.fechaFin) : timestampDeFecha(a.fechaInicio); const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? timestampDeFecha(b.fechaFin) : timestampDeFecha(b.fechaInicio); return vA - vB; });
