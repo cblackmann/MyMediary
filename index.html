@@ -773,9 +773,57 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .date-prec-btn{background:transparent;border:none;color:var(--muted);padding:5px 9px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:4px;}
 .date-prec-btn:hover{color:var(--text);background:rgba(56,189,248,0.08);}
 .date-prec-btn.active{background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.3);color:var(--accent);font-weight:700;}
+
+/* APARTADOS INICIO: RESUMEN ULTRA COMPACTO & RACHAS */
+.home-quick-stats-strip{margin-top:14px;display:flex;flex-direction:column;gap:12px;}
+.home-mini-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:13px 15px;box-shadow:var(--shadow-sm);transition:var(--tr);}
+.home-mini-section:hover{border-color:rgba(56,189,248,0.35);}
+.home-mini-section-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;}
+.home-mini-title{font-weight:700;font-size:0.95rem;color:var(--text);display:flex;align-items:center;gap:6px;}
+.home-mini-hint{font-size:0.74rem;color:var(--muted);}
+.home-subcats-mini-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;flex-wrap:wrap;}
+.home-subcat-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;font-size:0.83rem;font-weight:600;color:var(--text);cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:inherit;}
+.home-subcat-pill:hover{border-color:var(--accent);background:rgba(56,189,248,0.08);transform:translateY(-1px);}
+.home-subcat-pill .pill-count{font-weight:800;font-size:0.8rem;color:var(--accent);background:rgba(56,189,248,0.14);padding:2px 7px;border-radius:8px;border:1px solid rgba(56,189,248,0.25);}
+.home-streaks-cards-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;flex-wrap:wrap;align-items:center;}
+.home-streak-main-card{display:inline-flex;align-items:center;gap:10px;padding:7px 14px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.35);border-radius:12px;font-size:0.82rem;color:var(--text);}
+.home-streak-flame{font-size:1.25rem;line-height:1;animation:pulseFlame 2.2s ease-in-out infinite;}
+@keyframes pulseFlame{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+.home-streak-subcat-pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-size:0.79rem;color:var(--text);cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:inherit;}
+.home-streak-subcat-pill:hover{border-color:#f59e0b;background:rgba(245,158,11,0.08);}
+.home-streak-subcat-pill .subcat-streak-count{color:#f59e0b;font-weight:800;display:inline-flex;align-items:center;gap:2px;}
+[data-theme$="-light"] .home-streak-main-card,[data-theme="nordic-light"] .home-streak-main-card,[data-theme="creme-latte"] .home-streak-main-card,[data-theme="parchment"] .home-streak-main-card,[data-theme="sage-garden"] .home-streak-main-card{background:rgba(245,158,11,0.18) !important;border-color:#d97706 !important;color:#92400e !important;}
+[data-theme$="-light"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="nordic-light"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="creme-latte"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="parchment"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="sage-garden"] .home-streak-subcat-pill .subcat-streak-count{color:#b45309 !important;}
 </style> </head> <body> <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
-</div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <div class="home-hero-card"> <div class="home-hero-content"> <h2 style="font-size:1.4rem; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;"> <span>🏠</span> <span data-i18n="home_title">Inicio</span> </h2> <p style="color:var(--muted); font-size:.88rem; margin:0; text-align:center;" data-i18n="home_subtitle">Tu centro multimedia personal: registra tus obras, sigue a tus amigos y descubre nuevas recomendaciones.</p> </div> <div class="home-hero-actions"> <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()"> <span style="font-size:1.15rem;">⚡</span> <span data-i18n="btn_quick_add_hero">Agregado Rápido</span> </button> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;"> <span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Mis Watchlists</span> </button> </div> </div> <div class="home-community-section" id="seccion-comunidad-resumida-inicio"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--text); display:flex; align-items:center; gap:8px;"> <span>👥</span> <span data-i18n="home_friends_title">Novedades de Amigos</span> <span style="font-size:0.72rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;">Última semana</span> </div> <p style="font-size:0.8rem; color:var(--muted); margin-top:2px;" data-i18n="home_friends_sub">Lo que han registrado tus amigos en los últimos 7 días.</p> </div> <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem;"> <span data-i18n="btn_view_all_community">Ver toda la comunidad ➔</span> </button> </div> <div id="lista-comunidad-resumen-inicio"> <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;">Cargando actividad reciente de amigos... ⏳</div> </div> </div> <div class="home-discover-section" id="seccion-discover-inicio" style="margin-top:28px; border-top:1px solid var(--border); padding-top:24px;"> <div class="discover-header-bar"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>🧭 Discover</span> <span class="discover-live-badge"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="discover_subtitle">Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.</p> </div> <div class="discover-controls"> <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano">⚡ Auto-actualizar: ON</button> <button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="recargarDiscoverManual()"><span data-i18n="btn_discover_explore">🔄 Explorar nuevos</span></button> </div> </div> <div style="font-size:0.78rem; color:var(--muted); margin-bottom:6px;" data-i18n="discover_filter_hint">Selecciona qué categorías quieres ver (puedes activar o desactivar varias):</div> <div class="discover-filter-bar" id="discover-category-filters"> <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button> <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button> <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button> </div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) --> <div id="vista-listas-extendida" style="display:none;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:8px; margin-bottom:4px;"> <span>⭐</span> <span data-i18n="lists_dashboard_title">Índice General de Listas</span> </h2> <p style="color:var(--muted); font-size:.85rem; margin:0;" data-i18n="lists_dashboard_subtitle">Resumen exhaustivo de tus hábitos, subtotales y favoritos por categoría</p> </div> </div> <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- SECCIÓN: NOVEDADES Y ÚLTIMOS AGREGADOS DE AMIGOS --> <div class="cat-wide-card" style="margin-bottom:22px; padding:18px 20px;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(51,65,85,0.45); padding-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--accent); display:flex; align-items:center; gap:8px;"> <span>⚡</span> <span data-i18n="feed_amigos_title">Últimos Agregados de Amigos</span> <span id="badge-feed-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:800;">0</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-top:3px;" data-i18n="feed_amigos_desc">Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.</p> </div> <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.75rem; margin:0;" onclick="cargarFeedActividadAmigos(true)" title="Refrescar feed"> <span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span> </button> </div> <div class="discover-filter-bar" id="feed-amigos-filtros" style="margin-bottom:14px;"> <button type="button" class="subtab-btn active" data-fcat="todas" onclick="filtrarFeedAmigos('todas')">🌟 <span data-i18n="feed_filtro_todos">Todos</span> (<span id="count-feed-todas">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Peliculas" onclick="filtrarFeedAmigos('Peliculas')">🎬 <span data-i18n="nav_peliculas">Películas</span> (<span id="count-feed-pelis">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Series" onclick="filtrarFeedAmigos('Series')">📺 <span data-i18n="nav_series">Series</span> (<span id="count-feed-series">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Musica" onclick="filtrarFeedAmigos('Musica')">🎵 <span data-i18n="nav_musica">Música</span> (<span id="count-feed-musica">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Juegos" onclick="filtrarFeedAmigos('Juegos')">🎮 <span data-i18n="nav_juegos">Juegos</span> (<span id="count-feed-juegos">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Lecturas" onclick="filtrarFeedAmigos('Lecturas')">📖 <span data-i18n="nav_lecturas">Lecturas</span> (<span id="count-feed-lecturas">0</span>)</button> </div> <div id="lista-feed-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%;"> <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;">Cargando novedades de tus amigos... ⏳</div> </div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" id="perfil-hero-card" style="padding:18px 22px;">
+</div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <div class="home-hero-card"> <div class="home-hero-content"> <h2 style="font-size:1.4rem; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;"> <span>🏠</span> <span data-i18n="home_title">Inicio</span> </h2> <p style="color:var(--muted); font-size:.88rem; margin:0; text-align:center;" data-i18n="home_subtitle">Tu centro multimedia personal: registra tus obras, sigue a tus amigos y descubre nuevas recomendaciones.</p> </div> <div class="home-hero-actions"> <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()"> <span style="font-size:1.15rem;">⚡</span> <span data-i18n="btn_quick_add_hero">Agregado Rápido</span> </button> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;"> <span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Mis Watchlists</span> </button> </div> </div>
+
+      <!-- APARTADOS DE INICIO: RESUMEN DE SUBCATEGORÍAS & RACHAS ACTUALES -->
+      <div class="home-quick-stats-strip" id="home-quick-stats-section">
+        <!-- 1. RESUMEN ULTRA COMPACTO DE SUBCATEGORÍAS -->
+        <div class="home-mini-section">
+          <div class="home-mini-section-header">
+            <div class="home-mini-title"><span>📊</span> <span>Subcategorías</span></div>
+            <span class="home-mini-hint">Toca una para ver su categoría</span>
+          </div>
+          <div class="home-subcats-mini-row" id="home-subcats-summary-pills">
+            <!-- Píldoras generadas dinámicamente con nombre y total -->
+          </div>
+        </div>
+
+        <!-- 2. RACHAS ACTUALES -->
+        <div class="home-mini-section">
+          <div class="home-mini-section-header">
+            <div class="home-mini-title"><span>🔥</span> <span>Rachas Actuales</span></div>
+            <span class="home-mini-hint" id="home-streaks-global-badge">Días consecutivos</span>
+          </div>
+          <div class="home-streaks-cards-row" id="home-streaks-summary-cards">
+            <!-- Tarjetas de racha actual general y por subcategoría -->
+          </div>
+        </div>
+      </div>
+
+      <div class="home-community-section" id="seccion-comunidad-resumida-inicio"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--text); display:flex; align-items:center; gap:8px;"> <span>👥</span> <span data-i18n="home_friends_title">Novedades de Amigos</span> <span style="font-size:0.72rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;">Última semana</span> </div> <p style="font-size:0.8rem; color:var(--muted); margin-top:2px;" data-i18n="home_friends_sub">Lo que han registrado tus amigos en los últimos 7 días.</p> </div> <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem;"> <span data-i18n="btn_view_all_community">Ver toda la comunidad ➔</span> </button> </div> <div id="lista-comunidad-resumen-inicio"> <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;">Cargando actividad reciente de amigos... ⏳</div> </div> </div> <div class="home-discover-section" id="seccion-discover-inicio" style="margin-top:28px; border-top:1px solid var(--border); padding-top:24px;"> <div class="discover-header-bar"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>🧭 Discover</span> <span class="discover-live-badge"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="discover_subtitle">Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.</p> </div> <div class="discover-controls"> <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano">⚡ Auto-actualizar: ON</button> <button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="recargarDiscoverManual()"><span data-i18n="btn_discover_explore">🔄 Explorar nuevos</span></button> </div> </div> <div style="font-size:0.78rem; color:var(--muted); margin-bottom:6px;" data-i18n="discover_filter_hint">Selecciona qué categorías quieres ver (puedes activar o desactivar varias):</div> <div class="discover-filter-bar" id="discover-category-filters"> <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button> <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button> <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button> </div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) --> <div id="vista-listas-extendida" style="display:none;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:8px; margin-bottom:4px;"> <span>⭐</span> <span data-i18n="lists_dashboard_title">Índice General de Listas</span> </h2> <p style="color:var(--muted); font-size:.85rem; margin:0;" data-i18n="lists_dashboard_subtitle">Resumen exhaustivo de tus hábitos, subtotales y favoritos por categoría</p> </div> </div> <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- SECCIÓN: NOVEDADES Y ÚLTIMOS AGREGADOS DE AMIGOS --> <div class="cat-wide-card" style="margin-bottom:22px; padding:18px 20px;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(51,65,85,0.45); padding-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--accent); display:flex; align-items:center; gap:8px;"> <span>⚡</span> <span data-i18n="feed_amigos_title">Últimos Agregados de Amigos</span> <span id="badge-feed-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:800;">0</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-top:3px;" data-i18n="feed_amigos_desc">Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.</p> </div> <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.75rem; margin:0;" onclick="cargarFeedActividadAmigos(true)" title="Refrescar feed"> <span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span> </button> </div> <div class="discover-filter-bar" id="feed-amigos-filtros" style="margin-bottom:14px;"> <button type="button" class="subtab-btn active" data-fcat="todas" onclick="filtrarFeedAmigos('todas')">🌟 <span data-i18n="feed_filtro_todos">Todos</span> (<span id="count-feed-todas">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Peliculas" onclick="filtrarFeedAmigos('Peliculas')">🎬 <span data-i18n="nav_peliculas">Películas</span> (<span id="count-feed-pelis">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Series" onclick="filtrarFeedAmigos('Series')">📺 <span data-i18n="nav_series">Series</span> (<span id="count-feed-series">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Musica" onclick="filtrarFeedAmigos('Musica')">🎵 <span data-i18n="nav_musica">Música</span> (<span id="count-feed-musica">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Juegos" onclick="filtrarFeedAmigos('Juegos')">🎮 <span data-i18n="nav_juegos">Juegos</span> (<span id="count-feed-juegos">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Lecturas" onclick="filtrarFeedAmigos('Lecturas')">📖 <span data-i18n="nav_lecturas">Lecturas</span> (<span id="count-feed-lecturas">0</span>)</button> </div> <div id="lista-feed-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%;"> <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;">Cargando novedades de tus amigos... ⏳</div> </div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" id="perfil-hero-card" style="padding:18px 22px;">
   <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
     <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer;flex-shrink:0;">
       <span>👤</span>
@@ -1143,15 +1191,27 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 
     <!-- CONTENIDO TAB 1: BÚSQUEDA EN LÍNEA -->
     <div id="tab-char-content-online" class="char-picker-pane active">
-      <div style="margin-bottom:12px;">
-        <input type="text" id="input-buscar-personaje-online" class="form-input" placeholder="Escribe el nombre del personaje (ej: Goku, Aragorn, Batman, Geralt, Luffy...)" oninput="debouncedBuscarPersonaje(this.value)">
+      <div style="display:flex; gap:8px; margin-bottom:10px;">
+        <input type="text" id="input-buscar-personaje-online" class="form-input" style="flex:1;" placeholder="Escribe el nombre del personaje (ej: Goku, Luffy, Batman, Geralt, Spider-Man...)" onkeydown="if(event.key==='Enter'){event.preventDefault();ejecutarBuscarPersonajeOnline();}">
+        <button type="button" class="btn-save" style="width:auto; min-height:42px; padding:0 18px; margin:0; display:inline-flex; align-items:center; gap:6px; font-size:0.86rem;" onclick="ejecutarBuscarPersonajeOnline()">
+          <span>🔍</span> <span>Buscar</span>
+        </button>
+      </div>
+      <!-- Sugerencias populares de un click -->
+      <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:12px; font-size:0.78rem;">
+        <span style="color:var(--muted); font-size:0.75rem;">Sugerencias rápidas:</span>
+        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Monkey D. Luffy')">🏴‍☠️ Luffy</button>
+        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Son Goku')">💥 Goku</button>
+        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Batman')">🦇 Batman</button>
+        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Spider-Man')">🕷️ Spider-Man</button>
+        <button type="button" class="btn-today-pill" style="height:26px; padding:0 9px; font-size:0.74rem; margin:0;" onclick="sugerirBusquedaPersonaje('Geralt of Rivia')">🐺 Geralt</button>
       </div>
       <div id="char-search-loading" style="display:none; text-align:center; padding:18px; color:var(--accent); font-size:0.85rem;">
-        🔍 Buscando personajes...
+        🔍 Buscando personajes en bases de datos de anime, cine y series...
       </div>
       <div id="char-search-results" class="char-search-results-grid">
         <div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.84rem; grid-column:1/-1;">
-          Escribe un nombre arriba para buscar en bases de datos de anime, cine y series.
+          Escribe un nombre arriba y presiona <strong>Buscar</strong> para explorar personajes en anime, cine, videojuegos y series.
         </div>
       </div>
     </div>
@@ -5190,7 +5250,7 @@ function cambiarAnioVisualizacion(anio) {
   try { localStorage.setItem('mediary_anio_activo', anio); } catch (e) {}
   actualizarUISelectorAnio();
   cerrarMenuAniosApp();
-  if (estado.categoria === 'inicio') { renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); }
+  if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); }
   else if (estado.categoria === 'listas') renderizarStats();
   else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
   else if (!esSubcategoriaWatchlist(estado.subcategoria)) filtrarYMostrarHistorial();
@@ -5457,6 +5517,25 @@ function cambiarTabSelectorPersonaje(tab) {
   }
 }
 
+window.resultadosPersonajesCache = [];
+
+function ejecutarBuscarPersonajeOnline() {
+  const input = document.getElementById('input-buscar-personaje-online');
+  const q = String(input ? input.value : '').trim();
+  if (q.length < 2) {
+    const resBox = document.getElementById('char-search-results');
+    if (resBox) resBox.innerHTML = '<div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.84rem; grid-column:1/-1;">Escribe al menos 2 letras para buscar personajes.</div>';
+    return;
+  }
+  buscarPersonajeEnVivo(q);
+}
+
+function sugerirBusquedaPersonaje(nombre) {
+  const input = document.getElementById('input-buscar-personaje-online');
+  if (input) input.value = nombre;
+  ejecutarBuscarPersonajeOnline();
+}
+
 function debouncedBuscarPersonaje(val) {
   clearTimeout(debounceTimerChar);
   const q = String(val || '').trim();
@@ -5469,72 +5548,137 @@ function debouncedBuscarPersonaje(val) {
   if (loadEl) loadEl.style.display = 'block';
   debounceTimerChar = setTimeout(() => {
     buscarPersonajeEnVivo(q);
-  }, 350);
+  }, 450);
 }
 
 async function buscarPersonajeEnVivo(query) {
   const loadEl = document.getElementById('char-search-loading');
   const resBox = document.getElementById('char-search-results');
+  if (loadEl) loadEl.style.display = 'block';
   try {
     const qEnc = encodeURIComponent(query);
-    const promises = [
-      getJson_(`https://kitsu.io/api/edge/characters?filter[name]=${qEnc}&page[limit]=8`).catch(() => null),
-      getJson_(`https://api.jikan.moe/v4/characters?q=${qEnc}&limit=8`).catch(() => null),
-      getJson_(`https://api.themoviedb.org/3/search/person?api_key=${TMDB_K}&query=${qEnc}&language=es-ES`).catch(() => null)
-    ];
-
-    const [kitsuRes, jikanRes, tmdbRes] = await Promise.all(promises);
     const items = [];
+    const seenNames = new Set();
 
-    if (jikanRes?.data && Array.isArray(jikanRes.data)) {
-      jikanRes.data.forEach(c => {
-        items.push({
-          nombre: c.name || '',
-          obra: c.nicknames?.join(', ') || 'Anime / Manga',
-          imagen: c.images?.jpg?.image_url || '',
-          cita: '',
-          fuente: 'Jikan'
+    const addUnique = (nom, obra, img, fuente = '') => {
+      const nomNorm = String(nom || '').trim();
+      if (!nomNorm) return;
+      const key = nomNorm.toLowerCase();
+      if (seenNames.has(key)) return;
+      seenNames.add(key);
+      items.push({
+        nombre: nomNorm,
+        obra: String(obra || 'Anime / Cine / TV').trim(),
+        imagen: String(img || '').trim(),
+        cita: '',
+        fuente
+      });
+    };
+
+    // 1. Coincidencias en la colección propia del usuario
+    try {
+      const qLow = query.toLowerCase();
+      (estado.registros || []).forEach(r => {
+        if (!r.titulo) return;
+        const tit = r.titulo.toLowerCase();
+        if (tit.includes(qLow)) {
+          addUnique(r.titulo, `${r.categoria} · ${r.creador || 'De tu colección'}`, r.poster || '', 'Tu Colección');
+        }
+      });
+    } catch (eLocal) {}
+
+    // 2. AniList GraphQL (Personajes de anime y manga de ficción con fotos grandes)
+    const fetchAniList = async () => {
+      try {
+        const queryGql = `query ($search: String) {
+          Page(page: 1, perPage: 8) {
+            characters(search: $search) {
+              id
+              name { full userPreferred native }
+              image { large medium }
+              media(perPage: 1) {
+                nodes {
+                  title { userPreferred english native }
+                }
+              }
+            }
+          }
+        }`;
+        const resp = await fetch('https://graphql.anilist.co', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ query: queryGql, variables: { search: query } }),
+          signal: (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) ? AbortSignal.timeout(4500) : undefined
         });
-      });
-    }
+        if (!resp.ok) return;
+        const data = await resp.json();
+        const chars = data?.data?.Page?.characters || [];
+        chars.forEach(c => {
+          const nom = c.name?.full || c.name?.userPreferred || '';
+          const obra = c.media?.nodes?.[0]?.title?.userPreferred || c.media?.nodes?.[0]?.title?.english || 'Anime / Manga';
+          const img = c.image?.large || c.image?.medium || '';
+          if (nom) addUnique(nom, obra, img, 'AniList');
+        });
+      } catch (eAni) {}
+    };
 
-    if (kitsuRes?.data && Array.isArray(kitsuRes.data)) {
-      kitsuRes.data.forEach(c => {
-        const attr = c.attributes || {};
-        const nom = attr.canonicalName || attr.name || '';
-        const img = attr.image?.original || attr.image?.medium || '';
-        if (nom && !items.some(x => x.nombre.toLowerCase() === nom.toLowerCase())) {
-          items.push({
-            nombre: nom,
-            obra: 'Anime / Manga',
-            imagen: img,
-            cita: '',
-            fuente: 'Kitsu'
+    // 3. TMDb Multi Search (Personajes de cine, series, franquicias y personas)
+    const fetchTMDb = async () => {
+      try {
+        if (!TMDB_K) return;
+        const url = `https://api.themoviedb.org/3/search/multi?api_key=${TMDB_K}&query=${qEnc}&language=es-ES&page=1`;
+        const resp = await fetch(url, {
+          signal: (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) ? AbortSignal.timeout(4500) : undefined
+        });
+        if (!resp.ok) return;
+        const data = await resp.json();
+        const results = data?.results || [];
+        results.forEach(p => {
+          const nom = p.name || p.title || '';
+          let obra = 'Cine & TV';
+          let img = '';
+          if (p.media_type === 'person') {
+            obra = (p.known_for || []).map(x => x.title || x.name).filter(Boolean).slice(0, 2).join(', ') || p.known_for_department || 'Cine & TV';
+            if (p.profile_path) img = `https://image.tmdb.org/t/p/w300${p.profile_path}`;
+          } else {
+            obra = p.title ? `Película (${(p.release_date || '').substring(0,4)})` : `Serie (${(p.first_air_date || '').substring(0,4)})`;
+            if (p.poster_path) img = `https://image.tmdb.org/t/p/w300${p.poster_path}`;
+            else if (p.backdrop_path) img = `https://image.tmdb.org/t/p/w300${p.backdrop_path}`;
+          }
+          if (nom) addUnique(nom, obra, img, 'TMDb');
+        });
+      } catch (eTmdb) {}
+    };
+
+    // 4. TVmaze (Series y personajes de televisión)
+    const fetchTVmaze = async () => {
+      try {
+        const url = `https://api.tvmaze.com/search/shows?q=${qEnc}`;
+        const resp = await fetch(url, {
+          signal: (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) ? AbortSignal.timeout(4500) : undefined
+        });
+        if (!resp.ok) return;
+        const data = await resp.json();
+        if (Array.isArray(data)) {
+          data.slice(0, 5).forEach(item => {
+            const show = item.show || {};
+            const nom = show.name || '';
+            const gen = (show.genres || []).join(', ') || 'Serie TV';
+            const img = show.image?.medium || show.image?.original || '';
+            if (nom) addUnique(nom, `Serie · ${gen}`, img, 'TVmaze');
           });
         }
-      });
-    }
+      } catch (eTv) {}
+    };
 
-    if (tmdbRes?.results && Array.isArray(tmdbRes.results)) {
-      tmdbRes.results.forEach(p => {
-        const nom = p.name || '';
-        const kf = (p.known_for || []).map(x => x.title || x.name).filter(Boolean).slice(0, 2).join(', ');
-        const img = p.profile_path ? `https://image.tmdb.org/t/p/w300${p.profile_path}` : '';
-        if (nom && !items.some(x => x.nombre.toLowerCase() === nom.toLowerCase())) {
-          items.push({
-            nombre: nom,
-            obra: kf || (p.known_for_department || 'Cine & TV'),
-            imagen: img,
-            cita: '',
-            fuente: 'TMDb'
-          });
-        }
-      });
-    }
+    await Promise.allSettled([fetchAniList(), fetchTMDb(), fetchTVmaze()]);
 
+    window.resultadosPersonajesCache = items;
     renderizarResultadosBusquedaPersonaje(items, query);
   } catch (err) {
-    if (resBox) resBox.innerHTML = '<div style="text-align:center; padding:20px; color:#f87171; font-size:0.84rem; grid-column:1/-1;">Error al buscar personajes. Puedes usar la pestaña "Personalizado" para ingresarlo manualmente.</div>';
+    if (resBox) {
+      resBox.innerHTML = '<div style="text-align:center; padding:20px; color:#f87171; font-size:0.84rem; grid-column:1/-1;">Error al consultar servicios de búsqueda. Puedes usar la pestaña "Personalizado" para asignarlo directamente.</div>';
+    }
   } finally {
     if (loadEl) loadEl.style.display = 'none';
   }
@@ -5547,28 +5691,33 @@ function renderizarResultadosBusquedaPersonaje(items, query) {
     resBox.innerHTML = `
       <div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.85rem; grid-column:1/-1;">
         No se encontraron resultados para "<strong>${query}</strong>".<br>
-        <span style="font-size:0.78rem; opacity:0.8;">Prueba con otro término o ingrésalo en la pestaña "Personalizado".</span>
+        <span style="font-size:0.78rem; opacity:0.8;">Prueba con otra variante del nombre o créalo en la pestaña "Personalizado".</span>
       </div>
     `;
     return;
   }
 
-  resBox.innerHTML = items.map((c) => {
+  resBox.innerHTML = items.map((c, idx) => {
     const esImg = c.imagen && (c.imagen.startsWith('http') || c.imagen.startsWith('data:'));
-    const safeChar = encodeURIComponent(JSON.stringify(c));
     return `
-      <div class="char-result-card" onclick="seleccionarPersonajeOnline('${safeChar}')">
+      <div class="char-result-card" onclick="seleccionarPersonajePorIndice(${idx})">
         <div class="char-result-avatar">
-          ${esImg ? `<img src="${c.imagen}" alt="${c.nombre}">` : `<span>👑</span>`}
+          ${esImg ? `<img src="${c.imagen}" alt="${c.nombre}" loading="lazy">` : `<span>👑</span>`}
         </div>
         <div class="char-result-info">
           <strong class="char-result-name">${c.nombre}</strong>
-          <span class="char-result-origin">${c.obra}</span>
+          <span class="char-result-origin">${c.obra}${c.fuente ? ` · <em style="font-size:0.72rem; opacity:0.75;">${c.fuente}</em>` : ''}</span>
         </div>
         <button type="button" class="btn-select-char-pill">Elegir</button>
       </div>
     `;
   }).join('');
+}
+
+function seleccionarPersonajePorIndice(idx) {
+  if (!window.resultadosPersonajesCache || !window.resultadosPersonajesCache[idx]) return;
+  const charObj = window.resultadosPersonajesCache[idx];
+  asignarPersonajeFavorito(charObj);
 }
 
 function seleccionarPersonajeOnline(safeCharJson) {
@@ -6323,6 +6472,141 @@ function calcularRachaSubcategoria(cat, sub) {
     totalDias: setDayIndices.size,
     textoAccion: obtenerTextoAccionSubcategoria(cat, sub)
   };
+}
+
+function calcularRachaGlobalActual(regs) {
+  const allRegs = regs || estado.registros || [];
+  if (!allRegs.length) return { rachaActual: 0, esActivaHoy: false, totalDias: 0 };
+  const setDayIndices = new Set();
+  allRegs.forEach(r => {
+    const setR = extraerDayIndicesDeRegistro(r);
+    setR.forEach(idx => setDayIndices.add(idx));
+  });
+  if (!setDayIndices.size) return { rachaActual: 0, esActivaHoy: false, totalDias: 0 };
+
+  const now = new Date();
+  const hoyMid = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const hoyIdx = Math.round(hoyMid.getTime() / 86400000);
+  const ayerIdx = hoyIdx - 1;
+
+  let rachaActual = 0;
+  let esActivaHoy = false;
+
+  if (setDayIndices.has(hoyIdx)) {
+    esActivaHoy = true;
+    let check = hoyIdx;
+    while (setDayIndices.has(check)) {
+      rachaActual++;
+      check--;
+    }
+  } else if (setDayIndices.has(ayerIdx)) {
+    esActivaHoy = false;
+    let check = ayerIdx;
+    while (setDayIndices.has(check)) {
+      rachaActual++;
+      check--;
+    }
+  }
+  return { rachaActual, esActivaHoy, totalDias: setDayIndices.size };
+}
+
+function renderizarResumenInicio() {
+  renderizarSubcategoriasResumenInicio();
+  renderizarRachasActualesInicio();
+}
+
+function renderizarSubcategoriasResumenInicio() {
+  const cont = document.getElementById('home-subcats-summary-pills');
+  if (!cont) return;
+  const listaSubcats = [
+    { cat: 'Peliculas', sub: 'Películas', emoji: '🎬', label: 'Películas' },
+    { cat: 'Series', sub: 'Temporadas', emoji: '📺', label: 'Temporadas' },
+    { cat: 'Musica', sub: 'Discos', emoji: '💿', label: 'Discos' },
+    { cat: 'Juegos', sub: 'Videojuegos', emoji: '🎮', label: 'Juegos' },
+    { cat: 'Lecturas', sub: 'Libros', emoji: '📖', label: 'Libros' },
+    { cat: 'Lecturas', sub: 'Cómics', emoji: '💥', label: 'Cómics' },
+    { cat: 'Lecturas', sub: 'Mangas', emoji: '⛩️', label: 'Mangas' }
+  ];
+
+  cont.innerHTML = listaSubcats.map(s => {
+    const total = (typeof obtenerRegistrosDeSubcategoria === 'function')
+      ? obtenerRegistrosDeSubcategoria(s.cat, s.sub, false).length
+      : (estado.registros || []).filter(r => perteneceASub(r, s.cat, s.sub)).length;
+    return `
+      <button type="button" class="home-subcat-pill" onclick="cambiarCat('${s.cat}', '${s.sub}')" title="Ver ${s.label}">
+        <span class="emoji-dyn">${s.emoji}</span>
+        <span>${s.label}</span>
+        <span class="pill-count">${total}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+function renderizarRachasActualesInicio() {
+  const cont = document.getElementById('home-streaks-summary-cards');
+  const badgeGlobal = document.getElementById('home-streaks-global-badge');
+  if (!cont) return;
+
+  const rachaGlobal = calcularRachaGlobalActual(estado.registros);
+  if (badgeGlobal) {
+    if (rachaGlobal.rachaActual > 0) {
+      badgeGlobal.textContent = rachaGlobal.esActivaHoy ? '✓ Activa hoy' : '⚡ Mantener hoy';
+    } else {
+      badgeGlobal.textContent = 'Días consecutivos';
+    }
+  }
+
+  const subcatsInfo = [
+    { cat: 'Peliculas', sub: 'Películas', emoji: '🎬', label: 'Películas' },
+    { cat: 'Series', sub: 'Temporadas', emoji: '📺', label: 'Temporadas' },
+    { cat: 'Musica', sub: 'Discos', emoji: '💿', label: 'Discos' },
+    { cat: 'Juegos', sub: 'Videojuegos', emoji: '🎮', label: 'Juegos' },
+    { cat: 'Lecturas', sub: 'Libros', emoji: '📖', label: 'Libros' },
+    { cat: 'Lecturas', sub: 'Cómics', emoji: '💥', label: 'Cómics' },
+    { cat: 'Lecturas', sub: 'Mangas', emoji: '⛩️', label: 'Mangas' }
+  ];
+
+  const subcatsConRacha = [];
+  subcatsInfo.forEach(s => {
+    try {
+      const infoR = calcularRachaSubcategoria(s.cat, s.sub);
+      if (infoR && infoR.rachaActual >= 1) {
+        subcatsConRacha.push({ ...s, racha: infoR.rachaActual, activaHoy: infoR.esActivaHoy });
+      }
+    } catch (e) {}
+  });
+
+  let htmlGlobalCard = `
+    <div class="home-streak-main-card">
+      <span class="home-streak-flame">🔥</span>
+      <div>
+        <div style="font-weight:800; font-size:0.92rem; color:inherit;">
+          ${rachaGlobal.rachaActual > 0 ? `${rachaGlobal.rachaActual} ${rachaGlobal.rachaActual === 1 ? 'día' : 'días'}` : '0 días'}
+        </div>
+        <div style="font-size:0.71rem; opacity:0.85;">
+          ${rachaGlobal.rachaActual > 0 ? (rachaGlobal.esActivaHoy ? '✓ Registraste hoy' : '⚡ Registra hoy para continuar') : 'Racha general'}
+        </div>
+      </div>
+    </div>
+  `;
+
+  let htmlSubcats = subcatsConRacha.map(s => `
+    <button type="button" class="home-streak-subcat-pill" onclick="cambiarCat('${s.cat}', '${s.sub}')" title="Ver racha de ${s.label}">
+      <span class="emoji-dyn">${s.emoji}</span>
+      <span>${s.label}</span>
+      <span class="subcat-streak-count">🔥 ${s.racha}d</span>
+    </button>
+  `).join('');
+
+  if (!subcatsConRacha.length) {
+    htmlSubcats = `
+      <span style="color:var(--muted); font-size:0.77rem; padding:4px 6px;">
+        Registra hoy para encender rachas por categoría.
+      </span>
+    `;
+  }
+
+  cont.innerHTML = htmlGlobalCard + htmlSubcats;
 }
 
 function calcularRachaMasAltaGlobal(regs) {
@@ -7138,7 +7422,7 @@ window.onload = () => {
   fpInicio = flatpickr('#input-fecha-inicio', opts);
   fpFin = flatpickr('#input-fecha-fin', opts);
   sincronizarPerfilDesdeServidor();
-  if (estado.userEmail) { cargarRegistros(); cargarWatchlist(); cargarFeedActividadAmigos(); } else { renderizarFeedAmigosResumidoInicio(); }
+  if (estado.userEmail) { cargarRegistros(); cargarWatchlist(); cargarFeedActividadAmigos(); } else { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); }
   precargarDiscoverEnSegundoPlano(1);
   iniciarLoopAutoActualizacionDiscover();
   inicializarManejoBotonAtras(); inicializarEventosBuscadores();
@@ -7164,6 +7448,7 @@ function refrescarDatosApp() {
             fechaFin: sanitizarFechaFrontend(r.fechaFin)
           }));
           if (estado.categoria === 'inicio') {
+            renderizarResumenInicio();
             renderizarFeedAmigosResumidoInicio();
             renderizarDiscoverVista();
           } else if (estado.categoria === 'listas') {
@@ -7474,6 +7759,7 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
     actualizarNavWebActiva();
     if (vIni) vIni.style.display = 'block';
     if (vCat) vCat.style.display = 'none';
+    renderizarResumenInicio();
     renderizarFeedAmigosResumidoInicio();
     if (!estado.amigosFeedCache || !estado.amigosFeedCache.length) cargarFeedActividadAmigos();
     if (estado.discoverData) renderizarDiscoverVista();
@@ -7658,8 +7944,8 @@ if (info.totalTemporadas) estado.seleccionado.totalSeasons = info.totalTemporada
 }).obtenerDatosSerieInfo(estado.seleccionado.idRef, num); }
 }
 function configurarFormularioFechas() { const rango = subTieneRango(estado.categoria, estado.subcategoria); document.getElementById('col-fecha-fin').style.display = rango ? 'block' : 'none'; document.getElementById('lbl-fecha-ini').textContent = rango ? t('lbl_fecha_ini') : t('lbl_fecha_vis'); }
-function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_regs_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_regs_' + estado.userEmail.toLowerCase()); if (c) { estado.registros = JSON.parse(c).map(r => { let fI = sanitizarFechaFrontend(r.fechaInicio); let fF = sanitizarFechaFrontend(r.fechaFin); const fFinLower = String(fF || '').trim().toLowerCase(); const fIniLower = String(fI || '').trim().toLowerCase(); if ((!fF || fFinLower === 'sin fecha') && (subTieneRango(r.categoria, r.subcategoria) || (fI && fIniLower !== 'sin fecha'))) { fF = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo'; } return { ...r, fechaInicio: fI, fechaFin: fF }; }); if (estado.categoria === 'inicio') { renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { estado.registros = (d || []).map(r => { let fI = sanitizarFechaFrontend(r.fechaInicio); let fF = sanitizarFechaFrontend(r.fechaFin); const fFinLower = String(fF || '').trim().toLowerCase(); const fIniLower = String(fI || '').trim().toLowerCase(); if ((!fF || fFinLower === 'sin fecha') && (subTieneRango(r.categoria, r.subcategoria) || (fI && fIniLower !== 'sin fecha'))) { fF = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo'; } return { ...r, fechaInicio: fI, fechaFin: fF }; }); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_regs_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.registros)); } catch(e) {} }
-if (estado.categoria === 'inicio') { renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
+function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_regs_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_regs_' + estado.userEmail.toLowerCase()); if (c) { estado.registros = JSON.parse(c).map(r => { let fI = sanitizarFechaFrontend(r.fechaInicio); let fF = sanitizarFechaFrontend(r.fechaFin); const fFinLower = String(fF || '').trim().toLowerCase(); const fIniLower = String(fI || '').trim().toLowerCase(); if ((!fF || fFinLower === 'sin fecha') && (subTieneRango(r.categoria, r.subcategoria) || (fI && fIniLower !== 'sin fecha'))) { fF = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo'; } return { ...r, fechaInicio: fI, fechaFin: fF }; }); if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { estado.registros = (d || []).map(r => { let fI = sanitizarFechaFrontend(r.fechaInicio); let fF = sanitizarFechaFrontend(r.fechaFin); const fFinLower = String(fF || '').trim().toLowerCase(); const fIniLower = String(fI || '').trim().toLowerCase(); if ((!fF || fFinLower === 'sin fecha') && (subTieneRango(r.categoria, r.subcategoria) || (fI && fIniLower !== 'sin fecha'))) { fF = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo'; } return { ...r, fechaInicio: fI, fechaFin: fF }; }); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_regs_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.registros)); } catch(e) {} }
+if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
 else { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 }).obtenerRegistros(estado.userEmail); }
 function cargarWatchlist() { if (!estado.watchlist?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_wl_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_wl_' + estado.userEmail.toLowerCase()); if (c) estado.watchlist = JSON.parse(c); } catch(e) {} } google.script.run.withSuccessHandler(w => { estado.watchlist = w || []; if (estado.userEmail) { try { localStorage.setItem('mediary_cache_wl_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.watchlist)); } catch(e) {} } if (CONFIG[estado.categoria]) renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); if (estado.categoria === 'watchlists') renderizarVistaWatchlistsDedicada(); }).obtenerWatchlist(estado.userEmail); }
