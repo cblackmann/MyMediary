@@ -542,9 +542,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   <div class="checkbox-row" style="margin-top:8px;"><input type="checkbox" id="chk-no-fecha" onchange="toggleSinFecha(this.checked)"><label for="chk-no-fecha" data-i18n="chk_no_fecha">No registrada / No recuerdo la fecha exacta</label></div>
 </div>
 <div class="form-group" id="grupo-en-progreso" style="display:none; margin:12px 0 16px;">
-  <div class="en-progreso-box" style="background:linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(99,102,241,0.08) 100%); border:1px solid rgba(56,189,248,0.3); border-radius:10px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer;" onclick="marcarComoEnProgreso(event)">
+  <div class="en-progreso-box" style="background:linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(99,102,241,0.08) 100%); border:1px solid rgba(56,189,248,0.3); border-radius:10px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer;" onclick="toggleEnProgresoFormulario(event)">
     <div style="display:flex; align-items:center; gap:10px;">
-      <input type="checkbox" id="chk-en-progreso" style="width:19px; height:19px; cursor:pointer; accent-color:var(--accent);" onchange="marcarComoEnProgreso(event)">
+      <input type="checkbox" id="chk-en-progreso" style="width:19px; height:19px; cursor:pointer; accent-color:var(--accent);" onchange="toggleEnProgresoFormulario(event)">
       <div>
         <label for="chk-en-progreso" id="lbl-en-progreso" style="cursor:pointer; color:var(--text); font-weight:700; font-size:0.92rem; margin:0; display:flex; align-items:center; gap:6px;">
           <span id="icono-en-progreso">⏳</span> <span id="texto-en-progreso">Aún viendo</span>
@@ -554,7 +554,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
         </div>
       </div>
     </div>
-    <button type="button" class="btn-ghost" style="flex-shrink:0; font-size:0.78rem; padding:6px 14px; border-radius:8px; background:rgba(56,189,248,0.15); color:var(--accent); font-weight:700; border:1px solid rgba(56,189,248,0.35); cursor:pointer;" onclick="marcarComoEnProgreso(event)">
+    <button type="button" class="btn-ghost" style="flex-shrink:0; font-size:0.78rem; padding:6px 14px; border-radius:8px; background:rgba(56,189,248,0.15); color:var(--accent); font-weight:700; border:1px solid rgba(56,189,248,0.35); cursor:pointer;" onclick="event.stopPropagation(); quickGuardarEnProgreso();">
       ⚡ <span id="btn-txt-en-progreso" data-i18n="en_progreso_btn">Guardar</span>
     </button>
   </div>
@@ -4942,7 +4942,10 @@ function establecerFechaHoyFin() {
   const chkNo = document.getElementById('chk-no-fecha');
   if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFecha(false); }
   const chkProg = document.getElementById('chk-en-progreso');
-  if (chkProg && chkProg.checked) chkProg.checked = false;
+  if (chkProg && chkProg.checked) {
+    chkProg.checked = false;
+    toggleEnProgresoFormulario();
+  }
   if (fpFin) fpFin.setDate(fechaHoy);
   else document.getElementById('input-fecha-fin').value = fechaHoy;
 }
@@ -6504,7 +6507,7 @@ if (boxProg) {
       else if (c === 'Lecturas') icnEl.textContent = '📖';
     }
     const chkProg = document.getElementById('chk-en-progreso');
-    if (chkProg) chkProg.checked = false;
+    if (chkProg) { chkProg.checked = false; toggleEnProgresoFormulario(); }
   } else {
     boxProg.style.display = 'none';
   }
@@ -7325,6 +7328,11 @@ function seleccionarItem(it) {
     if (chkTempU) chkTempU.checked = false;
     const chkRw = document.getElementById('chk-es-rewatch');
     if (chkRw) chkRw.checked = false;
+    const chkProg = document.getElementById('chk-en-progreso');
+    if (chkProg) {
+      chkProg.checked = false;
+      toggleEnProgresoFormulario();
+    }
     actualizarVisibilidadCamposEspeciales();
     configurarFormularioFechas();
     crearEstrellasInteractivas();
@@ -7691,102 +7699,93 @@ function confirmarCreacionNuevoArtista() {
     cargarRegistros();
   }).guardarRegistro(payload, estado.userEmail);
 }
-function marcarComoEnProgreso(e) {
-  if (e) {
-    if (e.target && e.target.id === 'chk-en-progreso') {
-      // activado directamente
+function toggleEnProgresoFormulario(e) {
+  const chk = document.getElementById('chk-en-progreso');
+  if (!chk) return;
+  if (e && e.target) {
+    if (e.target.id === 'chk-en-progreso') {
+      // El navegador ya cambió chk.checked
+    } else if (e.target.tagName === 'LABEL' || e.target.closest('label')) {
+      // El label cambia el checkbox nativamente
+      return;
+    } else if (e.target.closest('button')) {
+      return;
     } else {
-      const chk = document.getElementById('chk-en-progreso');
-      if (chk) chk.checked = true;
+      chk.checked = !chk.checked;
+    }
+  }
+  const isChecked = chk.checked;
+  const inpFin = document.getElementById('input-fecha-fin');
+  const c = estado.categoria, s = estado.subcategoria;
+  const textoProg = obtenerTextoEnProgreso(c, s) || 'Aún viendo';
+  const box = document.querySelector('.en-progreso-box');
+
+  if (isChecked) {
+    const inpIni = document.getElementById('input-fecha-inicio');
+    if (inpIni && (!inpIni.value || inpIni.value === 'Sin fecha')) {
+      establecerFechaHoyInicio();
+    }
+    if (inpFin) {
+      inpFin.value = `⏳ ${textoProg}`;
+      inpFin.disabled = true;
+      inpFin.style.opacity = '0.7';
+    }
+    if (box) {
+      box.style.borderColor = 'var(--accent)';
+      box.style.background = 'rgba(56,189,248,0.16)';
+      box.style.boxShadow = '0 0 12px rgba(56,189,248,0.25)';
     }
   } else {
-    const chk = document.getElementById('chk-en-progreso');
-    if (chk) chk.checked = true;
+    if (inpFin) {
+      if (inpFin.value.includes('⏳') || esEnProgresoTexto(inpFin.value)) {
+        inpFin.value = '';
+      }
+      inpFin.disabled = false;
+      inpFin.style.opacity = '1';
+    }
+    if (box) {
+      box.style.borderColor = 'rgba(56,189,248,0.3)';
+      box.style.background = 'linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(99,102,241,0.08) 100%)';
+      box.style.boxShadow = 'none';
+    }
   }
+}
+function quickGuardarEnProgreso() {
+  const chk = document.getElementById('chk-en-progreso');
+  if (chk) {
+    chk.checked = true;
+    toggleEnProgresoFormulario();
+  }
+  guardarNuevoElemento();
+}
+function marcarComoEnProgreso(e) {
+  toggleEnProgresoFormulario(e);
+}
+function guardarNuevoElemento() {
   if (!estado.userEmail) {
     abrirModalAuthSupabase('login');
     return alert('Por favor inicia sesión en tu cuenta para guardar registros en Supabase.');
   }
   if (!estado.seleccionado) {
-    return alert('Por favor selecciona primero un elemento o completa la información.');
-  }
-  const c = estado.categoria, s = estado.subcategoria;
-  const textoProgreso = obtenerTextoEnProgreso(c, s);
-  if (!textoProgreso) return;
-
-  let tTit = estado.seleccionado.tituloOriginal || estado.seleccionado.titulo || 'Sin título';
-  let sub = estado.seleccionado.tituloIngles || '';
-  let tBase = estado.seleccionado.tituloOriginal || estado.seleccionado.titulo || 'Sin título';
-
-  let esUnica = false, numT = 0, totT = estado.seleccionado.totalSeasons || 0;
-  if (c === 'Series' && (s === 'Temporadas' || s.includes('Temporada'))) {
-    const n = document.getElementById('input-temporada-num')?.value?.trim();
-    numT = Number(n) || 1;
-    tTit = `${tBase} [${n ? 'S' + n : 'S1'}]`;
-    esUnica = document.getElementById('chk-temporada-unica')?.checked || false;
-  }
-  if (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) {
-    const a = document.getElementById('input-arco')?.value?.trim();
-    const num = document.getElementById('input-numeros-abarcados')?.value?.trim();
-    if (a) tTit = `${tBase}: ${a}`;
-    if (num) sub = `${tBase} #${num}`;
-  }
-
-  const fechasG = obtenerFechasParaGuardarNuevo();
-  let fI = fechasG.fI;
-  if (!fI || fI === 'Sin fecha') {
-    fI = fmtFecha_(new Date());
-  }
-  const fF = textoProgreso;
-  const esRw = subAdmiteRewatch(c, s) && (document.getElementById('chk-es-rewatch')?.checked || false);
-
-  let horasGuardar = '';
-  if (c === 'Juegos' && document.getElementById('input-horas-jugadas')?.value?.trim()) {
-    horasGuardar = `${document.getElementById('input-horas-jugadas').value.trim()} hrs`;
-  }
-
-  const payload = {
-    categoria: c,
-    subcategoria: s,
-    titulo: tTit,
-    tituloBase: tBase,
-    subtitulo: sub,
-    creador: estado.seleccionado.creador || 'Desconocido',
-    anio: String(estado.seleccionado.anio || ''),
-    fechaInicio: fI,
-    fechaFin: fF,
-    calificacion: 0,
-    comentario: '',
-    poster: estado.seleccionado.poster || '',
-    horas: horasGuardar,
-    esTemporadaUnica: esUnica,
-    numTempActual: numT,
-    totalTempOficiales: totT,
-    esRewatch: esRw
-  };
-
-  ocultarFormulario();
-  limpiarModuloConcierto();
-
-  const l = userPrefs.lang || 'es';
-  const toastMsg = l === 'en'
-    ? `Saved to history! (${textoProgreso})`
-    : `¡Guardado en el historial! (${textoProgreso})`;
-  mostrarToastPersonalizado(toastMsg);
-
-  google.script.run.withSuccessHandler(res => {
-    if (res?.exito) {
-      if (res.removidoDeWatchlist) {
-        cargarWatchlist();
-      }
-      cargarRegistros();
-    } else {
-      alert('Error al guardar: ' + (res?.error || 'Desconocido'));
+    const searchVal = document.getElementById('input-search')?.value?.trim();
+    const formTitEl = document.getElementById('form-titulo');
+    const formTitVal = formTitEl ? formTitEl.textContent.trim() : '';
+    const titFinal = (formTitVal && formTitVal !== 'Título') ? formTitVal : (searchVal || '');
+    if (titFinal) {
+      estado.seleccionado = {
+        tituloOriginal: titFinal,
+        titulo: titFinal,
+        creador: 'Desconocido',
+        anio: String(new Date().getFullYear()),
+        poster: document.getElementById('form-poster')?.src || ''
+      };
     }
-  }).guardarRegistro(payload, estado.userEmail);
-}
-function guardarNuevoElemento() { if (!estado.userEmail) { abrirModalAuthSupabase('login'); return alert('Por favor inicia sesión en tu cuenta para guardar registros en Supabase.'); }
-if (!estado.seleccionado) return alert('Por favor selecciona primero un elemento o completa la información.'); const c = estado.categoria, s = estado.subcategoria; let tTit = estado.seleccionado.tituloOriginal, sub = estado.seleccionado.tituloIngles || '', tBase = estado.seleccionado.tituloOriginal;
+  }
+  if (!estado.seleccionado) return alert('Por favor selecciona primero un elemento o completa la información.');
+  const c = estado.categoria, s = estado.subcategoria;
+  let tTit = estado.seleccionado.tituloOriginal || estado.seleccionado.titulo || 'Sin título',
+      sub = estado.seleccionado.tituloIngles || '',
+      tBase = estado.seleccionado.tituloOriginal || estado.seleccionado.titulo || 'Sin título';
 let esUnica = false, esUltima = false, numT = 0, totT = estado.seleccionado.totalSeasons || 0; if (c === 'Series' && (s === 'Temporadas' || s.includes('Temporada'))) { const n = document.getElementById('input-temporada-num').value.trim(); numT = Number(n) || 1;
 tTit = `${estado.seleccionado.tituloOriginal} [${n ? 'S' + n : 'S1'}]`; esUnica = document.getElementById('chk-temporada-unica').checked; if (totT > 0 && numT >= totT && !esUnica) esUltima = true; }
 if (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) { const a = document.getElementById('input-arco').value.trim(), num = document.getElementById('input-numeros-abarcados').value.trim(); if (a) tTit = `${estado.seleccionado.tituloOriginal}: ${a}`;
