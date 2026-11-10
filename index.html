@@ -482,10 +482,21 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   </div>
   <!-- Modo Día -->
   <div id="wrap-prec-dia" class="date-prec-wrap">
-    <div class="date-row">
-      <div style="flex:1;"><label id="lbl-fecha-ini" data-i18n="lbl_fecha_ini">Fecha de inicio:</label><input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly></div>
-      <div style="flex:1;" id="col-fecha-fin"><label data-i18n="lbl_fecha_fin">Fecha de término:</label><input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly></div>
-      <button type="button" class="btn-today-pill" onclick="establecerFechaHoy()" title="Poner fecha de hoy" data-i18n="btn_today">📅 Hoy</button>
+    <div class="date-row" style="align-items:flex-start;">
+      <div style="flex:1; min-width:140px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+          <label id="lbl-fecha-ini" data-i18n="lbl_fecha_ini" style="margin:0; font-size:0.82rem; color:var(--muted); font-weight:600;">Fecha de inicio:</label>
+          <button type="button" class="btn-today-pill" onclick="establecerFechaHoyInicio()" title="Poner fecha de hoy en inicio" style="margin:0; height:24px; padding:0 8px; font-size:0.7rem; border-radius:6px; width:auto;" data-i18n="btn_today">📅 Hoy</button>
+        </div>
+        <input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly>
+      </div>
+      <div style="flex:1; min-width:140px;" id="col-fecha-fin">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+          <label id="lbl-fecha-fin" data-i18n="lbl_fecha_fin" style="margin:0; font-size:0.82rem; color:var(--muted); font-weight:600;">Fecha de término:</label>
+          <button type="button" class="btn-today-pill" onclick="establecerFechaHoyFin()" title="Poner fecha de hoy en término" style="margin:0; height:24px; padding:0 8px; font-size:0.7rem; border-radius:6px; width:auto;" data-i18n="btn_today">📅 Hoy</button>
+        </div>
+        <input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly>
+      </div>
     </div>
   </div>
   <!-- Modo Semana -->
@@ -659,8 +670,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 </div> <!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
 <h3 id="titulo-modal-fav" data-i18n="fav_modal_title">👑 Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;" data-i18n="fav_modal_hint">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="text" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)">
 </div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;" data-i18n="fav_modal_remove">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()" data-i18n="btn_close">Cerrar</button>
-</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0;">⚙️ Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;">✕</button></div> <div class="form-group"> <label data-i18n="cfg_lang_label">Idioma de la Interfaz:</label> <select id="cfg-lang" class="settings-select" onchange="cambiarIdiomaEnVivo()">
-<option value="es">Español (Predeterminado)</option> <option value="en">English</option> </select> </div> <div class="form-group"> <label data-i18n="cfg_font_label">Tipografía de la App (con muestra real):</label> <input type="hidden" id="cfg-font" value="'Lexend', sans-serif"> <div class="cfg-visual-grid" id="cfg-font-cards"> <button type="button" class="cfg-option-card active" data-val="'Lexend', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Lexend', sans-serif !important;">
+</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0;">⚙️ Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;">✕</button></div> <div class="form-group"> <label data-i18n="cfg_lang_label">Idioma de la Interfaz:</label> <input type="hidden" id="cfg-lang" value="es"> <div class="cfg-visual-grid" id="cfg-lang-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;"> <button type="button" class="cfg-option-card active" data-lang="es" onclick="seleccionarIdiomaVisual('es')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">🇪🇸</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">Español</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Predeterminado</span> </div> </button> <button type="button" class="cfg-option-card" data-lang="en" onclick="seleccionarIdiomaVisual('en')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">🇺🇸</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">English</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Interface in English</span> </div> </button> </div> </div> <div class="form-group"> <label data-i18n="cfg_font_label">Tipografía de la App (con muestra real):</label> <input type="hidden" id="cfg-font" value="'Lexend', sans-serif"> <div class="cfg-visual-grid" id="cfg-font-cards"> <button type="button" class="cfg-option-card active" data-val="'Lexend', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Lexend', sans-serif !important;">
 <strong style="font-size:0.95rem; color:var(--text); font-family:'Lexend', sans-serif !important;">Lexend (Predeterminada)</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Lexend', sans-serif !important;">Aa Bb Cc — Lectura fluida 123</span>
 </button> <button type="button" class="cfg-option-card" data-val="'Plus Jakarta Sans', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Plus Jakarta Sans', sans-serif !important;">
 <strong style="font-size:0.95rem; color:var(--text); font-family:'Plus Jakarta Sans', sans-serif !important;">Plus Jakarta Sans</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Plus Jakarta Sans', sans-serif !important;">Aa Bb Cc — El arte del cine 123</span>
@@ -1235,7 +1245,7 @@ preferencias: datos.preferencias !== undefined ? Object.assign({}, actual.prefer
 id: String(r.id || ''), categoria: String(r.categoria || ''), subcategoria: String(r.subcategoria || ''), titulo: String(r.titulo || ''), subtitulo: String(r.subtitulo || ''),
 creador: String(r.creador || ''), anio: String(r.anio || ''), fechaInicio: fmtFecha_(r.fecha_inicio), fechaFin: fmtFecha_(r.fecha_fin), calificacion: Number(r.calificacion) || 0, comentario: String(r.comentario || ''), poster: String(r.poster || ''), horas: String(r.horas || ''),
 esRewatch: !!r.es_rewatch || String(r.subcategoria || '').includes('Rewatch')
-})); return lista.sort((a, b) => { const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha') ? parseTs_(a.fechaFin) : parseTs_(a.fechaInicio); const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha') ? parseTs_(b.fechaFin) : parseTs_(b.fechaInicio); return vA - vB; }); } catch (e) { return []; }
+})); return lista.sort((a, b) => { const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? parseTs_(a.fechaFin) : parseTs_(a.fechaInicio); const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? parseTs_(b.fechaFin) : parseTs_(b.fechaInicio); return vA - vB; }); } catch (e) { return []; }
 }, async guardarRegistro(d, userEmail) { try { const email = normEm_(userEmail || d?.userEmail); if (!email) return { exito: false, error: 'Inicia sesión para guardar registros.' }; const buildObj = o => ({
 id: uuid_(), user_email: email, categoria: o.categoria || '', subcategoria: o.subcategoria || '', titulo: o.titulo || 'Sin título', subtitulo: o.subtitulo || '',
 creador: o.creador || '', anio: String(o.anio || ''), fecha_inicio: o.fechaInicio === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaInicio), fecha_fin: o.fechaFin === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaFin), calificacion: Number(o.calificacion) || 0, comentario: o.comentario || '',
@@ -4130,7 +4140,7 @@ function filtrarRegistrosAmigoModal() {
   const q = (document.getElementById('input-buscar-regs-amigo')?.value || '').toLowerCase().trim();
 
   const parseDateForSort = r => {
-    const f = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? r.fechaFin : (r.fechaInicio && r.fechaInicio !== 'Sin fecha' ? r.fechaInicio : null);
+    const f = (r.fechaFin && r.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(r.fechaFin)) ? r.fechaFin : (r.fechaInicio && r.fechaInicio !== 'Sin fecha' ? r.fechaInicio : null);
     if (!f) return 0;
     const parts = f.split('/');
     if (parts.length === 3) {
@@ -4520,7 +4530,11 @@ function cambiarAnioVisualizacion(anio) {
 }
 function extraerAnioDeRegistro(r) {
   if (!r) return '';
-  const f = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? r.fechaFin : (r.fechaInicio && r.fechaInicio !== 'Sin fecha' ? r.fechaInicio : '');
+  const fFin = r.fechaFin;
+  const fIni = r.fechaInicio;
+  const finValida = fFin && fFin !== 'Sin fecha' && !esEnProgresoTexto(fFin);
+  const iniValida = fIni && fIni !== 'Sin fecha';
+  const f = finValida ? fFin : (iniValida ? fIni : '');
   if (f) {
     const m = String(f).match(/\b(20\d{2}|19\d{2})\b/);
     if (m) return m[1];
@@ -4909,9 +4923,33 @@ function actualizarTextosInterfaz() {
 }
 
 
-function establecerFechaHoy() { const hoy = new Date(); const dd = String(hoy.getDate()).padStart(2, '0'); const mm = String(hoy.getMonth() + 1).padStart(2, '0'); const yyyy = hoy.getFullYear(); const fechaHoy = `${dd}/${mm}/${yyyy}`;
-document.getElementById('chk-no-fecha').checked = false; toggleSinFecha(false); if (fpInicio) fpInicio.setDate(fechaHoy); else document.getElementById('input-fecha-inicio').value = fechaHoy; const rango = subTieneRango(estado.categoria, estado.subcategoria); if (rango) {
-if (fpFin) fpFin.setDate(fechaHoy); else document.getElementById('input-fecha-fin').value = fechaHoy; }
+function obtenerFechaHoyStr() {
+  const hoy = new Date();
+  const dd = String(hoy.getDate()).padStart(2, '0');
+  const mm = String(hoy.getMonth() + 1).padStart(2, '0');
+  const yyyy = hoy.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+function establecerFechaHoyInicio() {
+  const fechaHoy = obtenerFechaHoyStr();
+  const chkNo = document.getElementById('chk-no-fecha');
+  if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFecha(false); }
+  if (fpInicio) fpInicio.setDate(fechaHoy);
+  else document.getElementById('input-fecha-inicio').value = fechaHoy;
+}
+function establecerFechaHoyFin() {
+  const fechaHoy = obtenerFechaHoyStr();
+  const chkNo = document.getElementById('chk-no-fecha');
+  if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFecha(false); }
+  const chkProg = document.getElementById('chk-en-progreso');
+  if (chkProg && chkProg.checked) chkProg.checked = false;
+  if (fpFin) fpFin.setDate(fechaHoy);
+  else document.getElementById('input-fecha-fin').value = fechaHoy;
+}
+function establecerFechaHoy() {
+  establecerFechaHoyInicio();
+  const rango = subTieneRango(estado.categoria, estado.subcategoria);
+  if (rango) establecerFechaHoyFin();
 }
 function manejarEnterComentario(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); guardarNuevoElemento(); }
 }
@@ -5410,6 +5448,16 @@ function actualizarTarjetasVisualesConfig() {
   migrarTemaLegadoSiEsNecesario();
   const l = userPrefs.lang || 'es';
 
+  // Idioma
+  const curLang = userPrefs.lang || 'es';
+  document.querySelectorAll('#cfg-lang-cards .cfg-option-card').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === curLang);
+  });
+  const esCardSub = document.querySelector('#cfg-lang-cards [data-lang="es"] .lang-card-sub');
+  if (esCardSub) esCardSub.textContent = curLang === 'en' ? 'Default' : 'Predeterminado';
+  const enCardSub = document.querySelector('#cfg-lang-cards [data-lang="en"] .lang-card-sub');
+  if (enCardSub) enCardSub.textContent = curLang === 'en' ? 'Interface in English' : 'Interfaz en inglés';
+
   // Tipografías
   document.querySelectorAll('#cfg-font-cards .cfg-option-card').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.val === userPrefs.font);
@@ -5479,6 +5527,14 @@ function clickEnLineaTamano(e) {
   seleccionarSizeVisual(sizes[idx]);
 }
 
+function seleccionarIdiomaVisual(lang) {
+  const hidden = document.getElementById('cfg-lang');
+  if (hidden) hidden.value = lang;
+  userPrefs.lang = lang;
+  guardarPreferenciasLocales();
+  actualizarTarjetasVisualesConfig();
+  cambiarIdiomaEnVivo();
+}
 function seleccionarFontVisual(val) { document.getElementById('cfg-font').value = val; try { localStorage.setItem('mediary_user_custom_font', 'true'); } catch (e) {} aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarSizeVisual(val) { document.getElementById('cfg-font-size').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 
@@ -5753,8 +5809,9 @@ function mostrarToastPersonalizado(txt) { const old = document.querySelector('.t
 document.body.appendChild(tBox); setTimeout(() => { tBox.style.transition = 'opacity 0.4s ease, transform 0.4s ease'; tBox.style.opacity = '0'; tBox.style.transform = 'translateY(-20px)'; setTimeout(() => tBox.remove(), 400); }, 3000); }
 function esEnProgresoTexto(str) {
   if (!str) return false;
-  const s = String(str).toLowerCase().trim();
+  const s = String(str).toLowerCase().trim().replace(/^⏳\s*/, '');
   return s.startsWith('aún ') || s.startsWith('aun ') || s.startsWith('still ') ||
+         s.includes('progreso') || s.includes('progress') ||
          s === 'aún viendo' || s === 'aun viendo' || s === 'still watching' ||
          s === 'aún escuchando' || s === 'aun escuchando' || s === 'still listening' ||
          s === 'aún jugando' || s === 'aun jugando' || s === 'still playing' ||
