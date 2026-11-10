@@ -854,6 +854,58 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div class="form-group"><label data-i18n="manual_lbl_subtitulo">Traducción al inglés (opcional, si el original no es inglés ni español):</label><input type="text" id="manual-input-subtitulo" class="form-input" placeholder="Ej: Attack on Titan"></div> <div class="form-group"><label id="manual-label-creador" data-i18n="manual_lbl_creador">Director / Autor / Artista:</label><input type="text" id="manual-input-creador" class="form-input" placeholder="Nombre(s) completo(s)"></div>
 <div class="form-group"><label data-i18n="manual_lbl_anio">Año de salida / emisión:</label><input type="text" id="manual-input-anio" class="form-input" placeholder="Ej: 2024 o 2011-2019"></div> <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="cerrarModalManual()" data-i18n="btn_cancel">Cancelar</button> <button type="button" class="btn-modal-save" id="btn-manual-confirmar" onclick="procesarIngresoManual()"><span data-i18n="btn_continue">Continuar</span> ➔</button>
 </div> </div> </div> <div id="modal-edicion" class="modal-overlay" style="display:none;"> <div class="modal-box"><h3 id="modal-titulo">Editar</h3><div id="modal-contenido"></div><div class="modal-actions"><button class="btn-modal-cancel" onclick="cerrarModal()" data-i18n="btn_cancel">Cancelar</button><button class="btn-modal-save" id="btn-modal-confirmar" data-i18n="btn_save_changes">Guardar cambios</button></div></div>
+</div> <!-- MODAL TERMINAR OBRA (PENDIENTE -> COMPLETADO) -->
+<div id="modal-terminar-obra" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalTerminarObra()">
+  <div class="modal-box" style="max-width:480px; max-height:90vh; overflow-y:auto;">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+      <div>
+        <h3 style="color:#10b981; margin:0; display:flex; align-items:center; gap:8px;">
+          <span>🎉</span> <span id="modal-terminar-title">¡Terminé esta obra!</span>
+        </h3>
+        <p style="color:var(--muted); font-size:0.82rem; margin:3px 0 0 0;" id="modal-terminar-subtitle">Registra tu fecha de término, calificación y comentario final.</p>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalTerminarObra()">✕</button>
+    </div>
+
+    <!-- Mini ficha de la obra -->
+    <div id="terminar-obra-preview" style="display:flex; gap:12px; align-items:center; margin-bottom:14px; background:var(--bg); padding:10px 12px; border-radius:10px; border:1px solid var(--border);">
+      <img id="terminar-poster" src="" style="width:42px; height:60px; object-fit:cover; border-radius:6px; background:#334155; flex-shrink:0;">
+      <div style="flex:1; min-width:0;">
+        <strong id="terminar-titulo" style="font-size:0.95rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></strong>
+        <div id="terminar-creador" style="font-size:0.78rem; color:var(--muted);"></div>
+        <div id="terminar-subcat-badge" style="font-size:0.72rem; color:var(--accent); font-weight:700; margin-top:2px;"></div>
+      </div>
+    </div>
+
+    <!-- Fecha de término con botón de HOY -->
+    <div class="form-group" style="margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+        <label style="margin:0; font-size:0.85rem; color:var(--text); font-weight:600;" id="lbl-terminar-fecha-fin">Fecha de término:</label>
+        <button type="button" class="btn-today-pill" onclick="establecerFechaHoyTerminarModal()" title="Poner fecha de hoy" style="margin:0; height:24px; padding:0 8px; font-size:0.72rem; border-radius:6px; width:auto; border-color:#10b981; color:#34d399; background:rgba(16,185,129,0.12); cursor:pointer;">📅 Hoy</button>
+      </div>
+      <input type="text" id="terminar-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly style="font-weight:600;">
+    </div>
+
+    <!-- Calificación interactiva -->
+    <div class="form-group" style="text-align:center; margin-bottom:14px; background:var(--card); padding:10px; border-radius:10px; border:1px solid var(--border);">
+      <label style="font-size:0.85rem; color:var(--text); font-weight:600; display:block; margin-bottom:4px;" id="lbl-terminar-calif">Calificación:</label>
+      <div class="stars-wrapper" id="terminar-stars-wrapper" style="font-size:2.2rem; margin:6px 0; justify-content:center;"></div>
+      <span id="terminar-rating-label" style="font-size:0.95rem; color:var(--accent); font-weight:700;">5.0 / 5</span>
+      <input type="hidden" id="terminar-val-calif" value="5">
+    </div>
+
+    <!-- Comentario / Reseña -->
+    <div class="form-group" style="margin-bottom:16px;">
+      <label style="font-size:0.85rem; color:var(--text); font-weight:600; display:block; margin-bottom:4px;" id="lbl-terminar-comentario">Comentario / Reseña:</label>
+      <textarea id="terminar-comentario" class="comment-box" style="min-height:85px;" placeholder="¿Qué te pareció la obra? Deja tus impresiones..."></textarea>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="modal-actions" style="justify-content:flex-end; gap:10px;">
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalTerminarObra()" data-i18n="btn_cancel">Cancelar</button>
+      <button type="button" class="btn-modal-save" id="btn-guardar-terminar-obra" style="background:linear-gradient(135deg, #10b981, #059669); border:none; box-shadow:0 3px 10px rgba(16,185,129,0.35);" onclick="confirmarTerminarObra()">🎉 ¡Guardar y Finalizar!</button>
+    </div>
+  </div>
 </div> <div id="modal-serie-completa" class="modal-overlay" style="display:none;"> <div class="modal-box"> <h3 style="color:var(--accent);" data-i18n="serie_comp_title">🎉 ¡Completaste toda la serie!</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:14px; line-height:1.4;" id="msg-serie-completa"></p> <div class="form-group" style="text-align:center;"> <label data-i18n="serie_comp_rating_lbl">Calificación de la serie completa:</label>
 <div class="stars-wrapper" id="rating-stars-completa" style="font-size:2.2rem; margin:8px 0;"></div> <span id="rating-label-completa" style="font-size:.9rem; color:var(--accent); font-weight:700;">0.0 / 5</span> </div> <div class="form-group"><label data-i18n="serie_comp_comment_lbl">Comentario / Reseña final de la serie:</label><textarea id="comentario-serie-completa" class="comment-box" style="min-height:90px;" placeholder="¿Qué te pareció la serie en su totalidad?"></textarea></div>
 <div class="modal-actions"><button class="btn-modal-cancel" onclick="omitirGuardadoSerieCompleta()" data-i18n="btn_skip">Omitir</button><button class="btn-modal-save" id="btn-confirmar-serie-completa" data-i18n="btn_save_full_series">Guardar Serie Completa</button></div> </div> </div> <div id="modal-confirmar-eliminar" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <div class="modal-confirm-icon" style="margin:0 auto 14px;">🗑️</div>
@@ -1241,11 +1293,34 @@ nickname: datos.nickname !== undefined ? String(datos.nickname) : (actual.nickna
 avatar: datos.avatar !== undefined ? String(datos.avatar) : (actual.avatar || '🎬'), favoritos: datos.favoritos !== undefined ? datos.favoritos : (actual.favoritos || {}), favoritos_ocultos: datos.favoritosOcultos !== undefined ? datos.favoritosOcultos : (actual.favoritos_ocultos || {}),
 preferencias: datos.preferencias !== undefined ? Object.assign({}, actual.preferencias || {}, datos.preferencias) : (actual.preferencias || {}), updated_at: new Date().toISOString()
 }; await sbFetch_('perfiles?on_conflict=user_email', 'POST', payload, 'resolution=merge-duplicates,return=representation'); return { exito: true, emailGoogle: email }; } catch (e) { return { exito: false, error: e.toString() }; }
-}, async obtenerRegistros(userEmail) { try { const email = normEm_(userEmail); if (!email) return []; const data = await sbFetch_(`registros?user_email=eq.${encodeURIComponent(email)}&select=*&order=created_at.asc`, 'GET') || []; const lista = data.map(r => ({
+}, async obtenerRegistros(userEmail) { try { const email = normEm_(userEmail); if (!email) return []; const data = await sbFetch_(`registros?user_email=eq.${encodeURIComponent(email)}&select=*&order=created_at.asc`, 'GET') || [];
+const migracionesPendientes = [];
+const lista = data.map(r => {
+let fIni = fmtFecha_(r.fecha_inicio);
+let fFin = fmtFecha_(r.fecha_fin);
+const fFinLower = String(fFin || '').trim().toLowerCase();
+const fIniLower = String(fIni || '').trim().toLowerCase();
+const esSinFechaFin = (!fFin || fFinLower === 'sin fecha' || fFinLower === '');
+const tieneRango = subTieneRango(r.categoria, r.subcategoria);
+const fIniValida = (fIni && fIniLower !== 'sin fecha');
+if (esSinFechaFin && (tieneRango || fIniValida)) {
+  fFin = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo';
+  migracionesPendientes.push({ id: r.id, fecha_fin: fFin });
+}
+return {
 id: String(r.id || ''), categoria: String(r.categoria || ''), subcategoria: String(r.subcategoria || ''), titulo: String(r.titulo || ''), subtitulo: String(r.subtitulo || ''),
-creador: String(r.creador || ''), anio: String(r.anio || ''), fechaInicio: fmtFecha_(r.fecha_inicio), fechaFin: fmtFecha_(r.fecha_fin), calificacion: Number(r.calificacion) || 0, comentario: String(r.comentario || ''), poster: String(r.poster || ''), horas: String(r.horas || ''),
+creador: String(r.creador || ''), anio: String(r.anio || ''), fechaInicio: fIni, fechaFin: fFin, calificacion: Number(r.calificacion) || 0, comentario: String(r.comentario || ''), poster: String(r.poster || ''), horas: String(r.horas || ''),
 esRewatch: !!r.es_rewatch || String(r.subcategoria || '').includes('Rewatch')
-})); return lista.sort((a, b) => { const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? parseTs_(a.fechaFin) : parseTs_(a.fechaInicio); const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? parseTs_(b.fechaFin) : parseTs_(b.fechaInicio); return vA - vB; }); } catch (e) { return []; }
+};
+});
+if (migracionesPendientes.length > 0) {
+  setTimeout(() => {
+    migracionesPendientes.forEach(item => {
+      sbFetch_(`registros?id=eq.${encodeURIComponent(item.id)}`, 'PATCH', { fecha_fin: item.fecha_fin, updated_at: new Date().toISOString() }).catch(() => {});
+    });
+  }, 100);
+}
+return lista.sort((a, b) => { const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? parseTs_(a.fechaFin) : parseTs_(a.fechaInicio); const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? parseTs_(b.fechaFin) : parseTs_(b.fechaInicio); return vA - vB; }); } catch (e) { return []; }
 }, async guardarRegistro(d, userEmail) { try { const email = normEm_(userEmail || d?.userEmail); if (!email) return { exito: false, error: 'Inicia sesión para guardar registros.' }; const buildObj = o => ({
 id: uuid_(), user_email: email, categoria: o.categoria || '', subcategoria: o.subcategoria || '', titulo: o.titulo || 'Sin título', subtitulo: o.subtitulo || '',
 creador: o.creador || '', anio: String(o.anio || ''), fecha_inicio: o.fechaInicio === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaInicio), fecha_fin: o.fechaFin === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaFin), calificacion: Number(o.calificacion) || 0, comentario: o.comentario || '',
@@ -6521,7 +6596,7 @@ if (info.totalTemporadas) estado.seleccionado.totalSeasons = info.totalTemporada
 }).obtenerDatosSerieInfo(estado.seleccionado.idRef, num); }
 }
 function configurarFormularioFechas() { const rango = subTieneRango(estado.categoria, estado.subcategoria); document.getElementById('col-fecha-fin').style.display = rango ? 'block' : 'none'; document.getElementById('lbl-fecha-ini').textContent = rango ? t('lbl_fecha_ini') : t('lbl_fecha_vis'); }
-function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_regs_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_regs_' + estado.userEmail.toLowerCase()); if (c) { estado.registros = JSON.parse(c); if (estado.categoria === 'inicio') { renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { estado.registros = (d || []).map(r => ({ ...r, fechaInicio: sanitizarFechaFrontend(r.fechaInicio), fechaFin: sanitizarFechaFrontend(r.fechaFin) })); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_regs_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.registros)); } catch(e) {} }
+function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_regs_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_regs_' + estado.userEmail.toLowerCase()); if (c) { estado.registros = JSON.parse(c).map(r => { let fI = sanitizarFechaFrontend(r.fechaInicio); let fF = sanitizarFechaFrontend(r.fechaFin); const fFinLower = String(fF || '').trim().toLowerCase(); const fIniLower = String(fI || '').trim().toLowerCase(); if ((!fF || fFinLower === 'sin fecha') && (subTieneRango(r.categoria, r.subcategoria) || (fI && fIniLower !== 'sin fecha'))) { fF = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo'; } return { ...r, fechaInicio: fI, fechaFin: fF }; }); if (estado.categoria === 'inicio') { renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { estado.registros = (d || []).map(r => { let fI = sanitizarFechaFrontend(r.fechaInicio); let fF = sanitizarFechaFrontend(r.fechaFin); const fFinLower = String(fF || '').trim().toLowerCase(); const fIniLower = String(fI || '').trim().toLowerCase(); if ((!fF || fFinLower === 'sin fecha') && (subTieneRango(r.categoria, r.subcategoria) || (fI && fIniLower !== 'sin fecha'))) { fF = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo'; } return { ...r, fechaInicio: fI, fechaFin: fF }; }); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_regs_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.registros)); } catch(e) {} }
 if (estado.categoria === 'inicio') { renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
 else { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 }).obtenerRegistros(estado.userEmail); }
@@ -7899,10 +7974,178 @@ const fechaParaMes = (r && fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ?
 const textoMesContador = mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`); const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
 sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td"><span class="emoji-dyn">🗓️ </span>${textoMesContador}</td>`; tbFrag.appendChild(sepTr); const sepCard = document.createElement('div'); sepCard.className = 'month-separator-card';
 sepCard.innerHTML = `<span class="emoji-dyn">🗓️ </span>${textoMesContador}`; mBoxFrag.appendChild(sepCard); }
-const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd'; const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`; tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;"><button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
-tbFrag.appendChild(tr); const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`; m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div>`;
+const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd'; const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`; tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'Finish entry' : 'Completar y calificar obra'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;">🎉 ${userPrefs.lang === 'en' ? 'Finished!' : '¡Terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
+tbFrag.appendChild(tr); const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`; m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="abrirModalTerminarObra('${reg.id}')" style="width:100%; height:36px; border:none; border-radius:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.84rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>🎉</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Terminé!'}</span></button></div>` : ''}`;
 mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales(); }
 const cerrarModal = () => { document.getElementById('modal-edicion').style.display = 'none'; document.getElementById('modal-contenido').innerHTML = ''; };
+let califSeleccionadaTerminar = 5;
+let regIdParaTerminar = null;
+let fpTerminarFin = null;
+
+function abrirModalTerminarObra(id) {
+  const reg = (estado.registros || []).find(r => String(r.id) === String(id));
+  if (!reg) return;
+  regIdParaTerminar = id;
+  const l = userPrefs.lang || 'es';
+
+  const modalEl = document.getElementById('modal-terminar-obra');
+  if (!modalEl) return;
+
+  const posterEl = document.getElementById('terminar-poster');
+  if (posterEl) posterEl.src = reg.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'42\' height=\'60\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
+
+  const titEl = document.getElementById('terminar-titulo');
+  if (titEl) titEl.textContent = reg.titulo || 'Sin título';
+
+  const crEl = document.getElementById('terminar-creador');
+  if (crEl) crEl.textContent = (reg.creador || '') + (reg.anio ? ` (${reg.anio})` : '');
+
+  const badgeEl = document.getElementById('terminar-subcat-badge');
+  if (badgeEl) badgeEl.textContent = `${reg.categoria} ➔ ${reg.subcategoria}${reg.fechaInicio && reg.fechaInicio !== 'Sin fecha' ? ' | Inicio: ' + reg.fechaInicio : ''}`;
+
+  const hoyStr = fmtFecha_(new Date());
+  const inputFin = document.getElementById('terminar-fecha-fin');
+  if (inputFin) inputFin.value = hoyStr;
+
+  if (fpTerminarFin) {
+    try { fpTerminarFin.destroy(); } catch(e) {}
+    fpTerminarFin = null;
+  }
+  if (window.flatpickr && inputFin) {
+    fpTerminarFin = flatpickr(inputFin, {
+      locale: (l === 'en' ? 'default' : 'es'),
+      dateFormat: 'd/m/Y',
+      defaultDate: hoyStr,
+      allowInput: false,
+      disableMobile: true
+    });
+  }
+
+  califSeleccionadaTerminar = (Number(reg.calificacion) > 0) ? Number(reg.calificacion) : 5;
+  const valCalifInp = document.getElementById('terminar-val-calif');
+  if (valCalifInp) valCalifInp.value = califSeleccionadaTerminar;
+  renderEstrellasTerminar(califSeleccionadaTerminar);
+
+  const comEl = document.getElementById('terminar-comentario');
+  if (comEl) comEl.value = (reg.comentario && reg.comentario !== '—') ? reg.comentario : '';
+
+  const btnConfirm = document.getElementById('btn-guardar-terminar-obra');
+  if (btnConfirm) {
+    btnConfirm.textContent = l === 'en' ? '🎉 Save & Finish!' : '🎉 ¡Guardar y Finalizar!';
+    btnConfirm.disabled = false;
+  }
+
+  modalEl.style.display = 'flex';
+  setTimeout(() => {
+    if (comEl) comEl.focus();
+  }, 120);
+}
+
+function cerrarModalTerminarObra() {
+  const modalEl = document.getElementById('modal-terminar-obra');
+  if (modalEl) modalEl.style.display = 'none';
+  regIdParaTerminar = null;
+}
+
+function establecerFechaHoyTerminarModal() {
+  const hoyStr = fmtFecha_(new Date());
+  const inp = document.getElementById('terminar-fecha-fin');
+  if (inp) inp.value = hoyStr;
+  if (fpTerminarFin) {
+    try { fpTerminarFin.setDate(hoyStr, true); } catch(e) {}
+  }
+}
+
+function renderEstrellasTerminar(val) {
+  const box = document.getElementById('terminar-stars-wrapper');
+  if (!box) return;
+  box.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const s = document.createElement('span');
+    s.className = `star-box ${val >= i ? 'full' : (val >= i - 0.5 ? 'half' : '')}`;
+    s.textContent = '★';
+    s.style.cursor = 'pointer';
+    s.onmousemove = e => {
+      const p = (e.clientX - s.getBoundingClientRect().left < s.getBoundingClientRect().width / 2) ? i - 0.5 : i;
+      document.querySelectorAll('#terminar-stars-wrapper .star-box').forEach((st, idx) => {
+        st.className = `star-box ${p >= idx + 1 ? 'full' : (p >= idx + 0.5 ? 'half' : '')}`;
+      });
+      const lbl = document.getElementById('terminar-rating-label');
+      if (lbl) lbl.textContent = `${p.toFixed(1)} / 5`;
+    };
+    s.onclick = e => {
+      const p = (e.clientX - s.getBoundingClientRect().left < s.getBoundingClientRect().width / 2) ? i - 0.5 : i;
+      califSeleccionadaTerminar = p;
+      const vEl = document.getElementById('terminar-val-calif');
+      if (vEl) vEl.value = p;
+      renderEstrellasTerminar(p);
+    };
+    box.appendChild(s);
+  }
+  box.onmouseleave = () => {
+    renderEstrellasTerminar(califSeleccionadaTerminar);
+  };
+  const lbl = document.getElementById('terminar-rating-label');
+  if (lbl) lbl.textContent = `${Number(val).toFixed(1)} / 5`;
+}
+
+function confirmarTerminarObra() {
+  if (!regIdParaTerminar) return;
+  const reg = (estado.registros || []).find(r => String(r.id) === String(regIdParaTerminar));
+  if (!reg) return;
+
+  const btn = document.getElementById('btn-guardar-terminar-obra');
+  const txtOrig = btn ? btn.textContent : '';
+  if (btn) {
+    btn.textContent = 'Guardando... ⏳';
+    btn.disabled = true;
+  }
+
+  const l = userPrefs.lang || 'es';
+  const fFinVal = sanitizarFechaFrontend(document.getElementById('terminar-fecha-fin')?.value?.trim()) || fmtFecha_(new Date());
+  const califVal = Number(califSeleccionadaTerminar) || 0;
+  const comVal = asegurarPuntoFinal(document.getElementById('terminar-comentario')?.value?.trim() || '');
+
+  google.script.run.withSuccessHandler(res => {
+    if (btn) {
+      btn.textContent = txtOrig;
+      btn.disabled = false;
+    }
+    cerrarModalTerminarObra();
+
+    if (res && res.exito) {
+      reg.fechaFin = fFinVal;
+      reg.calificacion = califVal;
+      reg.comentario = comVal;
+
+      mostrarToastPersonalizado(l === 'en' ? '🎉 Congratulations! Entry completed.' : '🎉 ¡Felicidades! Obra marcada como terminada.');
+
+      filtrarYMostrarHistorial();
+
+      // Recalcular promedios o serie completa si corresponde
+      if (reg.categoria === 'Musica' && (reg.subcategoria === 'Discos' || reg.subcategoria === 'Disco') && reg.creador) {
+        recalcularYActualizarPromedioArtista(reg.creador).then(() => {
+          cargarRegistros();
+        });
+      } else if (reg.categoria === 'Series' && (reg.subcategoria === 'Temporadas' || reg.subcategoria?.includes('Temporada'))) {
+        const tBase = reg.tituloBase || reg.titulo.replace(/\s*\[S\d+\]$/i, '').trim();
+        recalcularYActualizarPromedioSerieCompleta(tBase).then(() => {
+          cargarRegistros();
+        });
+      } else {
+        cargarRegistros();
+      }
+    } else {
+      alert('Error al actualizar registro: ' + (res?.error || 'Desconocido'));
+    }
+  }).actualizarRegistro(reg.id, { fechaFin: fFinVal, calificacion: califVal, comentario: comVal }, estado.userEmail);
+}
+
+window.abrirModalTerminarObra = abrirModalTerminarObra;
+window.cerrarModalTerminarObra = cerrarModalTerminarObra;
+window.establecerFechaHoyTerminarModal = establecerFechaHoyTerminarModal;
+window.renderEstrellasTerminar = renderEstrellasTerminar;
+window.confirmarTerminarObra = confirmarTerminarObra;
 let fpComplFin = null;
 let fpFinSimple = null;
 function mostrarFechaFinEnEditorCompl() {
