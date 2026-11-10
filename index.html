@@ -80,6 +80,25 @@
 [data-theme$="-light"] .flatpickr-day.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
 [data-theme$="-light"] .flatpickr-day:hover{background:var(--card-hover)}
 [data-theme$="-light"] .flatpickr-current-month, [data-theme$="-light"] .flatpickr-months .flatpickr-month{color:var(--text);fill:var(--text)}
+/* BOTONES DE WATCHLIST EN MODO CLARO - MÁXIMO CONTRASTE */
+[data-theme$="-light"] .btn-watchlist-special, [data-theme="nordic-light"] .btn-watchlist-special, [data-theme="creme-latte"] .btn-watchlist-special, [data-theme="parchment"] .btn-watchlist-special, [data-theme="sage-garden"] .btn-watchlist-special,
+[data-theme$="-light"] .nav-sec-btn.nav-sec-wl, [data-theme="nordic-light"] .nav-sec-btn.nav-sec-wl, [data-theme="creme-latte"] .nav-sec-btn.nav-sec-wl, [data-theme="parchment"] .nav-sec-btn.nav-sec-wl, [data-theme="sage-garden"] .nav-sec-btn.nav-sec-wl{background:linear-gradient(135deg,rgba(245,158,11,0.22) 0%,rgba(217,119,6,0.28) 100%) !important;border:1.5px solid #d97706 !important;color:#78350f !important;font-weight:800 !important;box-shadow:0 3px 10px rgba(217,119,6,0.2) !important}
+[data-theme$="-light"] .btn-watchlist-special:hover, [data-theme="nordic-light"] .btn-watchlist-special:hover, [data-theme="creme-latte"] .btn-watchlist-special:hover, [data-theme="parchment"] .btn-watchlist-special:hover, [data-theme="sage-garden"] .btn-watchlist-special:hover,
+[data-theme$="-light"] .nav-sec-btn.nav-sec-wl:hover, [data-theme="nordic-light"] .nav-sec-btn.nav-sec-wl:hover, [data-theme="creme-latte"] .nav-sec-btn.nav-sec-wl:hover, [data-theme="parchment"] .nav-sec-btn.nav-sec-wl:hover, [data-theme="sage-garden"] .nav-sec-btn.nav-sec-wl:hover{background:linear-gradient(135deg,#f59e0b,#d97706) !important;border-color:#b45309 !important;color:#ffffff !important;box-shadow:0 4px 14px rgba(217,119,6,0.35) !important}
+[data-theme$="-light"] .btn-watchlist-special.active, [data-theme="nordic-light"] .btn-watchlist-special.active, [data-theme="creme-latte"] .btn-watchlist-special.active, [data-theme="parchment"] .btn-watchlist-special.active, [data-theme="sage-garden"] .btn-watchlist-special.active,
+[data-theme$="-light"] .nav-sec-btn.nav-sec-wl.active, [data-theme="nordic-light"] .nav-sec-btn.nav-sec-wl.active, [data-theme="creme-latte"] .nav-sec-btn.nav-sec-wl.active, [data-theme="parchment"] .nav-sec-btn.nav-sec-wl.active, [data-theme="sage-garden"] .nav-sec-btn.nav-sec-wl.active{background:linear-gradient(135deg,#d97706,#b45309) !important;border-color:#92400e !important;color:#ffffff !important;box-shadow:0 0 16px rgba(217,119,6,0.45) !important}
+[data-theme$="-light"] .wl-cat-pill.active, [data-theme="nordic-light"] .wl-cat-pill.active, [data-theme="creme-latte"] .wl-cat-pill.active, [data-theme="parchment"] .wl-cat-pill.active, [data-theme="sage-garden"] .wl-cat-pill.active{background:rgba(245,158,11,0.25) !important;border-color:#d97706 !important;color:#78350f !important;font-weight:800 !important}
+[data-theme$="-light"] .all-watchlists-title, [data-theme="nordic-light"] .all-watchlists-title, [data-theme="creme-latte"] .all-watchlists-title, [data-theme="parchment"] .all-watchlists-title, [data-theme="sage-garden"] .all-watchlists-title{color:#92400e !important}
+[data-theme$="-light"] .wl-badge-count, [data-theme="nordic-light"] .wl-badge-count, [data-theme="creme-latte"] .wl-badge-count, [data-theme="parchment"] .wl-badge-count, [data-theme="sage-garden"] .wl-badge-count{background:rgba(180,83,9,0.18) !important;color:#78350f !important}
+/* LIGHTBOX DE AVATAR EN GRANDE */
+.lightbox-avatar-box{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:24px;display:flex;flex-direction:column;align-items:center;gap:14px;box-shadow:0 24px 60px rgba(0,0,0,0.7);max-width:90vw;position:relative;animation:zoomInAvatar .22s cubic-bezier(.34,1.3,.64,1);margin:auto}
+@keyframes zoomInAvatar{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+.lightbox-avatar-img{width:290px;height:290px;max-width:76vw;max-height:76vw;border-radius:22px;object-fit:cover;box-shadow:0 10px 30px rgba(0,0,0,0.5);border:2px solid var(--border);display:block}
+.lightbox-avatar-emoji{width:230px;height:230px;max-width:76vw;max-height:76vw;font-size:7.5rem;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:22px;border:2px solid var(--border);box-shadow:0 10px 30px rgba(0,0,0,0.5);user-select:none}
+.btn-close-lightbox{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.5);border:1px solid var(--border);color:#fff;border-radius:50%;width:34px;height:34px;display:grid;place-items:center;font-size:1.35rem;line-height:1;cursor:pointer;transition:var(--tr);z-index:10}
+.btn-close-lightbox:hover{background:rgba(239,68,68,0.85);transform:scale(1.08)}
+[data-theme$="-light"] .lightbox-avatar-box, [data-theme="nordic-light"] .lightbox-avatar-box, [data-theme="creme-latte"] .lightbox-avatar-box, [data-theme="parchment"] .lightbox-avatar-box, [data-theme="sage-garden"] .lightbox-avatar-box{box-shadow:0 20px 50px rgba(0,0,0,0.22);border-color:var(--border)}
+[data-theme$="-light"] .btn-close-lightbox, [data-theme="nordic-light"] .btn-close-lightbox, [data-theme="creme-latte"] .btn-close-lightbox, [data-theme="parchment"] .btn-close-lightbox, [data-theme="sage-garden"] .btn-close-lightbox{background:rgba(0,0,0,0.2);color:var(--text)}
 html{font-size:var(--font-scale)}*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body, button, input, select, textarea{font-family:var(--font-family)}
 body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px}header{background:var(--header-bg);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.header-brand, .header-actions{display:flex;align-items:center;gap:16px}.header-actions{gap:8px}.logo{font-size:1.25rem;font-weight:700;color:var(--accent);cursor:pointer;transition:var(--tr)}
 .logo:hover{filter:drop-shadow(0 0 8px rgba(56,189,248,.6))}.year-display{font-family:'Cinzel',serif;font-size:1.55rem;font-weight:700;letter-spacing:0.1em;background:linear-gradient(135deg,#f8fafc 0%,var(--accent) 65%,var(--muted) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;user-select:none;line-height:1;filter:drop-shadow(0 0 10px rgba(56,189,248,0.3))}
@@ -355,7 +374,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .date-prec-btn.active{background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.3);color:var(--accent);font-weight:700;}
 </style> </head> <body> <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
-</div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <div class="home-hero-card"> <div class="home-hero-content"> <h2 style="font-size:1.4rem; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;"> <span>🏠</span> <span data-i18n="home_title">Inicio</span> </h2> <p style="color:var(--muted); font-size:.88rem; margin:0; text-align:center;" data-i18n="home_subtitle">Tu centro multimedia personal: registra tus obras, sigue a tus amigos y descubre nuevas recomendaciones.</p> </div> <div class="home-hero-actions"> <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()"> <span style="font-size:1.15rem;">⚡</span> <span data-i18n="btn_quick_add_hero">Agregado Rápido</span> </button> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;"> <span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Mis Watchlists</span> </button> </div> </div> <div class="home-community-section" id="seccion-comunidad-resumida-inicio"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--text); display:flex; align-items:center; gap:8px;"> <span>👥</span> <span data-i18n="home_friends_title">Novedades de Amigos</span> <span style="font-size:0.72rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;">Última semana</span> </div> <p style="font-size:0.8rem; color:var(--muted); margin-top:2px;" data-i18n="home_friends_sub">Lo que han registrado tus amigos en los últimos 7 días.</p> </div> <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem;"> <span data-i18n="btn_view_all_community">Ver toda la comunidad ➔</span> </button> </div> <div id="lista-comunidad-resumen-inicio"> <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;">Cargando actividad reciente de amigos... ⏳</div> </div> </div> <div class="home-discover-section" id="seccion-discover-inicio" style="margin-top:28px; border-top:1px solid var(--border); padding-top:24px;"> <div class="discover-header-bar"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>🧭 Discover</span> <span class="discover-live-badge"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="discover_subtitle">Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.</p> </div> <div class="discover-controls"> <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano">⚡ Auto-actualizar: ON</button> <button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="recargarDiscoverManual()"><span data-i18n="btn_discover_explore">🔄 Explorar nuevos</span></button> </div> </div> <div style="font-size:0.78rem; color:var(--muted); margin-bottom:6px;" data-i18n="discover_filter_hint">Selecciona qué categorías quieres ver (puedes activar o desactivar varias):</div> <div class="discover-filter-bar" id="discover-category-filters"> <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button> <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button> <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button> </div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) --> <div id="vista-listas-extendida" style="display:none;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:8px; margin-bottom:4px;"> <span>📑</span> <span data-i18n="lists_dashboard_title">Índice General de Listas</span> </h2> <p style="color:var(--muted); font-size:.85rem; margin:0;" data-i18n="lists_dashboard_subtitle">Resumen exhaustivo de tus hábitos, subtotales y favoritos por categoría</p> </div> <div class="view-mode-toggle" id="toggle-dashboard-view-mode"> <button type="button" class="btn-view-mode active" id="btn-view-mode-lista" onclick="cambiarModoVistaDashboard('lista')"> <span>📋</span> <span data-i18n="view_mode_detailed">Lista Detallada</span> </button> <button type="button" class="btn-view-mode" id="btn-view-mode-grid" onclick="cambiarModoVistaDashboard('cuadricula')"> <span>⊞</span> <span data-i18n="view_mode_grid">Cuadrícula</span> </button> </div> </div> <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- SECCIÓN: NOVEDADES Y ÚLTIMOS AGREGADOS DE AMIGOS --> <div class="cat-wide-card" style="margin-bottom:22px; padding:18px 20px;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(51,65,85,0.45); padding-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--accent); display:flex; align-items:center; gap:8px;"> <span>⚡</span> <span data-i18n="feed_amigos_title">Últimos Agregados de Amigos</span> <span id="badge-feed-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:800;">0</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-top:3px;" data-i18n="feed_amigos_desc">Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.</p> </div> <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.75rem; margin:0;" onclick="cargarFeedActividadAmigos(true)" title="Refrescar feed"> <span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span> </button> </div> <div class="discover-filter-bar" id="feed-amigos-filtros" style="margin-bottom:14px;"> <button type="button" class="subtab-btn active" data-fcat="todas" onclick="filtrarFeedAmigos('todas')">🌟 <span data-i18n="feed_filtro_todos">Todos</span> (<span id="count-feed-todas">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Peliculas" onclick="filtrarFeedAmigos('Peliculas')">🎬 <span data-i18n="nav_peliculas">Películas</span> (<span id="count-feed-pelis">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Series" onclick="filtrarFeedAmigos('Series')">📺 <span data-i18n="nav_series">Series</span> (<span id="count-feed-series">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Musica" onclick="filtrarFeedAmigos('Musica')">🎵 <span data-i18n="nav_musica">Música</span> (<span id="count-feed-musica">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Juegos" onclick="filtrarFeedAmigos('Juegos')">🎮 <span data-i18n="nav_juegos">Juegos</span> (<span id="count-feed-juegos">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Lecturas" onclick="filtrarFeedAmigos('Lecturas')">📖 <span data-i18n="nav_lecturas">Lecturas</span> (<span id="count-feed-lecturas">0</span>)</button> </div> <div id="lista-feed-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%;"> <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;">Cargando novedades de tus amigos... ⏳</div> </div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" style="padding:18px 22px;">
+</div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <div class="home-hero-card"> <div class="home-hero-content"> <h2 style="font-size:1.4rem; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;"> <span>🏠</span> <span data-i18n="home_title">Inicio</span> </h2> <p style="color:var(--muted); font-size:.88rem; margin:0; text-align:center;" data-i18n="home_subtitle">Tu centro multimedia personal: registra tus obras, sigue a tus amigos y descubre nuevas recomendaciones.</p> </div> <div class="home-hero-actions"> <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()"> <span style="font-size:1.15rem;">⚡</span> <span data-i18n="btn_quick_add_hero">Agregado Rápido</span> </button> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;"> <span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Mis Watchlists</span> </button> </div> </div> <div class="home-community-section" id="seccion-comunidad-resumida-inicio"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--text); display:flex; align-items:center; gap:8px;"> <span>👥</span> <span data-i18n="home_friends_title">Novedades de Amigos</span> <span style="font-size:0.72rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;">Última semana</span> </div> <p style="font-size:0.8rem; color:var(--muted); margin-top:2px;" data-i18n="home_friends_sub">Lo que han registrado tus amigos en los últimos 7 días.</p> </div> <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem;"> <span data-i18n="btn_view_all_community">Ver toda la comunidad ➔</span> </button> </div> <div id="lista-comunidad-resumen-inicio"> <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;">Cargando actividad reciente de amigos... ⏳</div> </div> </div> <div class="home-discover-section" id="seccion-discover-inicio" style="margin-top:28px; border-top:1px solid var(--border); padding-top:24px;"> <div class="discover-header-bar"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>🧭 Discover</span> <span class="discover-live-badge"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="discover_subtitle">Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.</p> </div> <div class="discover-controls"> <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano">⚡ Auto-actualizar: ON</button> <button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="recargarDiscoverManual()"><span data-i18n="btn_discover_explore">🔄 Explorar nuevos</span></button> </div> </div> <div style="font-size:0.78rem; color:var(--muted); margin-bottom:6px;" data-i18n="discover_filter_hint">Selecciona qué categorías quieres ver (puedes activar o desactivar varias):</div> <div class="discover-filter-bar" id="discover-category-filters"> <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button> <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button> <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button> </div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) --> <div id="vista-listas-extendida" style="display:none;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:8px; margin-bottom:4px;"> <span>⭐</span> <span data-i18n="lists_dashboard_title">Índice General de Listas</span> </h2> <p style="color:var(--muted); font-size:.85rem; margin:0;" data-i18n="lists_dashboard_subtitle">Resumen exhaustivo de tus hábitos, subtotales y favoritos por categoría</p> </div> </div> <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- SECCIÓN: NOVEDADES Y ÚLTIMOS AGREGADOS DE AMIGOS --> <div class="cat-wide-card" style="margin-bottom:22px; padding:18px 20px;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(51,65,85,0.45); padding-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--accent); display:flex; align-items:center; gap:8px;"> <span>⚡</span> <span data-i18n="feed_amigos_title">Últimos Agregados de Amigos</span> <span id="badge-feed-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:800;">0</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-top:3px;" data-i18n="feed_amigos_desc">Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.</p> </div> <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.75rem; margin:0;" onclick="cargarFeedActividadAmigos(true)" title="Refrescar feed"> <span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span> </button> </div> <div class="discover-filter-bar" id="feed-amigos-filtros" style="margin-bottom:14px;"> <button type="button" class="subtab-btn active" data-fcat="todas" onclick="filtrarFeedAmigos('todas')">🌟 <span data-i18n="feed_filtro_todos">Todos</span> (<span id="count-feed-todas">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Peliculas" onclick="filtrarFeedAmigos('Peliculas')">🎬 <span data-i18n="nav_peliculas">Películas</span> (<span id="count-feed-pelis">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Series" onclick="filtrarFeedAmigos('Series')">📺 <span data-i18n="nav_series">Series</span> (<span id="count-feed-series">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Musica" onclick="filtrarFeedAmigos('Musica')">🎵 <span data-i18n="nav_musica">Música</span> (<span id="count-feed-musica">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Juegos" onclick="filtrarFeedAmigos('Juegos')">🎮 <span data-i18n="nav_juegos">Juegos</span> (<span id="count-feed-juegos">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Lecturas" onclick="filtrarFeedAmigos('Lecturas')">📖 <span data-i18n="nav_lecturas">Lecturas</span> (<span id="count-feed-lecturas">0</span>)</button> </div> <div id="lista-feed-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%;"> <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;">Cargando novedades de tus amigos... ⏳</div> </div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" style="padding:18px 22px;">
   <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
     <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer;flex-shrink:0;">
       <span>👤</span>
@@ -546,7 +565,16 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div id="shuffle-sub" style="font-size:0.85rem; color:var(--muted);">¿Qué tocará hoy?</div> </div> </div> <div class="modal-actions" style="justify-content:center; gap:10px; margin-top:14px;"> <button type="button" class="btn-modal-cancel" id="btn-shuffle-otro" style="display:none;" onclick="ejecutarShuffleAnimado()">Tirar de nuevo 🎲</button> <button type="button" class="btn-modal-save" id="btn-shuffle-listo" style="display:none;" onclick="cerrarModalShuffle()">¡A disfrutar!</button>
 </div> </div> </div> <!-- MODAL SUGERENCIA NUEVO ARTISTA --> <div id="modal-nuevo-artista" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <h3 style="color:var(--accent); font-size:1.15rem; margin-bottom:10px;">🎙️ ¿Registrar nuevo Artista/Grupo?</h3> <p id="msg-nuevo-artista" style="color:var(--text); font-size:.9rem; line-height:1.5; margin-bottom:14px;"></p>
 <p style="color:var(--muted); font-size:.8rem; margin-bottom:16px;">Se iniciará su seguimiento en Música ➔ Artistas/Grupos con fecha de inicio hoy/disco.</p> <div class="modal-actions" style="justify-content:center; gap:12px;"> <button class="btn-modal-cancel" onclick="cerrarModalNuevoArtista()">No, solo el disco</button> <button class="btn-modal-save" id="btn-confirmar-nuevo-artista">Sí, comenzar registro</button>
-</div> </div> </div> <!-- MODAL EDITAR PERFIL (FOTO Y NICKNAME) -->
+</div> </div> </div> <!-- MODAL LIGHTBOX FOTO DE PERFIL EN GRANDE -->
+<div id="modal-lightbox-avatar" class="modal-overlay" style="display:none; z-index:99999;" onclick="if(event.target===this || event.target.closest('.btn-close-lightbox')) cerrarLightboxAvatar()">
+  <div class="lightbox-avatar-box">
+    <button type="button" class="btn-close-lightbox" onclick="cerrarLightboxAvatar()" title="Cerrar vista">&times;</button>
+    <div id="lightbox-avatar-content"></div>
+    <div id="lightbox-avatar-name" style="font-size:1.15rem; font-weight:700; color:var(--text); text-align:center;"></div>
+    <div style="font-size:0.75rem; color:var(--muted); text-align:center;">Toca fuera o la cruz para cerrar</div>
+  </div>
+</div>
+<!-- MODAL EDITAR PERFIL (FOTO Y NICKNAME) -->
 <div id="modal-editar-perfil" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalEditarPerfil()">
   <div class="modal-box" style="max-width:480px;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -3495,7 +3523,7 @@ function renderizarFeedAmigos() {
       <div class="amigo-feed-card">
         <div class="feed-card-header">
           <div class="feed-card-user-info">
-            <div class="feed-user-avatar" onclick="verPerfilDeAmigo('${it.userEmail}')" title="${l === 'en' ? 'View Profile' : 'Ver Perfil'}">
+            <div class="feed-user-avatar friend-avatar-wrap" data-avatar-zoom="${it.amigoAvatar || '🦊'}" data-avatar-name="${escHtmlFeed_(it.amigoNickname)}" onclick="verPerfilDeAmigo('${it.userEmail}')" title="${l === 'en' ? 'View Profile' : 'Ver Perfil'}">
               ${avatarHtml}
             </div>
             <div style="min-width:0;flex:1;">
@@ -3671,7 +3699,7 @@ function renderizarFeedAmigosResumidoInicio() {
       <div class="home-friend-card" onclick="abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(it.amigoNickname)}', '${escHtmlFeed_(it.categoria)}')">
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
           <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-            <div style="width:30px;height:30px;border-radius:50%;border:1.5px solid var(--accent);overflow:hidden;display:grid;place-items:center;font-size:1rem;flex-shrink:0;background:var(--bg);">
+            <div class="friend-avatar-wrap" data-avatar-zoom="${it.amigoAvatar || '🦊'}" data-avatar-name="${escHtmlFeed_(it.amigoNickname)}" style="width:30px;height:30px;border-radius:50%;border:1.5px solid var(--accent);overflow:hidden;display:grid;place-items:center;font-size:1rem;flex-shrink:0;background:var(--bg);">
               ${avatarHtml}
             </div>
             <div style="min-width:0;line-height:1.2;">
@@ -3766,7 +3794,7 @@ function renderizarListaAmigos(amigos) {
     return `
       <div class="amigo-wide-card" onclick="verPerfilDeAmigo('${a.email}')" style="cursor:pointer; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; transition:var(--tr);">
         <div style="display:flex; align-items:center; gap:14px; min-width:220px; flex:1;">
-          <div style="width:52px; height:52px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.6rem; flex-shrink:0;">
+          <div class="friend-avatar-wrap" data-avatar-zoom="${a.avatar || '🦊'}" data-avatar-name="${a.nickname || ''}" style="width:52px; height:52px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.6rem; flex-shrink:0;">
             ${avatarHtml}
           </div>
           <div style="min-width:0;">
@@ -3858,10 +3886,15 @@ function verPerfilDeAmigo(emailAmigo) {
     amigoSeleccionadoActual = res.amigo;
     const a = res.amigo;
     const avEl = document.getElementById('amigo-modal-avatar');
-    if (a.avatar && (a.avatar.startsWith('http') || a.avatar.startsWith('data:'))) {
-      avEl.innerHTML = `<img src="${a.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
-    } else {
-      avEl.innerHTML = `<span>${a.avatar || '👤'}</span>`;
+    if (avEl) {
+      avEl.setAttribute('data-avatar-zoom', a.avatar || '🦊');
+      avEl.setAttribute('data-avatar-name', a.nickname || 'Amigo');
+      avEl.title = l === 'en' ? 'Hold down to view enlarged photo' : 'Mantén presionado para ver foto en grande';
+      if (a.avatar && (a.avatar.startsWith('http') || a.avatar.startsWith('data:'))) {
+        avEl.innerHTML = `<img src="${a.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+      } else {
+        avEl.innerHTML = `<span>${a.avatar || '👤'}</span>`;
+      }
     }
     document.getElementById('amigo-modal-nick').textContent = a.nickname;
     document.getElementById('amigo-modal-bio').textContent = a.bio || (l === 'en' ? 'Collecting stories in Mediary ✨' : 'Coleccionando historias en Mediary ✨');
@@ -4516,8 +4549,9 @@ if (estado.categoria === 'perfil') renderizarFavoritosPerfil(); if (mostrarSalud
 function sincronizarPerfilDesdeServidor() { google.script.run.withSuccessHandler(res => { if (res && res.exito) { aplicarSesionExitosa(res, false); } else if (res && res.sinSesion && !estado.userEmail) { abrirModalAuthSupabase(); } }).obtenerPerfilUsuario(estado.userEmail); }
 function renderizarCabeceraPerfil() { const avBox = document.getElementById('perfil-avatar-render'); const btnHeader = document.getElementById('btn-profile');
 const esImg = perfilUsuario.avatar && (perfilUsuario.avatar.startsWith('http') || perfilUsuario.avatar.startsWith('data:image')); if (avBox) {
+avBox.setAttribute('data-avatar-zoom', perfilUsuario.avatar || '🦊'); avBox.setAttribute('data-avatar-name', perfilUsuario.nickname || 'Mi Perfil');
 avBox.innerHTML = `${esImg ? `<img src="${perfilUsuario.avatar}" alt="Avatar">` : `<span>${perfilUsuario.avatar || '🦊'}</span>`}<div class="profile-avatar-edit-badge">Editar</div>`; }
-if (btnHeader) { btnHeader.innerHTML = esImg
+if (btnHeader) { btnHeader.setAttribute('data-avatar-zoom', perfilUsuario.avatar || '🦊'); btnHeader.setAttribute('data-avatar-name', perfilUsuario.nickname || 'Mi Perfil'); btnHeader.innerHTML = esImg
 ? `<img src="${perfilUsuario.avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;">`
 : `<span class="btn-icon-glyph">${perfilUsuario.avatar || '🦊'}</span>`; }
 const idTxtEl = document.getElementById('perfil-id-txt'); if (idTxtEl) { const miId = generarOObtenerIdUsuario(estado.userEmail || perfilUsuario.emailGoogle, perfilUsuario.nickname, perfilUsuario.preferencias); idTxtEl.textContent = miId; } const nickEl = document.getElementById('perfil-nick-render'); if (nickEl) nickEl.textContent = perfilUsuario.nickname || 'Cinéfilo & Lector'; const bioEl = document.getElementById('perfil-bio-render'); if (bioEl) bioEl.textContent = perfilUsuario.bio || 'Coleccionando historias en Mediary ✨';
@@ -5854,6 +5888,7 @@ function inicializarManejoBotonAtras() {
       'modal-ingreso-manual',
       'modal-felicitaciones-watchlist',
       'modal-shuffle-recomendar',
+      'modal-lightbox-avatar',
       'modal-nuevo-artista',
       'modal-editar-perfil'
     ];
@@ -5871,6 +5906,7 @@ function inicializarManejoBotonAtras() {
         else if (mId === 'modal-ingreso-manual') cerrarModalManual();
         else if (mId === 'modal-felicitaciones-watchlist') cerrarModalFelicitacionWatchlist();
         else if (mId === 'modal-shuffle-recomendar') cerrarModalShuffle();
+        else if (mId === 'modal-lightbox-avatar') cerrarLightboxAvatar();
         else if (mId === 'modal-nuevo-artista') cerrarModalNuevoArtista();
         else if (mId === 'modal-editar-perfil') cerrarModalEditarPerfil();
         else el.style.display = 'none';
@@ -6266,19 +6302,11 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
 }
 
 function cambiarModoVistaDashboard(modo) {
-  estado.modoVistaDashboard = modo || 'lista';
-  try { localStorage.setItem('mediary_dashboard_view_mode', estado.modoVistaDashboard); } catch (e) {}
-  actualizarBotonesModoVistaDashboardUI();
+  estado.modoVistaDashboard = 'lista';
   renderizarStats();
 }
 
-function actualizarBotonesModoVistaDashboardUI() {
-  const modo = estado.modoVistaDashboard || 'lista';
-  const btnLista = document.getElementById('btn-view-mode-lista');
-  const btnGrid = document.getElementById('btn-view-mode-grid');
-  if (btnLista) btnLista.classList.toggle('active', modo === 'lista');
-  if (btnGrid) btnGrid.classList.toggle('active', modo === 'cuadricula');
-}
+function actualizarBotonesModoVistaDashboardUI() {}
 
 function abrirVistaDashboardListas(pushNav = true) {
   if (pushNav) registrarNavegacionApp('listas');
@@ -7044,72 +7072,6 @@ function renderizarStats() {
   box.innerHTML = '';
   const l = userPrefs.lang || 'es';
   const regsAnio = obtenerRegistrosFiltradosPorAnio();
-  const modo = estado.modoVistaDashboard || 'lista';
-
-  if (modo === 'cuadricula') {
-    box.className = 'dashboard-grid-view';
-    Object.keys(CONFIG).forEach(cat => {
-      const cfg = CONFIG[cat];
-      let tot = 0;
-      if (cat === 'Series') {
-        tot = regsAnio.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))).length;
-      } else if (cat === 'Musica') {
-        tot = regsAnio.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco')).length;
-      } else {
-        tot = regsAnio.filter(r => r.categoria === cat).length;
-      }
-      const itemsConCalif = regsAnio.filter(r => r.categoria === cat && Number(r.calificacion) > 0);
-      const promCat = itemsConCalif.length ? (itemsConCalif.reduce((acc, x) => acc + Number(x.calificacion), 0) / itemsConCalif.length).toFixed(1) : '0.0';
-      const catNombre = I18N[l]?.cats?.[cat] || cfg.nombre;
-
-      const subPills = cfg.subs.filter(s => !s.esWatchlist).map(s => {
-        const sNombre = I18N[l]?.subs?.[s.id] || s.nombre;
-        const countTotal = obtenerRegistrosDeSubcategoria(cat, s.id).length;
-        return `<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 8px;background:rgba(0,0,0,0.22);border-radius:8px;font-size:0.78rem;">
-          <span style="color:var(--text);display:flex;align-items:center;gap:6px;"><span class="emoji-dyn">${s.emoji}</span><span>${sNombre}</span></span>
-          <strong style="color:var(--accent);">${countTotal}</strong>
-        </div>`;
-      }).join('');
-
-      let uUltimo = [];
-      if (cat === 'Peliculas') uUltimo = regsAnio.filter(r => r.categoria === 'Peliculas' && !r.esRewatch);
-      else if (cat === 'Series') uUltimo = regsAnio.filter(r => r.categoria === 'Series' && !r.esRewatch && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada')));
-      else if (cat === 'Musica') uUltimo = regsAnio.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco'));
-      else if (cat === 'Juegos') uUltimo = regsAnio.filter(r => r.categoria === 'Juegos');
-      else uUltimo = regsAnio.filter(r => r.categoria === 'Lecturas');
-
-      const ult = uUltimo.length ? [...uUltimo].sort((a,b) => (timestampDeFecha(b.fechaFin) || timestampDeFecha(b.fechaInicio)) - (timestampDeFecha(a.fechaFin) || timestampDeFecha(a.fechaInicio)))[0] : null;
-      const uF = ult ? ((ult.fechaFin && ult.fechaFin !== 'Sin fecha') ? ult.fechaFin : ult.fechaInicio) : '';
-
-      const card = document.createElement('div');
-      card.className = 'cat-grid-card';
-      card.onclick = () => cambiarCat(cat);
-      card.innerHTML = `
-        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:10px;">
-          <div style="font-size:1.08rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;">
-            <span class="emoji-dyn">${cfg.emoji}</span>
-            <span>${catNombre}</span>
-          </div>
-          <div style="display:flex;align-items:center;gap:8px;">
-            <span style="color:var(--star-active);font-weight:700;font-size:0.85rem;">★ ${promCat}</span>
-            <span style="font-size:0.75rem;background:rgba(56,189,248,0.15);color:var(--accent);padding:2px 8px;border-radius:10px;font-weight:700;">${tot}</span>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:5px;flex:1;">
-          ${subPills}
-        </div>
-        <div style="background:rgba(0,0,0,0.25);border-radius:10px;padding:8px 10px;margin-top:auto;border:1px solid rgba(255,255,255,0.05);">
-          <div style="font-size:0.68rem;color:var(--muted);text-transform:uppercase;font-weight:700;margin-bottom:2px;">${t('stat_ultimo')}</div>
-          <div style="font-size:0.82rem;font-weight:600;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${ult ? ult.titulo : t('stat_sin_reg')}</div>
-          <div style="font-size:0.7rem;color:var(--muted);">${ult ? (uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')) : '—'}</div>
-        </div>
-      `;
-      box.appendChild(card);
-    });
-    aplicarEstilosGlobales();
-    return;
-  }
-
   box.className = 'dashboard-vertical-list';
   Object.keys(CONFIG).forEach(cat => { const cfg = CONFIG[cat]; let tot = 0; if (cat === 'Series') {
 tot = regsAnio.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))).length;
@@ -8305,6 +8267,164 @@ function inicializarEventosBuscadores() {
     });
   }
 }
+// === VISTA EN GRANDE DE AVATARES / FOTOS DE PERFIL (LONG PRESS) ===
+let _longPressTimer = null;
+let _longPressTriggered = false;
+let _longPressStartX = 0;
+let _longPressStartY = 0;
+let _avatarTargetInfo = null;
+
+function abrirLightboxAvatar(avatarData, nombre = '') {
+  if (!avatarData) avatarData = '👤';
+  const modal = document.getElementById('modal-lightbox-avatar');
+  if (!modal) return;
+  const box = document.getElementById('lightbox-avatar-content');
+  const nameEl = document.getElementById('lightbox-avatar-name');
+  const l = userPrefs.lang || 'es';
+  if (nameEl) nameEl.textContent = nombre ? (nombre.startsWith('@') ? nombre : `${nombre}`) : '';
+  
+  const esImg = typeof avatarData === 'string' && (avatarData.startsWith('http') || avatarData.startsWith('data:image'));
+  if (esImg) {
+    box.innerHTML = `<img src="${avatarData}" alt="Avatar" class="lightbox-avatar-img">`;
+  } else {
+    box.innerHTML = `<div class="lightbox-avatar-emoji">${avatarData}</div>`;
+  }
+  modal.style.display = 'flex';
+}
+window.abrirLightboxAvatar = abrirLightboxAvatar;
+
+function cerrarLightboxAvatar() {
+  const modal = document.getElementById('modal-lightbox-avatar');
+  if (modal) modal.style.display = 'none';
+}
+window.cerrarLightboxAvatar = cerrarLightboxAvatar;
+
+function obtenerInfoAvatarDesdeElemento(el) {
+  if (!el) return null;
+  const target = el.closest('[data-avatar-zoom], #perfil-avatar-render, #amigo-modal-avatar, #act-modal-friend-avatar, .feed-user-avatar, .friend-avatar-wrap, .discover-friend-avatar-btn, .discover-avatar-circle, .profile-avatar-box');
+  if (!target) return null;
+
+  if (target.getAttribute('data-avatar-zoom')) {
+    return {
+      avatar: target.getAttribute('data-avatar-zoom'),
+      name: target.getAttribute('data-avatar-name') || ''
+    };
+  }
+  if (target.id === 'perfil-avatar-render' || target.classList.contains('profile-avatar-box')) {
+    return {
+      avatar: perfilUsuario.avatar || '🦊',
+      name: perfilUsuario.nickname || 'Mi Perfil'
+    };
+  }
+  if (target.id === 'amigo-modal-avatar') {
+    return {
+      avatar: amigoSeleccionadoActual ? amigoSeleccionadoActual.avatar : '👤',
+      name: amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : 'Amigo'
+    };
+  }
+  const img = target.querySelector('img');
+  if (img && img.src) {
+    return {
+      avatar: img.src,
+      name: target.getAttribute('data-avatar-name') || target.getAttribute('title') || ''
+    };
+  }
+  const span = target.querySelector('span');
+  if (span && span.textContent.trim()) {
+    return {
+      avatar: span.textContent.trim(),
+      name: target.getAttribute('data-avatar-name') || target.getAttribute('title') || ''
+    };
+  }
+  return null;
+}
+
+function inicializarLongPressAvatares() {
+  const onStart = (clientX, clientY, target) => {
+    const info = obtenerInfoAvatarDesdeElemento(target);
+    if (!info) return;
+    _avatarTargetInfo = info;
+    _longPressTriggered = false;
+    _longPressStartX = clientX;
+    _longPressStartY = clientY;
+    clearTimeout(_longPressTimer);
+    _longPressTimer = setTimeout(() => {
+      _longPressTriggered = true;
+      if (window.navigator && window.navigator.vibrate) {
+        try { window.navigator.vibrate(40); } catch (_) {}
+      }
+      abrirLightboxAvatar(_avatarTargetInfo.avatar, _avatarTargetInfo.name);
+    }, 450);
+  };
+
+  const onMove = (clientX, clientY) => {
+    if (!_longPressTimer) return;
+    if (Math.hypot(clientX - _longPressStartX, clientY - _longPressStartY) > 10) {
+      clearTimeout(_longPressTimer);
+      _longPressTimer = null;
+    }
+  };
+
+  const onCancel = () => {
+    if (_longPressTimer) {
+      clearTimeout(_longPressTimer);
+      _longPressTimer = null;
+    }
+  };
+
+  // Touch handlers
+  document.addEventListener('touchstart', (e) => {
+    if (e.touches && e.touches.length === 1) {
+      onStart(e.touches[0].clientX, e.touches[0].clientY, e.target);
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches.length > 0) {
+      onMove(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', (e) => {
+    if (_longPressTriggered) {
+      e.preventDefault();
+      e.stopPropagation();
+      setTimeout(() => { _longPressTriggered = false; }, 350);
+    }
+    onCancel();
+  }, { passive: false });
+
+  document.addEventListener('touchcancel', onCancel, { passive: true });
+
+  // Mouse handlers (Desktop)
+  document.addEventListener('mousedown', (e) => {
+    if (e.button === 0) {
+      onStart(e.clientX, e.clientY, e.target);
+    }
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    onMove(e.clientX, e.clientY);
+  });
+
+  document.addEventListener('mouseup', (e) => {
+    if (_longPressTriggered) {
+      e.stopPropagation();
+      setTimeout(() => { _longPressTriggered = false; }, 350);
+    }
+    onCancel();
+  });
+
+  // Capture clicks to suppress triggering normal action if long press activated
+  document.addEventListener('click', (e) => {
+    if (_longPressTriggered) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
+}
+inicializarLongPressAvatares();
+
 inicializarEventosBuscadores();
 </script>
 </body>
