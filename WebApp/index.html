@@ -20,44 +20,67 @@
 <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 <style>
 :root{--font-family:'Plus Jakarta Sans',sans-serif;--font-scale:100%;--bg:#0f172a;--card:#1e293b;--card-hover:#334155;--accent:#38bdf8;--accent-hover:#0ea5e9;--text:#f8fafc;--muted:#94a3b8;--star-active:#f59e0b;--star-inactive:#475569;--border:#334155;--header-bg:#111827;--separator-bg:#0c1322;--danger:#ef4444;--danger-hover:#dc2626;--b-nav:70px;--tr:all .2s cubic-bezier(.4,0,.2,1)}
-[data-theme="oled"]{--bg:#000000;--card:#121212;--card-hover:#1e1e1e;--accent:#10b981;--accent-hover:#059669;--text:#fff;--muted:#888;--star-active:#fbbf24;--star-inactive:#333;--border:#242424;--header-bg:#0a0a0a;--separator-bg:#050505}
-[data-theme="dracula"]{--bg:#1e1f29;--card:#282a36;--card-hover:#383a59;--accent:#ff79c6;--accent-hover:#bd93f9;--text:#f8f8f2;--muted:#6272a4;--star-active:#f1fa8c;--star-inactive:#44475a;--border:#44475a;--header-bg:#191a21;--separator-bg:#14151b}
-[data-theme="espresso"]{--bg:#1c1917;--card:#292524;--card-hover:#44403c;--accent:#f59e0b;--accent-hover:#d97706;--text:#fafaf9;--muted:#a8a29e;--star-active:#fbbf24;--star-inactive:#57534e;--border:#44403c;--header-bg:#141210;--separator-bg:#0c0a09}
-[data-theme="nordic-light"]{--bg:#f8fafc;--card:#ffffff;--card-hover:#f1f5f9;--accent:#0284c7;--accent-hover:#0369a1;--text:#0f172a;--muted:#64748b;--star-active:#f59e0b;--star-inactive:#cbd5e1;--border:#e2e8f0;--header-bg:#ffffff;--separator-bg:#f1f5f9;--danger:#dc2626;--danger-hover:#b91c1c}
-[data-theme="creme-latte"]{--bg:#fdfbf7;--card:#ffffff;--card-hover:#f7f3ea;--accent:#d97706;--accent-hover:#b45309;--text:#292524;--muted:#78716c;--star-active:#f59e0b;--star-inactive:#e7e5e4;--border:#e7e5e4;--header-bg:#fbf8f2;--separator-bg:#f4eee3;--danger:#dc2626;--danger-hover:#b91c1c}
-[data-theme="parchment"]{--bg:#ede4d4;--card:#e2d6c3;--card-hover:#d7c9b4;--accent:#c25e2e;--accent-hover:#9e441b;--text:#29231c;--muted:#736758;--star-active:#d97706;--star-inactive:#c4b59f;--border:#cfc1ac;--header-bg:#e4d8c6;--separator-bg:#dad0bd;--danger:#dc2626;--danger-hover:#b91c1c}
-[data-theme="sage-garden"]{--bg:#e2ece4;--card:#d5e2d8;--card-hover:#c6d7cb;--accent:#0d7658;--accent-hover:#095942;--text:#142b1f;--muted:#526d5f;--star-active:#d97706;--star-inactive:#b6cac0;--border:#bfd2c5;--header-bg:#dae7dd;--separator-bg:#cdddd1;--danger:#dc2626;--danger-hover:#b91c1c}
-[data-theme="nordic-light"] .form-input, [data-theme="creme-latte"] .form-input, [data-theme="parchment"] .form-input, [data-theme="sage-garden"] .form-input, [data-theme="nordic-light"] .comment-box, [data-theme="creme-latte"] .comment-box, [data-theme="parchment"] .comment-box, [data-theme="sage-garden"] .comment-box, [data-theme="nordic-light"] .settings-select, [data-theme="creme-latte"] .settings-select, [data-theme="parchment"] .settings-select, [data-theme="sage-garden"] .settings-select{background:var(--card);color:var(--text);border-color:var(--border)}
-[data-theme="nordic-light"] .year-display-txt, [data-theme="creme-latte"] .year-display-txt, [data-theme="parchment"] .year-display-txt, [data-theme="sage-garden"] .year-display-txt{background:linear-gradient(135deg,var(--text) 0%,var(--accent) 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-[data-theme="nordic-light"] .year-dropdown-menu, [data-theme="creme-latte"] .year-dropdown-menu, [data-theme="parchment"] .year-dropdown-menu, [data-theme="sage-garden"] .year-dropdown-menu{background:var(--card);border-color:var(--border);box-shadow:0 12px 30px rgba(0,0,0,0.12)}
-[data-theme="nordic-light"] .modal-box, [data-theme="creme-latte"] .modal-box, [data-theme="parchment"] .modal-box, [data-theme="sage-garden"] .modal-box{background:var(--card);color:var(--text);border-color:var(--border);box-shadow:0 20px 45px rgba(0,0,0,0.15)}
-[data-theme="nordic-light"] .nav-sec-btn, [data-theme="creme-latte"] .nav-sec-btn, [data-theme="parchment"] .nav-sec-btn, [data-theme="sage-garden"] .nav-sec-btn{background:rgba(0,0,0,0.04);color:var(--muted)}
-[data-theme="nordic-light"] .nav-sec-btn:hover, [data-theme="creme-latte"] .nav-sec-btn:hover, [data-theme="parchment"] .nav-sec-btn:hover, [data-theme="sage-garden"] .nav-sec-btn:hover{background:rgba(0,0,0,0.08);color:var(--text)}
-[data-theme="nordic-light"] .nav-sec-btn.active, [data-theme="creme-latte"] .nav-sec-btn.active, [data-theme="parchment"] .nav-sec-btn.active, [data-theme="sage-garden"] .nav-sec-btn.active{background:var(--accent);color:#ffffff}
-[data-theme="nordic-light"] .btn-header-icon, [data-theme="creme-latte"] .btn-header-icon, [data-theme="parchment"] .btn-header-icon, [data-theme="sage-garden"] .btn-header-icon{background:rgba(0,0,0,0.04);border-color:var(--border);color:var(--text)}
-[data-theme="nordic-light"] .btn-header-icon:hover, [data-theme="creme-latte"] .btn-header-icon:hover, [data-theme="parchment"] .btn-header-icon:hover, [data-theme="sage-garden"] .btn-header-icon:hover{background:var(--accent);color:#ffffff}
-[data-theme="nordic-light"] .subtab-btn, [data-theme="creme-latte"] .subtab-btn, [data-theme="parchment"] .subtab-btn, [data-theme="sage-garden"] .subtab-btn{background:rgba(0,0,0,0.04);color:var(--muted);border-color:var(--border)}
-[data-theme="nordic-light"] .subtab-btn.active, [data-theme="creme-latte"] .subtab-btn.active, [data-theme="parchment"] .subtab-btn.active, [data-theme="sage-garden"] .subtab-btn.active{background:var(--accent);color:#ffffff;border-color:var(--accent)}
-[data-theme="nordic-light"] .search-input, [data-theme="creme-latte"] .search-input, [data-theme="parchment"] .search-input, [data-theme="sage-garden"] .search-input{background:var(--card);color:var(--text);border-color:var(--border)}
-[data-theme="nordic-light"] .search-results, [data-theme="creme-latte"] .search-results, [data-theme="parchment"] .search-results, [data-theme="sage-garden"] .search-results{background:var(--card);border-color:var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
-[data-theme="nordic-light"] .result-item, [data-theme="creme-latte"] .result-item, [data-theme="parchment"] .result-item, [data-theme="sage-garden"] .result-item{border-color:var(--border)}
-[data-theme="nordic-light"] .history-table th, [data-theme="creme-latte"] .history-table th, [data-theme="parchment"] .history-table th, [data-theme="sage-garden"] .history-table th{background:var(--card);color:var(--muted);border-color:var(--border)}
-[data-theme="nordic-light"] .history-table td, [data-theme="creme-latte"] .history-table td, [data-theme="parchment"] .history-table td, [data-theme="sage-garden"] .history-table td{border-color:var(--border)}
-[data-theme="nordic-light"] .btn-mobile-center-plus, [data-theme="creme-latte"] .btn-mobile-center-plus, [data-theme="parchment"] .btn-mobile-center-plus, [data-theme="sage-garden"] .btn-mobile-center-plus{color:#ffffff}
-[data-theme="nordic-light"] .nav-cat-card, [data-theme="creme-latte"] .nav-cat-card, [data-theme="parchment"] .nav-cat-card, [data-theme="sage-garden"] .nav-cat-card{background:var(--card);color:var(--muted);border-color:var(--border)}
-[data-theme="nordic-light"] .nav-cat-card:hover, [data-theme="creme-latte"] .nav-cat-card:hover, [data-theme="parchment"] .nav-cat-card:hover, [data-theme="sage-garden"] .nav-cat-card:hover{color:var(--text);background:var(--card-hover)}
-[data-theme="nordic-light"] .nav-cat-card.active{background:rgba(2,132,199,0.12);color:var(--accent);border-color:var(--accent)}
-[data-theme="creme-latte"] .nav-cat-card.active{background:rgba(217,119,6,0.12);color:var(--accent);border-color:var(--accent)}
-[data-theme="parchment"] .nav-cat-card.active{background:rgba(194,94,46,0.14);color:var(--accent);border-color:var(--accent)}
-[data-theme="sage-garden"] .nav-cat-card.active{background:rgba(13,118,88,0.14);color:var(--accent);border-color:var(--accent)}
-[data-theme="nordic-light"] .btn-save, [data-theme="creme-latte"] .btn-save, [data-theme="parchment"] .btn-save, [data-theme="sage-garden"] .btn-save, [data-theme="nordic-light"] .btn-modal-save, [data-theme="creme-latte"] .btn-modal-save, [data-theme="parchment"] .btn-modal-save, [data-theme="sage-garden"] .btn-modal-save, [data-theme="parchment"] .btn-toggle-tipo.active, [data-theme="sage-garden"] .btn-toggle-tipo.active{color:#ffffff}
-[data-theme="nordic-light"] .row-month-even, [data-theme="creme-latte"] .row-month-even, [data-theme="parchment"] .row-month-even, [data-theme="sage-garden"] .row-month-even{background:rgba(0,0,0,0.02)}
-[data-theme="nordic-light"] .row-month-odd, [data-theme="creme-latte"] .row-month-odd, [data-theme="parchment"] .row-month-odd, [data-theme="sage-garden"] .row-month-odd{background:rgba(0,0,0,0.05)}
-[data-theme="parchment"] .month-separator-td, [data-theme="sage-garden"] .month-separator-td{border-top-color:var(--border) !important;border-bottom-color:var(--border) !important}
-[data-theme="parchment"] .month-separator-card{background:rgba(194,94,46,0.1)}
-[data-theme="sage-garden"] .month-separator-card{background:rgba(13,118,88,0.1)}
-[data-theme="parchment"] .cfg-option-card.active{border-color:var(--accent);background:rgba(194,94,46,0.12);box-shadow:0 0 10px rgba(194,94,46,0.2)}
-[data-theme="sage-garden"] .cfg-option-card.active{border-color:var(--accent);background:rgba(13,118,88,0.12);box-shadow:0 0 10px rgba(13,118,88,0.2)}html{font-size:var(--font-scale)}*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body, button, input, select, textarea{font-family:var(--font-family)}
+
+/* 1. TEMA PIZARRA NÓRDICA (SLATE) */
+[data-theme="slate-dark"], [data-theme="default"]{--bg:#0f172a;--card:#1e293b;--card-hover:#334155;--accent:#38bdf8;--accent-hover:#0ea5e9;--text:#f8fafc;--muted:#94a3b8;--star-active:#f59e0b;--star-inactive:#475569;--border:#334155;--header-bg:#111827;--separator-bg:#0c1322;--danger:#ef4444;--danger-hover:#dc2626}
+[data-theme="slate-light"], [data-theme="nordic-light"]{--bg:#dbe2ea;--card:#ced7e2;--card-hover:#c0ccd9;--accent:#0284c7;--accent-hover:#0369a1;--text:#0f172a;--muted:#475569;--star-active:#f59e0b;--star-inactive:#94a3b8;--border:#b4c2d0;--header-bg:#d0d9e4;--separator-bg:#c4d0dc;--danger:#dc2626;--danger-hover:#b91c1c}
+
+/* 2. TEMA ESMERALDA & SALVIA (EMERALD) */
+[data-theme="emerald-dark"], [data-theme="oled"]{--bg:#000000;--card:#121413;--card-hover:#1e2220;--accent:#10b981;--accent-hover:#059669;--text:#f0fdf4;--muted:#869f90;--star-active:#fbbf24;--star-inactive:#2a362e;--border:#222924;--header-bg:#0a0d0b;--separator-bg:#050706;--danger:#ef4444;--danger-hover:#dc2626}
+[data-theme="emerald-light"], [data-theme="sage-garden"]{--bg:#d6e3d9;--card:#c7d8cb;--card-hover:#b8ccbd;--accent:#0d7658;--accent-hover:#095942;--text:#11261b;--muted:#4a6554;--star-active:#d97706;--star-inactive:#9fb7a5;--border:#adc4b2;--header-bg:#cdddd1;--separator-bg:#c0d2c4;--danger:#dc2626;--danger-hover:#b91c1c}
+
+/* 3. TEMA CAFÉ & PERGAMINO (WARM ESPRESSO) */
+[data-theme="espresso-dark"], [data-theme="espresso"]{--bg:#1c1917;--card:#292524;--card-hover:#44403c;--accent:#f59e0b;--accent-hover:#d97706;--text:#fafaf9;--muted:#a8a29e;--star-active:#fbbf24;--star-inactive:#57534e;--border:#44403c;--header-bg:#141210;--separator-bg:#0c0a09;--danger:#ef4444;--danger-hover:#dc2626}
+[data-theme="espresso-light"], [data-theme="parchment"], [data-theme="creme-latte"]{--bg:#e6dac7;--card:#d8cbb5;--card-hover:#cbbea6;--accent:#c25e2e;--accent-hover:#9e441b;--text:#28211a;--muted:#6e6252;--star-active:#d97706;--star-inactive:#b3a48e;--border:#beaf98;--header-bg:#ddd0ba;--separator-bg:#d0c2ab;--danger:#dc2626;--danger-hover:#b91c1c}
+
+/* 4. TEMA DRÁCULA & LAVANDA (AMETHYST) */
+[data-theme="dracula-dark"], [data-theme="dracula"]{--bg:#1e1f29;--card:#282a36;--card-hover:#383a59;--accent:#ff79c6;--accent-hover:#bd93f9;--text:#f8f8f2;--muted:#6272a4;--star-active:#f1fa8c;--star-inactive:#44475a;--border:#44475a;--header-bg:#191a21;--separator-bg:#14151b;--danger:#ef4444;--danger-hover:#dc2626}
+[data-theme="dracula-light"], [data-theme="lavender-light"]{--bg:#ded7e8;--card:#d0c8dc;--card-hover:#c2b8d0;--accent:#9333ea;--accent-hover:#7e22ce;--text:#20142e;--muted:#5c4f6d;--star-active:#d97706;--star-inactive:#b2a4c2;--border:#b7a8c8;--header-bg:#d5cde0;--separator-bg:#c8bed4;--danger:#dc2626;--danger-hover:#b91c1c}
+
+/* Shared overrides for light themes */
+[data-theme$="-light"], [data-theme="nordic-light"], [data-theme="creme-latte"], [data-theme="parchment"], [data-theme="sage-garden"] {
+  --color-scheme: light;
+}
+[data-theme$="-light"] .form-input, [data-theme$="-light"] .comment-box, [data-theme$="-light"] .settings-select,
+[data-theme="nordic-light"] .form-input, [data-theme="creme-latte"] .form-input, [data-theme="parchment"] .form-input, [data-theme="sage-garden"] .form-input,
+[data-theme="nordic-light"] .comment-box, [data-theme="creme-latte"] .comment-box, [data-theme="parchment"] .comment-box, [data-theme="sage-garden"] .comment-box,
+[data-theme="nordic-light"] .settings-select, [data-theme="creme-latte"] .settings-select, [data-theme="parchment"] .settings-select, [data-theme="sage-garden"] .settings-select{background:var(--card);color:var(--text);border-color:var(--border)}
+[data-theme$="-light"] .year-display-txt, [data-theme="nordic-light"] .year-display-txt, [data-theme="creme-latte"] .year-display-txt, [data-theme="parchment"] .year-display-txt, [data-theme="sage-garden"] .year-display-txt{background:linear-gradient(135deg,var(--text) 0%,var(--accent) 70%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+[data-theme$="-light"] .year-dropdown-menu, [data-theme="nordic-light"] .year-dropdown-menu, [data-theme="creme-latte"] .year-dropdown-menu, [data-theme="parchment"] .year-dropdown-menu, [data-theme="sage-garden"] .year-dropdown-menu{background:var(--card);border-color:var(--border);box-shadow:0 12px 30px rgba(0,0,0,0.12)}
+[data-theme$="-light"] .modal-box, [data-theme="nordic-light"] .modal-box, [data-theme="creme-latte"] .modal-box, [data-theme="parchment"] .modal-box, [data-theme="sage-garden"] .modal-box{background:var(--card);color:var(--text);border-color:var(--border);box-shadow:0 20px 45px rgba(0,0,0,0.18)}
+[data-theme$="-light"] .nav-sec-btn, [data-theme="nordic-light"] .nav-sec-btn, [data-theme="creme-latte"] .nav-sec-btn, [data-theme="parchment"] .nav-sec-btn, [data-theme="sage-garden"] .nav-sec-btn{background:rgba(0,0,0,0.06);color:var(--muted);border-color:var(--border)}
+[data-theme$="-light"] .nav-sec-btn:hover, [data-theme="nordic-light"] .nav-sec-btn:hover, [data-theme="creme-latte"] .nav-sec-btn:hover, [data-theme="parchment"] .nav-sec-btn:hover, [data-theme="sage-garden"] .nav-sec-btn:hover{background:rgba(0,0,0,0.12);color:var(--text)}
+[data-theme$="-light"] .nav-sec-btn.active, [data-theme="nordic-light"] .nav-sec-btn.active, [data-theme="creme-latte"] .nav-sec-btn.active, [data-theme="parchment"] .nav-sec-btn.active, [data-theme="sage-garden"] .nav-sec-btn.active{background:var(--accent);color:#ffffff}
+[data-theme$="-light"] .btn-header-icon, [data-theme="nordic-light"] .btn-header-icon, [data-theme="creme-latte"] .btn-header-icon, [data-theme="parchment"] .btn-header-icon, [data-theme="sage-garden"] .btn-header-icon{background:rgba(0,0,0,0.06);border-color:var(--border);color:var(--text)}
+[data-theme$="-light"] .btn-header-icon:hover, [data-theme="nordic-light"] .btn-header-icon:hover, [data-theme="creme-latte"] .btn-header-icon:hover, [data-theme="parchment"] .btn-header-icon:hover, [data-theme="sage-garden"] .btn-header-icon:hover{background:var(--accent);color:#ffffff}
+[data-theme$="-light"] .subtab-btn, [data-theme="nordic-light"] .subtab-btn, [data-theme="creme-latte"] .subtab-btn, [data-theme="parchment"] .subtab-btn, [data-theme="sage-garden"] .subtab-btn{background:rgba(0,0,0,0.06);color:var(--muted);border-color:var(--border)}
+[data-theme$="-light"] .subtab-btn.active, [data-theme="nordic-light"] .subtab-btn.active, [data-theme="creme-latte"] .subtab-btn.active, [data-theme="parchment"] .subtab-btn.active, [data-theme="sage-garden"] .subtab-btn.active{background:var(--accent);color:#ffffff;border-color:var(--accent)}
+[data-theme$="-light"] .search-input, [data-theme="nordic-light"] .search-input, [data-theme="creme-latte"] .search-input, [data-theme="parchment"] .search-input, [data-theme="sage-garden"] .search-input{background:var(--card);color:var(--text);border-color:var(--border)}
+[data-theme$="-light"] .search-results, [data-theme="nordic-light"] .search-results, [data-theme="creme-latte"] .search-results, [data-theme="parchment"] .search-results, [data-theme="sage-garden"] .search-results{background:var(--card);border-color:var(--border);box-shadow:0 8px 24px rgba(0,0,0,0.1)}
+[data-theme$="-light"] .result-item, [data-theme="nordic-light"] .result-item, [data-theme="creme-latte"] .result-item, [data-theme="parchment"] .result-item, [data-theme="sage-garden"] .result-item{border-color:var(--border)}
+[data-theme$="-light"] .history-table th, [data-theme="nordic-light"] .history-table th, [data-theme="creme-latte"] .history-table th, [data-theme="parchment"] .history-table th, [data-theme="sage-garden"] .history-table th{background:var(--card);color:var(--muted);border-color:var(--border)}
+[data-theme$="-light"] .history-table td, [data-theme="nordic-light"] .history-table td, [data-theme="creme-latte"] .history-table td, [data-theme="parchment"] .history-table td, [data-theme="sage-garden"] .history-table td{border-color:var(--border)}
+[data-theme$="-light"] .btn-mobile-center-plus, [data-theme="nordic-light"] .btn-mobile-center-plus, [data-theme="creme-latte"] .btn-mobile-center-plus, [data-theme="parchment"] .btn-mobile-center-plus, [data-theme="sage-garden"] .btn-mobile-center-plus{color:#ffffff}
+[data-theme$="-light"] .nav-cat-card, [data-theme="nordic-light"] .nav-cat-card, [data-theme="creme-latte"] .nav-cat-card, [data-theme="parchment"] .nav-cat-card, [data-theme="sage-garden"] .nav-cat-card{background:var(--card);color:var(--muted);border-color:var(--border)}
+[data-theme$="-light"] .nav-cat-card:hover, [data-theme="nordic-light"] .nav-cat-card:hover, [data-theme="creme-latte"] .nav-cat-card:hover, [data-theme="parchment"] .nav-cat-card:hover, [data-theme="sage-garden"] .nav-cat-card:hover{color:var(--text);background:var(--card-hover)}
+[data-theme="slate-light"] .nav-cat-card.active, [data-theme="nordic-light"] .nav-cat-card.active{background:rgba(2,132,199,0.15);color:var(--accent);border-color:var(--accent)}
+[data-theme="emerald-light"] .nav-cat-card.active, [data-theme="sage-garden"] .nav-cat-card.active{background:rgba(13,118,88,0.15);color:var(--accent);border-color:var(--accent)}
+[data-theme="espresso-light"] .nav-cat-card.active, [data-theme="parchment"] .nav-cat-card.active, [data-theme="creme-latte"] .nav-cat-card.active{background:rgba(194,94,46,0.15);color:var(--accent);border-color:var(--accent)}
+[data-theme="dracula-light"] .nav-cat-card.active, [data-theme="lavender-light"] .nav-cat-card.active{background:rgba(147,51,234,0.15);color:var(--accent);border-color:var(--accent)}
+[data-theme$="-light"] .btn-save, [data-theme="nordic-light"] .btn-save, [data-theme="creme-latte"] .btn-save, [data-theme="parchment"] .btn-save, [data-theme="sage-garden"] .btn-save,
+[data-theme$="-light"] .btn-modal-save, [data-theme="nordic-light"] .btn-modal-save, [data-theme="creme-latte"] .btn-modal-save, [data-theme="parchment"] .btn-modal-save, [data-theme="sage-garden"] .btn-modal-save,
+[data-theme$="-light"] .btn-toggle-tipo.active, [data-theme="parchment"] .btn-toggle-tipo.active, [data-theme="sage-garden"] .btn-toggle-tipo.active{color:#ffffff}
+[data-theme$="-light"] .row-month-even, [data-theme="nordic-light"] .row-month-even, [data-theme="creme-latte"] .row-month-even, [data-theme="parchment"] .row-month-even, [data-theme="sage-garden"] .row-month-even{background:rgba(0,0,0,0.02)}
+[data-theme$="-light"] .row-month-odd, [data-theme="nordic-light"] .row-month-odd, [data-theme="creme-latte"] .row-month-odd, [data-theme="parchment"] .row-month-odd, [data-theme="sage-garden"] .row-month-odd{background:rgba(0,0,0,0.05)}
+[data-theme$="-light"] .month-separator-td, [data-theme="parchment"] .month-separator-td, [data-theme="sage-garden"] .month-separator-td{border-top-color:var(--border) !important;border-bottom-color:var(--border) !important}
+[data-theme$="-light"] .month-separator-card, [data-theme="parchment"] .month-separator-card, [data-theme="sage-garden"] .month-separator-card{background:rgba(0,0,0,0.06)}
+[data-theme$="-light"] .cfg-option-card.active, [data-theme="parchment"] .cfg-option-card.active, [data-theme="sage-garden"] .cfg-option-card.active{border-color:var(--accent);background:rgba(0,0,0,0.08);box-shadow:0 0 10px rgba(0,0,0,0.12)}
+[data-theme$="-light"] .flatpickr-calendar{background:var(--card);color:var(--text);box-shadow:0 12px 30px rgba(0,0,0,0.15);border:1px solid var(--border)}
+[data-theme$="-light"] .flatpickr-day{color:var(--text)}
+[data-theme$="-light"] .flatpickr-day.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
+[data-theme$="-light"] .flatpickr-day:hover{background:var(--card-hover)}
+[data-theme$="-light"] .flatpickr-current-month, [data-theme$="-light"] .flatpickr-months .flatpickr-month{color:var(--text);fill:var(--text)}
+html{font-size:var(--font-scale)}*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}body, button, input, select, textarea{font-family:var(--font-family)}
 body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px}header{background:var(--header-bg);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.header-brand, .header-actions{display:flex;align-items:center;gap:16px}.header-actions{gap:8px}.logo{font-size:1.25rem;font-weight:700;color:var(--accent);cursor:pointer;transition:var(--tr)}
 .logo:hover{filter:drop-shadow(0 0 8px rgba(56,189,248,.6))}.year-display{font-family:'Cinzel',serif;font-size:1.55rem;font-weight:700;letter-spacing:0.1em;background:linear-gradient(135deg,#f8fafc 0%,var(--accent) 65%,var(--muted) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;user-select:none;line-height:1;filter:drop-shadow(0 0 10px rgba(56,189,248,0.3))}
 .btn-header-icon{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.35);color:var(--accent);border-radius:50%;width:38px;height:38px;padding:0;margin:0;display:inline-grid;place-items:center;cursor:pointer;font-size:1.12rem;line-height:1;transition:var(--tr);outline:none;overflow:hidden}.btn-header-icon .btn-icon-glyph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;line-height:1;text-align:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;margin:0;padding:0}.btn-header-icon:hover{background:var(--accent);color:#0f172a;transform:translateY(-1px);box-shadow:0 0 14px rgba(56,189,248,0.4)}.btn-refresh.spinning{animation:spinRefresh 0.8s linear infinite}
@@ -156,7 +179,22 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .size-line-track-fill{position:absolute;left:0;height:6px;background:var(--accent);border-radius:6px;top:50%;transform:translateY(-50%);z-index:2;transition:width 0.25s cubic-bezier(0.4,0,0.2,1);width:50%}.size-line-node{position:relative;z-index:3;width:26px;height:26px;padding:0;line-height:1;border-radius:50%;background:var(--card);border:3px solid var(--border);cursor:pointer;transition:var(--tr);display:grid;place-items:center;font-size:0.65rem;font-weight:800;color:var(--muted)}
 .size-line-node:hover{border-color:var(--accent);transform:scale(1.12)}.size-line-node.reached{border-color:var(--accent)}.size-line-node.active{width:32px;height:32px;background:var(--accent);border-color:var(--text);color:#0f172a;box-shadow:0 0 14px rgba(56,189,248,0.6);transform:scale(1.15)}
 .size-line-labels{display:flex;justify-content:space-between;margin-top:8px}.size-line-lbl-btn{background:none;border:none;color:var(--muted);cursor:pointer;text-align:center;flex:1;transition:var(--tr);padding:4px;border-radius:8px}.size-line-lbl-btn:hover{color:var(--text);background:rgba(56,189,248,0.06)}.size-line-lbl-btn.active{color:var(--accent);font-weight:700}/* CÍRCULO ÚNICO BICOLOR PARA TEMAS (100% VECTORIAL SIN ESPACIOS EN BLANCO NI CUADRADOS) */
-.theme-card-row{display:flex;align-items:center;gap:12px;flex-direction:row !important}.theme-dual-circle{width:38px;height:38px;min-width:38px;min-height:38px;border-radius:50%;overflow:hidden;flex-shrink:0;display:block;padding:0;margin:0;border:none;background:none;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.45))}.import-export-box{background:var(--bg);border:1px dashed var(--accent);border-radius:12px;padding:14px;margin-top:14px}
+.theme-card-row{display:flex;align-items:center;gap:12px;flex-direction:row !important}
+.theme-dual-circle{width:40px;height:40px;min-width:40px;min-height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;display:block;padding:0;margin:0;border:none;background:none;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.45))}
+.theme-mode-btn{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:var(--tr);text-align:left}
+.theme-mode-btn:hover{background:var(--card-hover);color:var(--text);border-color:var(--accent)}
+.theme-mode-btn.active{background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:700;box-shadow:0 0 12px rgba(56,189,248,0.35)}
+[data-theme$="-light"] .theme-mode-btn.active{color:#ffffff}
+.theme-family-card{cursor:pointer;position:relative;transition:var(--tr);display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px}
+.theme-family-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.theme-family-card.active{border-color:var(--accent);box-shadow:0 0 14px rgba(56,189,248,0.25)}
+.theme-pill-btn{display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;padding:3px 9px;border-radius:6px;border:1px solid var(--border);background:rgba(0,0,0,0.25);color:var(--muted);cursor:pointer;transition:var(--tr);font-weight:600}
+.theme-pill-btn:hover{background:rgba(0,0,0,0.45);color:var(--text)}
+.theme-pill-btn.active{background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:700}
+[data-theme$="-light"] .theme-pill-btn{background:rgba(0,0,0,0.06);color:var(--muted)}
+[data-theme$="-light"] .theme-pill-btn:hover{background:rgba(0,0,0,0.12);color:var(--text)}
+[data-theme$="-light"] .theme-pill-btn.active{color:#ffffff}
+.import-export-box{background:var(--bg);border:1px dashed var(--accent);border-radius:12px;padding:14px;margin-top:14px}
 /* VISOR Y RECORTADOR INTERACTIVO 1:1 DE AVATAR */
 .cropper-modal-box{max-width:380px;width:92%;text-align:center;padding:18px 20px;}
 .cropper-stage-wrap{position:relative;width:280px;height:280px;max-width:100%;aspect-ratio:1/1;margin:12px auto;border-radius:16px;overflow:hidden;background:#090d16;border:2px solid var(--accent);box-shadow:0 8px 28px rgba(0,0,0,0.6);cursor:grab;touch-action:none;user-select:none;}
@@ -194,7 +232,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .amigo-feed-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;transition:var(--tr);display:flex;flex-direction:column;gap:12px;box-shadow:0 3px 12px rgba(0,0,0,0.18);position:relative;}
 .amigo-feed-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.28);}
 .feed-card-header{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;border-bottom:1px solid rgba(255,255,255,0.06);padding-bottom:10px;}
-[data-theme="nordic-light"] .feed-card-header, [data-theme="creme-latte"] .feed-card-header, [data-theme="parchment"] .feed-card-header, [data-theme="sage-garden"] .feed-card-header{border-bottom-color:var(--border);}
+[data-theme$="-light"] .feed-card-header, [data-theme="nordic-light"] .feed-card-header, [data-theme="creme-latte"] .feed-card-header, [data-theme="parchment"] .feed-card-header, [data-theme="sage-garden"] .feed-card-header{border-bottom-color:var(--border);}
 .feed-card-user-info{display:flex;align-items:center;gap:12px;min-width:0;flex:1;}
 .feed-user-avatar{width:44px;height:44px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.45rem;flex-shrink:0;cursor:pointer;transition:transform 0.2s;}
 .feed-user-avatar:hover{transform:scale(1.08);}
@@ -211,7 +249,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .feed-status-badge{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:700;padding:2px 8px;border-radius:6px;}
 .feed-status-inprog{background:rgba(245,158,11,0.14);color:#fbbf24;border:1px solid rgba(245,158,11,0.35);}
 .feed-review-box{margin-top:10px;padding:10px 14px;background:rgba(56,189,248,0.06);border-left:3px solid var(--accent);border-radius:4px 8px 8px 4px;font-size:0.86rem;color:var(--text);line-height:1.45;word-break:break-word;position:relative;}
-[data-theme="nordic-light"] .feed-review-box, [data-theme="creme-latte"] .feed-review-box, [data-theme="parchment"] .feed-review-box, [data-theme="sage-garden"] .feed-review-box{background:rgba(0,0,0,0.03);}
+[data-theme$="-light"] .feed-review-box, [data-theme="nordic-light"] .feed-review-box, [data-theme="creme-latte"] .feed-review-box, [data-theme="parchment"] .feed-review-box, [data-theme="sage-garden"] .feed-review-box{background:rgba(0,0,0,0.03);}
 .feed-review-title{font-size:0.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
 .feed-review-text{font-style:italic;}
 .feed-actions{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap;}
@@ -233,7 +271,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .discover-carousel-track{display:flex;gap:14px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;padding:6px 4px 14px 4px;}
 .discover-carousel-track::-webkit-scrollbar{height:7px;}
 .discover-carousel-track::-webkit-scrollbar-track{background:rgba(0,0,0,0.12);border-radius:6px;}
-[data-theme="nordic-light"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="creme-latte"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="parchment"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="sage-garden"] .discover-carousel-track::-webkit-scrollbar-track{background:rgba(0,0,0,0.06);}
+[data-theme$="-light"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="nordic-light"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="creme-latte"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="parchment"] .discover-carousel-track::-webkit-scrollbar-track, [data-theme="sage-garden"] .discover-carousel-track::-webkit-scrollbar-track{background:rgba(0,0,0,0.06);}
 .discover-carousel-track::-webkit-scrollbar-thumb{background:var(--border);border-radius:6px;}
 .discover-carousel-track::-webkit-scrollbar-thumb:hover{background:var(--accent);}
 .discover-carousel-track .discover-card{flex:0 0 172px;min-width:172px;max-width:172px;scroll-snap-align:start;margin:0;}
@@ -569,11 +607,126 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div class="size-line-node" data-val="88%" data-idx="1" onclick="event.stopPropagation(); seleccionarSizeVisual('88%')"></div>
 <div class="size-line-node" data-val="100%" data-idx="2" onclick="event.stopPropagation(); seleccionarSizeVisual('100%')"></div>
 <div class="size-line-node" data-val="112%" data-idx="3" onclick="event.stopPropagation(); seleccionarSizeVisual('112%')"></div>
-<div class="size-line-node" data-val="125%" data-idx="4" onclick="event.stopPropagation(); seleccionarSizeVisual('125%')"></div> </div> <div class="size-line-labels" id="cfg-size-labels"> <button type="button" class="size-line-lbl-btn" data-val="75%" onclick="seleccionarSizeVisual('75%')" style="text-align:left;"> <span style="font-size:11px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="88%" onclick="seleccionarSizeVisual('88%')"> <span style="font-size:13px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="100%" onclick="seleccionarSizeVisual('100%')" style="text-align:center;"> <span style="font-size:15px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="112%" onclick="seleccionarSizeVisual('112%')"> <span style="font-size:17.5px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="125%" onclick="seleccionarSizeVisual('125%')" style="text-align:right;"> <span style="font-size:20px; font-weight:800; display:block;">Aa</span> </button> </div> </div> </div> <div class="form-group"> <label data-i18n="cfg_theme_label">Tema de color (color principal y secundario):</label> <input type="hidden" id="cfg-theme" value="default"> <div class="cfg-visual-grid" id="cfg-theme-cards">
-<button type="button" class="cfg-option-card theme-card-row" data-val="default" onclick="seleccionarThemeVisual('default')" style="background:#0f172a; border-color:#334155;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Azul Pizarra | Secundario: Celeste"><circle cx="20" cy="20" r="19" fill="#1e293b"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#38bdf8" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg>
-<div> <strong style="font-size:0.88rem; color:#f8fafc; display:block;">Midnight Slate</strong> <span style="font-size:0.73rem; color:#94a3b8;">Pizarra + Celeste</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="oled" onclick="seleccionarThemeVisual('oled')" style="background:#000000; border-color:#242424;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Negro OLED | Secundario: Esmeralda"><circle cx="20" cy="20" r="19" fill="#18181b"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#10b981" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg>
-<div> <strong style="font-size:0.88rem; color:#ffffff; display:block;">OLED Pure Black</strong> <span style="font-size:0.73rem; color:#888888;">Negro + Esmeralda</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="dracula" onclick="seleccionarThemeVisual('dracula')" style="background:#1e1f29; border-color:#44475a;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Púrpura Noche | Secundario: Rosa Neón"><circle cx="20" cy="20" r="19" fill="#44475a"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#ff79c6" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg>
-<div> <strong style="font-size:0.88rem; color:#f8f8f2; display:block;">Dracula Dark</strong> <span style="font-size:0.73rem; color:#bd93f9;">Púrpura + Rosa</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="espresso" onclick="seleccionarThemeVisual('espresso')" style="background:#1c1917; border-color:#44403c;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Café Espresso | Secundario: Ámbar"><circle cx="20" cy="20" r="19" fill="#44403c"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#f59e0b" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#fafaf9; display:block;">Warm Espresso</strong> <span style="font-size:0.73rem; color:#a8a29e;">Café + Ámbar</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="nordic-light" onclick="seleccionarThemeVisual('nordic-light')" style="background:#f8fafc; border-color:#cbd5e1;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Blanco Nórdico | Secundario: Azul Cielo"><circle cx="20" cy="20" r="19" fill="#f1f5f9"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#0284c7" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#0f172a; display:block;">Nordic Snow</strong> <span style="font-size:0.73rem; color:#64748b;">Blanco + Azul Cielo</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="creme-latte" onclick="seleccionarThemeVisual('creme-latte')" style="background:#fdfbf7; border-color:#e7e5e4;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Crema Cálido | Secundario: Ámbar Caramelo"><circle cx="20" cy="20" r="19" fill="#f7f3ea"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#d97706" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#292524; display:block;">Cozy Latte</strong> <span style="font-size:0.73rem; color:#78716c;">Marfil + Ámbar Cálido</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="parchment" onclick="seleccionarThemeVisual('parchment')" style="background:#ede4d4; border-color:#cfc1ac;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Papel Pergamino | Secundario: Terracota"><circle cx="20" cy="20" r="19" fill="#e2d6c3"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#c25e2e" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#29231c; display:block;">Pergamino Cálido</strong> <span style="font-size:0.73rem; color:#736758;">Pergamino + Terracota</span> </div> </button> <button type="button" class="cfg-option-card theme-card-row" data-val="sage-garden" onclick="seleccionarThemeVisual('sage-garden')" style="background:#e2ece4; border-color:#bfd2c5;"> <svg class="theme-dual-circle" viewBox="0 0 40 40" title="Principal: Salvia Natural | Secundario: Verde Jade"><circle cx="20" cy="20" r="19" fill="#d5e2d8"/><path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#0d7658" transform="rotate(-45 20 20)"/><circle cx="20" cy="20" r="18.2" fill="none" stroke="rgba(0,0,0,0.18)" stroke-width="1.6"/></svg> <div> <strong style="font-size:0.88rem; color:#142b1f; display:block;">Salvia Relajante</strong> <span style="font-size:0.73rem; color:#526d5f;">Salvia + Verde Jade</span> </div> </button> </div> </div>
+<div class="size-line-node" data-val="125%" data-idx="4" onclick="event.stopPropagation(); seleccionarSizeVisual('125%')"></div> </div> <div class="size-line-labels" id="cfg-size-labels"> <button type="button" class="size-line-lbl-btn" data-val="75%" onclick="seleccionarSizeVisual('75%')" style="text-align:left;"> <span style="font-size:11px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="88%" onclick="seleccionarSizeVisual('88%')"> <span style="font-size:13px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="100%" onclick="seleccionarSizeVisual('100%')" style="text-align:center;"> <span style="font-size:15px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="112%" onclick="seleccionarSizeVisual('112%')"> <span style="font-size:17.5px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="125%" onclick="seleccionarSizeVisual('125%')" style="text-align:right;"> <span style="font-size:20px; font-weight:800; display:block;">Aa</span> </button> </div> </div> </div> <div class="form-group">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+    <label data-i18n="cfg_theme_label" style="font-weight:700; margin:0;">Tema visual:</label>
+    <span id="cfg-theme-system-detected" style="font-size:0.75rem; color:var(--accent); font-weight:600;"></span>
+  </div>
+
+  <!-- CONTROL DE MODO DE APARIENCIA -->
+  <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px; margin-bottom:12px;">
+    <div style="font-size:0.74rem; color:var(--muted); margin-bottom:8px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
+      Modo de apariencia:
+    </div>
+    <div class="theme-mode-segmented-control" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
+      <button type="button" class="theme-mode-btn" id="btn-mode-system" onclick="seleccionarThemeMode('system')" title="Usa automáticamente el tema claro u oscuro de tu teléfono o computadora">
+        <span style="font-size:1.15rem;">📱</span>
+        <div style="display:flex; flex-direction:column; line-height:1.2;">
+          <strong style="font-size:0.82rem;">Del sistema</strong>
+          <span style="font-size:0.68rem; opacity:0.85;">Auto Claro/Oscuro</span>
+        </div>
+      </button>
+      <button type="button" class="theme-mode-btn" id="btn-mode-light" onclick="seleccionarThemeMode('light')" title="Fija el modo diurno claro (tonos descansados sin blancos deslumbrantes)">
+        <span style="font-size:1.15rem;">☀️</span>
+        <div style="display:flex; flex-direction:column; line-height:1.2;">
+          <strong style="font-size:0.82rem;">Modo Claro</strong>
+          <span style="font-size:0.68rem; opacity:0.85;">Sin blanco molesto</span>
+        </div>
+      </button>
+      <button type="button" class="theme-mode-btn" id="btn-mode-dark" onclick="seleccionarThemeMode('dark')" title="Fija el modo nocturno oscuro">
+        <span style="font-size:1.15rem;">🌙</span>
+        <div style="display:flex; flex-direction:column; line-height:1.2;">
+          <strong style="font-size:0.82rem;">Modo Oscuro</strong>
+          <span style="font-size:0.68rem; opacity:0.85;">Noche profunda</span>
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- LOS 4 TEMAS ORDENADOS (LIGHT + DARK) -->
+  <input type="hidden" id="cfg-theme" value="slate">
+  <div class="cfg-visual-grid" id="cfg-theme-cards" style="grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:10px;">
+    <!-- 1. SLATE -->
+    <div class="cfg-option-card theme-card-row theme-family-card" data-family="slate" onclick="seleccionarThemeFamily('slate')" title="Pizarra Nórdica">
+      <svg class="theme-dual-circle" viewBox="0 0 40 40">
+        <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#1e293b"/>
+        <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#38bdf8"/>
+        <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#dbe2ea"/>
+        <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#0284c7"/>
+        <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+        <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+      </svg>
+      <div style="flex:1; min-width:0;">
+        <strong class="theme-title" style="font-size:0.88rem; color:var(--text); display:block;">Pizarra Nórdica</strong>
+        <span class="theme-subtitle" style="font-size:0.73rem; color:var(--muted); display:block; margin-bottom:6px;">Pizarra + Celeste</span>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="theme-pill-btn pill-light" onclick="event.stopPropagation(); seleccionarThemePill('slate', 'light')">☀️ Claro</button>
+          <button type="button" class="theme-pill-btn pill-dark" onclick="event.stopPropagation(); seleccionarThemePill('slate', 'dark')">🌙 Oscuro</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. EMERALD -->
+    <div class="cfg-option-card theme-card-row theme-family-card" data-family="emerald" onclick="seleccionarThemeFamily('emerald')" title="Esmeralda & Salvia">
+      <svg class="theme-dual-circle" viewBox="0 0 40 40">
+        <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#000000"/>
+        <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#10b981"/>
+        <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#d6e3d9"/>
+        <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#0d7658"/>
+        <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+        <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+      </svg>
+      <div style="flex:1; min-width:0;">
+        <strong class="theme-title" style="font-size:0.88rem; color:var(--text); display:block;">Esmeralda & Salvia</strong>
+        <span class="theme-subtitle" style="font-size:0.73rem; color:var(--muted); display:block; margin-bottom:6px;">Esmeralda + Salvia Jade</span>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="theme-pill-btn pill-light" onclick="event.stopPropagation(); seleccionarThemePill('emerald', 'light')">☀️ Claro</button>
+          <button type="button" class="theme-pill-btn pill-dark" onclick="event.stopPropagation(); seleccionarThemePill('emerald', 'dark')">🌙 Oscuro</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. ESPRESSO -->
+    <div class="cfg-option-card theme-card-row theme-family-card" data-family="espresso" onclick="seleccionarThemeFamily('espresso')" title="Café & Pergamino">
+      <svg class="theme-dual-circle" viewBox="0 0 40 40">
+        <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#292524"/>
+        <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#f59e0b"/>
+        <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#e6dac7"/>
+        <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#c25e2e"/>
+        <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+        <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+      </svg>
+      <div style="flex:1; min-width:0;">
+        <strong class="theme-title" style="font-size:0.88rem; color:var(--text); display:block;">Café & Pergamino</strong>
+        <span class="theme-subtitle" style="font-size:0.73rem; color:var(--muted); display:block; margin-bottom:6px;">Espresso + Pergamino Ámbar</span>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="theme-pill-btn pill-light" onclick="event.stopPropagation(); seleccionarThemePill('espresso', 'light')">☀️ Claro</button>
+          <button type="button" class="theme-pill-btn pill-dark" onclick="event.stopPropagation(); seleccionarThemePill('espresso', 'dark')">🌙 Oscuro</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. DRACULA -->
+    <div class="cfg-option-card theme-card-row theme-family-card" data-family="dracula" onclick="seleccionarThemeFamily('dracula')" title="Drácula & Lavanda">
+      <svg class="theme-dual-circle" viewBox="0 0 40 40">
+        <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#282a36"/>
+        <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#ff79c6"/>
+        <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#ded7e8"/>
+        <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#9333ea"/>
+        <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+        <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+      </svg>
+      <div style="flex:1; min-width:0;">
+        <strong class="theme-title" style="font-size:0.88rem; color:var(--text); display:block;">Drácula & Lavanda</strong>
+        <span class="theme-subtitle" style="font-size:0.73rem; color:var(--muted); display:block; margin-bottom:6px;">Púrpura Noche + Amatista</span>
+        <div style="display:flex; gap:6px;">
+          <button type="button" class="theme-pill-btn pill-light" onclick="event.stopPropagation(); seleccionarThemePill('dracula', 'light')">☀️ Claro</button>
+          <button type="button" class="theme-pill-btn pill-dark" onclick="event.stopPropagation(); seleccionarThemePill('dracula', 'dark')">🌙 Oscuro</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="form-group"> <div class="switch-wrap"> <span class="switch-label" data-i18n="cfg_emojis_label">Mostrar emojis en la interfaz</span>
 <label class="switch-toggle"> <input type="checkbox" id="cfg-emojis" checked onchange="aplicarConfiguracionEnVivo()"> <span class="switch-slider"></span> </label> </div> </div> <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;"> <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;"> <div style="display:flex; align-items:center; gap:8px;"> <span>☁️</span> <span data-i18n="cfg_account_title">Cuenta y Sincronización Supabase Cloud</span> </div> <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;">✓ Supabase Cloud Activo</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;" id="cfg-account-status" data-i18n="cfg_account_hint">Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.</p> <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;"> <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span> </button> <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:rgba(16,185,129,0.45); color:#34d399; background:rgba(16,185,129,0.1); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets"> <span data-i18n="cfg_btn_migrar">☁️ Migrar mis datos de Google Sheets a Supabase</span> </button> </div>
 <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;">
@@ -3935,7 +4088,7 @@ stat_ultimo: "Último", stat_mejor: "Mejor Calificado", stat_sin_reg: "Sin regis
 concierto_tipo_q: "¿Fue concierto o festival?:", concierto_btn_concierto: "Concierto", concierto_btn_festival: "Festival", concierto_buscar_art: "Buscar y agregar artistas que tocaron:", concierto_agregados: "Artistas agregados:",
 concierto_vacio: "No has agregado artistas aún.", concierto_continuar: "Continuar con calificación y fecha", profile_title: "Perfil y Estadísticas", stat_best_day: "Día récord", stat_best_week: "Semana récord",
 stat_best_month: "Mes récord", profile_dist_title: "Distribución de Contenido por Categoría:", cfg_title: "⚙️ Configuración y Estilo", cfg_title_short: "Configuración", cfg_lang_label: "Idioma de la Interfaz:", cfg_font_label: "Tipografía de la App:",
-cfg_size_label: "Tamaño general de letra:", cfg_theme_label: "Tema de color:", cfg_emojis_label: "Mostrar emojis en la interfaz", btn_defaults: "Predeterminados", btn_done: "Listo", btn_cancel: "Cancelar", btn_continue: "Continuar",
+cfg_size_label: "Tamaño general de letra:", cfg_theme_label: "Tema de color (4 temas con versión Claro y Oscuro):", cfg_emojis_label: "Mostrar emojis en la interfaz", btn_defaults: "Predeterminados", btn_done: "Listo", btn_cancel: "Cancelar", btn_continue: "Continuar",
 btn_save_changes: "Guardar cambios", btn_skip: "Omitir", btn_save_full_series: "Guardar Serie Completa", del_title: "¿Eliminar este registro?", btn_del_permanent: "Eliminar definitivamente", manual_modal_title: "Ingreso Manual", manual_lbl_titulo: "Título (idioma original en alfabeto latino):",
 manual_lbl_subtitulo: "Traducción al inglés (opcional, si el original no es inglés ni español):", manual_lbl_creador: "Director / Autor / Artista:", manual_lbl_anio: "Año de salida / emisión:",
 ficha_estreno: "Estreno:", ficha_dirs: "Director(es):", ficha_writers: "Escritor(es):", ficha_cast: "Protagonistas:", ficha_sinopsis: "Sinopsis:", btn_entendido: "Entendido", serie_comp_title: "🎉 ¡Completaste toda la serie!", serie_comp_rating_lbl: "Calificación de la serie completa:",
@@ -3996,7 +4149,7 @@ lbl_es_rewatch: "🔁 Seen it before (Rewatch)", lbl_comentario: "Review / Thoug
 stat_ultimo: "Latest", stat_mejor: "Highest Rated", stat_sin_reg: "No records yet", stat_sin_fecha: "No registered date", total_prefix: "Total:", concierto_title: "Log Concert / Festival", concierto_gira: "Tour or Event name:",
 concierto_tipo_q: "Event Type:", concierto_btn_concierto: "Concert", concierto_btn_festival: "Festival", concierto_buscar_art: "Search and add artists that performed:", concierto_agregados: "Added artists:", concierto_vacio: "No artists added yet.", concierto_continuar: "Proceed to rating & date",
 profile_title: "Profile & Statistics", stat_best_day: "Record Day", stat_best_week: "Record Week", stat_best_month: "Record Month", profile_dist_title: "Media Distribution by Category:", cfg_title: "⚙️ Settings & Theme", cfg_title_short: "Settings", cfg_lang_label: "Interface Language:", cfg_font_label: "App Typography:",
-cfg_size_label: "Font Scale:", cfg_theme_label: "Color Theme:", cfg_emojis_label: "Show interface emojis", btn_defaults: "Defaults", btn_done: "Done", btn_cancel: "Cancel", btn_continue: "Continue",
+cfg_size_label: "Font Scale:", cfg_theme_label: "Color Theme (4 themes with Light & Dark versions):", cfg_emojis_label: "Show interface emojis", btn_defaults: "Defaults", btn_done: "Done", btn_cancel: "Cancel", btn_continue: "Continue",
 btn_save_changes: "Save Changes", btn_skip: "Skip", btn_save_full_series: "Save Full Series", del_title: "Delete this record?", btn_del_permanent: "Delete Permanently",
 manual_modal_title: "Manual Entry", manual_lbl_titulo: "Title (Original language, Latin script):", manual_lbl_subtitulo: "English translation (optional):", manual_lbl_creador: "Director / Author / Artist:", manual_lbl_anio: "Release Year:",
 ficha_estreno: "Release:", ficha_dirs: "Director(es):", ficha_writers: "Writer(s):", ficha_cast: "Cast:", ficha_sinopsis: "Synopsis:", btn_entendido: "Understood",
@@ -4052,7 +4205,7 @@ dias: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], 
 'To Read: Libros': 'To Read: Books', 'To Read: Cómics': 'To Read: Comics', 'To Read: Mangas': 'To Read: Manga'
 }, wl_section_title: "My Watchlists", wl_section_desc: "Your pending items organized and separated by each subcategory.", btn_volver_historial: "Back to History"
 }
-}; let userPrefs = { font: "'Plus Jakarta Sans', sans-serif", fontSize: "100%", theme: "default", showEmojis: true, lang: "es"
+}; let userPrefs = { font: "'Plus Jakarta Sans', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", showEmojis: true, lang: "es"
 }; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary ✨', avatar: '🦊', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
 }; const AVATARES_PRESET = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐯', '🐨', '🐸', '🦉', '🐻', '🐵', '🐰']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
 const WATCHLIST_ESTRUCTURA = [
@@ -4314,8 +4467,65 @@ function asignarFavoritoSubcategoria(favObj) { if (!estado.subFavEnEdicion) retu
 guardarPerfilLocal(); renderizarFavoritosPerfil(); cerrarModalSeleccionarFavorito(); google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail); mostrarToastPersonalizado(`👑 "${favObj.titulo}" elegido como favorito de ${sub}`); }
 function quitarFavoritoSubcategoria() { if (!estado.subFavEnEdicion) return; const { cat, sub } = estado.subFavEnEdicion; if (perfilUsuario.favoritos) delete perfilUsuario.favoritos[`${cat}__${sub}`];
 guardarPerfilLocal(); renderizarFavoritosPerfil(); cerrarModalSeleccionarFavorito(); google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail); }
-function aplicarEstilosGlobales() { const r = document.documentElement; r.style.setProperty('--font-family', userPrefs.font); r.style.setProperty('--font-scale', userPrefs.fontSize); if (userPrefs.theme === 'default') r.removeAttribute('data-theme');
-else r.setAttribute('data-theme', userPrefs.theme); document.querySelectorAll('.emoji-dyn').forEach(el => { if (el.closest('.mobile-bottom-nav') || el.closest('.btn-header-icon')) { el.style.display = ''; } else { el.style.display = userPrefs.showEmojis ? 'inline' : 'none'; } }); }
+function migrarTemaLegadoSiEsNecesario() {
+  if (!userPrefs.themeFamily) {
+    const t = userPrefs.theme || 'slate-dark';
+    if (t === 'default' || t === 'slate-dark') { userPrefs.themeFamily = 'slate'; userPrefs.themeMode = userPrefs.themeMode || 'dark'; }
+    else if (t === 'oled' || t === 'emerald-dark') { userPrefs.themeFamily = 'emerald'; userPrefs.themeMode = userPrefs.themeMode || 'dark'; }
+    else if (t === 'dracula' || t === 'dracula-dark') { userPrefs.themeFamily = 'dracula'; userPrefs.themeMode = userPrefs.themeMode || 'dark'; }
+    else if (t === 'espresso' || t === 'espresso-dark') { userPrefs.themeFamily = 'espresso'; userPrefs.themeMode = userPrefs.themeMode || 'dark'; }
+    else if (t === 'nordic-light' || t === 'slate-light') { userPrefs.themeFamily = 'slate'; userPrefs.themeMode = userPrefs.themeMode || 'light'; }
+    else if (t === 'creme-latte' || t === 'parchment' || t === 'espresso-light') { userPrefs.themeFamily = 'espresso'; userPrefs.themeMode = userPrefs.themeMode || 'light'; }
+    else if (t === 'sage-garden' || t === 'emerald-light') { userPrefs.themeFamily = 'emerald'; userPrefs.themeMode = userPrefs.themeMode || 'light'; }
+    else if (t.endsWith('-light')) { userPrefs.themeFamily = t.replace('-light', ''); userPrefs.themeMode = userPrefs.themeMode || 'light'; }
+    else if (t.endsWith('-dark')) { userPrefs.themeFamily = t.replace('-dark', ''); userPrefs.themeMode = userPrefs.themeMode || 'dark'; }
+    else { userPrefs.themeFamily = 'slate'; userPrefs.themeMode = userPrefs.themeMode || 'system'; }
+  }
+  if (!userPrefs.themeMode) {
+    userPrefs.themeMode = 'system';
+  }
+}
+
+function obtenerTemaEfectivo() {
+  migrarTemaLegadoSiEsNecesario();
+  const family = userPrefs.themeFamily || 'slate';
+  let mode = userPrefs.themeMode || 'system';
+  if (mode === 'system') {
+    const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    mode = isDark ? 'dark' : 'light';
+  }
+  return `${family}-${mode}`;
+}
+
+function actualizarMetaThemeColor() {
+  try {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) return;
+    const headerBg = getComputedStyle(document.documentElement).getPropertyValue('--header-bg').trim();
+    if (headerBg) meta.setAttribute('content', headerBg);
+  } catch(e) {}
+}
+
+function aplicarEstilosGlobales() {
+  const r = document.documentElement;
+  r.style.setProperty('--font-family', userPrefs.font);
+  r.style.setProperty('--font-scale', userPrefs.fontSize);
+  
+  migrarTemaLegadoSiEsNecesario();
+  const temaEfectivo = obtenerTemaEfectivo();
+  userPrefs.theme = temaEfectivo;
+  
+  r.setAttribute('data-theme', temaEfectivo);
+  actualizarMetaThemeColor();
+
+  document.querySelectorAll('.emoji-dyn').forEach(el => {
+    if (el.closest('.mobile-bottom-nav') || el.closest('.btn-header-icon')) {
+      el.style.display = '';
+    } else {
+      el.style.display = userPrefs.showEmojis ? 'inline' : 'none';
+    }
+  });
+}
 function actualizarTextosInterfaz() {
   const l = userPrefs.lang || 'es';
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -4379,27 +4589,48 @@ function actualizarTextosInterfaz() {
     btn.innerHTML = `<span style="font-size:${sizeSamples[idx] || '15px'}; font-weight:800; display:block;">Aa</span>`;
   });
 
-  // 8 Themes descriptions
-  const themeCards = document.querySelectorAll('#cfg-theme-cards .cfg-option-card');
-  if (themeCards.length >= 6) {
-    const tTexts = [
-      { t: 'Midnight Slate', s: l === 'en' ? 'Slate + Sky Blue' : 'Pizarra + Celeste' },
-      { t: 'OLED Pure Black', s: l === 'en' ? 'Pure Black + Emerald' : 'Negro + Esmeralda' },
-      { t: 'Dracula Dark', s: l === 'en' ? 'Purple + Neon Pink' : 'Púrpura + Rosa' },
-      { t: 'Warm Espresso', s: l === 'en' ? 'Coffee + Amber' : 'Café + Ámbar' },
-      { t: 'Nordic Snow', s: l === 'en' ? 'Nordic White + Sky Blue' : 'Blanco + Azul Cielo' },
-      { t: 'Cozy Latte', s: l === 'en' ? 'Warm Ivory + Amber' : 'Marfil + Ámbar Cálido' },
-      { t: l === 'en' ? 'Warm Parchment' : 'Pergamino Cálido', s: l === 'en' ? 'Parchment + Terracotta' : 'Pergamino + Terracota' },
-      { t: l === 'en' ? 'Calm Sage' : 'Salvia Relajante', s: l === 'en' ? 'Sage + Deep Jade' : 'Salvia + Verde Jade' }
-    ];
-    themeCards.forEach((card, idx) => {
-      if (tTexts[idx]) {
-        const strong = card.querySelector('strong');
-        const span = card.querySelector('span');
-        if (strong) strong.textContent = tTexts[idx].t;
-        if (span) span.textContent = tTexts[idx].s;
-      }
-    });
+  // 4 Temas y botones de modo
+  const themeCards = document.querySelectorAll('#cfg-theme-cards .theme-family-card');
+  const tTexts = {
+    'slate': { t: l === 'en' ? 'Nordic Slate' : 'Pizarra Nórdica', s: l === 'en' ? 'Slate + Sky Blue' : 'Pizarra + Celeste' },
+    'emerald': { t: l === 'en' ? 'Emerald & Sage' : 'Esmeralda & Salvia', s: l === 'en' ? 'Emerald + Salvia Jade' : 'Esmeralda + Salvia Jade' },
+    'espresso': { t: l === 'en' ? 'Espresso & Parchment' : 'Café & Pergamino', s: l === 'en' ? 'Espresso + Warm Parchment' : 'Espresso + Pergamino Ámbar' },
+    'dracula': { t: l === 'en' ? 'Dracula & Lavender' : 'Drácula & Lavanda', s: l === 'en' ? 'Purple Night + Lavender' : 'Púrpura Noche + Amatista' }
+  };
+  themeCards.forEach(card => {
+    const fam = card.dataset.family;
+    if (tTexts[fam]) {
+      const strong = card.querySelector('.theme-title');
+      const span = card.querySelector('.theme-subtitle');
+      if (strong) strong.textContent = tTexts[fam].t;
+      if (span) span.textContent = tTexts[fam].s;
+    }
+    const pL = card.querySelector('.pill-light');
+    if (pL) pL.textContent = `☀️ ${l === 'en' ? 'Light' : 'Claro'}`;
+    const pD = card.querySelector('.pill-dark');
+    if (pD) pD.textContent = `🌙 ${l === 'en' ? 'Dark' : 'Oscuro'}`;
+  });
+
+  const btnSys = document.getElementById('btn-mode-system');
+  if (btnSys) {
+    const st = btnSys.querySelector('strong');
+    const sp = btnSys.querySelector('span:last-child');
+    if (st) st.textContent = l === 'en' ? 'System Theme' : 'Del sistema';
+    if (sp) sp.textContent = l === 'en' ? 'Auto Light/Dark' : 'Auto Claro/Oscuro';
+  }
+  const btnLight = document.getElementById('btn-mode-light');
+  if (btnLight) {
+    const st = btnLight.querySelector('strong');
+    const sp = btnLight.querySelector('span:last-child');
+    if (st) st.textContent = l === 'en' ? 'Light Mode' : 'Modo Claro';
+    if (sp) sp.textContent = l === 'en' ? 'Restful, non-white' : 'Descansado, sin blanco';
+  }
+  const btnDark = document.getElementById('btn-mode-dark');
+  if (btnDark) {
+    const st = btnDark.querySelector('strong');
+    const sp = btnDark.querySelector('span:last-child');
+    if (st) st.textContent = l === 'en' ? 'Dark Mode' : 'Modo Oscuro';
+    if (sp) sp.textContent = l === 'en' ? 'Deep Night' : 'Noche profunda';
   }
 
   // Supabase badge
@@ -4618,9 +4849,15 @@ bWrap.appendChild(row); });
 setTimeout(() => resolverHorasVistasFaltantes(regs), 150);
 aplicarEstilosGlobales(); }
 function actualizarTarjetasVisualesConfig() {
+  migrarTemaLegadoSiEsNecesario();
+  const l = userPrefs.lang || 'es';
+
+  // Tipografías
   document.querySelectorAll('#cfg-font-cards .cfg-option-card').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.val === userPrefs.font);
   });
+
+  // Tamaños
   const sizeOrder = ['75%', '88%', '100%', '112%', '125%'];
   const curIdx = Math.max(0, sizeOrder.indexOf(userPrefs.fontSize || '100%'));
   const fillEl = document.getElementById('size-line-fill');
@@ -4633,10 +4870,48 @@ function actualizarTarjetasVisualesConfig() {
   document.querySelectorAll('#cfg-size-labels .size-line-lbl-btn').forEach(lbl => {
     lbl.classList.toggle('active', lbl.dataset.val === userPrefs.fontSize);
   });
-  document.querySelectorAll('#cfg-theme-cards .cfg-option-card').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.val === userPrefs.theme);
+
+  // Modo de apariencia (segmented control: system, light, dark)
+  const mode = userPrefs.themeMode || 'system';
+  const btnSys = document.getElementById('btn-mode-system');
+  const btnLight = document.getElementById('btn-mode-light');
+  const btnDark = document.getElementById('btn-mode-dark');
+  if (btnSys) btnSys.classList.toggle('active', mode === 'system');
+  if (btnLight) btnLight.classList.toggle('active', mode === 'light');
+  if (btnDark) btnDark.classList.toggle('active', mode === 'dark');
+
+  // Indicador de modo detectado en tiempo real
+  const sysLabel = document.getElementById('cfg-theme-system-detected');
+  if (sysLabel) {
+    const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (mode === 'system') {
+      sysLabel.textContent = l === 'en'
+        ? `(Auto: ${isDark ? 'Dark' : 'Light'} detected)`
+        : `(Auto: ${isDark ? 'Oscuro' : 'Claro'} detectado)`;
+    } else {
+      sysLabel.textContent = mode === 'light'
+        ? (l === 'en' ? '(Forced Light)' : '(Claro fijo)')
+        : (l === 'en' ? '(Forced Dark)' : '(Oscuro fijo)');
+    }
+  }
+
+  // Tarjetas de los 4 temas
+  const effectiveTheme = obtenerTemaEfectivo();
+  const effectiveMode = effectiveTheme.endsWith('-light') ? 'light' : 'dark';
+  const curFamily = userPrefs.themeFamily || 'slate';
+
+  document.querySelectorAll('#cfg-theme-cards .theme-family-card').forEach(card => {
+    const fam = card.dataset.family;
+    const isFamActive = fam === curFamily;
+    card.classList.toggle('active', isFamActive);
+
+    const pillLight = card.querySelector('.pill-light');
+    const pillDark = card.querySelector('.pill-dark');
+    if (pillLight) pillLight.classList.toggle('active', isFamActive && effectiveMode === 'light');
+    if (pillDark) pillDark.classList.toggle('active', isFamActive && effectiveMode === 'dark');
   });
 }
+
 function clickEnLineaTamano(e) {
   const wrap = e.currentTarget;
   const rect = wrap.getBoundingClientRect();
@@ -4645,16 +4920,50 @@ function clickEnLineaTamano(e) {
   const idx = Math.min(4, Math.floor(relX * 5));
   seleccionarSizeVisual(sizes[idx]);
 }
+
 function seleccionarFontVisual(val) { document.getElementById('cfg-font').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarSizeVisual(val) { document.getElementById('cfg-font-size').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
-function seleccionarThemeVisual(val) { document.getElementById('cfg-theme').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
+
+function seleccionarThemeFamily(family) {
+  migrarTemaLegadoSiEsNecesario();
+  userPrefs.themeFamily = family;
+  if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = family;
+  aplicarConfiguracionEnVivo();
+  actualizarTarjetasVisualesConfig();
+}
+
+function seleccionarThemeMode(mode) {
+  migrarTemaLegadoSiEsNecesario();
+  userPrefs.themeMode = mode;
+  aplicarConfiguracionEnVivo();
+  actualizarTarjetasVisualesConfig();
+}
+
+function seleccionarThemePill(family, mode) {
+  userPrefs.themeFamily = family;
+  userPrefs.themeMode = mode;
+  if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = family;
+  aplicarConfiguracionEnVivo();
+  actualizarTarjetasVisualesConfig();
+}
+
+function seleccionarThemeVisual(val) {
+  if (val && val.includes('-')) {
+    const parts = val.split('-');
+    seleccionarThemePill(parts[0], parts[1]);
+  } else if (val) {
+    seleccionarThemeFamily(val);
+  }
+}
+
 function abrirModalConfiguracion() { 
   try {
     if (userPrefs) {
+      migrarTemaLegadoSiEsNecesario();
       if (document.getElementById('cfg-lang')) document.getElementById('cfg-lang').value = userPrefs.lang || 'es';
       if (document.getElementById('cfg-font')) document.getElementById('cfg-font').value = userPrefs.font || "'Plus Jakarta Sans', sans-serif";
       if (document.getElementById('cfg-font-size')) document.getElementById('cfg-font-size').value = userPrefs.fontSize || '100%';
-      if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = userPrefs.theme || 'default';
+      if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = userPrefs.themeFamily || 'slate';
       if (document.getElementById('cfg-emojis')) document.getElementById('cfg-emojis').checked = !!userPrefs.showEmojis;
     }
     const cvInp = document.getElementById('cfg-comicvine-key');
@@ -4672,8 +4981,30 @@ function abrirModalConfiguracion() {
     console.error('Error al abrir modal configuracion:', err);
   }
 }
-function aplicarConfiguracionEnVivo() { userPrefs.font = document.getElementById('cfg-font').value; userPrefs.fontSize = document.getElementById('cfg-font-size').value;
-userPrefs.theme = document.getElementById('cfg-theme').value; userPrefs.showEmojis = document.getElementById('cfg-emojis').checked; aplicarEstilosGlobales(); }
+
+function aplicarConfiguracionEnVivo() {
+  userPrefs.font = document.getElementById('cfg-font').value;
+  userPrefs.fontSize = document.getElementById('cfg-font-size').value;
+  userPrefs.showEmojis = document.getElementById('cfg-emojis').checked;
+  aplicarEstilosGlobales();
+}
+
+if (window.matchMedia) {
+  try {
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const onChangeThemeScheme = () => {
+      if (userPrefs && userPrefs.themeMode === 'system') {
+        aplicarEstilosGlobales();
+        actualizarTarjetasVisualesConfig();
+      }
+    };
+    if (mql.addEventListener) {
+      mql.addEventListener('change', onChangeThemeScheme);
+    } else if (mql.addListener) {
+      mql.addListener(onChangeThemeScheme);
+    }
+  } catch(e) {}
+}
 function cambiarIdiomaEnVivo() {
   userPrefs.lang = document.getElementById('cfg-lang').value;
   actualizarTextosInterfaz();
