@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>✨ Mediary</title>
+<title>✨ Mediary - Tus Listas</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#111827">
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
@@ -13,13 +13,13 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mediary">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Lexend:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
 <style>
-:root{--font-family:'Plus Jakarta Sans',sans-serif;--font-scale:100%;--bg:#0f172a;--card:#1e293b;--card-hover:#334155;--accent:#38bdf8;--accent-hover:#0ea5e9;--text:#f8fafc;--muted:#94a3b8;--star-active:#f59e0b;--star-inactive:#475569;--border:#334155;--header-bg:#111827;--separator-bg:#0c1322;--danger:#ef4444;--danger-hover:#dc2626;--b-nav:70px;--tr:all .2s cubic-bezier(.4,0,.2,1)}
+:root{--font-family:'Lexend',sans-serif;--font-scale:100%;--bg:#0f172a;--card:#1e293b;--card-hover:#334155;--accent:#38bdf8;--accent-hover:#0ea5e9;--text:#f8fafc;--muted:#94a3b8;--star-active:#f59e0b;--star-inactive:#475569;--border:#334155;--header-bg:#111827;--separator-bg:#0c1322;--danger:#ef4444;--danger-hover:#dc2626;--b-nav:70px;--tr:all .2s cubic-bezier(.4,0,.2,1)}
 
 /* 1. TEMA PIZARRA NÓRDICA (SLATE) */
 [data-theme="slate-dark"], [data-theme="default"]{--bg:#0f172a;--card:#1e293b;--card-hover:#334155;--accent:#38bdf8;--accent-hover:#0ea5e9;--text:#f8fafc;--muted:#94a3b8;--star-active:#f59e0b;--star-inactive:#475569;--border:#334155;--header-bg:#111827;--separator-bg:#0c1322;--danger:#ef4444;--danger-hover:#dc2626}
@@ -634,7 +634,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <h3 id="titulo-modal-fav" data-i18n="fav_modal_title">👑 Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;" data-i18n="fav_modal_hint">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="text" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)">
 </div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;" data-i18n="fav_modal_remove">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()" data-i18n="btn_close">Cerrar</button>
 </div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0;">⚙️ Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;">✕</button></div> <div class="form-group"> <label data-i18n="cfg_lang_label">Idioma de la Interfaz:</label> <select id="cfg-lang" class="settings-select" onchange="cambiarIdiomaEnVivo()">
-<option value="es">Español (Predeterminado)</option> <option value="en">English</option> </select> </div> <div class="form-group"> <label data-i18n="cfg_font_label">Tipografía de la App (con muestra real):</label> <input type="hidden" id="cfg-font" value="'Plus Jakarta Sans', sans-serif"> <div class="cfg-visual-grid" id="cfg-font-cards"> <button type="button" class="cfg-option-card" data-val="'Plus Jakarta Sans', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Plus Jakarta Sans', sans-serif !important;">
+<option value="es">Español (Predeterminado)</option> <option value="en">English</option> </select> </div> <div class="form-group"> <label data-i18n="cfg_font_label">Tipografía de la App (con muestra real):</label> <input type="hidden" id="cfg-font" value="'Lexend', sans-serif"> <div class="cfg-visual-grid" id="cfg-font-cards"> <button type="button" class="cfg-option-card active" data-val="'Lexend', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Lexend', sans-serif !important;">
+<strong style="font-size:0.95rem; color:var(--text); font-family:'Lexend', sans-serif !important;">Lexend (Predeterminada)</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Lexend', sans-serif !important;">Aa Bb Cc — Lectura fluida 123</span>
+</button> <button type="button" class="cfg-option-card" data-val="'Plus Jakarta Sans', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Plus Jakarta Sans', sans-serif !important;">
 <strong style="font-size:0.95rem; color:var(--text); font-family:'Plus Jakarta Sans', sans-serif !important;">Plus Jakarta Sans</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Plus Jakarta Sans', sans-serif !important;">Aa Bb Cc — El arte del cine 123</span>
 </button> <button type="button" class="cfg-option-card" data-val="'Inter', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Inter', sans-serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Inter', sans-serif !important;">Inter Moderna</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Inter', sans-serif !important;">Aa Bb Cc — Lectura limpia 123</span>
 </button> <button type="button" class="cfg-option-card" data-val="'Cinzel', serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Cinzel', serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Cinzel', serif !important; letter-spacing:0.04em;">Cinzel Clásica</strong> <span style="font-size:0.8rem; color:var(--muted); font-family:'Cinzel', serif !important;">AA BB CC — ESTÉTICA ÉPICA 123</span>
@@ -4405,7 +4407,7 @@ dias: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"], 
 'To Read: Libros': 'To Read: Books', 'To Read: Cómics': 'To Read: Comics', 'To Read: Mangas': 'To Read: Manga'
 }, wl_section_title: "My Watchlists", wl_section_desc: "Your pending items organized and separated by each subcategory.", btn_volver_historial: "Back to History"
 }
-}; let userPrefs = { font: "'Plus Jakarta Sans', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", showEmojis: true, lang: "es"
+}; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", showEmojis: true, lang: "es"
 }; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary ✨', avatar: '🦊', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
 }; const AVATARES_PRESET = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐯', '🐨', '🐸', '🦉', '🐻', '🐵', '🐰']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
 const WATCHLIST_ESTRUCTURA = [
@@ -4499,7 +4501,7 @@ function obtenerRegistrosFiltradosPorAnio() {
   return estado.registros.filter(r => extraerAnioDeRegistro(r) === estado.anioActivo);
 }
 
-function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) userPrefs = Object.assign(userPrefs, JSON.parse(p)); } catch (e) {}
+function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {}
 try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) estado.anioActivo = anioG; } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
 try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); } } catch (e) {}
@@ -4762,10 +4764,11 @@ function actualizarTextosInterfaz() {
   const inFavFilter = document.getElementById('input-filtro-fav');
   if (inFavFilter) inFavFilter.placeholder = l === 'en' ? 'Filter in your records or search online...' : 'Filtrar en tu historial o buscar online...';
 
-  // 6 Font Cards titles and subtitles
+  // Font Cards titles and subtitles
   const fontCards = document.querySelectorAll('#cfg-font-cards .cfg-option-card');
-  if (fontCards.length >= 6) {
+  if (fontCards.length >= 7) {
     const fontData = [
+      { t: l === 'en' ? 'Lexend (Default)' : 'Lexend (Predeterminada)', s: l === 'en' ? 'Aa Bb Cc — Fluent reading 123' : 'Aa Bb Cc — Lectura fluida 123' },
       { t: 'Plus Jakarta Sans', s: l === 'en' ? 'Aa Bb Cc — The art of cinema 123' : 'Aa Bb Cc — El arte del cine 123' },
       { t: l === 'en' ? 'Inter Modern' : 'Inter Moderna', s: l === 'en' ? 'Aa Bb Cc — Clean reading 123' : 'Aa Bb Cc — Lectura limpia 123' },
       { t: l === 'en' ? 'Cinzel Classic' : 'Cinzel Clásica', s: l === 'en' ? 'AA BB CC — EPIC AESTHETIC 123' : 'AA BB CC — ESTÉTICA ÉPICA 123' },
@@ -5444,7 +5447,7 @@ function clickEnLineaTamano(e) {
   seleccionarSizeVisual(sizes[idx]);
 }
 
-function seleccionarFontVisual(val) { document.getElementById('cfg-font').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
+function seleccionarFontVisual(val) { document.getElementById('cfg-font').value = val; try { localStorage.setItem('mediary_user_custom_font', 'true'); } catch (e) {} aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarSizeVisual(val) { document.getElementById('cfg-font-size').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 
 function seleccionarThemeFamily(family) {
@@ -5484,7 +5487,7 @@ function abrirModalConfiguracion() {
     if (userPrefs) {
       migrarTemaLegadoSiEsNecesario();
       if (document.getElementById('cfg-lang')) document.getElementById('cfg-lang').value = userPrefs.lang || 'es';
-      if (document.getElementById('cfg-font')) document.getElementById('cfg-font').value = userPrefs.font || "'Plus Jakarta Sans', sans-serif";
+      if (document.getElementById('cfg-font')) document.getElementById('cfg-font').value = userPrefs.font || "'Lexend', sans-serif";
       if (document.getElementById('cfg-font-size')) document.getElementById('cfg-font-size').value = userPrefs.fontSize || '100%';
       if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = userPrefs.themeFamily || 'slate';
       if (document.getElementById('cfg-emojis')) document.getElementById('cfg-emojis').checked = !!userPrefs.showEmojis;
@@ -5573,7 +5576,7 @@ function guardarYCerrarConfiguracion() {
     console.error('Error al guardar configuracion:', err);
   }
 }
-function restablecerConfiguracionPorDefecto() { userPrefs = { font: "'Plus Jakarta Sans', sans-serif", fontSize: "100%", theme: "default", showEmojis: true, lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
+function restablecerConfiguracionPorDefecto() { try { localStorage.removeItem('mediary_user_custom_font'); } catch (e) {} userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "default", showEmojis: true, lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
 // --- IMPORTAR Y EXPORTAR ARCHIVOS DE TEXTO ---
 function abrirModalImportarExportar() { document.getElementById('modal-configuracion').style.display = 'none'; document.getElementById('input-file-import').value = ''; document.getElementById('textarea-import-raw').value = ''; estado.registrosImportarPendientes = [];
 document.getElementById('import-preview-box').innerHTML = 'Sube un archivo .txt o pega texto arriba para previsualizar los registros detectados.'; document.getElementById('modal-importar-exportar').style.display = 'flex'; }
