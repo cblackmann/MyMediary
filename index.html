@@ -317,6 +317,361 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .btn-friend-records{background:linear-gradient(135deg,rgba(56,189,248,0.16),rgba(14,165,233,0.1));border:1.5px solid var(--accent);color:var(--accent);font-weight:700;border-radius:12px;padding:12px 20px;font-size:0.92rem;cursor:pointer;transition:var(--tr);display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 3px 12px rgba(56,189,248,0.15);width:100%;margin-bottom:14px;}
 .btn-friend-records:hover{background:var(--accent);color:#0f172a;transform:translateY(-1.5px);box-shadow:0 6px 18px rgba(56,189,248,0.35);}
 .amigo-wide-card:hover{border-color:var(--accent) !important;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.35);}
+
+/* ESTILOS DE PORTADAS DE PERFIL */
+.cover-espacio {
+  background-color: #070913 !important;
+  background-image: 
+    radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 50px 80px, rgba(255,255,255,0.85), rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 110px 40px, #ffffff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 180px 140px, #e9d5ff, rgba(0,0,0,0)),
+    radial-gradient(1.5px 1.5px at 240px 70px, #93c5fd, rgba(0,0,0,0)),
+    radial-gradient(circle at 18% 28%, rgba(147, 51, 234, 0.45) 0%, transparent 45%),
+    radial-gradient(circle at 82% 72%, rgba(56, 189, 248, 0.4) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.25) 0%, transparent 55%),
+    linear-gradient(135deg, #090b16 0%, #111836 50%, #1e113a 100%) !important;
+  background-repeat: repeat, repeat, repeat, repeat, repeat, no-repeat, no-repeat, no-repeat, no-repeat !important;
+  background-size: 250px 250px, 300px 300px, 200px 200px, 350px 350px, 280px 280px, auto, auto, auto, auto !important;
+  border: 1.5px solid rgba(168, 85, 247, 0.55) !important;
+  box-shadow: 0 10px 32px rgba(17, 24, 54, 0.6) !important;
+}
+.cover-arcade {
+  background-color: #12061e !important;
+  background-image:
+    linear-gradient(rgba(244, 63, 94, 0.16) 1.5px, transparent 1.5px),
+    linear-gradient(90deg, rgba(6, 182, 212, 0.16) 1.5px, transparent 1.5px),
+    radial-gradient(circle at 50% 10%, rgba(244, 63, 94, 0.48) 0%, transparent 60%),
+    radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.35) 0%, transparent 50%),
+    linear-gradient(180deg, #180829 0%, #290835 50%, #0d1326 100%) !important;
+  background-size: 32px 32px, 32px 32px, auto, auto, auto !important;
+  border: 1.5px solid rgba(244, 63, 94, 0.6) !important;
+  box-shadow: 0 10px 32px rgba(244, 63, 94, 0.3) !important;
+}
+.cover-bosque {
+  background-color: #051e13 !important;
+  background-image:
+    radial-gradient(circle at 75% 20%, rgba(52, 211, 153, 0.42) 0%, transparent 45%),
+    radial-gradient(circle at 20% 80%, rgba(6, 182, 212, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 50% 45%, rgba(16, 185, 129, 0.25) 0%, transparent 55%),
+    linear-gradient(135deg, #051d13 0%, #0c3322 45%, #052632 100%) !important;
+  border: 1.5px solid rgba(16, 185, 129, 0.55) !important;
+  box-shadow: 0 10px 32px rgba(5, 29, 19, 0.55) !important;
+}
+.cover-castillo {
+  background-color: #1a0f2e !important;
+  background-image:
+    radial-gradient(circle at 80% 18%, rgba(251, 191, 36, 0.4) 0%, transparent 45%),
+    radial-gradient(circle at 18% 75%, rgba(192, 132, 252, 0.38) 0%, transparent 45%),
+    radial-gradient(circle at 50% 90%, rgba(245, 158, 11, 0.22) 0%, transparent 50%),
+    linear-gradient(135deg, #170d2b 0%, #2f1246 45%, #421626 100%) !important;
+  border: 1.5px solid rgba(251, 191, 36, 0.5) !important;
+  box-shadow: 0 10px 32px rgba(47, 18, 70, 0.5) !important;
+}
+.profile-hero-card.has-custom-cover {
+  position: relative;
+  overflow: hidden;
+}
+.profile-hero-card.has-custom-cover .profile-nick-display {
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+}
+.profile-hero-card.has-custom-cover .profile-bio-txt {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+}
+.profile-hero-card.has-custom-cover #perfil-id-badge {
+  background: rgba(15, 23, 42, 0.72) !important;
+  backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.profile-hero-card.has-custom-cover #perfil-email-render {
+  color: rgba(255, 255, 255, 0.85) !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+.btn-change-cover {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  padding: 6px 13px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--tr);
+}
+.btn-change-cover:hover {
+  background: var(--accent);
+  color: #0f172a;
+  transform: translateY(-1px);
+}
+[data-theme$="-light"] .btn-change-cover:hover,
+[data-theme="nordic-light"] .btn-change-cover:hover,
+[data-theme="creme-latte"] .btn-change-cover:hover,
+[data-theme="parchment"] .btn-change-cover:hover,
+[data-theme="sage-garden"] .btn-change-cover:hover {
+  color: #ffffff !important;
+}
+.profile-hero-card.has-custom-cover .btn-change-cover {
+  background: rgba(15, 23, 42, 0.7) !important;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+}
+.profile-hero-card.has-custom-cover .btn-change-cover:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: #ffffff !important;
+}
+
+/* MODAL SELECTOR DE PORTADA */
+.profile-covers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
+}
+.cover-option-card {
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: var(--tr);
+  background: var(--card);
+  position: relative;
+  text-align: left;
+}
+.cover-option-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+.cover-option-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 16px rgba(56,189,248,0.45);
+}
+.cover-preview-stage {
+  height: 65px;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px 12px;
+}
+.cover-option-body {
+  padding: 10px 12px;
+  background: var(--card);
+}
+.cover-option-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+.cover-option-desc {
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.cover-check-pill {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(16,185,129,0.15);
+  border: 1px solid rgba(16,185,129,0.35);
+  padding: 2px 8px;
+  border-radius: 10px;
+  display: none;
+}
+.cover-option-card.active .cover-check-pill {
+  display: inline-flex;
+}
+
+/* TARJETA DE PERSONAJE FAVORITO EN PERFIL */
+.profile-fav-char-card {
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  position: relative;
+  transition: var(--tr);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.profile-fav-char-card:hover {
+  border-color: rgba(245,158,11,0.5);
+  box-shadow: 0 6px 22px rgba(245,158,11,0.15);
+}
+.fav-char-card-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 240px;
+  flex: 1;
+}
+.fav-char-poster-wrap {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--bg);
+  border: 2.5px solid #f59e0b;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 14px rgba(245,158,11,0.3);
+}
+.fav-char-poster-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fav-char-crown-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #f59e0b;
+  color: #0f172a;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  font-size: 0.72rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+.fav-char-details {
+  flex: 1;
+  min-width: 0;
+}
+.fav-char-top-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #fbbf24;
+  margin-bottom: 2px;
+}
+[data-theme$="-light"] .fav-char-top-badge,
+[data-theme="nordic-light"] .fav-char-top-badge,
+[data-theme="creme-latte"] .fav-char-top-badge,
+[data-theme="parchment"] .fav-char-top-badge,
+[data-theme="sage-garden"] .fav-char-top-badge {
+  color: #b45309 !important;
+}
+.fav-char-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.25;
+}
+.fav-char-work {
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.fav-char-work strong {
+  color: var(--text);
+}
+.fav-char-quote {
+  font-size: 0.78rem;
+  color: var(--accent);
+  font-style: italic;
+  margin-top: 4px;
+  line-height: 1.3;
+}
+.fav-char-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fav-char-empty-box {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  cursor: pointer;
+  padding: 4px 0;
+}
+.fav-char-empty-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(245,158,11,0.12);
+  border: 1.5px dashed rgba(245,158,11,0.4);
+  color: #fbbf24;
+  display: grid;
+  place-items: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+.fav-char-empty-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.fav-char-empty-desc {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.35;
+}
+.btn-choose-char-cta {
+  background: linear-gradient(135deg, rgba(245,158,11,0.18), rgba(217,119,6,0.18));
+  border: 1.5px solid #d97706;
+  color: #fbbf24;
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--tr);
+}
+.btn-choose-char-cta:hover {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #0f172a;
+  transform: translateY(-1px);
+}
+[data-theme$="-light"] .btn-choose-char-cta,
+[data-theme="nordic-light"] .btn-choose-char-cta,
+[data-theme="creme-latte"] .btn-choose-char-cta,
+[data-theme="parchment"] .btn-choose-char-cta,
+[data-theme="sage-garden"] .btn-choose-char-cta {
+  background: rgba(245, 158, 11, 0.22) !important;
+  border-color: #d97706 !important;
+  color: #78350f !important;
+  font-weight: 800 !important;
+}
+[data-theme$="-light"] .btn-choose-char-cta:hover,
+[data-theme="nordic-light"] .btn-choose-char-cta:hover,
+[data-theme="creme-latte"] .btn-choose-char-cta:hover,
+[data-theme="parchment"] .btn-choose-char-cta:hover,
+[data-theme="sage-garden"] .btn-choose-char-cta:hover {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+  color: #ffffff !important;
+}
+
 /* PÍLDORAS Y ESTILOS SOCIALES DE AMIGOS */
 .amigo-activity-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:var(--accent);font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-top:3px;white-space:nowrap}
 .amigo-activity-pill.amigo-wl-pill{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.35);color:#fbbf24}
@@ -420,7 +775,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .date-prec-btn.active{background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.3);color:var(--accent);font-weight:700;}
 </style> </head> <body> <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
-</div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <div class="home-hero-card"> <div class="home-hero-content"> <h2 style="font-size:1.4rem; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;"> <span>🏠</span> <span data-i18n="home_title">Inicio</span> </h2> <p style="color:var(--muted); font-size:.88rem; margin:0; text-align:center;" data-i18n="home_subtitle">Tu centro multimedia personal: registra tus obras, sigue a tus amigos y descubre nuevas recomendaciones.</p> </div> <div class="home-hero-actions"> <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()"> <span style="font-size:1.15rem;">⚡</span> <span data-i18n="btn_quick_add_hero">Agregado Rápido</span> </button> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;"> <span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Mis Watchlists</span> </button> </div> </div> <div class="home-community-section" id="seccion-comunidad-resumida-inicio"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--text); display:flex; align-items:center; gap:8px;"> <span>👥</span> <span data-i18n="home_friends_title">Novedades de Amigos</span> <span style="font-size:0.72rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;">Última semana</span> </div> <p style="font-size:0.8rem; color:var(--muted); margin-top:2px;" data-i18n="home_friends_sub">Lo que han registrado tus amigos en los últimos 7 días.</p> </div> <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem;"> <span data-i18n="btn_view_all_community">Ver toda la comunidad ➔</span> </button> </div> <div id="lista-comunidad-resumen-inicio"> <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;">Cargando actividad reciente de amigos... ⏳</div> </div> </div> <div class="home-discover-section" id="seccion-discover-inicio" style="margin-top:28px; border-top:1px solid var(--border); padding-top:24px;"> <div class="discover-header-bar"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>🧭 Discover</span> <span class="discover-live-badge"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="discover_subtitle">Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.</p> </div> <div class="discover-controls"> <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano">⚡ Auto-actualizar: ON</button> <button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="recargarDiscoverManual()"><span data-i18n="btn_discover_explore">🔄 Explorar nuevos</span></button> </div> </div> <div style="font-size:0.78rem; color:var(--muted); margin-bottom:6px;" data-i18n="discover_filter_hint">Selecciona qué categorías quieres ver (puedes activar o desactivar varias):</div> <div class="discover-filter-bar" id="discover-category-filters"> <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button> <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button> <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button> </div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) --> <div id="vista-listas-extendida" style="display:none;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:8px; margin-bottom:4px;"> <span>⭐</span> <span data-i18n="lists_dashboard_title">Índice General de Listas</span> </h2> <p style="color:var(--muted); font-size:.85rem; margin:0;" data-i18n="lists_dashboard_subtitle">Resumen exhaustivo de tus hábitos, subtotales y favoritos por categoría</p> </div> </div> <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- SECCIÓN: NOVEDADES Y ÚLTIMOS AGREGADOS DE AMIGOS --> <div class="cat-wide-card" style="margin-bottom:22px; padding:18px 20px;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(51,65,85,0.45); padding-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--accent); display:flex; align-items:center; gap:8px;"> <span>⚡</span> <span data-i18n="feed_amigos_title">Últimos Agregados de Amigos</span> <span id="badge-feed-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:800;">0</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-top:3px;" data-i18n="feed_amigos_desc">Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.</p> </div> <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.75rem; margin:0;" onclick="cargarFeedActividadAmigos(true)" title="Refrescar feed"> <span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span> </button> </div> <div class="discover-filter-bar" id="feed-amigos-filtros" style="margin-bottom:14px;"> <button type="button" class="subtab-btn active" data-fcat="todas" onclick="filtrarFeedAmigos('todas')">🌟 <span data-i18n="feed_filtro_todos">Todos</span> (<span id="count-feed-todas">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Peliculas" onclick="filtrarFeedAmigos('Peliculas')">🎬 <span data-i18n="nav_peliculas">Películas</span> (<span id="count-feed-pelis">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Series" onclick="filtrarFeedAmigos('Series')">📺 <span data-i18n="nav_series">Series</span> (<span id="count-feed-series">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Musica" onclick="filtrarFeedAmigos('Musica')">🎵 <span data-i18n="nav_musica">Música</span> (<span id="count-feed-musica">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Juegos" onclick="filtrarFeedAmigos('Juegos')">🎮 <span data-i18n="nav_juegos">Juegos</span> (<span id="count-feed-juegos">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Lecturas" onclick="filtrarFeedAmigos('Lecturas')">📖 <span data-i18n="nav_lecturas">Lecturas</span> (<span id="count-feed-lecturas">0</span>)</button> </div> <div id="lista-feed-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%;"> <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;">Cargando novedades de tus amigos... ⏳</div> </div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" style="padding:18px 22px;">
+</div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <div class="home-hero-card"> <div class="home-hero-content"> <h2 style="font-size:1.4rem; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;"> <span>🏠</span> <span data-i18n="home_title">Inicio</span> </h2> <p style="color:var(--muted); font-size:.88rem; margin:0; text-align:center;" data-i18n="home_subtitle">Tu centro multimedia personal: registra tus obras, sigue a tus amigos y descubre nuevas recomendaciones.</p> </div> <div class="home-hero-actions"> <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()"> <span style="font-size:1.15rem;">⚡</span> <span data-i18n="btn_quick_add_hero">Agregado Rápido</span> </button> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;"> <span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Mis Watchlists</span> </button> </div> </div> <div class="home-community-section" id="seccion-comunidad-resumida-inicio"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--text); display:flex; align-items:center; gap:8px;"> <span>👥</span> <span data-i18n="home_friends_title">Novedades de Amigos</span> <span style="font-size:0.72rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;">Última semana</span> </div> <p style="font-size:0.8rem; color:var(--muted); margin-top:2px;" data-i18n="home_friends_sub">Lo que han registrado tus amigos en los últimos 7 días.</p> </div> <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem;"> <span data-i18n="btn_view_all_community">Ver toda la comunidad ➔</span> </button> </div> <div id="lista-comunidad-resumen-inicio"> <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;">Cargando actividad reciente de amigos... ⏳</div> </div> </div> <div class="home-discover-section" id="seccion-discover-inicio" style="margin-top:28px; border-top:1px solid var(--border); padding-top:24px;"> <div class="discover-header-bar"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>🧭 Discover</span> <span class="discover-live-badge"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="discover_subtitle">Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.</p> </div> <div class="discover-controls"> <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano">⚡ Auto-actualizar: ON</button> <button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="recargarDiscoverManual()"><span data-i18n="btn_discover_explore">🔄 Explorar nuevos</span></button> </div> </div> <div style="font-size:0.78rem; color:var(--muted); margin-bottom:6px;" data-i18n="discover_filter_hint">Selecciona qué categorías quieres ver (puedes activar o desactivar varias):</div> <div class="discover-filter-bar" id="discover-category-filters"> <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button> <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button> <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button> </div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) --> <div id="vista-listas-extendida" style="display:none;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:8px; margin-bottom:4px;"> <span>⭐</span> <span data-i18n="lists_dashboard_title">Índice General de Listas</span> </h2> <p style="color:var(--muted); font-size:.85rem; margin:0;" data-i18n="lists_dashboard_subtitle">Resumen exhaustivo de tus hábitos, subtotales y favoritos por categoría</p> </div> </div> <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div> <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div> <!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div> <!-- SECCIÓN: NOVEDADES Y ÚLTIMOS AGREGADOS DE AMIGOS --> <div class="cat-wide-card" style="margin-bottom:22px; padding:18px 20px;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(51,65,85,0.45); padding-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--accent); display:flex; align-items:center; gap:8px;"> <span>⚡</span> <span data-i18n="feed_amigos_title">Últimos Agregados de Amigos</span> <span id="badge-feed-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:800;">0</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-top:3px;" data-i18n="feed_amigos_desc">Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.</p> </div> <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.75rem; margin:0;" onclick="cargarFeedActividadAmigos(true)" title="Refrescar feed"> <span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span> </button> </div> <div class="discover-filter-bar" id="feed-amigos-filtros" style="margin-bottom:14px;"> <button type="button" class="subtab-btn active" data-fcat="todas" onclick="filtrarFeedAmigos('todas')">🌟 <span data-i18n="feed_filtro_todos">Todos</span> (<span id="count-feed-todas">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Peliculas" onclick="filtrarFeedAmigos('Peliculas')">🎬 <span data-i18n="nav_peliculas">Películas</span> (<span id="count-feed-pelis">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Series" onclick="filtrarFeedAmigos('Series')">📺 <span data-i18n="nav_series">Series</span> (<span id="count-feed-series">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Musica" onclick="filtrarFeedAmigos('Musica')">🎵 <span data-i18n="nav_musica">Música</span> (<span id="count-feed-musica">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Juegos" onclick="filtrarFeedAmigos('Juegos')">🎮 <span data-i18n="nav_juegos">Juegos</span> (<span id="count-feed-juegos">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Lecturas" onclick="filtrarFeedAmigos('Lecturas')">📖 <span data-i18n="nav_lecturas">Lecturas</span> (<span id="count-feed-lecturas">0</span>)</button> </div> <div id="lista-feed-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%;"> <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;">Cargando novedades de tus amigos... ⏳</div> </div> </div> <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div> </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" id="perfil-hero-card" style="padding:18px 22px;">
   <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
     <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer;flex-shrink:0;">
       <span>👤</span>
@@ -443,8 +798,18 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
         </div>
       </div>
     </div>
+    <div class="profile-hero-side-actions">
+      <button type="button" class="btn-change-cover" onclick="abrirModalElegirPortada()" title="Personalizar portada del perfil">
+        <span>🎨</span> <span>Portada</span>
+      </button>
+      <button type="button" class="btn-change-cover" onclick="abrirModalEditarPerfil()" title="Editar información de perfil">
+        <span>✏️</span> <span>Editar</span>
+      </button>
+    </div>
   </div>
 </div>
+<!-- SLOT DESTACADO: PERSONAJE FAVORITO -->
+<div id="perfil-character-card-container"></div>
 <div style="margin:12px 0 16px; display:flex; gap:10px; flex-wrap:wrap;">
   <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:12px;">
     <span class="emoji-dyn">📌</span>
@@ -671,6 +1036,18 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
         </div>
       </div>
     </div>
+    <div class="form-group" style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border);">
+      <label>🎨 Portada temática de perfil:</label>
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 14px;">
+        <div>
+          <div style="font-size:0.86rem; color:var(--text); font-weight:700;">Fondo temático</div>
+          <div style="font-size:0.75rem; color:var(--muted);">Espacio, Retro Arcade, Bosque o Castillo</div>
+        </div>
+        <button type="button" class="btn-today-pill" style="font-size:0.78rem; padding:6px 12px; margin:0;" onclick="cerrarModalEditarPerfil(); abrirModalElegirPortada();">
+          🎨 Cambiar Portada
+        </button>
+      </div>
+    </div>
     <div class="modal-actions">
       <button type="button" class="btn-modal-cancel" onclick="cerrarModalEditarPerfil()" data-i18n="btn_cancel">Cancelar</button>
       <button type="button" class="btn-modal-save" onclick="guardarCambiosPerfilUsuario()" data-i18n="btn_save_profile">Guardar Perfil</button>
@@ -713,7 +1090,141 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
       <button type="button" class="btn-modal-save" onclick="confirmarRecorteAvatar()" data-i18n="crop_btn_confirm">✅ Aplicar Recorte 1:1</button>
     </div>
   </div>
-</div> <!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
+</div>
+
+<!-- MODAL SELECCIONAR PORTADA DE PERFIL -->
+<div id="modal-elegir-portada" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalElegirPortada()">
+  <div class="modal-box" style="max-width:540px; max-height:90vh; overflow-y:auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="margin:0; display:flex; align-items:center; gap:8px;">
+        <span>🎨</span> <span>Portada de tu Perfil</span>
+      </h3>
+      <button type="button" class="btn-close-form" onclick="cerrarModalElegirPortada()" style="position:static;">✕</button>
+    </div>
+    <p style="font-size:0.83rem; color:var(--muted); margin-bottom:14px; line-height:1.4;">
+      Elige un fondo temático para la tarjeta superior de tu perfil. Se guardará en tu cuenta y tus amigos también podrán admirarlo.
+    </p>
+
+    <div class="profile-covers-grid" id="profile-covers-options-list">
+      <!-- Opciones dinámicas: Predeterminada, Cosmos, Retro Arcade, Bosque y Castillo -->
+    </div>
+
+    <div class="modal-actions" style="margin-top:16px; justify-content:flex-end;">
+      <button type="button" class="btn-modal-save" onclick="cerrarModalElegirPortada()">Listo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SELECCIONAR PERSONAJE FAVORITO -->
+<div id="modal-seleccionar-personaje" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalSeleccionarPersonaje()">
+  <div class="modal-box" style="max-width:580px; max-height:90vh; overflow-y:auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="margin:0; display:flex; align-items:center; gap:8px;">
+        <span>👑</span> <span>Mi Personaje Favorito</span>
+      </h3>
+      <button type="button" class="btn-close-form" onclick="cerrarModalSeleccionarPersonaje()" style="position:static;">✕</button>
+    </div>
+    <p style="font-size:0.83rem; color:var(--muted); margin-bottom:14px; line-height:1.4;">
+      Destaca a tu personaje favorito de películas, series, anime, videojuegos o libros en la cabecera de tu perfil.
+    </p>
+
+    <!-- TABS DEL SELECTOR DE PERSONAJE -->
+    <div class="char-picker-tabs">
+      <button type="button" class="char-picker-tab-btn active" id="tab-char-online" onclick="cambiarTabSelectorPersonaje('online')">
+        <span>🔍</span> <span>En línea</span>
+      </button>
+      <button type="button" class="char-picker-tab-btn" id="tab-char-misobras" onclick="cambiarTabSelectorPersonaje('misobras')">
+        <span>📑</span> <span>De mis obras</span>
+      </button>
+      <button type="button" class="char-picker-tab-btn" id="tab-char-manual" onclick="cambiarTabSelectorPersonaje('manual')">
+        <span>✍️</span> <span>Personalizado</span>
+      </button>
+    </div>
+
+    <!-- CONTENIDO TAB 1: BÚSQUEDA EN LÍNEA -->
+    <div id="tab-char-content-online" class="char-picker-pane active">
+      <div style="margin-bottom:12px;">
+        <input type="text" id="input-buscar-personaje-online" class="form-input" placeholder="Escribe el nombre del personaje (ej: Goku, Aragorn, Batman, Geralt, Luffy...)" oninput="debouncedBuscarPersonaje(this.value)">
+      </div>
+      <div id="char-search-loading" style="display:none; text-align:center; padding:18px; color:var(--accent); font-size:0.85rem;">
+        🔍 Buscando personajes...
+      </div>
+      <div id="char-search-results" class="char-search-results-grid">
+        <div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.84rem; grid-column:1/-1;">
+          Escribe un nombre arriba para buscar en bases de datos de anime, cine y series.
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENIDO TAB 2: SELECCIONAR DE OBRAS DEL USUARIO -->
+    <div id="tab-char-content-misobras" class="char-picker-pane" style="display:none;">
+      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">
+        Selecciona una obra de tu historial y escribe el nombre de tu personaje:
+      </p>
+      <div style="margin-bottom:10px;">
+        <input type="text" id="input-filtrar-mis-obras-char" class="form-input" placeholder="Filtrar tus obras registradas..." oninput="filtrarMisObrasParaPersonaje(this.value)">
+      </div>
+      <div id="char-obras-lista" class="char-user-obras-list">
+        <!-- Obras registradas por el usuario -->
+      </div>
+      <!-- Formulario para ingresar personaje tras elegir obra -->
+      <div id="char-obra-selected-form" style="display:none; margin-top:14px; padding:12px; background:var(--bg); border:1px solid var(--accent); border-radius:12px;">
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+          <img id="char-obra-selected-img" src="" alt="Obra" style="width:40px; height:56px; border-radius:6px; object-fit:cover; background:#1e293b;">
+          <div style="flex:1; min-width:0;">
+            <div style="font-size:0.75rem; color:var(--accent); font-weight:700;" id="char-obra-selected-cat">OBRA</div>
+            <strong style="font-size:0.92rem; color:var(--text);" id="char-obra-selected-title">Título</strong>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:8px;">
+          <label style="font-size:0.8rem;">Nombre del personaje: *</label>
+          <input type="text" id="input-char-from-obra-name" class="form-input" placeholder="Ej: Spider-Man, Paul Atreides, Hermione...">
+        </div>
+        <div class="form-group" style="margin-bottom:8px;">
+          <label style="font-size:0.8rem;">Cita célebre o frase (opcional):</label>
+          <input type="text" id="input-char-from-obra-quote" class="form-input" placeholder="Ej: 'Un gran poder conlleva una gran responsabilidad'">
+        </div>
+        <button type="button" class="btn-save" style="margin-top:6px;" onclick="confirmarPersonajeDeObra()">
+          👑 Asignar este Personaje
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENIDO TAB 3: MANUAL / FOTO -->
+    <div id="tab-char-content-manual" class="char-picker-pane" style="display:none;">
+      <div class="form-group">
+        <label>Nombre del personaje: *</label>
+        <input type="text" id="input-char-manual-nombre" class="form-input" placeholder="Ej: Arthur Morgan, Gandalf, Daenerys...">
+      </div>
+      <div class="form-group">
+        <label>Obra / Franquicia de origen: *</label>
+        <input type="text" id="input-char-manual-obra" class="form-input" placeholder="Ej: Red Dead Redemption 2, El Señor de los Anillos...">
+      </div>
+      <div class="form-group">
+        <label>URL de imagen del personaje (o emoji):</label>
+        <input type="text" id="input-char-manual-imagen" class="form-input" placeholder="https://... o un emoji como 🤠, ⚔️, 🧙‍♂️">
+      </div>
+      <div class="form-group">
+        <label>Cita célebre o frase favorita (opcional):</label>
+        <input type="text" id="input-char-manual-cita" class="form-input" placeholder="Ej: 'May the Force be with you'">
+      </div>
+      <button type="button" class="btn-save" style="margin-top:10px;" onclick="guardarPersonajeManual()">
+        👑 Guardar y Fijar Personaje
+      </button>
+    </div>
+
+    <div class="modal-actions" style="margin-top:16px; justify-content:space-between;">
+      <button type="button" class="btn-modal-danger" id="btn-quitar-personaje-fav" onclick="quitarPersonajeFavorito()" style="display:none;">
+        🗑️ Quitar Personaje
+      </button>
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarPersonaje()">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
 <h3 id="titulo-modal-fav" data-i18n="fav_modal_title">👑 Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;" data-i18n="fav_modal_hint">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="text" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)">
 </div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;" data-i18n="fav_modal_remove">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()" data-i18n="btn_close">Cerrar</button>
 </div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0;">⚙️ Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;">✕</button></div> <div class="form-group"> <label data-i18n="cfg_lang_label">Idioma de la Interfaz:</label> <input type="hidden" id="cfg-lang" value="es"> <div class="cfg-visual-grid" id="cfg-lang-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;"> <button type="button" class="cfg-option-card active" data-lang="es" onclick="seleccionarIdiomaVisual('es')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">🇪🇸</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">Español</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Predeterminado</span> </div> </button> <button type="button" class="cfg-option-card" data-lang="en" onclick="seleccionarIdiomaVisual('en')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">🇺🇸</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">English</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Interface in English</span> </div> </button> </div> </div> <div class="form-group"> <label data-i18n="cfg_font_label">Tipografía de la App (con muestra real):</label> <input type="hidden" id="cfg-font" value="'Lexend', sans-serif"> <div class="cfg-visual-grid" id="cfg-font-cards"> <button type="button" class="cfg-option-card active" data-val="'Lexend', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Lexend', sans-serif !important;">
@@ -956,7 +1467,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div class="stars-wrapper" id="rating-stars-completa" style="font-size:2.2rem; margin:8px 0;"></div> <span id="rating-label-completa" style="font-size:.9rem; color:var(--accent); font-weight:700;">0.0 / 5</span> </div> <div class="form-group"><label data-i18n="serie_comp_comment_lbl">Comentario / Reseña final de la serie:</label><textarea id="comentario-serie-completa" class="comment-box" style="min-height:90px;" placeholder="¿Qué te pareció la serie en su totalidad?"></textarea></div>
 <div class="modal-actions"><button class="btn-modal-cancel" onclick="omitirGuardadoSerieCompleta()" data-i18n="btn_skip">Omitir</button><button class="btn-modal-save" id="btn-confirmar-serie-completa" data-i18n="btn_save_full_series">Guardar Serie Completa</button></div> </div> </div> <div id="modal-confirmar-eliminar" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <div class="modal-confirm-icon" style="margin:0 auto 14px;">🗑️</div>
 <h3 style="color:var(--danger); font-size:1.15rem; margin-bottom:8px;" data-i18n="del_title">¿Eliminar este registro?</h3> <p id="confirm-eliminar-mensaje" style="color:var(--muted); font-size:.9rem; line-height:1.4; margin-bottom:14px;"></p> <div class="modal-actions" style="justify-content:center; gap:12px; margin-top:14px;"> <button class="btn-modal-cancel" onclick="cerrarModalEliminar()" data-i18n="btn_cancel">Cancelar</button><button class="btn-modal-danger" id="btn-confirmar-eliminar-si" data-i18n="btn_del_permanent">Eliminar definitivamente</button>
-</div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ <span data-i18n="amigo_stat_title">Métricas de Contenido</span></div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_total_lbl">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_total_sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_avg_lbl">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_avg_sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_hours_lbl">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="amigo_stat_hours_sub">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="amigo-stat-watched-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 <span data-i18n="amigo_breakdown_title">Desglose por Categorías y Subcategorías</span></div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📑 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;" id="amigo-regs-cat-tabs"></div> <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL DETALLE DE ACTIVIDAD DE AMIGO EN DISCOVER -->
+</div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div id="amigo-modal-hero-card" class="profile-hero-card cover-predeterminada" style="margin-bottom:14px; padding:16px 18px; border-radius:14px; position:relative; overflow:hidden;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> </div> <div id="amigo-modal-character-container"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ <span data-i18n="amigo_stat_title">Métricas de Contenido</span></div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_total_lbl">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_total_sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_avg_lbl">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_avg_sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_hours_lbl">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="amigo_stat_hours_sub">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="amigo-stat-watched-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 <span data-i18n="amigo_breakdown_title">Desglose por Categorías y Subcategorías</span></div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📑 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;" id="amigo-regs-cat-tabs"></div> <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL DETALLE DE ACTIVIDAD DE AMIGO EN DISCOVER -->
 <div id="modal-amigo-registro-detalle" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalDetalleActividadAmigo()">
   <div class="modal-box" style="max-width:440px;padding:22px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:12px;">
@@ -1308,7 +1819,7 @@ amigosRowsList.forEach((rows, idx) => {
     return { exito: false, error: e.toString() };
   }
 },
-async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const favs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🎬', userId: p.preferencias?.userId || email, favoritos: favs }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
+async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const favs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); const charFav = (p.favoritos?.personajeFavorito || p.preferencias?.personajeFavorito || null); const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada'); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🎬', userId: p.preferencias?.userId || email, favoritos: favs, portada: portAmigo, personajeFavorito: charFav }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
 const email = normEm_(userEmail); if (!email) return { exito: false, sinSesion: true, emailGoogle: '', logueadoGoogle: false, nickname: 'Invitado', avatar: '👤', bio: 'Inicia sesión para guardar tus listas en Supabase ✨', favoritos: {}, favoritosOcultos: {} };
 const rows = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); if (rows && rows.length > 0) { const p = rows[0];
 return { exito: true, emailGoogle: p.user_email, logueadoGoogle: true, nickname: p.nickname || email.split('@')[0], avatar: p.avatar || '🎬', bio: p.bio || 'Coleccionando historias en Mediary ✨', favoritos: p.favoritos || {}, favoritosOcultos: p.favoritos_ocultos || {}, preferencias: p.preferencias || {} };
@@ -4028,6 +4539,45 @@ function verPerfilDeAmigo(emailAmigo) {
     document.getElementById('amigo-modal-nick').textContent = a.nickname;
     document.getElementById('amigo-modal-bio').textContent = a.bio || (l === 'en' ? 'Collecting stories in Mediary ✨' : 'Coleccionando historias en Mediary ✨');
     document.getElementById('amigo-modal-id-badge').textContent = `🆔 ${a.userId || 'ID'}`;
+    const amHero = document.getElementById('amigo-modal-hero-card');
+    if (amHero) {
+      PORTADAS_DISPONIBLES.forEach(p => amHero.classList.remove(`cover-${p.id}`));
+      amHero.classList.remove('has-custom-cover');
+      const coverAmigo = a.portada || 'predeterminada';
+      if (coverAmigo && coverAmigo !== 'predeterminada') {
+        amHero.classList.add(`cover-${coverAmigo}`, 'has-custom-cover');
+      } else {
+        amHero.classList.add('cover-predeterminada');
+      }
+    }
+    const amCharBox = document.getElementById('amigo-modal-character-container');
+    if (amCharBox) {
+      if (a.personajeFavorito && a.personajeFavorito.nombre) {
+        const c = a.personajeFavorito;
+        const esImg = c.imagen && (c.imagen.startsWith('http') || c.imagen.startsWith('data:'));
+        amCharBox.innerHTML = `
+          <div class="profile-fav-char-card" style="margin-bottom:14px;">
+            <div class="fav-char-crown-badge">
+              <span>👑</span> <span>${l === 'en' ? 'FAVORITE CHARACTER' : 'PERSONAJE FAVORITO'}</span>
+            </div>
+            <div class="fav-char-inner">
+              <div class="fav-char-poster-wrap">
+                ${esImg ? `<img src="${c.imagen}" alt="${c.nombre}">` : `<div class="fav-char-emoji-poster">${c.imagen || '👑'}</div>`}
+              </div>
+              <div class="fav-char-details">
+                <div class="fav-char-name">${c.nombre}</div>
+                <div class="fav-char-origin"><span style="opacity:0.8;">${l === 'en' ? 'From:' : 'De:'}</span> <strong>${c.obra || ''}</strong></div>
+                ${c.cita ? `<div class="fav-char-quote">“${c.cita}”</div>` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+        amCharBox.style.display = 'block';
+      } else {
+        amCharBox.innerHTML = '';
+        amCharBox.style.display = 'none';
+      }
+    }
     // Métricas del amigo
     document.getElementById('amigo-stat-total').textContent = res.metricas?.total || 0;
     document.getElementById('amigo-stat-promedio').textContent = `★ ${(res.metricas?.promedio || 0).toFixed(1)}`;
@@ -4668,7 +5218,7 @@ function obtenerRegistrosFiltradosPorAnio() {
 function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {}
 try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) estado.anioActivo = anioG; } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
-try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); } } catch (e) {}
+try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); if (!perfilUsuario.portada && perfilUsuario.preferencias?.portada) perfilUsuario.portada = perfilUsuario.preferencias.portada; if (!perfilUsuario.personajeFavorito && perfilUsuario.favoritos?.personajeFavorito) perfilUsuario.personajeFavorito = perfilUsuario.favoritos.personajeFavorito; } } catch (e) {}
 aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); actualizarUISelectorAnio(); }
 function guardarPreferenciasLocales() { try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {} }
 function guardarPerfilLocal() { try { localStorage.setItem('Mediary_perfil_v1', JSON.stringify(perfilUsuario)); if (estado.userEmail) localStorage.setItem('Mediary_active_user_v1', estado.userEmail); } catch (e) {} }
@@ -4677,7 +5227,7 @@ localStorage.setItem('Mediary_saved_accounts_v1', JSON.stringify(lista.slice(0, 
 }
 function aplicarSesionExitosa(res, mostrarSaludo = false) { estado.userEmail = (res.emailGoogle || estado.userEmail || '').trim().toLowerCase(); perfilUsuario.emailGoogle = estado.userEmail; perfilUsuario.logueadoGoogle = true;
 perfilUsuario.nickname = res.nickname || (estado.userEmail ? estado.userEmail.split('@')[0] : 'Cinéfilo & Lector'); perfilUsuario.bio = res.bio || 'Coleccionando historias en Mediary ✨'; perfilUsuario.avatar = res.avatar || '🎬'; perfilUsuario.favoritos = res.favoritos || {};
-perfilUsuario.favoritosOcultos = res.favoritosOcultos || {}; perfilUsuario.preferencias = res.preferencias || {}; if (!perfilUsuario.preferencias.userId && estado.userEmail) { perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias); } guardarPerfilLocal(); registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar); renderizarCabeceraPerfil(); cerrarModalAuthSupabase(); cargarRegistros(); cargarWatchlist();
+perfilUsuario.favoritosOcultos = res.favoritosOcultos || {}; perfilUsuario.preferencias = res.preferencias || {}; if (res.preferencias?.portada || res.favoritos?.portada) perfilUsuario.portada = res.preferencias?.portada || res.favoritos?.portada; if (res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito) perfilUsuario.personajeFavorito = res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito; if (!perfilUsuario.preferencias.userId && estado.userEmail) { perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias); } guardarPerfilLocal(); registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar); renderizarCabeceraPerfil(); cerrarModalAuthSupabase(); cargarRegistros(); cargarWatchlist();
 if (estado.categoria === 'perfil') renderizarFavoritosPerfil(); if (mostrarSaludo) mostrarToastPersonalizado(`¡Bienvenido, ${perfilUsuario.nickname}! (${estado.userEmail}) ✨`); }
 function sincronizarPerfilDesdeServidor() { google.script.run.withSuccessHandler(res => { if (res && res.exito) { aplicarSesionExitosa(res, false); } else if (res && res.sinSesion && !estado.userEmail) { abrirModalAuthSupabase(); } }).obtenerPerfilUsuario(estado.userEmail); }
 function renderizarCabeceraPerfil() { const avBox = document.getElementById('perfil-avatar-render'); const btnHeader = document.getElementById('btn-profile');
@@ -4703,6 +5253,448 @@ if (userEmailActivo) {
   if (cfgBadge) cfgBadge.style.display = 'none';
   if (cfgStatus) cfgStatus.textContent = 'Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.';
 }
+aplicarPortadaEnHeroCard('perfil-hero-card');
+renderizarPersonajeFavorito();
+}
+
+// ==========================================
+// SISTEMA DE PORTADAS DE PERFIL
+// ==========================================
+const PORTADAS_DISPONIBLES = [
+  {
+    id: 'predeterminada',
+    nombre: 'Predeterminada',
+    icono: '✨',
+    descripcion: 'Diseño limpio y sobrio adaptado al tema visual activo de Mediary.',
+    previewClass: 'cover-predeterminada',
+    gradientePreview: 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.95))'
+  },
+  {
+    id: 'espacio',
+    nombre: '1. Espacio & Cosmos',
+    icono: '🌌',
+    descripcion: 'Universo estelar profundo con nebulosa cósmica violeta/azul y constelaciones.',
+    previewClass: 'cover-espacio',
+    gradientePreview: 'radial-gradient(ellipse at 30% 20%, rgba(168,85,247,0.45) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(56,189,248,0.4) 0%, transparent 55%), #050816'
+  },
+  {
+    id: 'arcade',
+    nombre: '2. Gaming / Arcade Retro',
+    icono: '🕹️',
+    descripcion: 'Estética synthwave 80s con rejilla neón magenta y cian retro-futurista.',
+    previewClass: 'cover-arcade',
+    gradientePreview: 'linear-gradient(180deg, #130924 0%, #2a0845 55%, #f43f5e 100%)'
+  },
+  {
+    id: 'bosque',
+    nombre: '3. Bosque con Río',
+    icono: '🌲',
+    descripcion: 'Naturaleza viva con follaje esmeralda profundo, destellos y agua cristalina.',
+    previewClass: 'cover-bosque',
+    gradientePreview: 'linear-gradient(145deg, #06231a 0%, #0d4432 50%, #115e59 100%)'
+  },
+  {
+    id: 'castillo',
+    nombre: '4. Castillo de Fantasía',
+    icono: '🏰',
+    descripcion: 'Reino místico crepuscular con torres doradas, aurora y magia medieval.',
+    previewClass: 'cover-castillo',
+    gradientePreview: 'linear-gradient(140deg, #1a0b2e 0%, #3b135c 45%, #6b21a8 80%, #d97706 100%)'
+  }
+];
+
+function obtenerPortadaActual() {
+  return perfilUsuario?.portada || perfilUsuario?.preferencias?.portada || perfilUsuario?.favoritos?.portada || 'predeterminada';
+}
+
+function aplicarPortadaEnHeroCard(targetElId = 'perfil-hero-card', idCover = null) {
+  const el = document.getElementById(targetElId);
+  if (!el) return;
+  const cover = idCover || obtenerPortadaActual();
+  PORTADAS_DISPONIBLES.forEach(p => el.classList.remove(`cover-${p.id}`));
+  el.classList.remove('has-custom-cover');
+  if (cover && cover !== 'predeterminada') {
+    el.classList.add(`cover-${cover}`, 'has-custom-cover');
+  } else {
+    el.classList.add('cover-predeterminada');
+  }
+}
+
+function abrirModalElegirPortada() {
+  renderizarOpcionesPortadas();
+  const m = document.getElementById('modal-elegir-portada');
+  if (m) m.style.display = 'flex';
+}
+
+function cerrarModalElegirPortada() {
+  const m = document.getElementById('modal-elegir-portada');
+  if (m) m.style.display = 'none';
+}
+
+function renderizarOpcionesPortadas() {
+  const c = document.getElementById('profile-covers-options-list');
+  if (!c) return;
+  const actual = obtenerPortadaActual();
+  c.innerHTML = PORTADAS_DISPONIBLES.map(p => {
+    const isAct = (p.id === actual);
+    return `
+      <div class="cover-option-card ${isAct ? 'selected' : ''}" onclick="seleccionarPortadaPerfil('${p.id}')">
+        <div class="cover-preview-stage ${p.previewClass}" style="background:${p.gradientePreview};">
+          <div style="font-size:1.85rem; text-shadow:0 2px 8px rgba(0,0,0,0.6);">${p.icono}</div>
+          ${isAct ? `<div class="cover-selected-badge">✓ Activa</div>` : ''}
+        </div>
+        <div class="cover-meta-wrap">
+          <strong class="cover-name-txt">${p.nombre}</strong>
+          <p class="cover-desc-txt">${p.descripcion}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function seleccionarPortadaPerfil(idCover) {
+  perfilUsuario.portada = idCover;
+  if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+  perfilUsuario.preferencias.portada = idCover;
+  if (!perfilUsuario.favoritos) perfilUsuario.favoritos = {};
+  perfilUsuario.favoritos.portada = idCover;
+  guardarPerfilLocal();
+  aplicarPortadaEnHeroCard('perfil-hero-card', idCover);
+  renderizarOpcionesPortadas();
+  const pNom = PORTADAS_DISPONIBLES.find(x => x.id === idCover)?.nombre || idCover;
+  mostrarToastPersonalizado(`🎨 Portada "${pNom}" aplicada`);
+  google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+}
+
+// ==========================================
+// SLOT DESTACADO: PERSONAJE FAVORITO
+// ==========================================
+let debounceTimerChar = null;
+let obraSeleccionadaParaChar = null;
+
+function renderizarPersonajeFavorito() {
+  const cont = document.getElementById('perfil-character-card-container');
+  if (!cont) return;
+  const char = perfilUsuario?.personajeFavorito || perfilUsuario?.favoritos?.personajeFavorito || null;
+  const l = userPrefs?.lang || 'es';
+
+  if (!char || !char.nombre) {
+    cont.innerHTML = `
+      <div class="fav-char-empty-box" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Click to choose your favorite character' : 'Click para elegir tu personaje favorito'}">
+        <div style="display:flex; align-items:center; gap:14px; min-width:0; flex:1;">
+          <div class="fav-char-empty-icon">👑</div>
+          <div style="min-width:0; flex:1;">
+            <div style="font-weight:700; font-size:0.92rem; color:var(--text); margin-bottom:2px;">
+              ${l === 'en' ? 'Choose your Favorite Character' : '👑 Elige tu Personaje Favorito'}
+            </div>
+            <div style="font-size:0.77rem; color:var(--muted); line-height:1.35;">
+              ${l === 'en' ? 'Feature your top hero, protagonist or companion in your profile header.' : 'Destaca a tu protagonista, héroe o villano predilecto de películas, anime, series, juegos o libros.'}
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-choose-char-cta" onclick="event.stopPropagation(); abrirModalSeleccionarPersonaje()">
+          <span>+</span> <span>${l === 'en' ? 'Choose' : 'Elegir'}</span>
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  const esImg = char.imagen && (char.imagen.startsWith('http') || char.imagen.startsWith('data:'));
+  cont.innerHTML = `
+    <div class="profile-fav-char-card">
+      <div class="fav-char-crown-badge">
+        <span>👑</span> <span>${l === 'en' ? 'FAVORITE CHARACTER' : 'PERSONAJE FAVORITO'}</span>
+      </div>
+      <div class="fav-char-inner">
+        <div class="fav-char-poster-wrap">
+          ${esImg ? `<img src="${char.imagen}" alt="${char.nombre}">` : `<div class="fav-char-emoji-poster">${char.imagen || '👑'}</div>`}
+        </div>
+        <div class="fav-char-details">
+          <div class="fav-char-name">${char.nombre}</div>
+          <div class="fav-char-origin">
+            <span style="opacity:0.8;">${l === 'en' ? 'From:' : 'De:'}</span> <strong>${char.obra || 'Obra predilecta'}</strong>
+          </div>
+          ${char.cita ? `<div class="fav-char-quote">“${char.cita}”</div>` : ''}
+        </div>
+        <div class="fav-char-actions">
+          <button type="button" class="btn-fav-char-action" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Change favorite character' : 'Cambiar personaje favorito'}">
+            <span>🔄</span> <span>${l === 'en' ? 'Change' : 'Cambiar'}</span>
+          </button>
+          <button type="button" class="btn-fav-char-action btn-fav-char-remove" onclick="quitarPersonajeFavorito()" title="${l === 'en' ? 'Remove character' : 'Quitar personaje'}">
+            <span>✕</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function abrirModalSeleccionarPersonaje() {
+  const m = document.getElementById('modal-seleccionar-personaje');
+  if (!m) return;
+  cambiarTabSelectorPersonaje('online');
+  const btnQuitar = document.getElementById('btn-quitar-personaje-fav');
+  const tieneChar = !!(perfilUsuario?.personajeFavorito && perfilUsuario.personajeFavorito.nombre);
+  if (btnQuitar) btnQuitar.style.display = tieneChar ? 'inline-flex' : 'none';
+  m.style.display = 'flex';
+}
+
+function cerrarModalSeleccionarPersonaje() {
+  const m = document.getElementById('modal-seleccionar-personaje');
+  if (m) m.style.display = 'none';
+}
+
+function cambiarTabSelectorPersonaje(tab) {
+  const tabs = ['online', 'misobras', 'manual'];
+  tabs.forEach(t => {
+    document.getElementById(`tab-char-${t}`)?.classList.toggle('active', t === tab);
+    const pane = document.getElementById(`tab-char-content-${t}`);
+    if (pane) pane.style.display = (t === tab) ? 'block' : 'none';
+  });
+  if (tab === 'misobras') {
+    cargarObrasParaPersonaje();
+  }
+}
+
+function debouncedBuscarPersonaje(val) {
+  clearTimeout(debounceTimerChar);
+  const q = String(val || '').trim();
+  if (q.length < 2) {
+    const resBox = document.getElementById('char-search-results');
+    if (resBox) resBox.innerHTML = '<div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.84rem; grid-column:1/-1;">Escribe al menos 2 letras para buscar personajes.</div>';
+    return;
+  }
+  const loadEl = document.getElementById('char-search-loading');
+  if (loadEl) loadEl.style.display = 'block';
+  debounceTimerChar = setTimeout(() => {
+    buscarPersonajeEnVivo(q);
+  }, 350);
+}
+
+async function buscarPersonajeEnVivo(query) {
+  const loadEl = document.getElementById('char-search-loading');
+  const resBox = document.getElementById('char-search-results');
+  try {
+    const qEnc = encodeURIComponent(query);
+    const promises = [
+      getJson_(`https://kitsu.io/api/edge/characters?filter[name]=${qEnc}&page[limit]=8`).catch(() => null),
+      getJson_(`https://api.jikan.moe/v4/characters?q=${qEnc}&limit=8`).catch(() => null),
+      getJson_(`https://api.themoviedb.org/3/search/person?api_key=${TMDB_K}&query=${qEnc}&language=es-ES`).catch(() => null)
+    ];
+
+    const [kitsuRes, jikanRes, tmdbRes] = await Promise.all(promises);
+    const items = [];
+
+    if (jikanRes?.data && Array.isArray(jikanRes.data)) {
+      jikanRes.data.forEach(c => {
+        items.push({
+          nombre: c.name || '',
+          obra: c.nicknames?.join(', ') || 'Anime / Manga',
+          imagen: c.images?.jpg?.image_url || '',
+          cita: '',
+          fuente: 'Jikan'
+        });
+      });
+    }
+
+    if (kitsuRes?.data && Array.isArray(kitsuRes.data)) {
+      kitsuRes.data.forEach(c => {
+        const attr = c.attributes || {};
+        const nom = attr.canonicalName || attr.name || '';
+        const img = attr.image?.original || attr.image?.medium || '';
+        if (nom && !items.some(x => x.nombre.toLowerCase() === nom.toLowerCase())) {
+          items.push({
+            nombre: nom,
+            obra: 'Anime / Manga',
+            imagen: img,
+            cita: '',
+            fuente: 'Kitsu'
+          });
+        }
+      });
+    }
+
+    if (tmdbRes?.results && Array.isArray(tmdbRes.results)) {
+      tmdbRes.results.forEach(p => {
+        const nom = p.name || '';
+        const kf = (p.known_for || []).map(x => x.title || x.name).filter(Boolean).slice(0, 2).join(', ');
+        const img = p.profile_path ? `https://image.tmdb.org/t/p/w300${p.profile_path}` : '';
+        if (nom && !items.some(x => x.nombre.toLowerCase() === nom.toLowerCase())) {
+          items.push({
+            nombre: nom,
+            obra: kf || (p.known_for_department || 'Cine & TV'),
+            imagen: img,
+            cita: '',
+            fuente: 'TMDb'
+          });
+        }
+      });
+    }
+
+    renderizarResultadosBusquedaPersonaje(items, query);
+  } catch (err) {
+    if (resBox) resBox.innerHTML = '<div style="text-align:center; padding:20px; color:#f87171; font-size:0.84rem; grid-column:1/-1;">Error al buscar personajes. Puedes usar la pestaña "Personalizado" para ingresarlo manualmente.</div>';
+  } finally {
+    if (loadEl) loadEl.style.display = 'none';
+  }
+}
+
+function renderizarResultadosBusquedaPersonaje(items, query) {
+  const resBox = document.getElementById('char-search-results');
+  if (!resBox) return;
+  if (!items || !items.length) {
+    resBox.innerHTML = `
+      <div style="text-align:center; padding:24px 12px; color:var(--muted); font-size:0.85rem; grid-column:1/-1;">
+        No se encontraron resultados para "<strong>${query}</strong>".<br>
+        <span style="font-size:0.78rem; opacity:0.8;">Prueba con otro término o ingrésalo en la pestaña "Personalizado".</span>
+      </div>
+    `;
+    return;
+  }
+
+  resBox.innerHTML = items.map((c) => {
+    const esImg = c.imagen && (c.imagen.startsWith('http') || c.imagen.startsWith('data:'));
+    const safeChar = encodeURIComponent(JSON.stringify(c));
+    return `
+      <div class="char-result-card" onclick="seleccionarPersonajeOnline('${safeChar}')">
+        <div class="char-result-avatar">
+          ${esImg ? `<img src="${c.imagen}" alt="${c.nombre}">` : `<span>👑</span>`}
+        </div>
+        <div class="char-result-info">
+          <strong class="char-result-name">${c.nombre}</strong>
+          <span class="char-result-origin">${c.obra}</span>
+        </div>
+        <button type="button" class="btn-select-char-pill">Elegir</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function seleccionarPersonajeOnline(safeCharJson) {
+  try {
+    const charObj = JSON.parse(decodeURIComponent(safeCharJson));
+    asignarPersonajeFavorito(charObj);
+  } catch (e) {}
+}
+
+function cargarObrasParaPersonaje() {
+  const box = document.getElementById('char-obras-lista');
+  if (!box) return;
+  filtrarMisObrasParaPersonaje('');
+}
+
+function filtrarMisObrasParaPersonaje(filtro) {
+  const box = document.getElementById('char-obras-lista');
+  if (!box) return;
+  const q = String(filtro || '').toLowerCase().trim();
+  const regs = (estado.registros || []).filter(r => {
+    if (!q) return true;
+    return (r.titulo && r.titulo.toLowerCase().includes(q)) || (r.creador && r.creador.toLowerCase().includes(q));
+  });
+
+  if (!regs.length) {
+    box.innerHTML = '<div style="color:var(--muted); font-size:0.82rem; padding:16px; text-align:center;">No se encontraron registros en tu historial.</div>';
+    return;
+  }
+
+  box.innerHTML = regs.slice(0, 30).map(r => {
+    return `
+      <div class="char-obra-row ${obraSeleccionadaParaChar?.id === r.id ? 'selected' : ''}" onclick="seleccionarObraParaPersonaje('${r.id}')">
+        <div style="width:34px; height:48px; border-radius:6px; overflow:hidden; background:#1e293b; flex-shrink:0;">
+          ${r.poster ? `<img src="${r.poster}" style="width:100%; height:100%; object-fit:cover;">` : '<div style="width:100%; height:100%; display:grid; place-items:center; font-size:0.9rem;">🎬</div>'}
+        </div>
+        <div style="flex:1; min-width:0;">
+          <strong style="font-size:0.86rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${r.titulo}</strong>
+          <span style="font-size:0.74rem; color:var(--muted);">${r.categoria} • ${r.subcategoria || ''}</span>
+        </div>
+        <span style="font-size:0.8rem; color:var(--accent);">➔</span>
+      </div>
+    `;
+  }).join('');
+}
+
+function seleccionarObraParaPersonaje(idReg) {
+  const r = (estado.registros || []).find(x => String(x.id) === String(idReg));
+  if (!r) return;
+  obraSeleccionadaParaChar = r;
+  document.querySelectorAll('.char-obra-row').forEach(el => el.classList.remove('selected'));
+
+  const formBox = document.getElementById('char-obra-selected-form');
+  const imgEl = document.getElementById('char-obra-selected-img');
+  const catEl = document.getElementById('char-obra-selected-cat');
+  const titEl = document.getElementById('char-obra-selected-title');
+  const inpName = document.getElementById('input-char-from-obra-name');
+
+  if (imgEl) imgEl.src = r.poster || '';
+  if (catEl) catEl.textContent = `${r.categoria} • ${r.subcategoria || ''}`;
+  if (titEl) titEl.textContent = r.titulo;
+  if (inpName) {
+    inpName.value = '';
+    inpName.focus();
+  }
+  if (formBox) formBox.style.display = 'block';
+}
+
+function confirmarPersonajeDeObra() {
+  if (!obraSeleccionadaParaChar) return alert('Por favor selecciona una obra primero.');
+  const nom = document.getElementById('input-char-from-obra-name')?.value.trim();
+  const cita = document.getElementById('input-char-from-obra-quote')?.value.trim();
+  if (!nom) return alert('Por favor escribe el nombre del personaje.');
+
+  const charObj = {
+    nombre: nom,
+    obra: obraSeleccionadaParaChar.titulo,
+    categoria: obraSeleccionadaParaChar.categoria,
+    imagen: obraSeleccionadaParaChar.poster || '👑',
+    cita: cita || '',
+    fuente: 'obra'
+  };
+  asignarPersonajeFavorito(charObj);
+}
+
+function guardarPersonajeManual() {
+  const nom = document.getElementById('input-char-manual-nombre')?.value.trim();
+  const obra = document.getElementById('input-char-manual-obra')?.value.trim();
+  const img = document.getElementById('input-char-manual-imagen')?.value.trim();
+  const cita = document.getElementById('input-char-manual-cita')?.value.trim();
+
+  if (!nom) return alert('Por favor escribe el nombre del personaje.');
+  if (!obra) return alert('Por favor escribe la obra o franquicia de origen.');
+
+  const charObj = {
+    nombre: nom,
+    obra: obra,
+    imagen: img || '👑',
+    cita: cita || '',
+    fuente: 'manual'
+  };
+  asignarPersonajeFavorito(charObj);
+}
+
+function asignarPersonajeFavorito(charObj) {
+  if (!charObj || !charObj.nombre) return;
+  perfilUsuario.personajeFavorito = charObj;
+  if (!perfilUsuario.favoritos) perfilUsuario.favoritos = {};
+  perfilUsuario.favoritos.personajeFavorito = charObj;
+  guardarPerfilLocal();
+  renderizarPersonajeFavorito();
+  cerrarModalSeleccionarPersonaje();
+  mostrarToastPersonalizado(`👑 ¡${charObj.nombre} es ahora tu Personaje Favorito!`);
+  google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+}
+
+function quitarPersonajeFavorito() {
+  if (!confirm('¿Deseas quitar a tu personaje favorito de tu perfil?')) return;
+  perfilUsuario.personajeFavorito = null;
+  if (perfilUsuario.favoritos) {
+    delete perfilUsuario.favoritos.personajeFavorito;
+  }
+  guardarPerfilLocal();
+  renderizarPersonajeFavorito();
+  cerrarModalSeleccionarPersonaje();
+  mostrarToastPersonalizado('Personaje favorito quitado del perfil.');
+  google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
 }
 function abrirModalAuthSupabase(modoInicial = 'login') { cambiarModoModalAuth(modoInicial); const errBox = document.getElementById('auth-error-msg'); if (errBox) errBox.style.display = 'none'; document.getElementById('auth-input-email').value = estado.userEmail || '';
 document.getElementById('auth-input-pass').value = ''; document.getElementById('auth-input-nick').value = ''; const btnLogout = document.getElementById('btn-auth-logout'); if (btnLogout) btnLogout.style.display = estado.userEmail ? 'inline-block' : 'none';
@@ -4728,7 +5720,7 @@ if (!email) return mostrarErrorAuth('Por favor escribe tu correo (ej. usuario@gm
 google.script.run.withSuccessHandler(res => { btn.textContent = txtOrig; btn.disabled = false; if (res && res.exito) { aplicarSesionExitosa(res, true); } else { mostrarErrorAuth(res?.error || 'Error al autenticar con Supabase.'); }
 }).withFailureHandler(err => { btn.textContent = txtOrig; btn.disabled = false; mostrarErrorAuth('Error de red: ' + (err?.message || err)); }).autenticarUsuarioSupabase({ modo: estado.modoAuthModal, email, password, nickname }); }
 function cerrarSesionUsuarioActual() { estado.userEmail = ''; estado.registros = []; estado.watchlist = [];
-perfilUsuario = { nickname: 'Invitado', bio: 'Inicia sesión para ver tus colecciones en Supabase ✨', avatar: '👤', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {} };
+perfilUsuario = { nickname: 'Invitado', bio: 'Inicia sesión para ver tus colecciones en Supabase ✨', avatar: '👤', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}, portada: 'predeterminada', personajeFavorito: null };
 try { localStorage.removeItem('Mediary_active_user_v1'); localStorage.removeItem('MyMediary_active_user_v1'); localStorage.removeItem('Mediary_perfil_v1'); localStorage.removeItem('MyMediary_perfil_v1'); } catch (e) {}
 renderizarCabeceraPerfil(); if (estado.categoria === 'inicio') renderizarStats(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
 else if (CONFIG[estado.categoria]) { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
@@ -6091,7 +7083,9 @@ function inicializarManejoBotonAtras() {
       'modal-shuffle-recomendar',
       'modal-lightbox-avatar',
       'modal-nuevo-artista',
-      'modal-editar-perfil'
+      'modal-editar-perfil',
+      'modal-elegir-portada',
+      'modal-seleccionar-personaje'
     ];
     for (const mId of modalIds) {
       const el = document.getElementById(mId);
@@ -6110,6 +7104,8 @@ function inicializarManejoBotonAtras() {
         else if (mId === 'modal-lightbox-avatar') cerrarLightboxAvatar();
         else if (mId === 'modal-nuevo-artista') cerrarModalNuevoArtista();
         else if (mId === 'modal-editar-perfil') cerrarModalEditarPerfil();
+        else if (mId === 'modal-elegir-portada') cerrarModalElegirPortada();
+        else if (mId === 'modal-seleccionar-personaje') cerrarModalSeleccionarPersonaje();
         else el.style.display = 'none';
         try { history.pushState({ appView: estado.categoria || 'inicio', depth: appNavHistory.length }, '', ''); } catch (err) {}
         return;
