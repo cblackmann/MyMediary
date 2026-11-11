@@ -2135,6 +2135,14 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
       <textarea id="terminar-comentario" class="comment-box" style="min-height:85px;" placeholder="¿Qué te pareció la obra? Deja tus impresiones..."></textarea>
     </div>
 
+    <!-- Opción de serie de temporada única (guardar también en Series Completas) -->
+    <div class="form-group" id="terminar-grupo-serie-unica" style="display:none; margin-bottom:14px; background:rgba(56,189,248,0.08); padding:9px 12px; border-radius:8px; border:1px solid rgba(56,189,248,0.25);">
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer; margin:0; font-size:0.84rem; font-weight:600; color:var(--text);">
+        <input type="checkbox" id="chk-terminar-serie-unica" style="cursor:pointer; width:16px; height:16px; accent-color:var(--accent);">
+        <span>📺 <span id="lbl-terminar-serie-unica" data-i18n="lbl_guardar_serie_completa">Serie de temporada única (guardar también en Series Completas)</span></span>
+      </label>
+    </div>
+
     <!-- Botones de acción -->
     <div class="modal-actions" style="justify-content:flex-end; gap:10px;">
       <button type="button" class="btn-modal-cancel" onclick="cerrarModalTerminarObra()" data-i18n="btn_cancel">Cancelar</button>
@@ -2743,8 +2751,27 @@ const buildObj = o => {
     creador: o.creador || '', anio: String(o.anio || ''), fecha_inicio: fIni, fecha_fin: fFin, calificacion: Number(o.calificacion) || 0, comentario: o.comentario || '',
     poster: o.poster || '', horas: o.horas || '', es_rewatch: !!o.esRewatch
   };
-}; const rows = [buildObj(d)]; if (d.esTemporadaUnica && d.categoria === 'Series' && (d.subcategoria === 'Temporadas' || d.subcategoria.includes('Temporada'))) {
-rows.push(buildObj(Object.assign({}, d, { subcategoria: 'Series Completas', titulo: d.tituloBase || d.titulo.replace(/\s*\[S\d+\]$/, '') }))); }
+}; const rows = [buildObj(d)];
+if (d.esTemporadaUnica && d.categoria === 'Series' && (d.subcategoria === 'Temporadas' || d.subcategoria.includes('Temporada'))) {
+  const baseTitle = (d.tituloBase || d.titulo.replace(/\s*\[s\d+\]$/i, '')).trim();
+  try {
+    const wExisting = await sbFetch_(`registros?user_email=eq.${encodeURIComponent(email)}&categoria=eq.Series&subcategoria=eq.Series%20Completas&titulo=eq.${encodeURIComponent(baseTitle)}&select=id`, 'GET') || [];
+    if (wExisting && wExisting.length > 0) {
+      const patchObj = {
+        fecha_inicio: d.fechaInicio === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(d.fechaInicio),
+        fecha_fin: d.fechaFin === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(d.fechaFin),
+        calificacion: Number(d.calificacion) || 0,
+        comentario: d.comentario || '',
+        es_rewatch: !!d.esRewatch
+      };
+      await sbFetch_(`registros?id=eq.${encodeURIComponent(wExisting[0].id)}&user_email=eq.${encodeURIComponent(email)}`, 'PATCH', patchObj);
+    } else {
+      rows.push(buildObj(Object.assign({}, d, { subcategoria: 'Series Completas', titulo: baseTitle })));
+    }
+  } catch (errSC) {
+    rows.push(buildObj(Object.assign({}, d, { subcategoria: 'Series Completas', titulo: baseTitle })));
+  }
+}
 await sbFetch_('registros', 'POST', rows); let estabaEnWatchlist = false, tituloWatchlist = ''; try { const wData = await sbFetch_(`watchlist?user_email=eq.${encodeURIComponent(email)}&categoria=eq.${encodeURIComponent(d.categoria || '')}&select=*`, 'GET') || [];
 const titNorm = String(d.tituloBase || d.titulo || '').toLowerCase().replace(/\s*\[s\d+\]$/i, '').trim(); for (const w of wData) { const itemTit = String(w.titulo || '').toLowerCase().trim(); if (itemTit === titNorm || (itemTit && (titNorm.startsWith(itemTit) || itemTit.startsWith(titNorm)))) {
 estabaEnWatchlist = true; tituloWatchlist = String(w.titulo); await sbFetch_(`watchlist?id=eq.${encodeURIComponent(w.id)}&user_email=eq.${encodeURIComponent(email)}`, 'DELETE'); }
@@ -6877,6 +6904,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "lbl_fecha_termino": "Fecha de término:",
     "btn_hoy_pill": "📅 Hoy",
     "lbl_comentario_resena": "Comentario / Reseña:",
+    "lbl_guardar_serie_completa": "Serie de temporada única (guardar también en Series Completas)",
     "btn_guardar_finalizar": "🎉 ¡Guardar y Finalizar!",
     "btn_ruleta_amigo_perfil": "¿Qué vemos o jugamos hoy? — Ruleta Co-op",
     "ruleta_modal_title": "Mezclar Watchlists con un Amigo",
@@ -7291,6 +7319,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "lbl_fecha_termino": "Completion date:",
     "btn_hoy_pill": "📅 Today",
     "lbl_comentario_resena": "Review / Notes:",
+    "lbl_guardar_serie_completa": "Single-season series (also save to Complete Series)",
     "btn_guardar_finalizar": "🎉 Save & Finish!",
     "btn_ruleta_amigo_perfil": "What shall we watch or play today? — Co-op Roulette",
     "ruleta_modal_title": "Mix Watchlists with a Friend",
@@ -11665,7 +11694,13 @@ function seleccionarItem(it) {
       if (el) el.value = '';
     });
     const chkTempU = document.getElementById('chk-temporada-unica');
-    if (chkTempU) chkTempU.checked = false;
+    if (chkTempU) {
+      chkTempU.checked = (it.totalSeasons === 1 || (Array.isArray(it.seasonsList) && it.seasonsList.length === 1));
+      if (chkTempU.checked) {
+        const inTempNum = document.getElementById('input-temporada-num');
+        if (inTempNum && !inTempNum.value) inTempNum.value = '1';
+      }
+    }
     const chkRw = document.getElementById('chk-es-rewatch');
     if (chkRw) chkRw.checked = false;
     const chkProg = document.getElementById('chk-en-progreso');
@@ -12137,8 +12172,15 @@ function guardarNuevoElemento() {
   let tTit = estado.seleccionado.tituloOriginal || estado.seleccionado.titulo || 'Sin título',
       sub = estado.seleccionado.tituloIngles || '',
       tBase = estado.seleccionado.tituloOriginal || estado.seleccionado.titulo || 'Sin título';
-let esUnica = false, esUltima = false, numT = 0, totT = estado.seleccionado.totalSeasons || 0; if (c === 'Series' && (s === 'Temporadas' || s.includes('Temporada'))) { const n = document.getElementById('input-temporada-num').value.trim(); numT = Number(n) || 1;
-tTit = `${estado.seleccionado.tituloOriginal} [${n ? 'S' + n : 'S1'}]`; esUnica = document.getElementById('chk-temporada-unica').checked; if (totT > 0 && numT >= totT && !esUnica) esUltima = true; }
+let esUnica = false, esUltima = false, numT = 0, totT = estado.seleccionado.totalSeasons || 0;
+if (c === 'Series' && (s === 'Temporadas' || s.includes('Temporada'))) {
+  const n = document.getElementById('input-temporada-num').value.trim();
+  numT = Number(n) || 1;
+  tTit = `${estado.seleccionado.tituloOriginal} [${n ? 'S' + n : 'S1'}]`;
+  const chkU = document.getElementById('chk-temporada-unica')?.checked;
+  esUnica = !!chkU || (totT === 1 && numT <= 1);
+  if (totT > 0 && numT >= totT && !esUnica) esUltima = true;
+}
 if (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) { const a = document.getElementById('input-arco').value.trim(), num = document.getElementById('input-numeros-abarcados').value.trim(); if (a) tTit = `${estado.seleccionado.tituloOriginal}: ${a}`;
 if (num) sub = `${estado.seleccionado.tituloOriginal} #${num}`; }
 const sinF = document.getElementById('chk-no-fecha').checked; const fechasG = obtenerFechasParaGuardarNuevo(); const fI = fechasG.fI; let fF = fechasG.fF;
@@ -12349,6 +12391,27 @@ function abrirModalTerminarObra(id) {
     const comEl = document.getElementById('terminar-comentario');
     if (comEl) comEl.value = (reg.comentario && reg.comentario !== '—') ? reg.comentario : '';
 
+    const esSerie = (reg.categoria === 'Series' && (reg.subcategoria === 'Temporadas' || String(reg.subcategoria || '').includes('Temporada')));
+    const grupoSerieUnica = document.getElementById('terminar-grupo-serie-unica');
+    const chkSerieUnica = document.getElementById('chk-terminar-serie-unica');
+    if (grupoSerieUnica && chkSerieUnica) {
+      if (esSerie) {
+        grupoSerieUnica.style.display = 'block';
+        const tBase = reg.tituloBase || reg.titulo.replace(/\s*\[s\d+\]$/i, '').trim();
+        const tNorm = tBase.toLowerCase();
+        const otrasTemps = (estado.registros || []).filter(r => 
+          r.categoria === 'Series' && 
+          (r.subcategoria === 'Temporadas' || String(r.subcategoria || '').includes('Temporada')) &&
+          String(r.id) !== String(reg.id) &&
+          (String(r.titulo || '').toLowerCase().startsWith(tNorm + ' [') || String(r.titulo || '').toLowerCase() === tNorm)
+        );
+        chkSerieUnica.checked = (otrasTemps.length === 0);
+      } else {
+        grupoSerieUnica.style.display = 'none';
+        chkSerieUnica.checked = false;
+      }
+    }
+
     const btnConfirm = document.getElementById('btn-guardar-terminar-obra');
     if (btnConfirm) {
       btnConfirm.textContent = l === 'en' ? '🎉 Save & Finish!' : '🎉 ¡Guardar y Finalizar!';
@@ -12428,6 +12491,7 @@ function confirmarTerminarObra() {
   const fFinVal = sanitizarFechaFrontend(document.getElementById('terminar-fecha-fin')?.value?.trim()) || obtenerFechaHoyStr();
   const califVal = Number(califSeleccionadaTerminar) || 0;
   const comVal = asegurarPuntoFinal(document.getElementById('terminar-comentario')?.value?.trim() || '');
+  const esSerieUnicaTerminar = (reg.categoria === 'Series' && (reg.subcategoria === 'Temporadas' || String(reg.subcategoria || '').includes('Temporada')) && !!document.getElementById('chk-terminar-serie-unica')?.checked);
 
   google.script.run.withSuccessHandler(res => {
     if (btn) {
@@ -12442,6 +12506,47 @@ function confirmarTerminarObra() {
       reg.comentario = comVal;
 
       mostrarToastPersonalizado(l === 'en' ? '🎉 Congratulations! Entry completed.' : '🎉 ¡Felicidades! Obra marcada como terminada.');
+
+      // Si es serie de temporada única, guardar o actualizar automáticamente en Series Completas
+      if (esSerieUnicaTerminar) {
+        const tBase = reg.tituloBase || reg.titulo.replace(/\s*\[s\d+\]$/i, '').trim();
+        const tNorm = tBase.toLowerCase();
+        const serieCompReg = (estado.registros || []).find(r => 
+          r.categoria === 'Series' && 
+          (r.subcategoria === 'Series Completas' || String(r.subcategoria || '').includes('Completa')) &&
+          String(r.titulo || '').trim().toLowerCase() === tNorm
+        );
+        if (serieCompReg) {
+          serieCompReg.fechaInicio = reg.fechaInicio;
+          serieCompReg.fechaFin = fFinVal;
+          serieCompReg.calificacion = califVal;
+          serieCompReg.comentario = comVal;
+          google.script.run.actualizarRegistro(serieCompReg.id, {
+            fechaInicio: reg.fechaInicio,
+            fechaFin: fFinVal,
+            calificacion: califVal,
+            comentario: comVal
+          }, estado.userEmail);
+        } else {
+          const payloadSerieComp = {
+            categoria: 'Series',
+            subcategoria: 'Series Completas',
+            titulo: tBase,
+            subtitulo: reg.subtitulo || '',
+            creador: reg.creador || '',
+            anio: reg.anio || '',
+            fechaInicio: reg.fechaInicio || fFinVal,
+            fechaFin: fFinVal,
+            calificacion: califVal,
+            comentario: comVal,
+            poster: reg.poster || '',
+            horas: reg.horas || '',
+            esRewatch: !!reg.esRewatch
+          };
+          google.script.run.guardarRegistro(payloadSerieComp, estado.userEmail);
+        }
+      }
+
       if (typeof renderizarObrasEnProgresoInicio === 'function') {
         renderizarObrasEnProgresoInicio();
       }
