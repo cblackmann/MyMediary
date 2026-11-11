@@ -2706,7 +2706,8 @@ if (!tieneRango) {
   const fIniLower = String(fIni || '').trim().toLowerCase();
   const esSinFechaFin = (!fFin || fFinLower === 'sin fecha' || fFinLower === '');
   const fIniValida = (fIni && fIniLower !== 'sin fecha');
-  if (esSinFechaFin && fIniValida && esSubcategoriaEnProgresoPermitida(cat, sub) && esEnProgresoTexto(r.fecha_fin)) {
+  const tieneProgTexto = esEnProgresoTexto(r.fecha_fin || r.fechaFin || fFin);
+  if ((esSinFechaFin && fIniValida) || tieneProgTexto) {
     fFin = obtenerTextoEnProgreso(cat, sub) || 'Aún viendo';
   }
 }
@@ -6938,7 +6939,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "home_en_progreso_title": "Aún viendo",
     "home_en_progreso_hint": "En curso en tu historial",
     "home_en_progreso_empty": "No tienes obras en curso en este momento.",
-    "btn_la_termine": "La terminé",
+    "btn_la_termine": "¡Ya lo terminé!",
     "lbl_en_progreso_inicio": "Inicio:"
   },
   "en": {
@@ -9022,12 +9023,18 @@ function renderizarObrasEnProgresoInicio() {
   if (!listEl) return;
 
   const l = userPrefs.lang || 'es';
-  // Filtrar obras que admiten rango y están actualmente en progreso
+  // Filtrar obras que admiten rango y están actualmente en progreso o con fecha término "Sin fecha"
   const enProgreso = (estado.registros || []).filter(r => {
     if (!r) return false;
     const admiteRango = typeof subTieneRango === 'function' ? subTieneRango(r.categoria, r.subcategoria) : false;
     if (!admiteRango) return false;
-    return typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(r.fechaFin || r.fecha_fin);
+    const fFin = r.fechaFin || r.fecha_fin;
+    const fIni = r.fechaInicio || r.fecha_inicio;
+    const fFinLower = String(fFin || '').trim().toLowerCase();
+    const fIniLower = String(fIni || '').trim().toLowerCase();
+    const esSinFechaFin = (!fFin || fFinLower === 'sin fecha' || fFinLower === '');
+    const fIniValida = (fIni && fIniLower !== 'sin fecha');
+    return (typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(fFin)) || (esSinFechaFin && fIniValida);
   });
 
   if (countEl) countEl.textContent = String(enProgreso.length);
@@ -9046,7 +9053,8 @@ function renderizarObrasEnProgresoInicio() {
     const posterSrc = r.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'46\' height=\'66\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
     const catObj = (typeof CONFIG !== 'undefined' && CONFIG[r.categoria]) ? CONFIG[r.categoria] : {};
     const catEmoji = catObj.emoji || '🎬';
-    const statusTxt = r.fechaFin || (l === 'en' ? 'Still watching' : 'Aún viendo');
+    const txtProg = typeof obtenerTextoEnProgreso === 'function' ? obtenerTextoEnProgreso(r.categoria, r.subcategoria) : null;
+    const statusTxt = (r.fechaFin && esEnProgresoTexto(r.fechaFin)) ? r.fechaFin : (txtProg || (l === 'en' ? 'Still watching' : 'Aún viendo'));
     const fechaIniStr = (r.fechaInicio && r.fechaInicio !== 'Sin fecha') ? r.fechaInicio : '';
     const subLabel = r.subcategoria || r.categoria;
     const creadorStr = r.creador ? `${r.creador} ${r.anio ? `(${r.anio})` : ''}` : (r.anio ? `(${r.anio})` : '');
@@ -9064,7 +9072,7 @@ function renderizarObrasEnProgresoInicio() {
           </div>
         </div>
         <button type="button" class="btn-terminar-home" onclick="event.stopPropagation(); abrirModalTerminarObra('${r.id}')" title="${l === 'en' ? 'Mark as finished & review' : 'Completar y calificar obra'}">
-          <span>🎉</span> <span>${l === 'en' ? 'I finished it!' : 'La terminé'}</span>
+          <span>🎉</span> <span>${l === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span>
         </button>
       </div>
     `;
@@ -10763,7 +10771,10 @@ function sanitizarRegistroFechasFrontend(r) {
   } else {
     const fFinLower = String(fF || '').trim().toLowerCase();
     const fIniLower = String(fI || '').trim().toLowerCase();
-    if ((!fF || fFinLower === 'sin fecha') && (fI && fIniLower !== 'sin fecha') && esSubcategoriaEnProgresoPermitida(cat, sub) && esEnProgresoTexto(r.fechaFin || r.fecha_fin)) {
+    const esSinFechaFin = (!fF || fFinLower === 'sin fecha' || fFinLower === '');
+    const fIniValida = (fI && fIniLower !== 'sin fecha');
+    const tieneProgTexto = esEnProgresoTexto(r.fechaFin || r.fecha_fin || fF);
+    if ((esSinFechaFin && fIniValida) || tieneProgTexto) {
       fF = obtenerTextoEnProgreso(cat, sub) || 'Aún viendo';
     }
   }
@@ -11718,9 +11729,10 @@ function obtenerFechasParaGuardarNuevo() {
     return { fI: anio, fF: anio };
   } else {
     const fI = sanitizarFechaFrontend(document.getElementById('input-fecha-inicio')?.value);
-    const fF = admiteRango ? sanitizarFechaFrontend(document.getElementById('input-fecha-fin')?.value) : fI;
+    const inpFinVal = document.getElementById('input-fecha-fin')?.value?.trim();
+    const fF = (admiteRango && inpFinVal) ? sanitizarFechaFrontend(inpFinVal) : (admiteRango ? 'Sin fecha' : fI);
     const finalI = fI || 'Sin fecha';
-    const finalF = (admiteRango ? (fF || fI) : fI) || 'Sin fecha';
+    const finalF = fF || 'Sin fecha';
     return { fI: finalI, fF: finalF };
   }
 }
@@ -12159,17 +12171,17 @@ l.forEach(reg => {
     fI = fUnica;
     fF = fUnica;
   }
-  const enProg = r && esEnProgresoTexto(fF);
+  const enProg = r && (esEnProgresoTexto(fF) || (!fF || fF === 'Sin fecha' || fF === ''));
   const sub = reg.subtitulo ? `<div style="font-size:.8rem; color:var(--muted); margin-top:2px;">(${reg.subtitulo})</div>` : ''; const meta = `(${reg.creador}${reg.anio ? ', ' + reg.anio : ''})`;
-  const stars = (enProg && (!reg.calificacion || Number(reg.calificacion) === 0))
+  const stars = enProg
     ? `<span style="color:var(--accent); font-size:0.8rem; font-weight:700; font-style:italic;">⏳ ${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>`
     : renderEstrellasVisuales(reg.calificacion);
-  const com = reg.comentario
-    ? `"${reg.comentario}"`
-    : (enProg ? `<span style="color:var(--muted); font-size:0.8rem; font-style:italic;">${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>` : '<span style="color:var(--border)">—</span>');
+  const com = enProg
+    ? `<span style="color:var(--muted); font-size:0.8rem; font-style:italic;">⏳ ${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>`
+    : (reg.comentario ? `"${reg.comentario}"` : '<span style="color:var(--border)">—</span>');
   const badgeRwHtml = reg.esRewatch ? `<span class="badge-rewatch">🔁 ${t('badge_rewatch')}</span>` : '';
   const fFDisplay = enProg
-    ? `<span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:12px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">⏳ ${fF}</span>`
+    ? `<span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:12px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">⏳ ${fF && esEnProgresoTexto(fF) ? fF : (obtenerTextoEnProgreso(c, s) || 'Aún viendo')}</span>`
     : fF;
   const fechaParaMes = (!r) ? fI : ((fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : fI);
   const mesData = extraerMesClave(fechaParaMes);
@@ -12183,10 +12195,10 @@ l.forEach(reg => {
   }
   const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd';
   const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`;
-  tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'Finish entry' : 'Completar y calificar obra'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;">🎉 ${userPrefs.lang === 'en' ? 'Finished!' : '¡Terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
+  tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;">🎉 ${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
   tbFrag.appendChild(tr);
   const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`;
-  m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>🎉</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Terminé!'}</span></button></div>` : ''}`;
+  m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>🎉</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span></button></div>` : ''}`;
 mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales(); }
 const cerrarModal = () => { document.getElementById('modal-edicion').style.display = 'none'; document.getElementById('modal-contenido').innerHTML = ''; };
 let califSeleccionadaTerminar = 5;
