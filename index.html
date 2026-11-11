@@ -953,24 +953,32 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-quick-stats-strip{margin-top:16px;margin-bottom:32px;display:flex;flex-direction:column;gap:14px;max-width:100%;width:100%;box-sizing:border-box;}
 .home-mini-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);transition:var(--tr);max-width:100%;width:100%;box-sizing:border-box;overflow:hidden;}
 .home-mini-section:hover{border-color:rgba(56,189,248,0.35);}
-.home-mini-section-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
-.home-mini-title{font-weight:700;font-size:0.95rem;color:var(--text);display:flex;align-items:center;gap:6px;}
-.home-mini-hint{font-size:0.74rem;color:var(--muted);}
-.home-subcats-mini-row{display:grid;grid-template-columns:repeat(auto-fill, minmax(130px, 1fr));gap:9px;}
-@media (max-width: 640px){.home-subcats-mini-row{grid-template-columns:repeat(2, 1fr);gap:8px;}}
-.home-subcat-pill{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:12px;font-size:0.82rem;font-weight:600;color:var(--text);cursor:pointer;transition:var(--tr);font-family:inherit;box-shadow:0 1px 3px rgba(0,0,0,0.06);min-height:42px;}
+.home-mini-section-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+.home-mini-title{font-weight:700;font-size:0.92rem;color:var(--text);display:flex;align-items:center;gap:6px;}
+.home-mini-hint{font-size:0.72rem;color:var(--muted);}
+.home-subcats-mini-row{display:grid;grid-template-columns:repeat(auto-fill, minmax(115px, 1fr));gap:6px;}
+@media (max-width: 640px){.home-subcats-mini-row{grid-template-columns:repeat(2, 1fr);gap:6px;}}
+.home-subcat-pill{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:6px 10px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-size:0.78rem;font-weight:600;color:var(--text);cursor:pointer;transition:var(--tr);font-family:inherit;box-shadow:0 1px 3px rgba(0,0,0,0.06);min-height:36px;}
 .home-subcat-pill:hover{border-color:var(--accent);background:rgba(56,189,248,0.08);transform:translateY(-1px);box-shadow:0 4px 12px rgba(56,189,248,0.15);}
-.home-subcat-pill .subcat-left-info{display:flex;align-items:center;gap:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.home-subcat-pill .pill-count{font-weight:800;font-size:0.78rem;color:var(--accent);background:rgba(56,189,248,0.14);padding:2px 7px;border-radius:8px;border:1px solid rgba(56,189,248,0.25);flex-shrink:0;}
+.home-subcat-pill .subcat-left-info{display:flex;align-items:center;gap:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.home-subcat-pill .pill-count{font-weight:800;font-size:0.72rem;color:var(--accent);background:rgba(56,189,248,0.14);padding:1px 6px;border-radius:6px;border:1px solid rgba(56,189,248,0.25);flex-shrink:0;}
+/* BOTÓN DISCRETO REORDENAR INICIO */
+.btn-discrete-reorder{display:inline-flex;align-items:center;gap:5px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:0.72rem;font-weight:600;padding:3px 9px;border-radius:8px;cursor:pointer;transition:all .18s ease;font-family:inherit;}
+.btn-discrete-reorder:hover{color:var(--accent);border-color:var(--accent);background:rgba(56,189,248,0.08);}
+.btn-reorder-move{width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;background:var(--card);border:1px solid var(--border);color:var(--text);font-size:0.8rem;font-weight:700;cursor:pointer;transition:all .15s ease;font-family:inherit;}
+.btn-reorder-move:not([disabled]):hover{background:rgba(56,189,248,0.15);border-color:var(--accent);color:var(--accent);}
+/* TARJETAS DE SUBCATEGORÍA DE LECTURAS ADAPTATIVAS (NO OSCURAS) */
+.stat-subcat-lecturas-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;}
+.mobile-history-card.row-highlighted{outline:2px solid var(--accent) !important;box-shadow:0 0 16px rgba(56,189,248,0.45) !important;animation:highlightRow 2.5s ease-out !important;}
 /* 3 RACHAS: PELÍCULAS, MÚSICA, LECTURA */
-.home-streaks-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:12px;width:100%;box-sizing:border-box;}
-@media (max-width: 680px){.home-streaks-grid{grid-template-columns:1fr;gap:10px;}}
-.home-streak-card{display:flex;flex-direction:column;justify-content:space-between;padding:14px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:14px;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);box-sizing:border-box;min-height:124px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+.home-streaks-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;width:100%;box-sizing:border-box;}
+@media (max-width: 680px){.home-streaks-grid{grid-template-columns:1fr;gap:8px;}}
+.home-streak-card{display:flex;flex-direction:column;justify-content:space-between;padding:10px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);box-sizing:border-box;min-height:96px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
 .home-streak-card:hover{border-color:#f59e0b;transform:translateY(-2px);box-shadow:0 6px 18px rgba(245,158,11,0.15);}
 .home-streak-card.active{border-color:rgba(245,158,11,0.45);background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,var(--bg) 100%);}
-.home-streak-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
-.home-streak-card-name{display:flex;align-items:center;gap:6px;font-weight:700;font-size:0.88rem;color:var(--text);}
-.home-streak-badge{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+.home-streak-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;}
+.home-streak-card-name{display:flex;align-items:center;gap:6px;font-weight:700;font-size:0.84rem;color:var(--text);}
+.home-streak-badge{font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:8px;white-space:nowrap;}
 .badge-active{background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.35);}
 .badge-pending{background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.35);}
 .badge-inactive{background:rgba(148,163,184,0.12);color:var(--muted);border:1px solid var(--border);}
@@ -1516,9 +1524,10 @@ html[data-ui-style="modern"] .btn-hero-quick-add {
 html[data-ui-style="modern"] .home-subcat-pill {
   background: rgba(255, 255, 255, 0.025) !important;
   border: 1px solid rgba(255, 255, 255, 0.07) !important;
-  border-radius: 10px !important;
-  padding: 6px 12px !important;
-  font-size: 0.8rem !important;
+  border-radius: 9px !important;
+  padding: 5px 9px !important;
+  font-size: 0.76rem !important;
+  min-height: 32px !important;
   transition: all 0.18s ease !important;
 }
 
@@ -1535,81 +1544,82 @@ html[data-ui-style="modern"] .home-subcat-pill:hover {
 
 html[data-ui-style="modern"] .home-subcat-pill .pill-count {
   background: rgba(255, 255, 255, 0.06) !important;
-  font-size: 0.72rem !important;
-  padding: 1px 6px !important;
-  border-radius: 6px !important;
+  font-size: 0.7rem !important;
+  padding: 1px 5px !important;
+  border-radius: 5px !important;
 }
 
-/* ON GOING CAROUSEL MINIMALISTA */
+/* ON GOING CAROUSEL COMPACTO MINIMALISTA */
 html[data-ui-style="modern"] .home-en-progreso-card {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   padding: 0 !important;
-  width: 135px !important;
-  flex: 0 0 135px !important;
+  width: 108px !important;
+  flex: 0 0 108px !important;
   min-height: auto !important;
 }
 
 html[data-ui-style="modern"] .home-en-progreso-card-poster {
   width: 100% !important;
-  height: 185px !important;
-  border-radius: 12px !important;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+  height: 154px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
   transition: transform 0.22s ease, box-shadow 0.22s ease !important;
 }
 
 html[data-ui-style="modern"] .home-en-progreso-card-poster:hover {
-  transform: translateY(-3px) scale(1.02) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
 }
 
 html[data-ui-style="modern"] .home-en-progreso-card-badge {
-  font-size: 0.65rem !important;
-  padding: 2px 6px !important;
-  border-radius: 6px !important;
+  font-size: 0.62rem !important;
+  padding: 1px 5px !important;
+  border-radius: 5px !important;
   backdrop-filter: blur(8px) !important;
-  margin-bottom: 4px !important;
+  margin-bottom: 3px !important;
 }
 
 html[data-ui-style="modern"] .home-en-progreso-card-title {
-  font-size: 0.85rem !important;
+  font-size: 0.78rem !important;
   font-weight: 700 !important;
-  margin: 6px 0 2px !important;
+  margin: 4px 0 1px !important;
+  line-height: 1.2 !important;
 }
 
 html[data-ui-style="modern"] .home-en-progreso-card-sub {
-  font-size: 0.72rem !important;
+  font-size: 0.68rem !important;
   color: var(--muted) !important;
 }
 
 html[data-ui-style="modern"] .home-en-progreso-card-date {
-  font-size: 0.68rem !important;
+  font-size: 0.64rem !important;
   color: var(--accent) !important;
-  margin-top: 3px !important;
+  margin-top: 2px !important;
 }
 
 html[data-ui-style="modern"] .btn-terminar-card-carousel {
-  padding: 5px 8px !important;
-  font-size: 0.7rem !important;
-  border-radius: 8px !important;
+  padding: 4px 6px !important;
+  font-size: 0.66rem !important;
+  border-radius: 6px !important;
   height: auto !important;
-  margin-top: 6px !important;
+  margin-top: 4px !important;
   box-shadow: none !important;
 }
 
 /* RACHAS COMPACTAS MINIMALISTAS */
 html[data-ui-style="modern"] .home-streaks-grid {
-  gap: 10px !important;
+  gap: 8px !important;
 }
 
 html[data-ui-style="modern"] .home-streak-card {
   background: rgba(255, 255, 255, 0.02) !important;
   border: 1px solid rgba(255, 255, 255, 0.07) !important;
-  border-radius: 14px !important;
+  border-radius: 12px !important;
   box-shadow: none !important;
-  padding: 10px 12px !important;
-  min-height: 100px !important;
+  padding: 8px 10px !important;
+  min-height: 82px !important;
 }
 
 [data-theme$="-light"][data-ui-style="modern"] .home-streak-card {
@@ -1623,19 +1633,38 @@ html[data-ui-style="modern"] .home-streak-card.active {
 }
 
 html[data-ui-style="modern"] .home-streak-number {
-  font-size: 1.45rem !important;
+  font-size: 1.25rem !important;
   font-weight: 800 !important;
 }
 
 html[data-ui-style="modern"] .home-streak-card-name {
-  font-size: 0.8rem !important;
+  font-size: 0.76rem !important;
   font-weight: 700 !important;
 }
 
 html[data-ui-style="modern"] .btn-read-today-streak {
-  padding: 4px 8px !important;
-  font-size: 0.7rem !important;
-  border-radius: 7px !important;
+  padding: 3px 8px !important;
+  font-size: 0.68rem !important;
+  border-radius: 6px !important;
+}
+
+/* SUBCATEGORÍAS DE LECTURA ADAPTATIVAS EN MODERNO */
+html[data-ui-style="modern"] .stat-subcat-lecturas-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+}
+[data-theme$="-light"][data-ui-style="modern"] .stat-subcat-lecturas-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html[data-ui-style="modern"] .stat-subcat-lecturas-card .highlight-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+[data-theme$="-light"][data-ui-style="modern"] .stat-subcat-lecturas-card .highlight-card {
+  background: rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
 }
 
 /* NOVEDADES DE AMIGOS & DISCOVER */
@@ -1987,45 +2016,51 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
 </div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <div class="home-hero-card"> <div class="home-hero-content"> <h2 style="font-size:1.4rem; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;"> <span>🏠</span> <span data-i18n="home_title">Inicio</span> </h2> <p style="color:var(--muted); font-size:.88rem; margin:0; text-align:center;" data-i18n="home_subtitle">Tu centro multimedia personal: registra tus obras, sigue a tus amigos y descubre nuevas recomendaciones.</p> </div> <div class="home-hero-actions"> <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()"> <span style="font-size:1.15rem;">⚡</span> <span data-i18n="btn_quick_add_hero">Agregado Rápido</span> </button> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;"> <span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Mis Watchlists</span> </button> </div> </div>
 
-      <!-- APARTADOS DE INICIO: RESUMEN DE SUBCATEGORÍAS & RACHAS ACTUALES -->
+      <!-- APARTADOS DE INICIO: RESUMEN DE SUBCATEGORÍAS, ON GOING & RACHAS (REORDENABLES) -->
       <div class="home-quick-stats-strip" id="home-quick-stats-section">
-        <!-- 1. RESUMEN ULTRA COMPACTO DE SUBCATEGORÍAS -->
-        <div class="home-mini-section">
-          <div class="home-mini-section-header">
-            <div class="home-mini-title"><span>📊</span> <span data-i18n="home_subcategories_title">Subcategorías</span></div>
-            <span class="home-mini-hint" data-i18n="home_subcategories_sub">Toca una para ver su categoría</span>
-          </div>
-          <div class="home-subcats-mini-row" id="home-subcats-summary-pills">
-            <!-- Píldoras generadas dinámicamente con nombre y total -->
-          </div>
+        <div style="display:flex; justify-content:flex-end; align-items:center; margin-bottom:4px;">
+          <button type="button" class="btn-discrete-reorder" onclick="abrirModalReordenarInicio()" title="Reordenar tarjetas de inicio">
+            <span>⇅</span> <span data-i18n="btn_reorder_home">Reordenar</span>
+          </button>
         </div>
-
-        <!-- 2. PRODUCTOS EN CURSO / ON GOING -->
-        <div class="home-mini-section" id="home-en-progreso-section" style="max-width:100%; width:100%; box-sizing:border-box; overflow:hidden;">
-          <div class="home-mini-section-header">
-            <div class="home-mini-title">
-              <span>⚡</span>
-              <span data-i18n="home_en_progreso_title">On Going</span>
-              <span class="pill-count" id="home-en-progreso-count" style="margin-left:4px; font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border-radius:10px; padding:1px 8px; font-weight:800;">0</span>
+        <div id="home-reorderable-sections" style="display:flex; flex-direction:column; gap:12px; max-width:100%; width:100%; box-sizing:border-box;">
+          <!-- 1. RESUMEN ULTRA COMPACTO DE SUBCATEGORÍAS -->
+          <div class="home-mini-section" id="home-sec-subcats">
+            <div class="home-mini-section-header">
+              <div class="home-mini-title"><span>📊</span> <span data-i18n="home_subcategories_title">Subcategorías</span></div>
+              <span class="home-mini-hint" data-i18n="home_subcategories_sub">Toca una para ver su categoría</span>
             </div>
-            <span class="home-mini-hint" data-i18n="home_en_progreso_hint">Temporadas · Juegos · Lecturas</span>
+            <div class="home-subcats-mini-row" id="home-subcats-summary-pills">
+              <!-- Píldoras generadas dinámicamente con nombre y total -->
+            </div>
           </div>
-          <div id="home-en-progreso-list" class="home-en-progreso-carousel">
-            <!-- Generado dinámicamente por renderizarObrasEnProgresoInicio -->
-          </div>
-        </div>
 
+          <!-- 2. PRODUCTOS EN CURSO / ON GOING -->
+          <div class="home-mini-section" id="home-sec-ongoing" style="max-width:100%; width:100%; box-sizing:border-box; overflow:hidden;">
+            <div class="home-mini-section-header">
+              <div class="home-mini-title">
+                <span>⚡</span>
+                <span data-i18n="home_en_progreso_title">On Going</span>
+                <span class="pill-count" id="home-en-progreso-count" style="margin-left:4px; font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border-radius:10px; padding:1px 8px; font-weight:800;">0</span>
+              </div>
+              <span class="home-mini-hint" data-i18n="home_en_progreso_hint">Temporadas · Juegos · Lecturas</span>
+            </div>
+            <div id="home-en-progreso-list" class="home-en-progreso-carousel">
+              <!-- Generado dinámicamente por renderizarObrasEnProgresoInicio -->
+            </div>
+          </div>
 
-        <!-- 2. RACHAS ACTUALES -->
-        <div class="home-mini-section">
-          <div class="home-mini-section-header">
-            <div class="home-mini-title"><span>🔥</span> <span data-i18n="home_streaks_title">Rachas Actuales</span></div>
-            <span class="home-mini-hint" id="home-streaks-global-badge" data-i18n="home_streaks_sub">Películas · Música · Lectura</span>
+          <!-- 3. RACHAS ACTUALES -->
+          <div class="home-mini-section" id="home-sec-streaks">
+            <div class="home-mini-section-header">
+              <div class="home-mini-title"><span>🔥</span> <span data-i18n="home_streaks_title">Rachas Actuales</span></div>
+              <span class="home-mini-hint" id="home-streaks-global-badge" data-i18n="home_streaks_sub">Películas · Música · Lectura</span>
+            </div>
+            <div id="home-streaks-summary-cards">
+              <!-- 3 Tarjetas de racha en orden: Películas, Música, Lectura -->
+            </div>
+            <div id="home-reading-quick-box" style="display:none;"></div>
           </div>
-          <div id="home-streaks-summary-cards">
-            <!-- 3 Tarjetas de racha en orden: Películas, Música, Lectura -->
-          </div>
-          <div id="home-reading-quick-box" style="display:none;"></div>
         </div>
       </div>
 
@@ -2811,7 +2846,28 @@ html[data-ui-style="modern"] .btn-modal-cancel {
       <button type="button" class="btn-modal-save" id="btn-guardar-terminar-obra" style="background:linear-gradient(135deg, #10b981, #059669); border:none; box-shadow:0 3px 10px rgba(16,185,129,0.35);" onclick="confirmarTerminarObra()" data-i18n="btn_guardar_finalizar">🎉 ¡Guardar y Finalizar!</button>
     </div>
   </div>
-</div> <div id="modal-serie-completa" class="modal-overlay" style="display:none;"> <div class="modal-box"> <h3 style="color:var(--accent);" data-i18n="serie_comp_title">🎉 ¡Completaste toda la serie!</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:14px; line-height:1.4;" id="msg-serie-completa"></p> <div class="form-group" style="text-align:center;"> <label data-i18n="serie_comp_rating_lbl">Calificación de la serie completa:</label>
+</div>
+<!-- MODAL REORDENAR SECCIONES DE INICIO -->
+<div id="modal-reordenar-inicio" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalReordenarInicio()">
+  <div class="modal-box" style="max-width:420px; width:92%;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <h3 style="margin:0; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+        <span>⇅</span>
+        <span data-i18n="modal_reorder_title">Reordenar Inicio</span>
+      </h3>
+      <button type="button" class="btn-close-form" onclick="cerrarModalReordenarInicio()" style="position:static;">✕</button>
+    </div>
+    <p style="font-size:0.82rem; color:var(--muted); margin:0 0 16px;" data-i18n="modal_reorder_sub">
+      Ajusta el orden en que quieres ver estas secciones en la página de inicio con las flechas:
+    </p>
+    <div id="lista-reordenar-items" style="display:flex; flex-direction:column; gap:8px;"></div>
+    <div class="modal-actions" style="margin-top:18px; justify-content:space-between;">
+      <button type="button" class="btn-modal-cancel" onclick="restablecerOrdenSeccionesInicio()" style="font-size:0.78rem;" data-i18n="btn_reset_order">Restablecer</button>
+      <button type="button" class="btn-modal-save" onclick="cerrarModalReordenarInicio()" style="padding:0 22px;">Listo ✓</button>
+    </div>
+  </div>
+</div>
+<div id="modal-serie-completa" class="modal-overlay" style="display:none;"> <div class="modal-box"> <h3 style="color:var(--accent);" data-i18n="serie_comp_title">🎉 ¡Completaste toda la serie!</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:14px; line-height:1.4;" id="msg-serie-completa"></p> <div class="form-group" style="text-align:center;"> <label data-i18n="serie_comp_rating_lbl">Calificación de la serie completa:</label>
 <div class="stars-wrapper" id="rating-stars-completa" style="font-size:2.2rem; margin:8px 0;"></div> <span id="rating-label-completa" style="font-size:.9rem; color:var(--accent); font-weight:700;">0.0 / 5</span> </div> <div class="form-group"><label data-i18n="serie_comp_comment_lbl">Comentario / Reseña final de la serie:</label><textarea id="comentario-serie-completa" class="comment-box" style="min-height:90px;" placeholder="¿Qué te pareció la serie en su totalidad?"></textarea></div>
 <div class="modal-actions"><button class="btn-modal-cancel" onclick="omitirGuardadoSerieCompleta()" data-i18n="btn_skip">Omitir</button><button class="btn-modal-save" id="btn-confirmar-serie-completa" data-i18n="btn_save_full_series">Guardar Serie Completa</button></div> </div> </div> <div id="modal-confirmar-eliminar" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <div class="modal-confirm-icon" style="margin:0 auto 14px;">🗑️</div>
 <h3 style="color:var(--danger); font-size:1.15rem; margin-bottom:8px;" data-i18n="del_title">¿Eliminar este registro?</h3> <p id="confirm-eliminar-mensaje" style="color:var(--muted); font-size:.9rem; line-height:1.4; margin-bottom:14px;"></p> <div class="modal-actions" style="justify-content:center; gap:12px; margin-top:14px;"> <button class="btn-modal-cancel" onclick="cerrarModalEliminar()" data-i18n="btn_cancel">Cancelar</button><button class="btn-modal-danger" id="btn-confirmar-eliminar-si" data-i18n="btn_del_permanent">Eliminar definitivamente</button>
@@ -3409,7 +3465,7 @@ const buildObj = o => {
     fFin = fUnica;
   }
   return {
-    id: uuid_(), user_email: email, categoria: o.categoria || '', subcategoria: o.subcategoria || '', titulo: o.titulo || 'Sin título', subtitulo: o.subtitulo || '',
+    id: (o.id && typeof o.id === 'string' && o.id.length > 5) ? o.id : uuid_(), user_email: email, categoria: o.categoria || '', subcategoria: o.subcategoria || '', titulo: o.titulo || 'Sin título', subtitulo: o.subtitulo || '',
     creador: o.creador || '', anio: String(o.anio || ''), fecha_inicio: fIni, fecha_fin: fFin, calificacion: Number(o.calificacion) || 0, comentario: o.comentario || '',
     poster: o.poster || '', horas: o.horas || '', es_rewatch: !!o.esRewatch
   };
@@ -3439,7 +3495,7 @@ const titNorm = String(d.tituloBase || d.titulo || '').toLowerCase().replace(/\s
 estabaEnWatchlist = true; tituloWatchlist = String(w.titulo); await sbFetch_(`watchlist?id=eq.${encodeURIComponent(w.id)}&user_email=eq.${encodeURIComponent(email)}`, 'DELETE'); }
 }
 } catch (ew) {}
-return { exito: true, removidoDeWatchlist: estabaEnWatchlist, tituloRemovido: tituloWatchlist }; } catch (e) { return { exito: false, error: e.toString() }; }
+return { exito: true, id: rows[0].id, removidoDeWatchlist: estabaEnWatchlist, tituloRemovido: tituloWatchlist }; } catch (e) { return { exito: false, error: e.toString() }; }
 }, async importarRegistrosMasivos(lista, userEmail) { try { const email = normEm_(userEmail); if (!email) return { exito: false, error: 'Inicia sesión primero para importar registros.' }; if (!Array.isArray(lista) || !lista.length) return { exito: false, error: 'Lista vacía' };
 const buscarPosterAuto = lista.length <= 20; const nuevasFilas = []; for (const o of lista) { const cat = String(o.categoria || 'Peliculas').trim(), sub = String(o.subcategoria || 'Películas').trim(); const tit = String(o.titulo || 'Sin título').trim(), subtit = String(o.subtitulo || '').trim();
 const creador = String(o.creador || 'Desconocido').trim(), anio = String(o.anio || '').trim(); const fIni = (!o.fechaInicio || o.fechaInicio === 'Sin fecha') ? 'Sin fecha' : fmtFecha_(o.fechaInicio); const fFin = (!o.fechaFin || o.fechaFin === 'Sin fecha') ? fIni : fmtFecha_(o.fechaFin);
@@ -7412,6 +7468,10 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "dcat_libros": "📖 Libros",
     "dcat_comics": "💥 Cómics",
     "dcat_mangas": "⛩️ Mangas",
+    "btn_reorder_home": "Reordenar",
+    "modal_reorder_title": "Reordenar Inicio",
+    "modal_reorder_sub": "Ajusta el orden en que quieres ver estas secciones en la página de inicio con las flechas:",
+    "btn_reset_order": "Restablecer",
     "discover_loading": "Cargando recomendaciones recientes... ⏳",
     "btn_cfg_favs_show": "👁️ Configurar cuáles mostrar",
     "btn_cfg_favs_done": "✓ Listo",
@@ -7832,6 +7892,10 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "dcat_libros": "📖 Books",
     "dcat_comics": "💥 Comics",
     "dcat_mangas": "⛩️ Manga",
+    "btn_reorder_home": "Reorder",
+    "modal_reorder_title": "Reorder Home Sections",
+    "modal_reorder_sub": "Organize the home page sections in your preferred order with the arrows:",
+    "btn_reset_order": "Reset",
     "discover_loading": "Loading recent recommendations... ⏳",
     "btn_cfg_favs_show": "👁️ Configure which to show",
     "btn_cfg_favs_done": "✓ Done",
@@ -9691,10 +9755,104 @@ function calcularRachaGlobalActual(regs) {
   return calcularRachaDesdeDayIndices(setDayIndices);
 }
 
+const ORDEN_SECCIONES_INICIO_DEFAULT = ['subcats', 'ongoing', 'streaks'];
+
+function obtenerOrdenSeccionesInicio() {
+  try {
+    const raw = localStorage.getItem('mediary_home_sections_order');
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr) && arr.length === 3 && arr.includes('subcats') && arr.includes('ongoing') && arr.includes('streaks')) {
+        return arr;
+      }
+    }
+  } catch(e) {}
+  return [...ORDEN_SECCIONES_INICIO_DEFAULT];
+}
+
+function guardarOrdenSeccionesInicio(nuevoOrden) {
+  try {
+    localStorage.setItem('mediary_home_sections_order', JSON.stringify(nuevoOrden));
+  } catch(e) {}
+  aplicarOrdenSeccionesInicio(nuevoOrden);
+}
+
+function aplicarOrdenSeccionesInicio(orden) {
+  const lista = orden || obtenerOrdenSeccionesInicio();
+  const cont = document.getElementById('home-reorderable-sections');
+  if (!cont) return;
+  lista.forEach(key => {
+    const el = document.getElementById(`home-sec-${key}`);
+    if (el && cont.contains(el)) {
+      cont.appendChild(el);
+    }
+  });
+}
+
+function abrirModalReordenarInicio() {
+  const modal = document.getElementById('modal-reordenar-inicio');
+  if (!modal) return;
+  renderizarListaReordenarInicio();
+  modal.style.display = 'flex';
+}
+
+function cerrarModalReordenarInicio() {
+  const modal = document.getElementById('modal-reordenar-inicio');
+  if (modal) modal.style.display = 'none';
+}
+
+function renderizarListaReordenarInicio() {
+  const cont = document.getElementById('lista-reordenar-items');
+  if (!cont) return;
+  const orden = obtenerOrdenSeccionesInicio();
+  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang) || 'es';
+  const infoMap = {
+    subcats: { emoji: '📊', nombre: (I18N[l]?.home_subcategories_title || 'Subcategorías') },
+    ongoing: { emoji: '⚡', nombre: (I18N[l]?.home_en_progreso_title || 'On Going') },
+    streaks: { emoji: '🔥', nombre: (I18N[l]?.home_streaks_title || 'Rachas Actuales') }
+  };
+  cont.innerHTML = orden.map((key, idx) => {
+    const item = infoMap[key] || { emoji: '📌', nombre: key };
+    const isFirst = idx === 0;
+    const isLast = idx === orden.length - 1;
+    return `
+      <div class="reorder-item-row" style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; background:var(--bg); border:1px solid var(--border); border-radius:10px;">
+        <div style="display:flex; align-items:center; gap:8px; font-weight:700; font-size:0.88rem; color:var(--text);">
+          <span class="emoji-dyn">${item.emoji}</span>
+          <span>${item.nombre}</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button type="button" class="btn-reorder-move" onclick="moverSeccionInicio('${key}', -1)" ${isFirst ? 'disabled style="opacity:0.3; cursor:not-allowed;"' : ''} title="${l === 'en' ? 'Move up' : 'Subir'}">▲</button>
+          <button type="button" class="btn-reorder-move" onclick="moverSeccionInicio('${key}', 1)" ${isLast ? 'disabled style="opacity:0.3; cursor:not-allowed;"' : ''} title="${l === 'en' ? 'Move down' : 'Bajar'}">▼</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function moverSeccionInicio(key, dir) {
+  const orden = obtenerOrdenSeccionesInicio();
+  const idx = orden.indexOf(key);
+  if (idx < 0) return;
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= orden.length) return;
+  const temp = orden[idx];
+  orden[idx] = orden[newIdx];
+  orden[newIdx] = temp;
+  guardarOrdenSeccionesInicio(orden);
+  renderizarListaReordenarInicio();
+}
+
+function restablecerOrdenSeccionesInicio() {
+  guardarOrdenSeccionesInicio([...ORDEN_SECCIONES_INICIO_DEFAULT]);
+  renderizarListaReordenarInicio();
+}
+
 function renderizarResumenInicio() {
   renderizarSubcategoriasResumenInicio();
   renderizarObrasEnProgresoInicio();
   renderizarRachasActualesInicio();
+  aplicarOrdenSeccionesInicio();
 }
 
 function clasificarSubcatOnGoing(r) {
@@ -12199,7 +12357,7 @@ return `<div class="subtotal-pill"><span class="emoji-dyn">${s.emoji} </span>${s
 destacados = `<div style="grid-column:span 2; display:flex; flex-direction:column; gap:12px;">` + cfg.subs.filter(s => !s.esWatchlist).map(s => { const u = obtenerRegistrosDeSubcategoria('Lecturas', s.id);
 const ult = u.length ? [...u].sort((a,b) => (timestampDeFecha(b.fechaFin) || timestampDeFecha(b.fechaInicio)) - (timestampDeFecha(a.fechaFin) || timestampDeFecha(a.fechaInicio)))[0] : null; let mejores = u.length ? u.filter(x => x.calificacion === Math.max(...u.map(y => y.calificacion))) : [];
 const mej = mejores[0] || null, cId = `lectura-${s.id.toLowerCase()}-mej`; const uF = ult ? ((ult.fechaFin && ult.fechaFin !== 'Sin fecha') ? ult.fechaFin : ult.fechaInicio) : ''; const mF = mej ? ((mej.fechaFin && mej.fechaFin !== 'Sin fecha') ? mej.fechaFin : mej.fechaInicio) : '';
-if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, 'Lecturas', s.id), 50); const sNombre = I18N[l].subs[s.id] || s.nombre; return ` <div style="background:rgba(15,23,42,.6); border:1px solid var(--border); border-radius:12px; padding:12px 14px;"> <div style="font-weight:700; color:var(--accent); font-size:.9rem; margin-bottom:6px;"><span class="emoji-dyn">${s.emoji} </span>${sNombre}</div> <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"> <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''}> <div style="font-size:.7rem; color:var(--muted); text-transform:uppercase; font-weight:700;">${t('stat_ultimo')}</div> <div class="highlight-main-txt" style="font-size:.85rem;">${ult ? ult.titulo : '—'}</div> <div class="highlight-sub-txt" style="font-size:.75rem;">${ult ? (uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')) : t('stat_sin_reg')}</div> </div> <div class="highlight-card" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''}> <div style="font-size:.7rem; color:var(--muted); text-transform:uppercase; font-weight:700; display:flex; justify-content:space-between;"> <span>${t('stat_mejor')}</span>${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator">[1/${mejores.length}]</span>` : ''} </div> <div class="highlight-main-txt" id="${cId}-title" style="font-size:.85rem;">${mej ? mej.titulo : '—'}</div> <div class="highlight-sub-txt" id="${cId}-sub" style="font-size:.75rem;">${mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : t('stat_sin_reg')}</div> </div> </div> </div>`;
+if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, 'Lecturas', s.id), 50); const sNombre = I18N[l].subs[s.id] || s.nombre; return ` <div class="stat-subcat-lecturas-card"> <div style="font-weight:700; color:var(--accent); font-size:.9rem; margin-bottom:6px;"><span class="emoji-dyn">${s.emoji} </span>${sNombre}</div> <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"> <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''}> <div style="font-size:.7rem; color:var(--muted); text-transform:uppercase; font-weight:700;">${t('stat_ultimo')}</div> <div class="highlight-main-txt" style="font-size:.85rem;">${ult ? ult.titulo : '—'}</div> <div class="highlight-sub-txt" style="font-size:.75rem;">${ult ? (uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')) : t('stat_sin_reg')}</div> </div> <div class="highlight-card" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''}> <div style="font-size:.7rem; color:var(--muted); text-transform:uppercase; font-weight:700; display:flex; justify-content:space-between;"> <span>${t('stat_mejor')}</span>${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator">[1/${mejores.length}]</span>` : ''} </div> <div class="highlight-main-txt" id="${cId}-title" style="font-size:.85rem;">${mej ? mej.titulo : '—'}</div> <div class="highlight-sub-txt" id="${cId}-sub" style="font-size:.75rem;">${mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : t('stat_sin_reg')}</div> </div> </div> </div>`;
 }).join('') + `</div>`; } else { let uUltimo = [], uMejores = [], subDestino = CONFIG[cat].subs[0].id; if (cat === 'Peliculas') { subDestino = 'Películas';
 uUltimo = uMejores = regsAnio.filter(r => r.categoria === 'Peliculas' && !r.esRewatch && r.subcategoria !== 'Rewatches'); } else if (cat === 'Series') {
 subDestino = 'Temporadas'; uUltimo = regsAnio.filter(r => r.categoria === 'Series' && !r.esRewatch && !r.subcategoria.includes('Rewatch'));
@@ -12891,11 +13049,22 @@ if (c === 'Juegos' && document.getElementById('input-horas-jugadas').value.trim(
 } else if ((c === 'Peliculas' || c === 'Series') && estado.seleccionado.duracionHoras) {
   horasGuardar = `${estado.seleccionado.duracionHoras} hrs`;
 }
-const payload = { categoria: c, subcategoria: s, titulo: tTit, tituloBase: tBase, subtitulo: sub,
+const savedId = (payload && payload.id) ? payload.id : (typeof uuid_ === 'function' ? uuid_() : 'reg_' + Date.now());
+const payload = { id: savedId, categoria: c, subcategoria: s, titulo: tTit, tituloBase: tBase, subtitulo: sub,
 creador: estado.seleccionado.creador, anio: estado.seleccionado.anio, fechaInicio: fI, fechaFin: fF, calificacion: calificacionNum, comentario: comentarioConPunto,
 poster: estado.seleccionado.poster, horas: horasGuardar, esTemporadaUnica: esUnica, numTempActual: numT, totalTempOficiales: totT, esRewatch: esRw
-}; const esDiscoMusica = c === 'Musica' && (s === 'Discos' || s === 'Disco'); const nombreArtistaDisco = estado.seleccionado.creador;
-const posterDisco = estado.seleccionado.poster; google.script.run.withSuccessHandler(res => { btn.textContent = t('btn_guardar'); btn.disabled = false; if (res?.exito) { ocultarFormulario(); limpiarModuloConcierto(); if (res.removidoDeWatchlist) {
+};
+estado.ultimoRegistroGuardadoId = savedId;
+const esDiscoMusica = c === 'Musica' && (s === 'Discos' || s === 'Disco'); const nombreArtistaDisco = estado.seleccionado.creador;
+const posterDisco = estado.seleccionado.poster; google.script.run.withSuccessHandler(res => { btn.textContent = t('btn_guardar'); btn.disabled = false; if (res?.exito) {
+const finalId = res.id || savedId;
+estado.ultimoRegistroGuardadoId = finalId;
+ocultarFormulario(); limpiarModuloConcierto();
+const secHist = document.getElementById('seccion-historial-contenido');
+if (secHist && estado.categoria !== 'inicio' && estado.categoria !== 'listas') {
+  secHist.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+if (res.removidoDeWatchlist) {
 document.getElementById('msg-felicitacion-watchlist').innerHTML = `¡Felicidades! Acabas de completar <strong>"${res.tituloRemovido || tBase}"</strong>, que estaba anotado en tus pendientes.`; document.getElementById('modal-felicitaciones-watchlist').style.display = 'flex'; cargarWatchlist(); }
 if (esUltima) {
   const prev = estado.registros.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada')) && (r.titulo.startsWith(tBase + ' [') || r.titulo === tBase));
@@ -12954,6 +13123,31 @@ alert((userPrefs.lang === 'en' ? 'Could not delete record: ' : 'No se pudo elimi
 }).withFailureHandler(err => { btn.textContent = txt; btn.disabled = false; cerrarModalEliminar(); alert((userPrefs.lang === 'en' ? 'Connection error while deleting: ' : 'Error de conexión al eliminar: ') + (err?.message || err)); }).eliminarRegistro(idTarget, fallbackTarget, estado.userEmail); }
 function renderEstrellasVisuales(val) { let h = '<div class="rating-badge">'; for (let i = 1; i <= 5; i++) h += `<span class="h-star ${val >= i ? 'full' : (val >= i - 0.5 ? 'half' : '')}">★</span>`;
 return `${h} <span style="font-size:.78rem; color:var(--muted); margin-left:3px;">(${Number(val).toFixed(1)})</span></div>`; }
+
+function desplazarHaciaRegistroGuardado(id) {
+  if (!id) return;
+  setTimeout(() => {
+    const elFila = document.getElementById(`fila-${id}`);
+    const elCard = document.getElementById(`card-${id}`);
+    const target = (window.innerWidth <= 768 && elCard) ? elCard : (elFila || elCard);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.classList.remove('row-highlighted');
+      void target.offsetWidth;
+      target.classList.add('row-highlighted');
+      setTimeout(() => {
+        target.classList.remove('row-highlighted');
+      }, 3000);
+      estado.ultimoRegistroGuardadoId = null;
+    } else {
+      const secHist = document.getElementById('seccion-historial-contenido');
+      if (secHist && estado.categoria !== 'inicio' && estado.categoria !== 'listas' && estado.categoria !== 'discover' && estado.categoria !== 'amigos' && estado.categoria !== 'perfil') {
+        secHist.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }, 180);
+}
+
 function filtrarYMostrarHistorial() { const th = document.getElementById('thead-historial'), tb = document.getElementById('tbody-historial'), mBox = document.getElementById('mobile-history-cards');
 tb.innerHTML = ''; mBox.innerHTML = ''; const c = estado.categoria, s = estado.subcategoria, r = subTieneRango(c, s), isJ = c === 'Juegos';
 renderizarBannerRachaSubcategoria(c, s);
@@ -13008,7 +13202,11 @@ l.forEach(reg => {
   tbFrag.appendChild(tr);
   const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`;
   m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>🎉</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span></button></div>` : ''}`;
-mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales(); }
+  mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales();
+if (estado.ultimoRegistroGuardadoId) {
+  desplazarHaciaRegistroGuardado(estado.ultimoRegistroGuardadoId);
+}
+}
 const cerrarModal = () => { document.getElementById('modal-edicion').style.display = 'none'; document.getElementById('modal-contenido').innerHTML = ''; };
 let califSeleccionadaTerminar = 5;
 let regIdParaTerminar = null;
@@ -13237,7 +13435,9 @@ function confirmarTerminarObra() {
         renderizarObrasEnProgresoInicio();
       }
 
+      estado.ultimoRegistroGuardadoId = reg.id;
       filtrarYMostrarHistorial();
+      desplazarHaciaRegistroGuardado(reg.id);
 
       // Recalcular promedios o serie completa si corresponde
       if (reg.categoria === 'Musica' && (reg.subcategoria === 'Discos' || reg.subcategoria === 'Disco') && reg.creador) {
@@ -13418,6 +13618,7 @@ function abrirEditorRegistroCompleto(id) {
         reg.comentario = com;
         reg.horas = horas;
         reg.esRewatch = esRw;
+        estado.ultimoRegistroGuardadoId = reg.id;
         filtrarYMostrarHistorial();
         if (reg.categoria === 'Musica' && (reg.subcategoria === 'Discos' || reg.subcategoria === 'Disco') && reg.creador) {
           recalcularYActualizarPromedioArtista(reg.creador).then(() => {
