@@ -2683,7 +2683,6 @@ avatar: datos.avatar !== undefined ? String(datos.avatar) : (actual.avatar || '�
 preferencias: datos.preferencias !== undefined ? Object.assign({}, actual.preferencias || {}, datos.preferencias) : (actual.preferencias || {}), updated_at: new Date().toISOString()
 }; await sbFetch_('perfiles?on_conflict=user_email', 'POST', payload, 'resolution=merge-duplicates,return=representation'); return { exito: true, emailGoogle: email }; } catch (e) { return { exito: false, error: e.toString() }; }
 }, async obtenerRegistros(userEmail) { try { const email = normEm_(userEmail); if (!email) return []; const data = await sbFetch_(`registros?user_email=eq.${encodeURIComponent(email)}&select=*&order=created_at.asc`, 'GET') || [];
-const correccionesBaseDatos = [];
 const lista = data.map(r => {
 let fIni = fmtFecha_(r.fecha_inicio);
 let fFin = fmtFecha_(r.fecha_fin);
@@ -2693,21 +2692,16 @@ const tieneRango = subTieneRango(cat, sub);
 
 if (!tieneRango) {
   // Subcategorías de una única fecha (Películas, Documentales, Discos, Conciertos)
-  // Solo deben tener una única fecha, y nunca deben tener la opción de quedar como pendientes.
   let fUnica = 'Sin fecha';
   if (fIni && fIni !== 'Sin fecha' && !esEnProgresoTexto(fIni)) {
     fUnica = fIni;
   } else if (fFin && fFin !== 'Sin fecha' && !esEnProgresoTexto(fFin)) {
     fUnica = fFin;
   }
-  const necesitaArreglo = (fFin !== fUnica) || (fIni !== fUnica) || esEnProgresoTexto(r.fecha_fin) || esEnProgresoTexto(r.fecha_inicio);
   fIni = fUnica;
   fFin = fUnica;
-  if (necesitaArreglo) {
-    correccionesBaseDatos.push({ id: r.id, fecha_inicio: fUnica, fecha_fin: fUnica });
-  }
 } else {
-  // Subcategorías que sí admiten rango (Series Temporadas, Videojuegos, Libros, etc.)
+  // Subcategorías que sí admiten rango (Series, Artistas/Grupos, Videojuegos, Libros, etc.)
   const fFinLower = String(fFin || '').trim().toLowerCase();
   const fIniLower = String(fIni || '').trim().toLowerCase();
   const esSinFechaFin = (!fFin || fFinLower === 'sin fecha' || fFinLower === '');
@@ -2723,17 +2717,6 @@ creador: String(r.creador || ''), anio: String(r.anio || ''), fechaInicio: fIni,
 esRewatch: !!r.es_rewatch || String(r.subcategoria || '').includes('Rewatch')
 };
 });
-if (correccionesBaseDatos.length > 0) {
-  setTimeout(() => {
-    correccionesBaseDatos.forEach(item => {
-      sbFetch_(`registros?id=eq.${encodeURIComponent(item.id)}`, 'PATCH', {
-        fecha_inicio: item.fecha_inicio,
-        fecha_fin: item.fecha_fin,
-        updated_at: new Date().toISOString()
-      }).catch(() => {});
-    });
-  }, 100);
-}
 return lista.sort((a, b) => {
   const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? parseTs_(a.fechaFin) : parseTs_(a.fechaInicio);
   const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? parseTs_(b.fechaFin) : parseTs_(b.fechaInicio);
@@ -9801,32 +9784,67 @@ function esEnProgresoTexto(str) {
 }
 function subTieneRango(c, s) {
   if (!c) return false;
-  const cNorm = c.normalize('NFD').replace(/[̀-ͯ]/g, '');
-  const cfg = CONFIG[c] || CONFIG[cNorm];
-  if (!cfg || !cfg.subs) return false;
-  const sub = cfg.subs.find(x => x.id === s || x.nombre === s || (x.id && s && x.id.toLowerCase() === s.toLowerCase()));
-  return !!sub?.rangoFechas;
+  const cat = String(c).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const sub = String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+
+  // Watchlists de cualquier categoría nunca admiten rango
+  if (sub.includes('watchlist') || sub.includes('to play') || sub.includes('to read') || sub.includes('to listen')) {
+    return false;
+  }
+
+  // Películas y documentales: NUNCA admiten rango (solo 1 fecha única)
+  if (cat.includes('pelicula') || cat.includes('movie') || cat.includes('film')) {
+    return false;
+  }
+
+  // Música: Discos y Conciertos son fecha única; Artistas/Grupos admite rango
+  if (cat.includes('musica') || cat.includes('music')) {
+    if (sub.includes('disco') || sub.includes('concierto') || sub.includes('album') || sub.includes('concert')) {
+      return false;
+    }
+    if (sub.includes('artista') || sub.includes('grupo') || sub.includes('artist') || sub.includes('band')) {
+      return true;
+    }
+    return false;
+  }
+
+  // Series: Todas las subcategorías de series admiten rango de fechas (fecha inicio y fecha término)
+  if (cat.includes('serie')) {
+    return true;
+  }
+
+  // Juegos: Todos los videojuegos/juegos admiten rango de fechas (fecha inicio y fecha término)
+  if (cat.includes('juego') || cat.includes('game')) {
+    return true;
+  }
+
+  // Lecturas: Todos los libros, cómics, mangas admiten rango de fechas (fecha inicio y fecha término)
+  if (cat.includes('lectura') || cat.includes('libro') || cat.includes('comic') || cat.includes('manga') || cat.includes('book') || cat.includes('read')) {
+    return true;
+  }
+
+  return false;
 }
 function obtenerTextoEnProgreso(cat, sub) {
   const c = cat || estado.categoria;
-  const s = (sub || estado.subcategoria || '').toLowerCase();
-  if (!subTieneRango(c, sub || estado.subcategoria)) return null;
-  const l = userPrefs.lang || 'es';
-  if (c === 'Series') {
+  const s = (sub || estado.subcategoria || '');
+  if (!subTieneRango(c, s)) return null;
+  const cNorm = String(c).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const sNorm = String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang) ? userPrefs.lang : 'es';
+  if (cNorm.includes('serie')) {
     return l === 'en' ? 'Still watching' : 'Aún viendo';
   }
-  if (c === 'Musica') {
-    if (s.includes('artista') || s.includes('grupo')) {
+  if (cNorm.includes('musica') || cNorm.includes('music')) {
+    if (sNorm.includes('artista') || sNorm.includes('grupo') || sNorm.includes('artist') || sNorm.includes('band')) {
       return l === 'en' ? 'Still listening' : 'Aún escuchando';
     }
   }
-  if (c === 'Juegos') {
+  if (cNorm.includes('juego') || cNorm.includes('game')) {
     return l === 'en' ? 'Still playing' : 'Aún jugando';
   }
-  if (c === 'Lecturas') {
-    if (s.includes('libro') || s.includes('cómic') || s.includes('comic') || s.includes('manga')) {
-      return l === 'en' ? 'Still reading' : 'Aún leyendo';
-    }
+  if (cNorm.includes('lectura') || cNorm.includes('libro') || cNorm.includes('comic') || cNorm.includes('manga') || cNorm.includes('book') || cNorm.includes('read')) {
+    return l === 'en' ? 'Still reading' : 'Aún leyendo';
   }
   return null;
 }
@@ -12422,7 +12440,7 @@ function abrirEditorRegistroCompleto(id) {
   const c = reg.categoria, s = reg.subcategoria;
   const admiteRango = subTieneRango(c, s);
   const enProg = admiteRango && esEnProgresoTexto(reg.fechaFin);
-  let r = admiteRango && ((reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) || enProg);
+  let r = admiteRango;
   const isJ = c === 'Juegos';
   document.getElementById('modal-titulo').textContent = l === 'en' ? 'Edit Entry' : 'Editar Registro';
   let html = '<div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;background:var(--bg);padding:10px;border-radius:10px;border:1px solid var(--border);">';
@@ -12584,7 +12602,7 @@ function abrirEditorFecha(id) {
   const l = userPrefs.lang || 'es';
   const admiteRango = subTieneRango(reg.categoria, reg.subcategoria);
   const enProg = admiteRango && esEnProgresoTexto(reg.fechaFin);
-  let r = admiteRango && ((reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) || enProg);
+  let r = admiteRango;
   document.getElementById('modal-titulo').textContent = l === 'en' ? 'Edit Date' : 'Editar Fecha';
   
   let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
