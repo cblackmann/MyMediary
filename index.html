@@ -13049,7 +13049,7 @@ if (c === 'Juegos' && document.getElementById('input-horas-jugadas').value.trim(
 } else if ((c === 'Peliculas' || c === 'Series') && estado.seleccionado.duracionHoras) {
   horasGuardar = `${estado.seleccionado.duracionHoras} hrs`;
 }
-const savedId = (payload && payload.id) ? payload.id : (typeof uuid_ === 'function' ? uuid_() : 'reg_' + Date.now());
+const savedId = (typeof uuid_ === 'function' ? uuid_() : 'reg_' + Date.now());
 const payload = { id: savedId, categoria: c, subcategoria: s, titulo: tTit, tituloBase: tBase, subtitulo: sub,
 creador: estado.seleccionado.creador, anio: estado.seleccionado.anio, fechaInicio: fI, fechaFin: fF, calificacion: calificacionNum, comentario: comentarioConPunto,
 poster: estado.seleccionado.poster, horas: horasGuardar, esTemporadaUnica: esUnica, numTempActual: numT, totalTempOficiales: totT, esRewatch: esRw
@@ -13098,6 +13098,10 @@ if (esUltima) {
   if (!res.removidoDeWatchlist) mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Record saved in Supabase!' : '¡Registro guardado en Supabase!');
 }
 } else { alert((userPrefs.lang === 'en' ? 'Error saving: ' : 'Error al guardar: ') + (res?.error || (userPrefs.lang === 'en' ? 'Unknown' : 'Desconocido'))); }
+}).withFailureHandler(err => {
+  btn.textContent = t('btn_guardar');
+  btn.disabled = false;
+  alert((userPrefs.lang === 'en' ? 'Connection error: ' : 'Error de conexión: ') + (err?.message || err));
 }).guardarRegistro(payload, estado.userEmail); }
 function confirmarEliminar(id, tTit) { idParaEliminar = id; const reg = estado.registros.find(r => String(r.id) === String(id)); regParaEliminar = reg ? { titulo: reg.titulo, categoria: reg.categoria, subcategoria: reg.subcategoria, creador: reg.creador } : (tTit ? { titulo: tTit, categoria: estado.categoria } : null);
 const nombreMostrar = (reg && reg.titulo) ? reg.titulo : (tTit || 'este registro'); document.getElementById('confirm-eliminar-mensaje').innerHTML = `¿Estás seguro de que deseas eliminar permanentemente <strong>"${nombreMostrar}"</strong> del historial?`;
