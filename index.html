@@ -922,27 +922,33 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .date-prec-btn.active{background:rgba(56,189,248,0.18);border:1px solid rgba(56,189,248,0.3);color:var(--accent);font-weight:700;}
 
 
-/* TARJETA EN CURSO / AÚN VIENDO EN INICIO */
-.home-en-progreso-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;margin-top:4px;}
-.home-en-progreso-item{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:12px;transition:var(--tr);position:relative;}
-.home-en-progreso-item:hover{border-color:rgba(56,189,248,0.4);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.22);}
-.home-en-progreso-poster{width:46px;height:66px;border-radius:8px;object-fit:cover;background:#334155;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.3);cursor:pointer;}
-.home-en-progreso-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;}
-.home-en-progreso-title{font-weight:700;font-size:0.88rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
-.home-en-progreso-title:hover{color:var(--accent);}
-.home-en-progreso-meta{font-size:0.73rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.home-en-progreso-tags{display:flex;align-items:center;gap:6px;margin-top:2px;flex-wrap:wrap;}
-.home-en-progreso-tag-badge{font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(56,189,248,0.12);color:var(--accent);border:1px solid rgba(56,189,248,0.25);}
-.home-en-progreso-status-pill{font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(245,158,11,0.14);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);}
-.btn-terminar-home{background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;border:none;border-radius:9px;padding:7px 12px;font-size:0.78rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;flex-shrink:0;box-shadow:0 2px 8px rgba(16,185,129,0.32);transition:all 0.15s ease;}
-.btn-terminar-home:hover{transform:scale(1.03);box-shadow:0 4px 14px rgba(16,185,129,0.45);}
-.btn-terminar-home:active{transform:scale(0.97);}
-[data-theme$="-light"] .btn-terminar-home,[data-theme="nordic-light"] .btn-terminar-home,[data-theme="creme-latte"] .btn-terminar-home,[data-theme="parchment"] .btn-terminar-home,[data-theme="sage-garden"] .btn-terminar-home{background:linear-gradient(135deg,#059669,#047857) !important;color:#ffffff !important;box-shadow:0 3px 10px rgba(5,150,105,0.35) !important;}
-@media (max-width: 480px){.home-en-progreso-grid{grid-template-columns:1fr;}}
+/* TARJETA ON GOING / EN PROGRESO EN INICIO (CARRUSEL HORIZONTAL) */
+.home-en-progreso-carousel{display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;padding:4px 2px 14px 2px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;max-width:100%;width:100%;box-sizing:border-box;}
+.home-en-progreso-carousel::-webkit-scrollbar{height:6px;}
+.home-en-progreso-carousel::-webkit-scrollbar-track{background:transparent;}
+.home-en-progreso-carousel::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.home-en-progreso-card{flex:0 0 190px;width:190px;max-width:190px;box-sizing:border-box;scroll-snap-align:start;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:var(--tr);position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.home-en-progreso-card:hover{border-color:rgba(56,189,248,0.45);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.18);}
+.home-en-progreso-card-top{width:100%;display:flex;justify-content:center;align-items:center;margin-bottom:8px;}
+.home-en-progreso-card-badge{font-size:0.68rem;font-weight:700;padding:2px 8px;border-radius:8px;background:rgba(56,189,248,0.12);color:var(--accent);border:1px solid rgba(56,189,248,0.25);white-space:nowrap;display:inline-flex;align-items:center;gap:4px;}
+.home-en-progreso-card-poster{width:96px;height:136px;border-radius:8px;object-fit:cover;background:#334155;box-shadow:0 3px 10px rgba(0,0,0,0.28);cursor:pointer;transition:transform 0.15s ease;margin-bottom:8px;flex-shrink:0;}
+.home-en-progreso-card-poster:hover{transform:scale(1.03);}
+.home-en-progreso-card-title{width:100%;font-weight:700;font-size:0.86rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;margin-bottom:2px;}
+.home-en-progreso-card-title:hover{color:var(--accent);}
+.home-en-progreso-card-sub{width:100%;font-size:0.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;}
+.home-en-progreso-card-date{font-size:0.7rem;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap;}
+.btn-terminar-card-carousel{width:100%;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;border:none;border-radius:8px;padding:7px 10px;font-size:0.76rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 6px rgba(16,185,129,0.3);transition:all 0.15s ease;margin-top:auto;white-space:nowrap;}
+.btn-terminar-card-carousel:hover{transform:scale(1.02);box-shadow:0 4px 12px rgba(16,185,129,0.45);}
+.btn-terminar-card-carousel:active{transform:scale(0.98);}
+[data-theme$="-light"] .btn-terminar-card-carousel,[data-theme="nordic-light"] .btn-terminar-card-carousel,[data-theme="creme-latte"] .btn-terminar-card-carousel,[data-theme="parchment"] .btn-terminar-card-carousel,[data-theme="sage-garden"] .btn-terminar-card-carousel{background:linear-gradient(135deg,#059669,#047857) !important;color:#ffffff !important;}
+@media (max-width: 480px){
+  .home-en-progreso-card{flex:0 0 165px;width:165px;max-width:165px;padding:10px 8px;}
+  .home-en-progreso-card-poster{width:86px;height:122px;}
+}
 
 /* APARTADOS INICIO: RESUMEN ULTRA COMPACTO & RACHAS */
-.home-quick-stats-strip{margin-top:16px;margin-bottom:32px;display:flex;flex-direction:column;gap:14px;}
-.home-mini-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);transition:var(--tr);}
+.home-quick-stats-strip{margin-top:16px;margin-bottom:32px;display:flex;flex-direction:column;gap:14px;max-width:100%;width:100%;box-sizing:border-box;}
+.home-mini-section{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px 16px;box-shadow:var(--shadow-sm);transition:var(--tr);max-width:100%;width:100%;box-sizing:border-box;overflow:hidden;}
 .home-mini-section:hover{border-color:rgba(56,189,248,0.35);}
 .home-mini-section-header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
 .home-mini-title{font-weight:700;font-size:0.95rem;color:var(--text);display:flex;align-items:center;gap:6px;}
@@ -1330,17 +1336,17 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
           </div>
         </div>
 
-        <!-- 2. PRODUCTOS EN "AÚN VIENDO" / EN PROGRESO -->
-        <div class="home-mini-section" id="home-en-progreso-section">
+        <!-- 2. PRODUCTOS EN CURSO / ON GOING -->
+        <div class="home-mini-section" id="home-en-progreso-section" style="max-width:100%; width:100%; box-sizing:border-box; overflow:hidden;">
           <div class="home-mini-section-header">
             <div class="home-mini-title">
-              <span>⏳</span>
-              <span data-i18n="home_en_progreso_title">Aún viendo</span>
+              <span>⚡</span>
+              <span data-i18n="home_en_progreso_title">On Going</span>
               <span class="pill-count" id="home-en-progreso-count" style="margin-left:4px; font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border-radius:10px; padding:1px 8px; font-weight:800;">0</span>
             </div>
-            <span class="home-mini-hint" data-i18n="home_en_progreso_hint">En curso en tu historial</span>
+            <span class="home-mini-hint" data-i18n="home_en_progreso_hint">Temporadas · Juegos · Lecturas</span>
           </div>
-          <div id="home-en-progreso-list" class="home-en-progreso-grid">
+          <div id="home-en-progreso-list" class="home-en-progreso-carousel">
             <!-- Generado dinámicamente por renderizarObrasEnProgresoInicio -->
           </div>
         </div>
@@ -6936,8 +6942,8 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cat_juegos": "Juegos",
     "cat_musica": "Música",
     "cat_lecturas": "Lecturas",
-    "home_en_progreso_title": "Aún viendo",
-    "home_en_progreso_hint": "En curso en tu historial",
+    "home_en_progreso_title": "On Going",
+    "home_en_progreso_hint": "Temporadas · Juegos · Lecturas",
     "home_en_progreso_empty": "No tienes obras en curso en este momento.",
     "btn_la_termine": "¡Ya lo terminé!",
     "lbl_en_progreso_inicio": "Inicio:"
@@ -7350,8 +7356,8 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cat_juegos": "Games",
     "cat_musica": "Music",
     "cat_lecturas": "Readings",
-    "home_en_progreso_title": "Still watching",
-    "home_en_progreso_hint": "In progress in your history",
+    "home_en_progreso_title": "On Going",
+    "home_en_progreso_hint": "Seasons · Games · Readings",
     "home_en_progreso_empty": "You have no titles in progress right now.",
     "btn_la_termine": "I finished it!",
     "lbl_en_progreso_inicio": "Started:"
@@ -9017,17 +9023,53 @@ function renderizarResumenInicio() {
   renderizarRachasActualesInicio();
 }
 
+function clasificarSubcatOnGoing(r) {
+  if (!r) return null;
+  const c = String(r.categoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const s = String(r.subcategoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+
+  // Excluir watchlists
+  if (s.includes('watchlist') || s.includes('to play') || s.includes('to read') || s.includes('to listen')) return null;
+
+  // Excluir explícitamente música y artistas
+  if (c.includes('musica') || c.includes('music') || s.includes('artista') || s.includes('grupo') || s.includes('disco')) return null;
+
+  // Excluir explícitamente películas
+  if (c.includes('pelicula') || c.includes('movie') || c.includes('film')) return null;
+
+  // Excluir explícitamente series completas y documentales
+  if (s.includes('completa') || s.includes('documental')) return null;
+
+  // 1. Temporadas de series
+  if (c.includes('serie')) {
+    return { orden: 1, grupo: 'temporadas', label: 'Temporada', emoji: '📺' };
+  }
+
+  // 2. Juegos
+  if (c.includes('juego') || c.includes('game')) {
+    return { orden: 2, grupo: 'juegos', label: 'Juego', emoji: '🎮' };
+  }
+
+  // 3. Lecturas
+  if (c.includes('lectura') || c.includes('libro') || c.includes('comic') || c.includes('manga') || c.includes('book') || c.includes('read')) {
+    const lbl = s.includes('comic') ? 'Cómic' : (s.includes('manga') ? 'Manga' : 'Libro');
+    return { orden: 3, grupo: 'lecturas', label: lbl, emoji: '📚' };
+  }
+
+  return null;
+}
+
 function renderizarObrasEnProgresoInicio() {
   const listEl = document.getElementById('home-en-progreso-list');
   const countEl = document.getElementById('home-en-progreso-count');
   if (!listEl) return;
 
   const l = userPrefs.lang || 'es';
-  // Filtrar obras que admiten rango y están actualmente en progreso o con fecha término "Sin fecha"
-  const enProgreso = (estado.registros || []).filter(r => {
+  // Filtrar y clasificar obras On Going: temporadas, juegos y lecturas (sin series completas ni artistas)
+  const candidatos = (estado.registros || []).filter(r => {
     if (!r) return false;
-    const admiteRango = typeof subTieneRango === 'function' ? subTieneRango(r.categoria, r.subcategoria) : false;
-    if (!admiteRango) return false;
+    const info = clasificarSubcatOnGoing(r);
+    if (!info) return false;
     const fFin = r.fechaFin || r.fecha_fin;
     const fIni = r.fechaInicio || r.fecha_inicio;
     const fFinLower = String(fFin || '').trim().toLowerCase();
@@ -9037,11 +9079,19 @@ function renderizarObrasEnProgresoInicio() {
     return (typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(fFin)) || (esSinFechaFin && fIniValida);
   });
 
-  if (countEl) countEl.textContent = String(enProgreso.length);
+  // Ordenar estrictamente por subcategorías: 1. temporadas, 2. juegos, 3. lecturas
+  candidatos.sort((a, b) => {
+    const cA = clasificarSubcatOnGoing(a);
+    const cB = clasificarSubcatOnGoing(b);
+    if (cA.orden !== cB.orden) return cA.orden - cB.orden;
+    return timestampDeFecha(b.fechaInicio) - timestampDeFecha(a.fechaInicio);
+  });
 
-  if (!enProgreso.length) {
+  if (countEl) countEl.textContent = String(candidatos.length);
+
+  if (!candidatos.length) {
     listEl.innerHTML = `
-      <div style="text-align:center; padding:18px 12px; color:var(--muted); font-size:0.82rem; background:var(--bg); border:1px dashed var(--border); border-radius:12px; grid-column:1/-1;">
+      <div style="text-align:center; padding:18px 12px; color:var(--muted); font-size:0.82rem; background:var(--bg); border:1px dashed var(--border); border-radius:12px; width:100%; box-sizing:border-box;">
         <span style="font-size:1.35rem; display:block; margin-bottom:4px;">✨</span>
         <span data-i18n="home_en_progreso_empty">${l === 'en' ? 'You have no titles in progress right now.' : 'No tienes obras en curso en este momento.'}</span>
       </div>
@@ -9049,29 +9099,24 @@ function renderizarObrasEnProgresoInicio() {
     return;
   }
 
-  listEl.innerHTML = enProgreso.map(r => {
-    const posterSrc = r.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'46\' height=\'66\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
-    const catObj = (typeof CONFIG !== 'undefined' && CONFIG[r.categoria]) ? CONFIG[r.categoria] : {};
-    const catEmoji = catObj.emoji || '🎬';
-    const txtProg = typeof obtenerTextoEnProgreso === 'function' ? obtenerTextoEnProgreso(r.categoria, r.subcategoria) : null;
-    const statusTxt = (r.fechaFin && esEnProgresoTexto(r.fechaFin)) ? r.fechaFin : (txtProg || (l === 'en' ? 'Still watching' : 'Aún viendo'));
+  listEl.innerHTML = candidatos.map(r => {
+    const info = clasificarSubcatOnGoing(r) || { emoji: '🎬', label: r.subcategoria || r.categoria };
+    const posterSrc = r.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'140\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
     const fechaIniStr = (r.fechaInicio && r.fechaInicio !== 'Sin fecha') ? r.fechaInicio : '';
-    const subLabel = r.subcategoria || r.categoria;
     const creadorStr = r.creador ? `${r.creador} ${r.anio ? `(${r.anio})` : ''}` : (r.anio ? `(${r.anio})` : '');
 
     return `
-      <div class="home-en-progreso-item" id="home-prog-${r.id}">
-        <img src="${posterSrc}" class="home-en-progreso-poster" alt="${r.titulo}" onclick="abrirFichaTecnica('${r.id}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">
-        <div class="home-en-progreso-info">
-          <div class="home-en-progreso-title" onclick="abrirFichaTecnica('${r.id}')" title="${r.titulo}">${r.titulo}</div>
-          <div class="home-en-progreso-meta">${subLabel}${creadorStr ? ` · ${creadorStr}` : ''}</div>
-          <div class="home-en-progreso-tags">
-            <span class="home-en-progreso-tag-badge">${catEmoji} ${subLabel}</span>
-            <span class="home-en-progreso-status-pill">⏳ ${statusTxt}</span>
-            ${fechaIniStr ? `<span style="font-size:0.7rem; color:var(--muted); margin-left:auto;">${l === 'en' ? 'Started:' : 'Inicio:'} ${fechaIniStr}</span>` : ''}
-          </div>
+      <div class="home-en-progreso-card" id="home-prog-${r.id}">
+        <div class="home-en-progreso-card-top">
+          <span class="home-en-progreso-card-badge">${info.emoji} ${info.label}</span>
         </div>
-        <button type="button" class="btn-terminar-home" onclick="event.stopPropagation(); abrirModalTerminarObra('${r.id}')" title="${l === 'en' ? 'Mark as finished & review' : 'Completar y calificar obra'}">
+        <img src="${posterSrc}" class="home-en-progreso-card-poster" alt="${r.titulo}" onclick="abrirFichaTecnica('${r.id}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">
+        <div class="home-en-progreso-card-title" onclick="abrirFichaTecnica('${r.id}')" title="${r.titulo}">${r.titulo}</div>
+        <div class="home-en-progreso-card-sub" title="${creadorStr}">${creadorStr || '—'}</div>
+        <div class="home-en-progreso-card-date">
+          <span class="emoji-dyn">⏳ </span><span>${fechaIniStr ? `${l === 'en' ? 'Started: ' : 'Inicio: '}${fechaIniStr}` : (l === 'en' ? 'In progress' : 'En progreso')}</span>
+        </div>
+        <button type="button" class="btn-terminar-card-carousel" onclick="event.stopPropagation(); abrirModalTerminarObra('${r.id}')" title="${l === 'en' ? 'Mark as finished & review' : 'Completar y calificar obra'}">
           <span>🎉</span> <span>${l === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span>
         </button>
       </div>
