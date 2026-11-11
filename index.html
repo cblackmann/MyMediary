@@ -2675,38 +2675,77 @@ avatar: datos.avatar !== undefined ? String(datos.avatar) : (actual.avatar || '�
 preferencias: datos.preferencias !== undefined ? Object.assign({}, actual.preferencias || {}, datos.preferencias) : (actual.preferencias || {}), updated_at: new Date().toISOString()
 }; await sbFetch_('perfiles?on_conflict=user_email', 'POST', payload, 'resolution=merge-duplicates,return=representation'); return { exito: true, emailGoogle: email }; } catch (e) { return { exito: false, error: e.toString() }; }
 }, async obtenerRegistros(userEmail) { try { const email = normEm_(userEmail); if (!email) return []; const data = await sbFetch_(`registros?user_email=eq.${encodeURIComponent(email)}&select=*&order=created_at.asc`, 'GET') || [];
-const migracionesPendientes = [];
+const correccionesBaseDatos = [];
 const lista = data.map(r => {
 let fIni = fmtFecha_(r.fecha_inicio);
 let fFin = fmtFecha_(r.fecha_fin);
-const fFinLower = String(fFin || '').trim().toLowerCase();
-const fIniLower = String(fIni || '').trim().toLowerCase();
-const esSinFechaFin = (!fFin || fFinLower === 'sin fecha' || fFinLower === '');
-const tieneRango = subTieneRango(r.categoria, r.subcategoria);
-const fIniValida = (fIni && fIniLower !== 'sin fecha');
-if (esSinFechaFin && (tieneRango || fIniValida)) {
-  fFin = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo';
-  migracionesPendientes.push({ id: r.id, fecha_fin: fFin });
+const cat = String(r.categoria || '');
+const sub = String(r.subcategoria || '');
+const tieneRango = subTieneRango(cat, sub);
+
+if (!tieneRango) {
+  // Subcategorías de una única fecha (Películas, Documentales, Discos, Conciertos)
+  // Solo deben tener una única fecha, y nunca deben tener la opción de quedar como pendientes.
+  let fUnica = 'Sin fecha';
+  if (fIni && fIni !== 'Sin fecha' && !esEnProgresoTexto(fIni)) {
+    fUnica = fIni;
+  } else if (fFin && fFin !== 'Sin fecha' && !esEnProgresoTexto(fFin)) {
+    fUnica = fFin;
+  }
+  const necesitaArreglo = (fFin !== fUnica) || (fIni !== fUnica) || esEnProgresoTexto(r.fecha_fin) || esEnProgresoTexto(r.fecha_inicio);
+  fIni = fUnica;
+  fFin = fUnica;
+  if (necesitaArreglo) {
+    correccionesBaseDatos.push({ id: r.id, fecha_inicio: fUnica, fecha_fin: fUnica });
+  }
+} else {
+  // Subcategorías que sí admiten rango (Series Temporadas, Videojuegos, Libros, etc.)
+  const fFinLower = String(fFin || '').trim().toLowerCase();
+  const fIniLower = String(fIni || '').trim().toLowerCase();
+  const esSinFechaFin = (!fFin || fFinLower === 'sin fecha' || fFinLower === '');
+  const fIniValida = (fIni && fIniLower !== 'sin fecha');
+  if (esSinFechaFin && fIniValida && esSubcategoriaEnProgresoPermitida(cat, sub) && esEnProgresoTexto(r.fecha_fin)) {
+    fFin = obtenerTextoEnProgreso(cat, sub) || 'Aún viendo';
+  }
 }
+
 return {
-id: String(r.id || ''), categoria: String(r.categoria || ''), subcategoria: String(r.subcategoria || ''), titulo: String(r.titulo || ''), subtitulo: String(r.subtitulo || ''),
+id: String(r.id || ''), categoria: cat, subcategoria: sub, titulo: String(r.titulo || ''), subtitulo: String(r.subtitulo || ''),
 creador: String(r.creador || ''), anio: String(r.anio || ''), fechaInicio: fIni, fechaFin: fFin, calificacion: Number(r.calificacion) || 0, comentario: String(r.comentario || ''), poster: String(r.poster || ''), horas: String(r.horas || ''),
 esRewatch: !!r.es_rewatch || String(r.subcategoria || '').includes('Rewatch')
 };
 });
-if (migracionesPendientes.length > 0) {
+if (correccionesBaseDatos.length > 0) {
   setTimeout(() => {
-    migracionesPendientes.forEach(item => {
-      sbFetch_(`registros?id=eq.${encodeURIComponent(item.id)}`, 'PATCH', { fecha_fin: item.fecha_fin, updated_at: new Date().toISOString() }).catch(() => {});
+    correccionesBaseDatos.forEach(item => {
+      sbFetch_(`registros?id=eq.${encodeURIComponent(item.id)}`, 'PATCH', {
+        fecha_inicio: item.fecha_inicio,
+        fecha_fin: item.fecha_fin,
+        updated_at: new Date().toISOString()
+      }).catch(() => {});
     });
   }, 100);
 }
-return lista.sort((a, b) => { const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? parseTs_(a.fechaFin) : parseTs_(a.fechaInicio); const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? parseTs_(b.fechaFin) : parseTs_(b.fechaInicio); return vA - vB; }); } catch (e) { return []; }
-}, async guardarRegistro(d, userEmail) { try { const email = normEm_(userEmail || d?.userEmail); if (!email) return { exito: false, error: 'Inicia sesión para guardar registros.' }; const buildObj = o => ({
-id: uuid_(), user_email: email, categoria: o.categoria || '', subcategoria: o.subcategoria || '', titulo: o.titulo || 'Sin título', subtitulo: o.subtitulo || '',
-creador: o.creador || '', anio: String(o.anio || ''), fecha_inicio: o.fechaInicio === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaInicio), fecha_fin: o.fechaFin === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaFin), calificacion: Number(o.calificacion) || 0, comentario: o.comentario || '',
-poster: o.poster || '', horas: o.horas || '', es_rewatch: !!o.esRewatch
-}); const rows = [buildObj(d)]; if (d.esTemporadaUnica && d.categoria === 'Series' && (d.subcategoria === 'Temporadas' || d.subcategoria.includes('Temporada'))) {
+return lista.sort((a, b) => {
+  const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? parseTs_(a.fechaFin) : parseTs_(a.fechaInicio);
+  const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? parseTs_(b.fechaFin) : parseTs_(b.fechaInicio);
+  return vA - vB;
+}); } catch (e) { return []; }
+}, async guardarRegistro(d, userEmail) { try { const email = normEm_(userEmail || d?.userEmail); if (!email) return { exito: false, error: 'Inicia sesión para guardar registros.' }; const admiteRango = subTieneRango(d.categoria, d.subcategoria);
+const buildObj = o => {
+  let fIni = o.fechaInicio === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaInicio);
+  let fFin = o.fechaFin === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaFin);
+  if (!admiteRango) {
+    const fUnica = (fIni && fIni !== 'Sin fecha' && !esEnProgresoTexto(fIni)) ? fIni : ((fFin && fFin !== 'Sin fecha' && !esEnProgresoTexto(fFin)) ? fFin : 'Sin fecha');
+    fIni = fUnica;
+    fFin = fUnica;
+  }
+  return {
+    id: uuid_(), user_email: email, categoria: o.categoria || '', subcategoria: o.subcategoria || '', titulo: o.titulo || 'Sin título', subtitulo: o.subtitulo || '',
+    creador: o.creador || '', anio: String(o.anio || ''), fecha_inicio: fIni, fecha_fin: fFin, calificacion: Number(o.calificacion) || 0, comentario: o.comentario || '',
+    poster: o.poster || '', horas: o.horas || '', es_rewatch: !!o.esRewatch
+  };
+}; const rows = [buildObj(d)]; if (d.esTemporadaUnica && d.categoria === 'Series' && (d.subcategoria === 'Temporadas' || d.subcategoria.includes('Temporada'))) {
 rows.push(buildObj(Object.assign({}, d, { subcategoria: 'Series Completas', titulo: d.tituloBase || d.titulo.replace(/\s*\[S\d+\]$/, '') }))); }
 await sbFetch_('registros', 'POST', rows); let estabaEnWatchlist = false, tituloWatchlist = ''; try { const wData = await sbFetch_(`watchlist?user_email=eq.${encodeURIComponent(email)}&categoria=eq.${encodeURIComponent(d.categoria || '')}&select=*`, 'GET') || [];
 const titNorm = String(d.tituloBase || d.titulo || '').toLowerCase().replace(/\s*\[s\d+\]$/i, '').trim(); for (const w of wData) { const itemTit = String(w.titulo || '').toLowerCase().trim(); if (itemTit === titNorm || (itemTit && (titNorm.startsWith(itemTit) || itemTit.startsWith(titNorm)))) {
@@ -8937,9 +8976,18 @@ function esEnProgresoTexto(str) {
          s === 'aún jugando' || s === 'aun jugando' || s === 'still playing' ||
          s === 'aún leyendo' || s === 'aun leyendo' || s === 'still reading';
 }
+function subTieneRango(c, s) {
+  if (!c) return false;
+  const cNorm = c.normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const cfg = CONFIG[c] || CONFIG[cNorm];
+  if (!cfg || !cfg.subs) return false;
+  const sub = cfg.subs.find(x => x.id === s || x.nombre === s || (x.id && s && x.id.toLowerCase() === s.toLowerCase()));
+  return !!sub?.rangoFechas;
+}
 function obtenerTextoEnProgreso(cat, sub) {
   const c = cat || estado.categoria;
   const s = (sub || estado.subcategoria || '').toLowerCase();
+  if (!subTieneRango(c, sub || estado.subcategoria)) return null;
   const l = userPrefs.lang || 'es';
   if (c === 'Series') {
     return l === 'en' ? 'Still watching' : 'Aún viendo';
@@ -8960,16 +9008,7 @@ function obtenerTextoEnProgreso(cat, sub) {
   return null;
 }
 function esSubcategoriaEnProgresoPermitida(cat, sub) {
-  return obtenerTextoEnProgreso(cat, sub) !== null;
-}
-function subTieneRango(c, s, reg) {
-  if (reg && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) return true;
-  if (!c) return false;
-  const cNorm = c.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const cfg = CONFIG[c] || CONFIG[cNorm];
-  if (!cfg || !cfg.subs) return false;
-  const sub = cfg.subs.find(x => x.id === s || x.nombre === s || (x.id && s && x.id.toLowerCase() === s.toLowerCase()));
-  return !!sub?.rangoFechas;
+  return subTieneRango(cat, sub) && obtenerTextoEnProgreso(cat, sub) !== null;
 }
 function subAdmiteRewatch(c, s) { return !!CONFIG[c]?.subs?.find(x => x.id === s)?.admiteRewatch; }
 function obtenerFechaHoyStr() {
@@ -9663,10 +9702,11 @@ if (!esTemp) { document.getElementById('input-temporada-num').value = ''; docume
 const admiteRw = subAdmiteRewatch(c, s); const boxRw = document.getElementById('grupo-rewatch-checkbox'); if (boxRw) { boxRw.style.display = admiteRw ? 'block' : 'none'; document.getElementById('chk-es-rewatch').checked = false; }
 const btnFiltroRw = document.getElementById('btn-filtro-rewatches'); if (btnFiltroRw) btnFiltroRw.style.display = admiteRw ? 'inline-flex' : 'none';
 document.getElementById('grupo-comic-manga').style.display = (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) ? 'block' : 'none'; document.getElementById('grupo-horas-juegos').style.display = (c === 'Juegos') ? 'block' : 'none';
-const textoProg = obtenerTextoEnProgreso(c, s);
+const admiteRangoForm = subTieneRango(c, s);
+const textoProg = admiteRangoForm ? obtenerTextoEnProgreso(c, s) : null;
 const boxProg = document.getElementById('grupo-en-progreso');
 if (boxProg) {
-  if (textoProg) {
+  if (textoProg && admiteRangoForm) {
     boxProg.style.display = 'block';
     const txtEl = document.getElementById('texto-en-progreso');
     if (txtEl) txtEl.textContent = textoProg;
@@ -9681,6 +9721,8 @@ if (boxProg) {
     if (chkProg) { chkProg.checked = false; toggleEnProgresoFormulario(); }
   } else {
     boxProg.style.display = 'none';
+    const chkProg = document.getElementById('chk-en-progreso');
+    if (chkProg) chkProg.checked = false;
   }
 }
 actualizarBotonLecturaHoyLibros();
@@ -9693,7 +9735,28 @@ if (info.totalTemporadas) estado.seleccionado.totalSeasons = info.totalTemporada
 }).obtenerDatosSerieInfo(estado.seleccionado.idRef, num); }
 }
 function configurarFormularioFechas() { const rango = subTieneRango(estado.categoria, estado.subcategoria); document.getElementById('col-fecha-fin').style.display = rango ? 'block' : 'none'; document.getElementById('lbl-fecha-ini').textContent = rango ? t('lbl_fecha_ini') : t('lbl_fecha_vis'); }
-function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_regs_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_regs_' + estado.userEmail.toLowerCase()); if (c) { estado.registros = JSON.parse(c).map(r => { let fI = sanitizarFechaFrontend(r.fechaInicio); let fF = sanitizarFechaFrontend(r.fechaFin); const fFinLower = String(fF || '').trim().toLowerCase(); const fIniLower = String(fI || '').trim().toLowerCase(); if ((!fF || fFinLower === 'sin fecha') && (subTieneRango(r.categoria, r.subcategoria) || (fI && fIniLower !== 'sin fecha'))) { fF = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo'; } return { ...r, fechaInicio: fI, fechaFin: fF }; }); if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { estado.registros = (d || []).map(r => { let fI = sanitizarFechaFrontend(r.fechaInicio); let fF = sanitizarFechaFrontend(r.fechaFin); const fFinLower = String(fF || '').trim().toLowerCase(); const fIniLower = String(fI || '').trim().toLowerCase(); if ((!fF || fFinLower === 'sin fecha') && (subTieneRango(r.categoria, r.subcategoria) || (fI && fIniLower !== 'sin fecha'))) { fF = obtenerTextoEnProgreso(r.categoria, r.subcategoria) || 'Aún viendo'; } return { ...r, fechaInicio: fI, fechaFin: fF }; }); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_regs_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.registros)); } catch(e) {} }
+function sanitizarRegistroFechasFrontend(r) {
+  let fI = sanitizarFechaFrontend(r.fechaInicio || r.fecha_inicio);
+  let fF = sanitizarFechaFrontend(r.fechaFin || r.fecha_fin);
+  const cat = r.categoria || '';
+  const sub = r.subcategoria || '';
+  const tieneRango = subTieneRango(cat, sub);
+  if (!tieneRango) {
+    let fUnica = 'Sin fecha';
+    if (fI && fI !== 'Sin fecha' && !esEnProgresoTexto(fI)) fUnica = fI;
+    else if (fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) fUnica = fF;
+    fI = fUnica;
+    fF = fUnica;
+  } else {
+    const fFinLower = String(fF || '').trim().toLowerCase();
+    const fIniLower = String(fI || '').trim().toLowerCase();
+    if ((!fF || fFinLower === 'sin fecha') && (fI && fIniLower !== 'sin fecha') && esSubcategoriaEnProgresoPermitida(cat, sub) && esEnProgresoTexto(r.fechaFin || r.fecha_fin)) {
+      fF = obtenerTextoEnProgreso(cat, sub) || 'Aún viendo';
+    }
+  }
+  return { ...r, fechaInicio: fI, fechaFin: fF };
+}
+function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_regs_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_regs_' + estado.userEmail.toLowerCase()); if (c) { estado.registros = JSON.parse(c).map(sanitizarRegistroFechasFrontend); if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { estado.registros = (d || []).map(sanitizarRegistroFechasFrontend); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_regs_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.registros)); } catch(e) {} }
 if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
 else { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 }).obtenerRegistros(estado.userEmail); }
@@ -10628,6 +10691,7 @@ function actualizarFechaDesdeSoloAnio() {
 function obtenerFechasParaGuardarNuevo() {
   const sinF = document.getElementById('chk-no-fecha')?.checked;
   if (sinF) return { fI: 'Sin fecha', fF: 'Sin fecha' };
+  const admiteRango = subTieneRango(estado.categoria, estado.subcategoria);
   if (regPrecisionActual === 'semana') {
     const val = document.getElementById('sel-semana-num')?.value || '';
     return { fI: val || 'Sin fecha', fF: val || 'Sin fecha' };
@@ -10641,8 +10705,10 @@ function obtenerFechasParaGuardarNuevo() {
     return { fI: anio, fF: anio };
   } else {
     const fI = sanitizarFechaFrontend(document.getElementById('input-fecha-inicio')?.value);
-    const fF = sanitizarFechaFrontend(document.getElementById('input-fecha-fin')?.value);
-    return { fI, fF };
+    const fF = admiteRango ? sanitizarFechaFrontend(document.getElementById('input-fecha-fin')?.value) : fI;
+    const finalI = fI || 'Sin fecha';
+    const finalF = (admiteRango ? (fF || fI) : fI) || 'Sin fecha';
+    return { fI: finalI, fF: finalF };
   }
 }
 const restaurarHoverEstrellas = () => actualizarDisplayEstrellas(estado.calificacion); function toggleSinFecha(sinF) { [fpInicio, fpFin].forEach((fp, idx) => { const inp = document.getElementById(idx === 0 ? 'input-fecha-inicio' : 'input-fecha-fin'); if (fp) {
@@ -10872,8 +10938,16 @@ function confirmarCreacionNuevoArtista() {
   }).guardarRegistro(payload, estado.userEmail);
 }
 function toggleEnProgresoFormulario(e) {
+  const c = estado.categoria, s = estado.subcategoria;
+  const admiteRango = subTieneRango(c, s);
   const chk = document.getElementById('chk-en-progreso');
   if (!chk) return;
+  if (!admiteRango) {
+    chk.checked = false;
+    const boxP = document.getElementById('grupo-en-progreso');
+    if (boxP) boxP.style.display = 'none';
+    return;
+  }
   if (e && e.target) {
     if (e.target.id === 'chk-en-progreso') {
       // El navegador ya cambió chk.checked
@@ -10888,7 +10962,6 @@ function toggleEnProgresoFormulario(e) {
   }
   const isChecked = chk.checked;
   const inpFin = document.getElementById('input-fecha-fin');
-  const c = estado.categoria, s = estado.subcategoria;
   const textoProg = obtenerTextoEnProgreso(c, s) || 'Aún viendo';
   const box = document.querySelector('.en-progreso-box');
 
@@ -10966,13 +11039,15 @@ const sinF = document.getElementById('chk-no-fecha').checked; const fechasG = ob
 let calificacionNum = Number(estado.calificacion)||0;
 let comentarioConPunto = asegurarPuntoFinal(document.getElementById('input-comentario').value);
 const chkProgEl = document.getElementById('chk-en-progreso');
-if (chkProgEl && chkProgEl.checked) {
+if (chkProgEl && chkProgEl.checked && subTieneRango(c, s)) {
   const pTxt = obtenerTextoEnProgreso(c, s);
   if (pTxt) {
     fF = pTxt;
     calificacionNum = 0;
     comentarioConPunto = '';
   }
+} else if (!subTieneRango(c, s)) {
+  fF = fI;
 }
 const esRw = subAdmiteRewatch(c, s) && document.getElementById('chk-es-rewatch').checked; const btn = document.getElementById('btn-guardar');
 btn.textContent = 'Guardando... ⏳'; btn.disabled = true;
@@ -11050,29 +11125,55 @@ tb.innerHTML = ''; mBox.innerHTML = ''; const c = estado.categoria, s = estado.s
 renderizarBannerRachaSubcategoria(c, s);
 th.innerHTML = `<tr>${r ? `<th style="width:110px;">${t('table_th_fecha_ini')}</th><th style="width:110px;">${t('table_th_fecha_fin')}</th>` : `<th style="width:110px;">${t('table_th_fecha')}</th>`}${isJ ? `<th style="width:80px; text-align:center;">${t('table_th_horas')}</th>` : ''}<th>${obtenerNombreColumnaTitulo(c, s)}</th><th style="width:150px;">${t('table_th_calif')}</th><th>${t('table_th_comentario')}</th><th style="width:40px; text-align:center;"></th></tr>`;
 let l = obtenerRegistrosDeSubcategoria(c, s); if (estado.ocultarRewatches && subAdmiteRewatch(c, s)) { l = l.filter(x => !x.esRewatch && !x.subcategoria.includes('Rewatch')); }
-l.sort((a, b) => { const vA = (a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? timestampDeFecha(a.fechaFin) : timestampDeFecha(a.fechaInicio); const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? timestampDeFecha(b.fechaFin) : timestampDeFecha(b.fechaInicio); return vA - vB; });
+l.sort((a, b) => {
+  const fA = (!r) ? a.fechaInicio : ((a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? a.fechaFin : a.fechaInicio);
+  const fB = (!r) ? b.fechaInicio : ((b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? b.fechaFin : b.fechaInicio);
+  return timestampDeFecha(fA) - timestampDeFecha(fB);
+});
 document.getElementById('total-filtro').textContent = l.length; const cols = (r ? 2 : 1) + (isJ ? 1 : 0) + 4; if (!l.length) { tb.innerHTML = `<tr><td colspan="${cols}" style="text-align:center; padding:24px; color:var(--muted);">${t('stat_sin_reg')}</td></tr>`;
 mBox.innerHTML = `<div style="text-align:center; padding:24px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border);">${t('stat_sin_reg')}</div>`; return; }
-const conteosMes = {}; l.forEach(reg => { const fI = sanitizarFechaFrontend(reg.fechaInicio), fF = sanitizarFechaFrontend(reg.fechaFin); const fechaParaMes = (r && fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : (fI !== 'Sin fecha' ? fI : fF); const mKey = extraerMesClave(fechaParaMes).clave;
-conteosMes[mKey] = (conteosMes[mKey] || 0) + 1; }); let mesClaveActual = ''; let mesParidad = 0; const tbFrag = document.createDocumentFragment(); const mBoxFrag = document.createDocumentFragment(); l.forEach(reg => { const fI = sanitizarFechaFrontend(reg.fechaInicio), fF = sanitizarFechaFrontend(reg.fechaFin);
-const enProg = esEnProgresoTexto(fF);
-const sub = reg.subtitulo ? `<div style="font-size:.8rem; color:var(--muted); margin-top:2px;">(${reg.subtitulo})</div>` : ''; const meta = `(${reg.creador}${reg.anio ? ', ' + reg.anio : ''})`;
-const stars = (enProg && (!reg.calificacion || Number(reg.calificacion) === 0))
-  ? `<span style="color:var(--accent); font-size:0.8rem; font-weight:700; font-style:italic;">⏳ ${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>`
-  : renderEstrellasVisuales(reg.calificacion);
-const com = reg.comentario
-  ? `"${reg.comentario}"`
-  : (enProg ? `<span style="color:var(--muted); font-size:0.8rem; font-style:italic;">${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>` : '<span style="color:var(--border)">—</span>');
-const badgeRwHtml = reg.esRewatch ? `<span class="badge-rewatch">🔁 ${t('badge_rewatch')}</span>` : '';
-const fFDisplay = enProg
-  ? `<span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:12px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">⏳ ${fF}</span>`
-  : fF;
-const fechaParaMes = (r && fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : (fI !== 'Sin fecha' ? fI : fF); const mesData = extraerMesClave(fechaParaMes); if (mesData.clave !== mesClaveActual) { mesClaveActual = mesData.clave; mesParidad = (mesParidad + 1) % 2; const count = conteosMes[mesData.clave] || 1;
-const textoMesContador = mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`); const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
-sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td"><span class="emoji-dyn">🗓️ </span>${textoMesContador}</td>`; tbFrag.appendChild(sepTr); const sepCard = document.createElement('div'); sepCard.className = 'month-separator-card';
-sepCard.innerHTML = `<span class="emoji-dyn">🗓️ </span>${textoMesContador}`; mBoxFrag.appendChild(sepCard); }
-const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd'; const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`; tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'Finish entry' : 'Completar y calificar obra'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;">🎉 ${userPrefs.lang === 'en' ? 'Finished!' : '¡Terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
-tbFrag.appendChild(tr); const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`; m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${(fF && fF !== 'Sin fecha') ? fFDisplay : fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>🎉</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Terminé!'}</span></button></div>` : ''}`;
+const conteosMes = {}; l.forEach(reg => {
+  const fI = sanitizarFechaFrontend(reg.fechaInicio), fF = sanitizarFechaFrontend(reg.fechaFin);
+  const fechaParaMes = (!r) ? fI : ((fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : fI);
+  const mKey = extraerMesClave(fechaParaMes).clave;
+  conteosMes[mKey] = (conteosMes[mKey] || 0) + 1;
+});
+let mesClaveActual = ''; let mesParidad = 0; const tbFrag = document.createDocumentFragment(); const mBoxFrag = document.createDocumentFragment();
+l.forEach(reg => {
+  let fI = sanitizarFechaFrontend(reg.fechaInicio), fF = sanitizarFechaFrontend(reg.fechaFin);
+  if (!r) {
+    const fUnica = (fI && fI !== 'Sin fecha' && !esEnProgresoTexto(fI)) ? fI : ((fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : 'Sin fecha');
+    fI = fUnica;
+    fF = fUnica;
+  }
+  const enProg = r && esEnProgresoTexto(fF);
+  const sub = reg.subtitulo ? `<div style="font-size:.8rem; color:var(--muted); margin-top:2px;">(${reg.subtitulo})</div>` : ''; const meta = `(${reg.creador}${reg.anio ? ', ' + reg.anio : ''})`;
+  const stars = (enProg && (!reg.calificacion || Number(reg.calificacion) === 0))
+    ? `<span style="color:var(--accent); font-size:0.8rem; font-weight:700; font-style:italic;">⏳ ${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>`
+    : renderEstrellasVisuales(reg.calificacion);
+  const com = reg.comentario
+    ? `"${reg.comentario}"`
+    : (enProg ? `<span style="color:var(--muted); font-size:0.8rem; font-style:italic;">${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>` : '<span style="color:var(--border)">—</span>');
+  const badgeRwHtml = reg.esRewatch ? `<span class="badge-rewatch">🔁 ${t('badge_rewatch')}</span>` : '';
+  const fFDisplay = enProg
+    ? `<span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:12px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">⏳ ${fF}</span>`
+    : fF;
+  const fechaParaMes = (!r) ? fI : ((fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : fI);
+  const mesData = extraerMesClave(fechaParaMes);
+  if (mesData.clave !== mesClaveActual) {
+    mesClaveActual = mesData.clave; mesParidad = (mesParidad + 1) % 2; const count = conteosMes[mesData.clave] || 1;
+    const textoMesContador = mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`);
+    const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
+    sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td"><span class="emoji-dyn">🗓️ </span>${textoMesContador}</td>`; tbFrag.appendChild(sepTr);
+    const sepCard = document.createElement('div'); sepCard.className = 'month-separator-card';
+    sepCard.innerHTML = `<span class="emoji-dyn">🗓️ </span>${textoMesContador}`; mBoxFrag.appendChild(sepCard);
+  }
+  const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd';
+  const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`;
+  tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'Finish entry' : 'Completar y calificar obra'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:14px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;">🎉 ${userPrefs.lang === 'en' ? 'Finished!' : '¡Terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')">✕</button></td>`;
+  tbFrag.appendChild(tr);
+  const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`;
+  m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')">✏️</button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')">✕</button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">📅 </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">📅 </span>${fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">⏱️ </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:8px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>🎉</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Terminé!'}</span></button></div>` : ''}`;
 mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales(); }
 const cerrarModal = () => { document.getElementById('modal-edicion').style.display = 'none'; document.getElementById('modal-contenido').innerHTML = ''; };
 let califSeleccionadaTerminar = 5;
@@ -11085,6 +11186,10 @@ function abrirModalTerminarObra(id) {
                 (estado.registros || []).find(r => String(r.titulo) === String(id));
     if (!reg) {
       console.warn('Registro no encontrado para terminar con id:', id);
+      return;
+    }
+    if (!subTieneRango(reg.categoria, reg.subcategoria)) {
+      console.warn('Esta subcategoría solo admite una única fecha y no puede quedar como pendiente.');
       return;
     }
     regIdParaTerminar = reg.id;
@@ -11318,8 +11423,8 @@ function abrirEditorRegistroCompleto(id) {
   const l = userPrefs.lang || 'es';
   const c = reg.categoria, s = reg.subcategoria;
   const admiteRango = subTieneRango(c, s);
-  const enProg = esEnProgresoTexto(reg.fechaFin);
-  let r = (admiteRango && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) || enProg;
+  const enProg = admiteRango && esEnProgresoTexto(reg.fechaFin);
+  let r = admiteRango && ((reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) || enProg);
   const isJ = c === 'Juegos';
   document.getElementById('modal-titulo').textContent = l === 'en' ? 'Edit Entry' : 'Editar Registro';
   let html = '<div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;background:var(--bg);padding:10px;border-radius:10px;border:1px solid var(--border);">';
@@ -11374,17 +11479,21 @@ function abrirEditorRegistroCompleto(id) {
   document.getElementById('btn-modal-confirmar').onclick = () => {
     const sinF = document.getElementById('edit-compl-sin-fecha').checked;
     const fI = sinF ? 'Sin fecha' : sanitizarFechaFrontend(document.getElementById('edit-compl-fecha-ini').value);
-    const wrapFin = document.getElementById('wrap-edit-compl-fecha-fin');
-    const inputFin = document.getElementById('edit-compl-fecha-fin');
     let fF = fI;
     if (sinF) {
       fF = 'Sin fecha';
-    } else if (wrapFin && wrapFin.style.display !== 'none' && inputFin && inputFin.value.trim()) {
-      fF = sanitizarFechaFrontend(inputFin.value.trim());
-    } else if (enProg && (!inputFin || !inputFin.value.trim())) {
-      fF = reg.fechaFin;
-    } else if (r && inputFin && inputFin.value.trim()) {
-      fF = sanitizarFechaFrontend(inputFin.value.trim());
+    } else if (!admiteRango) {
+      fF = fI;
+    } else {
+      const wrapFin = document.getElementById('wrap-edit-compl-fecha-fin');
+      const inputFin = document.getElementById('edit-compl-fecha-fin');
+      if (wrapFin && wrapFin.style.display !== 'none' && inputFin && inputFin.value.trim()) {
+        fF = sanitizarFechaFrontend(inputFin.value.trim());
+      } else if (enProg && (!inputFin || !inputFin.value.trim())) {
+        fF = reg.fechaFin;
+      } else if (r && inputFin && inputFin.value.trim()) {
+        fF = sanitizarFechaFrontend(inputFin.value.trim());
+      }
     }
     const calif = Number(document.getElementById('edit-val-calif').value) || 0;
     const com = document.getElementById('edit-compl-comentario').value.trim();
@@ -11476,8 +11585,8 @@ function abrirEditorFecha(id) {
   if (!reg) return;
   const l = userPrefs.lang || 'es';
   const admiteRango = subTieneRango(reg.categoria, reg.subcategoria);
-  const enProg = esEnProgresoTexto(reg.fechaFin);
-  let r = (admiteRango && reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) || enProg;
+  const enProg = admiteRango && esEnProgresoTexto(reg.fechaFin);
+  let r = admiteRango && ((reg.fechaFin && reg.fechaFin !== 'Sin fecha' && reg.fechaFin !== reg.fechaInicio) || enProg);
   document.getElementById('modal-titulo').textContent = l === 'en' ? 'Edit Date' : 'Editar Fecha';
   
   let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;gap:6px;">
@@ -11586,10 +11695,12 @@ function abrirEditorFecha(id) {
         fI = fF = y;
       } else {
         fI = sanitizarFechaFrontend(document.getElementById('edit-fecha-ini').value);
-        const wrapFin = document.getElementById('wrap-edit-fecha-fin');
-        const inputFin = document.getElementById('edit-fecha-fin');
-        fF = fI;
-        if (admiteRango) {
+        if (!admiteRango) {
+          fF = fI;
+        } else {
+          const wrapFin = document.getElementById('wrap-edit-fecha-fin');
+          const inputFin = document.getElementById('edit-fecha-fin');
+          fF = fI;
           if (wrapFin && wrapFin.style.display !== 'none' && inputFin && inputFin.value.trim()) {
             fF = sanitizarFechaFrontend(inputFin.value.trim());
           } else if (enProg && (!inputFin || !inputFin.value.trim())) {
