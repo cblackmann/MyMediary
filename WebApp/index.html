@@ -1359,7 +1359,6 @@ html[data-ui-style="modern"] .container {
 }
 
 /* 1. SECCIONES GENERALES: SEPARACIÓN POR ESPACIO Y TIPOGRAFÍA EN VEZ DE TARJETAS */
-html[data-ui-style="modern"] .cat-wide-card,
 html[data-ui-style="modern"] .home-hero-card,
 html[data-ui-style="modern"] .home-community-section,
 html[data-ui-style="modern"] .all-watchlists-panel,
@@ -1375,7 +1374,6 @@ html[data-ui-style="modern"] .ruleta-banner-card {
   border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
 }
 
-[data-theme$="-light"][data-ui-style="modern"] .cat-wide-card,
 [data-theme$="-light"][data-ui-style="modern"] .home-hero-card,
 [data-theme$="-light"][data-ui-style="modern"] .home-community-section,
 [data-theme$="-light"][data-ui-style="modern"] .all-watchlists-panel,
@@ -1383,6 +1381,56 @@ html[data-ui-style="modern"] .ruleta-banner-card {
 [data-theme$="-light"][data-ui-style="modern"] .detail-card,
 [data-theme$="-light"][data-ui-style="modern"] .ruleta-banner-card {
   border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+/* EN LA PESTAÑA DE LISTAS: LAS DISTINTAS CATEGORÍAS SE MANTIENEN DENTRO DE TARJETAS */
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-card {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  padding: 20px !important;
+  margin-bottom: 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] #vista-listas-extendida .cat-wide-card {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+}
+
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-card:hover {
+  border-color: var(--accent) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22) !important;
+}
+
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding-bottom: 12px !important;
+  margin-bottom: 14px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] #vista-listas-extendida .cat-wide-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-title {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.015em !important;
+}
+
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-total {
+  background: var(--bg) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  padding: 4px 12px !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  color: var(--accent) !important;
 }
 
 html[data-ui-style="modern"] .cat-wide-header,
@@ -1395,7 +1443,6 @@ html[data-ui-style="modern"] .discover-header-bar {
   padding-bottom: 0 !important;
 }
 
-html[data-ui-style="modern"] .cat-wide-title,
 html[data-ui-style="modern"] .home-mini-title,
 html[data-ui-style="modern"] .history-title,
 html[data-ui-style="modern"] .all-watchlists-title,
@@ -1404,14 +1451,6 @@ html[data-ui-style="modern"] .discover-header-bar h2 {
   font-weight: 800 !important;
   letter-spacing: -0.02em !important;
   line-height: 1.25 !important;
-}
-
-html[data-ui-style="modern"] .cat-wide-total {
-  background: transparent !important;
-  border: 1px solid rgba(56, 189, 248, 0.3) !important;
-  border-radius: 8px !important;
-  padding: 3px 10px !important;
-  font-size: 0.85rem !important;
 }
 
 html[data-ui-style="modern"] .home-mini-hint,
@@ -1425,43 +1464,53 @@ html[data-ui-style="modern"] .discover-filter-hint {
   color: var(--muted) !important;
 }
 
-/* 2. PESTAÑA INICIO: HERO, SUBCATEGORÍAS, ON GOING Y RACHAS */
+/* 2. PESTAÑA INICIO: SECCIÓN HERO (AGREGADO RÁPIDO, WATCHLISTS) CENTRADA */
 html[data-ui-style="modern"] .home-hero-card {
-  text-align: left !important;
-  align-items: flex-start !important;
-  padding: 8px 0 24px 0 !important;
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 12px 16px 24px 16px !important;
+  margin: 0 auto 28px auto !important;
 }
 
 html[data-ui-style="modern"] .home-hero-content {
-  text-align: left !important;
-  align-items: flex-start !important;
-  max-width: 100% !important;
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  max-width: 680px !important;
+  margin: 0 auto !important;
 }
 
 html[data-ui-style="modern"] .home-hero-content h2 {
-  justify-content: flex-start !important;
+  justify-content: center !important;
+  text-align: center !important;
   font-size: 1.55rem !important;
   font-weight: 800 !important;
   letter-spacing: -0.02em !important;
-  margin-bottom: 4px !important;
+  margin-bottom: 6px !important;
 }
 
 html[data-ui-style="modern"] .home-hero-content p {
-  text-align: left !important;
-  font-size: 0.85rem !important;
-  line-height: 1.4 !important;
+  text-align: center !important;
+  font-size: 0.86rem !important;
+  line-height: 1.45 !important;
+  margin: 0 auto !important;
 }
 
 html[data-ui-style="modern"] .home-hero-actions {
-  justify-content: flex-start !important;
-  margin-top: 14px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-top: 16px !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
 }
 
 html[data-ui-style="modern"] .btn-hero-quick-add {
-  padding: 9px 18px !important;
-  font-size: 0.86rem !important;
-  border-radius: 10px !important;
-  box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25) !important;
+  padding: 10px 20px !important;
+  font-size: 0.9rem !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3) !important;
 }
 
 html[data-ui-style="modern"] .home-subcat-pill {
