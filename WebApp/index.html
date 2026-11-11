@@ -982,6 +982,22 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 @keyframes popInWinner{0%{transform:scale(0.85);opacity:0;}70%{transform:scale(1.03);}100%{transform:scale(1);opacity:1;}}
 @keyframes pulseBorder{0%,100%{border-color:var(--accent);box-shadow:0 0 20px rgba(56,189,248,0.2);}50%{border-color:#f59e0b;box-shadow:0 0 30px rgba(245,158,11,0.35);}}
 
+.ruleta-modal-box {
+  width: min(580px, 94vw);
+  min-height: 560px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .ruleta-modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: min(540px, 85vh) !important;
+  }
+}
+
 .ruleta-banner-card {
   margin-bottom: 20px;
   background: linear-gradient(135deg, rgba(245,158,11,0.14) 0%, rgba(168,85,247,0.12) 100%);
@@ -2114,7 +2130,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 </div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div id="amigo-modal-hero-card" class="profile-hero-card cover-predeterminada" style="margin-bottom:14px; padding:16px 18px; border-radius:14px; position:relative; overflow:hidden;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> </div> <div id="amigo-modal-character-container"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ <span data-i18n="amigo_stat_title">Métricas de Contenido</span></div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_total_lbl">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_total_sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_avg_lbl">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_avg_sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_hours_lbl">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="amigo_stat_hours_sub">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="amigo-stat-watched-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 <span data-i18n="amigo_breakdown_title">Desglose por Categorías y Subcategorías</span></div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <button type="button" class="btn-friend-records" id="btn-ruleta-amigo-perfil" style="margin-top:8px; background:linear-gradient(135deg, rgba(245,158,11,0.18), rgba(168,85,247,0.16)); border:1.5px solid rgba(245,158,11,0.45); color:var(--text);" onclick="abrirModalRuletaConAmigoActual()"> <span style="font-size:1.15rem;">🍿</span> <span style="font-weight:700;">¿Qué vemos o jugamos hoy? — Ruleta Co-op</span> <span style="font-size:0.85rem; opacity:0.85;">🎲</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL RULETA DE PELÍCULAS CON AMIGO (CO-OP WATCHLIST) -->
 <!-- MODAL RULETA COLABORATIVA CON AMIGO (CO-OP WATCHLIST: PELÍCULAS, SERIES Y JUEGOS) -->
 <div id="modal-ruleta-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRuleta()">
-  <div class="modal-box" style="max-width:580px; max-height:92vh; overflow-y:auto; padding:22px;">
+  <div class="modal-box ruleta-modal-box" style="width:min(580px, 94vw); min-height:560px; max-height:92vh; display:flex; flex-direction:column; overflow-y:auto; padding:22px; box-sizing:border-box;">
     <!-- Encabezado -->
     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; gap:12px; border-bottom:1px solid var(--border); padding-bottom:12px;">
       <div>
@@ -2146,10 +2162,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
       <!-- Carrusel de tarjetas de amigos para seleccionar con un toque -->
       <div id="ruleta-amigos-chips" class="ruleta-amigos-container" style="display:none;"></div>
 
-      <!-- Selector dropdown complementario -->
-      <select id="ruleta-select-amigo" class="form-input" style="font-weight:600; cursor:pointer; margin-top:6px; background:var(--bg); color:var(--text); border:1.5px solid var(--border);" onchange="alCambiarAmigoRuletaSelect(this.value)">
-        <!-- Opciones dinámicas -->
-      </select>
+      
 
       <!-- Mensaje si no tiene amigos -->
       <div id="ruleta-sin-amigos-alert" style="display:none; padding:14px; background:rgba(245,158,11,0.12); border:1.5px solid #d97706; border-radius:12px; margin-top:8px; text-align:center;">
@@ -2167,23 +2180,14 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
         🏷️ 2. ¿Qué categoría quieren elegir?
       </label>
       <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none;">
-        <button type="button" class="ruleta-cat-chip active" id="btn-cat-ruleta-todas" onclick="cambiarCategoriaRuleta('todas')">
-          <span>🌟</span> <span>Todas</span>
-        </button>
-        <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Peliculas" onclick="cambiarCategoriaRuleta('Peliculas')">
+        <button type="button" class="ruleta-cat-chip active" id="btn-cat-ruleta-Peliculas" onclick="cambiarCategoriaRuleta('Peliculas')">
           <span>🎬</span> <span>Películas</span>
         </button>
         <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Series" onclick="cambiarCategoriaRuleta('Series')">
           <span>📺</span> <span>Series</span>
         </button>
-        <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Musica" onclick="cambiarCategoriaRuleta('Musica')">
-          <span>🎵</span> <span>Música</span>
-        </button>
         <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Juegos" onclick="cambiarCategoriaRuleta('Juegos')">
           <span>🎮</span> <span>Juegos</span>
-        </button>
-        <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Lecturas" onclick="cambiarCategoriaRuleta('Lecturas')">
-          <span>📖</span> <span>Lecturas</span>
         </button>
       </div>
     </div>
@@ -2203,11 +2207,13 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
           <span class="mode-sub">(Unir las dos listas)</span>
         </div>
       </div>
-      <div id="ruleta-modo-descripcion" style="font-size:0.75rem; color:var(--muted); margin-top:8px; line-height:1.35; padding:8px 12px; background:var(--bg); border-radius:10px; border:1px dashed var(--border);">
+      <div id="ruleta-modo-descripcion" style="font-size:0.75rem; color:var(--muted); margin-top:8px; line-height:1.35; padding:8px 12px; background:var(--bg); border-radius:10px; border:1px dashed var(--border); min-height:42px; display:flex; align-items:center; box-sizing:border-box;">
         Solo elegirá entre las obras que <strong>ambos</strong> tienen guardadas en sus Watchlists.
       </div>
     </div>
 
+    <!-- CONTENEDOR DE ESTADO ESTABLE -->
+    <div id="ruleta-dynamic-stage" style="flex:1; display:flex; flex-direction:column; justify-content:flex-start; min-height:160px; margin-bottom:12px;">
     <!-- Estado de Carga de Watchlist del Amigo -->
     <div id="ruleta-loading-box" style="display:none; text-align:center; padding:24px 10px; color:var(--muted); font-size:0.88rem; background:var(--bg); border-radius:12px; margin-bottom:14px; border:1px solid var(--border);">
       <div style="font-size:2rem; margin-bottom:6px;">⏳</div>
@@ -2275,8 +2281,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
       </div>
     </details>
 
+    </div>
     <!-- Botones de pie -->
-    <div class="modal-actions" style="justify-content:space-between; margin-top:10px;">
+    <div class="modal-actions" style="justify-content:space-between; margin-top:auto; padding-top:12px; border-top:1px solid var(--border);">
       <button type="button" class="btn-modal-cancel" onclick="cerrarModalRuleta()">Cerrar</button>
       <button type="button" id="btn-ruleta-girar-principal" class="ruleta-btn-girar-banner" style="height:44px; padding:0 24px;" onclick="tirarRuletaPeliculas()">
         <span>🎲</span> <span>Girar Ruleta</span>
@@ -5806,7 +5813,7 @@ function cerrarModalRegistrosAmigo() {
    MEZCLAR WATCHLISTS CON UN AMIGO (CO-OP WATCHLIST & RULETA)
    ============================================================ */
 let ruletaAmigoSeleccionadoEmail = '';
-let ruletaCategoriaActual = 'todas'; // 'todas' | 'Peliculas' | 'Series' | 'Musica' | 'Juegos' | 'Lecturas'
+let ruletaCategoriaActual = 'Peliculas'; // 'Peliculas' | 'Series' | 'Juegos'
 let ruletaModoActual = 'comun'; // 'comun' | 'suma'
 let ruletaCandidatasActuales = [];
 let ruletaAmigoWatchlistCache = {}; // email -> array of items
@@ -5893,14 +5900,14 @@ function obtenerEmojiYNombreCategoria(cat) {
 function abrirModalRuletaConAmigoActual() {
   const email = amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '';
   cerrarModalPerfilAmigo();
-  abrirModalRuleta('todas', email);
+  abrirModalRuleta('Peliculas', email);
 }
 
 function abrirModalRuletaPeliculas(amigoEmailInicial = '') {
   abrirModalRuleta('Peliculas', amigoEmailInicial);
 }
 
-function abrirModalRuleta(catInicial = 'todas', amigoEmailInicial = '') {
+function abrirModalRuleta(catInicial = 'Peliculas', amigoEmailInicial = '') {
   const modal = document.getElementById('modal-ruleta-amigo');
   if (!modal) return;
 
@@ -5920,7 +5927,7 @@ function abrirModalRuleta(catInicial = 'todas', amigoEmailInicial = '') {
     } catch(e) {}
   }
 
-  ruletaCategoriaActual = catInicial || 'todas';
+  ruletaCategoriaActual = (catInicial && ['Peliculas', 'Series', 'Juegos'].includes(catInicial)) ? catInicial : 'Peliculas';
   ruletaModoActual = 'comun';
   ruletaObraElegidaActual = null;
 
@@ -5975,14 +5982,12 @@ function recargarAmigosRuleta(amigoEmailInicial = '') {
 function renderizarAmigosSelectorRuleta(amigoEmailInicial = '') {
   const amigos = estado.amigos || [];
   const chipsCont = document.getElementById('ruleta-amigos-chips');
-  const selectEl = document.getElementById('ruleta-select-amigo');
   const countBadge = document.getElementById('ruleta-amigos-count-badge');
   const noAmigosAlert = document.getElementById('ruleta-sin-amigos-alert');
   const btnGirar = document.getElementById('btn-ruleta-girar-principal');
 
   if (!amigos.length) {
     if (chipsCont) chipsCont.style.display = 'none';
-    if (selectEl) selectEl.style.display = 'none';
     if (countBadge) countBadge.textContent = '0 amigos';
     if (noAmigosAlert) noAmigosAlert.style.display = 'block';
     if (btnGirar) btnGirar.style.display = 'none';
@@ -6003,7 +6008,7 @@ function renderizarAmigosSelectorRuleta(amigoEmailInicial = '') {
   }
   ruletaAmigoSeleccionadoEmail = targetEmail;
 
-  // Render chips visuales interactivos (renderizando fotos de perfil correctamente y sin texto base64 largo)
+  // Render únicamente el carrusel de tarjetas de amigos (con foto de perfil)
   if (chipsCont) {
     chipsCont.style.display = 'flex';
     chipsCont.innerHTML = amigos.map(a => {
@@ -6014,23 +6019,12 @@ function renderizarAmigosSelectorRuleta(amigoEmailInicial = '') {
         ? `<img src="${a.avatar}" alt="${nick}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
         : `<span>${a.avatar || '👤'}</span>`;
       return `
-        <div class="ruleta-amigo-chip ${isAct ? 'active' : ''}" data-email="${a.email}" onclick="seleccionarAmigoRuleta('${a.email.replace(/'/g, "\'")}')">
+        <div class="ruleta-amigo-chip ${isAct ? 'active' : ''}" data-email="${a.email}" onclick="seleccionarAmigoRuleta('${a.email.replace(/'/g, "\\'")}')">
           <div class="ruleta-amigo-avatar">${avatarHtml}</div>
           <span class="ruleta-amigo-nick">${nick}</span>
           <span class="ruleta-amigo-check">✓</span>
         </div>
       `;
-    }).join('');
-  }
-
-  // Render selector dropdown complementario (usando emoji limpio en lugar de volcar el base64 de la imagen)
-  if (selectEl) {
-    selectEl.style.display = 'block';
-    selectEl.innerHTML = amigos.map(a => {
-      const isAct = a.email === ruletaAmigoSeleccionadoEmail;
-      const isImg = a.avatar && (a.avatar.startsWith('http') || a.avatar.startsWith('data:'));
-      const emojiTxt = isImg ? '👤' : (a.avatar || '👤');
-      return `<option value="${a.email}" ${isAct ? 'selected' : ''}>${emojiTxt} ${a.nickname || 'Amigo'}</option>`;
     }).join('');
   }
 
@@ -6045,9 +6039,6 @@ function seleccionarAmigoRuleta(email) {
   document.querySelectorAll('#ruleta-amigos-chips .ruleta-amigo-chip').forEach(ch => {
     ch.classList.toggle('active', ch.getAttribute('data-email') === email);
   });
-  // Sincronizar select
-  const sel = document.getElementById('ruleta-select-amigo');
-  if (sel) sel.value = email;
 
   ruletaObraElegidaActual = null;
   const wCard = document.getElementById('ruleta-winner-card');
@@ -6084,7 +6075,7 @@ function cambiarCategoriaRuleta(cat) {
 }
 
 function actualizarBotonesCategoriaRuleta() {
-  const cats = ['todas', 'Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'];
+  const cats = ['Peliculas', 'Series', 'Juegos'];
   cats.forEach(c => {
     const btn = document.getElementById(`btn-cat-ruleta-${c}`);
     if (btn) {
@@ -6182,11 +6173,10 @@ function actualizarVistaCandidatasRuleta() {
   const selAmigo = (estado.amigos || []).find(a => a.email === amEmail);
   const nomAmigo = selAmigo ? selAmigo.nickname : 'tu amigo';
 
-  // Filtrar según categoría seleccionada (Películas, Series, Música, Juegos, Lecturas o Todas)
+  // Filtrar según categoría seleccionada (Películas, Series o Juegos)
   const filtroCategoria = item => {
     const cat = item.categoriaDetectada || categorizarItemWatchlist(item);
     if (!cat) return false;
-    if (ruletaCategoriaActual === 'todas') return true;
     return cat === ruletaCategoriaActual;
   };
 
