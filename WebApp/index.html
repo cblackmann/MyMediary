@@ -9027,6 +9027,8 @@ function clasificarSubcatOnGoing(r) {
   if (!r) return null;
   const c = String(r.categoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   const s = String(r.subcategoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const tit = String(r.titulo || '').trim();
+  const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
 
   // Excluir watchlists
   if (s.includes('watchlist') || s.includes('to play') || s.includes('to read') || s.includes('to listen')) return null;
@@ -9040,19 +9042,22 @@ function clasificarSubcatOnGoing(r) {
   // Excluir explícitamente series completas y documentales
   if (s.includes('completa') || s.includes('documental')) return null;
 
-  // 1. Temporadas de series
+  // 1. Temporadas de series: SOLO temporadas individuales, jamás series completas ni series sin temporada
   if (c.includes('serie')) {
-    return { orden: 1, grupo: 'temporadas', label: 'Temporada', emoji: '📺' };
+    const tieneSeasonEnTitulo = /\[s\d+\]$/i.test(tit) || /\b(temporada|season)\s*\d+/i.test(tit) || /#\d+$/.test(tit);
+    const tieneTemporadaEnSub = s.includes('temporada') || s.includes('season');
+    if (!tieneTemporadaEnSub && !tieneSeasonEnTitulo) return null;
+    return { orden: 1, grupo: 'temporadas', label: isEn ? 'Season' : 'Temporada', emoji: '📺' };
   }
 
   // 2. Juegos
   if (c.includes('juego') || c.includes('game')) {
-    return { orden: 2, grupo: 'juegos', label: 'Juego', emoji: '🎮' };
+    return { orden: 2, grupo: 'juegos', label: isEn ? 'Game' : 'Juego', emoji: '🎮' };
   }
 
   // 3. Lecturas
   if (c.includes('lectura') || c.includes('libro') || c.includes('comic') || c.includes('manga') || c.includes('book') || c.includes('read')) {
-    const lbl = s.includes('comic') ? 'Cómic' : (s.includes('manga') ? 'Manga' : 'Libro');
+    const lbl = s.includes('comic') ? (isEn ? 'Comic' : 'Cómic') : (s.includes('manga') ? 'Manga' : (isEn ? 'Book' : 'Libro'));
     return { orden: 3, grupo: 'lecturas', label: lbl, emoji: '📚' };
   }
 
@@ -9066,7 +9071,7 @@ function renderizarObrasEnProgresoInicio() {
 
   const l = userPrefs.lang || 'es';
   // Filtrar y clasificar obras On Going: temporadas, juegos y lecturas (sin series completas ni artistas)
-  const candidatos = (estado.registros || []).filter(r => {
+  const candidatosCrudos = (estado.registros || []).filter(r => {
     if (!r) return false;
     const info = clasificarSubcatOnGoing(r);
     if (!info) return false;
@@ -9078,6 +9083,37 @@ function renderizarObrasEnProgresoInicio() {
     const fIniValida = (fIni && fIniLower !== 'sin fecha');
     return (typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(fFin)) || (esSinFechaFin && fIniValida);
   });
+
+  // Identificar qué series tienen una temporada específica con formato [S1] o Temporada X
+  const seriesConTemporadaEspecifica = new Set();
+  for (const r of candidatosCrudos) {
+    const c = String(r.categoria || '').toLowerCase();
+    if (c.includes('serie')) {
+      const tit = String(r.titulo || '').trim();
+      if (/\[s\d+\]$/i.test(tit) || /\b(temporada|season)\s*\d+/i.test(tit) || /#\d+$/.test(tit)) {
+        const baseTit = tit.replace(/\s*\[s\d+\]$/i, '').replace(/\s*-\s*(temporada|season)\s*\d+$/i, '').trim().toLowerCase();
+        seriesConTemporadaEspecifica.add(baseTit);
+      }
+    }
+  }
+
+  // Deduplicar: ID único, y descartar títulos base de series si ya existe su temporada específica
+  const seenIds = new Set();
+  const candidatos = [];
+  for (const r of candidatosCrudos) {
+    if (!r || !r.id || seenIds.has(r.id)) continue;
+    const c = String(r.categoria || '').toLowerCase();
+    if (c.includes('serie')) {
+      const tit = String(r.titulo || '').trim();
+      const tieneSeason = /\[s\d+\]$/i.test(tit) || /\b(temporada|season)\s*\d+/i.test(tit) || /#\d+$/.test(tit);
+      const baseTit = tit.replace(/\s*\[s\d+\]$/i, '').replace(/\s*-\s*(temporada|season)\s*\d+$/i, '').trim().toLowerCase();
+      if (!tieneSeason && seriesConTemporadaEspecifica.has(baseTit)) {
+        continue;
+      }
+    }
+    seenIds.add(r.id);
+    candidatos.push(r);
+  }
 
   // Ordenar estrictamente por subcategorías: 1. temporadas, 2. juegos, 3. lecturas
   candidatos.sort((a, b) => {
