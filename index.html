@@ -959,15 +959,34 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-subcat-pill:hover{border-color:var(--accent);background:rgba(56,189,248,0.08);transform:translateY(-1px);box-shadow:0 4px 12px rgba(56,189,248,0.15);}
 .home-subcat-pill .subcat-left-info{display:flex;align-items:center;gap:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 .home-subcat-pill .pill-count{font-weight:800;font-size:0.78rem;color:var(--accent);background:rgba(56,189,248,0.14);padding:2px 7px;border-radius:8px;border:1px solid rgba(56,189,248,0.25);flex-shrink:0;}
-.home-streaks-cards-row{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin;flex-wrap:wrap;align-items:center;}
-.home-streak-main-card{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.35);border-radius:12px;font-size:0.82rem;color:var(--text);}
-.home-streak-flame{font-size:1.25rem;line-height:1;animation:pulseFlame 2.2s ease-in-out infinite;}
+/* 3 RACHAS: PELÍCULAS, MÚSICA, LECTURA */
+.home-streaks-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:12px;width:100%;box-sizing:border-box;}
+@media (max-width: 680px){.home-streaks-grid{grid-template-columns:1fr;gap:10px;}}
+.home-streak-card{display:flex;flex-direction:column;justify-content:space-between;padding:14px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:14px;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);box-sizing:border-box;min-height:124px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+.home-streak-card:hover{border-color:#f59e0b;transform:translateY(-2px);box-shadow:0 6px 18px rgba(245,158,11,0.15);}
+.home-streak-card.active{border-color:rgba(245,158,11,0.45);background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,var(--bg) 100%);}
+.home-streak-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
+.home-streak-card-name{display:flex;align-items:center;gap:6px;font-weight:700;font-size:0.88rem;color:var(--text);}
+.home-streak-badge{font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;}
+.badge-active{background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.35);}
+.badge-pending{background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.35);}
+.badge-inactive{background:rgba(148,163,184,0.12);color:var(--muted);border:1px solid var(--border);}
+.home-streak-card-body{display:flex;align-items:baseline;gap:6px;margin:6px 0 10px 0;}
+.home-streak-flame-icon{font-size:1.4rem;line-height:1;}
+.home-streak-card.active .home-streak-flame-icon{animation:pulseFlame 2.2s ease-in-out infinite;}
 @keyframes pulseFlame{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
-.home-streak-subcat-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-size:0.79rem;color:var(--text);cursor:pointer;transition:var(--tr);white-space:nowrap;font-family:inherit;}
-.home-streak-subcat-pill:hover{border-color:#f59e0b;background:rgba(245,158,11,0.08);}
-.home-streak-subcat-pill .subcat-streak-count{color:#f59e0b;font-weight:800;display:inline-flex;align-items:center;gap:2px;}
-[data-theme$="-light"] .home-streak-main-card,[data-theme="nordic-light"] .home-streak-main-card,[data-theme="creme-latte"] .home-streak-main-card,[data-theme="parchment"] .home-streak-main-card,[data-theme="sage-garden"] .home-streak-main-card{background:rgba(245,158,11,0.18) !important;border-color:#d97706 !important;color:#92400e !important;}
-[data-theme$="-light"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="nordic-light"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="creme-latte"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="parchment"] .home-streak-subcat-pill .subcat-streak-count,[data-theme="sage-garden"] .home-streak-subcat-pill .subcat-streak-count{color:#b45309 !important;}
+.home-streak-number{font-size:1.55rem;font-weight:900;color:var(--text);line-height:1;letter-spacing:-0.5px;}
+.home-streak-card.active .home-streak-number{color:#f59e0b;}
+.home-streak-unit{font-size:0.78rem;color:var(--muted);font-weight:600;}
+.home-streak-card-footer{margin-top:auto;min-height:28px;display:flex;align-items:center;}
+.home-streak-hint{font-size:0.75rem;color:var(--muted);line-height:1.25;}
+.home-streak-hint.hint-done{color:#10b981;font-weight:600;}
+.btn-read-today-streak{background:linear-gradient(135deg,#f59e0b,#d97706);color:#0f172a;border:none;border-radius:18px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;box-shadow:0 2px 8px rgba(245,158,11,0.3);transition:all 0.2s ease;width:100%;box-sizing:border-box;}
+.btn-read-today-streak:hover{transform:scale(1.02);box-shadow:0 3px 12px rgba(245,158,11,0.45);}
+.btn-read-today-streak.done{background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;box-shadow:0 2px 8px rgba(16,185,129,0.3);}
+.btn-read-today-streak.done:hover{box-shadow:0 3px 12px rgba(16,185,129,0.45);}
+[data-theme$="-light"] .home-streak-card.active,[data-theme="nordic-light"] .home-streak-card.active,[data-theme="creme-latte"] .home-streak-card.active,[data-theme="parchment"] .home-streak-card.active,[data-theme="sage-garden"] .home-streak-card.active{background:rgba(245,158,11,0.12) !important;border-color:#d97706 !important;}
+[data-theme$="-light"] .home-streak-card.active .home-streak-number,[data-theme="nordic-light"] .home-streak-card.active .home-streak-number,[data-theme="creme-latte"] .home-streak-card.active .home-streak-number,[data-theme="parchment"] .home-streak-card.active .home-streak-number,[data-theme="sage-garden"] .home-streak-card.active .home-streak-number{color:#b45309 !important;}
 
 /* ESTILOS MODERNOS DEL SELECTOR DE PERSONAJE FAVORITO */
 .char-picker-tabs{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:4px;gap:4px;margin-bottom:16px;}
@@ -1356,14 +1375,12 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
         <div class="home-mini-section">
           <div class="home-mini-section-header">
             <div class="home-mini-title"><span>🔥</span> <span data-i18n="home_streaks_title">Rachas Actuales</span></div>
-            <span class="home-mini-hint" id="home-streaks-global-badge" data-i18n="home_streaks_sub">Días consecutivos</span>
+            <span class="home-mini-hint" id="home-streaks-global-badge" data-i18n="home_streaks_sub">Películas · Música · Lectura</span>
           </div>
-          <div class="home-streaks-cards-row" id="home-streaks-summary-cards">
-            <!-- Tarjetas de racha actual general y por subcategoría -->
+          <div id="home-streaks-summary-cards">
+            <!-- 3 Tarjetas de racha en orden: Películas, Música, Lectura -->
           </div>
-          <div id="home-reading-quick-box">
-            <!-- Botón / tarjeta interactiva He leído hoy -->
-          </div>
+          <div id="home-reading-quick-box" style="display:none;"></div>
         </div>
       </div>
 
@@ -6835,7 +6852,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "home_subcategories_title": "Subcategorías",
     "home_subcategories_sub": "Toca una para ver su categoría",
     "home_streaks_title": "Rachas Actuales",
-    "home_streaks_sub": "Días consecutivos",
+    "home_streaks_sub": "Películas · Música · Lectura",
     "home_streaks_last_week": "Última semana",
     "friends_loading_recent": "Cargando actividad reciente de amigos... ⏳",
     "friends_no_added_yet": "No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!",
@@ -7250,7 +7267,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "home_subcategories_title": "Subcategories",
     "home_subcategories_sub": "Tap one to view its category",
     "home_streaks_title": "Current Streaks",
-    "home_streaks_sub": "Consecutive days",
+    "home_streaks_sub": "Movies · Music · Reading",
     "home_streaks_last_week": "Last week",
     "friends_loading_recent": "Loading recent activity from friends... ⏳",
     "friends_no_added_yet": "You have no friends added yet. Share your ID to connect!",
@@ -8825,36 +8842,9 @@ function toggleLecturaHoy() {
 
 function actualizarBotonLecturaHoyInicio() {
   const box = document.getElementById('home-reading-quick-box');
-  if (!box) return;
-  const l = userPrefs.lang || 'es';
-  const ya = haLeidoHoy();
-
-  if (ya) {
-    box.innerHTML = `
-      <div class="home-reading-tracker-card active-read" onclick="toggleLecturaHoy()" title="${l === 'en' ? 'Click to toggle reading status' : 'Click para alternar estado de lectura'}">
-        <div class="reading-tracker-icon">✅</div>
-        <div class="reading-tracker-text">
-          <strong class="reading-tracker-title">${l === 'en' ? 'Reading logged today!' : '¡Lectura de hoy registrada!'} 🔥</strong>
-          <span class="reading-tracker-sub">${l === 'en' ? 'Your reading streak is active and protected for today.' : 'Tu racha de lectura está protegida hoy. ¡Sigue así!'}</span>
-        </div>
-        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy()">
-          <span>✓</span> <span>${l === 'en' ? 'Read today' : 'Leído hoy'}</span>
-        </button>
-      </div>
-    `;
-  } else {
-    box.innerHTML = `
-      <div class="home-reading-tracker-card" onclick="toggleLecturaHoy()" title="${l === 'en' ? 'Log that you read today' : 'Registra que leíste hoy'}">
-        <div class="reading-tracker-icon">📖</div>
-        <div class="reading-tracker-text">
-          <strong class="reading-tracker-title">${l === 'en' ? 'Did you read today?' : '¿Leíste hoy?'}</strong>
-          <span class="reading-tracker-sub">${l === 'en' ? 'Log your session to keep your reading streak alive.' : 'Toca para sumar el día de hoy a tu racha de lecturas.'}</span>
-        </div>
-        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy()">
-          <span>✨</span> <span>${l === 'en' ? 'I read today' : 'He leído hoy'}</span>
-        </button>
-      </div>
-    `;
+  if (box) {
+    box.innerHTML = '';
+    box.style.display = 'none';
   }
 }
 
@@ -8886,7 +8876,7 @@ function actualizarBotonLecturaHoyLibros() {
           </div>
         </div>
         <button type="button" class="btn-read-today done" onclick="toggleLecturaHoy()" style="padding:6px 14px; font-size:0.78rem;">
-          <span>✓</span> <span>${l === 'en' ? 'Read today' : 'Leído hoy'}</span>
+          <span>✓</span> <span>${l === 'en' ? 'Read today' : 'Ya leí hoy'}</span>
         </button>
       </div>
     `;
@@ -8896,58 +8886,25 @@ function actualizarBotonLecturaHoyLibros() {
         <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
           <span style="font-size:1.3rem;">📖</span>
           <div style="min-width:0; flex:1;">
-            <strong style="font-size:0.86rem; color:var(--text); display:block;">${l === 'en' ? 'Did you read today?' : '¿Avanzaste en tu libro hoy?'}</strong>
-            <span style="font-size:0.75rem; color:var(--muted);">${l === 'en' ? 'Keep your daily reading streak alive.' : 'Suma tu avance diario sin necesidad de haber terminado el libro.'}</span>
+            <strong style="font-size:0.86rem; color:var(--text); display:block;">${l === 'en' ? 'Did you read today?' : '¿Avanzaste en tu lectura hoy?'}</strong>
+            <span style="font-size:0.75rem; color:var(--muted);">${l === 'en' ? 'Keep your daily reading streak alive.' : 'Suma tu avance diario tocando el botón.'}</span>
           </div>
         </div>
         <button type="button" class="btn-read-today" onclick="toggleLecturaHoy()" style="padding:6px 14px; font-size:0.78rem;">
-          <span>✨</span> <span>${l === 'en' ? 'I read today' : 'He leído hoy'}</span>
+          <span>✨</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
         </button>
       </div>
     `;
   }
 }
 
-function calcularRachaSubcategoria(cat, sub) {
-  const l = userPrefs.lang || 'es';
-
-  // Juegos y Series NO cuentan para rachas
-  if (!esCategoriaValidaParaRachas(cat)) {
+function calcularRachaDesdeDayIndices(setDayIndices) {
+  if (!setDayIndices || !setDayIndices.size) {
     return {
       rachaActual: 0,
       rachaMasAlta: 0,
       esActivaHoy: false,
-      totalDias: 0,
-      textoAccion: ''
-    };
-  }
-
-  const items = (typeof obtenerRegistrosDeSubcategoria === 'function')
-    ? obtenerRegistrosDeSubcategoria(cat, sub, true)
-    : (estado.registros || []).filter(r => perteneceASub(r, cat, sub));
-
-  const setDayIndices = new Set();
-  (items || []).forEach(r => {
-    const setR = extraerDayIndicesDeRegistro(r);
-    setR.forEach(idx => setDayIndices.add(idx));
-  });
-
-  // En lecturas / libros sumamos los días de lectura registrados
-  if (cat === 'Lecturas') {
-    const subNorm = (sub || '').toLowerCase();
-    if (subNorm.includes('libro') || !subNorm) {
-      const diasLectura = obtenerDayIndicesDeLecturaDiaria();
-      diasLectura.forEach(idx => setDayIndices.add(idx));
-    }
-  }
-
-  if (!setDayIndices.size) {
-    return {
-      rachaActual: 0,
-      rachaMasAlta: 0,
-      esActivaHoy: false,
-      totalDias: 0,
-      textoAccion: obtenerTextoAccionSubcategoria(cat, sub)
+      totalDias: 0
     };
   }
 
@@ -8997,9 +8954,68 @@ function calcularRachaSubcategoria(cat, sub) {
     rachaActual,
     rachaMasAlta: bestStreak,
     esActivaHoy,
-    totalDias: setDayIndices.size,
-    textoAccion: obtenerTextoAccionSubcategoria(cat, sub)
+    totalDias: setDayIndices.size
   };
+}
+
+// 1. Racha de Películas (automática según días registrados de películas)
+function calcularRachaPeliculas(regs) {
+  const allRegs = regs || estado.registros || [];
+  const setDayIndices = new Set();
+  allRegs.forEach(r => {
+    if (r && perteneceASub(r, 'Peliculas', 'Películas')) {
+      const setR = extraerDayIndicesDeRegistro(r);
+      setR.forEach(idx => setDayIndices.add(idx));
+    }
+  });
+  return calcularRachaDesdeDayIndices(setDayIndices);
+}
+
+// 2. Racha de Discos (automática según días registrados de discos)
+function calcularRachaDiscos(regs) {
+  const allRegs = regs || estado.registros || [];
+  const setDayIndices = new Set();
+  allRegs.forEach(r => {
+    if (r && perteneceASub(r, 'Musica', 'Discos')) {
+      const setR = extraerDayIndicesDeRegistro(r);
+      setR.forEach(idx => setDayIndices.add(idx));
+    }
+  });
+  return calcularRachaDesdeDayIndices(setDayIndices);
+}
+
+// 3. Racha de Lecturas (manual exclusivamente con botón "Ya leí hoy")
+function calcularRachaLectura() {
+  const setDayIndices = obtenerDayIndicesDeLecturaDiaria();
+  return calcularRachaDesdeDayIndices(setDayIndices);
+}
+
+function calcularRachaSubcategoria(cat, sub) {
+  const cNorm = String(cat || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const sNorm = String(sub || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+
+  if (cNorm.includes('pelicula')) {
+    if (sNorm.includes('pelicula') || sNorm.includes('nueva') || sNorm.includes('rewatch')) {
+      const info = calcularRachaPeliculas();
+      return { ...info, textoAccion: obtenerTextoAccionSubcategoria('Peliculas', 'Películas') };
+    }
+    return { rachaActual: 0, rachaMasAlta: 0, esActivaHoy: false, totalDias: 0, textoAccion: '' };
+  }
+
+  if (cNorm.includes('musica')) {
+    if (sNorm.includes('disco')) {
+      const info = calcularRachaDiscos();
+      return { ...info, textoAccion: obtenerTextoAccionSubcategoria('Musica', 'Discos') };
+    }
+    return { rachaActual: 0, rachaMasAlta: 0, esActivaHoy: false, totalDias: 0, textoAccion: '' };
+  }
+
+  if (cNorm.includes('lectura')) {
+    const info = calcularRachaLectura();
+    return { ...info, textoAccion: obtenerTextoAccionSubcategoria('Lecturas', 'Libros') };
+  }
+
+  return { rachaActual: 0, rachaMasAlta: 0, esActivaHoy: false, totalDias: 0, textoAccion: '' };
 }
 
 function calcularRachaGlobalActual(regs) {
@@ -9007,43 +9023,16 @@ function calcularRachaGlobalActual(regs) {
   const setDayIndices = new Set();
 
   allRegs.forEach(r => {
-    // Solo Peliculas, Musica y Lecturas (NO Juegos ni Series)
-    if (esCategoriaValidaParaRachas(r.categoria)) {
+    if (r && (perteneceASub(r, 'Peliculas', 'Películas') || perteneceASub(r, 'Musica', 'Discos'))) {
       const setR = extraerDayIndicesDeRegistro(r);
       setR.forEach(idx => setDayIndices.add(idx));
     }
   });
 
-  // Sumar días de lectura marcados con "He leído hoy"
   const diasLectura = obtenerDayIndicesDeLecturaDiaria();
   diasLectura.forEach(idx => setDayIndices.add(idx));
 
-  if (!setDayIndices.size) return { rachaActual: 0, esActivaHoy: false, totalDias: 0 };
-
-  const now = new Date();
-  const hoyMid = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const hoyIdx = Math.round(hoyMid.getTime() / 86400000);
-  const ayerIdx = hoyIdx - 1;
-
-  let rachaActual = 0;
-  let esActivaHoy = false;
-
-  if (setDayIndices.has(hoyIdx)) {
-    esActivaHoy = true;
-    let check = hoyIdx;
-    while (setDayIndices.has(check)) {
-      rachaActual++;
-      check--;
-    }
-  } else if (setDayIndices.has(ayerIdx)) {
-    esActivaHoy = false;
-    let check = ayerIdx;
-    while (setDayIndices.has(check)) {
-      rachaActual++;
-      check--;
-    }
-  }
-  return { rachaActual, esActivaHoy, totalDias: setDayIndices.size };
+  return calcularRachaDesdeDayIndices(setDayIndices);
 }
 
 function renderizarResumenInicio() {
@@ -9225,65 +9214,89 @@ function renderizarRachasActualesInicio() {
   const badgeGlobal = document.getElementById('home-streaks-global-badge');
   if (!cont) return;
 
-  const rachaGlobal = calcularRachaGlobalActual(estado.registros);
+  const l = userPrefs.lang || 'es';
   if (badgeGlobal) {
-    if (rachaGlobal.rachaActual > 0) {
-      badgeGlobal.textContent = rachaGlobal.esActivaHoy ? '✓ Activa hoy' : '⚡ Mantener hoy';
-    } else {
-      badgeGlobal.textContent = 'Días consecutivos';
-    }
+    badgeGlobal.textContent = (l === 'en' ? 'Movies · Music · Reading' : 'Películas · Música · Lectura');
   }
 
-  // SOLO Películas, Discos y Lecturas (NO Series ni Juegos)
-  const subcatsInfo = [
-    { cat: 'Peliculas', sub: 'Películas', emoji: '🎬', label: 'Películas' },
-    { cat: 'Musica', sub: 'Discos', emoji: '💿', label: 'Discos' },
-    { cat: 'Lecturas', sub: 'Libros', emoji: '📖', label: 'Libros' },
-    { cat: 'Lecturas', sub: 'Cómics', emoji: '💥', label: 'Cómics' },
-    { cat: 'Lecturas', sub: 'Mangas', emoji: '⛩️', label: 'Mangas' }
-  ];
+  const rPeliculas = calcularRachaPeliculas(estado.registros);
+  const rMusica = calcularRachaDiscos(estado.registros);
+  const rLectura = calcularRachaLectura();
 
-  const subcatsConRacha = [];
-  subcatsInfo.forEach(s => {
-    try {
-      const infoR = calcularRachaSubcategoria(s.cat, s.sub);
-      if (infoR && infoR.rachaActual >= 1) {
-        subcatsConRacha.push({ ...s, racha: infoR.rachaActual, activaHoy: infoR.esActivaHoy });
-      }
-    } catch (e) {}
-  });
-
-  let htmlGlobalCard = `
-    <div class="home-streak-main-card">
-      <span class="home-streak-flame">🔥</span>
-      <div>
-        <div style="font-weight:800; font-size:0.92rem; color:inherit;">
-          ${rachaGlobal.rachaActual > 0 ? `${rachaGlobal.rachaActual} ${rachaGlobal.rachaActual === 1 ? 'día' : 'días'}` : '0 días'}
+  cont.innerHTML = `
+    <div class="home-streaks-grid">
+      <!-- 1. Películas -->
+      <div class="home-streak-card ${rPeliculas.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Peliculas', 'Películas')" title="${l === 'en' ? 'View movies' : 'Ver películas'}">
+        <div class="home-streak-card-header">
+          <div class="home-streak-card-name">
+            <span class="emoji-dyn">🎬</span>
+            <span>${l === 'en' ? 'Movies' : 'Películas'}</span>
+          </div>
+          <span class="home-streak-badge ${rPeliculas.esActivaHoy ? 'badge-active' : (rPeliculas.rachaActual > 0 ? 'badge-pending' : 'badge-inactive')}">
+            ${rPeliculas.esActivaHoy ? (l === 'en' ? '✓ Today' : '✓ Hoy') : (rPeliculas.rachaActual > 0 ? (l === 'en' ? '⚡ Log today' : '⚡ Registra hoy') : (l === 'en' ? '0 days' : 'Sin racha'))}
+          </span>
         </div>
-        <div style="font-size:0.71rem; opacity:0.85;">
-          ${rachaGlobal.rachaActual > 0 ? (rachaGlobal.esActivaHoy ? '✓ Registraste hoy' : '⚡ Registra hoy para continuar') : 'Racha general'}
+        <div class="home-streak-card-body">
+          <span class="home-streak-flame-icon">🔥</span>
+          <span class="home-streak-number">${rPeliculas.rachaActual}</span>
+          <span class="home-streak-unit">${rPeliculas.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
+        </div>
+        <div class="home-streak-card-footer">
+          <span class="home-streak-hint ${rPeliculas.esActivaHoy ? 'hint-done' : ''}">
+            ${rPeliculas.esActivaHoy ? (l === 'en' ? '✓ Movie watched today' : '✓ Película vista hoy') : (rPeliculas.rachaActual > 0 ? (l === 'en' ? 'Log 1 movie today' : 'Registra 1 película hoy') : (l === 'en' ? 'Auto: log a movie' : 'Automática al registrar película'))}
+          </span>
+        </div>
+      </div>
+
+      <!-- 2. Música -->
+      <div class="home-streak-card ${rMusica.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Musica', 'Discos')" title="${l === 'en' ? 'View albums' : 'Ver discos'}">
+        <div class="home-streak-card-header">
+          <div class="home-streak-card-name">
+            <span class="emoji-dyn">💿</span>
+            <span>${l === 'en' ? 'Music' : 'Música'}</span>
+          </div>
+          <span class="home-streak-badge ${rMusica.esActivaHoy ? 'badge-active' : (rMusica.rachaActual > 0 ? 'badge-pending' : 'badge-inactive')}">
+            ${rMusica.esActivaHoy ? (l === 'en' ? '✓ Today' : '✓ Hoy') : (rMusica.rachaActual > 0 ? (l === 'en' ? '⚡ Log today' : '⚡ Registra hoy') : (l === 'en' ? '0 days' : 'Sin racha'))}
+          </span>
+        </div>
+        <div class="home-streak-card-body">
+          <span class="home-streak-flame-icon">🔥</span>
+          <span class="home-streak-number">${rMusica.rachaActual}</span>
+          <span class="home-streak-unit">${rMusica.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
+        </div>
+        <div class="home-streak-card-footer">
+          <span class="home-streak-hint ${rMusica.esActivaHoy ? 'hint-done' : ''}">
+            ${rMusica.esActivaHoy ? (l === 'en' ? '✓ Album logged today' : '✓ Disco escuchado hoy') : (rMusica.rachaActual > 0 ? (l === 'en' ? 'Log 1 album today' : 'Registra 1 disco hoy') : (l === 'en' ? 'Auto: log an album' : 'Automática al registrar disco'))}
+          </span>
+        </div>
+      </div>
+
+      <!-- 3. Lectura -->
+      <div class="home-streak-card ${rLectura.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Lecturas', 'Libros')" title="${l === 'en' ? 'View books' : 'Ver libros'}">
+        <div class="home-streak-card-header">
+          <div class="home-streak-card-name">
+            <span class="emoji-dyn">📖</span>
+            <span>${l === 'en' ? 'Reading' : 'Lectura'}</span>
+          </div>
+          <span class="home-streak-badge ${rLectura.esActivaHoy ? 'badge-active' : (rLectura.rachaActual > 0 ? 'badge-pending' : 'badge-inactive')}">
+            ${rLectura.esActivaHoy ? (l === 'en' ? '✓ Today' : '✓ Hoy') : (rLectura.rachaActual > 0 ? (l === 'en' ? '⚡ Pending' : '⚡ Pendiente') : (l === 'en' ? '0 days' : 'Sin racha'))}
+          </span>
+        </div>
+        <div class="home-streak-card-body">
+          <span class="home-streak-flame-icon">🔥</span>
+          <span class="home-streak-number">${rLectura.rachaActual}</span>
+          <span class="home-streak-unit">${rLectura.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
+        </div>
+        <div class="home-streak-card-footer">
+          <button type="button" class="btn-read-today-streak ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy()" title="${l === 'en' ? 'Click to toggle reading status today' : 'Toca para marcar o desmarcar lectura de hoy'}">
+            <span>${rLectura.esActivaHoy ? '✓' : '✨'}</span>
+            <span>${rLectura.esActivaHoy ? (l === 'en' ? 'Read today' : 'Ya leí hoy') : (l === 'en' ? 'I read today' : 'Ya leí hoy')}</span>
+          </button>
         </div>
       </div>
     </div>
   `;
 
-  let htmlSubcats = subcatsConRacha.map(s => `
-    <button type="button" class="home-streak-subcat-pill" onclick="cambiarCat('${s.cat}', '${s.sub}')" title="Ver racha de ${s.label}">
-      <span class="emoji-dyn">${s.emoji}</span>
-      <span>${s.label}</span>
-      <span class="subcat-streak-count">🔥 ${s.racha}d</span>
-    </button>
-  `).join('');
-
-  if (!subcatsConRacha.length) {
-    htmlSubcats = `
-      <span style="color:var(--muted); font-size:0.77rem; padding:4px 6px;">
-        Registra hoy para encender rachas por categoría.
-      </span>
-    `;
-  }
-
-  cont.innerHTML = htmlGlobalCard + htmlSubcats;
   actualizarBotonLecturaHoyInicio();
 }
 
@@ -9293,8 +9306,8 @@ function calcularRachaMasAltaGlobal(regs) {
   const setDayIndices = new Set();
 
   allRegs.forEach(r => {
-    // Solo Peliculas, Musica y Lecturas (NO Juegos ni Series)
-    if (esCategoriaValidaParaRachas(r.categoria)) {
+    // Solo Películas y Discos desde registros (Series y Juegos NO cuentan)
+    if (r && (perteneceASub(r, 'Peliculas', 'Películas') || perteneceASub(r, 'Musica', 'Discos'))) {
       const setR = extraerDayIndicesDeRegistro(r);
       setR.forEach(idx => setDayIndices.add(idx));
     }
