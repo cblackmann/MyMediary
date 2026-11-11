@@ -888,6 +888,25 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 [data-theme$="-light"] .btn-select-char-pill{color:#b45309;border-color:#d97706;}
 [data-theme$="-light"] .char-result-card:hover .btn-select-char-pill{background:#d97706;color:#fff;}
 .char-custom-preview-box{margin-top:14px;padding:14px;background:var(--bg);border:1.5px dashed var(--border);border-radius:14px;}
+/* TARJETA / BOTÓN "HE LEÍDO HOY" */
+.home-reading-tracker-card{display:flex;align-items:center;justify-content:space-between;gap:14px;background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,rgba(217,119,6,0.03) 100%);border:1.5px solid rgba(245,158,11,0.28);border-radius:14px;padding:12px 16px;margin-top:12px;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);box-sizing:border-box;}
+.home-reading-tracker-card:hover{border-color:#f59e0b;background:linear-gradient(135deg,rgba(245,158,11,0.14) 0%,rgba(217,119,6,0.07) 100%);transform:translateY(-1px);box-shadow:0 4px 16px rgba(245,158,11,0.16);}
+.home-reading-tracker-card.active-read{background:linear-gradient(135deg,rgba(16,185,129,0.12) 0%,rgba(5,150,105,0.05) 100%);border-color:rgba(16,185,129,0.4);}
+.home-reading-tracker-card.active-read:hover{border-color:#10b981;box-shadow:0 4px 16px rgba(16,185,129,0.18);}
+.reading-tracker-icon{width:42px;height:42px;border-radius:12px;background:rgba(245,158,11,0.15);color:#fbbf24;display:grid;place-items:center;font-size:1.3rem;flex-shrink:0;transition:transform .2s ease;}
+.active-read .reading-tracker-icon{background:rgba(16,185,129,0.18);color:#34d399;}
+.reading-tracker-text{flex:1;min-width:0;}
+.reading-tracker-title{display:block;font-size:0.88rem;font-weight:700;color:var(--text);line-height:1.25;}
+.reading-tracker-sub{display:block;font-size:0.75rem;color:var(--muted);margin-top:2px;line-height:1.3;}
+.btn-read-today{background:linear-gradient(135deg,#f59e0b,#d97706);color:#0f172a;border:none;border-radius:20px;padding:8px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 3px 10px rgba(245,158,11,0.35);transition:all .2s ease;flex-shrink:0;}
+.btn-read-today:hover{transform:scale(1.04);box-shadow:0 4px 14px rgba(245,158,11,0.45);}
+.btn-read-today.done{background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;box-shadow:0 3px 10px rgba(16,185,129,0.3);}
+.btn-read-today.done:hover{box-shadow:0 4px 14px rgba(16,185,129,0.4);}
+
+/* BARRA EN PESTAÑA LIBROS */
+.books-reading-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,rgba(245,158,11,0.09) 0%,rgba(217,119,6,0.04) 100%);border:1.5px solid rgba(245,158,11,0.3);border-radius:14px;padding:10px 16px;margin-bottom:14px;box-sizing:border-box;}
+.books-reading-strip.active-read{background:linear-gradient(135deg,rgba(16,185,129,0.12) 0%,rgba(5,150,105,0.05) 100%);border-color:rgba(16,185,129,0.4);}
+[data-theme$="-light"] .home-reading-tracker-card,[data-theme="nordic-light"] .home-reading-tracker-card,[data-theme="creme-latte"] .home-reading-tracker-card,[data-theme="parchment"] .home-reading-tracker-card,[data-theme="sage-garden"] .home-reading-tracker-card,[data-theme$="-light"] .books-reading-strip,[data-theme="nordic-light"] .books-reading-strip,[data-theme="creme-latte"] .books-reading-strip,[data-theme="parchment"] .books-reading-strip,[data-theme="sage-garden"] .books-reading-strip{background:rgba(245,158,11,0.10);border-color:rgba(217,119,6,0.35);}
 </style> </head> <body> <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
 </div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio"> <div class="home-hero-card"> <div class="home-hero-content"> <h2 style="font-size:1.4rem; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:6px;"> <span>🏠</span> <span data-i18n="home_title">Inicio</span> </h2> <p style="color:var(--muted); font-size:.88rem; margin:0; text-align:center;" data-i18n="home_subtitle">Tu centro multimedia personal: registra tus obras, sigue a tus amigos y descubre nuevas recomendaciones.</p> </div> <div class="home-hero-actions"> <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()"> <span style="font-size:1.15rem;">⚡</span> <span data-i18n="btn_quick_add_hero">Agregado Rápido</span> </button> <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;"> <span class="emoji-dyn">📌</span> <span data-i18n="wl_global_btn">Mis Watchlists</span> </button> </div> </div>
@@ -913,6 +932,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
           </div>
           <div class="home-streaks-cards-row" id="home-streaks-summary-cards">
             <!-- Tarjetas de racha actual general y por subcategoría -->
+          </div>
+          <div id="home-reading-quick-box">
+            <!-- Botón / tarjeta interactiva He leído hoy -->
           </div>
         </div>
       </div>
@@ -1115,7 +1137,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <div class="form-group"> <label data-i18n="lbl_calificacion">Calificación:</label> <div class="stars-wrapper" id="rating-stars" onmouseleave="restaurarHoverEstrellas()"></div> <span id="rating-label" style="font-size:.85rem; color:var(--accent); margin-left:8px;">0.0 / 5</span> </div> <div class="form-group" id="grupo-rewatch-checkbox" style="display:none; margin:10px 0 16px;">
 <div class="checkbox-row" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:8px; padding:10px 14px;"> <input type="checkbox" id="chk-es-rewatch" style="width:18px; height:18px; cursor:pointer;"> <label for="chk-es-rewatch" style="cursor:pointer; color:var(--text); font-weight:600; margin:0;" data-i18n="lbl_es_rewatch">🔁 Ya la he visto antes (Rewatch)</label> </div> </div>
 <div class="form-group"> <label data-i18n="lbl_comentario">Comentario / Reseña:</label> <textarea id="input-comentario" class="comment-box" placeholder="Escribe lo que te pareció (Enter para guardar)..." onkeydown="manejarEnterComentario(event)"></textarea> </div> <button class="btn-save" id="btn-guardar" onclick="guardarNuevoElemento()" data-i18n="btn_guardar">Guardar en Mediary</button> </div> <!-- VISTA NORMAL DE HISTORIAL -->
-<div id="seccion-historial-contenido"> <div id="banner-racha-subcategoria" style="display:none; margin-bottom:14px;"></div> <div class="history-header"> <div class="history-title"><span data-i18n="historial_title">Historial</span> (<span id="total-filtro">0</span>)<span id="badge-racha-header" style="display:none; margin-left:10px;"></span></div> <button type="button" class="btn-toggle-filter" id="btn-filtro-rewatches" style="display:none;" onclick="toggleOcultarRewatches()"> <span>🔁</span> <span id="txt-filtro-rewatches" data-i18n="btn_ocultar_rw">Ocultar Rewatches</span>
+<div id="seccion-historial-contenido">
+  <div id="box-lectura-hoy-libros" style="display:none; margin-bottom:14px;"></div>
+  <div id="banner-racha-subcategoria" style="display:none; margin-bottom:14px;"></div> <div class="history-header"> <div class="history-title"><span data-i18n="historial_title">Historial</span> (<span id="total-filtro">0</span>)<span id="badge-racha-header" style="display:none; margin-left:10px;"></span></div> <button type="button" class="btn-toggle-filter" id="btn-filtro-rewatches" style="display:none;" onclick="toggleOcultarRewatches()"> <span>🔁</span> <span id="txt-filtro-rewatches" data-i18n="btn_ocultar_rw">Ocultar Rewatches</span>
 </button> </div> <div class="table-container"> <table class="history-table"><thead id="thead-historial"></thead><tbody id="tbody-historial"></tbody></table> </div> <div class="mobile-history-list" id="mobile-history-cards"></div> </div> <!-- VISTA EXCLUSIVA DE WATCHLIST --> <div id="seccion-watchlist-contenido" style="display:none;"> <div class="history-header"> <div class="history-title" id="titulo-watchlist-nombre">Watchlist (0)</div>
 <button type="button" class="btn-recommend" id="btn-recomendar-azar" onclick="iniciarRecomendacionAzar()"> <span>🎲</span> <span>Recomiéndame</span> </button> </div> <div class="watchlist-grid" id="grid-watchlist-items"></div> </div> </div> </div> <!-- MENÚ FLOTANTE MÓVIL CON 4 BOTONES -->
 <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
@@ -6653,13 +6677,218 @@ function obtenerTextoAccionSubcategoria(cat, sub) {
   return `registrando ${sub.toLowerCase()}`;
 }
 
+// ==========================================
+// SISTEMA DE RACHAS: Películas, Discos y Lecturas
+// (Series y Juegos NO se cuentan para rachas)
+// ==========================================
+function esCategoriaValidaParaRachas(cat) {
+  if (!cat) return false;
+  const c = String(cat).toLowerCase().trim();
+  return c === 'peliculas' || c === 'musica' || c === 'lecturas';
+}
+
+function obtenerFechaHoyStr() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function fechaStrToDayIndex(str) {
+  if (!str || typeof str !== 'string') return null;
+  const parts = str.split('-').map(Number);
+  if (parts.length < 3 || isNaN(parts[0]) || isNaN(parts[1]) || isNaN(parts[2])) return null;
+  const dt = new Date(parts[0], parts[1] - 1, parts[2]);
+  return Math.round(dt.getTime() / 86400000);
+}
+
+function obtenerListaDiasLectura() {
+  const clave = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
+  let locales = [];
+  try {
+    const raw = localStorage.getItem(clave);
+    if (raw) locales = JSON.parse(raw);
+  } catch (e) {}
+
+  let perfilArr = perfilUsuario?.diasLectura || [];
+  if (!Array.isArray(perfilArr)) perfilArr = [];
+
+  const combinado = Array.from(new Set([...locales, ...perfilArr])).filter(Boolean);
+  if (perfilUsuario) perfilUsuario.diasLectura = combinado;
+  return combinado;
+}
+
+function haLeidoHoy() {
+  const hoyStr = obtenerFechaHoyStr();
+  const lista = obtenerListaDiasLectura();
+  return lista.includes(hoyStr);
+}
+
+function obtenerDayIndicesDeLecturaDiaria() {
+  const set = new Set();
+  const lista = obtenerListaDiasLectura();
+  lista.forEach(fStr => {
+    const idx = fechaStrToDayIndex(fStr);
+    if (idx !== null) set.add(idx);
+  });
+  return set;
+}
+
+function toggleLecturaHoy() {
+  const hoyStr = obtenerFechaHoyStr();
+  let lista = obtenerListaDiasLectura();
+  const l = userPrefs.lang || 'es';
+  const yaLeyo = lista.includes(hoyStr);
+
+  if (yaLeyo) {
+    lista = lista.filter(f => f !== hoyStr);
+    mostrarToastPersonalizado(l === 'en' ? 'Reading session for today unmarked.' : '📖 Lectura de hoy desmarcada.');
+  } else {
+    lista.push(hoyStr);
+    mostrarToastPersonalizado(l === 'en' ? '📖 Reading session logged! Your streak is on fire 🔥' : '📖 ¡Lectura de hoy registrada! Tu racha sigue encendida 🔥');
+  }
+
+  const clave = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
+  try {
+    localStorage.setItem(clave, JSON.stringify(lista));
+  } catch (e) {}
+
+  if (perfilUsuario) {
+    perfilUsuario.diasLectura = lista;
+    guardarPerfilLocal();
+    if (typeof google !== 'undefined' && google.script?.run) {
+      google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+    }
+  }
+
+  actualizarBotonLecturaHoyInicio();
+  actualizarBotonLecturaHoyLibros();
+  renderizarRachasActualesInicio();
+  if (estado.categoria === 'Lecturas') {
+    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria);
+  }
+}
+
+function actualizarBotonLecturaHoyInicio() {
+  const box = document.getElementById('home-reading-quick-box');
+  if (!box) return;
+  const l = userPrefs.lang || 'es';
+  const ya = haLeidoHoy();
+
+  if (ya) {
+    box.innerHTML = `
+      <div class="home-reading-tracker-card active-read" onclick="toggleLecturaHoy()" title="${l === 'en' ? 'Click to toggle reading status' : 'Click para alternar estado de lectura'}">
+        <div class="reading-tracker-icon">✅</div>
+        <div class="reading-tracker-text">
+          <strong class="reading-tracker-title">${l === 'en' ? 'Reading logged today!' : '¡Lectura de hoy registrada!'} 🔥</strong>
+          <span class="reading-tracker-sub">${l === 'en' ? 'Your reading streak is active and protected for today.' : 'Tu racha de lectura está protegida hoy. ¡Sigue así!'}</span>
+        </div>
+        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy()">
+          <span>✓</span> <span>${l === 'en' ? 'Read today' : 'Leído hoy'}</span>
+        </button>
+      </div>
+    `;
+  } else {
+    box.innerHTML = `
+      <div class="home-reading-tracker-card" onclick="toggleLecturaHoy()" title="${l === 'en' ? 'Log that you read today' : 'Registra que leíste hoy'}">
+        <div class="reading-tracker-icon">📖</div>
+        <div class="reading-tracker-text">
+          <strong class="reading-tracker-title">${l === 'en' ? 'Did you read today?' : '¿Leíste hoy?'}</strong>
+          <span class="reading-tracker-sub">${l === 'en' ? 'Log your session to keep your reading streak alive.' : 'Toca para sumar el día de hoy a tu racha de lecturas.'}</span>
+        </div>
+        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy()">
+          <span>✨</span> <span>${l === 'en' ? 'I read today' : 'He leído hoy'}</span>
+        </button>
+      </div>
+    `;
+  }
+}
+
+function actualizarBotonLecturaHoyLibros() {
+  const box = document.getElementById('box-lectura-hoy-libros');
+  if (!box) return;
+  const c = estado.categoria;
+  const s = estado.subcategoria;
+  const esLibros = (c === 'Lecturas' && (s === 'Libros' || s === 'Libro'));
+
+  if (!esLibros) {
+    box.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+
+  box.style.display = 'block';
+  const l = userPrefs.lang || 'es';
+  const ya = haLeidoHoy();
+
+  if (ya) {
+    box.innerHTML = `
+      <div class="books-reading-strip active-read">
+        <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+          <span style="font-size:1.3rem;">✅</span>
+          <div style="min-width:0; flex:1;">
+            <strong style="font-size:0.86rem; color:var(--text); display:block;">${l === 'en' ? 'You read today!' : '¡Ya leíste hoy!'}</strong>
+            <span style="font-size:0.75rem; color:var(--muted);">${l === 'en' ? 'Session logged into your streak.' : 'Tu sesión de hoy está sumada a tu racha.'}</span>
+          </div>
+        </div>
+        <button type="button" class="btn-read-today done" onclick="toggleLecturaHoy()" style="padding:6px 14px; font-size:0.78rem;">
+          <span>✓</span> <span>${l === 'en' ? 'Read today' : 'Leído hoy'}</span>
+        </button>
+      </div>
+    `;
+  } else {
+    box.innerHTML = `
+      <div class="books-reading-strip">
+        <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+          <span style="font-size:1.3rem;">📖</span>
+          <div style="min-width:0; flex:1;">
+            <strong style="font-size:0.86rem; color:var(--text); display:block;">${l === 'en' ? 'Did you read today?' : '¿Avanzaste en tu libro hoy?'}</strong>
+            <span style="font-size:0.75rem; color:var(--muted);">${l === 'en' ? 'Keep your daily reading streak alive.' : 'Suma tu avance diario sin necesidad de haber terminado el libro.'}</span>
+          </div>
+        </div>
+        <button type="button" class="btn-read-today" onclick="toggleLecturaHoy()" style="padding:6px 14px; font-size:0.78rem;">
+          <span>✨</span> <span>${l === 'en' ? 'I read today' : 'He leído hoy'}</span>
+        </button>
+      </div>
+    `;
+  }
+}
+
 function calcularRachaSubcategoria(cat, sub) {
   const l = userPrefs.lang || 'es';
+
+  // Juegos y Series NO cuentan para rachas
+  if (!esCategoriaValidaParaRachas(cat)) {
+    return {
+      rachaActual: 0,
+      rachaMasAlta: 0,
+      esActivaHoy: false,
+      totalDias: 0,
+      textoAccion: ''
+    };
+  }
+
   const items = (typeof obtenerRegistrosDeSubcategoria === 'function')
     ? obtenerRegistrosDeSubcategoria(cat, sub, true)
     : (estado.registros || []).filter(r => perteneceASub(r, cat, sub));
 
-  if (!items || !items.length) {
+  const setDayIndices = new Set();
+  (items || []).forEach(r => {
+    const setR = extraerDayIndicesDeRegistro(r);
+    setR.forEach(idx => setDayIndices.add(idx));
+  });
+
+  // En lecturas / libros sumamos los días de lectura registrados
+  if (cat === 'Lecturas') {
+    const subNorm = (sub || '').toLowerCase();
+    if (subNorm.includes('libro') || !subNorm) {
+      const diasLectura = obtenerDayIndicesDeLecturaDiaria();
+      diasLectura.forEach(idx => setDayIndices.add(idx));
+    }
+  }
+
+  if (!setDayIndices.size) {
     return {
       rachaActual: 0,
       rachaMasAlta: 0,
@@ -6668,12 +6897,6 @@ function calcularRachaSubcategoria(cat, sub) {
       textoAccion: obtenerTextoAccionSubcategoria(cat, sub)
     };
   }
-
-  const setDayIndices = new Set();
-  items.forEach(r => {
-    const setR = extraerDayIndicesDeRegistro(r);
-    setR.forEach(idx => setDayIndices.add(idx));
-  });
 
   const sortedDays = Array.from(setDayIndices).sort((a, b) => a - b);
   let bestStreak = 0;
@@ -6728,12 +6951,20 @@ function calcularRachaSubcategoria(cat, sub) {
 
 function calcularRachaGlobalActual(regs) {
   const allRegs = regs || estado.registros || [];
-  if (!allRegs.length) return { rachaActual: 0, esActivaHoy: false, totalDias: 0 };
   const setDayIndices = new Set();
+
   allRegs.forEach(r => {
-    const setR = extraerDayIndicesDeRegistro(r);
-    setR.forEach(idx => setDayIndices.add(idx));
+    // Solo Peliculas, Musica y Lecturas (NO Juegos ni Series)
+    if (esCategoriaValidaParaRachas(r.categoria)) {
+      const setR = extraerDayIndicesDeRegistro(r);
+      setR.forEach(idx => setDayIndices.add(idx));
+    }
   });
+
+  // Sumar días de lectura marcados con "He leído hoy"
+  const diasLectura = obtenerDayIndicesDeLecturaDiaria();
+  diasLectura.forEach(idx => setDayIndices.add(idx));
+
   if (!setDayIndices.size) return { rachaActual: 0, esActivaHoy: false, totalDias: 0 };
 
   const now = new Date();
@@ -6810,11 +7041,10 @@ function renderizarRachasActualesInicio() {
     }
   }
 
+  // SOLO Películas, Discos y Lecturas (NO Series ni Juegos)
   const subcatsInfo = [
     { cat: 'Peliculas', sub: 'Películas', emoji: '🎬', label: 'Películas' },
-    { cat: 'Series', sub: 'Temporadas', emoji: '📺', label: 'Temporadas' },
     { cat: 'Musica', sub: 'Discos', emoji: '💿', label: 'Discos' },
-    { cat: 'Juegos', sub: 'Videojuegos', emoji: '🎮', label: 'Juegos' },
     { cat: 'Lecturas', sub: 'Libros', emoji: '📖', label: 'Libros' },
     { cat: 'Lecturas', sub: 'Cómics', emoji: '💥', label: 'Cómics' },
     { cat: 'Lecturas', sub: 'Mangas', emoji: '⛩️', label: 'Mangas' }
@@ -6861,23 +7091,25 @@ function renderizarRachasActualesInicio() {
   }
 
   cont.innerHTML = htmlGlobalCard + htmlSubcats;
+  actualizarBotonLecturaHoyInicio();
 }
 
 function calcularRachaMasAltaGlobal(regs) {
   const l = userPrefs.lang || 'es';
-  if (!regs || !regs.length) {
-    return {
-      maxStreak: 0,
-      valTxt: '—',
-      subTxt: (l === 'en' ? '0 consecutive days' : '0 días seguidos')
-    };
-  }
-
+  const allRegs = regs || estado.registros || [];
   const setDayIndices = new Set();
-  regs.forEach(r => {
-    const setR = extraerDayIndicesDeRegistro(r);
-    setR.forEach(idx => setDayIndices.add(idx));
+
+  allRegs.forEach(r => {
+    // Solo Peliculas, Musica y Lecturas (NO Juegos ni Series)
+    if (esCategoriaValidaParaRachas(r.categoria)) {
+      const setR = extraerDayIndicesDeRegistro(r);
+      setR.forEach(idx => setDayIndices.add(idx));
+    }
   });
+
+  // Sumar días de lectura diaria
+  const diasLectura = obtenerDayIndicesDeLecturaDiaria();
+  diasLectura.forEach(idx => setDayIndices.add(idx));
 
   if (!setDayIndices.size) {
     return {
@@ -6947,7 +7179,8 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
   const badgeHeader = document.getElementById('badge-racha-header');
   if (!container) return;
 
-  if (!cat || !sub || (typeof esSubcategoriaWatchlist === 'function' && esSubcategoriaWatchlist(sub))) {
+  // NO mostrar banners ni insignias de racha en Series ni en Juegos
+  if (!cat || !sub || !esCategoriaValidaParaRachas(cat) || (typeof esSubcategoriaWatchlist === 'function' && esSubcategoriaWatchlist(sub))) {
     container.style.display = 'none';
     container.innerHTML = '';
     if (badgeHeader) badgeHeader.style.display = 'none';
@@ -8215,6 +8448,7 @@ if (boxProg) {
     boxProg.style.display = 'none';
   }
 }
+actualizarBotonLecturaHoyLibros();
 }
 function toggleOcultarRewatches() { estado.ocultarRewatches = !estado.ocultarRewatches; const btn = document.getElementById('btn-filtro-rewatches'); btn.classList.toggle('active', estado.ocultarRewatches);
 document.getElementById('txt-filtro-rewatches').textContent = estado.ocultarRewatches ? t('btn_mostrar_rw') : t('btn_ocultar_rw'); filtrarYMostrarHistorial(); }
