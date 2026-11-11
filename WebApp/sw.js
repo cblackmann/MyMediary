@@ -1,5 +1,5 @@
-const CACHE_NAME = 'mediary-pwa-v42';
-const ASSETS = ['./index.html', './manifest.json', './icon.png', './icon-192.png', './icon-512.png', './icon.svg'];
+const CACHE_NAME = 'mediary-pwa-v43';
+const ASSETS = ['./index.html', './manifest.json', './manifest-dark.json', './icon.png', './icon-192.png', './icon-512.png', './icon.svg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
