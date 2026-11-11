@@ -13,8 +13,10 @@
     let mode = 'system';
     let font = null;
     let fontSize = null;
+    let uiStyle = 'modern';
     if (raw) {
       const p = JSON.parse(raw);
+      if (p.uiStyle) uiStyle = p.uiStyle;
       if (p.font) font = p.font;
       if (p.fontSize) fontSize = p.fontSize;
       if (p.themeFamily) {
@@ -40,6 +42,7 @@
     }
     const theme = (family || 'slate') + '-' + mode;
     document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-ui-style', uiStyle);
     if (font) document.documentElement.style.setProperty('--font-family', font);
     if (fontSize) document.documentElement.style.setProperty('--font-scale', fontSize);
     
@@ -1337,6 +1340,599 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 }
 
 @media (min-width: 769px){.modal-swipe-handle{display:none !important;}}
+
+/* ========================================================
+   DISEÑO MODERNO & MINIMALISTA (data-ui-style="modern")
+   Más moderno, compacto y minimalista.
+   Marca las secciones con espacios, fuentes y tamaños en vez de tarjetas.
+   Aplica a todas las pestañas, secciones y cuadros/modales.
+   ======================================================== */
+html[data-ui-style="modern"] body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html[data-ui-style="modern"] .container {
+  max-width: 1060px;
+  margin: 14px auto;
+  padding: 0 16px;
+}
+
+/* 1. SECCIONES GENERALES: SEPARACIÓN POR ESPACIO Y TIPOGRAFÍA EN VEZ DE TARJETAS */
+html[data-ui-style="modern"] .cat-wide-card,
+html[data-ui-style="modern"] .home-hero-card,
+html[data-ui-style="modern"] .home-community-section,
+html[data-ui-style="modern"] .all-watchlists-panel,
+html[data-ui-style="modern"] .concierto-box,
+html[data-ui-style="modern"] .detail-card,
+html[data-ui-style="modern"] .ruleta-banner-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 0 28px 0 !important;
+  margin-bottom: 32px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .cat-wide-card,
+[data-theme$="-light"][data-ui-style="modern"] .home-hero-card,
+[data-theme$="-light"][data-ui-style="modern"] .home-community-section,
+[data-theme$="-light"][data-ui-style="modern"] .all-watchlists-panel,
+[data-theme$="-light"][data-ui-style="modern"] .concierto-box,
+[data-theme$="-light"][data-ui-style="modern"] .detail-card,
+[data-theme$="-light"][data-ui-style="modern"] .ruleta-banner-card {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-ui-style="modern"] .cat-wide-header,
+html[data-ui-style="modern"] .home-mini-section-header,
+html[data-ui-style="modern"] .history-header,
+html[data-ui-style="modern"] .all-watchlists-header,
+html[data-ui-style="modern"] .discover-header-bar {
+  border-bottom: none !important;
+  margin-bottom: 14px !important;
+  padding-bottom: 0 !important;
+}
+
+html[data-ui-style="modern"] .cat-wide-title,
+html[data-ui-style="modern"] .home-mini-title,
+html[data-ui-style="modern"] .history-title,
+html[data-ui-style="modern"] .all-watchlists-title,
+html[data-ui-style="modern"] .discover-header-bar h2 {
+  font-size: 1.32rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+}
+
+html[data-ui-style="modern"] .cat-wide-total {
+  background: transparent !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  border-radius: 8px !important;
+  padding: 3px 10px !important;
+  font-size: 0.85rem !important;
+}
+
+html[data-ui-style="modern"] .home-mini-hint,
+html[data-ui-style="modern"] .home-en-progreso-hint,
+html[data-ui-style="modern"] .discover-subtitle,
+html[data-ui-style="modern"] .discover-filter-hint {
+  font-size: 0.72rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 700 !important;
+  color: var(--muted) !important;
+}
+
+/* 2. PESTAÑA INICIO: HERO, SUBCATEGORÍAS, ON GOING Y RACHAS */
+html[data-ui-style="modern"] .home-hero-card {
+  text-align: left !important;
+  align-items: flex-start !important;
+  padding: 8px 0 24px 0 !important;
+}
+
+html[data-ui-style="modern"] .home-hero-content {
+  text-align: left !important;
+  align-items: flex-start !important;
+  max-width: 100% !important;
+}
+
+html[data-ui-style="modern"] .home-hero-content h2 {
+  justify-content: flex-start !important;
+  font-size: 1.55rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 4px !important;
+}
+
+html[data-ui-style="modern"] .home-hero-content p {
+  text-align: left !important;
+  font-size: 0.85rem !important;
+  line-height: 1.4 !important;
+}
+
+html[data-ui-style="modern"] .home-hero-actions {
+  justify-content: flex-start !important;
+  margin-top: 14px !important;
+}
+
+html[data-ui-style="modern"] .btn-hero-quick-add {
+  padding: 9px 18px !important;
+  font-size: 0.86rem !important;
+  border-radius: 10px !important;
+  box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25) !important;
+}
+
+html[data-ui-style="modern"] .home-subcat-pill {
+  background: rgba(255, 255, 255, 0.025) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 10px !important;
+  padding: 6px 12px !important;
+  font-size: 0.8rem !important;
+  transition: all 0.18s ease !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .home-subcat-pill {
+  background: rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+html[data-ui-style="modern"] .home-subcat-pill:hover {
+  border-color: var(--accent) !important;
+  background: rgba(56, 189, 248, 0.08) !important;
+  transform: translateY(-1px) !important;
+}
+
+html[data-ui-style="modern"] .home-subcat-pill .pill-count {
+  background: rgba(255, 255, 255, 0.06) !important;
+  font-size: 0.72rem !important;
+  padding: 1px 6px !important;
+  border-radius: 6px !important;
+}
+
+/* ON GOING CAROUSEL MINIMALISTA */
+html[data-ui-style="modern"] .home-en-progreso-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  width: 135px !important;
+  flex: 0 0 135px !important;
+  min-height: auto !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-poster {
+  width: 100% !important;
+  height: 185px !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3) !important;
+  transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-poster:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45) !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-badge {
+  font-size: 0.65rem !important;
+  padding: 2px 6px !important;
+  border-radius: 6px !important;
+  backdrop-filter: blur(8px) !important;
+  margin-bottom: 4px !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-title {
+  font-size: 0.85rem !important;
+  font-weight: 700 !important;
+  margin: 6px 0 2px !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-sub {
+  font-size: 0.72rem !important;
+  color: var(--muted) !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-date {
+  font-size: 0.68rem !important;
+  color: var(--accent) !important;
+  margin-top: 3px !important;
+}
+
+html[data-ui-style="modern"] .btn-terminar-card-carousel {
+  padding: 5px 8px !important;
+  font-size: 0.7rem !important;
+  border-radius: 8px !important;
+  height: auto !important;
+  margin-top: 6px !important;
+  box-shadow: none !important;
+}
+
+/* RACHAS COMPACTAS MINIMALISTAS */
+html[data-ui-style="modern"] .home-streaks-grid {
+  gap: 10px !important;
+}
+
+html[data-ui-style="modern"] .home-streak-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  padding: 10px 12px !important;
+  min-height: 100px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .home-streak-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+html[data-ui-style="modern"] .home-streak-card.active {
+  border-color: rgba(234, 88, 12, 0.45) !important;
+  background: rgba(234, 88, 12, 0.04) !important;
+}
+
+html[data-ui-style="modern"] .home-streak-number {
+  font-size: 1.45rem !important;
+  font-weight: 800 !important;
+}
+
+html[data-ui-style="modern"] .home-streak-card-name {
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+}
+
+html[data-ui-style="modern"] .btn-read-today-streak {
+  padding: 4px 8px !important;
+  font-size: 0.7rem !important;
+  border-radius: 7px !important;
+}
+
+/* NOVEDADES DE AMIGOS & DISCOVER */
+html[data-ui-style="modern"] .home-friend-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+  padding: 12px 14px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .home-friend-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+html[data-ui-style="modern"] .discover-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+html[data-ui-style="modern"] .discover-poster {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28) !important;
+  transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+html[data-ui-style="modern"] .discover-poster:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42) !important;
+}
+
+html[data-ui-style="modern"] .discover-body {
+  padding: 8px 2px 2px !important;
+}
+
+html[data-ui-style="modern"] .discover-item-title {
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+}
+
+/* 3. PESTAÑA LISTAS / CATEGORÍAS: SUBTABS, BUSCADOR Y TABLAS */
+html[data-ui-style="modern"] .subtab-btn {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 6px 12px !important;
+  font-size: 0.8rem !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .subtab-btn {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html[data-ui-style="modern"] .subtab-btn.active {
+  background: var(--accent) !important;
+  color: #0f172a !important;
+  border-color: var(--accent) !important;
+  font-weight: 700 !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .subtab-btn.active {
+  color: #ffffff !important;
+}
+
+html[data-ui-style="modern"] .btn-watchlist-special {
+  padding: 6px 12px !important;
+  font-size: 0.8rem !important;
+  border-radius: 8px !important;
+}
+
+html[data-ui-style="modern"] .search-input {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  font-size: 0.9rem !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .search-input {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+/* HISTORIAL DESKTOP SIN CONTENEDOR BOX */
+html[data-ui-style="modern"] .table-container {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+html[data-ui-style="modern"] .history-table th {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.08em !important;
+  padding: 10px 8px !important;
+  color: var(--muted) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .history-table th {
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-ui-style="modern"] .history-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  padding: 10px 8px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .history-table td {
+  border-bottom-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+html[data-ui-style="modern"] .month-separator-tr {
+  background: transparent !important;
+}
+
+html[data-ui-style="modern"] .month-separator-td {
+  background: transparent !important;
+  border-top: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  font-size: 0.74rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-weight: 800 !important;
+  padding: 20px 8px 6px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .month-separator-td {
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-ui-style="modern"] .row-month-even,
+html[data-ui-style="modern"] .row-month-odd {
+  background: transparent !important;
+}
+
+html[data-ui-style="modern"] .history-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .history-table tr:hover td {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* HISTORIAL MÓVIL: FILAS MINIMALISTAS EN VEZ DE TARJETAS AISLADAS */
+html[data-ui-style="modern"] .mobile-history-card {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 12px 2px !important;
+  margin-bottom: 0 !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .mobile-history-card {
+  border-bottom-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+html[data-ui-style="modern"] .m-card-thumb {
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+html[data-ui-style="modern"] .m-card-title {
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+}
+
+html[data-ui-style="modern"] .m-card-bottom {
+  border-top: none !important;
+  padding-top: 4px !important;
+}
+
+/* WATCHLIST CARDS */
+html[data-ui-style="modern"] .watchlist-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+html[data-ui-style="modern"] .watchlist-poster {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28) !important;
+  transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+html[data-ui-style="modern"] .watchlist-poster:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42) !important;
+}
+
+html[data-ui-style="modern"] .watchlist-body {
+  padding: 8px 2px 2px !important;
+}
+
+html[data-ui-style="modern"] .watchlist-item-title {
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+}
+
+/* 4. PESTAÑA DASHBOARD / ÍNDICE DE LISTAS */
+html[data-ui-style="modern"] .subtotal-pill {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  font-size: 0.76rem !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .subtotal-pill {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html[data-ui-style="modern"] .highlight-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  padding: 12px 14px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .highlight-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* 5. PESTAÑA COMUNIDAD, AMIGOS & PERFIL */
+html[data-ui-style="modern"] .amigo-wide-card,
+html[data-ui-style="modern"] .friend-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .amigo-wide-card,
+[data-theme$="-light"][data-ui-style="modern"] .friend-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+html[data-ui-style="modern"] .fav-slot-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  padding: 10px 12px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .fav-slot-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* 6. TODOS LOS CUADROS Y MODALES */
+html[data-ui-style="modern"] .modal-box {
+  background: var(--card) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 20px !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.12) !important;
+  padding: 22px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .modal-box {
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14) !important;
+}
+
+html[data-ui-style="modern"] .form-group {
+  margin-bottom: 11px !important;
+}
+
+html[data-ui-style="modern"] .form-group label {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 5px !important;
+  color: var(--muted) !important;
+}
+
+html[data-ui-style="modern"] .form-input,
+html[data-ui-style="modern"] textarea.comment-box,
+html[data-ui-style="modern"] .settings-select {
+  background: rgba(255, 255, 255, 0.035) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  font-size: 0.88rem !important;
+  padding: 9px 12px !important;
+  min-height: 40px !important;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .form-input,
+[data-theme$="-light"][data-ui-style="modern"] textarea.comment-box,
+[data-theme$="-light"][data-ui-style="modern"] .settings-select {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+html[data-ui-style="modern"] .form-input:focus,
+html[data-ui-style="modern"] textarea.comment-box:focus,
+html[data-ui-style="modern"] .settings-select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15) !important;
+}
+
+html[data-ui-style="modern"] .btn-modal-save,
+html[data-ui-style="modern"] .btn-save {
+  border-radius: 10px !important;
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  padding: 10px 18px !important;
+  min-height: 42px !important;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25) !important;
+}
+
+html[data-ui-style="modern"] .btn-modal-cancel {
+  border-radius: 10px !important;
+  font-size: 0.88rem !important;
+  padding: 10px 18px !important;
+  min-height: 42px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .btn-modal-cancel {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Modales en móvil: aspecto de panel inferior minimalista */
+@media (max-width: 768px) {
+  html[data-ui-style="modern"] .modal-box {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 24px !important;
+    border-top-right-radius: 24px !important;
+    padding: 18px 18px calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
 </style> </head> <body>
 <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
@@ -1926,7 +2522,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 <!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
 <h3 id="titulo-modal-fav" data-i18n="fav_modal_title">👑 Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;" data-i18n="fav_modal_hint">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="text" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)">
 </div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;" data-i18n="fav_modal_remove">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()" data-i18n="btn_close">Cerrar</button>
-</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0;">⚙️ Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;">✕</button></div> <div class="form-group"> <label data-i18n="cfg_lang_label">Idioma de la Interfaz:</label> <input type="hidden" id="cfg-lang" value="es"> <div class="cfg-visual-grid" id="cfg-lang-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;"> <button type="button" class="cfg-option-card active" data-lang="es" onclick="seleccionarIdiomaVisual('es')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">🇪🇸</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">Español</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Predeterminado</span> </div> </button> <button type="button" class="cfg-option-card" data-lang="en" onclick="seleccionarIdiomaVisual('en')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">🇺🇸</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">English</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Interface in English</span> </div> </button> </div> </div> <div class="form-group"> <label data-i18n="cfg_font_label">Tipografía de la App (con muestra real):</label> <input type="hidden" id="cfg-font" value="'Lexend', sans-serif"> <div class="cfg-visual-grid" id="cfg-font-cards"> <button type="button" class="cfg-option-card active" data-val="'Lexend', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Lexend', sans-serif !important;">
+</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0;">⚙️ Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;">✕</button></div> <div class="form-group"> <label data-i18n="cfg_lang_label">Idioma de la Interfaz:</label> <input type="hidden" id="cfg-lang" value="es"> <div class="cfg-visual-grid" id="cfg-lang-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;"> <button type="button" class="cfg-option-card active" data-lang="es" onclick="seleccionarIdiomaVisual('es')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">🇪🇸</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">Español</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Predeterminado</span> </div> </button> <button type="button" class="cfg-option-card" data-lang="en" onclick="seleccionarIdiomaVisual('en')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">🇺🇸</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">English</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Interface in English</span> </div> </button> </div> </div> <div class="form-group"> <label data-i18n="cfg_uistyle_label" style="font-weight:700;">Estilo de Diseño:</label> <input type="hidden" id="cfg-uistyle" value="modern"> <div class="cfg-visual-grid" id="cfg-uistyle-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;"> <button type="button" class="cfg-option-card active" data-uistyle="modern" onclick="seleccionarUiStyleVisual('modern')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">✨</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="uistyle-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;" data-i18n="cfg_uistyle_modern">Moderno &amp; Minimalista</strong> <span class="uistyle-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;" data-i18n="cfg_uistyle_modern_desc">Espacios, tipografía y diseño compacto</span> </div> </button> <button type="button" class="cfg-option-card" data-uistyle="classic" onclick="seleccionarUiStyleVisual('classic')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-size:1.8rem; line-height:1; flex-shrink:0;">🗂️</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="uistyle-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;" data-i18n="cfg_uistyle_classic">Clásico</strong> <span class="uistyle-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;" data-i18n="cfg_uistyle_classic_desc">Diseño original con tarjetas</span> </div> </button> </div> </div> <div class="form-group"> <label data-i18n="cfg_font_label">Tipografía de la App (con muestra real):</label> <input type="hidden" id="cfg-font" value="'Lexend', sans-serif"> <div class="cfg-visual-grid" id="cfg-font-cards"> <button type="button" class="cfg-option-card active" data-val="'Lexend', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Lexend', sans-serif !important;">
 <strong style="font-size:0.95rem; color:var(--text); font-family:'Lexend', sans-serif !important;">Lexend (Predeterminada)</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Lexend', sans-serif !important;">Aa Bb Cc — Lectura fluida 123</span>
 </button> <button type="button" class="cfg-option-card" data-val="'Plus Jakarta Sans', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Plus Jakarta Sans', sans-serif !important;">
 <strong style="font-size:0.95rem; color:var(--text); font-family:'Plus Jakarta Sans', sans-serif !important;">Plus Jakarta Sans</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Plus Jakarta Sans', sans-serif !important;">Aa Bb Cc — El arte del cine 123</span>
@@ -6675,6 +7271,11 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cfg_title": "⚙️ Configuración y Estilo",
     "cfg_title_short": "Configuración",
     "cfg_lang_label": "Idioma de la Interfaz:",
+    "cfg_uistyle_label": "Estilo de Diseño:",
+    "cfg_uistyle_modern": "Moderno & Minimalista",
+    "cfg_uistyle_modern_desc": "Espacios, tipografía y diseño compacto",
+    "cfg_uistyle_classic": "Clásico",
+    "cfg_uistyle_classic_desc": "Diseño original con tarjetas",
     "cfg_font_label": "Tipografía de la App:",
     "cfg_size_label": "Tamaño general de letra:",
     "cfg_theme_label": "Tema de color (4 temas con versión Claro y Oscuro):",
@@ -7090,6 +7691,11 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cfg_title": "⚙️ Settings & Theme",
     "cfg_title_short": "Settings",
     "cfg_lang_label": "Interface Language:",
+    "cfg_uistyle_label": "Design Style:",
+    "cfg_uistyle_modern": "Modern & Minimalist",
+    "cfg_uistyle_modern_desc": "Compact layout based on whitespace and typography",
+    "cfg_uistyle_classic": "Classic",
+    "cfg_uistyle_classic_desc": "Original layout with traditional cards",
     "cfg_font_label": "App Typography:",
     "cfg_size_label": "Font Scale:",
     "cfg_theme_label": "Color Theme (4 themes with Light & Dark versions):",
@@ -7408,7 +8014,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "btn_la_termine": "I finished it!",
     "lbl_en_progreso_inicio": "Started:"
   }
-}; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", showEmojis: true, lang: "es"
+}; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", uiStyle: "modern", showEmojis: true, lang: "es"
 }; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary ✨', avatar: '🦊', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
 }; const AVATARES_PRESET = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐯', '🐨', '🐸', '🦉', '🐻', '🐵', '🐰']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
 const WATCHLIST_ESTRUCTURA = [
@@ -8348,6 +8954,7 @@ function aplicarEstilosGlobales() {
   userPrefs.theme = temaEfectivo;
   
   r.setAttribute('data-theme', temaEfectivo);
+  r.setAttribute('data-ui-style', userPrefs.uiStyle || 'modern');
   actualizarMetaThemeColor();
 
   document.querySelectorAll('.emoji-dyn').forEach(el => {
@@ -9549,6 +10156,12 @@ function actualizarTarjetasVisualesConfig() {
   const enCardSub = document.querySelector('#cfg-lang-cards [data-lang="en"] .lang-card-sub');
   if (enCardSub) enCardSub.textContent = curLang === 'en' ? 'Interface in English' : 'Interfaz en inglés';
 
+  // Estilo de Diseño (Moderno vs Clásico)
+  const curUiStyle = userPrefs.uiStyle || 'modern';
+  document.querySelectorAll('#cfg-uistyle-cards .cfg-option-card').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.uistyle === curUiStyle);
+  });
+
   // Tipografías
   document.querySelectorAll('#cfg-font-cards .cfg-option-card').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.val === userPrefs.font);
@@ -9625,6 +10238,14 @@ function seleccionarIdiomaVisual(lang) {
   guardarPreferenciasLocales();
   actualizarTarjetasVisualesConfig();
   cambiarIdiomaEnVivo();
+}
+function seleccionarUiStyleVisual(style) {
+  const hidden = document.getElementById('cfg-uistyle');
+  if (hidden) hidden.value = style;
+  userPrefs.uiStyle = style;
+  guardarPreferenciasLocales();
+  aplicarEstilosGlobales();
+  actualizarTarjetasVisualesConfig();
 }
 function seleccionarFontVisual(val) { document.getElementById('cfg-font').value = val; try { localStorage.setItem('mediary_user_custom_font', 'true'); } catch (e) {} aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarSizeVisual(val) { document.getElementById('cfg-font-size').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
@@ -9732,6 +10353,9 @@ function guardarYCerrarConfiguracion() {
     if (document.getElementById('cfg-lang')) {
       userPrefs.lang = document.getElementById('cfg-lang').value;
     }
+    if (document.getElementById('cfg-uistyle')) {
+      userPrefs.uiStyle = document.getElementById('cfg-uistyle').value;
+    }
     guardarPreferenciasLocales();
     const cvInp = document.getElementById('cfg-comicvine-key');
     if (cvInp) {
@@ -9760,7 +10384,7 @@ function guardarYCerrarConfiguracion() {
     console.error('Error al guardar configuracion:', err);
   }
 }
-function restablecerConfiguracionPorDefecto() { try { localStorage.removeItem('mediary_user_custom_font'); } catch (e) {} userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "default", showEmojis: true, lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
+function restablecerConfiguracionPorDefecto() { try { localStorage.removeItem('mediary_user_custom_font'); } catch (e) {} userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "default", uiStyle: "modern", showEmojis: true, lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
 // --- IMPORTAR Y EXPORTAR ARCHIVOS DE TEXTO ---
 function abrirModalImportarExportar() { document.getElementById('modal-configuracion').style.display = 'none'; document.getElementById('input-file-import').value = ''; document.getElementById('textarea-import-raw').value = ''; estado.registrosImportarPendientes = [];
 document.getElementById('import-preview-box').innerHTML = 'Sube un archivo .txt o pega texto arriba para previsualizar los registros detectados.'; document.getElementById('modal-importar-exportar').style.display = 'flex'; }
