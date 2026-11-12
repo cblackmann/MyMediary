@@ -17,7 +17,7 @@
     if (raw) {
       const p = JSON.parse(raw);
       if (p.font) font = p.font;
-      if (p.fontSize) fontSize = p.fontSize;
+      if (p.fontSize) fontSize = ['50%', '62%', '75%', '88%', '100%'].includes(p.fontSize) ? p.fontSize : '100%';
       if (p.themeFamily) {
         family = p.themeFamily;
         mode = p.themeMode || 'system';
@@ -362,11 +362,20 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .fav-slot-poster img{width:100%;height:100%;object-fit:cover}.fav-slot-info{flex:1;min-width:0}.fav-slot-top-row{display:flex;justify-content:space-between;align-items:center;gap:4px;margin-bottom:3px}.fav-slot-subcat{font-size:0.7rem;font-weight:700;text-transform:uppercase;color:var(--accent);letter-spacing:0.04em}.btn-toggle-fav-show{background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.4);color:#34d399;border-radius:12px;padding:2px 7px;font-size:0.66rem;font-weight:700;cursor:pointer;transition:var(--tr);white-space:nowrap}
 .btn-toggle-fav-show.hidden-fav{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.35);color:#f87171}.fav-slot-title{font-size:0.9rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fav-slot-meta{font-size:0.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}.btn-choose-fav{margin-top:6px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:var(--accent);border-radius:6px;padding:4px 9px;font-size:0.73rem;font-weight:700;cursor:pointer;transition:var(--tr)}
 .btn-choose-fav:hover{background:var(--accent);color:#0f172a}.cfg-visual-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.cfg-option-card{background:var(--bg);border:2px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;transition:var(--tr);text-align:left;display:flex;flex-direction:column;gap:3px}
-.cfg-option-card:hover{border-color:rgba(56,189,248,0.5)}.cfg-option-card.active{border-color:var(--accent);background:rgba(56,189,248,0.1);box-shadow:0 0 12px rgba(56,189,248,0.22)}/* LÍNEA CONTINUA INTERACTIVA DE 3 NIVELES PARA TAMAÑO DE LETRA */ .size-line-container{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:18px 22px 14px;margin-top:4px;user-select:none}
-.size-line-track-wrap{position:relative;height:36px;display:flex;align-items:center;justify-content:space-between;margin:0 14px;cursor:pointer}.size-line-track-bg{position:absolute;left:0;right:0;height:6px;background:var(--border);border-radius:6px;top:50%;transform:translateY(-50%);z-index:1}
-.size-line-track-fill{position:absolute;left:0;height:6px;background:var(--accent);border-radius:6px;top:50%;transform:translateY(-50%);z-index:2;transition:width 0.25s cubic-bezier(0.4,0,0.2,1);width:50%}.size-line-node{position:relative;z-index:3;width:26px;height:26px;padding:0;line-height:1;border-radius:50%;background:var(--card);border:3px solid var(--border);cursor:pointer;transition:var(--tr);display:grid;place-items:center;font-size:0.65rem;font-weight:800;color:var(--muted)}
-.size-line-node:hover{border-color:var(--accent);transform:scale(1.12)}.size-line-node.reached{border-color:var(--accent)}.size-line-node.active{width:32px;height:32px;background:var(--accent);border-color:var(--text);color:#0f172a;box-shadow:0 0 14px rgba(56,189,248,0.6);transform:scale(1.15)}
-.size-line-labels{display:flex;justify-content:space-between;margin-top:8px}.size-line-lbl-btn{background:none;border:none;color:var(--muted);cursor:pointer;text-align:center;flex:1;transition:var(--tr);padding:4px;border-radius:8px}.size-line-lbl-btn:hover{color:var(--text);background:rgba(56,189,248,0.06)}.size-line-lbl-btn.active{color:var(--accent);font-weight:700}/* CÍRCULO ÚNICO BICOLOR PARA TEMAS (100% VECTORIAL SIN ESPACIOS EN BLANCO NI CUADRADOS) */
+.cfg-option-card:hover{border-color:rgba(56,189,248,0.5)}.cfg-option-card.active{border-color:var(--accent);background:rgba(56,189,248,0.1);box-shadow:0 0 12px rgba(56,189,248,0.22)}/* LÍNEA CONTINUA INTERACTIVA DE 5 NIVELES PARA TAMAÑO DE LETRA */ .size-line-container{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:18px 20px 14px;margin-top:4px;user-select:none;box-sizing:border-box}
+.size-line-track-wrap{position:relative;height:36px;display:flex;align-items:center;justify-content:space-between;margin:0 14px;cursor:pointer}
+.size-line-track-bg{position:absolute;left:0;right:0;height:6px;background:var(--border);border-radius:6px;top:50%;transform:translateY(-50%);z-index:1}
+.size-line-track-fill{position:absolute;left:0;height:6px;background:var(--accent);border-radius:6px;top:50%;transform:translateY(-50%);z-index:2;transition:width 0.25s cubic-bezier(0.4,0,0.2,1);width:50%}
+.size-line-node{position:relative;z-index:3;width:26px;height:26px;min-width:26px;max-width:26px;padding:0;line-height:1;border-radius:50%;background:var(--card);border:3px solid var(--border);cursor:pointer;transition:var(--tr);display:grid;place-items:center;box-sizing:border-box;flex-shrink:0}
+.size-line-node:hover{border-color:var(--accent);transform:scale(1.15)}
+.size-line-node.reached{border-color:var(--accent)}
+.size-line-node.active{background:var(--accent);border-color:var(--text);color:#0f172a;box-shadow:0 0 14px rgba(56,189,248,0.6);transform:scale(1.22)}
+.size-line-labels{display:flex;justify-content:space-between;align-items:center;margin:8px 14px 0 14px;padding:0}
+.size-line-lbl-btn{background:none;border:none;color:var(--muted);cursor:pointer;width:26px;min-width:26px;max-width:26px;padding:6px 0;margin:0;display:flex;justify-content:center;align-items:center;text-align:center;flex-shrink:0;transition:var(--tr);position:relative;border-radius:6px}
+.size-line-lbl-btn::before{content:'';position:absolute;top:-8px;bottom:-8px;left:-10px;right:-10px}
+.size-line-lbl-btn:hover{color:var(--text);background:rgba(56,189,248,0.08)}
+.size-line-lbl-btn.active{color:var(--accent);font-weight:800}
+.size-line-lbl-btn span{display:inline-block;text-align:center;line-height:1}/* CÍRCULO ÚNICO BICOLOR PARA TEMAS (100% VECTORIAL SIN ESPACIOS EN BLANCO NI CUADRADOS) */
 .theme-card-row{display:flex;align-items:center;gap:12px;flex-direction:row !important}
 .theme-dual-circle{width:40px;height:40px;min-width:40px;min-height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;display:block;padding:0;margin:0;border:none;background:none;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.45))}
 .theme-mode-btn{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:var(--tr);text-align:left}
@@ -2615,11 +2624,11 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 </button> <button type="button" class="cfg-option-card" data-val="'Space Grotesk', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Space Grotesk', sans-serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Space Grotesk', sans-serif !important;">Space Grotesk</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Space Grotesk', sans-serif !important;">Aa Bb Cc — Tipografía tech 123</span>
 </button> <button type="button" class="cfg-option-card" data-val="'Playfair Display', serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Playfair Display', serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Playfair Display', serif !important; letter-spacing:0.02em;">Playfair Display</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Playfair Display', serif !important;">Aa Bb Cc — Elegancia editorial 123</span>
 </button> </div> </div> <div class="form-group"> <label data-i18n="cfg_size_label">Tamaño general de letra:</label> <input type="hidden" id="cfg-font-size" value="100%"> <div class="size-line-container" id="cfg-size-slider-box"> <div class="size-line-track-wrap" onclick="clickEnLineaTamano(event)"> <div class="size-line-track-bg"></div> <div class="size-line-track-fill" id="size-line-fill"></div>
-<div class="size-line-node" data-val="75%" data-idx="0" onclick="event.stopPropagation(); seleccionarSizeVisual('75%')"></div>
-<div class="size-line-node" data-val="88%" data-idx="1" onclick="event.stopPropagation(); seleccionarSizeVisual('88%')"></div>
-<div class="size-line-node" data-val="100%" data-idx="2" onclick="event.stopPropagation(); seleccionarSizeVisual('100%')"></div>
-<div class="size-line-node" data-val="112%" data-idx="3" onclick="event.stopPropagation(); seleccionarSizeVisual('112%')"></div>
-<div class="size-line-node" data-val="125%" data-idx="4" onclick="event.stopPropagation(); seleccionarSizeVisual('125%')"></div> </div> <div class="size-line-labels" id="cfg-size-labels"> <button type="button" class="size-line-lbl-btn" data-val="75%" onclick="seleccionarSizeVisual('75%')" style="text-align:left;"> <span style="font-size:11px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="88%" onclick="seleccionarSizeVisual('88%')"> <span style="font-size:13px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="100%" onclick="seleccionarSizeVisual('100%')" style="text-align:center;"> <span style="font-size:15px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="112%" onclick="seleccionarSizeVisual('112%')"> <span style="font-size:17.5px; font-weight:800; display:block;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="125%" onclick="seleccionarSizeVisual('125%')" style="text-align:right;"> <span style="font-size:20px; font-weight:800; display:block;">Aa</span> </button> </div> </div> </div> <div class="form-group">
+<div class="size-line-node" data-val="50%" data-idx="0" onclick="event.stopPropagation(); seleccionarSizeVisual('50%')"></div>
+<div class="size-line-node" data-val="62%" data-idx="1" onclick="event.stopPropagation(); seleccionarSizeVisual('62%')"></div>
+<div class="size-line-node" data-val="75%" data-idx="2" onclick="event.stopPropagation(); seleccionarSizeVisual('75%')"></div>
+<div class="size-line-node" data-val="88%" data-idx="3" onclick="event.stopPropagation(); seleccionarSizeVisual('88%')"></div>
+<div class="size-line-node" data-val="100%" data-idx="4" onclick="event.stopPropagation(); seleccionarSizeVisual('100%')"></div> </div> <div class="size-line-labels" id="cfg-size-labels"> <button type="button" class="size-line-lbl-btn" data-val="50%" onclick="seleccionarSizeVisual('50%')"> <span style="font-size:8px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="62%" onclick="seleccionarSizeVisual('62%')"> <span style="font-size:9.5px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="75%" onclick="seleccionarSizeVisual('75%')"> <span style="font-size:11px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="88%" onclick="seleccionarSizeVisual('88%')"> <span style="font-size:13px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="100%" onclick="seleccionarSizeVisual('100%')"> <span style="font-size:15px; font-weight:800;">Aa</span> </button> </div> </div> </div> <div class="form-group">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
     <label data-i18n="cfg_theme_label" style="font-weight:700; margin:0;">Tema visual:</label>
     <span id="cfg-theme-system-detected" style="font-size:0.75rem; color:var(--accent); font-weight:600;"></span>
@@ -8224,7 +8233,7 @@ function obtenerRegistrosFiltradosPorAnio() {
   return estado.registros.filter(r => extraerAnioDeRegistro(r) === estado.anioActivo);
 }
 
-function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {} userPrefs.uiStyle = 'modern';
+function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {} userPrefs.uiStyle = 'modern'; if (userPrefs.fontSize && !['50%', '62%', '75%', '88%', '100%'].includes(userPrefs.fontSize)) userPrefs.fontSize = '100%';
 try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) estado.anioActivo = anioG; } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
 try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); if (!perfilUsuario.portada && perfilUsuario.preferencias?.portada) perfilUsuario.portada = perfilUsuario.preferencias.portada; if (!perfilUsuario.personajeFavorito && perfilUsuario.favoritos?.personajeFavorito) perfilUsuario.personajeFavorito = perfilUsuario.favoritos.personajeFavorito; } } catch (e) {}
@@ -9166,9 +9175,9 @@ function actualizarTextosInterfaz() {
 
   // 5 Size Labels (solo muestra visual de tamaños Aa)
   const sizeLabels = document.querySelectorAll('#cfg-size-labels .size-line-lbl-btn');
-  const sizeSamples = ['11px', '13px', '15px', '17.5px', '20px'];
+  const sizeSamples = ['8px', '9.5px', '11px', '13px', '15px'];
   sizeLabels.forEach((btn, idx) => {
-    btn.innerHTML = `<span style="font-size:${sizeSamples[idx] || '15px'}; font-weight:800; display:block;">Aa</span>`;
+    btn.innerHTML = `<span style="font-size:${sizeSamples[idx] || '15px'}; font-weight:800; display:inline-block; line-height:1;">Aa</span>`;
   });
 
   // 4 Temas y botones de modo
@@ -10368,8 +10377,13 @@ function actualizarTarjetasVisualesConfig() {
   });
 
   // Tamaños
-  const sizeOrder = ['75%', '88%', '100%', '112%', '125%'];
-  const curIdx = Math.max(0, sizeOrder.indexOf(userPrefs.fontSize || '100%'));
+  const sizeOrder = ['50%', '62%', '75%', '88%', '100%'];
+  let curFontSize = userPrefs.fontSize || '100%';
+  if (!sizeOrder.includes(curFontSize)) {
+    curFontSize = '100%';
+    userPrefs.fontSize = '100%';
+  }
+  const curIdx = Math.max(0, sizeOrder.indexOf(curFontSize));
   const fillEl = document.getElementById('size-line-fill');
   if (fillEl) fillEl.style.width = `${(curIdx / 4) * 100}%`;
   document.querySelectorAll('#cfg-size-slider-box .size-line-node').forEach(node => {
@@ -10378,7 +10392,7 @@ function actualizarTarjetasVisualesConfig() {
     node.classList.toggle('reached', nIdx <= curIdx);
   });
   document.querySelectorAll('#cfg-size-labels .size-line-lbl-btn').forEach(lbl => {
-    lbl.classList.toggle('active', lbl.dataset.val === userPrefs.fontSize);
+    lbl.classList.toggle('active', lbl.dataset.val === curFontSize);
   });
 
   // Modo de apariencia (segmented control: system, light, dark)
@@ -10426,8 +10440,8 @@ function clickEnLineaTamano(e) {
   const wrap = e.currentTarget;
   const rect = wrap.getBoundingClientRect();
   const relX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-  const sizes = ['75%', '88%', '100%', '112%', '125%'];
-  const idx = Math.min(4, Math.floor(relX * 5));
+  const sizes = ['50%', '62%', '75%', '88%', '100%'];
+  const idx = Math.min(4, Math.max(0, Math.round(relX * 4)));
   seleccionarSizeVisual(sizes[idx]);
 }
 
