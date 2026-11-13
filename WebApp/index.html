@@ -2830,38 +2830,6 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 </div>
 <div class="form-group"> <div class="switch-wrap"> <span class="switch-label" data-i18n="cfg_emojis_label">Mostrar emojis en la interfaz</span>
 <label class="switch-toggle"> <input type="checkbox" id="cfg-emojis" checked onchange="aplicarConfiguracionEnVivo()"> <span class="switch-slider"></span> </label> </div> </div> <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;"> <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;"> <div style="display:flex; align-items:center; gap:8px;"> <span>☁️</span> <span data-i18n="cfg_account_title">Cuenta y Sincronización Supabase Cloud</span> </div> <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;">✓ Supabase Cloud Activo</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;" id="cfg-account-status" data-i18n="cfg_account_hint">Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.</p> <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;"> <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span> </button> <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:rgba(16,185,129,0.45); color:#34d399; background:rgba(16,185,129,0.1); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets"> <span data-i18n="cfg_btn_migrar">☁️ Migrar mis datos de Google Sheets a Supabase</span> </button> </div>
-<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;">
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; gap:8px;">
-    <span>💥</span> <span data-i18n="cfg_api_comics_title">APIs de Cómics (Comic Vine &amp; Marvel)</span>
-  </div>
-  <p style="font-size:0.78rem; color:var(--muted); margin-bottom:10px;" data-i18n="cfg_api_comics_desc">Conecta tus claves para habilitar búsquedas y fichas técnicas automáticas directas desde Comic Vine (GameSpot) y Marvel Comics:</p>
-  <div style="margin-bottom:10px;">
-    <label style="font-size:0.75rem; color:var(--muted); font-weight:600; display:block; margin-bottom:3px;" data-i18n="cfg_comicvine_key_lbl">Comic Vine API Key (GameSpot):</label>
-    <input type="text" id="cfg-comicvine-key" class="form-input" style="font-size:0.82rem;" placeholder="Pega tu API key de Comic Vine aquí..." value="">
-  </div>
-  <div>
-    <label style="font-size:0.75rem; color:var(--muted); font-weight:600; display:block; margin-bottom:3px;" data-i18n="cfg_marvel_key_lbl">Marvel Comics API Public Key:</label>
-    <input type="text" id="cfg-marvel-key" class="form-input" style="font-size:0.82rem;" placeholder="Pega tu Public Key de Marvel aquí..." value="">
-  </div>
-</div>
-<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;">
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; gap:8px;">
-    <span>🎮</span> <span data-i18n="cfg_api_games_title">APIs de Videojuegos (Steam Storefront, IGDB &amp; RAWG)</span>
-  </div>
-  <p style="font-size:0.78rem; color:var(--muted); margin-bottom:10px;" data-i18n="cfg_api_games_desc">Steam Storefront y RAWG se encuentran conectadas automáticamente. Opcionalmente puedes conectar tu aplicación de IGDB (Twitch Developer):</p>
-  <div style="display:flex; gap:8px; margin-bottom:10px; font-size:0.75rem; flex-wrap:wrap;">
-    <span style="background:rgba(56,189,248,0.15); color:#38bdf8; padding:3px 8px; border-radius:6px; font-weight:600;" data-i18n="cfg_api_steam_active">✓ Steam Storefront Activa</span>
-    <span style="background:rgba(16,185,129,0.15); color:#34d399; padding:3px 8px; border-radius:6px; font-weight:600;" data-i18n="cfg_api_rawg_active">✓ RAWG Activa</span>
-  </div>
-  <div style="margin-bottom:10px;">
-    <label style="font-size:0.75rem; color:var(--muted); font-weight:600; display:block; margin-bottom:3px;" data-i18n="cfg_igdb_client_id_lbl">IGDB Client ID (Twitch Developer):</label>
-    <input type="text" id="cfg-igdb-client-id" class="form-input" style="font-size:0.82rem;" placeholder="Pega tu Client ID de Twitch / IGDB..." value="">
-  </div>
-  <div>
-    <label style="font-size:0.75rem; color:var(--muted); font-weight:600; display:block; margin-bottom:3px;" data-i18n="cfg_igdb_token_lbl">IGDB Access Token (Bearer Token):</label>
-    <input type="password" id="cfg-igdb-token" class="form-input" style="font-size:0.82rem;" placeholder="Pega tu Access Token de IGDB..." value="">
-  </div>
-</div>
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
 
@@ -3287,7 +3255,7 @@ window.IS_APPS_SCRIPT = !!(window.google && window.google.script && window.googl
 // Variables y Claves de APIs Globales (accesibles en toda la app)
 var TMDB_K = '15d2ea6d0dc1d476efbca3eba2b9bbfb';
 var RAWG_K = 'c542e67aec3a4340908f9de9e86038af';
-var COMICVINE_K = localStorage.getItem('mediary_comicvine_key') || '';
+var COMICVINE_K = '6a65faa0799e008b056e5883d0c3183048419314';
 var MARVEL_K = localStorage.getItem('mediary_marvel_key') || '';
 var IGDB_CLIENT_ID = localStorage.getItem('mediary_igdb_client_id') || '';
 var IGDB_TOKEN = localStorage.getItem('mediary_igdb_token') || '';
