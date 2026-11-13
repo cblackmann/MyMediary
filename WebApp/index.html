@@ -13206,16 +13206,30 @@ renderizarBannerRachaSubcategoria(c, s);
 th.innerHTML = `<tr>${r ? `<th style="width:110px;">${t('table_th_fecha_ini')}</th><th style="width:110px;">${t('table_th_fecha_fin')}</th>` : `<th style="width:110px;">${t('table_th_fecha')}</th>`}${isJ ? `<th style="width:80px; text-align:center;">${t('table_th_horas')}</th>` : ''}<th>${obtenerNombreColumnaTitulo(c, s)}</th><th style="width:150px;">${t('table_th_calif')}</th><th>${t('table_th_comentario')}</th><th style="width:40px; text-align:center;"></th></tr>`;
 let l = obtenerRegistrosDeSubcategoria(c, s); if (estado.ocultarRewatches && subAdmiteRewatch(c, s)) { l = l.filter(x => !x.esRewatch && !x.subcategoria.includes('Rewatch')); }
 l.sort((a, b) => {
+  const enProgA = r && (esEnProgresoTexto(a.fechaFin) || (!a.fechaFin || a.fechaFin === 'Sin fecha' || a.fechaFin === ''));
+  const enProgB = r && (esEnProgresoTexto(b.fechaFin) || (!b.fechaFin || b.fechaFin === 'Sin fecha' || b.fechaFin === ''));
+  if (!enProgA && enProgB) return -1;
+  if (enProgA && !enProgB) return 1;
+  if (enProgA && enProgB) {
+    const tsA = timestampDeFecha(a.fechaInicio);
+    const tsB = timestampDeFecha(b.fechaInicio);
+    if (!tsA && tsB) return 1;
+    if (tsA && !tsB) return -1;
+    const diff = tsA - tsB;
+    return diff !== 0 ? diff : (a.titulo || '').localeCompare(b.titulo || '');
+  }
   const fA = (!r) ? a.fechaInicio : ((a.fechaFin && a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin)) ? a.fechaFin : a.fechaInicio);
   const fB = (!r) ? b.fechaInicio : ((b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? b.fechaFin : b.fechaInicio);
-  return timestampDeFecha(fA) - timestampDeFecha(fB);
+  const diff = timestampDeFecha(fA) - timestampDeFecha(fB);
+  return diff !== 0 ? diff : (a.titulo || '').localeCompare(b.titulo || '');
 });
 document.getElementById('total-filtro').textContent = l.length; const cols = (r ? 2 : 1) + (isJ ? 1 : 0) + 4; if (!l.length) { tb.innerHTML = `<tr><td colspan="${cols}" style="text-align:center; padding:24px; color:var(--muted);">${t('stat_sin_reg')}</td></tr>`;
 mBox.innerHTML = `<div style="text-align:center; padding:24px; color:var(--muted); background:var(--card); border-radius:12px; border:1px solid var(--border);">${t('stat_sin_reg')}</div>`; return; }
 const conteosMes = {}; l.forEach(reg => {
   const fI = sanitizarFechaFrontend(reg.fechaInicio), fF = sanitizarFechaFrontend(reg.fechaFin);
+  const enProg = r && (esEnProgresoTexto(fF) || (!fF || fF === 'Sin fecha' || fF === ''));
   const fechaParaMes = (!r) ? fI : ((fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : fI);
-  const mKey = extraerMesClave(fechaParaMes).clave;
+  const mKey = enProg ? 'EN_PROGRESO' : extraerMesClave(fechaParaMes).clave;
   conteosMes[mKey] = (conteosMes[mKey] || 0) + 1;
 });
 let mesClaveActual = ''; let mesParidad = 0; const tbFrag = document.createDocumentFragment(); const mBoxFrag = document.createDocumentFragment();
@@ -13239,14 +13253,19 @@ l.forEach(reg => {
     ? `<span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:12px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">⏳ ${fF && esEnProgresoTexto(fF) ? fF : (obtenerTextoEnProgreso(c, s) || 'Aún viendo')}</span>`
     : fF;
   const fechaParaMes = (!r) ? fI : ((fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : fI);
-  const mesData = extraerMesClave(fechaParaMes);
+  const mesData = enProg
+    ? { clave: 'EN_PROGRESO', mesNombre: (obtenerTextoEnProgreso(c, s) || (userPrefs.lang === 'en' ? 'In progress' : 'En curso')), anio: '' }
+    : extraerMesClave(fechaParaMes);
   if (mesData.clave !== mesClaveActual) {
     mesClaveActual = mesData.clave; mesParidad = (mesParidad + 1) % 2; const count = conteosMes[mesData.clave] || 1;
-    const textoMesContador = mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`);
+    const textoMesContador = enProg
+      ? `${mesData.mesNombre} (${count})`
+      : (mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`));
+    const emojiSeparador = enProg ? '⏳ ' : '🗓️ ';
     const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
-    sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td"><span class="emoji-dyn">🗓️ </span>${textoMesContador}</td>`; tbFrag.appendChild(sepTr);
+    sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td"><span class="emoji-dyn">${emojiSeparador}</span>${textoMesContador}</td>`; tbFrag.appendChild(sepTr);
     const sepCard = document.createElement('div'); sepCard.className = 'month-separator-card';
-    sepCard.innerHTML = `<span class="emoji-dyn">🗓️ </span>${textoMesContador}`; mBoxFrag.appendChild(sepCard);
+    sepCard.innerHTML = `<span class="emoji-dyn">${emojiSeparador}</span>${textoMesContador}`; mBoxFrag.appendChild(sepCard);
   }
   const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd';
   const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`;
