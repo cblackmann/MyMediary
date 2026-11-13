@@ -255,7 +255,11 @@ body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px
 .tag-artista:hover{border-color:var(--accent)}.tag-artista img{width:22px;height:22px;border-radius:50%;object-fit:cover}.tag-artista-remove{cursor:pointer;color:var(--muted);font-weight:bold;margin-left:4px;transition:var(--tr)}.tag-artista-remove:hover{color:var(--danger);transform:scale(1.2)}.detail-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:24px;display:none;position:relative}
 .media-info{display:flex;gap:16px;margin-bottom:16px}.media-poster{width:100px;height:145px;object-fit:cover;border-radius:8px;flex-shrink:0;background:#334155}.media-meta h3{font-size:1.15rem;margin-bottom:4px;padding-right:28px}.media-meta .sub-title{font-size:.9rem;color:var(--muted);margin-bottom:4px}.media-meta .author-year{font-size:.85rem;color:var(--accent);margin-bottom:8px}
 .media-meta p{font-size:.82rem;color:var(--muted);line-height:1.4;max-height:80px;overflow-y:auto}.form-group{margin-bottom:14px}.form-group label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:6px}.date-row{display:flex;gap:10px;align-items:flex-end}.form-input, .settings-select{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 14px;color:var(--text);width:100%;outline:none;font-size:.92rem;min-height:44px;transition:var(--tr)}
-.form-input:hover, .settings-select:hover{border-color:rgba(56,189,248,.4)}.form-input:focus, .settings-select:focus{border-color:var(--accent);box-shadow:0 0 12px rgba(56,189,248,.2)}.date-input{cursor:pointer}.checkbox-row{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:.82rem;color:var(--muted);min-height:36px}.btn-today-pill{background:rgba(56,189,248,0.12);border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-size:.78rem;font-weight:700;height:44px;padding:0 12px;cursor:pointer;white-space:nowrap;transition:var(--tr);display:inline-flex;align-items:center;justify-content:center}
+.form-input:hover, .settings-select:hover{border-color:rgba(56,189,248,.4)}.form-input:focus, .settings-select:focus{border-color:var(--accent);box-shadow:0 0 12px rgba(56,189,248,.2)}.date-input{cursor:pointer}.checkbox-row{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:.82rem;color:var(--muted);min-height:36px}
+.date-input-group{display:flex;gap:8px;align-items:center;width:100%;}
+.date-input-group .form-input{flex:1;min-width:0;}
+.btn-today-input{width:auto !important;height:44px;min-height:44px;padding:0 14px;font-size:0.8rem;font-weight:700;border-radius:8px;flex-shrink:0;box-sizing:border-box;margin:0;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;}
+.btn-today-pill{background:rgba(56,189,248,0.12);border:1px solid var(--accent);color:var(--accent);border-radius:8px;font-size:.78rem;font-weight:700;height:44px;padding:0 12px;cursor:pointer;white-space:nowrap;transition:var(--tr);display:inline-flex;align-items:center;justify-content:center}
 .btn-today-pill:hover{background:var(--accent);color:#0f172a;transform:translateY(-1px)}.stars-wrapper{display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:2rem;user-select:none}.star-box{position:relative;display:inline-block;color:var(--star-inactive);width:2rem;height:2rem;text-align:center;transition:transform .15s ease}.star-box:hover{transform:scale(1.15)}
 .star-box.full{color:var(--star-active)}.star-box.half{background:linear-gradient(90deg,var(--star-active) 50%,var(--star-inactive) 50%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}textarea.comment-box{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);resize:vertical;min-height:70px;outline:none;font-size:.92rem;transition:var(--tr)}
 textarea.comment-box:hover{border-color:rgba(56,189,248,.4)}textarea.comment-box:focus{border-color:var(--accent);box-shadow:0 0 12px rgba(56,189,248,.2)}.btn-save{background:var(--accent);color:#0f172a;border:none;padding:14px 20px;border-radius:10px;font-weight:700;cursor:pointer;width:100%;font-size:.95rem;min-height:48px;transition:var(--tr)}
@@ -2039,6 +2043,14 @@ html[data-ui-style="modern"] .settings-select {
   transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
 }
 
+html[data-ui-style="modern"] .btn-today-input {
+  min-height: 40px !important;
+  height: 40px !important;
+  border-radius: 10px !important;
+  font-size: 0.82rem !important;
+  padding: 0 14px !important;
+}
+
 [data-theme$="-light"][data-ui-style="modern"] .form-input,
 [data-theme$="-light"][data-ui-style="modern"] textarea.comment-box,
 [data-theme$="-light"][data-ui-style="modern"] .settings-select {
@@ -2294,18 +2306,18 @@ html[data-ui-style="modern"] .btn-modal-cancel {
   <div id="wrap-prec-dia" class="date-prec-wrap">
     <div class="date-row" style="align-items:flex-start;">
       <div style="flex:1; min-width:140px;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-          <label id="lbl-fecha-ini" data-i18n="lbl_fecha_ini" style="margin:0; font-size:0.82rem; color:var(--muted); font-weight:600;">Fecha de inicio:</label>
-          <button type="button" class="btn-today-pill" onclick="establecerFechaHoyInicio()" title="Poner fecha de hoy en inicio" style="margin:0; height:24px; padding:0 8px; font-size:0.7rem; border-radius:6px; width:auto;" data-i18n="btn_today">📅 Hoy</button>
+        <label id="lbl-fecha-ini" data-i18n="lbl_fecha_ini" style="display:block; margin:0 0 5px 0; font-size:0.82rem; color:var(--muted); font-weight:600;">Fecha de inicio:</label>
+        <div class="date-input-group">
+          <input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly>
+          <button type="button" class="btn-today-pill btn-today-input" onclick="establecerFechaHoyInicio()" title="Poner fecha de hoy en inicio" data-i18n="btn_today">📅 Hoy</button>
         </div>
-        <input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly>
       </div>
       <div style="flex:1; min-width:140px;" id="col-fecha-fin">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-          <label id="lbl-fecha-fin" data-i18n="lbl_fecha_fin" style="margin:0; font-size:0.82rem; color:var(--muted); font-weight:600;">Fecha de término:</label>
-          <button type="button" class="btn-today-pill" onclick="establecerFechaHoyFin()" title="Poner fecha de hoy en término" style="margin:0; height:24px; padding:0 8px; font-size:0.7rem; border-radius:6px; width:auto;" data-i18n="btn_today">📅 Hoy</button>
+        <label id="lbl-fecha-fin" data-i18n="lbl_fecha_fin" style="display:block; margin:0 0 5px 0; font-size:0.82rem; color:var(--muted); font-weight:600;">Fecha de término:</label>
+        <div class="date-input-group">
+          <input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly>
+          <button type="button" class="btn-today-pill btn-today-input" onclick="establecerFechaHoyFin()" title="Poner fecha de hoy en término" data-i18n="btn_today">📅 Hoy</button>
         </div>
-        <input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly>
       </div>
     </div>
   </div>
@@ -2887,11 +2899,11 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 
     <!-- Fecha de término con botón de HOY -->
     <div class="form-group" style="margin-bottom:14px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
-        <label style="margin:0; font-size:0.85rem; color:var(--text); font-weight:600;" id="lbl-terminar-fecha-fin" data-i18n="lbl_fecha_termino">Fecha de término:</label>
-        <button type="button" class="btn-today-pill btn-today-terminar" onclick="establecerFechaHoyTerminarModal()" title="Poner fecha de hoy" style="margin:0; height:24px; padding:0 8px; font-size:0.72rem; border-radius:6px; width:auto; cursor:pointer;" data-i18n="btn_hoy_pill">📅 Hoy</button>
+      <label style="display:block; margin:0 0 5px 0; font-size:0.85rem; color:var(--text); font-weight:600;" id="lbl-terminar-fecha-fin" data-i18n="lbl_fecha_termino">Fecha de término:</label>
+      <div class="date-input-group">
+        <input type="text" id="terminar-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly style="font-weight:600;">
+        <button type="button" class="btn-today-pill btn-today-input btn-today-terminar" onclick="establecerFechaHoyTerminarModal()" title="Poner fecha de hoy" data-i18n="btn_hoy_pill">📅 Hoy</button>
       </div>
-      <input type="text" id="terminar-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly style="font-weight:600;">
     </div>
 
     <!-- Calificación interactiva -->
