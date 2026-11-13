@@ -332,9 +332,20 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-friend-card{flex:0 0 300px;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:13px 14px;display:flex;flex-direction:column;gap:10px;justify-content:space-between;box-shadow:0 3px 12px rgba(0,0,0,0.12);transition:var(--tr)}
 .home-friend-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.22)}
 .home-friend-media-box{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:8px;border-radius:10px;}
-[data-theme$="-light"] .home-friend-media-box{background:rgba(255,255,255,0.7);border-color:rgba(0,0,0,0.06);}
-.home-friend-review-box{font-size:0.77rem;color:var(--text);font-style:italic;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;background:rgba(56,189,248,0.09);border:1px solid rgba(56,189,248,0.24);border-left:3px solid var(--accent);padding:7px 9px;border-radius:6px;word-break:break-word;}
+.home-friend-review-box{background:rgba(56,189,248,0.09);border:1px solid rgba(56,189,248,0.24);border-left:3px solid var(--accent);padding:7px 9px;border-radius:6px;word-break:break-word;}
+.home-friend-review-text{font-size:0.77rem;color:var(--text);font-style:italic;line-height:1.35;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
 [data-theme$="-light"] .home-friend-review-box{background:rgba(255,255,255,0.85);border:1px solid rgba(0,0,0,0.08);border-left:3px solid var(--accent);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.04);}
+.btn-like-resena{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:0.72rem;font-weight:600;padding:2px 7px;display:inline-flex;align-items:center;gap:3px;cursor:pointer;transition:all 0.16s ease;line-height:1.2;user-select:none;}
+.btn-like-resena:hover{background:rgba(244,63,94,0.09);border-color:rgba(244,63,94,0.35);color:#f43f5e;transform:translateY(-1px);}
+.btn-like-resena.liked{background:rgba(244,63,94,0.14);border-color:rgba(244,63,94,0.45);color:#f43f5e;font-weight:700;}
+.btn-like-resena .like-heart-icon{font-size:0.76rem;line-height:1;display:inline-block;transition:transform 0.16s ease;}
+.btn-like-resena .like-counter{font-size:0.72rem;font-weight:700;}
+.btn-like-resena .like-text{font-size:0.7rem;}
+.btn-like-resena.like-pop-anim .like-heart-icon{animation:likePopHeart 0.32s cubic-bezier(0.175,0.885,0.32,1.275);}
+@keyframes likePopHeart{0%{transform:scale(1);}50%{transform:scale(1.4);}100%{transform:scale(1);}}
+[data-theme$="-light"] .btn-like-resena{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.12);color:var(--muted);}
+[data-theme$="-light"] .btn-like-resena:hover{background:rgba(244,63,94,0.08);border-color:rgba(244,63,94,0.4);color:#e11d48;}
+[data-theme$="-light"] .btn-like-resena.liked{background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.45);color:#e11d48;}
 /* TOGGLE VISTA Y CUADRICULA LISTAS */
 .view-mode-toggle{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;gap:4px}
 .btn-view-mode{background:transparent;border:none;color:var(--muted);font-size:0.8rem;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--tr)}
@@ -3432,9 +3443,10 @@ amigosRowsList.forEach((rows, idx) => {
       comentario: priv.ocultarComentarios ? '' : (r.comentario || ''),
       esRewatch: !!r.es_rewatch,
       creador: r.creador || '',
-      anio: r.anio || ''
+      anio: r.anio || '',
+      likes: (p.preferencias?.likes_recibidos && p.preferencias.likes_recibidos[r.id]) ? p.preferencias.likes_recibidos[r.id] : []
     }));
-    return { exito: true, privado: false, registros: registros, privacidad: priv };
+    return { exito: true, privado: false, registros: registros, privacidad: priv, amigoPrefs: p.preferencias };
   } catch (e) {
     return { exito: false, error: e.toString() };
   }
@@ -4986,7 +4998,8 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
         esRewatch: !!r.es_rewatch,
         fechaInicio: sanitizarFechaFrontend(r.fecha_inicio || r.fechaInicio),
         fechaFin: sanitizarFechaFrontend(r.fecha_fin || r.fechaFin),
-        createdAt: r.created_at || ''
+        createdAt: r.created_at || '',
+        likes: (p.preferencias?.likes_recibidos && p.preferencias.likes_recibidos[r.id]) ? p.preferencias.likes_recibidos[r.id] : []
       }));
     });
 
@@ -5557,6 +5570,131 @@ function cargarAmigosYSolicitudes(mostrarToast = false) {
     if (mostrarToast) mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Friends list and updates refreshed 👥' : 'Lista de amigos y novedades actualizada 👥');
   }).obtenerDatosAmigosUsuario(estado.userEmail);
 }
+
+// === SISTEMA DE LIKES EN RESEÑAS DE AMIGOS ===
+let cacheLikesAmigosCount = {};
+
+function obtenerLikesResenasSet() {
+  try {
+    const raw = localStorage.getItem('mediary_liked_reviews');
+    if (raw) return new Set(JSON.parse(raw));
+  } catch (e) {}
+  if (typeof perfilUsuario !== 'undefined' && perfilUsuario?.preferencias?.likes_dados && Array.isArray(perfilUsuario.preferencias.likes_dados)) {
+    return new Set(perfilUsuario.preferencias.likes_dados);
+  }
+  return new Set();
+}
+
+function guardarLikesResenasSet(setObj) {
+  const arr = Array.from(setObj);
+  try {
+    localStorage.setItem('mediary_liked_reviews', JSON.stringify(arr));
+  } catch (e) {}
+  if (typeof perfilUsuario !== 'undefined' && perfilUsuario) {
+    if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+    perfilUsuario.preferencias.likes_dados = arr;
+    guardarPerfilLocal();
+  }
+  if (typeof estado !== 'undefined' && estado.userEmail && typeof sbFetch_ === 'function') {
+    sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(estado.userEmail), 'PATCH', {
+      preferencias: perfilUsuario.preferencias,
+      updated_at: new Date().toISOString()
+    }).catch(() => {});
+  }
+}
+
+function esResenaLikeada(regId) {
+  if (!regId) return false;
+  const s = obtenerLikesResenasSet();
+  return s.has(String(regId));
+}
+
+function obtenerConteoLikesResena(regId, amigoEmail, likesIniciales = null) {
+  if (!regId) return 0;
+  const idStr = String(regId);
+  if (cacheLikesAmigosCount[idStr] !== undefined) {
+    return cacheLikesAmigosCount[idStr];
+  }
+  let count = 0;
+  if (Array.isArray(likesIniciales)) {
+    count = likesIniciales.length;
+  }
+  const miEmail = (typeof estado !== 'undefined' && estado.userEmail ? estado.userEmail : (typeof perfilUsuario !== 'undefined' ? perfilUsuario?.emailGoogle : '') || '').toLowerCase();
+  const yoDiLike = esResenaLikeada(idStr);
+  if (yoDiLike && Array.isArray(likesIniciales) && miEmail && !likesIniciales.includes(miEmail)) {
+    count++;
+  } else if (yoDiLike && !Array.isArray(likesIniciales)) {
+    count = Math.max(count, 1);
+  }
+  cacheLikesAmigosCount[idStr] = count;
+  return count;
+}
+
+async function toggleLikeResenaAmigo(regId, amigoEmail, btnEl) {
+  if (!regId) return;
+  const idStr = String(regId);
+  const setLikes = obtenerLikesResenasSet();
+  const estabaLikeado = setLikes.has(idStr);
+  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang) ? userPrefs.lang : 'es';
+  const miEmail = (typeof estado !== 'undefined' && estado.userEmail ? estado.userEmail : (typeof perfilUsuario !== 'undefined' ? perfilUsuario?.emailGoogle : '') || '').toLowerCase();
+
+  let count = cacheLikesAmigosCount[idStr] !== undefined ? cacheLikesAmigosCount[idStr] : 0;
+  if (estabaLikeado) {
+    setLikes.delete(idStr);
+    count = Math.max(0, count - 1);
+  } else {
+    setLikes.add(idStr);
+    count = count + 1;
+  }
+  cacheLikesAmigosCount[idStr] = count;
+  guardarLikesResenasSet(setLikes);
+
+  const ahoraLikeado = !estabaLikeado;
+  document.querySelectorAll(`[data-like-id="${idStr}"]`).forEach(el => {
+    el.classList.toggle('liked', ahoraLikeado);
+    el.title = ahoraLikeado ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña');
+    const heart = el.querySelector('.like-heart-icon');
+    const counter = el.querySelector('.like-counter');
+    const text = el.querySelector('.like-text');
+    if (heart) heart.textContent = ahoraLikeado ? '❤️' : '🤍';
+    if (counter) counter.textContent = count > 0 ? count : '';
+    if (text) text.textContent = ahoraLikeado ? (l === 'en' ? 'Liked' : 'Te gusta') : (l === 'en' ? 'Like' : 'Me gusta');
+    if (ahoraLikeado) {
+      el.classList.remove('like-pop-anim');
+      void el.offsetWidth;
+      el.classList.add('like-pop-anim');
+    }
+  });
+
+  if (ahoraLikeado && typeof mostrarToastPersonalizado === 'function') {
+    mostrarToastPersonalizado(l === 'en' ? '❤️ Liked friend\'s review' : '❤️ ¡Te gustó la reseña!');
+  }
+
+  if (amigoEmail && miEmail && typeof sbFetch_ === 'function') {
+    try {
+      const pRows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEmail) + '&select=*', 'GET').catch(() => []);
+      if (pRows && pRows.length > 0) {
+        const amigoP = pRows[0];
+        const amigoPrefs = amigoP.preferencias || {};
+        if (!amigoPrefs.likes_recibidos) amigoPrefs.likes_recibidos = {};
+        let listaQuien = amigoPrefs.likes_recibidos[idStr] || [];
+        if (!Array.isArray(listaQuien)) listaQuien = [];
+        if (ahoraLikeado) {
+          if (!listaQuien.includes(miEmail)) listaQuien.push(miEmail);
+        } else {
+          listaQuien = listaQuien.filter(e => e !== miEmail);
+        }
+        amigoPrefs.likes_recibidos[idStr] = listaQuien;
+        sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEmail), 'PATCH', {
+          preferencias: amigoPrefs,
+          updated_at: new Date().toISOString()
+        }).catch(() => {});
+      }
+    } catch (e) {}
+  }
+}
+window.toggleLikeResenaAmigo = toggleLikeResenaAmigo;
+
 function cargarFeedActividadAmigos(mostrarToast = false) {
   const contenedor = document.getElementById('lista-feed-amigos');
   const l = userPrefs.lang || 'es';
@@ -5820,10 +5958,23 @@ function renderizarFeedAmigos() {
       ? `<span class="feed-cat-badge" style="background:rgba(16,185,129,0.12);color:#34d399;border-color:rgba(16,185,129,0.3);">⏱️ ${it.horas} hrs</span>`
       : '';
 
+    const isLiked = esResenaLikeada(it.id);
+    const likeCount = obtenerConteoLikesResena(it.id, it.userEmail, it.likes);
+    const likeBtnHtml = `
+      <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${it.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${it.id}', '${escHtmlFeed_(it.userEmail)}', this)" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
+        <span class="like-heart-icon">${isLiked ? '❤️' : '🤍'}</span>
+        <span class="like-counter">${likeCount > 0 ? likeCount : ''}</span>
+        <span class="like-text">${isLiked ? (l === 'en' ? 'Liked' : 'Te gusta') : (l === 'en' ? 'Like' : 'Me gusta')}</span>
+      </button>
+    `;
+
     const reviewHtml = (it.comentario && it.comentario.trim() !== '')
       ? `
         <div class="feed-review-box">
-          <div class="feed-review-title"><span>💬</span> <span>${l === 'en' ? 'Review & Notes' : 'Reseña y Opinión'}</span></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
+            <div class="feed-review-title"><span>💬</span> <span>${l === 'en' ? 'Review & Notes' : 'Reseña y Opinión'}</span></div>
+            ${likeBtnHtml}
+          </div>
           <div class="feed-review-text">"${escHtmlFeed_(it.comentario)}"</div>
         </div>
       `
@@ -5993,8 +6144,24 @@ function renderizarFeedAmigosResumidoInicio() {
     const avatarHtml = (it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:')))
       ? `<img src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
       : `<span>${escHtmlFeed_(it.amigoAvatar || '👤')}</span>`;
-    const ratingHtml = it.calificacion > 0 ? `<div style="display:flex;align-items:center;gap:4px;font-size:0.8rem;color:var(--star-active);">${renderEstrellasVisuales(it.calificacion)} <strong style="color:var(--accent);font-size:0.75rem;">${Number(it.calificacion).toFixed(1)}</strong></div>` : '';
-    const comSnippet = it.comentario ? `<div class="home-friend-review-box">“${escHtmlFeed_(it.comentario)}”</div>` : '';
+    const isLiked = esResenaLikeada(it.id);
+    const likeCount = obtenerConteoLikesResena(it.id, it.userEmail, it.likes);
+    const likeBtnHtml = `
+      <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${it.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${it.id}', '${escHtmlFeed_(it.userEmail)}', this)" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
+        <span class="like-heart-icon">${isLiked ? '❤️' : '🤍'}</span>
+        <span class="like-counter">${likeCount > 0 ? likeCount : ''}</span>
+        <span class="like-text">${isLiked ? (l === 'en' ? 'Liked' : 'Te gusta') : (l === 'en' ? 'Like' : 'Me gusta')}</span>
+      </button>
+    `;
+    const comSnippet = it.comentario ? `
+      <div class="home-friend-review-box">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
+          <span style="font-size:0.68rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;display:flex;align-items:center;gap:3px;"><span>💬</span> <span>${l === 'en' ? 'Review' : 'Reseña'}</span></span>
+          ${likeBtnHtml}
+        </div>
+        <div class="home-friend-review-text">“${escHtmlFeed_(it.comentario)}”</div>
+      </div>
+    ` : '';
     const itemPayload = encodeURIComponent(JSON.stringify({
       titulo: it.titulo,
       tituloOriginal: it.titulo,
@@ -6331,8 +6498,10 @@ function eliminarAmigoSeleccionado() {
 let amigoRegistrosCache = [];
 let amigoRegsFiltroCat = 'todas';
 let amigoRegsFiltroSub = 'todas';
+let amigoRegsEmailActual = '';
 function abrirModalRegistrosAmigo(email, nickname, catInicial = 'todas', subInicial = 'todas') {
   const amEmail = email || (amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '');
+  amigoRegsEmailActual = amEmail;
   const amFriend = (estado.amigos || []).find(x => x.email === amEmail);
   const amNick = nickname || (amFriend ? amFriend.nickname : (amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : 'Amigo'));
   if (!amEmail) return;
@@ -6607,8 +6776,24 @@ function filtrarRegistrosAmigoModal() {
         const fecha = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? `${r.fechaInicio} ➔ ${r.fechaFin}` : (r.fechaInicio || '');
         const fechaHtml = fecha && fecha !== 'Sin fecha' ? `<span style="font-size:0.73rem;color:var(--muted);background:rgba(255,255,255,0.04);padding:2px 7px;border-radius:5px;border:1px solid var(--border);">📅 ${fecha}</span>` : '';
         const horasHtml = r.horas ? `<span style="font-size:0.73rem;color:var(--accent);font-weight:600;background:rgba(56,189,248,0.1);padding:2px 7px;border-radius:5px;border:1px solid rgba(56,189,248,0.25);">⏱️ ${r.horas}</span>` : '';
-        const rwBadge = r.esRewatch ? `<span style="font-size:0.7rem;background:rgba(245,158,11,0.15);color:#d97706;border-radius:5px;padding:2px 7px;font-weight:700;">🔁 Rewatch</span>` : '';
-        const comHtml = r.comentario ? `<div style="font-size:0.79rem;color:var(--text);background:rgba(15,23,42,0.5);border-left:3px solid var(--accent);padding:7px 11px;border-radius:5px;margin-top:7px;font-style:italic;line-height:1.4;">"${r.comentario}"</div>` : '';
+        const isLiked = esResenaLikeada(r.id);
+        const likeCount = obtenerConteoLikesResena(r.id, amigoRegsEmailActual, r.likes);
+        const likeBtnHtml = `
+          <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${r.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${r.id}', '${amigoRegsEmailActual}', this)" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
+            <span class="like-heart-icon">${isLiked ? '❤️' : '🤍'}</span>
+            <span class="like-counter">${likeCount > 0 ? likeCount : ''}</span>
+            <span class="like-text">${isLiked ? (l === 'en' ? 'Liked' : 'Te gusta') : (l === 'en' ? 'Like' : 'Me gusta')}</span>
+          </button>
+        `;
+        const comHtml = r.comentario ? `
+          <div style="font-size:0.79rem;color:var(--text);background:rgba(15,23,42,0.5);border-left:3px solid var(--accent);padding:7px 11px;border-radius:6px;margin-top:7px;line-height:1.4;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
+              <span style="font-size:0.7rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;display:flex;align-items:center;gap:3px;"><span>💬</span> <span>${l === 'en' ? 'Review' : 'Reseña'}</span></span>
+              ${likeBtnHtml}
+            </div>
+            <div style="font-style:italic;">"${r.comentario}"</div>
+          </div>
+        ` : '';
 
         fullHtml += `
           <div class="amigo-reg-item-card">
@@ -8293,7 +8478,15 @@ localStorage.setItem('Mediary_saved_accounts_v1', JSON.stringify(lista.slice(0, 
 }
 function aplicarSesionExitosa(res, mostrarSaludo = false) { estado.userEmail = (res.emailGoogle || estado.userEmail || '').trim().toLowerCase(); perfilUsuario.emailGoogle = estado.userEmail; perfilUsuario.logueadoGoogle = true;
 perfilUsuario.nickname = res.nickname || (estado.userEmail ? estado.userEmail.split('@')[0] : 'Cinéfilo & Lector'); perfilUsuario.bio = res.bio || 'Coleccionando historias en Mediary ✨'; perfilUsuario.avatar = res.avatar || '🎬'; perfilUsuario.favoritos = res.favoritos || {};
-perfilUsuario.favoritosOcultos = res.favoritosOcultos || {}; perfilUsuario.preferencias = res.preferencias || {}; if (res.preferencias?.portada || res.favoritos?.portada) perfilUsuario.portada = res.preferencias?.portada || res.favoritos?.portada; if (res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito) perfilUsuario.personajeFavorito = res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito; if (!perfilUsuario.preferencias.userId && estado.userEmail) { perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias); } guardarPerfilLocal(); registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar); renderizarCabeceraPerfil(); cerrarModalAuthSupabase(); cargarRegistros(); cargarWatchlist();
+perfilUsuario.favoritosOcultos = res.favoritosOcultos || {}; perfilUsuario.preferencias = res.preferencias || {}; if (res.preferencias?.portada || res.favoritos?.portada) perfilUsuario.portada = res.preferencias?.portada || res.favoritos?.portada; if (res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito) perfilUsuario.personajeFavorito = res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito; if (!perfilUsuario.preferencias.userId && estado.userEmail) { perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias); }
+if (res.preferencias?.likes_dados && Array.isArray(res.preferencias.likes_dados)) {
+  try {
+    const s = obtenerLikesResenasSet();
+    res.preferencias.likes_dados.forEach(id => s.add(id));
+    localStorage.setItem('mediary_liked_reviews', JSON.stringify(Array.from(s)));
+  } catch (e) {}
+}
+guardarPerfilLocal(); registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar); renderizarCabeceraPerfil(); cerrarModalAuthSupabase(); cargarRegistros(); cargarWatchlist();
 if (estado.categoria === 'perfil') renderizarFavoritosPerfil(); if (mostrarSaludo) mostrarToastPersonalizado(userPrefs.lang === 'en' ? `Welcome, ${perfilUsuario.nickname}! (${estado.userEmail}) ✨` : `¡Bienvenido, ${perfilUsuario.nickname}! (${estado.userEmail}) ✨`); }
 function sincronizarPerfilDesdeServidor() { google.script.run.withSuccessHandler(res => { if (res && res.exito) { aplicarSesionExitosa(res, false); } else if (res && res.sinSesion && !estado.userEmail) { abrirModalAuthSupabase(); } }).obtenerPerfilUsuario(estado.userEmail); }
 function renderizarCabeceraPerfil() { const avBox = document.getElementById('perfil-avatar-render'); const btnHeader = document.getElementById('btn-profile');
