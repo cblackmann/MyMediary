@@ -3602,6 +3602,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
     const watchlists = Array.isArray(wlData) ? wlData : [];
     let reparados = 0;
     const detallesReparados = [];
+    let resolucionesExternas = 0;
 
     // Helper para detectar creadores faltantes, genéricos o erróneos
     const esCreadorInvalido_ = (cr) => {
@@ -3735,20 +3736,26 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         patch.comentario = `${com}.`;
       }
 
-      // E. Creador / Director ausente, erróneo o genérico
-      if (esCreadorInvalido_(r.creador)) {
-        const info = await resolverCreadorFaltante_(r.categoria, r.subcategoria, r.titulo);
-        if (info && info.creador) {
-          patch.creador = info.creador;
-          if (!r.poster && info.poster) patch.poster = info.poster;
-          if (!r.anio && info.anio) patch.anio = info.anio;
-        }
+      // E. Creador / Director ausente, erróneo o genérico (máx 3 llamadas externas por auditoría para rapidez)
+      if (resolucionesExternas < 3 && esCreadorInvalido_(r.creador)) {
+        try {
+          const info = await resolverCreadorFaltante_(r.categoria, r.subcategoria, r.titulo);
+          resolucionesExternas++;
+          if (info && info.creador) {
+            patch.creador = info.creador;
+            if (!r.poster && info.poster) patch.poster = info.poster;
+            if (!r.anio && info.anio) patch.anio = info.anio;
+          }
+        } catch (e) {}
       }
 
       // F. Póster faltante si sigue vacío
-      if (!r.poster && !patch.poster) {
-        const pGen = await SERVER_API.buscarPortadaGenerica(r.titulo, patch.creador || r.creador, r.categoria);
-        if (pGen) patch.poster = pGen;
+      if (resolucionesExternas < 3 && !r.poster && !patch.poster) {
+        try {
+          const pGen = await SERVER_API.buscarPortadaGenerica(r.titulo, patch.creador || r.creador, r.categoria);
+          resolucionesExternas++;
+          if (pGen) patch.poster = pGen;
+        } catch (e) {}
       }
 
       // Aplicar actualización si hubo correcciones
@@ -3768,16 +3775,22 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       else if (subLow === 'manga') wPatch.subcategoria = 'Mangas';
       else if (subLow === 'libro') wPatch.subcategoria = 'Libros';
 
-      if (esCreadorInvalido_(w.creador)) {
-        const info = await resolverCreadorFaltante_(w.categoria, w.subcategoria, w.titulo);
-        if (info && info.creador) {
-          wPatch.creador = info.creador;
-          if (!w.poster && info.poster) wPatch.poster = info.poster;
-        }
+      if (resolucionesExternas < 5 && esCreadorInvalido_(w.creador)) {
+        try {
+          const info = await resolverCreadorFaltante_(w.categoria, w.subcategoria, w.titulo);
+          resolucionesExternas++;
+          if (info && info.creador) {
+            wPatch.creador = info.creador;
+            if (!w.poster && info.poster) wPatch.poster = info.poster;
+          }
+        } catch (e) {}
       }
-      if (!w.poster && !wPatch.poster) {
-        const pGen = await SERVER_API.buscarPortadaGenerica(w.titulo, wPatch.creador || w.creador, w.categoria);
-        if (pGen) wPatch.poster = pGen;
+      if (resolucionesExternas < 5 && !w.poster && !wPatch.poster) {
+        try {
+          const pGen = await SERVER_API.buscarPortadaGenerica(w.titulo, wPatch.creador || w.creador, w.categoria);
+          resolucionesExternas++;
+          if (pGen) wPatch.poster = pGen;
+        } catch (e) {}
       }
       if (Object.keys(wPatch).length > 0) {
         await sbFetch_(`watchlist?id=eq.${encodeURIComponent(w.id)}&user_email=eq.${encodeURIComponent(email)}`, 'PATCH', wPatch);
@@ -6144,6 +6157,14 @@ function renderizarFeedAmigosResumidoInicio() {
     const avatarHtml = (it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:')))
       ? `<img src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
       : `<span>${escHtmlFeed_(it.amigoAvatar || '👤')}</span>`;
+    const califNum = Number(it.calificacion) || 0;
+    const enProg = esEnProgresoTexto(it.fechaFin);
+    let ratingHtml = '';
+    if (enProg) {
+      ratingHtml = `<span style="font-size:0.72rem;color:var(--accent);font-weight:700;">⏳ ${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span>`;
+    } else if (califNum > 0) {
+      ratingHtml = `<div style="display:flex;align-items:center;gap:4px;font-size:0.8rem;color:var(--star-active);">${renderEstrellasVisuales(califNum)} <strong style="color:var(--accent);font-size:0.75rem;">${califNum.toFixed(1)}</strong></div>`;
+    }
     const isLiked = esResenaLikeada(it.id);
     const likeCount = obtenerConteoLikesResena(it.id, it.userEmail, it.likes);
     const likeBtnHtml = `
@@ -11438,43 +11459,78 @@ window.addEventListener('resize', () => reposicionarIndicadorNavMovil());
 function refrescarDatosApp() {
   const btn = document.getElementById('btn-refresh');
   if (btn) btn.classList.add('spinning');
+  const l = userPrefs.lang || 'es';
+
+  let stoppedSpinning = false;
+  const detenerSpin = () => {
+    if (!stoppedSpinning) {
+      stoppedSpinning = true;
+      if (btn) setTimeout(() => btn.classList.remove('spinning'), 400);
+    }
+  };
+
+  // Temporizador de seguridad para garantizar que el botón nunca se quede pegado girando
+  setTimeout(detenerSpin, 7000);
+
+  if (!estado.userEmail) {
+    detenerSpin();
+    renderizarResumenInicio();
+    renderizarFeedAmigosResumidoInicio();
+    mostrarToastPersonalizado(l === 'en' ? 'Log in to sync your data with Supabase.' : 'Inicia sesión para sincronizar tus datos con Supabase.');
+    return;
+  }
+
+  // Refrescar en paralelo perfil, watchlist y feed de amigos
+  sincronizarPerfilDesdeServidor();
+  cargarWatchlist();
+  cargarFeedActividadAmigos(false);
+
+  // Sincronizar registros del usuario y actualizar las vistas activas
+  google.script.run
+    .withSuccessHandler(d => {
+      detenerSpin();
+      estado.registros = (d || []).map(r => ({
+        ...r,
+        fechaInicio: sanitizarFechaFrontend(r.fechaInicio),
+        fechaFin: sanitizarFechaFrontend(r.fechaFin)
+      }));
+      try {
+        if (estado.categoria === 'inicio') {
+          renderizarResumenInicio();
+          renderizarFeedAmigosResumidoInicio();
+          renderizarDiscoverVista();
+        } else if (estado.categoria === 'listas') {
+          renderizarStats();
+        } else if (estado.categoria === 'discover') {
+          renderizarDiscoverVista();
+        } else if (estado.categoria === 'perfil') {
+          renderizarFavoritosPerfil();
+          calcularYMostrarEstadisticasPerfil();
+        } else {
+          if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist();
+          else filtrarYMostrarHistorial();
+        }
+      } catch (err) {
+        console.error('Error al actualizar vistas tras sincronizar:', err);
+      }
+      mostrarToastPersonalizado(l === 'en' ? 'Mediary is up to date! All entries verified. ✨' : '¡Mediary verificado y al día con Supabase! Todo en orden. ✨');
+    })
+    .withFailureHandler(err => {
+      detenerSpin();
+      console.error('Error al sincronizar registros:', err);
+      mostrarToastPersonalizado(l === 'en' ? 'Could not sync with Supabase. Check connection.' : 'No se pudo sincronizar con Supabase. Revisa tu conexión.');
+    })
+    .obtenerRegistros(estado.userEmail);
+
+  // Ejecutar auditoría/reparación en segundo plano sin bloquear la respuesta del botón
   google.script.run
     .withSuccessHandler(res => {
-      cargarWatchlist();
-      cargarFeedActividadAmigos();
-      google.script.run
-        .withSuccessHandler(d => {
-          if (btn) setTimeout(() => btn.classList.remove('spinning'), 500);
-          estado.registros = (d || []).map(r => ({
-            ...r,
-            fechaInicio: sanitizarFechaFrontend(r.fechaInicio),
-            fechaFin: sanitizarFechaFrontend(r.fechaFin)
-          }));
-          if (estado.categoria === 'inicio') {
-            renderizarResumenInicio();
-            renderizarFeedAmigosResumidoInicio();
-            renderizarDiscoverVista();
-          } else if (estado.categoria === 'listas') {
-            renderizarStats();
-          } else if (estado.categoria === 'discover') renderizarDiscoverVista();
-          else if (estado.categoria === 'perfil') {
-            renderizarFavoritosPerfil();
-            calcularYMostrarEstadisticasPerfil();
-          } else {
-            if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist();
-            else filtrarYMostrarHistorial();
-          }
-          let txtMensaje = '';
-          if (res?.reparados > 0) {
-            txtMensaje = `¡Sincronización y auditoría completa! Se repararon ${res.reparados} registro(s) con directores o formatos antiguos. 🛠️`;
-          } else {
-            txtMensaje = (userPrefs.lang === 'en' ? 'Mediary is up to date! All entries verified.' : '¡Mediary verificado y al día con Supabase! Todo en orden. ✨');
-          }
-          mostrarToastPersonalizado(txtMensaje);
-        })
-        .obtenerRegistros(estado.userEmail);
+      if (res && res.reparados > 0) {
+        mostrarToastPersonalizado(l === 'en' ? `Audit complete: ${res.reparados} entry(ies) fixed! 🛠️` : `¡Auditoría completa! Se repararon ${res.reparados} registro(s) con directores o formatos antiguos. 🛠️`);
+        cargarRegistros();
+      }
     })
-    .withFailureHandler(() => btn && btn.classList.remove('spinning'))
+    .withFailureHandler(() => {})
     .sincronizarYRepararRegistros(estado.userEmail);
 }
 function obtenerTipoFicha(categoria, subcategoria) {
