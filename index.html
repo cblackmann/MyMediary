@@ -894,8 +894,8 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .feed-card-title{font-size:1.02rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px;}
 .feed-card-meta{font-size:0.8rem;color:var(--muted);margin-bottom:8px;}
 .feed-cat-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(56,189,248,0.12);color:var(--accent);font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid rgba(56,189,248,0.25);text-transform:uppercase;letter-spacing:0.03em;}
-.feed-status-inprog{background:rgba(245,158,11,0.18);color:#b45309;border:1.5px solid #d97706;font-weight:700;}
-[data-theme$="-dark"] .feed-status-inprog, html:not([data-theme*="-light"]) .feed-status-inprog{background:rgba(245,158,11,0.22);color:#fde047;border:1.5px solid rgba(245,158,11,0.6);font-weight:700;}
+.feed-status-inprog{display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.12);color:var(--star-active,#d97706);border:1px solid rgba(245,158,11,0.3);padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.02em;}
+[data-theme$="-dark"] .feed-status-inprog, html:not([data-theme*="-light"]) .feed-status-inprog{background:rgba(245,158,11,0.15);color:#fbbf24;border-color:rgba(245,158,11,0.35);}
 .feed-review-box{margin-top:10px;padding:10px 14px;background:rgba(56,189,248,0.06);border-left:3px solid var(--accent);border-radius:4px 8px 8px 4px;font-size:0.86rem;color:var(--text);line-height:1.45;word-break:break-word;position:relative;}
 [data-theme$="-light"] .feed-review-box, [data-theme="nordic-light"] .feed-review-box, [data-theme="creme-latte"] .feed-review-box, [data-theme="parchment"] .feed-review-box, [data-theme="sage-garden"] .feed-review-box{background:rgba(0,0,0,0.03);}
 .feed-review-title{font-size:0.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
@@ -3191,8 +3191,8 @@ html[data-ui-style="modern"] .btn-modal-cancel {
           <div data-i18n="ruleta_loading_msg">Obteniendo la lista de tus amigos...</div>
         </div>
 
-        <!-- Estado Vacío -->
-        <div id="ruleta-empty-box" style="display:none; text-align:center; padding:16px 12px; background:var(--bg); border:1.5px dashed var(--border); border-radius:12px; margin-bottom:10px;">
+        <!-- Estado Vacío (removido para mantener aspecto y altura constante) -->
+        <div id="ruleta-empty-box" style="display:none !important; text-align:center; padding:16px 12px; background:var(--bg); border:1.5px dashed var(--border); border-radius:12px; margin-bottom:10px;">
           <div style="font-size:1.8rem; margin-bottom:4px;">🤷‍♂️</div>
           <div id="ruleta-empty-title" style="font-weight:700; color:var(--text); font-size:0.9rem; margin-bottom:4px;" data-i18n="ruleta_empty_title">No hay obras en común</div>
           <p id="ruleta-empty-desc" style="font-size:0.78rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;" data-i18n="ruleta_empty_desc">
@@ -3252,7 +3252,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
     </div>
   </div>
 </div>
-<!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📑 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;" id="amigo-regs-cat-tabs"></div> <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL DETALLE DE ACTIVIDAD DE AMIGO EN DISCOVER -->
+<!-- MODAL REGISTROS DE AMIGO --> <div id="modal-registros-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRegistrosAmigo()"> <div class="modal-box" style="max-width:720px;max-height:90vh;overflow-y:auto;"> <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"> <h3 id="amigo-regs-modal-title" style="margin:0;display:flex;align-items:center;gap:8px;">📚 <span data-i18n="amigo_regs_title">Registros</span></h3> <button type="button" class="btn-close-form" onclick="cerrarModalRegistrosAmigo()" style="position:static;">✕</button> </div> <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:8px;" id="amigo-regs-cat-tabs"></div> <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div> <div style="margin-bottom:14px;"> <input type="text" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()"> </div> <div id="amigo-regs-grid" style="display:flex;flex-direction:column;gap:8px;max-height:55vh;overflow-y:auto;"></div> <div class="modal-actions" style="margin-top:14px;"> <button type="button" class="btn-modal-save" onclick="cerrarModalRegistrosAmigo()" data-i18n="btn_done">Listo</button> </div> </div> </div> <!-- MODAL DETALLE DE ACTIVIDAD DE AMIGO EN DISCOVER -->
 <div id="modal-amigo-registro-detalle" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalDetalleActividadAmigo()">
   <div class="modal-box" style="max-width:440px;padding:22px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;border-bottom:1px solid var(--border);padding-bottom:12px;">
@@ -6144,17 +6144,17 @@ function renderizarFeedAmigos() {
     const califNum = Number(it.calificacion) || 0;
     let ratingOrStatusHtml = '';
     if (enProg) {
-      ratingOrStatusHtml = `<span class="feed-status-badge feed-status-inprog" style="font-weight:700;">⏳ ${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span>`;
+      ratingOrStatusHtml = `<span class="feed-status-inprog"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.9;"></span><span>${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span></span>`;
     } else if (califNum > 0) {
       ratingOrStatusHtml = `
-        <div style="display:inline-flex;align-items:center;background:rgba(234,179,8,0.12);border:1px solid rgba(234,179,8,0.32);padding:3px 8px;border-radius:8px;">
+        <div style="display:inline-flex;align-items:center;background:var(--bg);border:1px solid var(--border);padding:3px 8px;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
           ${renderEstrellasVisuales(califNum)}
         </div>
       `;
     }
 
     const horasHtml = (it.horas && String(it.horas).trim() !== '' && it.horas !== '0')
-      ? `<span class="feed-cat-badge" style="background:rgba(16,185,129,0.14);color:#34d399;border-color:rgba(16,185,129,0.35);font-weight:700;">⏱️ ${it.horas} hrs</span>`
+      ? `<span class="feed-cat-badge" style="background:rgba(16,185,129,0.1);color:#10b981;border-color:rgba(16,185,129,0.3);font-weight:700;border-radius:20px;padding:3px 9px;">⏱️ ${it.horas} hrs</span>`
       : '';
 
     const isLiked = esResenaLikeada(it.id);
@@ -6180,8 +6180,8 @@ function renderizarFeedAmigos() {
 
     const yaTengoEsteProducto = usuarioYaTieneObra(it);
     const btnWatchlistTopRight = !yaTengoEsteProducto ? `
-      <button type="button" class="btn-today-pill" style="height:28px;padding:0 10px;font-size:0.74rem;margin:0;flex-shrink:0;display:inline-flex;align-items:center;gap:4px;font-weight:700;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:var(--accent);" onclick="agregarFeedItemAWatchlist(${idx}, this)" title="${l === 'en' ? 'Add to my Watchlist' : 'Agregar a mis pendientes'}">
-        <span>📌</span> <span>+ Watchlist</span>
+      <button type="button" class="btn-today-pill" style="width:30px;min-width:30px;height:30px;padding:0;margin:0;flex-shrink:0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--border);color:var(--accent);font-size:0.92rem;cursor:pointer;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,0.06);transition:var(--tr);" onclick="agregarFeedItemAWatchlist(${idx}, this)" title="${l === 'en' ? 'Add to Watchlist' : 'Agregar a Watchlist'}">
+        <span>📌</span>
       </button>
     ` : '';
 
@@ -6214,10 +6214,14 @@ function renderizarFeedAmigos() {
               ${btnWatchlistTopRight}
             </div>
             <div class="feed-card-title">${escHtmlFeed_(it.titulo)}</div>
-            ${horasHtml ? `<div style="margin:2px 0 4px;">${horasHtml}</div>` : ''}
             ${it.subtitulo && it.subtitulo !== it.titulo ? `<div style="font-size:0.78rem;color:var(--muted);font-style:italic;margin-top:-2px;margin-bottom:3px;">${escHtmlFeed_(it.subtitulo)}</div>` : ''}
             <div class="feed-card-meta">${escHtmlFeed_(it.creador || '')} ${it.anio ? '(' + escHtmlFeed_(it.anio) + ')' : ''}</div>
-            ${ratingOrStatusHtml ? `<div style="margin-top:6px;">${ratingOrStatusHtml}</div>` : ''}
+            ${(horasHtml || ratingOrStatusHtml) ? `
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;">
+                ${horasHtml}
+                ${ratingOrStatusHtml}
+              </div>
+            ` : ''}
             ${reviewHtml}
           </div>
         </div>
@@ -6243,7 +6247,10 @@ function agregarFeedItemAWatchlist(idx, btnEl) {
   };
   if (btnEl) {
     btnEl.classList.add('added');
-    btnEl.innerHTML = `<span>✓</span> <span>${userPrefs.lang === 'en' ? 'Added' : 'Agregado'}</span>`;
+    btnEl.innerHTML = `<span>✓</span>`;
+    btnEl.style.color = '#10b981';
+    btnEl.style.borderColor = 'rgba(16,185,129,0.4)';
+    btnEl.disabled = true;
   }
   agregarAWatchlistDirecto(itemConCat, btnEl);
 }
@@ -6492,15 +6499,15 @@ function renderizarListaAmigos(amigos) {
           </div>
 
           <!-- Calificación promedio en la esquina superior derecha -->
-          <div style="background:rgba(234,179,8,0.12); border:1px solid rgba(234,179,8,0.32); border-radius:10px; padding:4px 10px; font-size:0.82rem; display:inline-flex; align-items:center; gap:5px; flex-shrink:0;" title="${l === 'en' ? 'Average Rating' : 'Calificación Promedio'}">
-            <span style="color:#eab308; font-size:0.92rem;">★</span>
+          <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:4px 10px; font-size:0.82rem; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; box-shadow:0 1px 3px rgba(0,0,0,0.06);" title="${l === 'en' ? 'Average Rating' : 'Calificación Promedio'}">
+            <span style="color:var(--star-active); font-size:0.95rem;">★</span>
             <span style="font-weight:800; color:var(--text);">${avgRating}</span>
           </div>
         </div>
 
         <!-- Botón intermedio: "Ver Registros (N)" -->
         <button type="button" class="btn-today-pill" style="height:36px; padding:0 14px; font-size:0.82rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; width:100%; transition:var(--tr); box-sizing:border-box;" onclick="abrirModalRegistrosAmigo('${emailEscaped}', '${nickEscaped}')" title="${l === 'en' ? 'View friend records' : 'Ver registros de ' + nickEscaped}">
-          <span>📑</span>
+          <span>📚</span>
           <span>${l === 'en' ? `View Records (${totalRegs})` : `Ver Registros (${totalRegs})`}</span>
         </button>
 
@@ -6716,7 +6723,7 @@ function abrirModalRegistrosAmigo(email, nickname, catInicial = 'todas', subInic
   const title = document.getElementById('amigo-regs-modal-title');
   const grid = document.getElementById('amigo-regs-grid');
   const inSearch = document.getElementById('input-buscar-regs-amigo');
-  if (title) title.innerHTML = `📑 <span>${l === 'en' ? `Records of ${amNick}` : `Registros de ${amNick}`}</span>`;
+  if (title) title.innerHTML = `📚 <span>${l === 'en' ? `Records of ${amNick}` : `Registros de ${amNick}`}</span>`;
   if (inSearch) {
     inSearch.value = '';
     inSearch.placeholder = l === 'en' ? "Search in this friend's records..." : "Buscar en los registros de este amigo...";
@@ -6734,8 +6741,9 @@ function abrirModalRegistrosAmigo(email, nickname, catInicial = 'todas', subInic
     grid.innerHTML = `<div style="text-align:center;padding:30px 10px;color:var(--muted);"><span class="spinning" style="display:inline-block;margin-bottom:8px;">⏳</span><div>${l === 'en' ? 'Loading records...' : 'Cargando registros...'}</div></div>`;
   }
   if (modal) modal.style.display = 'flex';
-  google.script.run
-    .withSuccessHandler(res => {
+
+  const onExito = res => {
+    try {
       if (!res || !res.exito) {
         if (grid) grid.innerHTML = `<div style="color:var(--danger);padding:20px;text-align:center;">${res?.error || (l === 'en' ? 'Error loading records' : 'Error al cargar registros')}</div>`;
         return;
@@ -6748,11 +6756,26 @@ function abrirModalRegistrosAmigo(email, nickname, catInicial = 'todas', subInic
       renderizarTabsCategoriasAmigo();
       renderizarTabsSubcategoriasAmigo();
       filtrarRegistrosAmigoModal();
-    })
-    .withFailureHandler(err => {
-      if (grid) grid.innerHTML = `<div style="color:var(--danger);padding:20px;text-align:center;">${err?.message || err || (l === 'en' ? 'Error loading records' : 'Error al cargar registros')}</div>`;
-    })
-    .obtenerRegistrosAmigo(amEmail);
+    } catch (e) {
+      console.error('Error al procesar registros de amigo:', e);
+      if (grid) grid.innerHTML = `<div style="color:var(--danger);padding:20px;text-align:center;">Error: ${e.message}</div>`;
+    }
+  };
+
+  const onFallo = err => {
+    console.error('Error al obtener registros de amigo:', err);
+    if (grid) grid.innerHTML = `<div style="color:var(--danger);padding:20px;text-align:center;">${err?.message || err || (l === 'en' ? 'Error loading records' : 'Error al cargar registros')}</div>`;
+  };
+
+  if (typeof SERVER_API !== 'undefined' && SERVER_API.obtenerRegistrosAmigo) {
+    SERVER_API.obtenerRegistrosAmigo(amEmail).then(onExito).catch(onFallo);
+  } else if (window.google?.script?.run) {
+    if (window.google.script.run.obtenerRegistrosAmigo) {
+      google.script.run.withSuccessHandler(onExito).withFailureHandler(onFallo).obtenerRegistrosAmigo(amEmail);
+    } else if (window.google.script.run.obtenerRegistrosDeAmigo) {
+      google.script.run.withSuccessHandler(onExito).withFailureHandler(onFallo).obtenerRegistrosDeAmigo(amEmail, 'todas');
+    }
+  }
 }
 function renderizarTabsCategoriasAmigo() {
   const tabs = document.getElementById('amigo-regs-cat-tabs');
@@ -6948,6 +6971,16 @@ function filtrarRegistrosAmigoModal() {
       }
     });
 
+    // Asegurar que ningún registro quede fuera si no tiene subcategoría
+    const itemsSinSub = catGroup.items.filter(r => !subGroups.some(g => g.items.includes(r)));
+    if (itemsSinSub.length > 0) {
+      itemsSinSub.sort((a, b) => {
+        const diff = parseDateForSort(b) - parseDateForSort(a);
+        return diff !== 0 ? diff : (a.titulo || '').localeCompare(b.titulo || '');
+      });
+      subGroups.push({ id: 'general', nombre: l === 'en' ? 'General' : 'General', emoji: '📁', items: itemsSinSub });
+    }
+
     fullHtml += `
       <div class="amigo-cat-block">
         <div class="amigo-cat-group-header">
@@ -6983,8 +7016,9 @@ function filtrarRegistrosAmigoModal() {
         const fecha = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? `${r.fechaInicio} ➔ ${r.fechaFin}` : (r.fechaInicio || '');
         const fechaHtml = fecha && fecha !== 'Sin fecha' ? `<span style="font-size:0.73rem;color:var(--muted);background:rgba(255,255,255,0.04);padding:2px 7px;border-radius:5px;border:1px solid var(--border);">📅 ${fecha}</span>` : '';
         const horasHtml = r.horas ? `<span style="font-size:0.73rem;color:var(--accent);font-weight:600;background:rgba(56,189,248,0.1);padding:2px 7px;border-radius:5px;border:1px solid rgba(56,189,248,0.25);">⏱️ ${r.horas}</span>` : '';
-        const isLiked = esResenaLikeada(r.id);
-        const likeCount = obtenerConteoLikesResena(r.id, amigoRegsEmailActual, r.likes);
+        const rwBadge = r.esRewatch ? `<span style="font-size:0.73rem;color:var(--accent);background:rgba(56,189,248,0.1);padding:2px 7px;border-radius:5px;border:1px solid rgba(56,189,248,0.25);">🔁 ${l === 'en' ? 'Rewatch' : 'Revisita'}</span>` : '';
+        const isLiked = (typeof esResenaLikeada === 'function') ? esResenaLikeada(r.id) : false;
+        const likeCount = (typeof obtenerConteoLikesResena === 'function') ? obtenerConteoLikesResena(r.id, amigoRegsEmailActual, r.likes) : 0;
         const likeBtnHtml = `
           <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${r.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${r.id}', '${amigoRegsEmailActual}', this)" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
             <span class="like-heart-icon">${isLiked ? '❤️' : '🤍'}</span>
@@ -7582,33 +7616,14 @@ function actualizarVistaCandidatasRuleta() {
     }
   }
 
-  // Manejar estado vacío
+  // Manejar estado vacío (sin alterar dimensiones del modal)
   const emptyBox = document.getElementById('ruleta-empty-box');
   const btnGirar = document.getElementById('btn-ruleta-girar-principal');
-  const emptyTitle = document.getElementById('ruleta-empty-title');
-  const emptyDesc = document.getElementById('ruleta-empty-desc');
-  const btnSwitch = document.getElementById('btn-ruleta-switch-suma');
+  if (emptyBox) emptyBox.style.display = 'none';
 
   if (!candidatas.length) {
-    if (emptyBox) emptyBox.style.display = 'block';
     if (btnGirar) btnGirar.style.opacity = '0.5';
-
-    const l = userPrefs.lang || 'es';
-    if (ruletaModoActual === 'comun') {
-      if (emptyTitle) emptyTitle.textContent = l === 'en' ? 'No titles in common in this category' : 'No hay obras en común en esta categoría';
-      if (emptyDesc) emptyDesc.innerHTML = l === 'en'
-        ? `No matching titles found in common on your Watchlists for this category. Try "Combining Watchlists" mode!`
-        : `No coinciden obras en común en sus Watchlists para esta categoría. ¡Prueba el modo "Sumando ambas"!`;
-      if (btnSwitch) btnSwitch.style.display = 'inline-flex';
-    } else {
-      if (emptyTitle) emptyTitle.textContent = l === 'en' ? 'Watchlists without titles' : 'Watchlists sin obras';
-      if (emptyDesc) emptyDesc.innerHTML = l === 'en'
-        ? `Make sure at least one of you has added titles to their Watchlist for this category.`
-        : `Asegúrense de que al menos uno de ustedes tenga obras agregadas en su Watchlist para esta categoría.`;
-      if (btnSwitch) btnSwitch.style.display = 'none';
-    }
   } else {
-    if (emptyBox) emptyBox.style.display = 'none';
     if (btnGirar) {
       btnGirar.style.opacity = '1';
       btnGirar.style.display = 'inline-flex';
@@ -7620,11 +7635,6 @@ function tirarRuletaPeliculas() {
   if (!ruletaCandidatasActuales.length) {
     if (typeof mostrarToastPersonalizado === 'function') {
       mostrarToastPersonalizado(userPrefs.lang === 'en' ? '⚠️ No titles available with this category and mode. Try changing category or using "Combining both".' : '⚠️ No hay obras disponibles con esta categoría y modo. Prueba cambiando de categoría o usando "Sumando ambas".');
-    }
-    const emptyBox = document.getElementById('ruleta-empty-box');
-    if (emptyBox) {
-      emptyBox.style.animation = 'pulseBorder 1s ease';
-      setTimeout(() => { if (emptyBox) emptyBox.style.animation = ''; }, 1000);
     }
     return;
   }
