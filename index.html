@@ -41,6 +41,9 @@
       mode = isDark ? 'dark' : 'light';
     }
     const theme = (family || 'slate') + '-' + mode;
+    let appTheme = 'default';
+    if (p && p.appTheme) appTheme = p.appTheme;
+    document.documentElement.setAttribute('data-app-theme', appTheme);
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.setAttribute('data-ui-style', 'modern');
     document.documentElement.style.colorScheme = (mode === 'light') ? 'light' : 'dark';
@@ -87,7 +90,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mediary">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Lexend:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Lexend:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -2552,6 +2555,231 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 }
 .terminar-modal-title { color: var(--success) !important; }
 
+
+/* ========================================================
+   THEME MINIMALISTA (data-app-theme="minimalist")
+   - Tipografía DM Sans y todo en minúsculas en la interfaz
+   - Paleta reducida a 2 colores (1 neutro base, 1 acento de tema)
+   - Estados desaturados y suaves (verde éxito y rojo alerta atenuados)
+   - Sin emojis no esenciales (solo menú flotante, header y controles clave)
+   - Mayor respiro y espaciado entre secciones y elementos
+   ======================================================== */
+html[data-app-theme="minimalist"],
+html[data-app-theme="minimalist"] body,
+html[data-app-theme="minimalist"] button,
+html[data-app-theme="minimalist"] input,
+html[data-app-theme="minimalist"] select,
+html[data-app-theme="minimalist"] textarea {
+  font-family: 'DM Sans', sans-serif !important;
+}
+
+/* 1. Minúsculas en toda la interfaz */
+html[data-app-theme="minimalist"] h1,
+html[data-app-theme="minimalist"] h2,
+html[data-app-theme="minimalist"] h3,
+html[data-app-theme="minimalist"] h4,
+html[data-app-theme="minimalist"] h5,
+html[data-app-theme="minimalist"] button,
+html[data-app-theme="minimalist"] a,
+html[data-app-theme="minimalist"] label,
+html[data-app-theme="minimalist"] th,
+html[data-app-theme="minimalist"] .nav-sec-btn,
+html[data-app-theme="minimalist"] .nav-cat-card,
+html[data-app-theme="minimalist"] .subtab-btn,
+html[data-app-theme="minimalist"] .btn-save,
+html[data-app-theme="minimalist"] .btn-modal-save,
+html[data-app-theme="minimalist"] .btn-modal-cancel,
+html[data-app-theme="minimalist"] .btn-watchlist-special,
+html[data-app-theme="minimalist"] .btn-today-pill,
+html[data-app-theme="minimalist"] .btn-action-manual,
+html[data-app-theme="minimalist"] .btn-header-icon,
+html[data-app-theme="minimalist"] .home-mini-title,
+html[data-app-theme="minimalist"] .home-clean-title,
+html[data-app-theme="minimalist"] .cat-wide-title,
+html[data-app-theme="minimalist"] .history-title,
+html[data-app-theme="minimalist"] .profile-section-title,
+html[data-app-theme="minimalist"] .profile-stat-label,
+html[data-app-theme="minimalist"] .year-display-txt,
+html[data-app-theme="minimalist"] .theme-title,
+html[data-app-theme="minimalist"] .theme-subtitle,
+html[data-app-theme="minimalist"] .theme-pill-btn,
+html[data-app-theme="minimalist"] .notif-card-title,
+html[data-app-theme="minimalist"] .notif-card-msg,
+html[data-app-theme="minimalist"] .m-card-title,
+html[data-app-theme="minimalist"] .fav-slot-title,
+html[data-app-theme="minimalist"] .highlight-card,
+html[data-app-theme="minimalist"] .subtotal-pill,
+html[data-app-theme="minimalist"] .btn-terminar-badge,
+html[data-app-theme="minimalist"] .btn-terminar-card,
+html[data-app-theme="minimalist"] .btn-read-today-streak,
+html[data-app-theme="minimalist"] .app-theme-card strong,
+html[data-app-theme="minimalist"] .app-theme-card span {
+  text-transform: lowercase !important;
+}
+
+/* 2. Paleta reducida a 2 colores: 1 neutro base, 1 acento único */
+html[data-app-theme="minimalist"] {
+  --accent-warm: var(--accent) !important;
+  --accent-warm-hover: var(--accent-hover) !important;
+  --accent-warm-rgb: var(--accent-rgb) !important;
+  --accent-warm-contrast: var(--accent-contrast) !important;
+  --accent-warm-subtle: var(--accent-subtle) !important;
+  --accent-warm-border: var(--accent-border) !important;
+  --star-active: var(--accent) !important;
+}
+
+/* Modo oscuro minimalista: 1 neutro limpio + estados suaves */
+html[data-app-theme="minimalist"][data-theme$="-dark"],
+html[data-app-theme="minimalist"]:not([data-theme$="-light"]) {
+  --bg: #090a0d !important;
+  --card: #131519 !important;
+  --card-hover: #1c1f25 !important;
+  --header-bg: #07080a !important;
+  --separator-bg: #07080a !important;
+  --border: #23262f !important;
+  --text: #e2e4ea !important;
+  --muted: #737887 !important;
+  --bottom-nav-bg: rgba(11, 12, 14, 0.9) !important;
+  --bottom-nav-border: rgba(255, 255, 255, 0.08) !important;
+  --bottom-nav-shadow: 0 16px 40px rgba(0, 0, 0, 0.6) !important;
+
+  /* Estados desaturados y suaves */
+  --success: #3aa876 !important;
+  --success-hover: #2f8c62 !important;
+  --success-rgb: 58, 168, 118 !important;
+  --success-contrast: #ffffff !important;
+  --success-subtle: rgba(58, 168, 118, 0.12) !important;
+  --success-border: rgba(58, 168, 118, 0.28) !important;
+
+  --danger: #b34a4a !important;
+  --danger-hover: #9c3c3c !important;
+  --danger-rgb: 179, 74, 74 !important;
+  --danger-contrast: #ffffff !important;
+  --danger-subtle: rgba(179, 74, 74, 0.12) !important;
+  --danger-border: rgba(179, 74, 74, 0.28) !important;
+}
+
+/* Modo claro minimalista: 1 neutro suave + estados suaves */
+html[data-app-theme="minimalist"][data-theme$="-light"] {
+  --bg: #eceef1 !important;
+  --card: #f5f6f8 !important;
+  --card-hover: #e6e8eb !important;
+  --header-bg: #dadde2 !important;
+  --separator-bg: #dadde2 !important;
+  --border: #c8cbd2 !important;
+  --text: #14161a !important;
+  --muted: #656976 !important;
+  --bottom-nav-bg: rgba(245, 246, 248, 0.9) !important;
+  --bottom-nav-border: rgba(0, 0, 0, 0.08) !important;
+  --bottom-nav-shadow: 0 12px 30px rgba(0, 0, 0, 0.08) !important;
+
+  /* Estados desaturados y suaves */
+  --success: #2e8b5c !important;
+  --success-hover: #25734c !important;
+  --success-rgb: 46, 139, 92 !important;
+  --success-contrast: #ffffff !important;
+  --success-subtle: rgba(46, 139, 92, 0.12) !important;
+  --success-border: rgba(46, 139, 92, 0.28) !important;
+
+  --danger: #aa3d3d !important;
+  --danger-hover: #923232 !important;
+  --danger-rgb: 170, 61, 61 !important;
+  --danger-contrast: #ffffff !important;
+  --danger-subtle: rgba(170, 61, 61, 0.12) !important;
+  --danger-border: rgba(170, 61, 61, 0.28) !important;
+}
+
+/* Reducción de degradados y sombras llamativas en minimalista */
+html[data-app-theme="minimalist"] .streak-celebration-banner {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: none !important;
+}
+html[data-app-theme="minimalist"] .streak-celebration-banner::before {
+  display: none !important;
+}
+html[data-app-theme="minimalist"] .streak-flame-box {
+  background: var(--accent-subtle) !important;
+  border: 1px solid var(--accent-border) !important;
+  color: var(--accent) !important;
+}
+html[data-app-theme="minimalist"] .streak-badge-pill {
+  background: var(--accent) !important;
+  color: var(--accent-contrast) !important;
+  box-shadow: none !important;
+}
+html[data-app-theme="minimalist"] .badge-racha-header {
+  background: var(--accent-subtle) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent-border) !important;
+}
+html[data-app-theme="minimalist"] .home-hero-card {
+  box-shadow: none !important;
+  border-color: var(--border) !important;
+}
+
+/* 3. Sin emojis más que los estrictamente necesarios */
+html[data-app-theme="minimalist"] .emoji-dyn {
+  display: none !important;
+}
+html[data-app-theme="minimalist"] .mobile-bottom-nav .emoji-dyn,
+html[data-app-theme="minimalist"] .btn-header-icon .btn-icon-glyph,
+html[data-app-theme="minimalist"] .btn-header-icon span,
+html[data-app-theme="minimalist"] #badge-notif-count {
+  display: inline-block !important;
+}
+
+/* 4. Mayor espaciado y respiro entre elementos */
+html[data-app-theme="minimalist"] .container {
+  max-width: 1060px;
+  margin: 28px auto !important;
+  padding: 0 24px !important;
+}
+html[data-app-theme="minimalist"] .home-clean-section,
+html[data-app-theme="minimalist"] .home-hero-card,
+html[data-app-theme="minimalist"] .detail-card,
+html[data-app-theme="minimalist"] .cat-wide-card {
+  margin-bottom: 38px !important;
+  padding: 24px 26px !important;
+}
+html[data-app-theme="minimalist"] .home-clean-section-header {
+  margin-bottom: 18px !important;
+}
+html[data-app-theme="minimalist"] .home-section-divider {
+  margin: 36px 0 !important;
+  opacity: 0.08 !important;
+}
+html[data-app-theme="minimalist"] .home-streaks-grid,
+html[data-app-theme="minimalist"] .favs-grid,
+html[data-app-theme="minimalist"] .profile-grid-highlights,
+html[data-app-theme="minimalist"] .profile-grid-records,
+html[data-app-theme="minimalist"] .profile-grid-fun {
+  gap: 16px !important;
+}
+html[data-app-theme="minimalist"] .subtabs {
+  gap: 10px !important;
+  margin-bottom: 22px !important;
+}
+html[data-app-theme="minimalist"] .nav-sections-row {
+  margin-bottom: 16px !important;
+  gap: 12px !important;
+}
+html[data-app-theme="minimalist"] .nav-categories-row {
+  gap: 10px !important;
+  margin-bottom: 24px !important;
+}
+html[data-app-theme="minimalist"] .modal-box {
+  padding: 28px !important;
+  border-radius: 20px !important;
+}
+html[data-app-theme="minimalist"] .form-group {
+  margin-bottom: 18px !important;
+}
+html[data-app-theme="minimalist"] .modal-actions {
+  margin-top: 26px !important;
+  gap: 14px !important;
+}
+
 </style> </head> <body>
 <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:var(--accent-border); color:var(--accent); background:var(--accent-subtle);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button> <button type="button" class="btn-header-icon" id="btn-notifications" title="Notificaciones" onclick="abrirModalNotificaciones()"><span class="btn-icon-glyph">🔔</span><span id="badge-notif-count" class="notif-badge-pill" style="display:none;">0</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button>
@@ -3404,9 +3632,49 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 <div class="size-line-node" data-val="62%" data-idx="1" onclick="event.stopPropagation(); seleccionarSizeVisual('62%')"></div>
 <div class="size-line-node" data-val="75%" data-idx="2" onclick="event.stopPropagation(); seleccionarSizeVisual('75%')"></div>
 <div class="size-line-node" data-val="88%" data-idx="3" onclick="event.stopPropagation(); seleccionarSizeVisual('88%')"></div>
-<div class="size-line-node" data-val="100%" data-idx="4" onclick="event.stopPropagation(); seleccionarSizeVisual('100%')"></div> </div> <div class="size-line-labels" id="cfg-size-labels"> <button type="button" class="size-line-lbl-btn" data-val="50%" onclick="seleccionarSizeVisual('50%')"> <span style="font-size:8px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="62%" onclick="seleccionarSizeVisual('62%')"> <span style="font-size:9.5px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="75%" onclick="seleccionarSizeVisual('75%')"> <span style="font-size:11px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="88%" onclick="seleccionarSizeVisual('88%')"> <span style="font-size:13px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="100%" onclick="seleccionarSizeVisual('100%')"> <span style="font-size:15px; font-weight:800;">Aa</span> </button> </div> </div> </div> <div class="form-group">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-    <label data-i18n="cfg_theme_label" style="font-weight:700; margin:0;">Tema visual:</label>
+<div class="size-line-node" data-val="100%" data-idx="4" onclick="event.stopPropagation(); seleccionarSizeVisual('100%')"></div> </div> <div class="size-line-labels" id="cfg-size-labels"> <button type="button" class="size-line-lbl-btn" data-val="50%" onclick="seleccionarSizeVisual('50%')"> <span style="font-size:8px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="62%" onclick="seleccionarSizeVisual('62%')"> <span style="font-size:9.5px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="75%" onclick="seleccionarSizeVisual('75%')"> <span style="font-size:11px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="88%" onclick="seleccionarSizeVisual('88%')"> <span style="font-size:13px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="100%" onclick="seleccionarSizeVisual('100%')"> <span style="font-size:15px; font-weight:800;">Aa</span> </button> </div> </div> </div> <!-- SELECCIÓN DE THEMES (ESTILOS GLOBALES DE EXPERIENCIA) -->
+  <div class="form-group" style="margin-bottom:18px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <label data-i18n="cfg_app_theme_label" style="font-weight:700; margin:0; font-size:0.92rem;">Theme:</label>
+    </div>
+    <input type="hidden" id="cfg-app-theme" value="default">
+    <div class="cfg-visual-grid" id="cfg-app-theme-cards" style="grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:10px;">
+      <!-- PREDETERMINADO -->
+      <div class="cfg-option-card app-theme-card active" data-apptheme="default" onclick="seleccionarAppThemeVisual('default')" style="padding:12px 14px; text-align:left; cursor:pointer;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span style="font-size:1.25rem; line-height:1;">✨</span>
+          <strong style="font-size:0.88rem; color:var(--text);" data-i18n="app_theme_default_title">Predeterminado</strong>
+        </div>
+        <span style="font-size:0.73rem; color:var(--muted); line-height:1.35; display:block;" data-i18n="app_theme_default_desc">Estilo original de Mediary, rico en detalles y expresividad.</span>
+      </div>
+
+      <!-- MINIMALISTA -->
+      <div class="cfg-option-card app-theme-card" data-apptheme="minimalist" onclick="seleccionarAppThemeVisual('minimalist')" style="padding:12px 14px; text-align:left; cursor:pointer;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+          <span style="font-size:1.25rem; line-height:1;">◽</span>
+          <strong style="font-size:0.88rem; color:var(--text);" data-i18n="app_theme_minimalist_title">Minimalista</strong>
+        </div>
+        <span style="font-size:0.73rem; color:var(--muted); line-height:1.35; display:block;" data-i18n="app_theme_minimalist_desc">dm sans, minúsculas, 2 colores, respiro amplio y sin distracciones.</span>
+      </div>
+
+      <!-- JUGUETÓN -->
+      <div class="cfg-option-card app-theme-card" data-apptheme="playful" onclick="seleccionarAppThemeVisual('playful')" style="padding:12px 14px; text-align:left; cursor:pointer; opacity:0.7;" title="Próximamente">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:4px; margin-bottom:4px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:1.25rem; line-height:1;">🎨</span>
+            <strong style="font-size:0.88rem; color:var(--text);" data-i18n="app_theme_playful_title">Juguetón</strong>
+          </div>
+          <span style="font-size:0.62rem; font-weight:800; background:rgba(245,158,11,0.18); color:var(--accent-warm); padding:2px 6px; border-radius:6px; letter-spacing:0.04em;" data-i18n="app_theme_coming_soon">Pronto</span>
+        </div>
+        <span style="font-size:0.73rem; color:var(--muted); line-height:1.35; display:block;" data-i18n="app_theme_playful_desc">Diseño lúdico y vibrante (en stand by).</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SELECCIÓN DE COLORES Y MODO DE APARIENCIA -->
+  <div class="form-group">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+      <label data-i18n="cfg_colors_label" style="font-weight:700; margin:0; font-size:0.92rem;">Colores:</label>
     <span id="cfg-theme-system-detected" style="font-size:0.75rem; color:var(--accent); font-weight:600;"></span>
   </div>
 
@@ -9453,6 +9721,15 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cfg_font_label": "Tipografía de la App:",
     "cfg_size_label": "Tamaño general de letra:",
     "cfg_theme_label": "Tema de color (4 temas con versión Claro y Oscuro):",
+    "cfg_app_theme_label": "Theme de la App:",
+    "cfg_colors_label": "Colores:",
+    "app_theme_default_title": "Predeterminado",
+    "app_theme_default_desc": "Estilo original de Mediary, rico en detalles y expresividad.",
+    "app_theme_minimalist_title": "Minimalista",
+    "app_theme_minimalist_desc": "dm sans, minúsculas, 2 colores, respiro amplio y sin distracciones.",
+    "app_theme_playful_title": "Juguetón",
+    "app_theme_playful_desc": "Diseño lúdico y vibrante (en stand by).",
+    "app_theme_coming_soon": "Pronto",
     "cfg_emojis_label": "Mostrar emojis en la interfaz",
     "btn_defaults": "Predeterminados",
     "btn_done": "Listo",
@@ -9879,6 +10156,15 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cfg_font_label": "App Typography:",
     "cfg_size_label": "Font Scale:",
     "cfg_theme_label": "Color Theme (4 themes with Light & Dark versions):",
+    "cfg_app_theme_label": "App Theme:",
+    "cfg_colors_label": "Colors:",
+    "app_theme_default_title": "Default",
+    "app_theme_default_desc": "Original Mediary style, rich in detail and visual expression.",
+    "app_theme_minimalist_title": "Minimalist",
+    "app_theme_minimalist_desc": "dm sans, lowercase, 2 colors, generous breathing room and zero clutter.",
+    "app_theme_playful_title": "Playful",
+    "app_theme_playful_desc": "Playful and vibrant design (in stand by).",
+    "app_theme_coming_soon": "Soon",
     "cfg_emojis_label": "Show interface emojis",
     "btn_defaults": "Defaults",
     "btn_done": "Done",
@@ -10198,7 +10484,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "btn_la_termine": "I finished it!",
     "lbl_en_progreso_inicio": "Started:"
   }
-}; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", uiStyle: "modern", showEmojis: true, lang: "es", categoriasOrden: ['Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'], categoriasOcultas: []
+}; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", appTheme: "default", uiStyle: "modern", showEmojis: true, lang: "es", categoriasOrden: ['Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'], categoriasOcultas: []
 }; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary ✨', avatar: '🦊', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
 }; const AVATARES_PRESET = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐯', '🐨', '🐸', '🦉', '🐻', '🐵', '🐰']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
 const WATCHLIST_ESTRUCTURA = [
@@ -10296,7 +10582,7 @@ function obtenerRegistrosFiltradosPorAnio() {
   return estado.registros.filter(r => extraerAnioDeRegistro(r) === estado.anioActivo);
 }
 
-function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {} userPrefs.uiStyle = 'modern'; if (userPrefs.fontSize && !['50%', '62%', '75%', '88%', '100%'].includes(userPrefs.fontSize)) userPrefs.fontSize = '100%';
+function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {} userPrefs.uiStyle = 'modern'; if (!userPrefs.appTheme) userPrefs.appTheme = 'default'; if (userPrefs.fontSize && !['50%', '62%', '75%', '88%', '100%'].includes(userPrefs.fontSize)) userPrefs.fontSize = '100%';
 if (!userPrefs.notificaciones || typeof userPrefs.notificaciones !== 'object') { userPrefs.notificaciones = { habilitadas: true, racha21: true, likesAmigos: true, novedadesAmigos: true }; }
 try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) estado.anioActivo = anioG; } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
@@ -11167,17 +11453,20 @@ function aplicarEstilosGlobales() {
   const temaEfectivo = obtenerTemaEfectivo();
   userPrefs.theme = temaEfectivo;
   
+  const appTheme = userPrefs.appTheme || 'default';
+  r.setAttribute('data-app-theme', appTheme);
   r.setAttribute('data-theme', temaEfectivo);
   r.setAttribute('data-ui-style', 'modern');
   r.setAttribute('data-show-emojis', userPrefs.showEmojis ? 'true' : 'false');
   r.style.colorScheme = temaEfectivo.endsWith('-light') ? 'light' : 'dark';
   actualizarMetaThemeColor();
 
+  const isMinimalist = (appTheme === 'minimalist');
   document.querySelectorAll('.emoji-dyn').forEach(el => {
     if (el.closest('.mobile-bottom-nav') || el.closest('.btn-header-icon')) {
       el.style.display = '';
     } else {
-      el.style.display = userPrefs.showEmojis ? 'inline' : 'none';
+      el.style.display = (isMinimalist || !userPrefs.showEmojis) ? 'none' : 'inline';
     }
   });
 }
@@ -12726,6 +13015,12 @@ function actualizarTarjetasVisualesConfig() {
   migrarTemaLegadoSiEsNecesario();
   const l = userPrefs.lang || 'es';
 
+  // Themes de la App (Predeterminado, Minimalista, Juguetón)
+  const curAppTheme = userPrefs.appTheme || 'default';
+  document.querySelectorAll('#cfg-app-theme-cards .app-theme-card').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.apptheme === curAppTheme);
+  });
+
   // Idioma
   const curLang = userPrefs.lang || 'es';
   document.querySelectorAll('#cfg-lang-cards .cfg-option-card').forEach(btn => {
@@ -12819,10 +13114,24 @@ function seleccionarIdiomaVisual(lang) {
   cambiarIdiomaEnVivo();
 }
 function seleccionarUiStyleVisual(style) {
-  userPrefs.uiStyle = 'modern';
+  userPrefs.uiStyle = 'modern'; if (!userPrefs.appTheme) userPrefs.appTheme = 'default';
 }
 function seleccionarFontVisual(val) { document.getElementById('cfg-font').value = val; try { localStorage.setItem('mediary_user_custom_font', 'true'); } catch (e) {} aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
 function seleccionarSizeVisual(val) { document.getElementById('cfg-font-size').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
+
+function seleccionarAppThemeVisual(themeKey) {
+  if (themeKey === 'playful') {
+    const l = userPrefs && userPrefs.lang ? userPrefs.lang : 'es';
+    mostrarToastPersonalizado(l === 'en' ? 'Playful theme coming soon! (In stand-by) 🎨' : '¡Theme Juguetón próximamente! (En stand by) 🎨');
+    return;
+  }
+  userPrefs.appTheme = themeKey;
+  const hidden = document.getElementById('cfg-app-theme');
+  if (hidden) hidden.value = themeKey;
+  aplicarConfiguracionEnVivo();
+  actualizarTarjetasVisualesConfig();
+  guardarPreferenciasLocales();
+}
 
 function seleccionarThemeFamily(family) {
   migrarTemaLegadoSiEsNecesario();
@@ -12867,6 +13176,7 @@ function abrirModalConfiguracion() {
       if (document.getElementById('cfg-font')) document.getElementById('cfg-font').value = userPrefs.font || "'Lexend', sans-serif";
       if (document.getElementById('cfg-font-size')) document.getElementById('cfg-font-size').value = userPrefs.fontSize || '100%';
       if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = userPrefs.themeFamily || 'slate';
+      if (document.getElementById('cfg-app-theme')) document.getElementById('cfg-app-theme').value = userPrefs.appTheme || 'default';
       if (document.getElementById('cfg-emojis')) document.getElementById('cfg-emojis').checked = !!userPrefs.showEmojis;
     }
     const cvInp = document.getElementById('cfg-comicvine-key');
@@ -12931,7 +13241,7 @@ function guardarYCerrarConfiguracion() {
     if (document.getElementById('cfg-lang')) {
       userPrefs.lang = document.getElementById('cfg-lang').value;
     }
-    userPrefs.uiStyle = 'modern';
+    userPrefs.uiStyle = 'modern'; if (!userPrefs.appTheme) userPrefs.appTheme = 'default';
     guardarPreferenciasLocales();
     const cvInp = document.getElementById('cfg-comicvine-key');
     if (cvInp) {
@@ -12960,7 +13270,7 @@ function guardarYCerrarConfiguracion() {
     console.error('Error al guardar configuracion:', err);
   }
 }
-function restablecerConfiguracionPorDefecto() { try { localStorage.removeItem('mediary_user_custom_font'); } catch (e) {} userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "default", uiStyle: "modern", showEmojis: true, lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
+function restablecerConfiguracionPorDefecto() { try { localStorage.removeItem('mediary_user_custom_font'); } catch (e) {} userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "default", appTheme: "default", uiStyle: "modern", showEmojis: true, lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
 // --- IMPORTAR Y EXPORTAR ARCHIVOS DE TEXTO ---
 function abrirModalImportarExportar() { document.getElementById('modal-configuracion').style.display = 'none'; document.getElementById('input-file-import').value = ''; document.getElementById('textarea-import-raw').value = ''; estado.registrosImportarPendientes = [];
 document.getElementById('import-preview-box').innerHTML = 'Sube un archivo .txt o pega texto arriba para previsualizar los registros detectados.'; document.getElementById('modal-importar-exportar').style.display = 'flex'; }
