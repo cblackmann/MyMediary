@@ -1066,6 +1066,20 @@ html[data-show-emojis="false"] .emoji-dyn { display: none !important; }
 .home-indice-name{font-size:0.72rem;font-weight:700;color:var(--text);line-height:1.1;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
 .home-indice-count{font-size:0.65rem;font-weight:800;color:var(--accent);line-height:1;background:rgba(56,189,248,0.12);padding:1px 6px;border-radius:8px;}
 
+@media (min-width: 769px) {
+  .home-en-progreso-carousel {
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 14px;
+  }
+  .home-indice-carousel {
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+}
+
 /* Clases de compatibilidad */
 .home-mini-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:0;max-width:100%;width:100%;box-sizing:border-box;}
 .home-mini-section-header{display:flex;justify-content:center;align-items:center;margin-bottom:14px;text-align:center;}
@@ -11165,9 +11179,10 @@ function renderizarRachasActualesInicio() {
           <span class="home-streak-unit">${rPeliculas.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
         <div class="home-streak-card-footer">
-          <span class="home-streak-hint ${rPeliculas.esActivaHoy ? 'hint-done' : ''}">
-            ${rPeliculas.esActivaHoy ? (l === 'en' ? '✓ Movie watched today' : '✓ Película vista hoy') : (rPeliculas.rachaActual > 0 ? (l === 'en' ? 'Log 1 movie today' : 'Registra 1 película hoy') : (l === 'en' ? 'Auto: log a movie' : 'Automática al registrar película'))}
-          </span>
+          <button type="button" class="btn-read-today-streak ${rPeliculas.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); ejecutarAgregadoRapido('Peliculas', 'Películas')" title="${rPeliculas.esActivaHoy ? (l === 'en' ? 'Movie logged today! Click to log another' : '¡Película vista hoy! Toca para registrar otra') : (l === 'en' ? 'Log a movie to continue streak' : 'Registra una película para continuar tu racha')}">
+            <span class="emoji-dyn">${rPeliculas.esActivaHoy ? '✓' : '🎬'}</span>
+            <span>${rPeliculas.esActivaHoy ? (l === 'en' ? 'Movie logged' : 'Ya vi hoy') : (l === 'en' ? 'Log movie' : 'Ya vi hoy')}</span>
+          </button>
         </div>
       </div>
 
@@ -11188,9 +11203,10 @@ function renderizarRachasActualesInicio() {
           <span class="home-streak-unit">${rMusica.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
         <div class="home-streak-card-footer">
-          <span class="home-streak-hint ${rMusica.esActivaHoy ? 'hint-done' : ''}">
-            ${rMusica.esActivaHoy ? (l === 'en' ? '✓ Album logged today' : '✓ Disco escuchado hoy') : (rMusica.rachaActual > 0 ? (l === 'en' ? 'Log 1 album today' : 'Registra 1 disco hoy') : (l === 'en' ? 'Auto: log an album' : 'Automática al registrar disco'))}
-          </span>
+          <button type="button" class="btn-read-today-streak ${rMusica.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); ejecutarAgregadoRapido('Musica', 'Discos')" title="${rMusica.esActivaHoy ? (l === 'en' ? 'Album logged today! Click to log another' : '¡Disco escuchado hoy! Toca para registrar otro') : (l === 'en' ? 'Log an album to continue streak' : 'Registra un disco para continuar tu racha')}">
+            <span class="emoji-dyn">${rMusica.esActivaHoy ? '✓' : '💿'}</span>
+            <span>${rMusica.esActivaHoy ? (l === 'en' ? 'Album logged' : 'Ya escuché hoy') : (l === 'en' ? 'Log album' : 'Ya escuché hoy')}</span>
+          </button>
         </div>
       </div>
 
