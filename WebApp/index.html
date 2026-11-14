@@ -2558,66 +2558,95 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 
 /* ========================================================
    THEME MINIMALISTA (data-app-theme="minimalist")
-   - Tipografía DM Sans y todo en minúsculas en la interfaz
-   - Paleta reducida a 2 colores (1 neutro base, 1 acento de tema)
-   - Estados desaturados y suaves (verde éxito y rojo alerta atenuados)
-   - Sin emojis no esenciales (solo menú flotante, header y controles clave)
-   - Mayor respiro y espaciado entre secciones y elementos
+   - Tipografía DM Sans
+   - Títulos claros, destacados y con fuerte jerarquía visual
+   - Interfaz y controles en minúsculas
+   - Contenido del usuario legible y respetado
+   - Paleta de 2 colores: 1 neutro base + 1 acento de tema
+   - Estados suaves y desaturados (éxito y alertas atenuadas)
+   - Sin emojis decorativos innecesarios (se preservan menú y cabecera)
+   - Espaciado armónico, equilibrado y sin desbordes
    ======================================================== */
+
+/* Fuente global DM Sans */
 html[data-app-theme="minimalist"],
 html[data-app-theme="minimalist"] body,
 html[data-app-theme="minimalist"] button,
 html[data-app-theme="minimalist"] input,
 html[data-app-theme="minimalist"] select,
 html[data-app-theme="minimalist"] textarea {
-  font-family: 'DM Sans', sans-serif !important;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
 }
 
-/* 1. Minúsculas en toda la interfaz */
-html[data-app-theme="minimalist"] h1,
-html[data-app-theme="minimalist"] h2,
-html[data-app-theme="minimalist"] h3,
-html[data-app-theme="minimalist"] h4,
-html[data-app-theme="minimalist"] h5,
-html[data-app-theme="minimalist"] button,
-html[data-app-theme="minimalist"] a,
-html[data-app-theme="minimalist"] label,
-html[data-app-theme="minimalist"] th,
+/* 1. TÍTULOS PROMINENTES, CLAROS Y CON FUERTE JERARQUÍA */
+html[data-app-theme="minimalist"] .home-greeting-title,
+html[data-app-theme="minimalist"] .home-clean-title,
+html[data-app-theme="minimalist"] .home-mini-title,
+html[data-app-theme="minimalist"] .cat-wide-title,
+html[data-app-theme="minimalist"] .history-title,
+html[data-app-theme="minimalist"] .all-watchlists-title,
+html[data-app-theme="minimalist"] .discover-header-bar h2,
+html[data-app-theme="minimalist"] .detail-card h2,
+html[data-app-theme="minimalist"] .modal-box h3 {
+  font-size: 1.45rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.25 !important;
+  color: var(--text) !important;
+  text-transform: lowercase !important;
+  margin-bottom: 6px !important;
+}
+
+@media (max-width: 640px) {
+  html[data-app-theme="minimalist"] .home-greeting-title,
+  html[data-app-theme="minimalist"] .home-clean-title,
+  html[data-app-theme="minimalist"] .home-mini-title,
+  html[data-app-theme="minimalist"] .cat-wide-title,
+  html[data-app-theme="minimalist"] .history-title,
+  html[data-app-theme="minimalist"] .all-watchlists-title,
+  html[data-app-theme="minimalist"] .discover-header-bar h2 {
+    font-size: 1.3rem !important;
+  }
+}
+
+/* 2. MINÚSCULAS EN CONTROLES Y ELEMENTOS DE LA INTERFAZ */
 html[data-app-theme="minimalist"] .nav-sec-btn,
 html[data-app-theme="minimalist"] .nav-cat-card,
 html[data-app-theme="minimalist"] .subtab-btn,
 html[data-app-theme="minimalist"] .btn-save,
 html[data-app-theme="minimalist"] .btn-modal-save,
 html[data-app-theme="minimalist"] .btn-modal-cancel,
+html[data-app-theme="minimalist"] .btn-modal-danger,
 html[data-app-theme="minimalist"] .btn-watchlist-special,
 html[data-app-theme="minimalist"] .btn-today-pill,
 html[data-app-theme="minimalist"] .btn-action-manual,
-html[data-app-theme="minimalist"] .btn-header-icon,
-html[data-app-theme="minimalist"] .home-mini-title,
-html[data-app-theme="minimalist"] .home-clean-title,
-html[data-app-theme="minimalist"] .cat-wide-title,
-html[data-app-theme="minimalist"] .history-title,
+html[data-app-theme="minimalist"] .btn-hero-quick-add,
+html[data-app-theme="minimalist"] .btn-toggle-filter,
+html[data-app-theme="minimalist"] .btn-read-today-streak,
+html[data-app-theme="minimalist"] .btn-terminar-badge,
+html[data-app-theme="minimalist"] .btn-terminar-card,
+html[data-app-theme="minimalist"] .btn-change-cover,
+html[data-app-theme="minimalist"] .btn-edit-profile,
+html[data-app-theme="minimalist"] .btn-choose-fav,
 html[data-app-theme="minimalist"] .profile-section-title,
 html[data-app-theme="minimalist"] .profile-stat-label,
 html[data-app-theme="minimalist"] .year-display-txt,
+html[data-app-theme="minimalist"] .badge-racha-header,
+html[data-app-theme="minimalist"] .streak-badge-pill,
+html[data-app-theme="minimalist"] .subtotal-pill,
+html[data-app-theme="minimalist"] .nav-cats-label,
 html[data-app-theme="minimalist"] .theme-title,
 html[data-app-theme="minimalist"] .theme-subtitle,
 html[data-app-theme="minimalist"] .theme-pill-btn,
-html[data-app-theme="minimalist"] .notif-card-title,
-html[data-app-theme="minimalist"] .notif-card-msg,
-html[data-app-theme="minimalist"] .m-card-title,
-html[data-app-theme="minimalist"] .fav-slot-title,
-html[data-app-theme="minimalist"] .highlight-card,
-html[data-app-theme="minimalist"] .subtotal-pill,
-html[data-app-theme="minimalist"] .btn-terminar-badge,
-html[data-app-theme="minimalist"] .btn-terminar-card,
-html[data-app-theme="minimalist"] .btn-read-today-streak,
 html[data-app-theme="minimalist"] .app-theme-card strong,
-html[data-app-theme="minimalist"] .app-theme-card span {
+html[data-app-theme="minimalist"] .app-theme-card span,
+html[data-app-theme="minimalist"] .table-container th,
+html[data-app-theme="minimalist"] .history-table th,
+html[data-app-theme="minimalist"] .form-group label {
   text-transform: lowercase !important;
 }
 
-/* 2. Paleta reducida a 2 colores: 1 neutro base, 1 acento único */
+/* 3. PALETA DE 2 COLORES: 1 NEUTRO BASE + 1 ACENTO ÚNICO */
 html[data-app-theme="minimalist"] {
   --accent-warm: var(--accent) !important;
   --accent-warm-hover: var(--accent-hover) !important;
@@ -2628,68 +2657,68 @@ html[data-app-theme="minimalist"] {
   --star-active: var(--accent) !important;
 }
 
-/* Modo oscuro minimalista: 1 neutro limpio + estados suaves */
+/* Modo oscuro minimalista: base neutra elegante y desaturada */
 html[data-app-theme="minimalist"][data-theme$="-dark"],
 html[data-app-theme="minimalist"]:not([data-theme$="-light"]) {
-  --bg: #090a0d !important;
-  --card: #131519 !important;
-  --card-hover: #1c1f25 !important;
-  --header-bg: #07080a !important;
-  --separator-bg: #07080a !important;
-  --border: #23262f !important;
-  --text: #e2e4ea !important;
-  --muted: #737887 !important;
-  --bottom-nav-bg: rgba(11, 12, 14, 0.9) !important;
-  --bottom-nav-border: rgba(255, 255, 255, 0.08) !important;
-  --bottom-nav-shadow: 0 16px 40px rgba(0, 0, 0, 0.6) !important;
+  --bg: #0c0e12 !important;
+  --card: #15181e !important;
+  --card-hover: #1e222b !important;
+  --header-bg: #090a0d !important;
+  --separator-bg: #090a0d !important;
+  --border: #252933 !important;
+  --text: #f0f2f5 !important;
+  --muted: #848997 !important;
+  --bottom-nav-bg: rgba(12, 14, 18, 0.92) !important;
+  --bottom-nav-border: rgba(255, 255, 255, 0.09) !important;
+  --bottom-nav-shadow: 0 16px 40px rgba(0, 0, 0, 0.65) !important;
 
-  /* Estados desaturados y suaves */
+  /* Estados desaturados y suaves en oscuro */
   --success: #3aa876 !important;
-  --success-hover: #2f8c62 !important;
+  --success-hover: #329267 !important;
   --success-rgb: 58, 168, 118 !important;
   --success-contrast: #ffffff !important;
   --success-subtle: rgba(58, 168, 118, 0.12) !important;
   --success-border: rgba(58, 168, 118, 0.28) !important;
 
-  --danger: #b34a4a !important;
+  --danger: #b54a4a !important;
   --danger-hover: #9c3c3c !important;
-  --danger-rgb: 179, 74, 74 !important;
+  --danger-rgb: 181, 74, 74 !important;
   --danger-contrast: #ffffff !important;
-  --danger-subtle: rgba(179, 74, 74, 0.12) !important;
-  --danger-border: rgba(179, 74, 74, 0.28) !important;
+  --danger-subtle: rgba(181, 74, 74, 0.12) !important;
+  --danger-border: rgba(181, 74, 74, 0.28) !important;
 }
 
-/* Modo claro minimalista: 1 neutro suave + estados suaves */
+/* Modo claro minimalista: base neutra descansada sin blanco puro */
 html[data-app-theme="minimalist"][data-theme$="-light"] {
-  --bg: #eceef1 !important;
-  --card: #f5f6f8 !important;
-  --card-hover: #e6e8eb !important;
+  --bg: #eaecee !important;
+  --card: #f4f6f8 !important;
+  --card-hover: #e8eaed !important;
   --header-bg: #dadde2 !important;
   --separator-bg: #dadde2 !important;
   --border: #c8cbd2 !important;
   --text: #14161a !important;
-  --muted: #656976 !important;
-  --bottom-nav-bg: rgba(245, 246, 248, 0.9) !important;
+  --muted: #646875 !important;
+  --bottom-nav-bg: rgba(244, 246, 248, 0.92) !important;
   --bottom-nav-border: rgba(0, 0, 0, 0.08) !important;
-  --bottom-nav-shadow: 0 12px 30px rgba(0, 0, 0, 0.08) !important;
+  --bottom-nav-shadow: 0 12px 30px rgba(0, 0, 0, 0.07) !important;
 
-  /* Estados desaturados y suaves */
+  /* Estados desaturados y suaves en claro */
   --success: #2e8b5c !important;
-  --success-hover: #25734c !important;
+  --success-hover: #26734c !important;
   --success-rgb: 46, 139, 92 !important;
   --success-contrast: #ffffff !important;
   --success-subtle: rgba(46, 139, 92, 0.12) !important;
   --success-border: rgba(46, 139, 92, 0.28) !important;
 
   --danger: #aa3d3d !important;
-  --danger-hover: #923232 !important;
+  --danger-hover: #913131 !important;
   --danger-rgb: 170, 61, 61 !important;
   --danger-contrast: #ffffff !important;
   --danger-subtle: rgba(170, 61, 61, 0.12) !important;
   --danger-border: rgba(170, 61, 61, 0.28) !important;
 }
 
-/* Reducción de degradados y sombras llamativas en minimalista */
+/* Sobriedad visual: eliminar degradados o destellos fluorescentes */
 html[data-app-theme="minimalist"] .streak-celebration-banner {
   background: var(--card) !important;
   border: 1px solid var(--border) !important;
@@ -2718,7 +2747,7 @@ html[data-app-theme="minimalist"] .home-hero-card {
   border-color: var(--border) !important;
 }
 
-/* 3. Sin emojis más que los estrictamente necesarios */
+/* 4. SIN EMOJIS NO ESENCIALES (se conservan menú móvil inferior y cabecera) */
 html[data-app-theme="minimalist"] .emoji-dyn {
   display: none !important;
 }
@@ -2729,55 +2758,35 @@ html[data-app-theme="minimalist"] #badge-notif-count {
   display: inline-block !important;
 }
 
-/* 4. Mayor espaciado y respiro entre elementos */
+/* 5. ESPACIADO EQUILIBRADO Y SIN DESBORDES (respetando los anchos del contenedor) */
 html[data-app-theme="minimalist"] .container {
   max-width: 1060px;
-  margin: 28px auto !important;
-  padding: 0 24px !important;
+  margin: 18px auto !important;
+  padding: 0 16px !important;
+  box-sizing: border-box !important;
 }
 html[data-app-theme="minimalist"] .home-clean-section,
-html[data-app-theme="minimalist"] .home-hero-card,
-html[data-app-theme="minimalist"] .detail-card,
 html[data-app-theme="minimalist"] .cat-wide-card {
-  margin-bottom: 38px !important;
-  padding: 24px 26px !important;
-}
-html[data-app-theme="minimalist"] .home-clean-section-header {
-  margin-bottom: 18px !important;
+  margin-bottom: 26px !important;
 }
 html[data-app-theme="minimalist"] .home-section-divider {
-  margin: 36px 0 !important;
-  opacity: 0.08 !important;
+  margin: 22px 0 !important;
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  opacity: 0.45 !important;
 }
-html[data-app-theme="minimalist"] .home-streaks-grid,
-html[data-app-theme="minimalist"] .favs-grid,
-html[data-app-theme="minimalist"] .profile-grid-highlights,
-html[data-app-theme="minimalist"] .profile-grid-records,
-html[data-app-theme="minimalist"] .profile-grid-fun {
-  gap: 16px !important;
+html[data-app-theme="minimalist"] .home-clean-section-header {
+  margin-bottom: 12px !important;
 }
 html[data-app-theme="minimalist"] .subtabs {
-  gap: 10px !important;
-  margin-bottom: 22px !important;
-}
-html[data-app-theme="minimalist"] .nav-sections-row {
-  margin-bottom: 16px !important;
-  gap: 12px !important;
-}
-html[data-app-theme="minimalist"] .nav-categories-row {
-  gap: 10px !important;
-  margin-bottom: 24px !important;
-}
-html[data-app-theme="minimalist"] .modal-box {
-  padding: 28px !important;
-  border-radius: 20px !important;
-}
-html[data-app-theme="minimalist"] .form-group {
+  gap: 8px !important;
   margin-bottom: 18px !important;
 }
-html[data-app-theme="minimalist"] .modal-actions {
-  margin-top: 26px !important;
-  gap: 14px !important;
+html[data-app-theme="minimalist"] .nav-sections-row {
+  margin-bottom: 14px !important;
+}
+html[data-app-theme="minimalist"] .nav-categories-row {
+  margin-bottom: 18px !important;
 }
 
 </style> </head> <body>
