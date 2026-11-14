@@ -231,6 +231,19 @@ img{-webkit-touch-callout:none !important;-webkit-user-select:none !important;us
 body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px}header{background:var(--header-bg);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.header-brand, .header-actions{display:flex;align-items:center;gap:16px}.header-actions{gap:8px}.logo{font-size:1.25rem;font-weight:700;color:var(--accent);cursor:pointer;transition:var(--tr)}
 .logo:hover{filter:drop-shadow(0 0 8px rgba(56,189,248,.6))}.year-display{font-family:'Cinzel',serif;font-size:1.55rem;font-weight:700;letter-spacing:0.1em;background:linear-gradient(135deg,#f8fafc 0%,var(--accent) 65%,var(--muted) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;user-select:none;line-height:1;filter:drop-shadow(0 0 10px rgba(56,189,248,0.3))}
 .btn-header-icon{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.35);color:var(--accent);border-radius:50%;width:38px;height:38px;padding:0;margin:0;display:inline-grid;place-items:center;cursor:pointer;font-size:1.12rem;line-height:1;transition:var(--tr);outline:none;overflow:hidden}.btn-header-icon .btn-icon-glyph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;line-height:1;text-align:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;margin:0;padding:0}.btn-header-icon:hover{background:var(--accent);color:#0f172a;transform:translateY(-1px);box-shadow:0 0 14px rgba(56,189,248,0.4)}.btn-refresh.spinning{animation:spinRefresh 0.8s linear infinite}
+#btn-notifications{position:relative;overflow:visible !important;}
+.notif-badge-pill{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#ffffff;font-size:0.62rem;font-weight:800;min-width:17px;height:17px;padding:0 4px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--header-bg, var(--bg));box-shadow:0 2px 6px rgba(0,0,0,0.35);pointer-events:none;z-index:2;line-height:1;}
+.notif-card-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:12px;transition:all 0.16s ease;cursor:pointer;position:relative;text-align:left;width:100%;box-sizing:border-box;}
+.notif-card-item:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,0.12);}
+.notif-card-item.unread{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.35);}
+.notif-card-icon{width:36px;height:36px;border-radius:10px;background:rgba(56,189,248,0.12);display:inline-flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.notif-card-item.unread .notif-card-icon{background:linear-gradient(135deg,rgba(56,189,248,0.25),rgba(129,140,248,0.25));border:1px solid rgba(56,189,248,0.4);}
+.notif-card-content{flex:1;min-width:0;}
+.notif-card-header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:3px;}
+.notif-card-title{font-size:0.86rem;font-weight:700;color:var(--text);line-height:1.2;}
+.notif-card-time{font-size:0.7rem;color:var(--muted);white-space:nowrap;}
+.notif-card-msg{font-size:0.78rem;color:var(--muted);line-height:1.35;margin:0;}
+.notif-unread-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;margin-left:4px;}
 @keyframes spinRefresh{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}/* NAVEGACIÓN WEB EN DOS FILAS DIFERENCIADAS (SECCIONES VS CATEGORÍAS) */ .web-nav-wrapper{background:var(--header-bg);border-bottom:1px solid var(--border);display:flex;flex-direction:column}.nav-sections-row{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-bottom:1px solid rgba(51,65,85,0.45);background:var(--header-bg);gap:12px;flex-wrap:wrap}
 .nav-sections-group{display:flex;align-items:center;gap:8px;overflow-x:auto}.nav-sec-btn{background:rgba(30,41,59,0.6);border:1px solid var(--border);color:var(--muted);padding:7px 16px;border-radius:20px;font-weight:600;cursor:pointer;white-space:nowrap;transition:var(--tr);font-size:.86rem;display:inline-flex;align-items:center;gap:6px;line-height:1.2}
 .nav-sec-btn:hover{color:var(--text);border-color:rgba(56,189,248,.6);background:rgba(56,189,248,.08);transform:translateY(-1px)}.nav-sec-btn.active{background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:700;box-shadow:0 0 14px rgba(56,189,248,.4)}.nav-sec-btn.nav-sec-wl{border-color:rgba(245,158,11,0.45);color:#fcd34d;background:rgba(245,158,11,0.08)}
@@ -2252,7 +2265,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
   }
 }
 </style> </head> <body>
-<header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
+<header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button> <button type="button" class="btn-header-icon" id="btn-notifications" title="Notificaciones" onclick="abrirModalNotificaciones()"><span class="btn-icon-glyph">🔔</span><span id="badge-notif-count" class="notif-badge-pill" style="display:none;">0</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button>
 </div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio">
       <!-- 1. SALUDO INICIAL -->
@@ -3223,9 +3236,137 @@ html[data-ui-style="modern"] .btn-modal-cancel {
   </div>
 </div>
 <div class="form-group"> <div class="switch-wrap"> <span class="switch-label" data-i18n="cfg_emojis_label">Mostrar emojis en la interfaz</span>
-<label class="switch-toggle"> <input type="checkbox" id="cfg-emojis" checked onchange="aplicarConfiguracionEnVivo()"> <span class="switch-slider"></span> </label> </div> </div> <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;"> <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;"> <div style="display:flex; align-items:center; gap:8px;"> <span>☁️</span> <span data-i18n="cfg_account_title">Cuenta y Sincronización Supabase Cloud</span> </div> <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;">✓ Supabase Cloud Activo</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;" id="cfg-account-status" data-i18n="cfg_account_hint">Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.</p> <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;"> <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span> </button> <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:rgba(16,185,129,0.45); color:#34d399; background:rgba(16,185,129,0.1); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets"> <span data-i18n="cfg_btn_migrar">☁️ Migrar mis datos de Google Sheets a Supabase</span> </button> </div>
+<label class="switch-toggle"> <input type="checkbox" id="cfg-emojis" checked onchange="aplicarConfiguracionEnVivo()"> <span class="switch-slider"></span> </label> </div> </div>
+<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;">
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span>🔔</span>
+      <span>Preferencias de Notificaciones</span>
+    </div>
+    <button type="button" class="btn-today-pill" style="height:26px; font-size:0.72rem; padding:0 10px;" onclick="probarNotificacionSistema()">Probar</button>
+  </div>
+  <p style="font-size:0.76rem; color:var(--muted); margin-bottom:12px;">Elige qué avisos deseas recibir en tu dispositivo o navegador:</p>
+  
+  <div class="switch-wrap" style="margin-bottom:10px;">
+    <div>
+      <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">🔥 Recordatorio de rachas (21:00)</span>
+      <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar a las 21:00 si falta leer o escuchar un disco</span>
+    </div>
+    <label class="switch-toggle">
+      <input type="checkbox" id="cfg-notif-racha" checked onchange="actualizarPreferenciaNotificacion('racha21', this.checked)">
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+
+  <div class="switch-wrap" style="margin-bottom:10px;">
+    <div>
+      <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">❤️ Likes en mis reseñas</span>
+      <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar cuando un amigo le dé like a una reseña</span>
+    </div>
+    <label class="switch-toggle">
+      <input type="checkbox" id="cfg-notif-likes" checked onchange="actualizarPreferenciaNotificacion('likesAmigos', this.checked)">
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+
+  <div class="switch-wrap">
+    <div>
+      <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">👥 Nuevos registros de amigos</span>
+      <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar cuando un amigo agregue una obra al feed</span>
+    </div>
+    <label class="switch-toggle">
+      <input type="checkbox" id="cfg-notif-amigos" checked onchange="actualizarPreferenciaNotificacion('novedadesAmigos', this.checked)">
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+</div>
+<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;"> <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;"> <div style="display:flex; align-items:center; gap:8px;"> <span>☁️</span> <span data-i18n="cfg_account_title">Cuenta y Sincronización Supabase Cloud</span> </div> <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;">✓ Supabase Cloud Activo</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;" id="cfg-account-status" data-i18n="cfg_account_hint">Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.</p> <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;"> <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span> </button> <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:rgba(16,185,129,0.45); color:#34d399; background:rgba(16,185,129,0.1); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets"> <span data-i18n="cfg_btn_migrar">☁️ Migrar mis datos de Google Sheets a Supabase</span> </button> </div>
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
+
+<!-- MODAL NOTIFICACIONES -->
+<div id="modal-notificaciones" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalNotificaciones()">
+  <div class="modal-box" style="max-width:520px; max-height:88vh; display:flex; flex-direction:column; padding:0; overflow:hidden;">
+    <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--card);">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:1.25rem;">🔔</span>
+        <h3 style="margin:0; font-size:1.1rem; color:var(--text); font-weight:800;">Notificaciones</h3>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <button type="button" class="btn-today-pill" id="btn-toggle-notif-settings" style="height:28px; font-size:0.75rem; padding:0 10px;" onclick="togglePanelAjustesNotificaciones()" title="Configurar preferencias de notificaciones">
+          ⚙️ Ajustes
+        </button>
+        <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalNotificaciones()">✕</button>
+      </div>
+    </div>
+
+    <!-- Banner de Permiso del Navegador -->
+    <div id="banner-permiso-notif" style="display:none; padding:12px 18px; background:rgba(56,189,248,0.1); border-bottom:1px solid rgba(56,189,248,0.25); align-items:center; justify-content:space-between; gap:10px;">
+      <div style="font-size:0.78rem; color:var(--text); line-height:1.3;">
+        <strong>Activa las notificaciones del sistema</strong> para recibir avisos de rachas y amigos.
+      </div>
+      <button type="button" class="btn-today-pill" style="height:30px; font-size:0.75rem; white-space:nowrap; padding:0 12px; background:var(--accent); color:#0f172a; font-weight:800;" onclick="solicitarPermisoNotificaciones()">Activar</button>
+    </div>
+
+    <!-- Panel de Ajustes Desplegable -->
+    <div id="panel-ajustes-notificaciones" style="display:none; padding:16px 20px; background:var(--bg); border-bottom:1px solid var(--border);">
+      <div style="font-size:0.8rem; font-weight:800; color:var(--text); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.04em;">Preferencias de Notificación</div>
+      
+      <div class="switch-wrap" style="margin-bottom:12px;">
+        <div>
+          <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">🔥 Recordatorio de rachas (21:00)</span>
+          <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar a las 21:00 si falta leer o escuchar un disco</span>
+        </div>
+        <label class="switch-toggle">
+          <input type="checkbox" id="modal-notif-racha" checked onchange="actualizarPreferenciaNotificacion('racha21', this.checked)">
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+
+      <div class="switch-wrap" style="margin-bottom:12px;">
+        <div>
+          <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">❤️ Likes en mis reseñas</span>
+          <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar cuando un amigo le dé me gusta a una reseña</span>
+        </div>
+        <label class="switch-toggle">
+          <input type="checkbox" id="modal-notif-likes" checked onchange="actualizarPreferenciaNotificacion('likesAmigos', this.checked)">
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+
+      <div class="switch-wrap" style="margin-bottom:12px;">
+        <div>
+          <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">👥 Nuevos registros de amigos</span>
+          <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar cuando un amigo agregue o califique una obra</span>
+        </div>
+        <label class="switch-toggle">
+          <input type="checkbox" id="modal-notif-amigos" checked onchange="actualizarPreferenciaNotificacion('novedadesAmigos', this.checked)">
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:10px; border-top:1px dashed var(--border);">
+        <button type="button" class="btn-today-pill" style="height:28px; font-size:0.74rem;" onclick="probarNotificacionSistema()">🔔 Probar notificación</button>
+        <button type="button" class="btn-today-pill" style="height:28px; font-size:0.74rem; background:transparent; border:none; color:var(--muted);" onclick="togglePanelAjustesNotificaciones()">Cerrar ajustes</button>
+      </div>
+    </div>
+
+    <!-- Barra de acciones de bandeja -->
+    <div style="padding:10px 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); font-size:0.76rem; color:var(--muted);">
+      <span id="notif-bandeja-resumen">0 notificaciones</span>
+      <div style="display:flex; gap:8px;">
+        <button type="button" class="btn-text-action" onclick="marcarTodasNotificacionesLeidas()" style="background:none; border:none; color:var(--accent); cursor:pointer; font-size:0.75rem; font-weight:700;">Marcar todo leído</button>
+        <span style="opacity:0.3;">·</span>
+        <button type="button" class="btn-text-action" onclick="vaciarBandejaNotificaciones()" style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">Vaciar</button>
+      </div>
+    </div>
+
+    <!-- Lista scrolleable de notificaciones -->
+    <div id="lista-notificaciones-body" style="padding:14px 20px; overflow-y:auto; flex:1; max-height:460px; display:flex; flex-direction:column; gap:10px;">
+      <!-- Se inyecta dinámicamente -->
+    </div>
+  </div>
+</div>
 
 
 
@@ -6196,6 +6337,9 @@ function cargarFeedActividadAmigos(mostrarToast = false) {
     actualizarContadoresFeedAmigos();
     renderizarFeedAmigos();
     renderizarFeedAmigosResumidoInicio();
+    if (typeof verificarNuevasActividadesAmigos === 'function') {
+      verificarNuevasActividadesAmigos(estado.amigosFeedCache);
+    }
     if (mostrarToast) mostrarToastPersonalizado(l === 'en' ? 'Friends feed updated ⚡' : 'Novedades de amigos actualizadas ⚡');
   }).obtenerFeedAmigos(estado.userEmail);
 }
@@ -6744,6 +6888,519 @@ function agregarFeedItemDirectoDesdeHome(btnEl, payloadEnc) {
 
 window.renderizarFeedAmigosResumidoInicio = renderizarFeedAmigosResumidoInicio;
 window.agregarFeedItemDirectoDesdeHome = agregarFeedItemDirectoDesdeHome;
+
+// ==========================================
+// SISTEMA DE NOTIFICACIONES MEDIARY
+// 1. Recordatorio 21:00 (Lectura / Música)
+// 2. Likes en reseñas de amigos
+// 3. Nuevos registros de amigos
+// ==========================================
+
+const NOTIF_STORAGE_KEY = 'mediary_in_app_notifs_v1';
+const NOTIF_RACHA_LAST_KEY = 'mediary_notif_racha_21_last';
+const NOTIF_SEEN_FEED_KEY = 'mediary_seen_friend_feed_ids';
+const NOTIF_KNOWN_LIKES_KEY = 'mediary_known_likes_map';
+
+function obtenerPreferenciasNotificaciones() {
+  if (!userPrefs.notificaciones || typeof userPrefs.notificaciones !== 'object') {
+    userPrefs.notificaciones = {
+      habilitadas: true,
+      racha21: true,
+      likesAmigos: true,
+      novedadesAmigos: true
+    };
+  }
+  return userPrefs.notificaciones;
+}
+
+function obtenerBandejaNotificaciones() {
+  try {
+    const raw = localStorage.getItem(NOTIF_STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return [];
+}
+
+function guardarBandejaNotificaciones(lista) {
+  try {
+    localStorage.setItem(NOTIF_STORAGE_KEY, JSON.stringify(lista.slice(0, 60)));
+  } catch(e) {}
+  actualizarBadgeNotificaciones();
+}
+
+function actualizarBadgeNotificaciones() {
+  const lista = obtenerBandejaNotificaciones();
+  const noLeidas = lista.filter(n => !n.leida).length;
+  const badge = document.getElementById('badge-notif-count');
+  if (badge) {
+    if (noLeidas > 0) {
+      badge.textContent = noLeidas > 99 ? '99+' : String(noLeidas);
+      badge.style.display = 'inline-flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}
+
+async function lanzarNotificacion({ id, tipo, titulo, mensaje, icono, accion }) {
+  const notifObj = {
+    id: id || ('notif_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7)),
+    tipo: tipo || 'sistema',
+    titulo: titulo || 'Mediary',
+    mensaje: mensaje || '',
+    icono: icono || '🔔',
+    fecha: new Date().toISOString(),
+    leida: false,
+    accion: accion || null
+  };
+
+  const lista = obtenerBandejaNotificaciones();
+  if (!lista.some(n => n.id === notifObj.id)) {
+    lista.unshift(notifObj);
+    guardarBandejaNotificaciones(lista);
+  }
+
+  // Notificación del sistema (Web / PWA)
+  const prefs = obtenerPreferenciasNotificaciones();
+  if (prefs.habilitadas !== false && 'Notification' in window && Notification.permission === 'granted') {
+    try {
+      if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+        const reg = await navigator.serviceWorker.ready;
+        reg.showNotification(titulo, {
+          body: mensaje,
+          icon: './icon-192.png',
+          badge: './icon.png',
+          tag: notifObj.id,
+          vibrate: [100, 50, 100],
+          data: { url: './', tipo: notifObj.tipo }
+        });
+      } else {
+        new Notification(titulo, {
+          body: mensaje,
+          icon: './icon-192.png',
+          tag: notifObj.id
+        });
+      }
+    } catch (e) {
+      console.warn('Error al enviar Notificación Web:', e);
+    }
+  }
+}
+
+async function solicitarPermisoNotificaciones() {
+  if (!('Notification' in window)) {
+    mostrarToastPersonalizado('Este dispositivo/navegador no soporta notificaciones Web.');
+    return false;
+  }
+  try {
+    const perm = await Notification.requestPermission();
+    actualizarUIPermisoNotificaciones();
+    if (perm === 'granted') {
+      mostrarToastPersonalizado('🔔 ¡Notificaciones del sistema activadas!');
+      return true;
+    } else if (perm === 'denied') {
+      mostrarToastPersonalizado('Las notificaciones están bloqueadas en los permisos del navegador.');
+      return false;
+    }
+  } catch (e) {
+    console.error('Error al solicitar permiso de notificaciones:', e);
+  }
+  return false;
+}
+
+function actualizarUIPermisoNotificaciones() {
+  const banner = document.getElementById('banner-permiso-notif');
+  if (!banner) return;
+  if (!('Notification' in window) || Notification.permission === 'granted') {
+    banner.style.display = 'none';
+  } else {
+    banner.style.display = 'flex';
+  }
+}
+
+function sincronizarSwitchesNotificaciones() {
+  const prefs = obtenerPreferenciasNotificaciones();
+  const mapIds = {
+    racha21: ['cfg-notif-racha', 'modal-notif-racha'],
+    likesAmigos: ['cfg-notif-likes', 'modal-notif-likes'],
+    novedadesAmigos: ['cfg-notif-amigos', 'modal-notif-amigos']
+  };
+
+  Object.keys(mapIds).forEach(k => {
+    mapIds[k].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.checked = !!prefs[k];
+    });
+  });
+}
+
+function actualizarPreferenciaNotificacion(tipo, valor) {
+  const prefs = obtenerPreferenciasNotificaciones();
+  prefs[tipo] = !!valor;
+  userPrefs.notificaciones = prefs;
+  guardarPreferenciasLocales();
+
+  if (valor && 'Notification' in window && Notification.permission === 'default') {
+    solicitarPermisoNotificaciones();
+  }
+
+  sincronizarSwitchesNotificaciones();
+
+  if (estado.userEmail && typeof sbFetch_ === 'function') {
+    if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+    perfilUsuario.preferencias.notificaciones = prefs;
+    sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(normEm_(estado.userEmail)), 'PATCH', {
+      preferencias: perfilUsuario.preferencias,
+      updated_at: new Date().toISOString()
+    }).catch(() => {});
+  }
+}
+
+function probarNotificacionSistema() {
+  if (!('Notification' in window)) {
+    mostrarToastPersonalizado('Tu navegador no admite notificaciones Web.');
+    return;
+  }
+  if (Notification.permission !== 'granted') {
+    solicitarPermisoNotificaciones().then(ok => {
+      if (ok) {
+        lanzarNotificacion({
+          id: 'test_' + Date.now(),
+          tipo: 'sistema',
+          titulo: '🔔 ¡Notificaciones activas en Mediary!',
+          mensaje: 'Tu dispositivo está listo para avisarte de rachas a las 21:00 y actividad de amigos.',
+          icono: '✨'
+        });
+        renderizarListaNotificacionesModal();
+      }
+    });
+    return;
+  }
+  lanzarNotificacion({
+    id: 'test_' + Date.now(),
+    tipo: 'sistema',
+    titulo: '🔔 ¡Notificaciones activas en Mediary!',
+    mensaje: 'Tu dispositivo está listo para avisarte de rachas a las 21:00 y actividad de amigos.',
+    icono: '✨'
+  });
+  renderizarListaNotificacionesModal();
+  mostrarToastPersonalizado('🔔 Notificación de prueba enviada');
+}
+
+function abrirModalNotificaciones() {
+  const modal = document.getElementById('modal-notificaciones');
+  if (!modal) return;
+  actualizarUIPermisoNotificaciones();
+  sincronizarSwitchesNotificaciones();
+  renderizarListaNotificacionesModal();
+  modal.style.display = 'flex';
+}
+
+function cerrarModalNotificaciones() {
+  const modal = document.getElementById('modal-notificaciones');
+  if (modal) modal.style.display = 'none';
+  const panel = document.getElementById('panel-ajustes-notificaciones');
+  if (panel) panel.style.display = 'none';
+}
+
+function togglePanelAjustesNotificaciones() {
+  const panel = document.getElementById('panel-ajustes-notificaciones');
+  if (!panel) return;
+  const isHidden = panel.style.display === 'none';
+  panel.style.display = isHidden ? 'block' : 'none';
+  const btn = document.getElementById('btn-toggle-notif-settings');
+  if (btn) btn.classList.toggle('active', isHidden);
+}
+
+function renderizarListaNotificacionesModal() {
+  const cont = document.getElementById('lista-notificaciones-body');
+  const resEl = document.getElementById('notif-bandeja-resumen');
+  if (!cont) return;
+
+  const lista = obtenerBandejaNotificaciones();
+  const noLeidas = lista.filter(n => !n.leida).length;
+
+  if (resEl) {
+    resEl.textContent = lista.length === 1 
+      ? `1 notificación (${noLeidas} sin leer)` 
+      : `${lista.length} notificaciones (${noLeidas} sin leer)`;
+  }
+
+  if (!lista.length) {
+    cont.innerHTML = `
+      <div style="text-align:center; padding:38px 20px; color:var(--muted);">
+        <div style="font-size:2.2rem; margin-bottom:8px;">✨</div>
+        <div style="font-weight:700; color:var(--text); font-size:0.95rem; margin-bottom:4px;">No tienes notificaciones</div>
+        <div style="font-size:0.8rem; max-width:320px; margin:0 auto 14px;">Aquí verás los recordatorios de rachas a las 21:00, los likes de tus amigos y los nuevos registros en su feed.</div>
+        <button type="button" class="btn-today-pill" style="height:30px; font-size:0.75rem; margin:0 auto;" onclick="probarNotificacionSistema()">🔔 Probar notificación de muestra</button>
+      </div>
+    `;
+    return;
+  }
+
+  cont.innerHTML = lista.map(n => {
+    const timeStr = formatearTiempoNotif(n.fecha);
+    return `
+      <div class="notif-card-item ${n.leida ? '' : 'unread'}" onclick="clickEnNotificacion('${n.id}')">
+        <div class="notif-card-icon">${n.icono || '🔔'}</div>
+        <div class="notif-card-content">
+          <div class="notif-card-header">
+            <span class="notif-card-title">${n.titulo} ${n.leida ? '' : '<span class="notif-unread-dot" title="No leída"></span>'}</span>
+            <span class="notif-card-time">${timeStr}</span>
+          </div>
+          <p class="notif-card-msg">${n.mensaje}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function formatearTiempoNotif(isoStr) {
+  if (!isoStr) return '';
+  const d = new Date(isoStr);
+  const now = new Date();
+  const diffSec = Math.floor((now - d) / 1000);
+  if (diffSec < 60) return 'Ahora';
+  if (diffSec < 3600) return `Hace ${Math.floor(diffSec / 60)}m`;
+  if (diffSec < 86400) return `Hace ${Math.floor(diffSec / 3600)}h`;
+  const dia = d.getDate();
+  const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  return `${dia} ${meses[d.getMonth()]}`;
+}
+
+function clickEnNotificacion(notifId) {
+  const lista = obtenerBandejaNotificaciones();
+  const notif = lista.find(n => n.id === notifId);
+  if (notif) {
+    notif.leida = true;
+    guardarBandejaNotificaciones(lista);
+    renderizarListaNotificacionesModal();
+
+    if (notif.accion === 'abrirLectura') {
+      cerrarModalNotificaciones();
+      cambiarCat('Lecturas', 'Libros');
+    } else if (notif.accion === 'abrirMusica') {
+      cerrarModalNotificaciones();
+      cambiarCat('Musica', 'Discos');
+    } else if (notif.accion === 'abrirFeedAmigos' || notif.accion === 'abrirAmigos') {
+      cerrarModalNotificaciones();
+      abrirVistaAmigos();
+    }
+  }
+}
+
+function marcarTodasNotificacionesLeidas() {
+  const lista = obtenerBandejaNotificaciones();
+  lista.forEach(n => n.leida = true);
+  guardarBandejaNotificaciones(lista);
+  renderizarListaNotificacionesModal();
+  mostrarToastPersonalizado('✓ Notificaciones marcadas como leídas');
+}
+
+function vaciarBandejaNotificaciones() {
+  guardarBandejaNotificaciones([]);
+  renderizarListaNotificacionesModal();
+}
+
+// 1. RECORDATORIO DE RACHAS A LAS 21:00
+function verificarRecordatorioRacha21() {
+  const prefs = obtenerPreferenciasNotificaciones();
+  if (!prefs.racha21) return;
+
+  const now = new Date();
+  const hora = now.getHours();
+  if (hora < 21) return;
+
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : now.toISOString().split('T')[0];
+  const lastSent = localStorage.getItem(NOTIF_RACHA_LAST_KEY);
+  if (lastSent === hoyStr) return;
+
+  const leyoHoy = typeof haLeidoHoy === 'function' && haLeidoHoy();
+  const rMusica = typeof calcularRachaDiscos === 'function' ? calcularRachaDiscos(estado.registros) : { esActivaHoy: false };
+  const escuchoHoy = !!rMusica.esActivaHoy;
+
+  if (leyoHoy && escuchoHoy) return;
+
+  let tit = '🔥 ¡Recordatorio de rachas!';
+  let msg = '';
+  let icono = '🔥';
+  let accion = 'abrirLectura';
+
+  if (!leyoHoy && !escuchoHoy) {
+    msg = '¡Son las 21:00! Aún no has marcado lectura ni registrado un disco hoy. ¡Mantén tus rachas vivas!';
+    accion = 'abrirLectura';
+  } else if (!leyoHoy) {
+    tit = '📖 ¡Recordatorio de lectura!';
+    msg = '¡Son las 21:00! Aún no has marcado tu lectura de hoy. Toca para registrarla y no perder tu racha.';
+    icono = '📖';
+    accion = 'abrirLectura';
+  } else {
+    tit = '💿 ¡Recordatorio de música!';
+    msg = '¡Son las 21:00! Aún no has registrado un disco hoy. Agrega un álbum para continuar tu racha musical.';
+    icono = '💿';
+    accion = 'abrirMusica';
+  }
+
+  localStorage.setItem(NOTIF_RACHA_LAST_KEY, hoyStr);
+  lanzarNotificacion({
+    id: 'racha21_' + hoyStr,
+    tipo: 'racha',
+    titulo: tit,
+    mensaje: msg,
+    icono: icono,
+    accion: accion
+  });
+}
+
+function programarAlarmaRacha21() {
+  verificarRecordatorioRacha21();
+  setInterval(() => {
+    verificarRecordatorioRacha21();
+  }, 60 * 1000);
+}
+
+// 2. LIKES EN RESEÑAS
+function verificarNuevosLikesRecibidos(likesRecibidos) {
+  const prefs = obtenerPreferenciasNotificaciones();
+  if (!prefs.likesAmigos) return;
+  if (!likesRecibidos || typeof likesRecibidos !== 'object') return;
+
+  let conocidos = {};
+  try {
+    const raw = localStorage.getItem(NOTIF_KNOWN_LIKES_KEY);
+    if (raw) conocidos = JSON.parse(raw);
+  } catch(e) {}
+
+  let huboNuevos = false;
+  const regs = estado.registros || [];
+
+  for (const regId of Object.keys(likesRecibidos)) {
+    const listaEmails = likesRecibidos[regId];
+    if (!Array.isArray(listaEmails)) continue;
+    let conocidosParaEste = conocidos[regId] || [];
+
+    for (const emailAmigo of listaEmails) {
+      if (!conocidosParaEste.includes(emailAmigo)) {
+        huboNuevos = true;
+        conocidosParaEste.push(emailAmigo);
+
+        const reg = regs.find(r => String(r.id) === String(regId));
+        const tit = reg ? reg.titulo : 'tu reseña';
+
+        let nombreAmigo = emailAmigo.split('@')[0];
+        if (estado.amigosCache && Array.isArray(estado.amigosCache)) {
+          const am = estado.amigosCache.find(a => (a.email || '').toLowerCase() === emailAmigo.toLowerCase());
+          if (am && am.nickname) nombreAmigo = am.nickname;
+        }
+
+        lanzarNotificacion({
+          id: 'like_' + regId + '_' + emailAmigo,
+          tipo: 'like',
+          titulo: '❤️ ¡Nuevo Like en tu reseña!',
+          mensaje: `A ${nombreAmigo} le gustó tu reseña de "${tit}".`,
+          icono: '❤️',
+          accion: 'abrirAmigos'
+        });
+      }
+    }
+    conocidos[regId] = conocidosParaEste;
+  }
+
+  if (huboNuevos) {
+    try {
+      localStorage.setItem(NOTIF_KNOWN_LIKES_KEY, JSON.stringify(conocidos));
+    } catch(e) {}
+  }
+}
+
+async function verificarLikesRecibidosEnNube() {
+  if (!estado.userEmail) return;
+  const prefs = obtenerPreferenciasNotificaciones();
+  if (!prefs.likesAmigos) return;
+  try {
+    const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(normEm_(estado.userEmail)) + '&select=preferencias', 'GET').catch(() => []);
+    if (rows && rows.length > 0 && rows[0].preferencias) {
+      const p = rows[0].preferencias;
+      if (p.likes_recibidos) {
+        verificarNuevosLikesRecibidos(p.likes_recibidos);
+      }
+    }
+  } catch (e) {}
+}
+
+// 3. NUEVOS REGISTROS DE AMIGOS
+function verificarNuevasActividadesAmigos(feed) {
+  const prefs = obtenerPreferenciasNotificaciones();
+  if (!prefs.novedadesAmigos) return;
+  if (!Array.isArray(feed) || !feed.length) return;
+
+  let vistos = new Set();
+  try {
+    const raw = localStorage.getItem(NOTIF_SEEN_FEED_KEY);
+    if (raw) vistos = new Set(JSON.parse(raw));
+  } catch(e) {}
+
+  if (vistos.size === 0) {
+    feed.forEach(it => { if (it.id) vistos.add(String(it.id)); });
+    try {
+      localStorage.setItem(NOTIF_SEEN_FEED_KEY, JSON.stringify(Array.from(vistos)));
+    } catch(e) {}
+    return;
+  }
+
+  let huboNuevos = false;
+  const recientes = feed.slice(0, 10);
+  for (const it of recientes) {
+    if (!it || !it.id) continue;
+    const idStr = String(it.id);
+    if (!vistos.has(idStr)) {
+      vistos.add(idStr);
+      huboNuevos = true;
+
+      const amigoNombre = it.amigoNickname || it.amigoNick || (it.userEmail ? it.userEmail.split('@')[0] : 'Un amigo');
+      const catIcon = it.categoria === 'Peliculas' ? '🎬' : (it.categoria === 'Musica' ? '💿' : (it.categoria === 'Lecturas' ? '📖' : (it.categoria === 'Series' ? '📺' : '🎮')));
+
+      lanzarNotificacion({
+        id: 'amigo_' + idStr,
+        tipo: 'amigo',
+        titulo: `${catIcon} Novedad de amigo`,
+        mensaje: `${amigoNombre} agregó "${it.titulo}".`,
+        icono: catIcon,
+        accion: 'abrirFeedAmigos'
+      });
+    }
+  }
+
+  if (huboNuevos) {
+    try {
+      localStorage.setItem(NOTIF_SEEN_FEED_KEY, JSON.stringify(Array.from(vistos).slice(-200)));
+    } catch(e) {}
+  }
+}
+
+function inicializarSistemaNotificaciones() {
+  actualizarBadgeNotificaciones();
+  sincronizarSwitchesNotificaciones();
+  programarAlarmaRacha21();
+  if (estado.userEmail) {
+    verificarLikesRecibidosEnNube();
+  }
+}
+
+window.abrirModalNotificaciones = abrirModalNotificaciones;
+window.cerrarModalNotificaciones = cerrarModalNotificaciones;
+window.togglePanelAjustesNotificaciones = togglePanelAjustesNotificaciones;
+window.solicitarPermisoNotificaciones = solicitarPermisoNotificaciones;
+window.actualizarPreferenciaNotificacion = actualizarPreferenciaNotificacion;
+window.probarNotificacionSistema = probarNotificacionSistema;
+window.clickEnNotificacion = clickEnNotificacion;
+window.marcarTodasNotificacionesLeidas = marcarTodasNotificacionesLeidas;
+window.vaciarBandejaNotificaciones = vaciarBandejaNotificaciones;
+window.verificarNuevasActividadesAmigos = verificarNuevasActividadesAmigos;
+window.verificarNuevosLikesRecibidos = verificarNuevosLikesRecibidos;
+window.verificarLikesRecibidosEnNube = verificarLikesRecibidosEnNube;
+window.inicializarSistemaNotificaciones = inicializarSistemaNotificaciones;
+
 function renderizarListaSolicitudes(solicitudes) {
   const seccion = document.getElementById('seccion-solicitudes-pendientes');
   const countEl = document.getElementById('count-solicitudes-amigos');
@@ -9058,6 +9715,7 @@ function obtenerRegistrosFiltradosPorAnio() {
 }
 
 function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {} userPrefs.uiStyle = 'modern'; if (userPrefs.fontSize && !['50%', '62%', '75%', '88%', '100%'].includes(userPrefs.fontSize)) userPrefs.fontSize = '100%';
+if (!userPrefs.notificaciones || typeof userPrefs.notificaciones !== 'object') { userPrefs.notificaciones = { habilitadas: true, racha21: true, likesAmigos: true, novedadesAmigos: true }; }
 try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) estado.anioActivo = anioG; } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
 try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); if (!perfilUsuario.portada && perfilUsuario.preferencias?.portada) perfilUsuario.portada = perfilUsuario.preferencias.portada; if (!perfilUsuario.personajeFavorito && perfilUsuario.favoritos?.personajeFavorito) perfilUsuario.personajeFavorito = perfilUsuario.favoritos.personajeFavorito; } } catch (e) {}
@@ -9076,6 +9734,14 @@ if (res.preferencias?.likes_dados && Array.isArray(res.preferencias.likes_dados)
     res.preferencias.likes_dados.forEach(id => s.add(id));
     localStorage.setItem('mediary_liked_reviews', JSON.stringify(Array.from(s)));
   } catch (e) {}
+}
+if (res.preferencias?.likes_recibidos && typeof verificarNuevosLikesRecibidos === 'function') {
+  verificarNuevosLikesRecibidos(res.preferencias.likes_recibidos);
+}
+if (res.preferencias?.notificaciones) {
+  userPrefs.notificaciones = Object.assign(obtenerPreferenciasNotificaciones(), res.preferencias.notificaciones);
+  guardarPreferenciasLocales();
+  if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
 }
 guardarPerfilLocal(); registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar); renderizarCabeceraPerfil(); cerrarModalAuthSupabase(); cargarRegistros(); cargarWatchlist();
 if (estado.categoria === 'perfil') renderizarFavoritosPerfil(); if (mostrarSaludo) mostrarToastPersonalizado(userPrefs.lang === 'en' ? `Welcome, ${perfilUsuario.nickname}! (${estado.userEmail}) ✨` : `¡Bienvenido, ${perfilUsuario.nickname}! (${estado.userEmail}) ✨`); }
@@ -11630,6 +12296,7 @@ function abrirModalConfiguracion() {
     const igdbTokInp = document.getElementById('cfg-igdb-token');
     if (igdbTokInp) igdbTokInp.value = window.IGDB_TOKEN || IGDB_TOKEN || '';
     actualizarTarjetasVisualesConfig(); 
+    if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
     const modalCfg = document.getElementById('modal-configuracion');
     if (modalCfg) modalCfg.style.display = 'flex';
   } catch(err) {
@@ -12310,6 +12977,9 @@ window.onload = () => {
   precargarDiscoverEnSegundoPlano(1);
   iniciarLoopAutoActualizacionDiscover();
   inicializarManejoBotonAtras(); inicializarEventosBuscadores();
+  if (typeof inicializarSistemaNotificaciones === 'function') {
+    inicializarSistemaNotificaciones();
+  }
   setTimeout(() => reposicionarIndicadorNavMovil(), 180);
 };
 const irInicio = (pushNav = true) => {
@@ -12370,6 +13040,8 @@ function refrescarDatosApp() {
   sincronizarPerfilDesdeServidor();
   cargarWatchlist();
   cargarFeedActividadAmigos(false);
+  if (typeof verificarLikesRecibidosEnNube === 'function') verificarLikesRecibidosEnNube();
+  if (typeof verificarRecordatorioRacha21 === 'function') verificarRecordatorioRacha21();
 
   // Sincronizar registros del usuario y actualizar las vistas activas
   google.script.run
