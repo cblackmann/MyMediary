@@ -505,6 +505,36 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   color: rgba(255, 255, 255, 0.85) !important;
   text-shadow: 0 1px 4px rgba(0,0,0,0.7);
 }
+.amigo-wide-card.has-custom-cover {
+  position: relative;
+  overflow: hidden;
+}
+.amigo-wide-card.has-custom-cover .amigo-card-nick {
+  color: #ffffff !important;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.7);
+}
+.amigo-wide-card.has-custom-cover .amigo-card-bio {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+.amigo-wide-card.has-custom-cover .amigo-card-avg-badge {
+  background: rgba(15, 23, 42, 0.72) !important;
+  backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.amigo-wide-card.has-custom-cover .amigo-card-regs-btn {
+  background: rgba(15, 23, 42, 0.7) !important;
+  backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+.amigo-wide-card.has-custom-cover .friend-avatar-wrap {
+  border-color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
 .btn-change-cover {
   background: rgba(56, 189, 248, 0.12);
   border: 1px solid var(--accent);
@@ -1139,8 +1169,7 @@ html[data-show-emojis="false"] .emoji-dyn { display: none !important; }
 
 .ruleta-modal-box {
   width: min(540px, 94vw);
-  height: 630px;
-  max-height: 90vh;
+  max-height: 88vh;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -1152,8 +1181,7 @@ html[data-show-emojis="false"] .emoji-dyn { display: none !important; }
   .ruleta-modal-box {
     width: 100% !important;
     max-width: 100% !important;
-    height: 85vh !important;
-    max-height: 85vh !important;
+    max-height: 88vh !important;
     padding: 18px 16px 14px;
   }
 }
@@ -3246,8 +3274,8 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 
     <!-- Botones de pie centrado -->
     <div class="modal-actions" style="justify-content:center; margin-top:auto; padding-top:10px; border-top:1px solid var(--border); flex-shrink:0;">
-      <button type="button" id="btn-ruleta-girar-principal" class="ruleta-btn-girar-banner" style="height:44px; padding:0 36px; font-weight:700; margin:0 auto;" onclick="tirarRuletaPeliculas()">
-        <span>🎲</span> <span data-i18n="ruleta_btn_spin_main">Mezclar Watchlists</span>
+      <button type="button" id="btn-ruleta-girar-principal" class="ruleta-btn-girar-banner" style="height:48px; padding:0 42px; font-size:0.96rem; font-weight:800; border-radius:14px; margin:0 auto; box-shadow:0 6px 18px rgba(245,158,11,0.4);" onclick="tirarRuletaPeliculas()">
+        <span style="font-size:1.15rem;">🎲</span> <span data-i18n="ruleta_btn_spin_main">Mezclar Watchlists</span>
       </button>
     </div>
   </div>
@@ -3571,7 +3599,8 @@ amigosRowsList.forEach((rows, idx) => {
       promedio: (!priv.ocultarCalificaciones && numC) ? (sumC / numC).toFixed(1) : null,
       topCat: topCatName
     };
-    amigosData.push({ email: p.user_email, nickname: p.nickname || p.user_email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: p.preferencias?.userId || aEmail, stats: stats });
+    const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada');
+    amigosData.push({ email: p.user_email, nickname: p.nickname || p.user_email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: p.preferencias?.userId || aEmail, portada: portAmigo, stats: stats });
   }
 }); const solicitudesData = []; solicitudesRowsList.forEach((rows, idx) => { const sEmail = solicitudesEmails[idx]; if (rows && rows.length > 0) { const p = rows[0]; solicitudesData.push({ email: p.user_email, nickname: p.nickname || p.user_email.split('@')[0], avatar: p.avatar || '👤', userId: p.preferencias?.userId || sEmail }); } }); return { exito: true, amigos: amigosData, solicitudes: solicitudesData }; } catch (e) { return { exito: false, error: e.toString() }; } }, async enviarSolicitudAmistad(miEmail, idBuscado) { try { const miEm = normEm_(miEmail); const busq = String(idBuscado || '').trim(); if (!miEm) return { exito: false, error: 'Inicia sesión primero.' }; if (!busq) return { exito: false, error: 'Ingresa un ID válido.' }; let rows = await sbFetch_('perfiles?preferencias->>userId=eq.' + encodeURIComponent(busq) + '&select=*', 'GET'); if (!rows || !rows.length) { rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(busq.toLowerCase()) + '&select=*', 'GET'); } if (!rows || !rows.length) { const todos = await sbFetch_('perfiles?select=*', 'GET') || []; rows = todos.filter(p => { const uId = p.preferencias?.userId || ''; return uId.toLowerCase() === busq.toLowerCase() || p.user_email.toLowerCase() === busq.toLowerCase(); }); } if (!rows || !rows.length) { return { exito: false, error: 'No se encontró ningún usuario con ese ID.' }; } const targetUser = rows[0]; const targetEmail = targetUser.user_email; if (targetEmail.toLowerCase() === miEm.toLowerCase()) { return { exito: false, error: 'No puedes agregarte a ti mismo.' }; } const miPerfil = await SERVER_API.obtenerPerfilUsuario(miEm); const misPrefs = miPerfil.preferencias || {}; const misAmigos = misPrefs.amigos || []; if (misAmigos.includes(targetEmail)) { return { exito: false, error: 'Ya tienes a ' + (targetUser.nickname || 'este usuario') + ' en tu lista de amigos.' }; } const targetPrefs = targetUser.preferencias || {}; const targetRecibidas = targetPrefs.solicitudes_recibidas || []; if (!targetRecibidas.includes(miEm)) { targetRecibidas.push(miEm); targetPrefs.solicitudes_recibidas = targetRecibidas; await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(targetEmail), 'PATCH', { preferencias: targetPrefs, updated_at: new Date().toISOString() }); } return { exito: true, mensaje: '¡Solicitud enviada con éxito a ' + (targetUser.nickname || targetEmail) + '!' }; } catch (e) { return { exito: false, error: e.toString() }; } }, async procesarRespuestaSolicitud(miEmail, emailAmigo, aceptar) { try { const miEm = normEm_(miEmail); const amigoEm = normEm_(emailAmigo); if (!miEm || !amigoEm) return { exito: false, error: 'Datos incompletos' }; const miPerfil = await SERVER_API.obtenerPerfilUsuario(miEm); const misPrefs = miPerfil.preferencias || {}; misPrefs.solicitudes_recibidas = (misPrefs.solicitudes_recibidas || []).filter(e => e !== amigoEm); if (aceptar) { const misAmigos = misPrefs.amigos || []; if (!misAmigos.includes(amigoEm)) misAmigos.push(amigoEm); misPrefs.amigos = misAmigos; } await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(miEm), 'PATCH', { preferencias: misPrefs, updated_at: new Date().toISOString() }); const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEm) + '&select=*', 'GET'); if (rows && rows.length > 0) { const amigoP = rows[0]; const amigoPrefs = amigoP.preferencias || {}; if (aceptar) { const suListaAmigos = amigoPrefs.amigos || []; if (!suListaAmigos.includes(miEm)) suListaAmigos.push(miEm); amigoPrefs.amigos = suListaAmigos; } else { amigoPrefs.amigos = (amigoPrefs.amigos || []).filter(e => e !== miEm); } await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEm), 'PATCH', { preferencias: amigoPrefs, updated_at: new Date().toISOString() }); } return { exito: true }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerRegistrosAmigo(emailAmigo) {
   try {
@@ -6481,11 +6510,14 @@ function renderizarListaAmigos(amigos) {
     const avgRating = a.stats && a.stats.promedio ? a.stats.promedio : '-';
     const emailEscaped = (a.email || '').replace(/'/g, "\\'");
     const nickEscaped = (a.nickname || '').replace(/'/g, "\\'");
+    const coverId = a.portada || 'predeterminada';
+    const hasCustomCover = coverId && coverId !== 'predeterminada';
+    const coverClass = hasCustomCover ? `cover-${coverId} has-custom-cover` : '';
 
     return `
-      <div class="amigo-wide-card" style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px; transition:var(--tr); box-shadow:0 2px 8px rgba(0,0,0,0.06); position:relative;">
+      <div class="amigo-wide-card ${coverClass}" style="${hasCustomCover ? '' : 'background:var(--card); border:1px solid var(--border);'} border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px; transition:var(--tr); box-shadow:0 2px 8px rgba(0,0,0,0.06); position:relative; overflow:hidden;">
         <!-- Fila superior: Foto + Nickname interactivo + Bio a la izquierda; Calificación promedio en la esquina superior derecha -->
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; position:relative; z-index:2;">
           <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
             <!-- Foto de perfil interactiva -->
             <div class="friend-avatar-wrap" data-avatar-zoom="${a.avatar || '🦊'}" data-avatar-name="${nickEscaped}" onclick="verPerfilDeAmigo('${emailEscaped}')" style="width:52px; height:52px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.6rem; flex-shrink:0; cursor:pointer;" title="${l === 'en' ? 'View profile' : 'Ver perfil'}">
@@ -6493,26 +6525,26 @@ function renderizarListaAmigos(amigos) {
             </div>
             <!-- Nickname interactivo (más grande, sin ID) y Bio -->
             <div style="min-width:0; flex:1;">
-              <div style="font-size:1.15rem; font-weight:800; color:var(--text); cursor:pointer; text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.25;" onclick="verPerfilDeAmigo('${emailEscaped}')" title="${l === 'en' ? 'View profile' : 'Ver perfil'}">${a.nickname}</div>
-              <div style="font-size:0.8rem; color:var(--muted); margin-top:3px; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${a.bio || (l === 'en' ? 'Collecting stories on Mediary ✨' : 'Coleccionando historias en Mediary ✨')}</div>
+              <div class="amigo-card-nick" style="font-size:1.15rem; font-weight:800; color:var(--text); cursor:pointer; text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.25;" onclick="verPerfilDeAmigo('${emailEscaped}')" title="${l === 'en' ? 'View profile' : 'Ver perfil'}">${a.nickname}</div>
+              <div class="amigo-card-bio" style="font-size:0.8rem; color:var(--muted); margin-top:3px; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${a.bio || (l === 'en' ? 'Collecting stories on Mediary ✨' : 'Coleccionando historias en Mediary ✨')}</div>
             </div>
           </div>
 
           <!-- Calificación promedio en la esquina superior derecha -->
-          <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:4px 10px; font-size:0.82rem; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; box-shadow:0 1px 3px rgba(0,0,0,0.06);" title="${l === 'en' ? 'Average Rating' : 'Calificación Promedio'}">
+          <div class="amigo-card-avg-badge" style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:4px 10px; font-size:0.82rem; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; box-shadow:0 1px 3px rgba(0,0,0,0.06);" title="${l === 'en' ? 'Average Rating' : 'Calificación Promedio'}">
             <span style="color:var(--star-active); font-size:0.95rem;">★</span>
             <span style="font-weight:800; color:var(--text);">${avgRating}</span>
           </div>
         </div>
 
         <!-- Botón intermedio: "Ver Registros (N)" -->
-        <button type="button" class="btn-today-pill" style="height:36px; padding:0 14px; font-size:0.82rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; width:100%; transition:var(--tr); box-sizing:border-box;" onclick="abrirModalRegistrosAmigo('${emailEscaped}', '${nickEscaped}')" title="${l === 'en' ? 'View friend records' : 'Ver registros de ' + nickEscaped}">
+        <button type="button" class="btn-today-pill amigo-card-regs-btn" style="height:36px; padding:0 14px; font-size:0.82rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; width:100%; transition:var(--tr); box-sizing:border-box; position:relative; z-index:2;" onclick="abrirModalRegistrosAmigo('${emailEscaped}', '${nickEscaped}')" title="${l === 'en' ? 'View friend records' : 'Ver registros de ' + nickEscaped}">
           <span>📚</span>
           <span>${l === 'en' ? `View Records (${totalRegs})` : `Ver Registros (${totalRegs})`}</span>
         </button>
 
         <!-- Botón inferior: "Mezclar Watchlists" con colores de acento claros y alta legibilidad -->
-        <button type="button" class="ruleta-btn-girar-banner" style="height:38px; padding:0 14px; font-size:0.82rem; margin:0; width:100%; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; background:linear-gradient(135deg, #0284c7, #0ea5e9); color:#ffffff; border:none; box-shadow:0 2px 8px rgba(14,165,233,0.25); cursor:pointer; box-sizing:border-box;" onclick="abrirModalRuleta('Peliculas', '${emailEscaped}')" title="${l === 'en' ? 'Mix Watchlists with ' + nickEscaped : 'Mezclar Watchlists con ' + nickEscaped}">
+        <button type="button" class="ruleta-btn-girar-banner" style="height:38px; padding:0 14px; font-size:0.82rem; margin:0; width:100%; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; background:linear-gradient(135deg, #0284c7, #0ea5e9); color:#ffffff; border:none; box-shadow:0 2px 8px rgba(14,165,233,0.25); cursor:pointer; box-sizing:border-box; position:relative; z-index:2;" onclick="abrirModalRuleta('Peliculas', '${emailEscaped}')" title="${l === 'en' ? 'Mix Watchlists with ' + nickEscaped : 'Mezclar Watchlists con ' + nickEscaped}">
           <span>🍿</span>
           <span>${l === 'en' ? 'Mix Watchlists' : 'Mezclar Watchlists'}</span>
           <span>🎲</span>
@@ -7010,48 +7042,55 @@ function filtrarRegistrosAmigoModal() {
       `;
 
       subG.items.forEach(r => {
-        const poster = r.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'46\' height=\'68\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
+        const poster = r.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
         const calif = Number(r.calificacion) || 0;
-        const califHtml = calif > 0 ? `<span style="color:var(--star-active);font-weight:700;font-size:0.85rem;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.25);border-radius:6px;padding:2px 7px;white-space:nowrap;">★ ${calif.toFixed(1)}</span>` : '';
+        const enProg = esEnProgresoTexto(r.fechaFin);
+        const starsHtml = enProg
+          ? `<span class="badge-en-progreso" style="background:rgba(245,158,11,0.12); color:var(--star-active); font-weight:700; padding:2px 8px; border-radius:12px; font-size:0.75rem; border:1px solid rgba(245,158,11,0.3); white-space:nowrap;">⏳ ${obtenerTextoEnProgreso(r.categoria, r.subcategoria) || (l === 'en' ? 'In progress' : 'En curso')}</span>`
+          : (calif > 0 ? renderEstrellasVisuales(calif) : `<span style="color:var(--muted); font-size:0.78rem;">${l === 'en' ? 'No rating' : 'Sin calificar'}</span>`);
         const fecha = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? `${r.fechaInicio} ➔ ${r.fechaFin}` : (r.fechaInicio || '');
-        const fechaHtml = fecha && fecha !== 'Sin fecha' ? `<span style="font-size:0.73rem;color:var(--muted);background:rgba(255,255,255,0.04);padding:2px 7px;border-radius:5px;border:1px solid var(--border);">📅 ${fecha}</span>` : '';
-        const horasHtml = r.horas ? `<span style="font-size:0.73rem;color:var(--accent);font-weight:600;background:rgba(56,189,248,0.1);padding:2px 7px;border-radius:5px;border:1px solid rgba(56,189,248,0.25);">⏱️ ${r.horas}</span>` : '';
-        const rwBadge = r.esRewatch ? `<span style="font-size:0.73rem;color:var(--accent);background:rgba(56,189,248,0.1);padding:2px 7px;border-radius:5px;border:1px solid rgba(56,189,248,0.25);">🔁 ${l === 'en' ? 'Rewatch' : 'Revisita'}</span>` : '';
+        const fechaHtml = fecha && fecha !== 'Sin fecha' ? `<div class="m-card-dates"><span class="emoji-dyn">📅 </span>${fecha}</div>` : '';
+        const horasHtml = (r.horas && String(r.horas).trim() !== '' && r.horas !== '0') ? `<div class="m-card-horas" style="font-size:0.75rem; color:var(--accent); font-weight:600;"><span class="emoji-dyn">⏱️ </span>${r.horas} hrs</div>` : '';
+        const rwBadge = r.esRewatch ? `<span class="badge-rewatch" style="margin-left:6px;">🔁 ${l === 'en' ? 'Rewatch' : 'Revisita'}</span>` : '';
         const isLiked = (typeof esResenaLikeada === 'function') ? esResenaLikeada(r.id) : false;
         const likeCount = (typeof obtenerConteoLikesResena === 'function') ? obtenerConteoLikesResena(r.id, amigoRegsEmailActual, r.likes) : 0;
         const likeBtnHtml = `
-          <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${r.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${r.id}', '${amigoRegsEmailActual}', this)" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
+          <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${r.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${r.id}', '${amigoRegsEmailActual}', this)" style="background:transparent; border:none; padding:0 4px; font-size:1.1rem; cursor:pointer; display:inline-flex; align-items:center; gap:4px; line-height:1;" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
             <span class="like-heart-icon">${isLiked ? '❤️' : '🤍'}</span>
-            <span class="like-counter">${likeCount > 0 ? likeCount : ''}</span>
-            <span class="like-text">${isLiked ? (l === 'en' ? 'Liked' : 'Te gusta') : (l === 'en' ? 'Like' : 'Me gusta')}</span>
+            ${likeCount > 0 ? `<span class="like-counter" style="font-size:0.75rem; font-weight:700; color:var(--muted);">${likeCount}</span>` : ''}
           </button>
         `;
+        const meta = `(${r.creador || ''}${r.anio ? ', ' + r.anio : ''})`;
         const comHtml = r.comentario ? `
-          <div style="font-size:0.79rem;color:var(--text);background:rgba(15,23,42,0.5);border-left:3px solid var(--accent);padding:7px 11px;border-radius:6px;margin-top:7px;line-height:1.4;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
-              <span style="font-size:0.7rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;display:flex;align-items:center;gap:3px;"><span>💬</span> <span>${l === 'en' ? 'Review' : 'Reseña'}</span></span>
-              ${likeBtnHtml}
+          <div class="feed-review-box" style="margin-top:6px; padding:8px 12px; font-size:0.82rem; border-left:3px solid var(--accent); border-radius:4px 8px 8px 4px;">
+            <div style="font-size:0.7rem; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:2px;">
+              <span>💬 ${l === 'en' ? 'Comment' : 'Comentario'}</span>
             </div>
             <div style="font-style:italic;">"${r.comentario}"</div>
           </div>
         ` : '';
 
         fullHtml += `
-          <div class="amigo-reg-item-card">
-            <img src="${poster}" style="width:46px;height:66px;object-fit:cover;border-radius:6px;background:#334155;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.25);" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'46\\' height=\\'66\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'">
-            <div style="flex:1;min-width:0;">
-              <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;">
-                <strong style="font-size:0.92rem;color:var(--text);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${r.titulo}</strong>
-                ${califHtml}
+          <div class="mobile-history-card amigo-reg-item-card" style="margin-bottom:0; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+            <div class="m-card-top">
+              <img class="m-card-thumb" src="${poster}" loading="lazy" alt="${escHtmlFeed_(r.titulo)}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'50\\' height=\\'72\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'">
+              <div class="m-card-info" style="padding-right:0;">
+                <div class="m-card-title">${r.titulo}${rwBadge}</div>
+                ${r.subtitulo && r.subtitulo !== r.titulo ? `<div style="font-size:0.75rem; color:var(--muted); margin-bottom:2px;">(${r.subtitulo})</div>` : ''}
+                <div class="m-card-meta">${meta}</div>
+                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:4px;">
+                  ${fechaHtml}
+                  ${horasHtml}
+                </div>
               </div>
-              <div style="font-size:0.76rem;color:var(--muted);margin-top:2px;">${r.creador || ''} ${r.anio ? `(${r.anio})` : ''}</div>
-              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:5px;">
-                ${fechaHtml}
-                ${horasHtml}
-                ${rwBadge}
-              </div>
-              ${comHtml}
             </div>
+            <div class="m-card-bottom" style="margin-top:2px;">
+              <div style="display:flex; align-items:center; gap:6px;">
+                ${starsHtml}
+              </div>
+              ${likeBtnHtml}
+            </div>
+            ${comHtml}
           </div>
         `;
       });
@@ -11838,8 +11877,19 @@ function inicializarGestosSwipeDownModales() {
       if (target.closest('input, textarea, select, .switch-toggle, button, .star-box')) {
         return;
       }
+      if (target.closest('#amigo-regs-grid') && !target.closest('.modal-swipe-handle')) {
+        return;
+      }
       if (box.scrollTop > 5 && !target.closest('.modal-swipe-handle')) {
         return;
+      }
+      // Si el elemento interno donde se inició el toque tiene scroll acumulado, no interceptar
+      let scrollCheck = target;
+      while (scrollCheck && scrollCheck !== overlay) {
+        if (scrollCheck.scrollTop > 5 && !target.closest('.modal-swipe-handle')) {
+          return;
+        }
+        scrollCheck = scrollCheck.parentElement;
       }
       startY = e.touches[0].clientY;
       startX = e.touches[0].clientX;
@@ -11857,8 +11907,25 @@ function inicializarGestosSwipeDownModales() {
       const diffY = clientY - startY;
       const diffX = Math.abs(clientX - startX);
 
-      if (box.scrollTop > 0) {
+      // Si algún contenedor interno o el modal tiene scroll vertical, cancelar arrastre de cierre
+      let hasInnerScroll = false;
+      let el = e.target;
+      while (el && el !== overlay) {
+        if (el.scrollTop > 0) {
+          hasInnerScroll = true;
+          break;
+        }
+        el = el.parentElement;
+      }
+
+      if (box.scrollTop > 0 || hasInnerScroll || (e.target.closest('#amigo-regs-grid') && !e.target.closest('.modal-swipe-handle'))) {
         startY = clientY;
+        if (isTracking) {
+          isTracking = false;
+          box.classList.remove('swiping-down');
+          box.style.transform = '';
+          overlay.style.backgroundColor = '';
+        }
         return;
       }
 
