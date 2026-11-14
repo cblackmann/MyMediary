@@ -239,7 +239,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px
 .cat-wide-header:hover .cat-wide-total{border-color:var(--accent);box-shadow:0 0 10px rgba(56,189,248,.3)}.cat-wide-body{display:grid;grid-template-columns:1fr 1fr;gap:16px}.cat-subtotals-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;grid-column:span 2}.subtotal-pill{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:.8rem;color:var(--muted);transition:var(--tr)}
 .subtotal-pill:hover{border-color:rgba(56,189,248,.4);color:var(--text)}.subtotal-pill strong{color:var(--text)}.highlight-card{background:var(--bg);border:1px solid rgba(51,65,85,.5);border-radius:12px;padding:12px 16px;transition:var(--tr);position:relative;overflow:hidden;cursor:pointer}
 .highlight-card:hover{border-color:var(--accent);box-shadow:0 4px 14px rgba(56,189,248,0.25);transform:translateY(-2px)}.highlight-card-title{font-size:.75rem;font-weight:700;text-transform:uppercase;color:var(--accent);letter-spacing:.05em;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:6px}
-.highlight-main-txt{font-size:.95rem;font-weight:700;line-height:1.3;transition:opacity .25s ease-in-out}.highlight-sub-txt{font-size:.8rem;color:var(--muted);margin-top:4px;transition:opacity .25s ease-in-out}.carousel-indicator{font-size:.72rem;color:var(--muted);font-weight:600;background:rgba(51,65,85,.6);padding:1px 6px;border-radius:6px}.cat-top-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}.subtabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex:1;min-width:200px}
+.highlight-main-txt{font-size:.95rem;font-weight:700;line-height:1.3;transition:opacity .25s ease-in-out}.highlight-sub-txt{font-size:.8rem;color:var(--muted);margin-top:4px;transition:opacity .25s ease-in-out}.carousel-indicator{font-size:.72rem;color:var(--accent);font-weight:700;background:rgba(56,189,248,0.16);border:1px solid rgba(56,189,248,0.35);padding:1px 7px;border-radius:8px;letter-spacing:0.02em;display:inline-flex;align-items:center}.cat-top-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}.subtabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex:1;min-width:200px}
 .subtabs::-webkit-scrollbar{display:none}.subtab-btn{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:8px 14px;border-radius:8px;font-size:.85rem;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:var(--tr)}.subtab-btn:hover{color:var(--text);border-color:rgba(56,189,248,.6);background:rgba(56,189,248,.06);transform:translateY(-1px)}.subtab-btn.active{background:var(--card-hover);color:var(--text);border-color:var(--accent);font-weight:600;box-shadow:0 0 10px rgba(56,189,248,.25)}
 .watchlist-dedicated-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0}.btn-watchlist-special{background:linear-gradient(135deg,rgba(245,158,11,0.16),rgba(234,88,12,0.16));border:1px solid rgba(245,158,11,0.6);color:#fcd34d;padding:8px 15px;border-radius:12px;font-size:.84rem;font-weight:700;cursor:pointer;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;transition:var(--tr);box-shadow:0 3px 10px rgba(245,158,11,0.15)}
 .btn-watchlist-special:hover{background:linear-gradient(135deg,rgba(245,158,11,0.28),rgba(234,88,12,0.28));border-color:#f59e0b;color:#fff;transform:translateY(-1px);box-shadow:0 5px 14px rgba(245,158,11,0.3)}.btn-watchlist-special.active{background:linear-gradient(135deg,#f59e0b,#d97706);color:#0f172a;border-color:#fbbf24;box-shadow:0 0 16px rgba(245,158,11,0.45)}
@@ -1018,6 +1018,45 @@ html[data-show-emojis="false"] .emoji-dyn { display: none !important; }
 .home-subcat-pill{display:none;}
 /* TARJETAS DE SUBCATEGORÍA DE LECTURAS ADAPTATIVAS (NO OSCURAS) */
 .stat-subcat-lecturas-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;}
+
+/* REORGANIZACIÓN Y MODO REORDENAR PESTAÑA LISTAS */
+.listas-top-bar{display:flex;justify-content:flex-end;align-items:center;margin-bottom:12px;width:100%;box-sizing:border-box;}
+.btn-listas-reorder{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:var(--tr);box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.btn-listas-reorder:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-1px);}
+.btn-listas-reorder.active{background:rgba(56,189,248,0.15);border-color:var(--accent);color:var(--accent);}
+.reorder-panel-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,0.12);width:100%;box-sizing:border-box;}
+.reorder-panel-header{margin-bottom:14px;}
+.reorder-panel-title{font-size:1.05rem;font-weight:700;color:var(--text);display:flex;align-items:center;gap:8px;}
+.reorder-panel-sub{font-size:0.8rem;color:var(--muted);margin:4px 0 0 0;line-height:1.35;}
+.reorder-items-list{display:flex;flex-direction:column;gap:8px;}
+.reorder-item-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;transition:transform 0.15s ease,border-color 0.15s ease,opacity 0.15s ease;user-select:none;}
+.reorder-item-row.is-hidden{opacity:0.55;background:rgba(0,0,0,0.15);}
+.reorder-item-row.is-dragging{opacity:0.35;border-style:dashed;border-color:var(--accent);}
+.reorder-item-row.drag-over-top{border-top:2px solid var(--accent);}
+.reorder-item-row.drag-over-bottom{border-bottom:2px solid var(--accent);}
+.reorder-handle{cursor:grab;color:var(--muted);display:flex;align-items:center;padding:4px;touch-action:none;}
+.reorder-handle:active{cursor:grabbing;}
+.reorder-cat-info{display:flex;align-items:center;gap:10px;flex:1;}
+.reorder-cat-emoji{font-size:1.2rem;}
+.reorder-cat-name{font-weight:700;font-size:0.92rem;color:var(--text);}
+.reorder-badge-hidden{font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:6px;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.28);white-space:nowrap;}
+.reorder-item-actions{display:flex;align-items:center;gap:6px;}
+.btn-reorder-move{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);width:28px;height:28px;font-size:0.75rem;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--tr);}
+.btn-reorder-move:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+.btn-reorder-move:disabled{opacity:0.25;cursor:not-allowed;}
+.btn-reorder-eye{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--accent);width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--tr);}
+.btn-reorder-eye.hidden-state{color:var(--muted);border-color:rgba(239,68,68,0.35);}
+.btn-reorder-eye:hover{transform:scale(1.05);}
+.reorder-panel-footer{margin-top:14px;display:flex;justify-content:flex-end;}
+.btn-reorder-done{background:var(--accent);color:#ffffff;border:none;border-radius:10px;padding:8px 18px;font-size:0.85rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(56,189,248,0.3);transition:var(--tr);}
+.btn-reorder-done:hover{opacity:0.92;transform:translateY(-1px);}
+
+/* THEME SUPPORT PARA CAROUSEL-INDICATOR */
+[data-theme="emerald-dark"] .carousel-indicator,[data-theme="oled"] .carousel-indicator{color:#34d399 !important;background:rgba(16,185,129,0.16) !important;border-color:rgba(16,185,129,0.35) !important;}
+[data-theme="espresso-dark"] .carousel-indicator,[data-theme="espresso"] .carousel-indicator{color:#fbbf24 !important;background:rgba(245,158,11,0.16) !important;border-color:rgba(245,158,11,0.35) !important;}
+[data-theme="dracula-dark"] .carousel-indicator,[data-theme="dracula"] .carousel-indicator{color:#f472b6 !important;background:rgba(255,121,198,0.16) !important;border-color:rgba(255,121,198,0.35) !important;}
+[data-theme$="-light"] .carousel-indicator,[data-theme="nordic-light"] .carousel-indicator,[data-theme="creme-latte"] .carousel-indicator,[data-theme="parchment"] .carousel-indicator,[data-theme="sage-garden"] .carousel-indicator,[data-theme="lavender-light"] .carousel-indicator{color:var(--accent) !important;background:rgba(0,0,0,0.06) !important;border:1px solid rgba(0,0,0,0.16) !important;}
+
 .mobile-history-card.row-highlighted{outline:2px solid var(--accent) !important;box-shadow:0 0 16px rgba(56,189,248,0.45) !important;animation:highlightRow 2.5s ease-out !important;}
 /* 3 RACHAS: PELÍCULAS, MÚSICA, LECTURA */
 .home-streaks-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;width:100%;box-sizing:border-box;}
@@ -2257,7 +2296,23 @@ html[data-ui-style="modern"] .btn-modal-cancel {
           <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div>
         </div>
       </div>
-    </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) --> <div id="vista-listas-extendida" style="display:none;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:8px; margin-bottom:4px;"> <span>⭐</span> <span data-i18n="lists_dashboard_title">Índice General de Listas</span> </h2> <p style="color:var(--muted); font-size:.85rem; margin:0;" data-i18n="lists_dashboard_subtitle">Resumen exhaustivo de tus hábitos, subtotales y favoritos por categoría</p> </div> </div> <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div>
+    </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) -->
+    <div id="vista-listas-extendida" style="display:none;">
+      <div class="listas-top-bar">
+        <button type="button" class="btn-listas-reorder" id="btn-toggle-reordenar-listas" onclick="toggleModoReordenarListas()" title="Organizar y reordenar categorías" aria-label="Organizar y reordenar categorías">
+          <svg id="icon-reordenar-listas-idle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="6" x2="20" y2="6"></line>
+            <line x1="4" y1="12" x2="20" y2="12"></line>
+            <line x1="4" y1="18" x2="20" y2="18"></line>
+          </svg>
+          <svg id="icon-reordenar-listas-active" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div id="contenedor-modo-reordenar-listas" style="display:none; margin-bottom:16px;"></div>
+      <div class="dashboard-vertical-list" id="grid-stats"></div>
+    </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div>
 
 <!-- 1. AGREGAR ID -->
 <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div>
@@ -2509,7 +2564,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
     <span class="icon emoji-dyn">👤</span> <span data-i18n="nav_perfil">Perfil</span>
   </button>
 </nav> <!-- MODAL DE AGREGADO RÁPIDO (+) --> <div id="modal-agregado-rapido" class="modal-overlay" style="display:none;">
-<div class="modal-box"> <h3 style="display:flex; align-items:center; gap:8px;" data-i18n="quick_reg_title">⚡ ¿Qué deseas registrar?</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;" data-i18n="quick_reg_sub">Selecciona la categoría para abrir su buscador:</p> <div class="quick-add-grid"> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Películas')"><span>🎬</span> Película</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Documentales')"><span>📹</span> Documental</button>
+<div class="modal-box"> <h3 style="display:flex; align-items:center; gap:8px;" data-i18n="quick_reg_title">⚡ ¿Qué deseas registrar?</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;" data-i18n="quick_reg_sub">Selecciona la categoría para abrir su buscador:</p> <div class="quick-add-grid" id="modal-quick-add-grid"> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Películas')"><span>🎬</span> Película</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Documentales')"><span>📹</span> Documental</button>
 <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Series', 'Temporadas')"><span>📺</span> Serie / Temp.</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Series', 'Series Documentales')"><span>📽️</span> Docuserie</button>
 <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Musica', 'Discos')"><span>💿</span> Disco</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Musica', 'Artistas/Grupos')"><span>🎙️</span> Artista</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Juegos', 'Videojuegos')"><span>🎮</span> Videojuego</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Libros')"><span>📖</span> Libro</button>
 <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Cómics')"><span>💥</span> Cómic</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Mangas')"><span>⛩️</span> Manga</button> </div> <div class="modal-actions" style="margin-top:16px;"> <button type="button" class="btn-modal-cancel" onclick="cerrarModalAgregadoRapido()">Cancelar</button> </div> </div>
@@ -7691,8 +7746,8 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "table_th_horas": "Horas",
     "table_th_calif": "Calificación",
     "table_th_comentario": "Comentario",
-    "stat_ultimo": "Último",
-    "stat_mejor": "Mejor Calificado",
+    "stat_ultimo": "Último Agregado",
+    "stat_mejor": "Mejores Calificados",
     "stat_sin_reg": "Sin registros aún",
     "stat_sin_fecha": "Sin fecha registrada",
     "total_prefix": "Total:",
@@ -8115,7 +8170,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "table_th_horas": "Hours",
     "table_th_calif": "Rating",
     "table_th_comentario": "Review",
-    "stat_ultimo": "Latest",
+    "stat_ultimo": "Latest Added",
     "stat_mejor": "Highest Rated",
     "stat_sin_reg": "No records yet",
     "stat_sin_fecha": "No registered date",
@@ -8464,7 +8519,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "btn_la_termine": "I finished it!",
     "lbl_en_progreso_inicio": "Started:"
   }
-}; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", uiStyle: "modern", showEmojis: true, lang: "es"
+}; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", uiStyle: "modern", showEmojis: true, lang: "es", categoriasOrden: ['Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'], categoriasOcultas: []
 }; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary ✨', avatar: '🦊', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
 }; const AVATARES_PRESET = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐯', '🐨', '🐸', '🦉', '🐻', '🐵', '🐰']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
 const WATCHLIST_ESTRUCTURA = [
@@ -10297,10 +10352,330 @@ function renderizarObrasEnProgresoInicio() {
 window.renderizarObrasEnProgresoInicio = renderizarObrasEnProgresoInicio;
 
 
+const CATS_DEFECTO = ['Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'];
+
+function obtenerCategoriasOrdenadas(incluirOcultas = false) {
+  let orden = (typeof userPrefs !== 'undefined' && userPrefs && Array.isArray(userPrefs.categoriasOrden)) ? [...userPrefs.categoriasOrden] : [...CATS_DEFECTO];
+  CATS_DEFECTO.forEach(c => {
+    if (!orden.includes(c)) orden.push(c);
+  });
+  orden = orden.filter(c => (typeof CONFIG !== 'undefined' && CONFIG[c]));
+  if (!orden.length) orden = [...CATS_DEFECTO];
+
+  const ocultas = (typeof userPrefs !== 'undefined' && userPrefs && Array.isArray(userPrefs.categoriasOcultas)) ? userPrefs.categoriasOcultas : [];
+  if (incluirOcultas) {
+    return orden;
+  }
+  return orden.filter(c => !ocultas.includes(c));
+}
+window.obtenerCategoriasOrdenadas = obtenerCategoriasOrdenadas;
+
+function esObraTerminada(r) {
+  if (!r) return false;
+  const fFin = r.fechaFin || r.fecha_fin;
+  const fFinStr = String(fFin || '').trim();
+  const fFinLower = fFinStr.toLowerCase();
+  if (typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(fFin)) return false;
+  if (fFinLower.startsWith('aún') || fFinLower.startsWith('aun') || fFinLower.startsWith('still') || fFinLower.includes('progreso') || fFinLower.includes('progress')) return false;
+  
+  const admiteRango = (typeof subTieneRango === 'function') ? subTieneRango(r.categoria, r.subcategoria) : Boolean(r.fechaFin && r.fechaInicio);
+  if (admiteRango) {
+    if (!fFin || fFinLower === 'sin fecha' || fFinStr === '') return false;
+    return true;
+  }
+  const fIni = r.fechaInicio || r.fecha_inicio;
+  const fIniLower = String(fIni || '').trim().toLowerCase();
+  if (typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(fIni)) return false;
+  if (fIniLower.startsWith('aún') || fIniLower.startsWith('aun') || fIniLower.startsWith('still')) return false;
+  return Boolean((fFin && fFinLower !== 'sin fecha' && fFinStr !== '') || (fIni && fIniLower !== 'sin fecha' && String(fIni).trim() !== ''));
+}
+window.esObraTerminada = esObraTerminada;
+
+let modoReordenarListasActivo = false;
+
+function toggleModoReordenarListas() {
+  modoReordenarListasActivo = !modoReordenarListasActivo;
+  const btn = document.getElementById('btn-toggle-reordenar-listas');
+  const panel = document.getElementById('contenedor-modo-reordenar-listas');
+  const grid = document.getElementById('grid-stats');
+  const iconIdle = document.getElementById('icon-reordenar-listas-idle');
+  const iconActive = document.getElementById('icon-reordenar-listas-active');
+
+  if (modoReordenarListasActivo) {
+    if (btn) btn.classList.add('active');
+    if (iconIdle) iconIdle.style.display = 'none';
+    if (iconActive) iconActive.style.display = 'block';
+    if (panel) {
+      panel.style.display = 'block';
+      renderizarPanelReordenarListas();
+    }
+    if (grid) grid.style.display = 'none';
+  } else {
+    if (btn) btn.classList.remove('active');
+    if (iconIdle) iconIdle.style.display = 'block';
+    if (iconActive) iconActive.style.display = 'none';
+    if (panel) panel.style.display = 'none';
+    if (grid) grid.style.display = 'grid';
+    guardarPreferenciasLocales();
+    renderizarStats();
+    renderizarSubcategoriasResumenInicio();
+    renderizarOpcionesAgregadoRapido();
+  }
+}
+window.toggleModoReordenarListas = toggleModoReordenarListas;
+
+function renderizarPanelReordenarListas() {
+  const panel = document.getElementById('contenedor-modo-reordenar-listas');
+  if (!panel) return;
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
+  const todasCats = obtenerCategoriasOrdenadas(true);
+  const ocultas = new Set((typeof userPrefs !== 'undefined' && userPrefs && userPrefs.categoriasOcultas) || []);
+
+  panel.innerHTML = `
+    <div class="reorder-panel-box">
+      <div class="reorder-panel-header">
+        <div class="reorder-panel-title">
+          <span class="emoji-dyn">⚡</span>
+          <span>${l === 'en' ? 'Organize Categories' : 'Organizar Categorías'}</span>
+        </div>
+        <p class="reorder-panel-sub">
+          ${l === 'en' ? 'Drag categories to reorder them or tap the eye to show/hide. Changes apply to Lists, Home Index, and Quick Add.' : 'Arrastra para reordenar las categorías o toca el ojo para ocultar o mostrar. Se reflejará en Listas, Inicio y Agregado Rápido.'}
+        </p>
+      </div>
+      <div class="reorder-items-list" id="lista-reordenar-items">
+        ${todasCats.map((cat, idx) => {
+          const cfg = CONFIG[cat] || { emoji: '📁', nombre: cat };
+          const catNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].cats && I18N[l].cats[cat]) || cfg.nombre;
+          const esOculta = ocultas.has(cat);
+          return `
+            <div class="reorder-item-row ${esOculta ? 'is-hidden' : ''}" draggable="true" data-cat="${cat}" data-idx="${idx}">
+              <div class="reorder-handle" title="${l === 'en' ? 'Drag to move' : 'Arrastra para mover'}">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="6" r="1.5"></circle>
+                  <circle cx="15" cy="6" r="1.5"></circle>
+                  <circle cx="9" cy="12" r="1.5"></circle>
+                  <circle cx="15" cy="12" r="1.5"></circle>
+                  <circle cx="9" cy="18" r="1.5"></circle>
+                  <circle cx="15" cy="18" r="1.5"></circle>
+                </svg>
+              </div>
+              <div class="reorder-cat-info">
+                <span class="reorder-cat-emoji emoji-dyn">${cfg.emoji}</span>
+                <span class="reorder-cat-name">${catNombre}</span>
+                ${esOculta ? `<span class="reorder-badge-hidden">${l === 'en' ? 'Hidden' : 'Oculta'}</span>` : ''}
+              </div>
+              <div class="reorder-item-actions">
+                <button type="button" class="btn-reorder-move" onclick="moverCategoriaPaso('${cat}', -1)" title="${l === 'en' ? 'Move up' : 'Subir'}" ${idx === 0 ? 'disabled' : ''}>
+                  ▲
+                </button>
+                <button type="button" class="btn-reorder-move" onclick="moverCategoriaPaso('${cat}', 1)" title="${l === 'en' ? 'Move down' : 'Bajar'}" ${idx === todasCats.length - 1 ? 'disabled' : ''}>
+                  ▼
+                </button>
+                <button type="button" class="btn-reorder-eye ${esOculta ? 'hidden-state' : ''}" onclick="toggleVisibilidadCategoria('${cat}')" title="${esOculta ? (l === 'en' ? 'Show category' : 'Mostrar categoría') : (l === 'en' ? 'Hide category' : 'Ocultar categoría')}">
+                  ${esOculta ? `
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                      <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                  ` : `
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                  `}
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+      <div class="reorder-panel-footer">
+        <button type="button" class="btn-reorder-done" onclick="toggleModoReordenarListas()">
+          <span class="emoji-dyn">✓</span>
+          <span>${l === 'en' ? 'Done' : 'Listo'}</span>
+        </button>
+      </div>
+    </div>
+  `;
+
+  iniciarEventosDragDropReordenar();
+}
+window.renderizarPanelReordenarListas = renderizarPanelReordenarListas;
+
+function iniciarEventosDragDropReordenar() {
+  const container = document.getElementById('lista-reordenar-items');
+  if (!container) return;
+  const items = container.querySelectorAll('.reorder-item-row');
+  let draggedItem = null;
+
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => {
+      draggedItem = item;
+      item.classList.add('is-dragging');
+      if (e.dataTransfer) {
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', item.dataset.cat || '');
+      }
+    });
+
+    item.addEventListener('dragend', () => {
+      item.classList.remove('is-dragging');
+      items.forEach(it => it.classList.remove('drag-over-top', 'drag-over-bottom'));
+      guardarNuevoOrdenDesdeDOM();
+    });
+
+    item.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+      if (!draggedItem || draggedItem === item) return;
+      const rect = item.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      if (e.clientY < mid) {
+        item.classList.add('drag-over-top');
+        item.classList.remove('drag-over-bottom');
+      } else {
+        item.classList.add('drag-over-bottom');
+        item.classList.remove('drag-over-top');
+      }
+    });
+
+    item.addEventListener('dragleave', () => {
+      item.classList.remove('drag-over-top', 'drag-over-bottom');
+    });
+
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      if (!draggedItem || draggedItem === item) return;
+      const rect = item.getBoundingClientRect();
+      const mid = rect.top + rect.height / 2;
+      if (e.clientY < mid) {
+        container.insertBefore(draggedItem, item);
+      } else {
+        container.insertBefore(draggedItem, item.nextSibling);
+      }
+      guardarNuevoOrdenDesdeDOM();
+      renderizarPanelReordenarListas();
+    });
+  });
+
+  // Touch drag support para móviles
+  let touchDraggedItem = null;
+  items.forEach(item => {
+    const handle = item.querySelector('.reorder-handle');
+    if (!handle) return;
+    handle.addEventListener('touchstart', () => {
+      touchDraggedItem = item;
+      item.classList.add('is-dragging');
+    }, { passive: true });
+
+    handle.addEventListener('touchmove', e => {
+      if (!touchDraggedItem) return;
+      const touch = e.touches[0];
+      const targetElem = document.elementFromPoint(touch.clientX, touch.clientY);
+      const row = targetElem?.closest('.reorder-item-row');
+      if (row && row !== touchDraggedItem && row.parentNode === container) {
+        const rect = row.getBoundingClientRect();
+        const mid = rect.top + rect.height / 2;
+        if (touch.clientY < mid) {
+          container.insertBefore(touchDraggedItem, row);
+        } else {
+          container.insertBefore(touchDraggedItem, row.nextSibling);
+        }
+      }
+    }, { passive: true });
+
+    handle.addEventListener('touchend', () => {
+      if (touchDraggedItem) {
+        touchDraggedItem.classList.remove('is-dragging');
+        touchDraggedItem = null;
+        guardarNuevoOrdenDesdeDOM();
+        renderizarPanelReordenarListas();
+      }
+    });
+  });
+}
+
+function guardarNuevoOrdenDesdeDOM() {
+  const container = document.getElementById('lista-reordenar-items');
+  if (!container) return;
+  const rows = container.querySelectorAll('.reorder-item-row');
+  const nuevoOrden = Array.from(rows).map(r => r.dataset.cat).filter(Boolean);
+  if (nuevoOrden.length) {
+    if (typeof userPrefs === 'undefined' || !userPrefs) userPrefs = {};
+    userPrefs.categoriasOrden = nuevoOrden;
+    guardarPreferenciasLocales();
+  }
+}
+
+function moverCategoriaPaso(cat, paso) {
+  const todas = obtenerCategoriasOrdenadas(true);
+  const idx = todas.indexOf(cat);
+  if (idx === -1) return;
+  const nuevoIdx = idx + paso;
+  if (nuevoIdx < 0 || nuevoIdx >= todas.length) return;
+  todas.splice(idx, 1);
+  todas.splice(nuevoIdx, 0, cat);
+  if (typeof userPrefs === 'undefined' || !userPrefs) userPrefs = {};
+  userPrefs.categoriasOrden = todas;
+  guardarPreferenciasLocales();
+  renderizarPanelReordenarListas();
+}
+window.moverCategoriaPaso = moverCategoriaPaso;
+
+function toggleVisibilidadCategoria(cat) {
+  if (typeof userPrefs === 'undefined' || !userPrefs) userPrefs = {};
+  if (!Array.isArray(userPrefs.categoriasOcultas)) userPrefs.categoriasOcultas = [];
+  const idx = userPrefs.categoriasOcultas.indexOf(cat);
+  if (idx !== -1) {
+    userPrefs.categoriasOcultas.splice(idx, 1);
+  } else {
+    const todas = obtenerCategoriasOrdenadas(true);
+    if (userPrefs.categoriasOcultas.length >= todas.length - 1) {
+      if (typeof mostrarToastPersonalizado === 'function') {
+        mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'At least one category must remain visible' : 'Al menos una categoría debe permanecer visible');
+      }
+      return;
+    }
+    userPrefs.categoriasOcultas.push(cat);
+  }
+  guardarPreferenciasLocales();
+  renderizarPanelReordenarListas();
+}
+window.toggleVisibilidadCategoria = toggleVisibilidadCategoria;
+
+function renderizarOpcionesAgregadoRapido() {
+  const grid = document.getElementById('modal-quick-add-grid');
+  if (!grid) return;
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
+  const catsVisibles = obtenerCategoriasOrdenadas(false);
+
+  const opciones = [
+    { cat: 'Peliculas', sub: 'Películas', emoji: '🎬', label: (l === 'en' ? 'Movie' : 'Película') },
+    { cat: 'Peliculas', sub: 'Documentales', emoji: '📹', label: (l === 'en' ? 'Documentary' : 'Documental') },
+    { cat: 'Series', sub: 'Temporadas', emoji: '📺', label: (l === 'en' ? 'Series / Season' : 'Serie / Temp.') },
+    { cat: 'Series', sub: 'Series Documentales', emoji: '📽️', label: (l === 'en' ? 'Docuseries' : 'Docuserie') },
+    { cat: 'Musica', sub: 'Discos', emoji: '💿', label: (l === 'en' ? 'Album' : 'Disco') },
+    { cat: 'Musica', sub: 'Artistas/Grupos', emoji: '🎙️', label: (l === 'en' ? 'Artist' : 'Artista') },
+    { cat: 'Juegos', sub: 'Videojuegos', emoji: '🎮', label: (l === 'en' ? 'Video Game' : 'Videojuego') },
+    { cat: 'Lecturas', sub: 'Libros', emoji: '📖', label: (l === 'en' ? 'Book' : 'Libro') },
+    { cat: 'Lecturas', sub: 'Cómics', emoji: '💥', label: (l === 'en' ? 'Comic' : 'Cómic') },
+    { cat: 'Lecturas', sub: 'Mangas', emoji: '⛩️', label: (l === 'en' ? 'Manga' : 'Manga') }
+  ];
+
+  const opsFiltradas = opciones.filter(op => catsVisibles.includes(op.cat));
+  opsFiltradas.sort((a, b) => catsVisibles.indexOf(a.cat) - catsVisibles.indexOf(b.cat));
+
+  grid.innerHTML = opsFiltradas.map(op => {
+    return `<button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('${op.cat}', '${op.sub}')"><span class="emoji-dyn">${op.emoji}</span> <span>${op.label}</span></button>`;
+  }).join('');
+}
+window.renderizarOpcionesAgregadoRapido = renderizarOpcionesAgregadoRapido;
+
 function renderizarSubcategoriasResumenInicio() {
   const cont = document.getElementById('home-subcats-summary-pills');
   if (!cont) return;
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
+  const catsVisibles = obtenerCategoriasOrdenadas(false);
   const listaSubcats = [
     { cat: 'Peliculas', sub: 'Películas', emoji: '🎬', label: (l === 'en' ? 'Movies' : 'Películas') },
     { cat: 'Series', sub: 'Temporadas', emoji: '📺', label: (l === 'en' ? 'Series' : 'Series') },
@@ -10311,7 +10686,10 @@ function renderizarSubcategoriasResumenInicio() {
     { cat: 'Lecturas', sub: 'Mangas', emoji: '⛩️', label: (l === 'en' ? 'Manga' : 'Mangas') }
   ];
 
-  cont.innerHTML = listaSubcats.map(s => {
+  const subcatsFiltradas = listaSubcats.filter(s => catsVisibles.includes(s.cat));
+  subcatsFiltradas.sort((a, b) => catsVisibles.indexOf(a.cat) - catsVisibles.indexOf(b.cat));
+
+  cont.innerHTML = subcatsFiltradas.map(s => {
     return `
       <button type="button" class="home-indice-btn" onclick="cambiarCat('${s.cat}', '${s.sub}')" title="${s.label}">
         <span class="home-indice-icon emoji-dyn">${s.emoji}</span>
@@ -11892,6 +12270,9 @@ function abrirVistaDashboardListas(pushNav = true) {
   const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
   const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
   const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'block';
+  if (modoReordenarListasActivo && typeof toggleModoReordenarListas === 'function') {
+    toggleModoReordenarListas();
+  }
   actualizarBotonesModoVistaDashboardUI();
   renderizarStats();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -12065,7 +12446,7 @@ else { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); 
 }).obtenerRegistros(estado.userEmail); }
 function cargarWatchlist() { if (!estado.watchlist?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_wl_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_wl_' + estado.userEmail.toLowerCase()); if (c) estado.watchlist = JSON.parse(c); } catch(e) {} } google.script.run.withSuccessHandler(w => { estado.watchlist = w || []; if (estado.userEmail) { try { localStorage.setItem('mediary_cache_wl_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.watchlist)); } catch(e) {} } if (CONFIG[estado.categoria]) renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); if (estado.categoria === 'watchlists') renderizarVistaWatchlistsDedicada(); const modalR = document.getElementById('modal-ruleta-amigo'); if (modalR && modalR.style.display === 'flex' && typeof actualizarVistaCandidatasRuleta === 'function') { actualizarVistaCandidatasRuleta(); } }).obtenerWatchlist(estado.userEmail); }
 // --- AGREGADO RÁPIDO (+) EN MÓVIL ---
-function abrirModalAgregadoRapido() { document.getElementById('modal-agregado-rapido').style.display = 'flex'; }
+function abrirModalAgregadoRapido() { if (typeof renderizarOpcionesAgregadoRapido === 'function') renderizarOpcionesAgregadoRapido(); document.getElementById('modal-agregado-rapido').style.display = 'flex'; }
 function cerrarModalAgregadoRapido() { document.getElementById('modal-agregado-rapido').style.display = 'none'; }
 function ejecutarAgregadoRapido(cat, sub) { cerrarModalAgregadoRapido(); cambiarCat(cat, sub); setTimeout(() => { const inp = document.getElementById('input-search'); if (inp) { inp.focus(); inp.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 }, 250); }
@@ -12667,33 +13048,161 @@ function renderizarStats() {
   const box = document.getElementById('grid-stats');
   if (!box) return;
   box.innerHTML = '';
-  const l = userPrefs.lang || 'es';
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
   const regsAnio = obtenerRegistrosFiltradosPorAnio();
   box.className = 'dashboard-vertical-list';
-  Object.keys(CONFIG).forEach(cat => { const cfg = CONFIG[cat]; let tot = 0; if (cat === 'Series') {
-tot = regsAnio.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))).length;
-} else if (cat === 'Musica') { tot = regsAnio.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco')).length; } else { tot = regsAnio.filter(r => r.categoria === cat).length; }
-const itemsConCalif = regsAnio.filter(r => r.categoria === cat && Number(r.calificacion) > 0); const promCat = itemsConCalif.length ? (itemsConCalif.reduce((acc, x) => acc + Number(x.calificacion), 0) / itemsConCalif.length).toFixed(1) : '0.0';
-const catNombre = I18N[l].cats[cat] || cfg.nombre; const pills = cfg.subs.filter(s => !s.esWatchlist).map(s => { const sNombre = I18N[l].subs[s.id] || s.nombre; const regsSub = obtenerRegistrosDeSubcategoria(cat, s.id); const countTotal = regsSub.length; if (s.admiteRewatch) {
-const countRewatches = regsSub.filter(r => r.esRewatch).length; const countNuevos = countTotal - countRewatches;
-return `<div class="subtotal-pill"><span class="emoji-dyn">${s.emoji} </span>${sNombre}: <strong>${countTotal}</strong> <span style="color:var(--muted); font-size:0.75rem;">(${countNuevos} + ${countRewatches} 🔁)</span></div>`; }
-return `<div class="subtotal-pill"><span class="emoji-dyn">${s.emoji} </span>${sNombre}: <strong>${countTotal}</strong></div>`; }).join(''); let destacados = ''; if (cat === 'Lecturas') {
-destacados = `<div style="grid-column:span 2; display:flex; flex-direction:column; gap:12px;">` + cfg.subs.filter(s => !s.esWatchlist).map(s => { const u = obtenerRegistrosDeSubcategoria('Lecturas', s.id);
-const ult = u.length ? [...u].sort((a,b) => (timestampDeFecha(b.fechaFin) || timestampDeFecha(b.fechaInicio)) - (timestampDeFecha(a.fechaFin) || timestampDeFecha(a.fechaInicio)))[0] : null; let mejores = u.length ? u.filter(x => x.calificacion === Math.max(...u.map(y => y.calificacion))) : [];
-const mej = mejores[0] || null, cId = `lectura-${s.id.toLowerCase()}-mej`; const uF = ult ? ((ult.fechaFin && ult.fechaFin !== 'Sin fecha') ? ult.fechaFin : ult.fechaInicio) : ''; const mF = mej ? ((mej.fechaFin && mej.fechaFin !== 'Sin fecha') ? mej.fechaFin : mej.fechaInicio) : '';
-if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, 'Lecturas', s.id), 50); const sNombre = I18N[l].subs[s.id] || s.nombre; return ` <div class="stat-subcat-lecturas-card"> <div style="font-weight:700; color:var(--accent); font-size:.9rem; margin-bottom:6px;"><span class="emoji-dyn">${s.emoji} </span>${sNombre}</div> <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;"> <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''}> <div style="font-size:.7rem; color:var(--muted); text-transform:uppercase; font-weight:700;">${t('stat_ultimo')}</div> <div class="highlight-main-txt" style="font-size:.85rem;">${ult ? ult.titulo : '—'}</div> <div class="highlight-sub-txt" style="font-size:.75rem;">${ult ? (uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')) : t('stat_sin_reg')}</div> </div> <div class="highlight-card" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''}> <div style="font-size:.7rem; color:var(--muted); text-transform:uppercase; font-weight:700; display:flex; justify-content:space-between;"> <span>${t('stat_mejor')}</span>${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator">[1/${mejores.length}]</span>` : ''} </div> <div class="highlight-main-txt" id="${cId}-title" style="font-size:.85rem;">${mej ? mej.titulo : '—'}</div> <div class="highlight-sub-txt" id="${cId}-sub" style="font-size:.75rem;">${mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : t('stat_sin_reg')}</div> </div> </div> </div>`;
-}).join('') + `</div>`; } else { let uUltimo = [], uMejores = [], subDestino = CONFIG[cat].subs[0].id; if (cat === 'Peliculas') { subDestino = 'Películas';
-uUltimo = uMejores = regsAnio.filter(r => r.categoria === 'Peliculas' && !r.esRewatch && r.subcategoria !== 'Rewatches'); } else if (cat === 'Series') {
-subDestino = 'Temporadas'; uUltimo = regsAnio.filter(r => r.categoria === 'Series' && !r.esRewatch && !r.subcategoria.includes('Rewatch'));
-uMejores = regsAnio.filter(r => r.categoria === 'Series' && !r.esRewatch && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))); } else if (cat === 'Musica') { subDestino = 'Discos';
-uUltimo = uMejores = regsAnio.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco')); } else { subDestino = 'Videojuegos'; uUltimo = uMejores = regsAnio.filter(r => r.categoria === 'Juegos'); }
-const ult = uUltimo.length ? [...uUltimo].sort((a,b) => (timestampDeFecha(b.fechaFin) || timestampDeFecha(b.fechaInicio)) - (timestampDeFecha(a.fechaFin) || timestampDeFecha(a.fechaInicio)))[0] : null;
-let mejores = uMejores.length ? uMejores.filter(x => x.calificacion === Math.max(...uMejores.map(y => y.calificacion))) : []; const mej = mejores[0] || null, cId = `cat-${cat.toLowerCase()}-mej`; const uF = ult ? ((ult.fechaFin && ult.fechaFin !== 'Sin fecha') ? ult.fechaFin : ult.fechaInicio) : '';
-const mF = mej ? ((mej.fechaFin && mej.fechaFin !== 'Sin fecha') ? mej.fechaFin : mej.fechaInicio) : ''; const tag = cat === 'Peliculas' ? '(First Time)' : (cat === 'Series' ? '(First Time / Seasons)' : (cat === 'Musica' ? '(Albums)' : ''));
-if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, cat, subDestino), 50); destacados = ` <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', '${cat}', '${subDestino}')"` : ''}> <div class="highlight-card-title"><span class="emoji-dyn">🕒 </span>${t('stat_ultimo')} ${tag}</div> <div class="highlight-main-txt">${ult ? ult.titulo : t('stat_sin_reg')}</div> <div class="highlight-sub-txt">${ult ? (uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')) : '—'}</div> </div> <div class="highlight-card" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', '${cat}', '${subDestino}')"` : ''}> <div class="highlight-card-title"><span><span class="emoji-dyn">⭐ </span>${t('stat_mejor')} ${tag}</span>${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator">[1/${mejores.length}]</span>` : ''}</div> <div class="highlight-main-txt" id="${cId}-title">${mej ? mej.titulo : t('stat_sin_reg')}</div> <div class="highlight-sub-txt" id="${cId}-sub">${mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : '—'}</div> </div>`;
+
+  const catsAMostrar = obtenerCategoriasOrdenadas(false);
+  if (!catsAMostrar.length) {
+    box.innerHTML = `
+      <div style="text-align:center; padding:36px 16px; color:var(--muted); font-size:0.9rem; background:var(--card); border:1px dashed var(--border); border-radius:14px;">
+        <span class="emoji-dyn" style="font-size:1.8rem; display:block; margin-bottom:8px;">📁</span>
+        ${l === 'en' ? 'All categories are hidden. Tap the button above to organize categories.' : 'Todas las categorías están ocultas. Toca el botón de arriba para organizarlas.'}
+      </div>
+    `;
+    return;
+  }
+
+  catsAMostrar.forEach(cat => {
+    const cfg = CONFIG[cat];
+    if (!cfg) return;
+    let tot = 0;
+    if (cat === 'Series') {
+      tot = regsAnio.filter(r => r.categoria === 'Series' && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))).length;
+    } else if (cat === 'Musica') {
+      tot = regsAnio.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco')).length;
+    } else {
+      tot = regsAnio.filter(r => r.categoria === cat).length;
+    }
+
+    const itemsConCalif = regsAnio.filter(r => r.categoria === cat && Number(r.calificacion) > 0);
+    const promCat = itemsConCalif.length ? (itemsConCalif.reduce((acc, x) => acc + Number(x.calificacion), 0) / itemsConCalif.length).toFixed(1) : '0.0';
+    const catNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].cats && I18N[l].cats[cat]) || cfg.nombre;
+
+    const pills = cfg.subs.filter(s => !s.esWatchlist).map(s => {
+      const sNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].subs && I18N[l].subs[s.id]) || s.nombre;
+      const regsSub = obtenerRegistrosDeSubcategoria(cat, s.id);
+      const countTotal = regsSub.length;
+      if (s.admiteRewatch) {
+        const countRewatches = regsSub.filter(r => r.esRewatch).length;
+        const countNuevos = countTotal - countRewatches;
+        return `<div class="subtotal-pill"><span class="emoji-dyn">${s.emoji} </span>${sNombre}: <strong>${countTotal}</strong> <span style="color:var(--muted); font-size:0.75rem;">(${countNuevos} + ${countRewatches} 🔁)</span></div>`;
+      }
+      return `<div class="subtotal-pill"><span class="emoji-dyn">${s.emoji} </span>${sNombre}: <strong>${countTotal}</strong></div>`;
+    }).join('');
+
+    let destacados = '';
+    if (cat === 'Lecturas') {
+      destacados = `<div style="grid-column:span 2; display:flex; flex-direction:column; gap:12px;">` + cfg.subs.filter(s => !s.esWatchlist).map(s => {
+        const u = obtenerRegistrosDeSubcategoria('Lecturas', s.id);
+        const uTerminados = u.filter(r => esObraTerminada(r));
+        const ult = uTerminados.length ? [...uTerminados].sort((a,b) => (timestampDeFecha(b.fechaFin || b.fechaInicio) || 0) - (timestampDeFecha(a.fechaFin || a.fechaInicio) || 0))[0] : null;
+        let mejores = u.length ? u.filter(x => x.calificacion === Math.max(...u.map(y => y.calificacion))) : [];
+        const mej = mejores[0] || null, cId = `lectura-${s.id.toLowerCase()}-mej`;
+        const uF = ult ? ((ult.fechaFin && ult.fechaFin !== 'Sin fecha') ? ult.fechaFin : ult.fechaInicio) : '';
+        const mF = mej ? ((mej.fechaFin && mej.fechaFin !== 'Sin fecha') ? mej.fechaFin : mej.fechaInicio) : '';
+
+        if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, 'Lecturas', s.id), 50);
+        const sNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].subs && I18N[l].subs[s.id]) || s.nombre;
+
+        const ultCalifHtml = (ult && Number(ult.calificacion) > 0) ? `${renderEstrellasVisuales(ult.calificacion)} ` : '';
+        const ultSubTxt = ult ? `${ultCalifHtml}<span style="${ultCalifHtml ? 'margin-left:4px;' : ''}">(${uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')})</span>` : t('stat_sin_reg');
+        const mejCalifHtml = mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : t('stat_sin_reg');
+
+        return `
+          <div class="stat-subcat-lecturas-card">
+            <div style="font-weight:700; color:var(--accent); font-size:.9rem; margin-bottom:6px;"><span class="emoji-dyn">${s.emoji} </span>${sNombre}</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''}>
+                <div class="highlight-card-title">
+                  <span style="display:inline-flex; align-items:center; gap:5px;"><span class="emoji-dyn">🕒</span> ${t('stat_ultimo')}</span>
+                </div>
+                <div class="highlight-main-txt" style="font-size:.85rem;">${ult ? ult.titulo : '—'}</div>
+                <div class="highlight-sub-txt" style="font-size:.75rem;">${ultSubTxt}</div>
+              </div>
+              <div class="highlight-card" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''}>
+                <div class="highlight-card-title">
+                  <span style="display:inline-flex; align-items:center; gap:5px;"><span class="emoji-dyn">⭐</span> ${t('stat_mejor')}</span>
+                  ${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator">[1/${mejores.length}]</span>` : ''}
+                </div>
+                <div class="highlight-main-txt" id="${cId}-title" style="font-size:.85rem;">${mej ? mej.titulo : '—'}</div>
+                <div class="highlight-sub-txt" id="${cId}-sub" style="font-size:.75rem;">${mejCalifHtml}</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('') + `</div>`;
+    } else {
+      let uUltimo = [], uMejores = [], subDestino = CONFIG[cat].subs[0].id;
+      if (cat === 'Peliculas') {
+        subDestino = 'Películas';
+        uUltimo = regsAnio.filter(r => r.categoria === 'Peliculas' && !r.esRewatch && r.subcategoria !== 'Rewatches' && esObraTerminada(r));
+        uMejores = regsAnio.filter(r => r.categoria === 'Peliculas' && !r.esRewatch && r.subcategoria !== 'Rewatches');
+      } else if (cat === 'Series') {
+        subDestino = 'Temporadas';
+        uUltimo = regsAnio.filter(r => r.categoria === 'Series' && !r.esRewatch && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada')) && esObraTerminada(r));
+        uMejores = regsAnio.filter(r => r.categoria === 'Series' && !r.esRewatch && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada')));
+      } else if (cat === 'Musica') {
+        subDestino = 'Discos';
+        uUltimo = regsAnio.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco') && esObraTerminada(r));
+        uMejores = regsAnio.filter(r => r.categoria === 'Musica' && (r.subcategoria === 'Discos' || r.subcategoria === 'Disco'));
+      } else {
+        subDestino = 'Videojuegos';
+        uUltimo = regsAnio.filter(r => r.categoria === 'Juegos' && esObraTerminada(r));
+        uMejores = regsAnio.filter(r => r.categoria === 'Juegos');
+      }
+
+      const ult = uUltimo.length ? [...uUltimo].sort((a,b) => (timestampDeFecha(b.fechaFin || b.fechaInicio) || 0) - (timestampDeFecha(a.fechaFin || a.fechaInicio) || 0))[0] : null;
+      let mejores = uMejores.length ? uMejores.filter(x => x.calificacion === Math.max(...uMejores.map(y => y.calificacion))) : [];
+      const mej = mejores[0] || null, cId = `cat-${cat.toLowerCase()}-mej`;
+      const uF = ult ? ((ult.fechaFin && ult.fechaFin !== 'Sin fecha') ? ult.fechaFin : ult.fechaInicio) : '';
+      const mF = mej ? ((mej.fechaFin && mej.fechaFin !== 'Sin fecha') ? mej.fechaFin : mej.fechaInicio) : '';
+
+      if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, cat, subDestino), 50);
+
+      const ultCalifHtml = (ult && Number(ult.calificacion) > 0) ? `${renderEstrellasVisuales(ult.calificacion)} ` : '';
+      const ultSubTxt = ult ? `${ultCalifHtml}<span style="${ultCalifHtml ? 'margin-left:4px;' : ''}">(${uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')})</span>` : '—';
+      const mejCalifHtml = mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : '—';
+
+      destacados = `
+        <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', '${cat}', '${subDestino}')"` : ''}>
+          <div class="highlight-card-title">
+            <span style="display:inline-flex; align-items:center; gap:5px;"><span class="emoji-dyn">🕒</span> ${t('stat_ultimo')}</span>
+          </div>
+          <div class="highlight-main-txt">${ult ? ult.titulo : t('stat_sin_reg')}</div>
+          <div class="highlight-sub-txt">${ultSubTxt}</div>
+        </div>
+        <div class="highlight-card" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', '${cat}', '${subDestino}')"` : ''}>
+          <div class="highlight-card-title">
+            <span style="display:inline-flex; align-items:center; gap:5px;"><span class="emoji-dyn">⭐</span> ${t('stat_mejor')}</span>
+            ${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator">[1/${mejores.length}]</span>` : ''}
+          </div>
+          <div class="highlight-main-txt" id="${cId}-title">${mej ? mej.titulo : t('stat_sin_reg')}</div>
+          <div class="highlight-sub-txt" id="${cId}-sub">${mejCalifHtml}</div>
+        </div>
+      `;
+    }
+
+    const c = document.createElement('div');
+    c.className = 'cat-wide-card';
+    c.innerHTML = `
+      <div class="cat-wide-header" onclick="cambiarCat('${cat}')" title="Ir a ${catNombre}">
+        <div class="cat-wide-title"><span class="emoji-dyn">${cfg.emoji} </span>${catNombre}</div>
+        <div class="cat-wide-total">
+          <span style="color:var(--star-active); font-size:0.88rem;">★ ${promCat}</span>
+          <span style="color:var(--border);">·</span>
+          <span>${t('total_prefix')} ${tot}</span>
+        </div>
+      </div>
+      <div class="cat-wide-body">
+        <div class="cat-subtotals-wrap">${pills}</div>
+        ${destacados}
+      </div>
+    `;
+    box.appendChild(c);
+  });
+  aplicarEstilosGlobales();
 }
-const c = document.createElement('div'); c.className = 'cat-wide-card'; c.innerHTML = ` <div class="cat-wide-header" onclick="cambiarCat('${cat}')" title="Ir a ${catNombre}"> <div class="cat-wide-title"><span class="emoji-dyn">${cfg.emoji} </span>${catNombre}</div> <div class="cat-wide-total"> <span style="color:var(--star-active); font-size:0.88rem;">★ ${promCat}</span> <span style="color:var(--border);">·</span> <span>${t('total_prefix')} ${tot}</span> </div> </div> <div class="cat-wide-body"><div class="cat-subtotals-wrap">${pills}</div>${destacados}</div>`;
-box.appendChild(c); }); aplicarEstilosGlobales(); }
 function seleccionarTipoEvento(tVal) { estado.tipoEventoConcierto = tVal; document.getElementById('btn-tipo-concierto').classList.toggle('active', tVal === 'Concierto'); document.getElementById('btn-tipo-festival').classList.toggle('active', tVal === 'Festival'); }
 function limpiarModuloConcierto() { document.getElementById('concierto-gira').value = ''; document.getElementById('input-buscar-artista-concierto').value = '';
 document.getElementById('search-results-artistas').style.display = 'none'; estado.artistasConciertoSeleccionados = []; renderizarEtiquetasArtistas(); }
