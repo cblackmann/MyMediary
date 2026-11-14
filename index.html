@@ -894,8 +894,8 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .feed-card-title{font-size:1.02rem;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:2px;}
 .feed-card-meta{font-size:0.8rem;color:var(--muted);margin-bottom:8px;}
 .feed-cat-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(56,189,248,0.12);color:var(--accent);font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:6px;border:1px solid rgba(56,189,248,0.25);text-transform:uppercase;letter-spacing:0.03em;}
-.feed-status-badge{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;font-weight:700;padding:2px 8px;border-radius:6px;}
-.feed-status-inprog{background:rgba(245,158,11,0.14);color:#fbbf24;border:1px solid rgba(245,158,11,0.35);}
+.feed-status-inprog{background:rgba(245,158,11,0.18);color:#b45309;border:1.5px solid #d97706;font-weight:700;}
+[data-theme$="-dark"] .feed-status-inprog, html:not([data-theme*="-light"]) .feed-status-inprog{background:rgba(245,158,11,0.22);color:#fde047;border:1.5px solid rgba(245,158,11,0.6);font-weight:700;}
 .feed-review-box{margin-top:10px;padding:10px 14px;background:rgba(56,189,248,0.06);border-left:3px solid var(--accent);border-radius:4px 8px 8px 4px;font-size:0.86rem;color:var(--text);line-height:1.45;word-break:break-word;position:relative;}
 [data-theme$="-light"] .feed-review-box, [data-theme="nordic-light"] .feed-review-box, [data-theme="creme-latte"] .feed-review-box, [data-theme="parchment"] .feed-review-box, [data-theme="sage-garden"] .feed-review-box{background:rgba(0,0,0,0.03);}
 .feed-review-title{font-size:0.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
@@ -3577,29 +3577,34 @@ amigosRowsList.forEach((rows, idx) => {
   try {
     const email = normEm_(emailAmigo);
     if (!email) return { exito: false, error: 'Email inválido' };
-    const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET');
+    const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET').catch(() => []);
     const p = (rows && rows.length) ? rows[0] : {};
     const priv = p.preferencias?.privacidad || {};
     if (priv.ocultarRegistros) {
       return { exito: true, privado: true, registros: [] };
     }
-    const data = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*&order=created_at.desc', 'GET') || [];
-    const registros = data.map(r => ({
-      id: r.id,
-      titulo: r.titulo,
-      categoria: r.categoria,
-      subcategoria: r.subcategoria,
-      poster: r.poster || '',
-      calificacion: priv.ocultarCalificaciones ? 0 : (r.calificacion || 0),
-      fechaInicio: sanitizarFechaFrontend(r.fecha_inicio || r.fechaInicio),
-      fechaFin: sanitizarFechaFrontend(r.fecha_fin || r.fechaFin),
-      horas: r.horas || '',
-      comentario: priv.ocultarComentarios ? '' : (r.comentario || ''),
-      esRewatch: !!r.es_rewatch,
-      creador: r.creador || '',
-      anio: r.anio || '',
-      likes: (p.preferencias?.likes_recibidos && p.preferencias.likes_recibidos[r.id]) ? p.preferencias.likes_recibidos[r.id] : []
-    }));
+    const data = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*&order=created_at.desc', 'GET').catch(() => []) || [];
+    const registros = (Array.isArray(data) ? data : []).map(r => {
+      const fI = typeof sanitizarFechaFrontend === 'function' ? sanitizarFechaFrontend(r.fecha_inicio || r.fechaInicio) : (typeof fmtFecha_ === 'function' ? fmtFecha_(r.fecha_inicio || r.fechaInicio) : (r.fecha_inicio || r.fechaInicio || 'Sin fecha'));
+      const fF = typeof sanitizarFechaFrontend === 'function' ? sanitizarFechaFrontend(r.fecha_fin || r.fechaFin) : (typeof fmtFecha_ === 'function' ? fmtFecha_(r.fecha_fin || r.fechaFin) : (r.fecha_fin || r.fechaFin || 'Sin fecha'));
+      return {
+        id: r.id,
+        titulo: r.titulo || '',
+        subtitulo: r.subtitulo || '',
+        categoria: r.categoria || '',
+        subcategoria: r.subcategoria || '',
+        poster: r.poster || '',
+        calificacion: priv.ocultarCalificaciones ? 0 : (r.calificacion || 0),
+        fechaInicio: fI,
+        fechaFin: fF,
+        horas: r.horas || '',
+        comentario: priv.ocultarComentarios ? '' : (r.comentario || ''),
+        esRewatch: !!r.es_rewatch,
+        creador: r.creador || '',
+        anio: r.anio || '',
+        likes: (p.preferencias?.likes_recibidos && p.preferencias.likes_recibidos[r.id]) ? p.preferencias.likes_recibidos[r.id] : []
+      };
+    });
     return { exito: true, privado: false, registros: registros, privacidad: priv, amigoPrefs: p.preferencias };
   } catch (e) {
     return { exito: false, error: e.toString() };
@@ -6063,6 +6068,33 @@ function generarFraseActividadAmigo(item, lang = 'es') {
   }
   return `¡<strong>${nick}</strong> agregó un nuevo registro!`;
 }
+function usuarioYaTieneObra(it) {
+  if (!it) return false;
+  const titBuscado = (typeof normalizarTituloObra === 'function')
+    ? normalizarTituloObra(it.titulo || it.tituloOriginal)
+    : String(it.titulo || it.tituloOriginal || '').trim().toLowerCase();
+  if (!titBuscado) return false;
+  const catBuscada = String(it.categoria || '').trim().toLowerCase();
+
+  const enRegistros = Array.isArray(estado.registros) && estado.registros.some(r => {
+    const t = (typeof normalizarTituloObra === 'function')
+      ? normalizarTituloObra(r.titulo || r.tituloOriginal)
+      : String(r.titulo || r.tituloOriginal || '').trim().toLowerCase();
+    const c = String(r.categoria || '').trim().toLowerCase();
+    return t === titBuscado && (!catBuscada || !c || catBuscada === c);
+  });
+  if (enRegistros) return true;
+
+  const enWl = Array.isArray(estado.watchlist) && estado.watchlist.some(w => {
+    const t = (typeof normalizarTituloObra === 'function')
+      ? normalizarTituloObra(w.titulo || w.tituloOriginal)
+      : String(w.titulo || w.tituloOriginal || '').trim().toLowerCase();
+    const c = String(w.categoria || '').trim().toLowerCase();
+    return t === titBuscado && (!catBuscada || !c || catBuscada === c);
+  });
+  return Boolean(enWl);
+}
+
 function renderizarFeedAmigos() {
   const contenedor = document.getElementById('lista-feed-amigos');
   if (!contenedor) return;
@@ -6112,27 +6144,25 @@ function renderizarFeedAmigos() {
     const califNum = Number(it.calificacion) || 0;
     let ratingOrStatusHtml = '';
     if (enProg) {
-      ratingOrStatusHtml = `<span class="feed-status-badge feed-status-inprog">⏳ ${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span>`;
+      ratingOrStatusHtml = `<span class="feed-status-badge feed-status-inprog" style="font-weight:700;">⏳ ${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span>`;
     } else if (califNum > 0) {
       ratingOrStatusHtml = `
-        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(234,179,8,0.1);border:1px solid rgba(234,179,8,0.3);padding:3px 8px;border-radius:8px;">
-          <span style="font-size:0.85rem;line-height:1;">${renderEstrellasVisuales(califNum)}</span>
-          <span style="font-weight:800;color:var(--star-active);font-size:0.82rem;">${califNum.toFixed(1)}</span>
+        <div style="display:inline-flex;align-items:center;background:rgba(234,179,8,0.12);border:1px solid rgba(234,179,8,0.32);padding:3px 8px;border-radius:8px;">
+          ${renderEstrellasVisuales(califNum)}
         </div>
       `;
     }
 
     const horasHtml = (it.horas && String(it.horas).trim() !== '' && it.horas !== '0')
-      ? `<span class="feed-cat-badge" style="background:rgba(16,185,129,0.12);color:#34d399;border-color:rgba(16,185,129,0.3);">⏱️ ${it.horas} hrs</span>`
+      ? `<span class="feed-cat-badge" style="background:rgba(16,185,129,0.14);color:#34d399;border-color:rgba(16,185,129,0.35);font-weight:700;">⏱️ ${it.horas} hrs</span>`
       : '';
 
     const isLiked = esResenaLikeada(it.id);
     const likeCount = obtenerConteoLikesResena(it.id, it.userEmail, it.likes);
     const likeBtnHtml = `
-      <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${it.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${it.id}', '${escHtmlFeed_(it.userEmail)}', this)" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
+      <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${it.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${it.id}', '${escHtmlFeed_(it.userEmail)}', this)" style="background:transparent;border:none;padding:0 4px;font-size:1.15rem;cursor:pointer;display:inline-flex;align-items:center;gap:4px;line-height:1;" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
         <span class="like-heart-icon">${isLiked ? '❤️' : '🤍'}</span>
-        <span class="like-counter">${likeCount > 0 ? likeCount : ''}</span>
-        <span class="like-text">${isLiked ? (l === 'en' ? 'Liked' : 'Te gusta') : (l === 'en' ? 'Like' : 'Me gusta')}</span>
+        ${likeCount > 0 ? `<span class="like-counter" style="font-size:0.75rem;font-weight:700;color:var(--muted);">${likeCount}</span>` : ''}
       </button>
     `;
 
@@ -6140,13 +6170,20 @@ function renderizarFeedAmigos() {
       ? `
         <div class="feed-review-box">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
-            <div class="feed-review-title"><span>💬</span> <span>${l === 'en' ? 'Review & Notes' : 'Reseña y Opinión'}</span></div>
+            <div class="feed-review-title" style="font-size:0.75rem;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:5px;"><span>💬</span> <span>${l === 'en' ? 'Comment' : 'Comentario'}</span></div>
             ${likeBtnHtml}
           </div>
           <div class="feed-review-text">"${escHtmlFeed_(it.comentario)}"</div>
         </div>
       `
       : '';
+
+    const yaTengoEsteProducto = usuarioYaTieneObra(it);
+    const btnWatchlistTopRight = !yaTengoEsteProducto ? `
+      <button type="button" class="btn-today-pill" style="height:28px;padding:0 10px;font-size:0.74rem;margin:0;flex-shrink:0;display:inline-flex;align-items:center;gap:4px;font-weight:700;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:var(--accent);" onclick="agregarFeedItemAWatchlist(${idx}, this)" title="${l === 'en' ? 'Add to my Watchlist' : 'Agregar a mis pendientes'}">
+        <span>📌</span> <span>+ Watchlist</span>
+      </button>
+    ` : '';
 
     return `
       <div class="amigo-feed-card">
@@ -6159,39 +6196,29 @@ function renderizarFeedAmigos() {
               <div class="feed-card-phrase">${frase}</div>
               <div class="feed-card-time">
                 <span>🕒 ${timeStr}</span>
-                <span style="opacity:0.5;">•</span>
-                <span style="color:var(--accent);font-weight:600;cursor:pointer;" onclick="verPerfilDeAmigo('${it.userEmail}')">@${escHtmlFeed_(it.amigoNickname)}</span>
               </div>
             </div>
           </div>
-          <button type="button" class="btn-today-pill" style="height:30px;padding:0 10px;font-size:0.72rem;margin:0;flex-shrink:0;" onclick="abrirModalRegistrosAmigo('${it.userEmail}', '${escHtmlFeed_(it.amigoNickname)}', '${it.categoria}')" title="${l === 'en' ? 'View all records of this friend' : 'Ver registros de este amigo'}">
-            👤 <span>${l === 'en' ? 'Records' : 'Registros'}</span>
-          </button>
         </div>
 
         <div class="feed-card-body">
-          <div class="feed-card-poster-wrap" onclick="abrirModalRegistrosAmigo('${it.userEmail}', '${escHtmlFeed_(it.amigoNickname)}', '${it.categoria}')">
+          <div class="feed-card-poster-wrap">
             ${posterHtml}
           </div>
           <div class="feed-card-info">
-            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;">
-              <span class="feed-cat-badge">${catIcon} ${subNom || catNom}</span>
-              ${it.esRewatch ? `<span class="feed-cat-badge" style="background:rgba(168,85,247,0.14);border-color:rgba(168,85,247,0.35);color:#c084fc;">🔁 Rewatch</span>` : ''}
-              ${horasHtml}
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;">
+                <span class="feed-cat-badge">${catIcon} ${subNom || catNom}</span>
+                ${it.esRewatch ? `<span class="feed-cat-badge" style="background:rgba(168,85,247,0.14);border-color:rgba(168,85,247,0.35);color:#c084fc;">🔁 Rewatch</span>` : ''}
+              </div>
+              ${btnWatchlistTopRight}
             </div>
             <div class="feed-card-title">${escHtmlFeed_(it.titulo)}</div>
+            ${horasHtml ? `<div style="margin:2px 0 4px;">${horasHtml}</div>` : ''}
             ${it.subtitulo && it.subtitulo !== it.titulo ? `<div style="font-size:0.78rem;color:var(--muted);font-style:italic;margin-top:-2px;margin-bottom:3px;">${escHtmlFeed_(it.subtitulo)}</div>` : ''}
             <div class="feed-card-meta">${escHtmlFeed_(it.creador || '')} ${it.anio ? '(' + escHtmlFeed_(it.anio) + ')' : ''}</div>
             ${ratingOrStatusHtml ? `<div style="margin-top:6px;">${ratingOrStatusHtml}</div>` : ''}
             ${reviewHtml}
-            <div class="feed-actions">
-              <button type="button" class="btn-feed-action" onclick="agregarFeedItemAWatchlist(${idx}, this)" title="${l === 'en' ? 'Add to my Watchlist' : 'Agregar a mis pendientes'}">
-                <span>📌</span> <span>+ Watchlist</span>
-              </button>
-              <button type="button" class="btn-feed-action" onclick="abrirModalRegistrosAmigo('${it.userEmail}', '${escHtmlFeed_(it.amigoNickname)}', '${it.categoria}')">
-                <span>📑</span> <span>${l === 'en' ? 'Friend\'s Records' : 'Registros de ' + escHtmlFeed_(it.amigoNickname)}</span>
-              </button>
-            </div>
           </div>
         </div>
       </div>
@@ -6449,60 +6476,40 @@ function renderizarListaAmigos(amigos) {
     const nickEscaped = (a.nickname || '').replace(/'/g, "\\'");
 
     return `
-      <div class="amigo-wide-card" style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; display:flex; flex-direction:column; gap:12px; transition:var(--tr); box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-        <!-- Fila superior: Foto + Nickname (interactivos para ir a perfil), Bio y Botón dedicado Mezclar Watchlists -->
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+      <div class="amigo-wide-card" style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px; transition:var(--tr); box-shadow:0 2px 8px rgba(0,0,0,0.06); position:relative;">
+        <!-- Fila superior: Foto + Nickname interactivo + Bio a la izquierda; Calificación promedio en la esquina superior derecha -->
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
           <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
             <!-- Foto de perfil interactiva -->
-            <div class="friend-avatar-wrap" data-avatar-zoom="${a.avatar || '🦊'}" data-avatar-name="${a.nickname || ''}" onclick="verPerfilDeAmigo('${emailEscaped}')" style="width:48px; height:48px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.5rem; flex-shrink:0; cursor:pointer;" title="${l === 'en' ? 'View profile' : 'Ver perfil'}">
+            <div class="friend-avatar-wrap" data-avatar-zoom="${a.avatar || '🦊'}" data-avatar-name="${nickEscaped}" onclick="verPerfilDeAmigo('${emailEscaped}')" style="width:52px; height:52px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.6rem; flex-shrink:0; cursor:pointer;" title="${l === 'en' ? 'View profile' : 'Ver perfil'}">
               ${avatarHtml}
             </div>
-            <!-- Nickname interactivo y Bio -->
-            <div style="min-width:0;">
-              <div style="display:flex; align-items:center; gap:8px;">
-                <span style="font-size:1rem; font-weight:800; color:var(--text); cursor:pointer; text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" onclick="verPerfilDeAmigo('${emailEscaped}')" title="${l === 'en' ? 'View profile' : 'Ver perfil'}">${a.nickname}</span>
-                <span style="font-size:0.72rem; color:var(--accent); font-weight:700; background:rgba(56,189,248,0.12); padding:2px 7px; border-radius:6px; border:1px solid rgba(56,189,248,0.35);">🆔 ${a.userId || 'ID'}</span>
-              </div>
-              <div style="font-size:0.8rem; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:280px;">${a.bio || 'Coleccionando historias en Mediary ✨'}</div>
+            <!-- Nickname interactivo (más grande, sin ID) y Bio -->
+            <div style="min-width:0; flex:1;">
+              <div style="font-size:1.15rem; font-weight:800; color:var(--text); cursor:pointer; text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.25;" onclick="verPerfilDeAmigo('${emailEscaped}')" title="${l === 'en' ? 'View profile' : 'Ver perfil'}">${a.nickname}</div>
+              <div style="font-size:0.8rem; color:var(--muted); margin-top:3px; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${a.bio || (l === 'en' ? 'Collecting stories on Mediary ✨' : 'Coleccionando historias en Mediary ✨')}</div>
             </div>
           </div>
 
-          <!-- Botón de mezclar watchlists dedicado para este amigo -->
-          <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.78rem; margin:0; background:linear-gradient(135deg, rgba(245,158,11,0.18), rgba(217,119,6,0.14)); border:1.5px solid rgba(245,158,11,0.45); color:#fbbf24; font-weight:700; display:inline-flex; align-items:center; gap:6px; flex-shrink:0;" onclick="abrirModalRuleta('Peliculas', '${emailEscaped}')" title="${l === 'en' ? 'Mix Watchlists with ' + a.nickname : 'Mezclar Watchlists con ' + a.nickname}">
-            <span>🍿</span>
-            <span>${l === 'en' ? 'Mix Watchlists' : 'Mezclar Watchlists'}</span>
-          </button>
-        </div>
-
-        <!-- Fila inferior: Métricas (Número de registros interactivo y Calificación promedio) -->
-        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
-          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <!-- Número de registros interactivo -->
-            <button type="button" class="btn-today-pill" style="height:30px; padding:0 10px; font-size:0.76rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text); cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:var(--tr);" onclick="abrirModalRegistrosAmigo('${emailEscaped}', '${nickEscaped}')" title="${l === 'en' ? 'View friend records' : 'Ver registros de ' + a.nickname}">
-              <span>📑</span>
-              <span style="font-weight:800; color:var(--accent);">${totalRegs}</span>
-              <span style="color:var(--muted);">${l === 'en' ? 'records' : 'registros'}</span>
-              <span style="font-size:0.7rem; color:var(--accent); margin-left:2px;">➔</span>
-            </button>
-
-            <!-- Calificación promedio -->
-            <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:4px 10px; font-size:0.76rem; display:inline-flex; align-items:center; gap:5px;">
-              <span style="color:var(--star-active); font-size:0.85rem;">★</span>
-              <span style="font-weight:800; color:var(--text);">${avgRating}</span>
-              <span style="color:var(--muted);">${l === 'en' ? 'average' : 'promedio'}</span>
-            </div>
-
-            ${a.stats && a.stats.topCat ? `
-            <div style="background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.22); border-radius:10px; padding:4px 10px; font-size:0.76rem; color:var(--accent); display:inline-flex; align-items:center; gap:6px;">
-              <span>🔥</span>
-              <span>${I18N[l]?.cats?.[a.stats.topCat] || a.stats.topCat}</span>
-            </div>` : ''}
+          <!-- Calificación promedio en la esquina superior derecha -->
+          <div style="background:rgba(234,179,8,0.12); border:1px solid rgba(234,179,8,0.32); border-radius:10px; padding:4px 10px; font-size:0.82rem; display:inline-flex; align-items:center; gap:5px; flex-shrink:0;" title="${l === 'en' ? 'Average Rating' : 'Calificación Promedio'}">
+            <span style="color:#eab308; font-size:0.92rem;">★</span>
+            <span style="font-weight:800; color:var(--text);">${avgRating}</span>
           </div>
-
-          <button type="button" class="btn-today-pill" style="height:30px; padding:0 10px; font-size:0.75rem; margin:0; background:transparent; border:1px solid transparent; color:var(--muted); cursor:pointer;" onclick="verPerfilDeAmigo('${emailEscaped}')">
-            <span>${l === 'en' ? 'Profile ➔' : 'Perfil ➔'}</span>
-          </button>
         </div>
+
+        <!-- Botón intermedio: "Ver Registros (N)" -->
+        <button type="button" class="btn-today-pill" style="height:36px; padding:0 14px; font-size:0.82rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; width:100%; transition:var(--tr); box-sizing:border-box;" onclick="abrirModalRegistrosAmigo('${emailEscaped}', '${nickEscaped}')" title="${l === 'en' ? 'View friend records' : 'Ver registros de ' + nickEscaped}">
+          <span>📑</span>
+          <span>${l === 'en' ? `View Records (${totalRegs})` : `Ver Registros (${totalRegs})`}</span>
+        </button>
+
+        <!-- Botón inferior: "Mezclar Watchlists" con colores de acento claros y alta legibilidad -->
+        <button type="button" class="ruleta-btn-girar-banner" style="height:38px; padding:0 14px; font-size:0.82rem; margin:0; width:100%; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; background:linear-gradient(135deg, #0284c7, #0ea5e9); color:#ffffff; border:none; box-shadow:0 2px 8px rgba(14,165,233,0.25); cursor:pointer; box-sizing:border-box;" onclick="abrirModalRuleta('Peliculas', '${emailEscaped}')" title="${l === 'en' ? 'Mix Watchlists with ' + nickEscaped : 'Mezclar Watchlists con ' + nickEscaped}">
+          <span>🍿</span>
+          <span>${l === 'en' ? 'Mix Watchlists' : 'Mezclar Watchlists'}</span>
+          <span>🎲</span>
+        </button>
       </div>
     `;
   }).join('');
@@ -6699,9 +6706,9 @@ let amigoRegsFiltroCat = 'todas';
 let amigoRegsFiltroSub = 'todas';
 let amigoRegsEmailActual = '';
 function abrirModalRegistrosAmigo(email, nickname, catInicial = 'todas', subInicial = 'todas') {
-  const amEmail = email || (amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '');
+  const amEmail = (email || (amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '') || '').trim();
   amigoRegsEmailActual = amEmail;
-  const amFriend = (estado.amigos || []).find(x => x.email === amEmail);
+  const amFriend = (estado.amigos || []).find(x => (x.email || '').toLowerCase() === amEmail.toLowerCase());
   const amNick = nickname || (amFriend ? amFriend.nickname : (amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : 'Amigo'));
   if (!amEmail) return;
   const l = userPrefs.lang || 'es';
@@ -6727,20 +6734,25 @@ function abrirModalRegistrosAmigo(email, nickname, catInicial = 'todas', subInic
     grid.innerHTML = `<div style="text-align:center;padding:30px 10px;color:var(--muted);"><span class="spinning" style="display:inline-block;margin-bottom:8px;">⏳</span><div>${l === 'en' ? 'Loading records...' : 'Cargando registros...'}</div></div>`;
   }
   if (modal) modal.style.display = 'flex';
-  google.script.run.withSuccessHandler(res => {
-    if (!res || !res.exito) {
-      if (grid) grid.innerHTML = `<div style="color:var(--danger);padding:20px;text-align:center;">${res?.error || (l === 'en' ? 'Error loading records' : 'Error al cargar registros')}</div>`;
-      return;
-    }
-    if (res.privado) {
-      if (grid) grid.innerHTML = `<div style="text-align:center;padding:30px 20px;color:var(--muted);"><span style="font-size:2rem;display:block;margin-bottom:10px;">🔒</span><strong>${l === 'en' ? 'Private Records' : 'Registros Privados'}</strong><div style="font-size:0.85rem;margin-top:4px;">${l === 'en' ? `${amNick} has set their records to private.` : `${amNick} ha configurado sus registros como privados.`}</div></div>`;
-      return;
-    }
-    amigoRegistrosCache = res.registros || [];
-    renderizarTabsCategoriasAmigo();
-    renderizarTabsSubcategoriasAmigo();
-    filtrarRegistrosAmigoModal();
-  }).obtenerRegistrosAmigo(amEmail);
+  google.script.run
+    .withSuccessHandler(res => {
+      if (!res || !res.exito) {
+        if (grid) grid.innerHTML = `<div style="color:var(--danger);padding:20px;text-align:center;">${res?.error || (l === 'en' ? 'Error loading records' : 'Error al cargar registros')}</div>`;
+        return;
+      }
+      if (res.privado) {
+        if (grid) grid.innerHTML = `<div style="text-align:center;padding:30px 20px;color:var(--muted);"><span style="font-size:2rem;display:block;margin-bottom:10px;">🔒</span><strong>${l === 'en' ? 'Private Records' : 'Registros Privados'}</strong><div style="font-size:0.85rem;margin-top:4px;">${l === 'en' ? `${amNick} has set their records to private.` : `${amNick} ha configurado sus registros como privados.`}</div></div>`;
+        return;
+      }
+      amigoRegistrosCache = res.registros || [];
+      renderizarTabsCategoriasAmigo();
+      renderizarTabsSubcategoriasAmigo();
+      filtrarRegistrosAmigoModal();
+    })
+    .withFailureHandler(err => {
+      if (grid) grid.innerHTML = `<div style="color:var(--danger);padding:20px;text-align:center;">${err?.message || err || (l === 'en' ? 'Error loading records' : 'Error al cargar registros')}</div>`;
+    })
+    .obtenerRegistrosAmigo(amEmail);
 }
 function renderizarTabsCategoriasAmigo() {
   const tabs = document.getElementById('amigo-regs-cat-tabs');
@@ -6765,12 +6777,19 @@ function renderizarTabsSubcategoriasAmigo() {
   const subTabsEl = document.getElementById('amigo-regs-subcat-tabs');
   if (!subTabsEl) return;
   const l = userPrefs.lang || 'es';
-  const pool = amigoRegsFiltroCat === 'todas'
-    ? amigoRegistrosCache
-    : amigoRegistrosCache.filter(r => r.categoria === amigoRegsFiltroCat);
+
+  // Si está en "todas", no mostrar subcategorías (solo mostrar todas directamente)
+  if (amigoRegsFiltroCat === 'todas') {
+    subTabsEl.style.display = 'none';
+    subTabsEl.innerHTML = '';
+    amigoRegsFiltroSub = 'todas';
+    return;
+  }
+
+  const pool = amigoRegistrosCache.filter(r => r.categoria === amigoRegsFiltroCat);
 
   let subList = [];
-  if (amigoRegsFiltroCat !== 'todas' && CONFIG[amigoRegsFiltroCat]) {
+  if (CONFIG[amigoRegsFiltroCat]) {
     const cfgSubs = (CONFIG[amigoRegsFiltroCat].subs || []).filter(s => !s.esWatchlist);
     cfgSubs.forEach(s => {
       const count = pool.filter(r => r.subcategoria === s.id).length;
@@ -6783,17 +6802,6 @@ function renderizarTabsSubcategoriasAmigo() {
     extraSubs.forEach(s => {
       const count = pool.filter(r => r.subcategoria === s).length;
       subList.push({ id: s, label: s, emoji: '📁', count });
-    });
-  } else {
-    const distinctSubs = [...new Set(amigoRegistrosCache.map(r => r.subcategoria).filter(Boolean))];
-    distinctSubs.forEach(s => {
-      let emoji = '📁';
-      for (const catKey in CONFIG) {
-        const found = (CONFIG[catKey].subs || []).find(x => x.id === s);
-        if (found && found.emoji) { emoji = found.emoji; break; }
-      }
-      const count = amigoRegistrosCache.filter(r => r.subcategoria === s).length;
-      subList.push({ id: s, label: s, emoji, count });
     });
   }
 
