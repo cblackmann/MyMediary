@@ -325,7 +325,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;width:100%}
 .btn-hero-quick-add{background:linear-gradient(135deg,var(--accent) 0%,#38bdf8 100%);color:#0f172a;border:none;font-weight:800;font-size:0.95rem;padding:11px 20px;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(56,189,248,0.35);transition:var(--tr)}
 .btn-hero-quick-add:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,0.5)}
-.home-community-section{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px 20px;margin-bottom:24px}
+.home-community-section{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px 20px;margin-bottom:34px}
 .home-friend-feed-scroll{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .home-friend-feed-scroll::-webkit-scrollbar{height:6px}
 .home-friend-feed-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
@@ -977,16 +977,16 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 }
 
 /* APARTADOS INICIO: SALUDO, EN PROCESO, RACHAS & ÍNDICE HORIZONTAL */
-.home-greeting-banner{margin:4px 0 16px 0;padding:2px 0;}
-.home-greeting-title{font-size:1.45rem;font-weight:800;color:var(--text);margin:0;display:flex;align-items:center;gap:8px;line-height:1.25;}
+.home-greeting-banner{margin:10px 0 28px 0;padding:6px 0;display:flex;justify-content:center;align-items:center;text-align:center;}
+.home-greeting-title{font-size:1.55rem;font-weight:800;color:var(--text);margin:0;display:inline-flex;align-items:center;justify-content:center;gap:10px;line-height:1.25;text-align:center;}
 .home-greeting-title strong{color:var(--accent);}
-@media (max-width: 640px){.home-greeting-title{font-size:1.22rem;}}
+@media (max-width: 640px){.home-greeting-title{font-size:1.32rem;}}
 
-.home-clean-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:22px;max-width:100%;width:100%;box-sizing:border-box;}
-.home-clean-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.home-clean-title{font-weight:700;font-size:1.02rem;color:var(--text);display:flex;align-items:center;gap:8px;}
+.home-clean-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:32px;max-width:100%;width:100%;box-sizing:border-box;}
+.home-clean-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.home-clean-title{font-weight:800;font-size:1.16rem;color:var(--text);display:flex;align-items:center;gap:8px;}
 
-.home-quick-actions-strip{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:4px 0 24px 0;width:100%;box-sizing:border-box;}
+.home-quick-actions-strip{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:6px 0 32px 0;width:100%;box-sizing:border-box;}
 .home-quick-actions-strip .btn-hero-quick-add,
 .home-quick-actions-strip .btn-watchlist-special{flex:1 1 180px;min-height:44px;justify-content:center;}
 
@@ -1001,9 +1001,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-indice-count{font-size:0.65rem;font-weight:800;color:var(--accent);line-height:1;background:rgba(56,189,248,0.12);padding:1px 6px;border-radius:8px;}
 
 /* Clases de compatibilidad */
-.home-mini-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:22px;max-width:100%;width:100%;box-sizing:border-box;}
-.home-mini-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.home-mini-title{font-weight:700;font-size:1.02rem;color:var(--text);display:flex;align-items:center;gap:8px;}
+.home-mini-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:32px;max-width:100%;width:100%;box-sizing:border-box;}
+.home-mini-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.home-mini-title{font-weight:800;font-size:1.16rem;color:var(--text);display:flex;align-items:center;gap:8px;}
 .home-mini-hint{display:none;}
 .home-subcats-mini-row{display:contents;}
 .home-subcat-pill{display:none;}
@@ -2189,12 +2189,12 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 
       <!-- 6. NOVEDADES DE AMIGOS - SIN SUBTÍTULO -->
       <div class="home-community-section" id="seccion-comunidad-resumida-inicio">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
           <div>
-            <div style="font-weight:700; font-size:1.05rem; color:var(--text); display:flex; align-items:center; gap:8px;">
+            <div class="home-clean-title">
               <span>👥</span>
               <span data-i18n="home_friends_title">Novedades de Amigos</span>
-              <span style="font-size:0.72rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;" data-i18n="home_streaks_last_week">Última semana</span>
+              <span style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;" data-i18n="home_streaks_last_week">Última semana</span>
             </div>
           </div>
           <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem;">
