@@ -494,18 +494,29 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   position: relative;
   overflow: hidden;
 }
-.profile-hero-card.has-custom-cover .profile-nick-display {
+.profile-hero-card.has-custom-cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.65) 0%, rgba(15, 23, 42, 0.35) 55%, rgba(15, 23, 42, 0.15) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+.profile-hero-card.has-custom-cover .profile-nick-display,
+.profile-hero-card.has-custom-cover #amigo-modal-nick {
   color: #ffffff !important;
-  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.85);
 }
-.profile-hero-card.has-custom-cover .profile-bio-txt {
-  color: rgba(255, 255, 255, 0.9) !important;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+.profile-hero-card.has-custom-cover .profile-bio-txt,
+.profile-hero-card.has-custom-cover #amigo-modal-bio {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.85);
 }
-.profile-hero-card.has-custom-cover #perfil-id-badge {
-  background: rgba(15, 23, 42, 0.72) !important;
+.profile-hero-card.has-custom-cover #perfil-id-badge,
+.profile-hero-card.has-custom-cover #amigo-modal-id-badge {
+  background: rgba(15, 23, 42, 0.75) !important;
   backdrop-filter: blur(8px);
-  border-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
@@ -896,12 +907,13 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 
 /* PÍLDORAS Y ESTILOS SOCIALES DE AMIGOS */
 .amigo-activity-pill{display:inline-flex;align-items:center;gap:4px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:var(--accent);font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:12px;margin-top:3px;white-space:nowrap}
-.amigo-activity-pill.amigo-wl-pill{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.35);color:#fbbf24}
-.amigo-cat-stat-card{background:rgba(15,23,42,0.55);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:8px}
-.amigo-cat-stat-head{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:0.88rem;color:var(--accent);margin-bottom:6px}
+.amigo-cat-stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 14px;margin-bottom:8px;box-shadow:0 1px 4px rgba(0,0,0,0.05);transition:var(--tr)}
+.amigo-cat-stat-card:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.amigo-cat-stat-head{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:0.9rem;color:var(--text);margin-bottom:8px}
+.amigo-cat-count-badge{font-size:0.74rem;font-weight:700;color:var(--accent);background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.28);border-radius:8px;padding:2px 8px;display:inline-flex;align-items:center;gap:4px}
 .amigo-sub-pills-wrap{display:flex;flex-wrap:wrap;gap:6px}
-.amigo-sub-pill{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:2px 8px;font-size:0.72rem;color:var(--muted);transition:var(--tr)}
-.amigo-sub-pill:hover{border-color:var(--accent);color:var(--accent)}
+.amigo-sub-pill{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:3px 9px;font-size:0.74rem;color:var(--text);display:inline-flex;align-items:center;gap:5px;transition:var(--tr)}
+.amigo-sub-pill:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-1px)}
 .friend-view-banner{background:rgba(168,85,247,0.14);border:1px solid rgba(168,85,247,0.4);border-radius:12px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:0.85rem;color:#e9d5ff;gap:10px;flex-wrap:wrap}
 /* REGISTROS DE AMIGOS - ORDENADOS POR CATEGORÍA Y SUBCATEGORÍA */
 .amigo-cat-block{margin-bottom:18px;}
@@ -3275,8 +3287,101 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 <div id="modal-serie-completa" class="modal-overlay" style="display:none;"> <div class="modal-box"> <h3 style="color:var(--accent);" data-i18n="serie_comp_title">🎉 ¡Completaste toda la serie!</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:14px; line-height:1.4;" id="msg-serie-completa"></p> <div class="form-group" style="text-align:center;"> <label data-i18n="serie_comp_rating_lbl">Calificación de la serie completa:</label>
 <div class="stars-wrapper" id="rating-stars-completa" style="font-size:2.2rem; margin:8px 0;"></div> <span id="rating-label-completa" style="font-size:.9rem; color:var(--accent); font-weight:700;">0.0 / 5</span> </div> <div class="form-group"><label data-i18n="serie_comp_comment_lbl">Comentario / Reseña final de la serie:</label><textarea id="comentario-serie-completa" class="comment-box" style="min-height:90px;" placeholder="¿Qué te pareció la serie en su totalidad?"></textarea></div>
 <div class="modal-actions"><button class="btn-modal-cancel" onclick="omitirGuardadoSerieCompleta()" data-i18n="btn_skip">Omitir</button><button class="btn-modal-save" id="btn-confirmar-serie-completa" data-i18n="btn_save_full_series">Guardar Serie Completa</button></div> </div> </div> <div id="modal-confirmar-eliminar" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <div class="modal-confirm-icon" style="margin:0 auto 14px;">🗑️</div>
-<h3 style="color:var(--danger); font-size:1.15rem; margin-bottom:8px;" data-i18n="del_title">¿Eliminar este registro?</h3> <p id="confirm-eliminar-mensaje" style="color:var(--muted); font-size:.9rem; line-height:1.4; margin-bottom:14px;"></p> <div class="modal-actions" style="justify-content:center; gap:12px; margin-top:14px;"> <button class="btn-modal-cancel" onclick="cerrarModalEliminar()" data-i18n="btn_cancel">Cancelar</button><button class="btn-modal-danger" id="btn-confirmar-eliminar-si" data-i18n="btn_del_permanent">Eliminar definitivamente</button>
-</div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div id="amigo-modal-hero-card" class="profile-hero-card cover-predeterminada" style="margin-bottom:14px; padding:16px 18px; border-radius:14px; position:relative; overflow:hidden;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);" data-i18n="profile_default_bio">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> </div> <div id="amigo-modal-character-container"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ <span data-i18n="amigo_stat_title">Métricas de Contenido</span></div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_total_lbl">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_total_sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_avg_lbl">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_avg_sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_hours_lbl">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="amigo_stat_hours_sub">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="amigo-stat-watched-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 <span data-i18n="amigo_breakdown_title">Desglose por Categorías y Subcategorías</span></div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;" data-i18n="loading_favs">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <button type="button" class="btn-friend-records" id="btn-ruleta-amigo-perfil" style="margin-top:8px; background:linear-gradient(135deg, rgba(245,158,11,0.18), rgba(168,85,247,0.16)); border:1.5px solid rgba(245,158,11,0.45); color:var(--text);" onclick="abrirModalRuletaConAmigoActual()"> <span style="font-size:1.15rem;">🍿</span> <span style="font-weight:700;" data-i18n="btn_ruleta_amigo_perfil">¿Qué vemos o jugamos hoy? — Ruleta Co-op</span> <span style="font-size:0.85rem; opacity:0.85;">🎲</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL RULETA DE PELÍCULAS CON AMIGO (CO-OP WATCHLIST) -->
+<!-- MODAL PERFIL DE AMIGO -->
+<div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()">
+  <div class="modal-box" style="max-width:620px; max-height:90vh; overflow-y:auto; padding:20px;">
+    <!-- 1. HERO CARD DEL AMIGO -->
+    <div id="amigo-modal-hero-card" class="profile-hero-card cover-predeterminada" style="margin-bottom:14px; padding:16px 18px; border-radius:14px; position:relative; overflow:hidden;">
+      <div style="display:flex; justify-content:space-between; align-items:center; position:relative; z-index:2; width:100%;">
+        <div style="display:flex; gap:14px; align-items:center; min-width:0; flex:1;">
+          <div id="amigo-modal-avatar" style="width:58px; height:58px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.8rem; flex-shrink:0;"></div>
+          <div style="min-width:0; flex:1;">
+            <h3 id="amigo-modal-nick" class="profile-nick-display" style="font-size:1.25rem; font-weight:800; margin-bottom:2px; line-height:1.2; word-break:break-word;">Amigo</h3>
+            <div id="amigo-modal-bio" class="profile-bio-txt" style="font-size:0.82rem; margin-top:2px; line-height:1.35; word-break:break-word;" data-i18n="profile_default_bio">Coleccionando historias en Mediary ✨</div>
+            <div id="amigo-modal-id-badge" style="font-size:0.72rem; color:var(--accent); font-weight:700; margin-top:6px; display:inline-flex; align-items:center; gap:4px; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:6px; border:1px solid rgba(56,189,248,0.3);"></div>
+          </div>
+        </div>
+        <button type="button" class="btn-close-form" style="position:static; margin-left:10px; flex-shrink:0;" onclick="cerrarModalPerfilAmigo()">✕</button>
+      </div>
+    </div>
+
+    <!-- 2. PERSONAJE FAVORITO -->
+    <div id="amigo-modal-character-container" style="display:none; margin-bottom:14px;"></div>
+
+    <hr class="home-section-divider">
+
+    <!-- 3. MÉTRICAS GLOBALES -->
+    <div class="home-clean-section-header" style="margin:12px 0 8px;">
+      <div class="home-clean-title">
+        <span class="emoji-dyn">⚡</span>
+        <span data-i18n="profile_metrics_title">Métricas Globales</span>
+      </div>
+    </div>
+    <div class="profile-grid-highlights" style="margin-bottom:14px;">
+      <div class="profile-stat-box">
+        <div class="profile-stat-label" data-i18n="stat_total_entries">Total Registros</div>
+        <div class="profile-stat-val" id="amigo-stat-total">0</div>
+      </div>
+      <div class="profile-stat-box">
+        <div class="profile-stat-label" data-i18n="stat_avg_rating">Calificación Promedio</div>
+        <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div>
+      </div>
+      <div class="profile-stat-box">
+        <div class="profile-stat-label" data-i18n="stat_game_playtime">Horas en Juegos</div>
+        <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div>
+      </div>
+      <div class="profile-stat-box">
+        <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div>
+        <div class="profile-stat-val" id="amigo-stat-watched-horas">0 hrs</div>
+      </div>
+    </div>
+
+    <hr class="home-section-divider">
+
+    <!-- 4. DISTRIBUCIÓN POR CATEGORÍA -->
+    <div class="home-clean-section-header" style="margin:12px 0 8px;">
+      <div class="home-clean-title">
+        <span class="emoji-dyn">📊</span>
+        <span data-i18n="profile_dist_title">Distribución por Categoría</span>
+      </div>
+    </div>
+    <div id="amigo-desglose-categorias" style="margin-bottom:14px; display:flex; flex-direction:column; gap:8px;"></div>
+
+    <hr class="home-section-divider">
+
+    <!-- 5. OBRAS FAVORITAS -->
+    <div class="home-clean-section-header" style="margin:12px 0 8px;">
+      <div class="home-clean-title">
+        <span class="emoji-dyn">👑</span>
+        <span data-i18n="profile_favs_title">Mis Favoritos por Categoría</span>
+      </div>
+    </div>
+    <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;">
+      <div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:12px 0;" data-i18n="loading_favs">Cargando favoritos...</div>
+    </div>
+
+    <hr class="home-section-divider">
+
+    <!-- 6. BOTONES DE ACCIÓN: VER REGISTROS Y MEZCLAR WATCHLISTS -->
+    <div style="display:flex; flex-direction:column; gap:10px; margin:14px 0 8px;">
+      <button type="button" class="btn-today-pill amigo-card-regs-btn" id="btn-ver-regs-amigo" style="height:38px; padding:0 14px; font-size:0.84rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:10px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; width:100%; transition:var(--tr); box-sizing:border-box;" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')">
+        <span>📚</span>
+        <span id="txt-ver-regs-amigo-btn">Ver Registros (0)</span>
+      </button>
+
+      <button type="button" class="ruleta-btn-girar-banner" id="btn-ruleta-amigo-perfil" style="height:40px; padding:0 14px; font-size:0.84rem; margin:0; width:100%; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; background:linear-gradient(135deg, #0284c7, #0ea5e9); color:#ffffff; border:none; box-shadow:0 2px 8px rgba(14,165,233,0.25); cursor:pointer; box-sizing:border-box;" onclick="abrirModalRuletaConAmigoActual()">
+        <span>🍿</span>
+        <span>Mezclar Watchlists</span>
+        <span>🎲</span>
+      </button>
+    </div>
+
+    <div class="modal-actions" style="justify-content:space-between; margin-top:10px; padding-top:12px; border-top:1px solid var(--border);">
+      <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button>
+      <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button>
+    </div>
+  </div>
+</div> <!-- MODAL RULETA DE PELÍCULAS CON AMIGO (CO-OP WATCHLIST) -->
 <!-- MODAL RULETA COLABORATIVA CON AMIGO (CO-OP WATCHLIST: PELÍCULAS, SERIES Y JUEGOS) -->
 <!-- MODAL RULETA COLABORATIVA CON AMIGO (CO-OP WATCHLIST: PELÍCULAS, SERIES Y JUEGOS) -->
 <div id="modal-ruleta-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRuleta()">
@@ -3782,7 +3887,7 @@ amigosRowsList.forEach((rows, idx) => {
     return { exito: false, error: e.toString() };
   }
 },
-async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const favs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); const charFav = (p.favoritos?.personajeFavorito || p.preferencias?.personajeFavorito || null); const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada'); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🎬', userId: p.preferencias?.userId || email, favoritos: favs, portada: portAmigo, personajeFavorito: charFav }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
+async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const rawFavs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); const favs = {}; Object.keys(rawFavs).forEach(k => { if (k !== 'portada' && k !== 'personajeFavorito' && k.includes('__') && rawFavs[k] && typeof rawFavs[k] === 'object' && rawFavs[k].titulo) { favs[k] = rawFavs[k]; } }); const charFav = (p.favoritos?.personajeFavorito || p.preferencias?.personajeFavorito || null); const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada'); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🎬', userId: p.preferencias?.userId || email, favoritos: favs, portada: portAmigo, personajeFavorito: charFav }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
 const email = normEm_(userEmail); if (!email) return { exito: false, sinSesion: true, emailGoogle: '', logueadoGoogle: false, nickname: 'Invitado', avatar: '👤', bio: 'Inicia sesión para guardar tus listas en Supabase ✨', favoritos: {}, favoritosOcultos: {} };
 const rows = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); if (rows && rows.length > 0) { const p = rows[0];
 return { exito: true, emailGoogle: p.user_email, logueadoGoogle: true, nickname: p.nickname || email.split('@')[0], avatar: p.avatar || '🎬', bio: p.bio || 'Coleccionando historias en Mediary ✨', favoritos: p.favoritos || {}, favoritosOcultos: p.favoritos_ocultos || {}, preferencias: p.preferencias || {} };
@@ -6783,18 +6888,23 @@ function verPerfilDeAmigo(emailAmigo) {
         const c = a.personajeFavorito;
         const esImg = c.imagen && (c.imagen.startsWith('http') || c.imagen.startsWith('data:'));
         amCharBox.innerHTML = `
-          <div class="profile-fav-char-card" style="margin-bottom:14px;">
-            <div class="fav-char-crown-badge">
-              <span>👑</span> <span>${l === 'en' ? 'FAVORITE CHARACTER' : 'PERSONAJE FAVORITO'}</span>
+          <div class="home-clean-section-header" style="margin:4px 0 8px;">
+            <div class="home-clean-title">
+              <span class="emoji-dyn">👑</span>
+              <span>${l === 'en' ? 'Favorite Character' : 'Personaje Favorito'}</span>
             </div>
-            <div class="fav-char-inner">
-              <div class="fav-char-poster-wrap">
-                ${esImg ? `<img src="${c.imagen}" alt="${c.nombre}">` : `<div class="fav-char-emoji-poster">${c.imagen || '👑'}</div>`}
+          </div>
+          <div class="profile-fav-char-card" style="margin-bottom:0;">
+            <div class="fav-char-main-row">
+              <div class="fav-char-avatar-box">
+                ${esImg ? `<img src="${c.imagen}" alt="${c.nombre}" onerror="this.onerror=null;this.parentElement.innerHTML='👑';">` : `<span>${c.imagen || '👑'}</span>`}
               </div>
-              <div class="fav-char-details">
-                <div class="fav-char-name">${c.nombre}</div>
-                <div class="fav-char-origin"><span style="opacity:0.8;">${l === 'en' ? 'From:' : 'De:'}</span> <strong>${c.obra || ''}</strong></div>
-                ${c.cita ? `<div class="fav-char-quote">“${c.cita}”</div>` : ''}
+              <div class="fav-char-text-block">
+                <h4 class="fav-char-name-txt" title="${c.nombre}">${c.nombre}</h4>
+                <div class="fav-char-work-txt" title="${c.obra || ''}">
+                  <span style="opacity:0.75;">${l === 'en' ? 'From:' : 'De:'}</span> <strong>${c.obra || ''}</strong>
+                </div>
+                ${c.cita ? `<div class="fav-char-quote-txt" title="${c.cita}">“${c.cita}”</div>` : ''}
               </div>
             </div>
           </div>
@@ -6806,32 +6916,40 @@ function verPerfilDeAmigo(emailAmigo) {
       }
     }
     // Métricas del amigo
-    document.getElementById('amigo-stat-total').textContent = res.metricas?.total || 0;
+    const totalRegs = res.metricas?.total || 0;
+    document.getElementById('amigo-stat-total').textContent = totalRegs;
     document.getElementById('amigo-stat-promedio').textContent = `★ ${(res.metricas?.promedio || 0).toFixed(1)}`;
     document.getElementById('amigo-stat-horas').textContent = `${res.metricas?.horasJuegos || 0} hrs`;
     const elAmigoWatched = document.getElementById('amigo-stat-watched-horas');
     if (elAmigoWatched) elAmigoWatched.textContent = `${res.metricas?.horasVistas || 0} hrs`;
-    // Favoritos del amigo
+
+    // Actualizar texto del botón Ver Registros con el conteo
+    const txtRegsBtn = document.getElementById('txt-ver-regs-amigo-btn');
+    if (txtRegsBtn) {
+      txtRegsBtn.textContent = l === 'en' ? `View Records (${totalRegs})` : `Ver Registros (${totalRegs})`;
+    }
+
+    // Favoritos del amigo (excluyendo portada y personaje favorito)
     const favGrid = document.getElementById('amigo-grid-favoritos');
     const favs = a.favoritos || {};
-    const favKeys = Object.keys(favs);
+    const favKeys = Object.keys(favs).filter(k => k && k.includes('__') && k !== 'portada' && k !== 'personajeFavorito' && favs[k] && typeof favs[k] === 'object' && favs[k].titulo);
     if (!favKeys.length) {
-      favGrid.innerHTML = `<div style="color:var(--muted);font-size:0.82rem;">${l === 'en' ? 'This friend has not configured their favorite works yet.' : 'Este amigo aún no ha configurado sus obras favoritas.'}</div>`;
+      favGrid.innerHTML = `<div style="color:var(--muted);font-size:0.82rem;text-align:center;padding:12px 0;">${l === 'en' ? 'This friend has not configured their favorite works yet.' : 'Este amigo aún no ha configurado sus obras favoritas.'}</div>`;
     } else {
       favGrid.innerHTML = favKeys.map(k => {
         const item = favs[k];
         const [cat, sub] = k.split('__');
         const subI18n = I18N[l]?.subs?.[sub] || sub;
+        const catEmo = CONFIG[cat]?.emoji || '👑';
         return `
-          <div class="fav-slot-card" style="padding:8px 10px;">
-            <div style="width:42px;height:60px;border-radius:6px;overflow:hidden;background:#334155;flex-shrink:0;">
-              ${item.poster ? `<img src="${item.poster}" style="width:100%;height:100%;object-fit:cover;">` : '<div style="width:100%;height:100%;display:grid;place-items:center;">🎬</div>'}
+          <div class="fav-slot-card" style="padding:10px 12px;">
+            <div class="fav-slot-poster" style="width:46px;height:66px;border-radius:6px;overflow:hidden;flex-shrink:0;">
+              ${item.poster ? `<img src="${item.poster}" alt="${item.titulo}" style="width:100%;height:100%;object-fit:cover;">` : `<span style="font-size:1.3rem;">${catEmo}</span>`}
             </div>
-            <div style="flex:1;min-width:0;">
-              <span style="font-size:0.65rem;color:var(--accent);font-weight:700;text-transform:uppercase;">${subI18n || cat}</span>
-              <strong style="font-size:0.82rem;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.titulo}</strong>
-              <div style="font-size:0.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.creador || ''}</div>
-              <div style="color:var(--star-active);font-size:0.75rem;">★ ${item.calificacion || 5}</div>
+            <div class="fav-slot-info" style="flex:1;min-width:0;">
+              <div class="fav-slot-subcat" style="font-size:0.7rem;font-weight:700;color:var(--accent);"><span class="emoji-dyn">${catEmo} </span>${subI18n}</div>
+              <div class="fav-slot-title" title="${item.titulo}">${item.titulo}</div>
+              <div class="fav-slot-meta">${item.creador || ''}${item.calificacion ? ' · ★ ' + Number(item.calificacion).toFixed(1) : ''}</div>
             </div>
           </div>
         `;
@@ -6840,7 +6958,7 @@ function verPerfilDeAmigo(emailAmigo) {
     const desgloseBox = document.getElementById('amigo-desglose-categorias');
     if (desgloseBox) {
       if (res.privacidad?.ocultarEstadisticas) {
-        desgloseBox.innerHTML = `<div style="color:var(--muted);font-size:0.8rem;font-style:italic;">🔒 ${l === 'en' ? 'This friend has set their statistics to private.' : 'Este amigo ha configurado sus estadísticas como privadas.'}</div>`;
+        desgloseBox.innerHTML = `<div style="color:var(--muted);font-size:0.8rem;font-style:italic;padding:8px 0;text-align:center;">🔒 ${l === 'en' ? 'This friend has set their statistics to private.' : 'Este amigo ha configurado sus estadísticas como privadas.'}</div>`;
       } else {
         const cats = [
           { k: 'Peliculas', n: l === 'en' ? 'Movies' : 'Películas', e: '🎬' },
@@ -6854,13 +6972,13 @@ function verPerfilDeAmigo(emailAmigo) {
           const d = desg[c.k] || { total: 0, subs: {} };
           const subPills = Object.keys(d.subs).map(s => {
             const nomSubI18n = I18N[l]?.subs?.[s] || s;
-            return `<span class="amigo-sub-pill" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}', '${s.replace(/'/g, "\\'")}')" title="${l === 'en' ? `View records of ${nomSubI18n}` : `Ver registros de ${nomSubI18n}`}">${nomSubI18n}: <strong>${d.subs[s]}</strong></span>`;
-          }).join(' ');
+            return `<span class="amigo-sub-pill" onclick="event.stopPropagation(); abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}', '${s.replace(/'/g, "\\'")}')" title="${l === 'en' ? `View records of ${nomSubI18n}` : `Ver registros de ${nomSubI18n}`}">${nomSubI18n}: <strong>${d.subs[s]}</strong></span>`;
+          }).join('');
           return `
-            <div class="amigo-cat-stat-card" style="cursor:pointer;transition:var(--tr);" onclick="abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}')" title="${l === 'en' ? `View records of ${c.n}` : `Ver registros de ${c.n}`}">
+            <div class="amigo-cat-stat-card" style="cursor:pointer;" onclick="abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}')" title="${l === 'en' ? `View records of ${c.n}` : `Ver registros de ${c.n}`}">
               <div class="amigo-cat-stat-head">
-                <span>${c.e} ${c.n}</span>
-                <span style="font-size:0.8rem;color:var(--text);display:flex;align-items:center;gap:4px;">${d.total} ${l === 'en' ? 'records' : 'registros'} <span style="font-size:0.75rem;opacity:0.7;">➔</span></span>
+                <span style="display:flex;align-items:center;gap:6px;"><span>${c.e}</span> <span>${c.n}</span></span>
+                <span class="amigo-cat-count-badge">${d.total} ${l === 'en' ? 'records' : 'registros'} <span style="font-size:0.68rem;opacity:0.8;">➔</span></span>
               </div>
               <div class="amigo-sub-pills-wrap">${subPills || `<span style="font-size:0.75rem;color:var(--muted);">${l === 'en' ? 'No records yet' : 'Sin registros aún'}</span>`}</div>
             </div>
