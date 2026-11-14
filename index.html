@@ -233,17 +233,35 @@ body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px
 .btn-header-icon{background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.35);color:var(--accent);border-radius:50%;width:38px;height:38px;padding:0;margin:0;display:inline-grid;place-items:center;cursor:pointer;font-size:1.12rem;line-height:1;transition:var(--tr);outline:none;overflow:hidden}.btn-header-icon .btn-icon-glyph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;line-height:1;text-align:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;margin:0;padding:0}.btn-header-icon:hover{background:var(--accent);color:#0f172a;transform:translateY(-1px);box-shadow:0 0 14px rgba(56,189,248,0.4)}.btn-refresh.spinning{animation:spinRefresh 0.8s linear infinite}
 #btn-notifications{position:relative;overflow:visible !important;}
 .notif-badge-pill{position:absolute;top:-4px;right:-4px;background:#ef4444;color:#ffffff;font-size:0.62rem;font-weight:800;min-width:17px;height:17px;padding:0 4px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--header-bg, var(--bg));box-shadow:0 2px 6px rgba(0,0,0,0.35);pointer-events:none;z-index:2;line-height:1;}
-.notif-card-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:12px;transition:all 0.16s ease;cursor:pointer;position:relative;text-align:left;width:100%;box-sizing:border-box;}
-.notif-card-item:hover{border-color:var(--accent);transform:translateY(-1px);box-shadow:0 3px 10px rgba(0,0,0,0.12);}
-.notif-card-item.unread{background:rgba(56,189,248,0.06);border-color:rgba(56,189,248,0.35);}
-.notif-card-icon{width:36px;height:36px;border-radius:10px;background:rgba(56,189,248,0.12);display:inline-flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
-.notif-card-item.unread .notif-card-icon{background:linear-gradient(135deg,rgba(56,189,248,0.25),rgba(129,140,248,0.25));border:1px solid rgba(56,189,248,0.4);}
+.notif-tab-btn{flex:1;border:none;background:transparent;color:var(--muted);padding:8px 12px;border-radius:10px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+.notif-tab-btn:hover{color:var(--text);background:rgba(56,189,248,0.06);}
+.notif-tab-btn.active{background:var(--card);color:var(--text);border:1px solid var(--border);box-shadow:0 2px 8px rgba(0,0,0,0.12);}
+.notif-tab-counter{background:#ef4444;color:#ffffff;font-size:0.65rem;font-weight:800;padding:1px 6px;border-radius:8px;}
+.btn-notif-action-pill{background:rgba(56,189,248,0.1);color:var(--accent);border:1px solid rgba(56,189,248,0.25);border-radius:14px;padding:3px 10px;font-size:0.72rem;font-weight:700;cursor:pointer;transition:all 0.15s ease;display:inline-flex;align-items:center;gap:4px;}
+.btn-notif-action-pill:hover{background:var(--accent);color:#0f172a;}
+.btn-notif-action-pill.danger{background:rgba(239,68,68,0.08);color:#f87171;border-color:rgba(239,68,68,0.22);}
+.btn-notif-action-pill.danger:hover{background:#ef4444;color:#ffffff;}
+.notif-card{display:flex;align-items:flex-start;gap:13px;padding:13px 15px;background:var(--card);border:1px solid var(--border);border-radius:16px;transition:all 0.2s cubic-bezier(0.4,0,0.2,1);cursor:pointer;position:relative;text-align:left;box-shadow:0 2px 6px rgba(0,0,0,0.04);}
+.notif-card:hover{transform:translateY(-2px);border-color:rgba(56,189,248,0.45);box-shadow:0 6px 18px rgba(0,0,0,0.12);}
+.notif-card.unread{background:linear-gradient(135deg,rgba(56,189,248,0.09) 0%,rgba(129,140,248,0.04) 100%);border-color:rgba(56,189,248,0.42);}
+.notif-card-icon-box{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,0.15);color:#ffffff;}
+.notif-card-icon-box.racha{background:linear-gradient(135deg,#f59e0b 0%,#ea580c 100%);}
+.notif-card-icon-box.like{background:linear-gradient(135deg,#f43f5e 0%,#e11d48 100%);}
+.notif-card-icon-box.amigo{background:linear-gradient(135deg,#0284c7 0%,#2563eb 100%);}
+.notif-card-icon-box.solicitud{background:linear-gradient(135deg,#8b5cf6 0%,#6366f1 100%);}
+.notif-card-icon-box.sistema{background:linear-gradient(135deg,#10b981 0%,#059669 100%);}
 .notif-card-content{flex:1;min-width:0;}
 .notif-card-header{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:3px;}
-.notif-card-title{font-size:0.86rem;font-weight:700;color:var(--text);line-height:1.2;}
-.notif-card-time{font-size:0.7rem;color:var(--muted);white-space:nowrap;}
-.notif-card-msg{font-size:0.78rem;color:var(--muted);line-height:1.35;margin:0;}
-.notif-unread-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;margin-left:4px;}
+.notif-card-title{font-size:0.86rem;font-weight:700;color:var(--text);line-height:1.25;}
+.notif-card-time{font-size:0.68rem;color:var(--muted);font-weight:600;white-space:nowrap;}
+.notif-card-msg{font-size:0.79rem;color:var(--muted);line-height:1.35;margin:0;}
+.notif-card.unread .notif-card-msg{color:var(--text);opacity:0.9;}
+.notif-unread-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block;margin-left:4px;box-shadow:0 0 6px var(--accent);}
+.notif-dismiss-btn{background:transparent;border:none;color:var(--muted);border-radius:50%;width:22px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:0.82rem;cursor:pointer;opacity:0.5;transition:all 0.15s ease;margin-left:4px;flex-shrink:0;}
+.notif-dismiss-btn:hover{opacity:1;color:#ef4444;background:rgba(239,68,68,0.12);}
+.notif-pref-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:var(--tr);}
+.notif-pref-card:hover{border-color:rgba(56,189,248,0.35);}
+.notif-pref-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
 @keyframes spinRefresh{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}/* NAVEGACIÓN WEB EN DOS FILAS DIFERENCIADAS (SECCIONES VS CATEGORÍAS) */ .web-nav-wrapper{background:var(--header-bg);border-bottom:1px solid var(--border);display:flex;flex-direction:column}.nav-sections-row{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;border-bottom:1px solid rgba(51,65,85,0.45);background:var(--header-bg);gap:12px;flex-wrap:wrap}
 .nav-sections-group{display:flex;align-items:center;gap:8px;overflow-x:auto}.nav-sec-btn{background:rgba(30,41,59,0.6);border:1px solid var(--border);color:var(--muted);padding:7px 16px;border-radius:20px;font-weight:600;cursor:pointer;white-space:nowrap;transition:var(--tr);font-size:.86rem;display:inline-flex;align-items:center;gap:6px;line-height:1.2}
 .nav-sec-btn:hover{color:var(--text);border-color:rgba(56,189,248,.6);background:rgba(56,189,248,.08);transform:translateY(-1px)}.nav-sec-btn.active{background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:700;box-shadow:0 0 14px rgba(56,189,248,.4)}.nav-sec-btn.nav-sec-wl{border-color:rgba(245,158,11,0.45);color:#fcd34d;background:rgba(245,158,11,0.08)}
@@ -3269,7 +3287,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
     </label>
   </div>
 
-  <div class="switch-wrap">
+  <div class="switch-wrap" style="margin-bottom:10px;">
     <div>
       <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">👥 Nuevos registros de amigos</span>
       <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar cuando un amigo agregue una obra al feed</span>
@@ -3279,92 +3297,159 @@ html[data-ui-style="modern"] .btn-modal-cancel {
       <span class="switch-slider"></span>
     </label>
   </div>
+
+  <div class="switch-wrap">
+    <div>
+      <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">🤝 Nuevos amigos y solicitudes</span>
+      <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar al recibir una solicitud o cuando la acepten</span>
+    </div>
+    <label class="switch-toggle">
+      <input type="checkbox" id="cfg-notif-solicitudes" checked onchange="actualizarPreferenciaNotificacion('amigosYSolicitudes', this.checked)">
+      <span class="switch-slider"></span>
+    </label>
+  </div>
 </div>
 <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;"> <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;"> <div style="display:flex; align-items:center; gap:8px;"> <span>☁️</span> <span data-i18n="cfg_account_title">Cuenta y Sincronización Supabase Cloud</span> </div> <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;">✓ Supabase Cloud Activo</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;" id="cfg-account-status" data-i18n="cfg_account_hint">Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.</p> <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;"> <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span> </button> <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:rgba(16,185,129,0.45); color:#34d399; background:rgba(16,185,129,0.1); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets"> <span data-i18n="cfg_btn_migrar">☁️ Migrar mis datos de Google Sheets a Supabase</span> </button> </div>
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
 
-<!-- MODAL NOTIFICACIONES -->
+<!-- MODAL NOTIFICACIONES (REWORK MODERNO) -->
 <div id="modal-notificaciones" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalNotificaciones()">
-  <div class="modal-box" style="max-width:520px; max-height:88vh; display:flex; flex-direction:column; padding:0; overflow:hidden;">
-    <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--card);">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <span style="font-size:1.25rem;">🔔</span>
-        <h3 style="margin:0; font-size:1.1rem; color:var(--text); font-weight:800;">Notificaciones</h3>
-      </div>
-      <div style="display:flex; align-items:center; gap:8px;">
-        <button type="button" class="btn-today-pill" id="btn-toggle-notif-settings" style="height:28px; font-size:0.75rem; padding:0 10px;" onclick="togglePanelAjustesNotificaciones()" title="Configurar preferencias de notificaciones">
-          ⚙️ Ajustes
-        </button>
-        <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalNotificaciones()">✕</button>
-      </div>
-    </div>
-
-    <!-- Banner de Permiso del Navegador -->
-    <div id="banner-permiso-notif" style="display:none; padding:12px 18px; background:rgba(56,189,248,0.1); border-bottom:1px solid rgba(56,189,248,0.25); align-items:center; justify-content:space-between; gap:10px;">
-      <div style="font-size:0.78rem; color:var(--text); line-height:1.3;">
-        <strong>Activa las notificaciones del sistema</strong> para recibir avisos de rachas y amigos.
-      </div>
-      <button type="button" class="btn-today-pill" style="height:30px; font-size:0.75rem; white-space:nowrap; padding:0 12px; background:var(--accent); color:#0f172a; font-weight:800;" onclick="solicitarPermisoNotificaciones()">Activar</button>
-    </div>
-
-    <!-- Panel de Ajustes Desplegable -->
-    <div id="panel-ajustes-notificaciones" style="display:none; padding:16px 20px; background:var(--bg); border-bottom:1px solid var(--border);">
-      <div style="font-size:0.8rem; font-weight:800; color:var(--text); margin-bottom:12px; text-transform:uppercase; letter-spacing:0.04em;">Preferencias de Notificación</div>
-      
-      <div class="switch-wrap" style="margin-bottom:12px;">
-        <div>
-          <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">🔥 Recordatorio de rachas (21:00)</span>
-          <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar a las 21:00 si falta leer o escuchar un disco</span>
+  <div class="modal-box notif-modal-wrapper" style="max-width:520px; max-height:88vh; display:flex; flex-direction:column; padding:0; overflow:hidden; border-radius:24px;">
+    
+    <!-- Encabezado moderno -->
+    <div class="notif-modal-header" style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--header-bg);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="notif-header-bell-badge" style="width:36px; height:36px; border-radius:12px; background:rgba(56,189,248,0.14); border:1px solid rgba(56,189,248,0.3); display:flex; align-items:center; justify-content:center; font-size:1.2rem;">
+          <span>🔔</span>
         </div>
-        <label class="switch-toggle">
+        <div>
+          <h3 style="margin:0; font-size:1.12rem; color:var(--text); font-weight:800; line-height:1.2;">Notificaciones</h3>
+          <span id="notif-subtitle-count" style="font-size:0.72rem; color:var(--muted); font-weight:600;">Todo al día</span>
+        </div>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalNotificaciones()">✕</button>
+    </div>
+
+    <!-- Segmented Tab Switcher (Bandeja vs Preferencias) -->
+    <div class="notif-modal-tabs" style="display:flex; background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:4px; gap:4px; margin:14px 18px 10px 18px;">
+      <button type="button" class="notif-tab-btn active" id="btn-tab-notif-inbox" onclick="cambiarTabNotificaciones('inbox')">
+        <span>📥 Bandeja</span>
+        <span class="notif-tab-counter" id="tab-notif-inbox-counter" style="display:none;">0</span>
+      </button>
+      <button type="button" class="notif-tab-btn" id="btn-tab-notif-settings" onclick="cambiarTabNotificaciones('settings')">
+        <span>⚙️ Preferencias</span>
+      </button>
+    </div>
+
+    <!-- VISTA TAB 1: BANDEJA -->
+    <div id="vista-notif-tab-inbox" style="display:flex; flex-direction:column; flex:1; min-height:0; overflow:hidden;">
+      <!-- Toolbar de acciones de bandeja -->
+      <div style="padding:4px 20px 10px 20px; display:flex; justify-content:space-between; align-items:center; font-size:0.76rem; color:var(--muted);">
+        <span id="notif-bandeja-resumen">0 notificaciones</span>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button type="button" class="btn-notif-action-pill" onclick="marcarTodasNotificacionesLeidas()" title="Marcar todas como leídas">
+            <span>✓</span> <span>Leído</span>
+          </button>
+          <button type="button" class="btn-notif-action-pill danger" onclick="vaciarBandejaNotificaciones()" title="Eliminar todas las notificaciones">
+            <span>🗑️</span> <span>Vaciar</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Lista con scroll suave -->
+      <div id="lista-notificaciones-body" style="padding:0 18px 16px 18px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:10px;">
+        <!-- Se inyecta dinámicamente -->
+      </div>
+    </div>
+
+    <!-- VISTA TAB 2: PREFERENCIAS -->
+    <div id="vista-notif-tab-settings" style="display:none; flex-direction:column; flex:1; min-height:0; overflow-y:auto; padding:8px 18px 18px 18px;">
+      
+      <!-- Estado de Permisos del Navegador -->
+      <div id="notif-permiso-card" style="margin-bottom:14px; padding:14px 16px; border-radius:14px; background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.25); display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+          <span style="font-size:1.4rem;">📱</span>
+          <div style="min-width:0;">
+            <strong id="notif-permiso-status-txt" style="display:block; font-size:0.84rem; color:var(--text);">Permiso de Notificaciones</strong>
+            <span id="notif-permiso-desc-txt" style="display:block; font-size:0.72rem; color:var(--muted);">Para alertas en segundo plano</span>
+          </div>
+        </div>
+        <button type="button" class="btn-today-pill" id="btn-solicitar-permiso-notif" style="height:30px; font-size:0.75rem; padding:0 12px; background:var(--accent); color:#0f172a; font-weight:800; white-space:nowrap;" onclick="solicitarPermisoNotificaciones()">Activar</button>
+      </div>
+
+      <div style="font-size:0.75rem; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; padding-left:4px;">
+        Notificaciones que recibirás
+      </div>
+
+      <!-- Switch 1: Racha 21:00 -->
+      <div class="notif-pref-card">
+        <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+          <div class="notif-pref-icon" style="background:linear-gradient(135deg,rgba(245,158,11,0.2),rgba(234,88,12,0.2)); border:1px solid rgba(245,158,11,0.3);">🔥</div>
+          <div style="min-width:0;">
+            <strong style="display:block; font-size:0.85rem; color:var(--text);">Recordatorio de rachas (21:00)</strong>
+            <span style="display:block; font-size:0.72rem; color:var(--muted); margin-top:2px;">Te avisa a las 21:00 si aún no has leído o escuchado un disco</span>
+          </div>
+        </div>
+        <label class="switch-toggle" style="flex-shrink:0;">
           <input type="checkbox" id="modal-notif-racha" checked onchange="actualizarPreferenciaNotificacion('racha21', this.checked)">
           <span class="switch-slider"></span>
         </label>
       </div>
 
-      <div class="switch-wrap" style="margin-bottom:12px;">
-        <div>
-          <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">❤️ Likes en mis reseñas</span>
-          <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar cuando un amigo le dé me gusta a una reseña</span>
+      <!-- Switch 2: Likes de amigos -->
+      <div class="notif-pref-card">
+        <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+          <div class="notif-pref-icon" style="background:linear-gradient(135deg,rgba(244,63,94,0.2),rgba(225,29,72,0.2)); border:1px solid rgba(244,63,94,0.3);">❤️</div>
+          <div style="min-width:0;">
+            <strong style="display:block; font-size:0.85rem; color:var(--text);">Likes en tus reseñas</strong>
+            <span style="display:block; font-size:0.72rem; color:var(--muted); margin-top:2px;">Avisa cuando un amigo le dé me gusta a tu opinión</span>
+          </div>
         </div>
-        <label class="switch-toggle">
+        <label class="switch-toggle" style="flex-shrink:0;">
           <input type="checkbox" id="modal-notif-likes" checked onchange="actualizarPreferenciaNotificacion('likesAmigos', this.checked)">
           <span class="switch-slider"></span>
         </label>
       </div>
 
-      <div class="switch-wrap" style="margin-bottom:12px;">
-        <div>
-          <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;">👥 Nuevos registros de amigos</span>
-          <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar cuando un amigo agregue o califique una obra</span>
+      <!-- Switch 3: Nuevos registros de amigos -->
+      <div class="notif-pref-card">
+        <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+          <div class="notif-pref-icon" style="background:linear-gradient(135deg,rgba(56,189,248,0.2),rgba(37,99,235,0.2)); border:1px solid rgba(56,189,248,0.3);">👥</div>
+          <div style="min-width:0;">
+            <strong style="display:block; font-size:0.85rem; color:var(--text);">Actividad de amigos</strong>
+            <span style="display:block; font-size:0.72rem; color:var(--muted); margin-top:2px;">Avisa cuando un amigo registre o califique una obra</span>
+          </div>
         </div>
-        <label class="switch-toggle">
+        <label class="switch-toggle" style="flex-shrink:0;">
           <input type="checkbox" id="modal-notif-amigos" checked onchange="actualizarPreferenciaNotificacion('novedadesAmigos', this.checked)">
           <span class="switch-slider"></span>
         </label>
       </div>
 
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:14px; padding-top:10px; border-top:1px dashed var(--border);">
-        <button type="button" class="btn-today-pill" style="height:28px; font-size:0.74rem;" onclick="probarNotificacionSistema()">🔔 Probar notificación</button>
-        <button type="button" class="btn-today-pill" style="height:28px; font-size:0.74rem; background:transparent; border:none; color:var(--muted);" onclick="togglePanelAjustesNotificaciones()">Cerrar ajustes</button>
+      <!-- Switch 4: Nuevos amigos y solicitudes -->
+      <div class="notif-pref-card">
+        <div style="display:flex; align-items:center; gap:12px; min-width:0;">
+          <div class="notif-pref-icon" style="background:linear-gradient(135deg,rgba(139,92,246,0.2),rgba(99,102,241,0.2)); border:1px solid rgba(139,92,246,0.3);">🤝</div>
+          <div style="min-width:0;">
+            <strong style="display:block; font-size:0.85rem; color:var(--text);">Amigos y solicitudes</strong>
+            <span style="display:block; font-size:0.72rem; color:var(--muted); margin-top:2px;">Avisa cuando te envíen una solicitud o la acepten</span>
+          </div>
+        </div>
+        <label class="switch-toggle" style="flex-shrink:0;">
+          <input type="checkbox" id="modal-notif-solicitudes" checked onchange="actualizarPreferenciaNotificacion('amigosYSolicitudes', this.checked)">
+          <span class="switch-slider"></span>
+        </label>
+      </div>
+
+      <!-- Botón de prueba -->
+      <div style="margin-top:14px; text-align:center;">
+        <button type="button" class="btn-today-pill" style="height:36px; padding:0 18px; font-size:0.82rem; margin:0 auto; width:100%; justify-content:center; gap:8px;" onclick="probarNotificacionSistema()">
+          <span>🔔</span> <span>Enviar notificación de prueba</span>
+        </button>
       </div>
     </div>
 
-    <!-- Barra de acciones de bandeja -->
-    <div style="padding:10px 20px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--border); font-size:0.76rem; color:var(--muted);">
-      <span id="notif-bandeja-resumen">0 notificaciones</span>
-      <div style="display:flex; gap:8px;">
-        <button type="button" class="btn-text-action" onclick="marcarTodasNotificacionesLeidas()" style="background:none; border:none; color:var(--accent); cursor:pointer; font-size:0.75rem; font-weight:700;">Marcar todo leído</button>
-        <span style="opacity:0.3;">·</span>
-        <button type="button" class="btn-text-action" onclick="vaciarBandejaNotificaciones()" style="background:none; border:none; color:var(--muted); cursor:pointer; font-size:0.75rem;">Vaciar</button>
-      </div>
-    </div>
-
-    <!-- Lista scrolleable de notificaciones -->
-    <div id="lista-notificaciones-body" style="padding:14px 20px; overflow-y:auto; flex:1; max-height:460px; display:flex; flex-direction:column; gap:10px;">
-      <!-- Se inyecta dinámicamente -->
-    </div>
   </div>
 </div>
 
@@ -6188,6 +6273,9 @@ function cargarAmigosYSolicitudes(mostrarToast = false) {
     }
     cargarActividadAmigos();
     cargarFeedActividadAmigos();
+    if (typeof verificarNuevosAmigosYSolicitudes === 'function') {
+      verificarNuevosAmigosYSolicitudes(res.solicitudes || [], res.amigos || []);
+    }
     if (mostrarToast) mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Friends list and updates refreshed 👥' : 'Lista de amigos y novedades actualizada 👥');
   }).obtenerDatosAmigosUsuario(estado.userEmail);
 }
@@ -6900,6 +6988,8 @@ const NOTIF_STORAGE_KEY = 'mediary_in_app_notifs_v1';
 const NOTIF_RACHA_LAST_KEY = 'mediary_notif_racha_21_last';
 const NOTIF_SEEN_FEED_KEY = 'mediary_seen_friend_feed_ids';
 const NOTIF_KNOWN_LIKES_KEY = 'mediary_known_likes_map';
+const NOTIF_SEEN_REQUESTS_KEY = 'mediary_seen_friend_requests_v1';
+const NOTIF_KNOWN_FRIENDS_KEY = 'mediary_known_friends_emails_v1';
 
 function obtenerPreferenciasNotificaciones() {
   if (!userPrefs.notificaciones || typeof userPrefs.notificaciones !== 'object') {
@@ -6907,8 +6997,11 @@ function obtenerPreferenciasNotificaciones() {
       habilitadas: true,
       racha21: true,
       likesAmigos: true,
-      novedadesAmigos: true
+      novedadesAmigos: true,
+      amigosYSolicitudes: true
     };
+  } else if (typeof userPrefs.notificaciones.amigosYSolicitudes === 'undefined') {
+    userPrefs.notificaciones.amigosYSolicitudes = true;
   }
   return userPrefs.notificaciones;
 }
@@ -7010,11 +7103,59 @@ async function solicitarPermisoNotificaciones() {
 
 function actualizarUIPermisoNotificaciones() {
   const banner = document.getElementById('banner-permiso-notif');
-  if (!banner) return;
-  if (!('Notification' in window) || Notification.permission === 'granted') {
-    banner.style.display = 'none';
-  } else {
-    banner.style.display = 'flex';
+  const card = document.getElementById('notif-permiso-card');
+  const statusTxt = document.getElementById('notif-permiso-status-txt');
+  const descTxt = document.getElementById('notif-permiso-desc-txt');
+  const btnPerm = document.getElementById('btn-solicitar-permiso-notif');
+
+  const permGranted = ('Notification' in window) && Notification.permission === 'granted';
+  const permDenied = ('Notification' in window) && Notification.permission === 'denied';
+
+  if (banner) {
+    banner.style.display = (!('Notification' in window) || permGranted) ? 'none' : 'flex';
+  }
+
+  if (card && statusTxt && descTxt && btnPerm) {
+    if (!('Notification' in window)) {
+      statusTxt.textContent = 'Notificaciones no soportadas';
+      descTxt.textContent = 'Tu navegador no permite alertas Web';
+      btnPerm.style.display = 'none';
+      card.style.background = 'rgba(100,116,139,0.08)';
+      card.style.borderColor = 'rgba(100,116,139,0.2)';
+    } else if (permGranted) {
+      statusTxt.textContent = '✓ Notificaciones activas';
+      descTxt.textContent = 'Recibirás avisos de rachas y amigos';
+      btnPerm.textContent = 'Activo';
+      btnPerm.style.display = 'inline-block';
+      btnPerm.style.background = 'rgba(16,185,129,0.18)';
+      btnPerm.style.color = '#34d399';
+      btnPerm.style.borderColor = 'rgba(16,185,129,0.4)';
+      btnPerm.disabled = true;
+      card.style.background = 'rgba(16,185,129,0.06)';
+      card.style.borderColor = 'rgba(16,185,129,0.25)';
+    } else if (permDenied) {
+      statusTxt.textContent = '✕ Notificaciones bloqueadas';
+      descTxt.textContent = 'Habilítalas en los permisos de tu navegador';
+      btnPerm.textContent = 'Bloqueado';
+      btnPerm.style.display = 'inline-block';
+      btnPerm.style.background = 'rgba(239,68,68,0.15)';
+      btnPerm.style.color = '#f87171';
+      btnPerm.style.borderColor = 'rgba(239,68,68,0.35)';
+      btnPerm.disabled = true;
+      card.style.background = 'rgba(239,68,68,0.06)';
+      card.style.borderColor = 'rgba(239,68,68,0.25)';
+    } else {
+      statusTxt.textContent = 'Permiso de Notificaciones';
+      descTxt.textContent = 'Activa alertas de rachas y amigos';
+      btnPerm.textContent = 'Activar';
+      btnPerm.style.display = 'inline-block';
+      btnPerm.style.background = 'var(--accent)';
+      btnPerm.style.color = '#0f172a';
+      btnPerm.style.borderColor = 'var(--accent)';
+      btnPerm.disabled = false;
+      card.style.background = 'rgba(56,189,248,0.08)';
+      card.style.borderColor = 'rgba(56,189,248,0.25)';
+    }
   }
 }
 
@@ -7023,7 +7164,8 @@ function sincronizarSwitchesNotificaciones() {
   const mapIds = {
     racha21: ['cfg-notif-racha', 'modal-notif-racha'],
     likesAmigos: ['cfg-notif-likes', 'modal-notif-likes'],
-    novedadesAmigos: ['cfg-notif-amigos', 'modal-notif-amigos']
+    novedadesAmigos: ['cfg-notif-amigos', 'modal-notif-amigos'],
+    amigosYSolicitudes: ['cfg-notif-solicitudes', 'modal-notif-solicitudes']
   };
 
   Object.keys(mapIds).forEach(k => {
@@ -7056,6 +7198,28 @@ function actualizarPreferenciaNotificacion(tipo, valor) {
   }
 }
 
+function cambiarTabNotificaciones(tab) {
+  const btnInbox = document.getElementById('btn-tab-notif-inbox');
+  const btnSettings = document.getElementById('btn-tab-notif-settings');
+  const vistaInbox = document.getElementById('vista-notif-tab-inbox');
+  const vistaSettings = document.getElementById('vista-notif-tab-settings');
+
+  if (tab === 'settings') {
+    if (btnInbox) btnInbox.classList.remove('active');
+    if (btnSettings) btnSettings.classList.add('active');
+    if (vistaInbox) vistaInbox.style.display = 'none';
+    if (vistaSettings) vistaSettings.style.display = 'flex';
+    actualizarUIPermisoNotificaciones();
+    sincronizarSwitchesNotificaciones();
+  } else {
+    if (btnInbox) btnInbox.classList.add('active');
+    if (btnSettings) btnSettings.classList.remove('active');
+    if (vistaInbox) vistaInbox.style.display = 'flex';
+    if (vistaSettings) vistaSettings.style.display = 'none';
+    renderizarListaNotificacionesModal();
+  }
+}
+
 function probarNotificacionSistema() {
   if (!('Notification' in window)) {
     mostrarToastPersonalizado('Tu navegador no admite notificaciones Web.');
@@ -7068,7 +7232,7 @@ function probarNotificacionSistema() {
           id: 'test_' + Date.now(),
           tipo: 'sistema',
           titulo: '🔔 ¡Notificaciones activas en Mediary!',
-          mensaje: 'Tu dispositivo está listo para avisarte de rachas a las 21:00 y actividad de amigos.',
+          mensaje: 'Tu dispositivo está listo para avisarte de rachas a las 21:00, actividad y solicitudes.',
           icono: '✨'
         });
         renderizarListaNotificacionesModal();
@@ -7080,7 +7244,7 @@ function probarNotificacionSistema() {
     id: 'test_' + Date.now(),
     tipo: 'sistema',
     titulo: '🔔 ¡Notificaciones activas en Mediary!',
-    mensaje: 'Tu dispositivo está listo para avisarte de rachas a las 21:00 y actividad de amigos.',
+    mensaje: 'Tu dispositivo está listo para avisarte de rachas a las 21:00, actividad y solicitudes.',
     icono: '✨'
   });
   renderizarListaNotificacionesModal();
@@ -7090,6 +7254,7 @@ function probarNotificacionSistema() {
 function abrirModalNotificaciones() {
   const modal = document.getElementById('modal-notificaciones');
   if (!modal) return;
+  cambiarTabNotificaciones('inbox');
   actualizarUIPermisoNotificaciones();
   sincronizarSwitchesNotificaciones();
   renderizarListaNotificacionesModal();
@@ -7099,26 +7264,45 @@ function abrirModalNotificaciones() {
 function cerrarModalNotificaciones() {
   const modal = document.getElementById('modal-notificaciones');
   if (modal) modal.style.display = 'none';
-  const panel = document.getElementById('panel-ajustes-notificaciones');
-  if (panel) panel.style.display = 'none';
 }
 
-function togglePanelAjustesNotificaciones() {
-  const panel = document.getElementById('panel-ajustes-notificaciones');
-  if (!panel) return;
-  const isHidden = panel.style.display === 'none';
-  panel.style.display = isHidden ? 'block' : 'none';
-  const btn = document.getElementById('btn-toggle-notif-settings');
-  if (btn) btn.classList.toggle('active', isHidden);
+function escapeHtmlNotif(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
 function renderizarListaNotificacionesModal() {
   const cont = document.getElementById('lista-notificaciones-body');
   const resEl = document.getElementById('notif-bandeja-resumen');
+  const subCount = document.getElementById('notif-subtitle-count');
+  const tabCounter = document.getElementById('tab-notif-inbox-counter');
   if (!cont) return;
 
   const lista = obtenerBandejaNotificaciones();
   const noLeidas = lista.filter(n => !n.leida).length;
+
+  if (tabCounter) {
+    if (noLeidas > 0) {
+      tabCounter.textContent = noLeidas > 99 ? '99+' : String(noLeidas);
+      tabCounter.style.display = 'inline-block';
+    } else {
+      tabCounter.style.display = 'none';
+    }
+  }
+
+  if (subCount) {
+    if (noLeidas > 0) {
+      subCount.textContent = noLeidas === 1 ? '1 notificación sin leer' : `${noLeidas} notificaciones sin leer`;
+      subCount.style.color = 'var(--accent)';
+    } else {
+      subCount.textContent = 'Todo al día';
+      subCount.style.color = 'var(--muted)';
+    }
+  }
 
   if (resEl) {
     resEl.textContent = lista.length === 1 
@@ -7129,10 +7313,10 @@ function renderizarListaNotificacionesModal() {
   if (!lista.length) {
     cont.innerHTML = `
       <div style="text-align:center; padding:38px 20px; color:var(--muted);">
-        <div style="font-size:2.2rem; margin-bottom:8px;">✨</div>
+        <div style="font-size:2.4rem; margin-bottom:8px;">✨</div>
         <div style="font-weight:700; color:var(--text); font-size:0.95rem; margin-bottom:4px;">No tienes notificaciones</div>
-        <div style="font-size:0.8rem; max-width:320px; margin:0 auto 14px;">Aquí verás los recordatorios de rachas a las 21:00, los likes de tus amigos y los nuevos registros en su feed.</div>
-        <button type="button" class="btn-today-pill" style="height:30px; font-size:0.75rem; margin:0 auto;" onclick="probarNotificacionSistema()">🔔 Probar notificación de muestra</button>
+        <div style="font-size:0.8rem; max-width:320px; margin:0 auto 14px;">Aquí verás recordatorios de rachas, likes de amigos, nuevos registros y solicitudes.</div>
+        <button type="button" class="btn-today-pill" style="height:32px; font-size:0.75rem; margin:0 auto; padding:0 14px;" onclick="probarNotificacionSistema()">🔔 Probar notificación de muestra</button>
       </div>
     `;
     return;
@@ -7140,15 +7324,24 @@ function renderizarListaNotificacionesModal() {
 
   cont.innerHTML = lista.map(n => {
     const timeStr = formatearTiempoNotif(n.fecha);
+    const tipoVal = ['racha', 'like', 'amigo', 'solicitud', 'sistema'].includes(n.tipo) ? n.tipo : 'sistema';
     return `
-      <div class="notif-card-item ${n.leida ? '' : 'unread'}" onclick="clickEnNotificacion('${n.id}')">
-        <div class="notif-card-icon">${n.icono || '🔔'}</div>
+      <div class="notif-card ${n.leida ? '' : 'unread'}" onclick="clickEnNotificacion('${n.id}')">
+        <div class="notif-card-icon-box ${tipoVal}">
+          <span>${n.icono || '🔔'}</span>
+        </div>
         <div class="notif-card-content">
           <div class="notif-card-header">
-            <span class="notif-card-title">${n.titulo} ${n.leida ? '' : '<span class="notif-unread-dot" title="No leída"></span>'}</span>
-            <span class="notif-card-time">${timeStr}</span>
+            <span class="notif-card-title">
+              ${escapeHtmlNotif(n.titulo)}
+              ${n.leida ? '' : '<span class="notif-unread-dot" title="No leída"></span>'}
+            </span>
+            <div style="display:flex; align-items:center; gap:4px;">
+              <span class="notif-card-time">${timeStr}</span>
+              <button type="button" class="notif-dismiss-btn" onclick="eliminarNotificacion(event, '${n.id}')" title="Eliminar">✕</button>
+            </div>
           </div>
-          <p class="notif-card-msg">${n.mensaje}</p>
+          <p class="notif-card-msg">${escapeHtmlNotif(n.mensaje)}</p>
         </div>
       </div>
     `;
@@ -7187,6 +7380,13 @@ function clickEnNotificacion(notifId) {
       abrirVistaAmigos();
     }
   }
+}
+
+function eliminarNotificacion(e, notifId) {
+  if (e && e.stopPropagation) e.stopPropagation();
+  const lista = obtenerBandejaNotificaciones().filter(n => n.id !== notifId);
+  guardarBandejaNotificaciones(lista);
+  renderizarListaNotificacionesModal();
 }
 
 function marcarTodasNotificacionesLeidas() {
@@ -7378,27 +7578,147 @@ function verificarNuevasActividadesAmigos(feed) {
   }
 }
 
+// 4. NUEVOS AMIGOS Y SOLICITUDES DE AMISTAD
+function verificarNuevosAmigosYSolicitudes(solicitudes, amigos) {
+  const prefs = obtenerPreferenciasNotificaciones();
+  if (!prefs.amigosYSolicitudes) return;
+
+  // A) Solicitudes entrantes de amistad
+  if (Array.isArray(solicitudes) && solicitudes.length > 0) {
+    let vistas = new Set();
+    let esPrimeraCargaReq = false;
+    try {
+      const raw = localStorage.getItem(NOTIF_SEEN_REQUESTS_KEY);
+      if (raw !== null) {
+        vistas = new Set(JSON.parse(raw));
+      } else {
+        esPrimeraCargaReq = true;
+      }
+    } catch (e) {}
+
+    let huboNuevasReq = false;
+    for (const s of solicitudes) {
+      if (!s) continue;
+      const emailReq = (typeof s === 'string' ? s : (s.email || s.userId || '')).toLowerCase();
+      if (!emailReq) continue;
+
+      if (!vistas.has(emailReq)) {
+        vistas.add(emailReq);
+        huboNuevasReq = true;
+
+        const nick = (typeof s === 'object' && s.nickname) ? s.nickname : emailReq.split('@')[0];
+        lanzarNotificacion({
+          id: 'solicitud_' + emailReq,
+          tipo: 'solicitud',
+          titulo: '🤝 Solicitud de amistad recibida',
+          mensaje: `${nick} te ha enviado una solicitud de amistad.`,
+          icono: '🤝',
+          accion: 'abrirAmigos'
+        });
+      }
+    }
+
+    if (huboNuevasReq || esPrimeraCargaReq) {
+      try {
+        localStorage.setItem(NOTIF_SEEN_REQUESTS_KEY, JSON.stringify(Array.from(vistas)));
+      } catch (e) {}
+    }
+  }
+
+  // B) Nuevos amigos aceptados / conectados
+  if (Array.isArray(amigos)) {
+    let conocidos = new Set();
+    let esPrimeraCargaAmigos = false;
+    try {
+      const raw = localStorage.getItem(NOTIF_KNOWN_FRIENDS_KEY);
+      if (raw !== null) {
+        conocidos = new Set(JSON.parse(raw));
+      } else {
+        esPrimeraCargaAmigos = true;
+      }
+    } catch (e) {}
+
+    if (esPrimeraCargaAmigos) {
+      // Primera vez: guardar amigos existentes para no alertar sobre el historial previo
+      amigos.forEach(a => {
+        const em = (typeof a === 'string' ? a : (a.email || '')).toLowerCase();
+        if (em) conocidos.add(em);
+      });
+      try {
+        localStorage.setItem(NOTIF_KNOWN_FRIENDS_KEY, JSON.stringify(Array.from(conocidos)));
+      } catch (e) {}
+    } else {
+      let huboNuevosAmigos = false;
+      for (const a of amigos) {
+        if (!a) continue;
+        const em = (typeof a === 'string' ? a : (a.email || '')).toLowerCase();
+        if (!em) continue;
+
+        if (!conocidos.has(em)) {
+          conocidos.add(em);
+          huboNuevosAmigos = true;
+
+          const nick = (typeof a === 'object' && a.nickname) ? a.nickname : em.split('@')[0];
+          lanzarNotificacion({
+            id: 'nuevo_amigo_' + em,
+            tipo: 'amigo',
+            titulo: '🎉 ¡Nuevo amigo conectado!',
+            mensaje: `¡Ahora eres amigo de ${nick}! Ya puedes explorar sus registros y mezclar watchlists.`,
+            icono: '🎉',
+            accion: 'abrirAmigos'
+          });
+        }
+      }
+
+      if (huboNuevosAmigos) {
+        try {
+          localStorage.setItem(NOTIF_KNOWN_FRIENDS_KEY, JSON.stringify(Array.from(conocidos)));
+        } catch (e) {}
+      }
+    }
+  }
+}
+
+async function verificarAmigosYSolicitudesEnNube() {
+  if (!estado.userEmail) return;
+  const prefs = obtenerPreferenciasNotificaciones();
+  if (!prefs.amigosYSolicitudes) return;
+  try {
+    if (typeof google !== 'undefined' && google.script && google.script.run) {
+      google.script.run.withSuccessHandler(res => {
+        if (res && res.exito && typeof verificarNuevosAmigosYSolicitudes === 'function') {
+          verificarNuevosAmigosYSolicitudes(res.solicitudes || [], res.amigos || []);
+        }
+      }).obtenerDatosAmigosUsuario(estado.userEmail);
+    }
+  } catch (e) {}
+}
+
 function inicializarSistemaNotificaciones() {
   actualizarBadgeNotificaciones();
   sincronizarSwitchesNotificaciones();
   programarAlarmaRacha21();
   if (estado.userEmail) {
     verificarLikesRecibidosEnNube();
+    verificarAmigosYSolicitudesEnNube();
   }
 }
 
 window.abrirModalNotificaciones = abrirModalNotificaciones;
 window.cerrarModalNotificaciones = cerrarModalNotificaciones;
-window.togglePanelAjustesNotificaciones = togglePanelAjustesNotificaciones;
+window.cambiarTabNotificaciones = cambiarTabNotificaciones;
 window.solicitarPermisoNotificaciones = solicitarPermisoNotificaciones;
 window.actualizarPreferenciaNotificacion = actualizarPreferenciaNotificacion;
 window.probarNotificacionSistema = probarNotificacionSistema;
 window.clickEnNotificacion = clickEnNotificacion;
+window.eliminarNotificacion = eliminarNotificacion;
 window.marcarTodasNotificacionesLeidas = marcarTodasNotificacionesLeidas;
 window.vaciarBandejaNotificaciones = vaciarBandejaNotificaciones;
 window.verificarNuevasActividadesAmigos = verificarNuevasActividadesAmigos;
 window.verificarNuevosLikesRecibidos = verificarNuevosLikesRecibidos;
 window.verificarLikesRecibidosEnNube = verificarLikesRecibidosEnNube;
+window.verificarNuevosAmigosYSolicitudes = verificarNuevosAmigosYSolicitudes;
+window.verificarAmigosYSolicitudesEnNube = verificarAmigosYSolicitudesEnNube;
 window.inicializarSistemaNotificaciones = inicializarSistemaNotificaciones;
 
 function renderizarListaSolicitudes(solicitudes) {
