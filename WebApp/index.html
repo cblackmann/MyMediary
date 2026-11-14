@@ -1138,18 +1138,23 @@ html[data-show-emojis="false"] .emoji-dyn { display: none !important; }
 @keyframes pulseBorder{0%,100%{border-color:var(--accent);box-shadow:0 0 20px rgba(56,189,248,0.2);}50%{border-color:#f59e0b;box-shadow:0 0 30px rgba(245,158,11,0.35);}}
 
 .ruleta-modal-box {
-  width: min(580px, 94vw);
-  min-height: 560px;
-  max-height: 92vh;
+  width: min(540px, 94vw);
+  height: 630px;
+  max-height: 90vh;
+  position: relative;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  padding: 18px 20px 16px;
+  overflow: hidden;
 }
 @media (max-width: 768px) {
   .ruleta-modal-box {
     width: 100% !important;
     max-width: 100% !important;
-    min-height: min(540px, 85vh) !important;
+    height: 85vh !important;
+    max-height: 85vh !important;
+    padding: 18px 16px 14px;
   }
 }
 
@@ -1821,26 +1826,29 @@ html[data-ui-style="modern"] .home-friend-review-box {
   color: var(--text) !important;
 }
 
+[data-theme$="-light"] .home-friend-review-box,
 [data-theme$="-light"][data-ui-style="modern"] .home-friend-review-box {
-  background: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid var(--border) !important;
   border-left: 3px solid var(--accent) !important;
   color: var(--text) !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: none !important;
 }
 
 html[data-ui-style="modern"] .feed-review-box {
-  background: rgba(56, 189, 248, 0.10) !important;
-  border: 1px solid rgba(56, 189, 248, 0.25) !important;
+  background: rgba(56, 189, 248, 0.07) !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
   border-left: 3px solid var(--accent) !important;
   color: var(--text) !important;
 }
 
+[data-theme$="-light"] .feed-review-box,
 [data-theme$="-light"][data-ui-style="modern"] .feed-review-box {
-  background: #ffffff !important;
-  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid var(--border) !important;
   border-left: 3px solid var(--accent) !important;
   color: var(--text) !important;
+  box-shadow: none !important;
 }
 
 html[data-ui-style="modern"] .discover-card {
@@ -2330,37 +2338,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 
       <hr class="home-section-divider">
 
-      <!-- 1. AGREGAR AMIGO POR ID -->
-      <div class="home-clean-section" id="seccion-agregar-amigo">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title">
-            <span class="emoji-dyn">🔍</span>
-            <span data-i18n="amigos_search_title">Agregar Amigo por ID</span>
-          </div>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; max-width:540px; margin:0 auto;">
-          <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1; min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234">
-          <button type="button" class="btn-save" style="width:auto; min-height:44px; padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button>
-        </div>
-        <div id="msg-buscar-amigo-feedback" style="display:none; font-size:0.82rem; margin-top:10px; padding:8px 12px; border-radius:8px; text-align:center;"></div>
-      </div>
-
-      <!-- SOLICITUDES PENDIENTES (CONDICIONAL) -->
-      <div id="seccion-solicitudes-pendientes" style="display:none;">
-        <hr class="home-section-divider">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title" style="color:#fbbf24;">
-            <span class="emoji-dyn">📬</span>
-            <span>Solicitudes de Amistad</span>
-            <span class="pill-count" style="font-size:0.75rem; background:rgba(251,191,36,0.18); color:#fbbf24; border-radius:10px; padding:1px 8px; font-weight:800;"><span id="count-solicitudes-amigos">0</span></span>
-          </div>
-        </div>
-        <div id="lista-solicitudes-amigos" style="display:flex; flex-direction:column; gap:10px;"></div>
-      </div>
-
-      <hr class="home-section-divider">
-
-      <!-- 2. MIS AMIGOS -->
+      <!-- 1. SECCIÓN: MIS AMIGOS -->
       <div class="home-clean-section" id="seccion-mis-amigos">
         <div class="home-clean-section-header">
           <div class="home-clean-title">
@@ -2369,24 +2347,35 @@ html[data-ui-style="modern"] .btn-modal-cancel {
             <span class="pill-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border-radius:10px; padding:1px 8px; font-weight:800;"><span id="count-mis-amigos">0</span></span>
           </div>
         </div>
-        <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;">
+
+        <!-- i. Agregar amigo por ID (solo cuadro de texto y botón) -->
+        <div style="display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; max-width:540px; margin:0 auto 12px;">
+          <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1; min-width:200px;" placeholder="Ej: CARLOS-7910 o CJ-1234">
+          <button type="button" class="btn-save" style="width:auto; min-height:44px; padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button>
+        </div>
+        <div id="msg-buscar-amigo-feedback" style="display:none; font-size:0.82rem; margin-top:-6px; margin-bottom:12px; padding:8px 12px; border-radius:8px; text-align:center;"></div>
+
+        <!-- Solicitudes de amistad recibidas (si existen) -->
+        <div id="seccion-solicitudes-pendientes" style="display:none; margin-bottom:14px;">
+          <div class="home-clean-section-header">
+            <div class="home-clean-title" style="color:#fbbf24; font-size:1.02rem;">
+              <span class="emoji-dyn">📬</span>
+              <span>Solicitudes de Amistad</span>
+              <span class="pill-count" style="font-size:0.75rem; background:rgba(251,191,36,0.18); color:#fbbf24; border-radius:10px; padding:1px 8px; font-weight:800;"><span id="count-solicitudes-amigos">0</span></span>
+            </div>
+          </div>
+          <div id="lista-solicitudes-amigos" style="display:flex; flex-direction:column; gap:10px;"></div>
+        </div>
+
+        <!-- ii. Tarjetas de mis amigos -->
+        <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%; margin-bottom:14px;">
           <div style="color:var(--muted); font-size:0.88rem; padding:20px 0; text-align:center;" data-i18n="friends_no_added_yet">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div>
         </div>
-      </div>
 
-      <hr class="home-section-divider">
-
-      <!-- 3. MEZCLAR WATCHLISTS -->
-      <div class="home-clean-section" id="seccion-mezclar-watchlists">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title">
-            <span class="emoji-dyn">🍿</span>
-            <span data-i18n="banner_coop_btn">Mezclar Watchlists</span>
-          </div>
-        </div>
-        <div style="display:flex; justify-content:center; align-items:center; width:100%; margin:2px 0;">
-          <button type="button" class="ruleta-btn-girar-banner" onclick="abrirModalRuleta()" style="margin:0 auto;">
-            <span class="emoji-dyn">🎲</span> <span data-i18n="banner_coop_btn">Mezclar Watchlists</span>
+        <!-- Botón centrado de Mezclar Watchlists abajo de la sección de Mis Amigos -->
+        <div style="display:flex; justify-content:center; align-items:center; width:100%; margin:10px 0 4px;">
+          <button type="button" class="ruleta-btn-girar-banner" onclick="abrirModalRuleta()" style="margin:0 auto; display:inline-flex; align-items:center; gap:8px;">
+            <span class="emoji-dyn">🍿</span> <span data-i18n="banner_coop_btn">Mezclar Watchlists</span>
           </button>
         </div>
       </div>
@@ -3123,160 +3112,142 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 <h3 style="color:var(--danger); font-size:1.15rem; margin-bottom:8px;" data-i18n="del_title">¿Eliminar este registro?</h3> <p id="confirm-eliminar-mensaje" style="color:var(--muted); font-size:.9rem; line-height:1.4; margin-bottom:14px;"></p> <div class="modal-actions" style="justify-content:center; gap:12px; margin-top:14px;"> <button class="btn-modal-cancel" onclick="cerrarModalEliminar()" data-i18n="btn_cancel">Cancelar</button><button class="btn-modal-danger" id="btn-confirmar-eliminar-si" data-i18n="btn_del_permanent">Eliminar definitivamente</button>
 </div> </div> </div> <!-- MODAL PERFIL DE AMIGO --> <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()"> <div class="modal-box" style="max-width:680px;max-height:90vh;overflow-y:auto;"> <div id="amigo-modal-hero-card" class="profile-hero-card cover-predeterminada" style="margin-bottom:14px; padding:16px 18px; border-radius:14px; position:relative; overflow:hidden;"> <div style="display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2;"> <div style="display:flex;gap:14px;align-items:center;"> <div id="amigo-modal-avatar" style="width:58px;height:58px;border-radius:50%;border:2px solid var(--accent);overflow:hidden;background:var(--bg);display:grid;place-items:center;font-size:1.8rem;flex-shrink:0;"></div> <div> <h3 id="amigo-modal-nick" style="font-size:1.25rem;margin-bottom:2px;color:var(--text);">Amigo</h3> <div id="amigo-modal-bio" style="font-size:0.82rem;color:var(--muted);" data-i18n="profile_default_bio">Coleccionando historias en Mediary ✨</div> <div id="amigo-modal-id-badge" style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;"></div> </div> </div> <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalPerfilAmigo()">✕</button> </div> </div> <div id="amigo-modal-character-container"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:8px;">⚡ <span data-i18n="amigo_stat_title">Métricas de Contenido</span></div> <div class="profile-grid-highlights" style="margin-bottom:14px;"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_total_lbl">Total Registros</div> <div class="profile-stat-val" id="amigo-stat-total">0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_total_sub">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_avg_lbl">Calificación Promedio</div> <div class="profile-stat-val" id="amigo-stat-promedio">★ 0.0</div> <div class="profile-stat-sub" data-i18n="amigo_stat_avg_sub">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="amigo_stat_hours_lbl">Horas en Juegos</div> <div class="profile-stat-val" id="amigo-stat-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="amigo_stat_hours_sub">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="amigo-stat-watched-horas">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:6px;">📊 <span data-i18n="amigo_breakdown_title">Desglose por Categorías y Subcategorías</span></div> <div id="amigo-desglose-categorias" style="margin-bottom:14px;"></div> <div class="profile-section-title" style="font-size:0.75rem;margin-bottom:8px;">👑 <span data-i18n="profile_favs_title">Obras Favoritas</span></div> <div id="amigo-grid-favoritos" class="favs-grid" style="margin-bottom:14px;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));"> <div style="color:var(--muted);font-size:0.82rem;" data-i18n="loading_favs">Cargando favoritos...</div> </div> <div class="profile-section-title" style="font-size:0.75rem;margin-top:10px;margin-bottom:8px;">📑 <span data-i18n="amigo_regs_section_title">Historial de Registros</span></div> <button type="button" class="btn-friend-records" id="btn-ver-regs-amigo" onclick="abrirModalRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')"> <span>📑</span> <span data-i18n="btn_ver_regs_amigo">Ver Historial de Registros</span> <span style="font-size:0.8rem;opacity:0.85;">➔</span> </button> <button type="button" class="btn-friend-records" id="btn-ruleta-amigo-perfil" style="margin-top:8px; background:linear-gradient(135deg, rgba(245,158,11,0.18), rgba(168,85,247,0.16)); border:1.5px solid rgba(245,158,11,0.45); color:var(--text);" onclick="abrirModalRuletaConAmigoActual()"> <span style="font-size:1.15rem;">🍿</span> <span style="font-weight:700;" data-i18n="btn_ruleta_amigo_perfil">¿Qué vemos o jugamos hoy? — Ruleta Co-op</span> <span style="font-size:0.85rem; opacity:0.85;">🎲</span> </button> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" onclick="eliminarAmigoSeleccionado()" data-i18n="btn_remove_friend">Eliminar de amigos</button> <button type="button" class="btn-modal-save" onclick="cerrarModalPerfilAmigo()" data-i18n="btn_close">Cerrar</button> </div> </div> </div> <!-- MODAL RULETA DE PELÍCULAS CON AMIGO (CO-OP WATCHLIST) -->
 <!-- MODAL RULETA COLABORATIVA CON AMIGO (CO-OP WATCHLIST: PELÍCULAS, SERIES Y JUEGOS) -->
+<!-- MODAL RULETA COLABORATIVA CON AMIGO (CO-OP WATCHLIST: PELÍCULAS, SERIES Y JUEGOS) -->
 <div id="modal-ruleta-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalRuleta()">
-  <div class="modal-box ruleta-modal-box" style="width:min(580px, 94vw); min-height:560px; max-height:92vh; display:flex; flex-direction:column; overflow-y:auto; padding:22px; box-sizing:border-box;">
-    <!-- Encabezado -->
-    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; gap:12px; border-bottom:1px solid var(--border); padding-bottom:12px;">
-      <div>
-        <h3 style="margin:0; font-size:1.25rem; color:var(--text); display:flex; align-items:center; gap:8px;">
-          <span>🍿</span> <span data-i18n="banner_coop_title">Mezclar Watchlists con un Amigo</span>
-          <span class="ruleta-badge-coop" data-i18n="banner_coop_badge">🎲 Ruleta Co-op</span>
-        </h3>
-        <p style="font-size:0.8rem; color:var(--muted); margin:3px 0 0 0;">
-          Combina tu Watchlist con la de un amigo para Películas, Series, Música, Videojuegos y Lecturas.
-        </p>
-      </div>
-      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalRuleta()">✕</button>
-    </div>
+  <div class="modal-box ruleta-modal-box">
+    <button type="button" class="btn-close-form" onclick="cerrarModalRuleta()" title="Cerrar" style="position:absolute; top:14px; right:14px; z-index:10;">✕</button>
 
-    <!-- 1. SELECTOR INTERACTIVO DE AMIGO -->
-    <div class="form-group" style="margin-bottom:14px;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-        <label style="font-size:0.82rem; font-weight:700; color:var(--text); margin:0;" data-i18n="ruleta_step1_lbl">👥 1. Elige con qué amigo compartir:</label>
-        <span id="ruleta-amigos-count-badge" style="font-size:0.72rem; color:var(--muted);"></span>
-      </div>
+    <div class="ruleta-modal-body" style="flex:1; min-height:0; overflow-y:auto; padding-right:4px; display:flex; flex-direction:column; gap:12px;">
 
-      <!-- Estado cargando amigos -->
-      <div id="ruleta-amigos-loading" style="display:none; padding:12px; text-align:center; color:var(--muted); font-size:0.82rem; background:var(--bg); border:1px dashed var(--border); border-radius:10px;">
-        <span class="spinning" style="display:inline-block; margin-right:6px;">⏳</span> Cargando tu lista de amigos...
-      </div>
-
-      <!-- Carrusel de tarjetas de amigos para seleccionar con un toque -->
-      <div id="ruleta-amigos-chips" class="ruleta-amigos-container" style="display:none;"></div>
-
-      
-
-      <!-- Mensaje si no tiene amigos -->
-      <div id="ruleta-sin-amigos-alert" style="display:none; padding:14px; background:rgba(245,158,11,0.12); border:1.5px solid #d97706; border-radius:12px; margin-top:8px; text-align:center;">
-        <div style="font-weight:700; color:var(--text); font-size:0.88rem; margin-bottom:4px;" data-i18n="ruleta_no_friends_title">👥 Aún no tienes amigos agregados</div>
-        <p style="font-size:0.78rem; color:var(--muted); margin:0 0 10px 0;" data-i18n="ruleta_no_friends_desc">Pídele a tu amigo su ID de perfil para conectarse y empezar a usar la ruleta colaborativa.</p>
-        <button type="button" class="btn-save" style="width:auto; padding:0 18px; height:36px; font-size:0.8rem; margin:0 auto; background:var(--accent); color:#ffffff; font-weight:700;" onclick="cerrarModalRuleta(); abrirVistaAmigos();" data-i18n="ruleta_btn_go_add_friends">➕ Ir a agregar amigos</button>
-      </div>
-    </div>
-
-    <!-- 2. SELECTOR DE CATEGORÍA (Películas, Series, Juegos o Todas) -->
-    <div style="margin-bottom:14px;">
-      <label style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:6px; display:block;" data-i18n="ruleta_step2_lbl">
-        🏷️ 2. ¿Qué categoría quieren elegir?
-      </label>
-      <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none;">
-        <button type="button" class="ruleta-cat-chip active" id="btn-cat-ruleta-Peliculas" onclick="cambiarCategoriaRuleta('Peliculas')">
-          <span>🎬</span> <span data-i18n="cat_peliculas">Películas</span>
-        </button>
-        <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Series" onclick="cambiarCategoriaRuleta('Series')">
-          <span>📺</span> <span data-i18n="cat_series">Series</span>
-        </button>
-        <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Juegos" onclick="cambiarCategoriaRuleta('Juegos')">
-          <span>🎮</span> <span data-i18n="cat_juegos">Juegos</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- 3. SELECTOR DE MODO (En común o Sumando ambas) -->
-    <div style="margin-bottom:16px;">
-      <label style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:6px; display:block;" data-i18n="ruleta_step3_lbl">
-        🎯 3. Modo de Selección:
-      </label>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-        <div class="ruleta-mode-btn active" id="btn-modo-ruleta-comun" onclick="cambiarModoRuleta('comun')">
-          <span class="mode-title" data-i18n="ruleta_mode_common_title">✨ En común</span>
-          <span class="mode-sub" data-i18n="ruleta_mode_common_sub">(En ambas Watchlists)</span>
+      <!-- 1. SELECTOR INTERACTIVO DE AMIGO (MULTI-SELECCIÓN) -->
+      <div class="form-group" style="margin-bottom:0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <label style="font-size:0.82rem; font-weight:700; color:var(--text); margin:0;" data-i18n="ruleta_step1_lbl">👥 1. Elige amigos (puedes elegir varios):</label>
+          <span id="ruleta-amigos-count-badge" style="font-size:0.72rem; color:var(--muted);"></span>
         </div>
-        <div class="ruleta-mode-btn" id="btn-modo-ruleta-suma" onclick="cambiarModoRuleta('suma')">
-          <span class="mode-title" data-i18n="ruleta_mode_sum_title">🎲 Sumando ambas</span>
-          <span class="mode-sub" data-i18n="ruleta_mode_sum_sub">(Unir las dos listas)</span>
+
+        <!-- Estado cargando amigos -->
+        <div id="ruleta-amigos-loading" style="display:none; padding:10px; text-align:center; color:var(--muted); font-size:0.82rem; background:var(--bg); border:1px dashed var(--border); border-radius:10px;">
+          <span class="spinning" style="display:inline-block; margin-right:6px;">⏳</span> Cargando tu lista de amigos...
+        </div>
+
+        <!-- Carrusel de tarjetas de amigos para seleccionar con un toque -->
+        <div id="ruleta-amigos-chips" class="ruleta-amigos-container" style="display:none;"></div>
+
+        <!-- Mensaje si no tiene amigos -->
+        <div id="ruleta-sin-amigos-alert" style="display:none; padding:12px; background:rgba(245,158,11,0.12); border:1.5px solid #d97706; border-radius:12px; margin-top:6px; text-align:center;">
+          <div style="font-weight:700; color:var(--text); font-size:0.88rem; margin-bottom:4px;" data-i18n="ruleta_no_friends_title">👥 Aún no tienes amigos agregados</div>
+          <p style="font-size:0.78rem; color:var(--muted); margin:0 0 10px 0;" data-i18n="ruleta_no_friends_desc">Pídele a tu amigo su ID de perfil para conectarse y empezar a usar la ruleta colaborativa.</p>
+          <button type="button" class="btn-save" style="width:auto; padding:0 18px; height:36px; font-size:0.8rem; margin:0 auto; background:var(--accent); color:#ffffff; font-weight:700;" onclick="cerrarModalRuleta(); abrirVistaAmigos();" data-i18n="ruleta_btn_go_add_friends">➕ Ir a agregar amigos</button>
         </div>
       </div>
-      <div id="ruleta-modo-descripcion" style="font-size:0.75rem; color:var(--muted); margin-top:8px; line-height:1.35; padding:8px 12px; background:var(--bg); border-radius:10px; border:1px dashed var(--border); min-height:42px; display:flex; align-items:center; box-sizing:border-box;">
-        Solo elegirá entre las obras que <strong>ambos</strong> tienen guardadas en sus Watchlists.
-      </div>
-    </div>
 
-    <!-- CONTENEDOR DE ESTADO ESTABLE -->
-    <div id="ruleta-dynamic-stage" style="flex:1; display:flex; flex-direction:column; justify-content:flex-start; min-height:160px; margin-bottom:12px;">
-    <!-- Estado de Carga de Watchlist del Amigo -->
-    <div id="ruleta-loading-box" style="display:none; text-align:center; padding:24px 10px; color:var(--muted); font-size:0.88rem; background:var(--bg); border-radius:12px; margin-bottom:14px; border:1px solid var(--border);">
-      <div style="font-size:2rem; margin-bottom:6px;">⏳</div>
-      <div data-i18n="ruleta_loading_msg">Obteniendo la lista de tu amigo...</div>
-    </div>
-
-    <!-- Estado Vacío (Sin candidatos en este filtro) -->
-    <div id="ruleta-empty-box" style="display:none; text-align:center; padding:22px 14px; background:var(--bg); border:1.5px dashed var(--border); border-radius:12px; margin-bottom:14px;">
-      <div style="font-size:2rem; margin-bottom:6px;">🤷‍♂️</div>
-      <div id="ruleta-empty-title" style="font-weight:700; color:var(--text); font-size:0.92rem; margin-bottom:4px;" data-i18n="ruleta_empty_title">No hay obras en común</div>
-      <p id="ruleta-empty-desc" style="font-size:0.8rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;" data-i18n="ruleta_empty_desc">
-        Parece que ninguno de los dos coincide todavía con obras pendientes en esta categoría.
-      </p>
-      <button type="button" id="btn-ruleta-switch-suma" class="ruleta-btn-girar-banner" style="height:38px; font-size:0.8rem; margin:0 auto;" onclick="cambiarModoRuleta('suma')">
-        <span data-i18n="ruleta_btn_try_sum">🎲 Probar sumando ambas Watchlists</span>
-      </button>
-    </div>
-
-    <!-- Animación de Ruleta Rodando (Shuffling) -->
-    <div id="ruleta-spinning-card" style="display:none; text-align:center; padding:24px 16px; background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(168,85,247,0.12)); border:2px solid #f59e0b; border-radius:16px; margin-bottom:14px;">
-      <div style="font-size:2.8rem; margin-bottom:6px;">🎰</div>
-      <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:#d97706; font-weight:800; margin-bottom:4px;" id="ruleta-spin-status" data-i18n="ruleta_spinning_status">Eligiendo al azar...</div>
-      <div id="ruleta-spin-title" style="font-size:1.18rem; font-weight:800; color:var(--text); min-height:28px; transition:all 0.1s ease;">...</div>
-      <div id="ruleta-spin-meta" style="font-size:0.8rem; color:var(--muted); margin-top:3px;" data-i18n="ruleta_spinning_meta">Mezclando ambas listas</div>
-    </div>
-
-    <!-- Tarjeta del Ganador -->
-    <div id="ruleta-winner-card" style="display:none; margin-bottom:16px; animation:popInWinner 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(56,189,248,0.08)); border:2px solid #10b981; border-radius:16px; padding:16px; box-shadow:0 8px 24px rgba(16,185,129,0.2);">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:6px;">
-        <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#10b981; display:flex; align-items:center; gap:5px;">
-          <span>🎉</span> <span id="ruleta-winner-badge-label" data-i18n="ruleta_winner_badge">¡Obra Elegida!</span>
-        </span>
-        <div style="display:flex; gap:6px; align-items:center;">
-          <span id="ruleta-winner-cat-badge" class="ruleta-origin-pill cat-pill">🎬 Película</span>
-          <span id="ruleta-winner-provenance" class="ruleta-origin-pill ambos" data-i18n="ruleta_mode_common_title">✨ En común</span>
+      <!-- 2. SELECTOR DE CATEGORÍA -->
+      <div style="margin-bottom:0;">
+        <label style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:6px; display:block;" data-i18n="ruleta_step2_lbl">
+          🏷️ 2. Categoría:
+        </label>
+        <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; scrollbar-width:none;">
+          <button type="button" class="ruleta-cat-chip active" id="btn-cat-ruleta-Peliculas" onclick="cambiarCategoriaRuleta('Peliculas')">
+            <span>🎬</span> <span data-i18n="cat_peliculas">Películas</span>
+          </button>
+          <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Series" onclick="cambiarCategoriaRuleta('Series')">
+            <span>📺</span> <span data-i18n="cat_series">Series</span>
+          </button>
+          <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Juegos" onclick="cambiarCategoriaRuleta('Juegos')">
+            <span>🎮</span> <span data-i18n="cat_juegos">Juegos</span>
+          </button>
         </div>
       </div>
-      <div style="display:flex; gap:14px; align-items:flex-start;">
-        <img id="ruleta-winner-poster" src="" alt="Poster" style="width:78px; height:116px; object-fit:cover; border-radius:10px; background:#334155; flex-shrink:0; box-shadow:0 4px 12px rgba(0,0,0,0.25);">
-        <div style="flex:1; min-width:0;">
-          <h4 id="ruleta-winner-title" style="margin:0 0 4px 0; font-size:1.15rem; color:var(--text); line-height:1.25; font-weight:800;"></h4>
-          <div id="ruleta-winner-director" style="font-size:0.84rem; color:var(--muted); margin-bottom:4px;"></div>
-          <div id="ruleta-winner-year" style="font-size:0.78rem; color:var(--accent); font-weight:700; margin-bottom:8px;"></div>
-          <div id="ruleta-winner-note" style="font-size:0.75rem; color:var(--text); line-height:1.35; padding:6px 10px; background:var(--bg); border:1px solid var(--border); border-radius:8px;"></div>
+
+      <!-- 3. SELECTOR DE MODO (Solo títulos) -->
+      <div style="margin-bottom:0;">
+        <label style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:6px; display:block;" data-i18n="ruleta_step3_lbl">
+          🎯 3. Modo de Selección:
+        </label>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <div class="ruleta-mode-btn active" id="btn-modo-ruleta-comun" onclick="cambiarModoRuleta('comun')" style="justify-content:center; text-align:center; padding:10px 14px;">
+            <span class="mode-title" data-i18n="ruleta_mode_common_title">✨ En común</span>
+          </div>
+          <div class="ruleta-mode-btn" id="btn-modo-ruleta-suma" onclick="cambiarModoRuleta('suma')" style="justify-content:center; text-align:center; padding:10px 14px;">
+            <span class="mode-title" data-i18n="ruleta_mode_sum_title">🎲 Sumando ambas</span>
+          </div>
         </div>
       </div>
-      <div style="display:flex; gap:10px; margin-top:14px; flex-wrap:wrap;">
-        <button type="button" class="btn-save" style="flex:1; min-width:140px; height:42px; font-size:0.84rem; background:linear-gradient(135deg,#10b981,#059669); color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; gap:6px; border:none; box-shadow:0 4px 12px rgba(16,185,129,0.3);" onclick="celebrarYElegirPelicula()">
-          <span>🍿</span> <span data-i18n="ruleta_btn_enjoy">¡Vamos a disfrutarla!</span>
-        </button>
-        <button type="button" class="btn-today-pill" style="height:42px; padding:0 16px; font-size:0.84rem; margin:0;" onclick="tirarRuletaPeliculas()">
-          <span>🔄</span> <span data-i18n="ruleta_btn_spin_again">Girar otra vez</span>
-        </button>
+
+      <!-- 4. VISTA RÁPIDA DE OBRAS A MEZCLAR / SUMAR -->
+      <div id="ruleta-preview-section" style="margin-bottom:0;">
+        <div style="font-size:0.8rem; font-weight:700; color:var(--text); margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+          <span>🎬 Obras disponibles (<strong id="ruleta-count-candidatas" style="color:var(--accent);">0</strong>):</span>
+        </div>
+        <div id="ruleta-preview-carousel" style="display:flex; gap:8px; overflow-x:auto; padding:4px 2px 8px; min-height:92px; scrollbar-width:thin;"></div>
       </div>
+
+      <!-- CONTENEDOR DE ESTADO ESTABLE -->
+      <div id="ruleta-dynamic-stage" style="display:flex; flex-direction:column; justify-content:flex-start;">
+        <!-- Estado de Carga de Watchlist del Amigo -->
+        <div id="ruleta-loading-box" style="display:none; text-align:center; padding:16px 10px; color:var(--muted); font-size:0.86rem; background:var(--bg); border-radius:12px; margin-bottom:10px; border:1px solid var(--border);">
+          <div style="font-size:1.8rem; margin-bottom:4px;">⏳</div>
+          <div data-i18n="ruleta_loading_msg">Obteniendo la lista de tus amigos...</div>
+        </div>
+
+        <!-- Estado Vacío -->
+        <div id="ruleta-empty-box" style="display:none; text-align:center; padding:16px 12px; background:var(--bg); border:1.5px dashed var(--border); border-radius:12px; margin-bottom:10px;">
+          <div style="font-size:1.8rem; margin-bottom:4px;">🤷‍♂️</div>
+          <div id="ruleta-empty-title" style="font-weight:700; color:var(--text); font-size:0.9rem; margin-bottom:4px;" data-i18n="ruleta_empty_title">No hay obras en común</div>
+          <p id="ruleta-empty-desc" style="font-size:0.78rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;" data-i18n="ruleta_empty_desc">
+            Parece que no coinciden todavía con obras pendientes en esta categoría.
+          </p>
+          <button type="button" id="btn-ruleta-switch-suma" class="ruleta-btn-girar-banner" style="height:36px; font-size:0.78rem; margin:0 auto;" onclick="cambiarModoRuleta('suma')">
+            <span data-i18n="ruleta_btn_try_sum">🎲 Probar sumando Watchlists</span>
+          </button>
+        </div>
+
+        <!-- Animación de Ruleta Rodando (Shuffling) -->
+        <div id="ruleta-spinning-card" style="display:none; text-align:center; padding:18px 14px; background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(168,85,247,0.12)); border:2px solid #f59e0b; border-radius:16px; margin-bottom:10px;">
+          <div style="font-size:2.2rem; margin-bottom:4px;">🎰</div>
+          <div style="font-size:0.75rem; text-transform:uppercase; letter-spacing:1px; color:#d97706; font-weight:800; margin-bottom:4px;" id="ruleta-spin-status" data-i18n="ruleta_spinning_status">Eligiendo al azar...</div>
+          <div id="ruleta-spin-title" style="font-size:1.15rem; font-weight:800; color:var(--text); min-height:26px; transition:all 0.1s ease;">...</div>
+          <div id="ruleta-spin-meta" style="font-size:0.78rem; color:var(--muted); margin-top:3px;" data-i18n="ruleta_spinning_meta">Mezclando listas</div>
+        </div>
+
+        <!-- Tarjeta del Ganador -->
+        <div id="ruleta-winner-card" style="display:none; margin-bottom:10px; animation:popInWinner 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(56,189,248,0.08)); border:2px solid #10b981; border-radius:16px; padding:14px; box-shadow:0 8px 24px rgba(16,185,129,0.2);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; flex-wrap:wrap; gap:6px;">
+            <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; color:#10b981; display:flex; align-items:center; gap:5px;">
+              <span>🎉</span> <span id="ruleta-winner-badge-label" data-i18n="ruleta_winner_badge">¡Obra Elegida!</span>
+            </span>
+            <div style="display:flex; gap:6px; align-items:center;">
+              <span id="ruleta-winner-cat-badge" class="ruleta-origin-pill cat-pill">🎬 Película</span>
+              <span id="ruleta-winner-provenance" class="ruleta-origin-pill ambos" data-i18n="ruleta_mode_common_title">✨ En común</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <img id="ruleta-winner-poster" src="" alt="Poster" style="width:72px; height:106px; object-fit:cover; border-radius:10px; background:#334155; flex-shrink:0; box-shadow:0 4px 12px rgba(0,0,0,0.25);">
+            <div style="flex:1; min-width:0;">
+              <h4 id="ruleta-winner-title" style="margin:0 0 4px 0; font-size:1.1rem; color:var(--text); line-height:1.25; font-weight:800;"></h4>
+              <div id="ruleta-winner-director" style="font-size:0.8rem; color:var(--muted); margin-bottom:4px;"></div>
+              <div id="ruleta-winner-year" style="font-size:0.75rem; color:var(--accent); font-weight:700; margin-bottom:6px;"></div>
+              <div id="ruleta-winner-note" style="font-size:0.74rem; color:var(--text); line-height:1.35; padding:6px 8px; background:var(--bg); border:1px solid var(--border); border-radius:8px;"></div>
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap;">
+            <button type="button" class="btn-save" style="flex:1; min-width:140px; height:38px; font-size:0.82rem; background:linear-gradient(135deg,#10b981,#059669); color:#fff; font-weight:700; display:flex; align-items:center; justify-content:center; gap:6px; border:none; box-shadow:0 4px 12px rgba(16,185,129,0.3);" onclick="celebrarYElegirPelicula()">
+              <span>🍿</span> <span data-i18n="ruleta_btn_enjoy">¡Vamos a disfrutarla!</span>
+            </button>
+            <button type="button" class="btn-today-pill" style="height:38px; padding:0 14px; font-size:0.82rem; margin:0;" onclick="tirarRuletaPeliculas()">
+              <span>🔄</span> <span data-i18n="ruleta_btn_spin_again">Girar otra vez</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Lista desplegable de candidatas para transparencia -->
-    <details id="ruleta-details-candidatas" style="margin-bottom:16px; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:10px 12px; font-size:0.8rem;">
-      <summary style="cursor:pointer; font-weight:700; color:var(--accent); display:flex; justify-content:space-between; align-items:center;">
-        <span data-i18n="ruleta_view_available">📋 Ver obras disponibles en la ruleta</span>
-        <span id="ruleta-count-candidatas" style="background:rgba(56,189,248,0.15); color:var(--accent); padding:2px 8px; border-radius:10px; font-size:0.72rem; font-weight:800;">0</span>
-      </summary>
-      <div id="ruleta-lista-candidatas" style="margin-top:10px; max-height:180px; overflow-y:auto; display:flex; flex-direction:column; gap:6px;">
-        <!-- Elementos listados -->
-      </div>
-    </details>
-
-    </div>
-    <!-- Botones de pie -->
-    <div class="modal-actions" style="justify-content:space-between; margin-top:auto; padding-top:12px; border-top:1px solid var(--border);">
-      <button type="button" class="btn-modal-cancel" onclick="cerrarModalRuleta()" data-i18n="btn_close">Cerrar</button>
-      <button type="button" id="btn-ruleta-girar-principal" class="ruleta-btn-girar-banner" style="height:44px; padding:0 24px;" onclick="tirarRuletaPeliculas()">
-        <span>🎲</span> <span data-i18n="ruleta_btn_spin_main">Girar Ruleta</span>
+    <!-- Botones de pie centrado -->
+    <div class="modal-actions" style="justify-content:center; margin-top:auto; padding-top:10px; border-top:1px solid var(--border); flex-shrink:0;">
+      <button type="button" id="btn-ruleta-girar-principal" class="ruleta-btn-girar-banner" style="height:44px; padding:0 36px; font-weight:700; margin:0 auto;" onclick="tirarRuletaPeliculas()">
+        <span>🎲</span> <span data-i18n="ruleta_btn_spin_main">Mezclar Watchlists</span>
       </button>
     </div>
   </div>
@@ -6463,51 +6434,74 @@ function renderizarListaAmigos(amigos) {
   const l = userPrefs.lang || 'es';
   if (countEl) countEl.textContent = amigos.length;
   if (!amigos.length) {
-    contenedor.innerHTML = `<div style="color:var(--muted);font-size:0.88rem;padding:20px 0;">${l === 'en' ? 'You have no friends added yet. Share your ID so they can add you!' : 'No tienes amigos agregados aún. ¡Comparte tu ID para que te agreguen!'}</div>`;
+    contenedor.innerHTML = `<div style="color:var(--muted);font-size:0.88rem;padding:20px 0;text-align:center;">${l === 'en' ? 'You have no friends added yet. Share your ID so they can add you!' : 'No tienes amigos agregados aún. ¡Comparte tu ID para que te agreguen!'}</div>`;
     return;
   }
   contenedor.innerHTML = amigos.map(a => {
-    const avatarHtml = a.avatar && (a.avatar.startsWith('http') || a.avatar.startsWith('data:'))
-      ? `<img src="${a.avatar}" style="width:100%;height:100%;object-fit:cover;">`
+    const isImg = a.avatar && (a.avatar.startsWith('http') || a.avatar.startsWith('data:'));
+    const avatarHtml = isImg
+      ? `<img src="${a.avatar}" alt="${a.nickname}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
       : `<span>${a.avatar || '🦊'}</span>`;
 
+    const totalRegs = a.stats ? (a.stats.total || 0) : 0;
+    const avgRating = a.stats && a.stats.promedio ? a.stats.promedio : '-';
+    const emailEscaped = (a.email || '').replace(/'/g, "\\'");
+    const nickEscaped = (a.nickname || '').replace(/'/g, "\\'");
+
     return `
-      <div class="amigo-wide-card" onclick="verPerfilDeAmigo('${a.email}')" style="cursor:pointer; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 18px; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; transition:var(--tr);">
-        <div style="display:flex; align-items:center; gap:14px; min-width:220px; flex:1;">
-          <div class="friend-avatar-wrap" data-avatar-zoom="${a.avatar || '🦊'}" data-avatar-name="${a.nickname || ''}" style="width:52px; height:52px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.6rem; flex-shrink:0;">
-            ${avatarHtml}
-          </div>
-          <div style="min-width:0;">
-            <div style="display:flex; align-items:center; gap:8px;">
-              <strong style="font-size:0.98rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${a.nickname}</strong>
-              <span style="font-size:0.75rem; color:var(--accent); font-weight:700; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:6px; border:1px solid rgba(56,189,248,0.35);">🆔 ${a.userId || 'ID'}</span>
+      <div class="amigo-wide-card" style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px 16px; display:flex; flex-direction:column; gap:12px; transition:var(--tr); box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <!-- Fila superior: Foto + Nickname (interactivos para ir a perfil), Bio y Botón dedicado Mezclar Watchlists -->
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+            <!-- Foto de perfil interactiva -->
+            <div class="friend-avatar-wrap" data-avatar-zoom="${a.avatar || '🦊'}" data-avatar-name="${a.nickname || ''}" onclick="verPerfilDeAmigo('${emailEscaped}')" style="width:48px; height:48px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.5rem; flex-shrink:0; cursor:pointer;" title="${l === 'en' ? 'View profile' : 'Ver perfil'}">
+              ${avatarHtml}
             </div>
-            <div style="font-size:0.8rem; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:320px;">${a.bio || 'Coleccionando historias en Mediary ✨'}</div>
+            <!-- Nickname interactivo y Bio -->
+            <div style="min-width:0;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:1rem; font-weight:800; color:var(--text); cursor:pointer; text-decoration:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" onclick="verPerfilDeAmigo('${emailEscaped}')" title="${l === 'en' ? 'View profile' : 'Ver perfil'}">${a.nickname}</span>
+                <span style="font-size:0.72rem; color:var(--accent); font-weight:700; background:rgba(56,189,248,0.12); padding:2px 7px; border-radius:6px; border:1px solid rgba(56,189,248,0.35);">🆔 ${a.userId || 'ID'}</span>
+              </div>
+              <div style="font-size:0.8rem; color:var(--muted); margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:280px;">${a.bio || 'Coleccionando historias en Mediary ✨'}</div>
+            </div>
           </div>
+
+          <!-- Botón de mezclar watchlists dedicado para este amigo -->
+          <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.78rem; margin:0; background:linear-gradient(135deg, rgba(245,158,11,0.18), rgba(217,119,6,0.14)); border:1.5px solid rgba(245,158,11,0.45); color:#fbbf24; font-weight:700; display:inline-flex; align-items:center; gap:6px; flex-shrink:0;" onclick="abrirModalRuleta('Peliculas', '${emailEscaped}')" title="${l === 'en' ? 'Mix Watchlists with ' + a.nickname : 'Mezclar Watchlists con ' + a.nickname}">
+            <span>🍿</span>
+            <span>${l === 'en' ? 'Mix Watchlists' : 'Mezclar Watchlists'}</span>
+          </button>
         </div>
 
-        <div class="amigo-quick-stats" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-          <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:6px 12px; font-size:0.78rem; display:flex; align-items:center; gap:6px;">
-            <span>📚</span>
-            <span style="font-weight:700; color:var(--text);">${a.stats ? a.stats.total : 0}</span>
-            <span style="color:var(--muted);">${l === 'en' ? 'records' : 'registros'}</span>
-          </div>
-          ${a.stats && a.stats.promedio ? `
-          <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:6px 12px; font-size:0.78rem; display:flex; align-items:center; gap:6px;">
-            <span style="color:var(--star-active);">★</span>
-            <span style="font-weight:700; color:var(--text);">${a.stats.promedio}</span>
-            <span style="color:var(--muted);">${l === 'en' ? 'average' : 'promedio'}</span>
-          </div>` : ''}
-          ${a.stats && a.stats.topCat ? `
-          <div style="background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.25); border-radius:10px; padding:6px 12px; font-size:0.78rem; color:var(--accent); display:flex; align-items:center; gap:6px;">
-            <span>🔥</span>
-            <span>${I18N[l]?.cats?.[a.stats.topCat] || a.stats.topCat}</span>
-          </div>` : ''}
-        </div>
+        <!-- Fila inferior: Métricas (Número de registros interactivo y Calificación promedio) -->
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; padding-top:8px; border-top:1px solid rgba(255,255,255,0.06);">
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <!-- Número de registros interactivo -->
+            <button type="button" class="btn-today-pill" style="height:30px; padding:0 10px; font-size:0.76rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text); cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:var(--tr);" onclick="abrirModalRegistrosAmigo('${emailEscaped}', '${nickEscaped}')" title="${l === 'en' ? 'View friend records' : 'Ver registros de ' + a.nickname}">
+              <span>📑</span>
+              <span style="font-weight:800; color:var(--accent);">${totalRegs}</span>
+              <span style="color:var(--muted);">${l === 'en' ? 'records' : 'registros'}</span>
+              <span style="font-size:0.7rem; color:var(--accent); margin-left:2px;">➔</span>
+            </button>
 
-        <div style="display:flex; gap:8px; align-items:center; flex-shrink:0;">
-          <button type="button" class="btn-today-pill" style="height:36px; padding:0 12px; font-size:0.78rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text);" onclick="event.stopPropagation();abrirModalRegistrosAmigo('${a.email}', '${a.nickname}')" title="${l === 'en' ? 'View Records' : 'Ver Registros'}">📑 ${l === 'en' ? 'Records' : 'Registros'}</button>
-          <button type="button" class="btn-today-pill" style="height:36px; padding:0 14px; font-size:0.78rem; margin:0;" onclick="event.stopPropagation();verPerfilDeAmigo('${a.email}')">${l === 'en' ? 'View Profile ➔' : 'Ver Perfil ➔'}</button>
+            <!-- Calificación promedio -->
+            <div style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:4px 10px; font-size:0.76rem; display:inline-flex; align-items:center; gap:5px;">
+              <span style="color:var(--star-active); font-size:0.85rem;">★</span>
+              <span style="font-weight:800; color:var(--text);">${avgRating}</span>
+              <span style="color:var(--muted);">${l === 'en' ? 'average' : 'promedio'}</span>
+            </div>
+
+            ${a.stats && a.stats.topCat ? `
+            <div style="background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.22); border-radius:10px; padding:4px 10px; font-size:0.76rem; color:var(--accent); display:inline-flex; align-items:center; gap:6px;">
+              <span>🔥</span>
+              <span>${I18N[l]?.cats?.[a.stats.topCat] || a.stats.topCat}</span>
+            </div>` : ''}
+          </div>
+
+          <button type="button" class="btn-today-pill" style="height:30px; padding:0 10px; font-size:0.75rem; margin:0; background:transparent; border:1px solid transparent; color:var(--muted); cursor:pointer;" onclick="verPerfilDeAmigo('${emailEscaped}')">
+            <span>${l === 'en' ? 'Profile ➔' : 'Perfil ➔'}</span>
+          </button>
         </div>
       </div>
     `;
@@ -7042,6 +7036,7 @@ function cerrarModalRegistrosAmigo() {
    MEZCLAR WATCHLISTS CON UN AMIGO (CO-OP WATCHLIST & RULETA)
    ============================================================ */
 let ruletaAmigoSeleccionadoEmail = '';
+let ruletaAmigosSeleccionadosEmails = [];
 let ruletaCategoriaActual = 'Peliculas'; // 'Peliculas' | 'Series' | 'Juegos'
 let ruletaModoActual = 'comun'; // 'comun' | 'suma'
 let ruletaCandidatasActuales = [];
@@ -7161,6 +7156,13 @@ function abrirModalRuleta(catInicial = 'Peliculas', amigoEmailInicial = '') {
   ruletaModoActual = 'comun';
   ruletaObraElegidaActual = null;
 
+  if (amigoEmailInicial) {
+    ruletaAmigosSeleccionadosEmails = [amigoEmailInicial];
+  } else if (!ruletaAmigosSeleccionadosEmails.length) {
+    ruletaAmigosSeleccionadosEmails = estado.amigos?.length ? [estado.amigos[0].email] : [];
+  }
+  ruletaAmigoSeleccionadoEmail = ruletaAmigosSeleccionadosEmails[0] || '';
+
   // Reset UI
   const wCard = document.getElementById('ruleta-winner-card');
   const sCard = document.getElementById('ruleta-spinning-card');
@@ -7181,7 +7183,7 @@ function abrirModalRuleta(catInicial = 'Peliculas', amigoEmailInicial = '') {
   if (!estado.amigos?.length) {
     recargarAmigosRuleta(amigoEmailInicial);
   } else {
-    // Si tenemos amigos, cargar la watchlist del seleccionado
+    // Si tenemos amigos, cargar la watchlist de los seleccionados
     cargarDatosRuleta();
   }
 }
@@ -7225,31 +7227,35 @@ function renderizarAmigosSelectorRuleta(amigoEmailInicial = '') {
   }
 
   if (noAmigosAlert) noAmigosAlert.style.display = 'none';
-  if (countBadge) countBadge.textContent = `${amigos.length} amigo${amigos.length > 1 ? 's' : ''}`;
 
-  // Determinar amigo seleccionado
-  let targetEmail = amigoEmailInicial;
-  if (!targetEmail || !amigos.some(a => a.email === targetEmail)) {
-    if (ruletaAmigoSeleccionadoEmail && amigos.some(a => a.email === ruletaAmigoSeleccionadoEmail)) {
-      targetEmail = ruletaAmigoSeleccionadoEmail;
-    } else {
-      targetEmail = amigos[0].email;
+  // Si viene inicial, fijarlo
+  if (amigoEmailInicial && amigos.some(a => a.email === amigoEmailInicial)) {
+    ruletaAmigosSeleccionadosEmails = [amigoEmailInicial];
+  } else {
+    // Filtrar válidos
+    ruletaAmigosSeleccionadosEmails = (ruletaAmigosSeleccionadosEmails || []).filter(em => amigos.some(a => a.email === em));
+    if (!ruletaAmigosSeleccionadosEmails.length) {
+      ruletaAmigosSeleccionadosEmails = [amigos[0].email];
     }
   }
-  ruletaAmigoSeleccionadoEmail = targetEmail;
+  ruletaAmigoSeleccionadoEmail = ruletaAmigosSeleccionadosEmails[0] || '';
 
-  // Render únicamente el carrusel de tarjetas de amigos (con foto de perfil)
+  if (countBadge) {
+    countBadge.textContent = `${ruletaAmigosSeleccionadosEmails.length} de ${amigos.length} seleccionado${ruletaAmigosSeleccionadosEmails.length > 1 ? 's' : ''}`;
+  }
+
+  // Render carrusel de tarjetas de amigos para selección múltiple
   if (chipsCont) {
     chipsCont.style.display = 'flex';
     chipsCont.innerHTML = amigos.map(a => {
-      const isAct = a.email === ruletaAmigoSeleccionadoEmail;
+      const isAct = ruletaAmigosSeleccionadosEmails.includes(a.email);
       const nick = a.nickname || 'Amigo';
       const isImg = a.avatar && (a.avatar.startsWith('http') || a.avatar.startsWith('data:'));
       const avatarHtml = isImg
         ? `<img src="${a.avatar}" alt="${nick}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`
         : `<span>${a.avatar || '👤'}</span>`;
       return `
-        <div class="ruleta-amigo-chip ${isAct ? 'active' : ''}" data-email="${a.email}" onclick="seleccionarAmigoRuleta('${a.email.replace(/'/g, "\\'")}')">
+        <div class="ruleta-amigo-chip ${isAct ? 'active' : ''}" data-email="${a.email}" onclick="toggleAmigoRuleta('${a.email.replace(/'/g, "\\'")}')">
           <div class="ruleta-amigo-avatar">${avatarHtml}</div>
           <span class="ruleta-amigo-nick">${nick}</span>
           <span class="ruleta-amigo-check">✓</span>
@@ -7261,14 +7267,29 @@ function renderizarAmigosSelectorRuleta(amigoEmailInicial = '') {
   if (btnGirar) btnGirar.style.display = 'inline-flex';
 }
 
-function seleccionarAmigoRuleta(email) {
+function toggleAmigoRuleta(email) {
   if (!email) return;
-  ruletaAmigoSeleccionadoEmail = email;
+  const idx = ruletaAmigosSeleccionadosEmails.indexOf(email);
+  if (idx >= 0) {
+    if (ruletaAmigosSeleccionadosEmails.length > 1) {
+      ruletaAmigosSeleccionadosEmails.splice(idx, 1);
+    }
+  } else {
+    ruletaAmigosSeleccionadosEmails.push(email);
+  }
+  ruletaAmigoSeleccionadoEmail = ruletaAmigosSeleccionadosEmails[0] || '';
 
   // Actualizar chips activos
   document.querySelectorAll('#ruleta-amigos-chips .ruleta-amigo-chip').forEach(ch => {
-    ch.classList.toggle('active', ch.getAttribute('data-email') === email);
+    const em = ch.getAttribute('data-email');
+    ch.classList.toggle('active', ruletaAmigosSeleccionadosEmails.includes(em));
   });
+
+  const countBadge = document.getElementById('ruleta-amigos-count-badge');
+  const amigos = estado.amigos || [];
+  if (countBadge) {
+    countBadge.textContent = `${ruletaAmigosSeleccionadosEmails.length} de ${amigos.length} seleccionado${ruletaAmigosSeleccionadosEmails.length > 1 ? 's' : ''}`;
+  }
 
   ruletaObraElegidaActual = null;
   const wCard = document.getElementById('ruleta-winner-card');
@@ -7280,8 +7301,12 @@ function seleccionarAmigoRuleta(email) {
   cargarDatosRuleta();
 }
 
+function seleccionarAmigoRuleta(email) {
+  toggleAmigoRuleta(email);
+}
+
 function alCambiarAmigoRuletaSelect(val) {
-  seleccionarAmigoRuleta(val);
+  toggleAmigoRuleta(val);
 }
 
 function cerrarModalRuleta() {
@@ -7330,39 +7355,28 @@ function actualizarBotonesModoRuleta() {
   const btnComun = document.getElementById('btn-modo-ruleta-comun');
   const btnSuma = document.getElementById('btn-modo-ruleta-suma');
   const desc = document.getElementById('ruleta-modo-descripcion');
-  const l = userPrefs.lang || 'es';
-  const selAmigo = (estado.amigos || []).find(a => a.email === ruletaAmigoSeleccionadoEmail);
-  const nomAmigo = selAmigo ? selAmigo.nickname : (l === 'en' ? 'your friend' : 'tu amigo');
 
   if (ruletaModoActual === 'comun') {
     if (btnComun) btnComun.classList.add('active');
     if (btnSuma) btnSuma.classList.remove('active');
-    if (desc) {
-      desc.innerHTML = l === 'en'
-        ? `Will only pick from titles that <strong>both</strong> have saved in their Watchlists.`
-        : `Solo elegirá entre las obras que <strong>ambos</strong> tienen guardadas en sus Watchlists.`;
-    }
   } else {
     if (btnComun) btnComun.classList.remove('active');
     if (btnSuma) btnSuma.classList.add('active');
-    if (desc) {
-      desc.innerHTML = l === 'en'
-        ? `Will pick at random combining your Watchlist and <strong>${nomAmigo}</strong>'s (without duplicates).`
-        : `Elegirá al azar uniendo tu Watchlist y la de <strong>${nomAmigo}</strong> (sin repetir títulos).`;
-    }
   }
+  if (desc) desc.style.display = 'none';
 }
 
 function cargarDatosRuleta() {
-  const amEmail = ruletaAmigoSeleccionadoEmail;
-  if (!amEmail) return;
+  if (!ruletaAmigosSeleccionadosEmails.length) return;
 
   const loading = document.getElementById('ruleta-loading-box');
   const empty = document.getElementById('ruleta-empty-box');
   const btnGirar = document.getElementById('btn-ruleta-girar-principal');
 
-  // Si ya tenemos en memoria tanto la watchlist propia como la del amigo, actualizar de inmediato
-  if (ruletaAmigoWatchlistCache[amEmail] && estado.watchlist && estado.watchlist.length) {
+  const misWlCargada = Boolean(estado.watchlist && Array.isArray(estado.watchlist));
+  const todosAmigosEnCache = ruletaAmigosSeleccionadosEmails.every(em => Array.isArray(ruletaAmigoWatchlistCache[em]));
+
+  if (misWlCargada && todosAmigosEnCache) {
     if (loading) loading.style.display = 'none';
     actualizarVistaCandidatasRuleta();
     return;
@@ -7384,19 +7398,22 @@ function cargarDatosRuleta() {
       })
     : Promise.resolve(estado.watchlist);
 
-  const promAmigo = (!ruletaAmigoWatchlistCache[amEmail])
-    ? new Promise(resolve => {
-        google.script.run.withSuccessHandler(w => {
-          ruletaAmigoWatchlistCache[amEmail] = Array.isArray(w) ? w : [];
-          resolve(ruletaAmigoWatchlistCache[amEmail]);
-        }).withFailureHandler(() => {
-          ruletaAmigoWatchlistCache[amEmail] = [];
-          resolve([]);
-        }).obtenerWatchlist(amEmail);
-      })
-    : Promise.resolve(ruletaAmigoWatchlistCache[amEmail]);
+  const promesasAmigos = ruletaAmigosSeleccionadosEmails.map(em => {
+    if (Array.isArray(ruletaAmigoWatchlistCache[em])) {
+      return Promise.resolve(ruletaAmigoWatchlistCache[em]);
+    }
+    return new Promise(resolve => {
+      google.script.run.withSuccessHandler(w => {
+        ruletaAmigoWatchlistCache[em] = Array.isArray(w) ? w : [];
+        resolve(ruletaAmigoWatchlistCache[em]);
+      }).withFailureHandler(() => {
+        ruletaAmigoWatchlistCache[em] = [];
+        resolve([]);
+      }).obtenerWatchlist(em);
+    });
+  });
 
-  Promise.all([promMio, promAmigo]).then(() => {
+  Promise.all([promMio, ...promesasAmigos]).then(() => {
     if (loading) loading.style.display = 'none';
     if (btnGirar) btnGirar.disabled = false;
     actualizarVistaCandidatasRuleta();
@@ -7408,9 +7425,8 @@ function cargarDatosRuleta() {
 }
 
 function actualizarVistaCandidatasRuleta() {
-  const amEmail = ruletaAmigoSeleccionadoEmail;
-  const selAmigo = (estado.amigos || []).find(a => a.email === amEmail);
-  const nomAmigo = selAmigo ? selAmigo.nickname : 'tu amigo';
+  const amigosSel = (estado.amigos || []).filter(a => ruletaAmigosSeleccionadosEmails.includes(a.email));
+  const nomAmigos = amigosSel.map(a => a.nickname).join(', ') || 'tus amigos';
 
   // Filtrar según categoría seleccionada (Películas, Series o Juegos)
   const filtroCategoria = item => {
@@ -7421,26 +7437,32 @@ function actualizarVistaCandidatasRuleta() {
 
   // Obtener obras de mi watchlist
   const misObras = (estado.watchlist || []).map(it => ({ ...it, categoriaDetectada: categorizarItemWatchlist(it) })).filter(filtroCategoria);
-  // Obtener obras de la watchlist del amigo
-  const amigoWatchlist = ruletaAmigoWatchlistCache[amEmail] || [];
-  const amigoObras = amigoWatchlist.map(it => ({ ...it, categoriaDetectada: categorizarItemWatchlist(it) })).filter(filtroCategoria);
+
+  // Obtener obras de cada amigo seleccionado
+  const amigosListas = ruletaAmigosSeleccionadosEmails.map(em => {
+    const amObj = amigosSel.find(a => a.email === em);
+    const wl = ruletaAmigoWatchlistCache[em] || [];
+    return {
+      email: em,
+      nickname: amObj ? amObj.nickname : 'Amigo',
+      obras: wl.map(it => ({ ...it, categoriaDetectada: categorizarItemWatchlist(it) })).filter(filtroCategoria)
+    };
+  });
 
   let candidatas = [];
 
   if (ruletaModoActual === 'comun') {
-    // Intersección: están en ambas
-    const usadasAmigo = new Set();
+    // Intersección: están en mi lista Y en la de todos los amigos seleccionados
     misObras.forEach(itemMio => {
-      const amigoMatch = amigoObras.find((itemAmigo, idx) => !usadasAmigo.has(idx) && sonObrasCoincidentes(itemMio, itemAmigo));
-      if (amigoMatch) {
-        usadasAmigo.add(amigoObras.indexOf(amigoMatch));
-        const cat = itemMio.categoriaDetectada || amigoMatch.categoriaDetectada || 'Peliculas';
+      const presenteEnTodos = amigosListas.length > 0 && amigosListas.every(am => am.obras.some(itemAmigo => sonObrasCoincidentes(itemMio, itemAmigo)));
+      if (presenteEnTodos) {
+        const cat = itemMio.categoriaDetectada || 'Peliculas';
         const metaCat = obtenerEmojiYNombreCategoria(cat);
         candidatas.push({
-          titulo: itemMio.titulo || amigoMatch.titulo,
-          creador: itemMio.creador || amigoMatch.creador || '',
-          anio: itemMio.anio || amigoMatch.anio || '',
-          poster: itemMio.poster || amigoMatch.poster || '',
+          titulo: itemMio.titulo,
+          creador: itemMio.creador || '',
+          anio: itemMio.anio || '',
+          poster: itemMio.poster || '',
           categoria: cat,
           catEmoji: metaCat.emoji,
           catLabel: metaCat.label,
@@ -7450,59 +7472,51 @@ function actualizarVistaCandidatasRuleta() {
       }
     });
   } else {
-    // Unión: sumando ambas
+    // Unión: sumando listas sin duplicados
     const unificadas = [];
-    const usadasAmigo = new Set();
 
+    // Agregar las mías
     misObras.forEach(itemMio => {
-      const amigoMatch = amigoObras.find((itemAmigo, idx) => !usadasAmigo.has(idx) && sonObrasCoincidentes(itemMio, itemAmigo));
-      const cat = itemMio.categoriaDetectada || (amigoMatch ? amigoMatch.categoriaDetectada : 'Peliculas');
+      const cat = itemMio.categoriaDetectada || 'Peliculas';
       const metaCat = obtenerEmojiYNombreCategoria(cat);
-      if (amigoMatch) {
-        usadasAmigo.add(amigoObras.indexOf(amigoMatch));
-        unificadas.push({
-          titulo: itemMio.titulo || amigoMatch.titulo,
-          creador: itemMio.creador || amigoMatch.creador || '',
-          anio: itemMio.anio || amigoMatch.anio || '',
-          poster: itemMio.poster || amigoMatch.poster || '',
-          categoria: cat,
-          catEmoji: metaCat.emoji,
-          catLabel: metaCat.label,
-          origen: 'ambos',
-          origenLabel: (userPrefs.lang === 'en' ? '✨ In Common' : '✨ En común')
-        });
-      } else {
-        unificadas.push({
-          titulo: itemMio.titulo,
-          creador: itemMio.creador || '',
-          anio: itemMio.anio || '',
-          poster: itemMio.poster || '',
-          categoria: cat,
-          catEmoji: metaCat.emoji,
-          catLabel: metaCat.label,
-          origen: 'mio',
-          origenLabel: (userPrefs.lang === 'en' ? '👤 From your Watchlist' : '👤 De tu Watchlist')
-        });
-      }
+      const amigosQueLaTienen = amigosListas.filter(am => am.obras.some(itemAmigo => sonObrasCoincidentes(itemMio, itemAmigo)));
+      const coincideConTodos = amigosListas.length > 0 && amigosQueLaTienen.length === amigosListas.length;
+
+      unificadas.push({
+        titulo: itemMio.titulo,
+        creador: itemMio.creador || '',
+        anio: itemMio.anio || '',
+        poster: itemMio.poster || '',
+        categoria: cat,
+        catEmoji: metaCat.emoji,
+        catLabel: metaCat.label,
+        origen: coincideConTodos ? 'ambos' : 'mio',
+        origenLabel: coincideConTodos
+          ? (userPrefs.lang === 'en' ? '✨ In Common' : '✨ En común')
+          : (userPrefs.lang === 'en' ? '👤 From your Watchlist' : '👤 De tu Watchlist')
+      });
     });
 
-    // Agregar las del amigo que no estaban
-    amigoObras.forEach((itemAmigo, idx) => {
-      if (!usadasAmigo.has(idx)) {
-        const cat = itemAmigo.categoriaDetectada || 'Peliculas';
-        const metaCat = obtenerEmojiYNombreCategoria(cat);
-        unificadas.push({
-          titulo: itemAmigo.titulo,
-          creador: itemAmigo.creador || '',
-          anio: itemAmigo.anio || '',
-          poster: itemAmigo.poster || '',
-          categoria: cat,
-          catEmoji: metaCat.emoji,
-          catLabel: metaCat.label,
-          origen: 'amigo',
-          origenLabel: (userPrefs.lang === 'en' ? `👥 From ${nomAmigo}'s Watchlist` : `👥 De la Watchlist de ${nomAmigo}`)
-        });
-      }
+    // Agregar las de cada amigo si no han sido agregadas aún
+    amigosListas.forEach(am => {
+      am.obras.forEach(itemAmigo => {
+        const yaExiste = unificadas.some(u => sonObrasCoincidentes(u, itemAmigo));
+        if (!yaExiste) {
+          const cat = itemAmigo.categoriaDetectada || 'Peliculas';
+          const metaCat = obtenerEmojiYNombreCategoria(cat);
+          unificadas.push({
+            titulo: itemAmigo.titulo,
+            creador: itemAmigo.creador || '',
+            anio: itemAmigo.anio || '',
+            poster: itemAmigo.poster || '',
+            categoria: cat,
+            catEmoji: metaCat.emoji,
+            catLabel: metaCat.label,
+            origen: 'amigo',
+            origenLabel: userPrefs.lang === 'en' ? `👥 From ${am.nickname}'s Watchlist` : `👥 De ${am.nickname}`
+          });
+        }
+      });
     });
 
     candidatas = unificadas;
@@ -7510,10 +7524,29 @@ function actualizarVistaCandidatasRuleta() {
 
   ruletaCandidatasActuales = candidatas;
 
-  // Actualizar UI de contador y acordeón
+  // Actualizar UI de contador
   const countBadge = document.getElementById('ruleta-count-candidatas');
   if (countBadge) countBadge.textContent = String(candidatas.length);
 
+  // Vista rápida horizontal de productos (Requirement 6.iv)
+  const carouselEl = document.getElementById('ruleta-preview-carousel');
+  if (carouselEl) {
+    if (!candidatas.length) {
+      carouselEl.innerHTML = `<div style="color:var(--muted); font-size:0.75rem; padding:10px 4px; font-style:italic;">${(userPrefs.lang === 'en' ? 'No titles available to mix in this category.' : 'No hay obras disponibles para mezclar en esta categoría.')}</div>`;
+    } else {
+      carouselEl.innerHTML = candidatas.map(c => {
+        const posterSrc = c.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'64\' height=\'92\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
+        return `
+          <div style="flex:0 0 68px; min-width:68px; display:flex; flex-direction:column; align-items:center; text-align:center;">
+            <img src="${posterSrc}" alt="${c.titulo.replace(/"/g, '&quot;')}" style="width:64px; height:90px; object-fit:cover; border-radius:8px; background:var(--card); border:1px solid var(--border); box-shadow:0 2px 6px rgba(0,0,0,0.22);" onerror="this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'64\\' height=\\'90\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'">
+            <span style="font-size:0.66rem; font-weight:600; color:var(--text); width:64px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${c.titulo.replace(/"/g, '&quot;')}">${c.titulo}</span>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  // Lista detallada (si existe)
   const listaEl = document.getElementById('ruleta-lista-candidatas');
   if (listaEl) {
     if (!candidatas.length) {
@@ -7556,14 +7589,14 @@ function actualizarVistaCandidatasRuleta() {
     if (ruletaModoActual === 'comun') {
       if (emptyTitle) emptyTitle.textContent = l === 'en' ? 'No titles in common in this category' : 'No hay obras en común en esta categoría';
       if (emptyDesc) emptyDesc.innerHTML = l === 'en'
-        ? `Neither you nor <strong>${nomAmigo}</strong> have matching titles on your Watchlists for this category. Try "Combining Both Lists" mode!`
-        : `Ni tú ni <strong>${nomAmigo}</strong> tienen obras coincidentes en sus Watchlists para esta selección. ¡Prueba el modo "Sumando ambas listas"!`;
+        ? `No matching titles found in common on your Watchlists for this category. Try "Combining Watchlists" mode!`
+        : `No coinciden obras en común en sus Watchlists para esta categoría. ¡Prueba el modo "Sumando ambas"!`;
       if (btnSwitch) btnSwitch.style.display = 'inline-flex';
     } else {
       if (emptyTitle) emptyTitle.textContent = l === 'en' ? 'Watchlists without titles' : 'Watchlists sin obras';
       if (emptyDesc) emptyDesc.innerHTML = l === 'en'
         ? `Make sure at least one of you has added titles to their Watchlist for this category.`
-        : `Asegúrense de que al menos uno de los dos tenga obras agregadas en su Watchlist para esta categoría.`;
+        : `Asegúrense de que al menos uno de ustedes tenga obras agregadas en su Watchlist para esta categoría.`;
       if (btnSwitch) btnSwitch.style.display = 'none';
     }
   } else {
@@ -7672,20 +7705,20 @@ function mostrarResultadoRuletaGanadora(obra) {
   }
 
   if (noteEl) {
-    const selAmigo = (estado.amigos || []).find(a => a.email === ruletaAmigoSeleccionadoEmail);
-    const nomAmigo = selAmigo ? selAmigo.nickname : (lRuleta === 'en' ? 'your friend' : 'tu amigo');
+    const amigosSel = (estado.amigos || []).filter(a => ruletaAmigosSeleccionadosEmails.includes(a.email));
+    const nomAmigos = amigosSel.map(a => a.nickname).join(', ') || (lRuleta === 'en' ? 'your friends' : 'tus amigos');
     if (obra.origen === 'ambos') {
       noteEl.innerHTML = lRuleta === 'en'
-        ? `🎉 Great! This title was on both of your Watchlists.`
-        : `🎉 ¡Genial! Esta obra estaba en la lista de ambos.`;
+        ? `🎉 Great! This title was on everyone's Watchlist.`
+        : `🎉 ¡Genial! Esta obra estaba en la lista de todos.`;
     } else if (obra.origen === 'mio') {
       noteEl.innerHTML = lRuleta === 'en'
-        ? `💡 This title was on <strong>your</strong> list. Time to show it to <strong>${nomAmigo}</strong>!`
-        : `💡 Esta obra estaba en <strong>tu</strong> lista. ¡Momento de presentársela a <strong>${nomAmigo}</strong>!`;
+        ? `💡 This title was on <strong>your</strong> list. Time to show it to <strong>${nomAmigos}</strong>!`
+        : `💡 Esta obra estaba en <strong>tu</strong> lista. ¡Momento de presentársela a <strong>${nomAmigos}</strong>!`;
     } else {
       noteEl.innerHTML = lRuleta === 'en'
-        ? `💡 This title was on <strong>${nomAmigo}</strong>'s list. Time to give it a shot!`
-        : `💡 Esta obra estaba en la lista de <strong>${nomAmigo}</strong>. ¡Hora de darle la oportunidad!`;
+        ? `💡 This title was on <strong>${nomAmigos}</strong>'s list. Time to give it a shot!`
+        : `💡 Esta obra estaba en la lista de <strong>${nomAmigos}</strong>. ¡Hora de darle la oportunidad!`;
     }
   }
 
@@ -7696,8 +7729,8 @@ function mostrarResultadoRuletaGanadora(obra) {
 function celebrarYElegirPelicula() {
   if (!ruletaObraElegidaActual) return;
   const l = userPrefs.lang || 'es';
-  const selAmigo = (estado.amigos || []).find(a => a.email === ruletaAmigoSeleccionadoEmail);
-  const nomAmigo = selAmigo ? selAmigo.nickname : (l === 'en' ? 'your friend' : 'tu amigo');
+  const amigosSel = (estado.amigos || []).filter(a => ruletaAmigosSeleccionadosEmails.includes(a.email));
+  const nomAmigos = amigosSel.map(a => a.nickname).join(', ') || (l === 'en' ? 'your friends' : 'tus amigos');
 
   if (typeof mostrarToastPersonalizado === 'function') {
     let verbo = l === 'en' ? "Let's watch" : 'A ver';
@@ -7705,8 +7738,8 @@ function celebrarYElegirPelicula() {
     else if (ruletaObraElegidaActual.categoria === 'Lecturas') verbo = l === 'en' ? "Let's read" : 'A leer';
     else if (ruletaObraElegidaActual.categoria === 'Musica') verbo = l === 'en' ? "Let's listen to" : 'A escuchar';
     mostrarToastPersonalizado(l === 'en'
-      ? `🍿 Decided! ${verbo} "${ruletaObraElegidaActual.titulo}" with ${nomAmigo} ✨`
-      : `🍿 ¡Decidido! ${verbo} "${ruletaObraElegidaActual.titulo}" con ${nomAmigo} ✨`);
+      ? `🍿 Decided! ${verbo} "${ruletaObraElegidaActual.titulo}" with ${nomAmigos} ✨`
+      : `🍿 ¡Decidido! ${verbo} "${ruletaObraElegidaActual.titulo}" con ${nomAmigos} ✨`);
   }
   cerrarModalRuleta();
 }
