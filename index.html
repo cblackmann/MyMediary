@@ -325,7 +325,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;width:100%}
 .btn-hero-quick-add{background:linear-gradient(135deg,var(--accent) 0%,#38bdf8 100%);color:#0f172a;border:none;font-weight:800;font-size:0.95rem;padding:11px 20px;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(56,189,248,0.35);transition:var(--tr)}
 .btn-hero-quick-add:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(56,189,248,0.5)}
-.home-community-section{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px 20px;margin-bottom:34px}
+.home-community-section{background:transparent;border:none;border-radius:0;padding:0;margin-bottom:0;box-shadow:none;}
 .home-friend-feed-scroll{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .home-friend-feed-scroll::-webkit-scrollbar{height:6px}
 .home-friend-feed-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
@@ -977,18 +977,23 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 }
 
 /* APARTADOS INICIO: SALUDO, EN PROCESO, RACHAS & ÍNDICE HORIZONTAL */
-.home-greeting-banner{margin:10px 0 28px 0;padding:6px 0;display:flex;justify-content:center;align-items:center;text-align:center;}
+.home-section-divider{border:none;border-top:1px solid var(--border);opacity:0.65;margin:26px 0;width:100%;box-sizing:border-box;}
+.home-greeting-banner{margin:10px 0 20px 0;padding:4px 0;display:flex;justify-content:center;align-items:center;text-align:center;}
 .home-greeting-title{font-size:1.55rem;font-weight:800;color:var(--text);margin:0;display:inline-flex;align-items:center;justify-content:center;gap:10px;line-height:1.25;text-align:center;}
 .home-greeting-title strong{color:var(--accent);}
 @media (max-width: 640px){.home-greeting-title{font-size:1.32rem;}}
 
-.home-clean-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:32px;max-width:100%;width:100%;box-sizing:border-box;}
-.home-clean-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.home-clean-title{font-weight:800;font-size:1.16rem;color:var(--text);display:flex;align-items:center;gap:8px;}
+.home-clean-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:0;max-width:100%;width:100%;box-sizing:border-box;}
+.home-clean-section-header{display:flex;justify-content:center;align-items:center;margin-bottom:14px;text-align:center;width:100%;}
+.home-clean-title{font-weight:800;font-size:1.16rem;color:var(--text);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center;}
 
-.home-quick-actions-strip{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:6px 0 32px 0;width:100%;box-sizing:border-box;}
-.home-quick-actions-strip .btn-hero-quick-add,
-.home-quick-actions-strip .btn-watchlist-special{flex:1 1 180px;min-height:44px;justify-content:center;}
+.home-quick-actions-strip{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;margin:4px 0;width:100%;box-sizing:border-box;}
+.home-quick-actions-strip .btn-hero-quick-add{flex:0 1 auto;min-width:210px;min-height:48px;background:linear-gradient(135deg,var(--accent) 0%,#38bdf8 50%,#818cf8 100%) !important;color:#091428 !important;border:1px solid rgba(255,255,255,0.45) !important;font-weight:800 !important;font-size:0.96rem !important;padding:12px 26px !important;border-radius:14px !important;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 18px rgba(56,189,248,0.42),inset 0 1px 1px rgba(255,255,255,0.6) !important;transition:all 0.22s cubic-bezier(0.4,0,0.2,1) !important;letter-spacing:0.01em;}
+.home-quick-actions-strip .btn-hero-quick-add:hover{transform:translateY(-2px) scale(1.02) !important;box-shadow:0 8px 28px rgba(56,189,248,0.58),inset 0 1px 2px rgba(255,255,255,0.8) !important;}
+.home-quick-actions-strip .btn-hero-quick-add:active{transform:scale(0.98) !important;}
+.home-quick-actions-strip .btn-hero-quick-add .quick-add-icon-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:rgba(15,23,42,0.14);border-radius:8px;font-size:1.05rem;}
+.home-quick-actions-strip .btn-watchlist-special{flex:0 1 auto;min-width:180px;min-height:48px;background:var(--card) !important;border:1.5px solid var(--border) !important;border-radius:14px !important;font-weight:700 !important;font-size:0.92rem !important;padding:12px 22px !important;color:var(--text) !important;box-shadow:0 2px 8px rgba(0,0,0,0.08) !important;transition:all 0.22s ease !important;display:inline-flex;align-items:center;justify-content:center;gap:8px;}
+.home-quick-actions-strip .btn-watchlist-special:hover{border-color:var(--accent) !important;background:rgba(56,189,248,0.08) !important;transform:translateY(-2px) !important;box-shadow:0 6px 18px rgba(56,189,248,0.18) !important;}
 
 .home-indice-carousel{display:flex;gap:10px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;-webkit-overflow-scrolling:touch;}
 .home-indice-carousel::-webkit-scrollbar{height:5px;}
@@ -1001,9 +1006,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-indice-count{font-size:0.65rem;font-weight:800;color:var(--accent);line-height:1;background:rgba(56,189,248,0.12);padding:1px 6px;border-radius:8px;}
 
 /* Clases de compatibilidad */
-.home-mini-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:32px;max-width:100%;width:100%;box-sizing:border-box;}
-.home-mini-section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
-.home-mini-title{font-weight:800;font-size:1.16rem;color:var(--text);display:flex;align-items:center;gap:8px;}
+.home-mini-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:0;max-width:100%;width:100%;box-sizing:border-box;}
+.home-mini-section-header{display:flex;justify-content:center;align-items:center;margin-bottom:14px;text-align:center;}
+.home-mini-title{font-weight:800;font-size:1.16rem;color:var(--text);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center;}
 .home-mini-hint{display:none;}
 .home-subcats-mini-row{display:contents;}
 .home-subcat-pill{display:none;}
@@ -1408,7 +1413,6 @@ html[data-ui-style="modern"] .container {
 
 /* 1. SECCIONES GENERALES: SEPARACIÓN POR ESPACIO Y TIPOGRAFÍA EN VEZ DE TARJETAS */
 html[data-ui-style="modern"] .home-hero-card,
-html[data-ui-style="modern"] .home-community-section,
 html[data-ui-style="modern"] .all-watchlists-panel,
 html[data-ui-style="modern"] .concierto-box,
 html[data-ui-style="modern"] .detail-card,
@@ -1423,7 +1427,6 @@ html[data-ui-style="modern"] .ruleta-banner-card {
 }
 
 [data-theme$="-light"][data-ui-style="modern"] .home-hero-card,
-[data-theme$="-light"][data-ui-style="modern"] .home-community-section,
 [data-theme$="-light"][data-ui-style="modern"] .all-watchlists-panel,
 [data-theme$="-light"][data-ui-style="modern"] .concierto-box,
 [data-theme$="-light"][data-ui-style="modern"] .detail-card,
@@ -2134,7 +2137,9 @@ html[data-ui-style="modern"] .btn-modal-cancel {
         </h1>
       </div>
 
-      <!-- 2. EN PROCESO (ON GOING) - SIN TARJETA -->
+      <hr class="home-section-divider">
+
+      <!-- 2. EN PROCESO (ON GOING) -->
       <div class="home-clean-section" id="home-sec-ongoing">
         <div class="home-clean-section-header">
           <div class="home-clean-title">
@@ -2148,33 +2153,9 @@ html[data-ui-style="modern"] .btn-modal-cancel {
         </div>
       </div>
 
-      <!-- 3. AGREGADO RÁPIDO CON WATCHLISTS -->
-      <div class="home-quick-actions-strip">
-        <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()">
-          <span style="font-size:1.15rem;">⚡</span>
-          <span data-i18n="btn_quick_add_hero">Agregado Rápido</span>
-        </button>
-        <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 18px; border-radius:12px;">
-          <span class="emoji-dyn">📌</span>
-          <span data-i18n="wl_global_btn">Mis Watchlists</span>
-        </button>
-      </div>
+      <hr class="home-section-divider">
 
-      <!-- 4. RACHAS ACTUALES - SIN TARJETA -->
-      <div class="home-clean-section" id="home-sec-streaks">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title">
-            <span>🔥</span>
-            <span data-i18n="home_streaks_title">Rachas Actuales</span>
-          </div>
-        </div>
-        <div id="home-streaks-summary-cards">
-          <!-- 3 Tarjetas de racha en orden: Películas, Música, Lectura -->
-        </div>
-        <div id="home-reading-quick-box" style="display:none;"></div>
-      </div>
-
-      <!-- 5. ÍNDICE (SUBCATEGORÍAS) - SIN TARJETA, CARRUSEL HORIZONTAL CON ÍCONO GRANDE Y NOMBRE PEQUEÑO -->
+      <!-- 3. ÍNDICE (SUBCATEGORÍAS) -->
       <div class="home-clean-section" id="home-sec-subcats">
         <div class="home-clean-section-header">
           <div class="home-clean-title">
@@ -2187,24 +2168,87 @@ html[data-ui-style="modern"] .btn-modal-cancel {
         </div>
       </div>
 
-      <!-- 6. NOVEDADES DE AMIGOS - SIN SUBTÍTULO -->
-      <div class="home-community-section" id="seccion-comunidad-resumida-inicio">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:14px;">
-          <div>
-            <div class="home-clean-title">
-              <span>👥</span>
-              <span data-i18n="home_friends_title">Novedades de Amigos</span>
-              <span style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;" data-i18n="home_streaks_last_week">Última semana</span>
-            </div>
+      <hr class="home-section-divider">
+
+      <!-- 4. AGREGADO RÁPIDO CON WATCHLISTS -->
+      <div class="home-quick-actions-strip">
+        <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()">
+          <span class="quick-add-icon-badge">⚡</span>
+          <span data-i18n="btn_quick_add_hero">Agregado Rápido</span>
+        </button>
+        <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()">
+          <span class="emoji-dyn">📌</span>
+          <span data-i18n="wl_global_btn">Mis Watchlists</span>
+        </button>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 5. RACHAS -->
+      <div class="home-clean-section" id="home-sec-streaks">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span>🔥</span>
+            <span data-i18n="home_streaks_title">Rachas</span>
           </div>
-          <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem;">
+        </div>
+        <div id="home-streaks-summary-cards">
+          <!-- 3 Tarjetas de racha en orden: Películas, Música, Lectura -->
+        </div>
+        <div id="home-reading-quick-box" style="display:none;"></div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 6. NOVEDADES DE AMIGOS -->
+      <div class="home-community-section" id="seccion-comunidad-resumida-inicio">
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:14px; text-align:center;">
+          <div class="home-clean-title">
+            <span>👥</span>
+            <span data-i18n="home_friends_title">Novedades de Amigos</span>
+            <span style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;" data-i18n="home_streaks_last_week">Última semana</span>
+          </div>
+          <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem; margin:0 auto;">
             <span data-i18n="btn_view_all_community">Ver toda la comunidad ➔</span>
           </button>
         </div>
         <div id="lista-comunidad-resumen-inicio">
           <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;" data-i18n="friends_loading_recent">Cargando actividad reciente de amigos... ⏳</div>
         </div>
-      </div> <div class="home-discover-section" id="seccion-discover-inicio" style="margin-top:28px; border-top:1px solid var(--border); padding-top:24px;"> <div class="discover-header-bar"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>🧭 Discover</span> <span class="discover-live-badge"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="discover_subtitle">Estrenos recientes, tendencias actuales y recomendaciones que se actualizan constantemente.</p> </div> <div class="discover-controls"> <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano">⚡ Auto-actualizar: ON</button> <button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="recargarDiscoverManual()"><span data-i18n="btn_discover_explore">🔄 Explorar nuevos</span></button> </div> </div> <div style="font-size:0.78rem; color:var(--muted); margin-bottom:6px;" data-i18n="discover_filter_hint">Selecciona qué categorías quieres ver (puedes activar o desactivar varias):</div> <div class="discover-filter-bar" id="discover-category-filters"> <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button> <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button> <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button> <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button> <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button> <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button> <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button> <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button> <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button> <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button> </div> <div id="contenedor-discover-secciones"> <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div> </div> </div> </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) --> <div id="vista-listas-extendida" style="display:none;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:8px; margin-bottom:4px;"> <span>⭐</span> <span data-i18n="lists_dashboard_title">Índice General de Listas</span> </h2> <p style="color:var(--muted); font-size:.85rem; margin:0;" data-i18n="lists_dashboard_subtitle">Resumen exhaustivo de tus hábitos, subtotales y favoritos por categoría</p> </div> </div> <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 7. DISCOVER -->
+      <div class="home-discover-section" id="seccion-discover-inicio">
+        <div class="home-clean-section-header" style="flex-direction:column; align-items:center; justify-content:center; gap:10px; margin-bottom:14px; text-align:center;">
+          <div class="home-clean-title">
+            <span>🧭</span>
+            <span>Discover</span>
+            <span class="discover-live-badge" style="font-size:0.72rem; padding:2px 8px;"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span>
+          </div>
+          <div class="discover-controls" style="display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap;">
+            <button type="button" class="btn-toggle-filter active" id="btn-discover-autoupdate" onclick="toggleAutoRefreshDiscover()" title="Actualización constante en segundo plano" style="font-size:0.78rem;">⚡ Auto-actualizar: ON</button>
+            <button type="button" class="btn-action-manual" style="height:34px; padding:0 14px; font-size:0.78rem;" onclick="recargarDiscoverManual()"><span data-i18n="btn_discover_explore">🔄 Explorar nuevos</span></button>
+          </div>
+        </div>
+        <div class="discover-filter-bar" id="discover-category-filters" style="justify-content:center; margin-bottom:18px;">
+          <button type="button" class="subtab-btn active" data-dcat="todos" onclick="toggleFiltroCategoriaDiscover('todos')"><span data-i18n="dcat_todos">✨ Todas</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="peliculas" onclick="toggleFiltroCategoriaDiscover('peliculas')"><span data-i18n="dcat_peliculas">🎬 Películas</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="documentales" onclick="toggleFiltroCategoriaDiscover('documentales')"><span data-i18n="dcat_documentales">📹 Documentales</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series">📺 Series</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries">📽️ Docuseries</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica">🎵 Música</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos">🎮 Juegos</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros">📖 Libros</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics">💥 Cómics</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas">⛩️ Mangas</span></button>
+        </div>
+        <div id="contenedor-discover-secciones">
+          <div style="text-align:center; padding:40px; color:var(--muted);" data-i18n="discover_loading">Cargando recomendaciones recientes... ⏳</div>
+        </div>
+      </div>
+    </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) --> <div id="vista-listas-extendida" style="display:none;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:8px; margin-bottom:4px;"> <span>⭐</span> <span data-i18n="lists_dashboard_title">Índice General de Listas</span> </h2> <p style="color:var(--muted); font-size:.85rem; margin:0;" data-i18n="lists_dashboard_subtitle">Resumen exhaustivo de tus hábitos, subtotales y favoritos por categoría</p> </div> </div> <div class="dashboard-vertical-list" id="grid-stats"></div> </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div>
 
 <!-- 1. AGREGAR ID -->
 <!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div>
@@ -7845,7 +7889,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "btn_volver_historial": "Volver al Historial",
     "home_subcategories_title": "Subcategorías",
     "home_subcategories_sub": "Toca una para ver su categoría",
-    "home_streaks_title": "Rachas Actuales",
+    "home_streaks_title": "Rachas",
     "home_streaks_sub": "Películas · Música · Lectura",
     "home_streaks_last_week": "Última semana",
     "friends_loading_recent": "Cargando actividad reciente de amigos... ⏳",
@@ -8269,7 +8313,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "btn_volver_historial": "Back to History",
     "home_subcategories_title": "Subcategories",
     "home_subcategories_sub": "Tap one to view its category",
-    "home_streaks_title": "Current Streaks",
+    "home_streaks_title": "Streaks",
     "home_streaks_sub": "Movies · Music · Reading",
     "home_streaks_last_week": "Last week",
     "friends_loading_recent": "Loading recent activity from friends... ⏳",
@@ -12400,7 +12444,6 @@ function renderizarDiscoverVista() {
     header.innerHTML = `
       <div style="display:flex;align-items:center;gap:10px;">
         <span class="discover-section-title" style="margin:0;padding:0;">${sec.titulo}</span>
-        <span class="discover-count-badge">${itemsVisibles.length}</span>
       </div>
       <div class="discover-carousel-controls">
         <button type="button" class="btn-carousel-nav" onclick="desplazarCarruselDiscover('${sec.key}', -1)" title="${l === 'en' ? 'Previous' : 'Anterior'}">‹</button>
