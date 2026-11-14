@@ -5,6 +5,7 @@
 <title>Mediary — Your Media, Your Diary</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#111827">
+<meta name="color-scheme" content="light dark">
 <script>
 (function() {
   try {
@@ -42,6 +43,7 @@
     const theme = (family || 'slate') + '-' + mode;
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.setAttribute('data-ui-style', 'modern');
+    document.documentElement.style.colorScheme = (mode === 'light') ? 'light' : 'dark';
     if (font) document.documentElement.style.setProperty('--font-family', font);
     if (fontSize) document.documentElement.style.setProperty('--font-scale', fontSize);
     
@@ -111,7 +113,12 @@
 
 /* Shared overrides for light themes */
 [data-theme$="-light"], [data-theme="nordic-light"], [data-theme="creme-latte"], [data-theme="parchment"], [data-theme="sage-garden"] {
+  color-scheme: light !important;
   --color-scheme: light;
+}
+[data-theme$="-dark"], [data-theme="default"], [data-theme="oled"], [data-theme="espresso"], [data-theme="dracula"] {
+  color-scheme: dark !important;
+  --color-scheme: dark;
 }
 [data-theme$="-light"] .form-input, [data-theme$="-light"] .comment-box, [data-theme$="-light"] .settings-select,
 [data-theme="nordic-light"] .form-input, [data-theme="creme-latte"] .form-input, [data-theme="parchment"] .form-input, [data-theme="sage-garden"] .form-input,
@@ -1020,9 +1027,9 @@ html[data-show-emojis="false"] .emoji-dyn { display: none !important; }
 .stat-subcat-lecturas-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;}
 
 /* REORGANIZACIÓN Y MODO REORDENAR PESTAÑA LISTAS */
-.listas-top-bar{display:flex;justify-content:flex-end;align-items:center;margin-bottom:12px;width:100%;box-sizing:border-box;}
-.btn-listas-reorder{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:var(--tr);box-shadow:0 1px 4px rgba(0,0,0,0.08);}
-.btn-listas-reorder:hover{color:var(--accent);border-color:var(--accent);transform:translateY(-1px);}
+.listas-top-bar{display:flex;justify-content:flex-end;align-items:center;margin:0 0 2px 0;padding:0;width:100%;box-sizing:border-box;}
+.btn-listas-reorder{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;background:transparent;border:1px solid transparent;color:var(--muted);cursor:pointer;transition:var(--tr);box-shadow:none;padding:0;}
+.btn-listas-reorder:hover{color:var(--accent);background:rgba(255,255,255,0.06);border-color:var(--border);}
 .btn-listas-reorder.active{background:rgba(56,189,248,0.15);border-color:var(--accent);color:var(--accent);}
 .reorder-panel-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 4px 16px rgba(0,0,0,0.12);width:100%;box-sizing:border-box;}
 .reorder-panel-header{margin-bottom:14px;}
@@ -2176,7 +2183,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 }
 </style> </head> <body>
 <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:rgba(16,185,129,0.5); color:#34d399; background:rgba(16,185,129,0.12);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button>
-<button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button> <button type="button" class="btn-header-icon" id="btn-profile" title="Perfil y Estadísticas" onclick="abrirVistaPerfil()"><span class="btn-icon-glyph">👤</span></button>
+<button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button>
 </div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio">
       <!-- 1. SALUDO INICIAL -->
       <div class="home-greeting-banner" id="home-greeting-banner">
@@ -2300,12 +2307,12 @@ html[data-ui-style="modern"] .btn-modal-cancel {
     <div id="vista-listas-extendida" style="display:none;">
       <div class="listas-top-bar">
         <button type="button" class="btn-listas-reorder" id="btn-toggle-reordenar-listas" onclick="toggleModoReordenarListas()" title="Organizar y reordenar categorías" aria-label="Organizar y reordenar categorías">
-          <svg id="icon-reordenar-listas-idle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <svg id="icon-reordenar-listas-idle" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="4" y1="6" x2="20" y2="6"></line>
             <line x1="4" y1="12" x2="20" y2="12"></line>
             <line x1="4" y1="18" x2="20" y2="18"></line>
           </svg>
-          <svg id="icon-reordenar-listas-active" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+          <svg id="icon-reordenar-listas-active" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
             <polyline points="20 6 9 17 4 12"></polyline>
           </svg>
         </button>
@@ -2561,7 +2568,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
     <span class="icon emoji-dyn">👥</span> <span data-i18n="nav_amigos">Amigos</span>
   </button>
   <button type="button" class="mobile-nav-btn" id="m-btn-perfil" onclick="abrirVistaPerfil()">
-    <span class="icon emoji-dyn">👤</span> <span data-i18n="nav_perfil">Perfil</span>
+    <span class="icon emoji-dyn" id="m-btn-perfil-icon">👤</span> <span data-i18n="nav_perfil">Perfil</span>
   </button>
 </nav> <!-- MODAL DE AGREGADO RÁPIDO (+) --> <div id="modal-agregado-rapido" class="modal-overlay" style="display:none;">
 <div class="modal-box"> <h3 style="display:flex; align-items:center; gap:8px;" data-i18n="quick_reg_title">⚡ ¿Qué deseas registrar?</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;" data-i18n="quick_reg_sub">Selecciona la categoría para abrir su buscador:</p> <div class="quick-add-grid" id="modal-quick-add-grid"> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Películas')"><span>🎬</span> Película</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Documentales')"><span>📹</span> Documental</button>
@@ -2882,24 +2889,15 @@ html[data-ui-style="modern"] .btn-modal-cancel {
     <div class="theme-mode-segmented-control" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
       <button type="button" class="theme-mode-btn" id="btn-mode-system" onclick="seleccionarThemeMode('system')" title="Usa automáticamente el tema claro u oscuro de tu teléfono o computadora">
         <span style="font-size:1.15rem;">📱</span>
-        <div style="display:flex; flex-direction:column; line-height:1.2;">
-          <strong style="font-size:0.82rem;">Del sistema</strong>
-          <span style="font-size:0.68rem; opacity:0.85;">Auto Claro/Oscuro</span>
-        </div>
+        <strong style="font-size:0.82rem;">Del sistema</strong>
       </button>
       <button type="button" class="theme-mode-btn" id="btn-mode-light" onclick="seleccionarThemeMode('light')" title="Fija el modo diurno claro (tonos descansados sin blancos deslumbrantes)">
         <span style="font-size:1.15rem;">☀️</span>
-        <div style="display:flex; flex-direction:column; line-height:1.2;">
-          <strong style="font-size:0.82rem;">Modo Claro</strong>
-          <span style="font-size:0.68rem; opacity:0.85;">Sin blanco molesto</span>
-        </div>
+        <strong style="font-size:0.82rem;">Modo Claro</strong>
       </button>
       <button type="button" class="theme-mode-btn" id="btn-mode-dark" onclick="seleccionarThemeMode('dark')" title="Fija el modo nocturno oscuro">
         <span style="font-size:1.15rem;">🌙</span>
-        <div style="display:flex; flex-direction:column; line-height:1.2;">
-          <strong style="font-size:0.82rem;">Modo Oscuro</strong>
-          <span style="font-size:0.68rem; opacity:0.85;">Noche profunda</span>
-        </div>
+        <strong style="font-size:0.82rem;">Modo Oscuro</strong>
       </button>
     </div>
   </div>
@@ -5414,7 +5412,7 @@ function quitarFotoPersonalizada() {
     b.classList.toggle('selected', b.textContent === '🦊');
   });
 }
-function cerrarModalConfiguracion() { document.getElementById('modal-configuracion').style.display = 'none'; }
+function cerrarModalConfiguracion() { guardarPreferenciasLocales(); document.getElementById('modal-configuracion').style.display = 'none'; }
 function toggleSubOpcionesPrivacidad() { const chkRegs = document.getElementById('priv-opt-regs'); const subBox = document.getElementById('sub-opciones-priv-regs'); if (subBox && chkRegs) subBox.style.opacity = chkRegs.checked ? '1' : '0.4'; }
 function abrirModalPrivacidadAmigos() { const priv = perfilUsuario.preferencias?.privacidad || {}; document.getElementById('priv-opt-stats').checked = priv.ocultarEstadisticas !== true; document.getElementById('priv-opt-wl').checked = priv.ocultarWatchlist !== true; document.getElementById('priv-opt-favs').checked = priv.ocultarFavoritos !== true; document.getElementById('priv-opt-regs').checked = priv.ocultarRegistros !== true; document.getElementById('priv-opt-calif').checked = priv.ocultarCalificaciones !== true; document.getElementById('priv-opt-comentarios').checked = priv.ocultarComentarios !== true; toggleSubOpcionesPrivacidad(); document.getElementById('modal-privacidad-amigos').style.display = 'flex'; }
 function cerrarModalPrivacidadAmigos() { document.getElementById('modal-privacidad-amigos').style.display = 'none'; }
@@ -8647,6 +8645,24 @@ avBox.innerHTML = `${esImg ? `<img src="${perfilUsuario.avatar}" alt="Avatar">` 
 if (btnHeader) { btnHeader.setAttribute('data-avatar-zoom', perfilUsuario.avatar || '🦊'); btnHeader.setAttribute('data-avatar-name', perfilUsuario.nickname || 'Mi Perfil'); btnHeader.innerHTML = esImg
 ? `<img src="${perfilUsuario.avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%; display:block;">`
 : `<span class="btn-icon-glyph">${perfilUsuario.avatar || '🦊'}</span>`; }
+const mBtnPerfilIcon = document.getElementById('m-btn-perfil-icon') || document.querySelector('#m-btn-perfil .icon');
+if (mBtnPerfilIcon) {
+  if (esImg) {
+    mBtnPerfilIcon.innerHTML = `<img src="${perfilUsuario.avatar}" alt="Avatar" style="width:22px; height:22px; border-radius:50%; object-fit:cover; display:block; border:1.5px solid currentColor;">`;
+    mBtnPerfilIcon.classList.remove('emoji-dyn');
+  } else {
+    mBtnPerfilIcon.textContent = perfilUsuario.avatar || '👤';
+    mBtnPerfilIcon.classList.add('emoji-dyn');
+  }
+}
+const tabBtnPerfilIcon = document.querySelector('#tab-btn-perfil .emoji-dyn');
+if (tabBtnPerfilIcon) {
+  if (esImg) {
+    tabBtnPerfilIcon.innerHTML = `<img src="${perfilUsuario.avatar}" alt="Avatar" style="width:18px; height:18px; border-radius:50%; object-fit:cover; display:inline-block; vertical-align:middle; margin-right:2px;">`;
+  } else {
+    tabBtnPerfilIcon.textContent = perfilUsuario.avatar || '👤';
+  }
+}
 const idTxtEl = document.getElementById('perfil-id-txt'); if (idTxtEl) { const miId = generarOObtenerIdUsuario(estado.userEmail || perfilUsuario.emailGoogle, perfilUsuario.nickname, perfilUsuario.preferencias); idTxtEl.textContent = miId; } const nickEl = document.getElementById('perfil-nick-render'); if (nickEl) nickEl.textContent = perfilUsuario.nickname || 'Cinéfilo & Lector'; const bioEl = document.getElementById('perfil-bio-render'); if (bioEl) bioEl.textContent = perfilUsuario.bio || 'Coleccionando historias en Mediary ✨';
 const emailTxt = document.getElementById('perfil-email-txt'); const emailEl = document.getElementById('perfil-email-render'); const txtBtnG = document.getElementById('txt-btn-google'); const cfgBadge = document.getElementById('cfg-supabase-badge'); const cfgStatus = document.getElementById('cfg-account-status');
 const userEmailActivo = estado.userEmail || perfilUsuario.emailGoogle;
@@ -9470,6 +9486,7 @@ function aplicarEstilosGlobales() {
   r.setAttribute('data-theme', temaEfectivo);
   r.setAttribute('data-ui-style', 'modern');
   r.setAttribute('data-show-emojis', userPrefs.showEmojis ? 'true' : 'false');
+  r.style.colorScheme = temaEfectivo.endsWith('-light') ? 'light' : 'dark';
   actualizarMetaThemeColor();
 
   document.querySelectorAll('.emoji-dyn').forEach(el => {
@@ -9599,23 +9616,17 @@ function actualizarTextosInterfaz() {
   const btnSys = document.getElementById('btn-mode-system');
   if (btnSys) {
     const st = btnSys.querySelector('strong');
-    const sp = btnSys.querySelector('span:last-child');
     if (st) st.textContent = l === 'en' ? 'System Theme' : 'Del sistema';
-    if (sp) sp.textContent = l === 'en' ? 'Auto Light/Dark' : 'Auto Claro/Oscuro';
   }
   const btnLight = document.getElementById('btn-mode-light');
   if (btnLight) {
     const st = btnLight.querySelector('strong');
-    const sp = btnLight.querySelector('span:last-child');
     if (st) st.textContent = l === 'en' ? 'Light Mode' : 'Modo Claro';
-    if (sp) sp.textContent = l === 'en' ? 'Restful, non-white' : 'Descansado, sin blanco';
   }
   const btnDark = document.getElementById('btn-mode-dark');
   if (btnDark) {
     const st = btnDark.querySelector('strong');
-    const sp = btnDark.querySelector('span:last-child');
     if (st) st.textContent = l === 'en' ? 'Dark Mode' : 'Modo Oscuro';
-    if (sp) sp.textContent = l === 'en' ? 'Deep Night' : 'Noche profunda';
   }
 
   // Supabase badge
@@ -11133,6 +11144,7 @@ function seleccionarThemeFamily(family) {
   if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = family;
   aplicarConfiguracionEnVivo();
   actualizarTarjetasVisualesConfig();
+  guardarPreferenciasLocales();
 }
 
 function seleccionarThemeMode(mode) {
@@ -11140,6 +11152,7 @@ function seleccionarThemeMode(mode) {
   userPrefs.themeMode = mode;
   aplicarConfiguracionEnVivo();
   actualizarTarjetasVisualesConfig();
+  guardarPreferenciasLocales();
 }
 
 function seleccionarThemePill(family, mode) {
@@ -11148,6 +11161,7 @@ function seleccionarThemePill(family, mode) {
   if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = family;
   aplicarConfiguracionEnVivo();
   actualizarTarjetasVisualesConfig();
+  guardarPreferenciasLocales();
 }
 
 function seleccionarThemeVisual(val) {
