@@ -965,10 +965,11 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-en-progreso-card-poster:hover{transform:scale(1.03);}
 .home-en-progreso-card-title{width:100%;font-weight:700;font-size:0.86rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;margin-bottom:2px;}
 .home-en-progreso-card-title:hover{color:var(--accent);}
-.home-en-progreso-card-sub{width:100%;font-size:0.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;}
-.home-en-progreso-card-date{font-size:0.7rem;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap;}
-.btn-terminar-card-carousel{width:100%;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;border:none;border-radius:8px;padding:7px 10px;font-size:0.76rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 6px rgba(16,185,129,0.3);transition:all 0.15s ease;margin-top:auto;white-space:nowrap;}
-.btn-terminar-card-carousel:hover{transform:scale(1.02);box-shadow:0 4px 12px rgba(16,185,129,0.45);}
+.home-en-progreso-card-date-top{font-size:0.72rem;font-weight:700;color:var(--accent);background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.18);border-radius:6px;padding:2px 6px;text-align:center;margin:3px 0 6px 0;white-space:nowrap;width:100%;box-sizing:border-box;}
+.home-en-progreso-card-sub{display:none;}
+.home-en-progreso-card-date{display:none;}
+.btn-terminar-card-carousel{width:100%;background:linear-gradient(135deg,#10b981,#059669);color:#ffffff;border:1px solid rgba(255,255,255,0.28);border-radius:10px;padding:9px 12px;min-height:36px;font-size:0.82rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 3px 10px rgba(16,185,129,0.35);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);margin-top:auto;white-space:nowrap;}
+.btn-terminar-card-carousel:hover{transform:translateY(-1px) scale(1.02);box-shadow:0 6px 16px rgba(16,185,129,0.5);}
 .btn-terminar-card-carousel:active{transform:scale(0.98);}
 [data-theme$="-light"] .btn-terminar-card-carousel,[data-theme="nordic-light"] .btn-terminar-card-carousel,[data-theme="creme-latte"] .btn-terminar-card-carousel,[data-theme="parchment"] .btn-terminar-card-carousel,[data-theme="sage-garden"] .btn-terminar-card-carousel{background:linear-gradient(135deg,#059669,#047857) !important;color:#ffffff !important;}
 @media (max-width: 480px){
@@ -976,15 +977,17 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   .home-en-progreso-card-poster{width:86px;height:122px;}
 }
 
+html[data-show-emojis="false"] .emoji-dyn { display: none !important; }
+
 /* APARTADOS INICIO: SALUDO, EN PROCESO, RACHAS & ÍNDICE HORIZONTAL */
-.home-section-divider{border:none;border-top:1px solid var(--border);opacity:0.65;margin:26px 0;width:100%;box-sizing:border-box;}
-.home-greeting-banner{margin:10px 0 20px 0;padding:4px 0;display:flex;justify-content:center;align-items:center;text-align:center;}
+.home-section-divider{border:none;border-top:1px solid var(--border);opacity:0.65;margin:16px 0;width:100%;box-sizing:border-box;}
+.home-greeting-banner{margin:6px 0 12px 0;padding:2px 0;display:flex;justify-content:center;align-items:center;text-align:center;}
 .home-greeting-title{font-size:1.55rem;font-weight:800;color:var(--text);margin:0;display:inline-flex;align-items:center;justify-content:center;gap:10px;line-height:1.25;text-align:center;}
 .home-greeting-title strong{color:var(--accent);}
 @media (max-width: 640px){.home-greeting-title{font-size:1.32rem;}}
 
 .home-clean-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:0;max-width:100%;width:100%;box-sizing:border-box;}
-.home-clean-section-header{display:flex;justify-content:center;align-items:center;margin-bottom:14px;text-align:center;width:100%;}
+.home-clean-section-header{display:flex;justify-content:center;align-items:center;margin-bottom:10px;text-align:center;width:100%;}
 .home-clean-title{font-weight:800;font-size:1.16rem;color:var(--text);display:inline-flex;align-items:center;justify-content:center;gap:8px;text-align:center;}
 
 .home-quick-actions-strip{display:flex;gap:14px;align-items:center;justify-content:center;flex-wrap:wrap;margin:4px 0;width:100%;box-sizing:border-box;}
@@ -1643,12 +1646,12 @@ html[data-ui-style="modern"] .home-en-progreso-card-date {
 }
 
 html[data-ui-style="modern"] .btn-terminar-card-carousel {
-  padding: 4px 6px !important;
-  font-size: 0.66rem !important;
-  border-radius: 6px !important;
-  height: auto !important;
-  margin-top: 4px !important;
-  box-shadow: none !important;
+  padding: 8px 12px !important;
+  font-size: 0.8rem !important;
+  border-radius: 10px !important;
+  min-height: 35px !important;
+  margin-top: auto !important;
+  box-shadow: 0 3px 10px rgba(16, 185, 129, 0.35) !important;
 }
 
 /* RACHAS COMPACTAS MINIMALISTAS */
@@ -2133,7 +2136,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
       <!-- 1. SALUDO INICIAL -->
       <div class="home-greeting-banner" id="home-greeting-banner">
         <h1 class="home-greeting-title">
-          <span>👋</span> <span>Hola de nuevo, <strong id="home-greeting-nickname">Cinéfilo</strong>!</span>
+          <span class="emoji-dyn">👋</span> <span>Hola de nuevo, <strong id="home-greeting-nickname">Cinéfilo</strong>!</span>
         </h1>
       </div>
 
@@ -2143,7 +2146,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
       <div class="home-clean-section" id="home-sec-ongoing">
         <div class="home-clean-section-header">
           <div class="home-clean-title">
-            <span>⚡</span>
+            <span class="emoji-dyn">⚡</span>
             <span data-i18n="home_en_progreso_title">En Proceso</span>
             <span class="pill-count" id="home-en-progreso-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border-radius:10px; padding:1px 8px; font-weight:800;">0</span>
           </div>
@@ -2155,25 +2158,10 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 
       <hr class="home-section-divider">
 
-      <!-- 3. ÍNDICE (SUBCATEGORÍAS) -->
-      <div class="home-clean-section" id="home-sec-subcats">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title">
-            <span>📊</span>
-            <span data-i18n="home_index_title">Índice</span>
-          </div>
-        </div>
-        <div class="home-indice-carousel" id="home-subcats-summary-pills">
-          <!-- Generado dinámicamente por renderizarSubcategoriasResumenInicio -->
-        </div>
-      </div>
-
-      <hr class="home-section-divider">
-
-      <!-- 4. AGREGADO RÁPIDO CON WATCHLISTS -->
+      <!-- 3. AGREGADO RÁPIDO CON WATCHLISTS -->
       <div class="home-quick-actions-strip">
         <button type="button" class="btn-hero-quick-add" onclick="abrirModalAgregadoRapido()">
-          <span class="quick-add-icon-badge">⚡</span>
+          <span class="quick-add-icon-badge"><span class="emoji-dyn">⚡</span></span>
           <span data-i18n="btn_quick_add_hero">Agregado Rápido</span>
         </button>
         <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()">
@@ -2184,11 +2172,26 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 
       <hr class="home-section-divider">
 
+      <!-- 4. ÍNDICE (SUBCATEGORÍAS) -->
+      <div class="home-clean-section" id="home-sec-subcats">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">📊</span>
+            <span data-i18n="home_index_title">Índice</span>
+          </div>
+        </div>
+        <div class="home-indice-carousel" id="home-subcats-summary-pills">
+          <!-- Generado dinámicamente por renderizarSubcategoriasResumenInicio -->
+        </div>
+      </div>
+
+      <hr class="home-section-divider">
+
       <!-- 5. RACHAS -->
       <div class="home-clean-section" id="home-sec-streaks">
         <div class="home-clean-section-header">
           <div class="home-clean-title">
-            <span>🔥</span>
+            <span class="emoji-dyn">🔥</span>
             <span data-i18n="home_streaks_title">Rachas</span>
           </div>
         </div>
@@ -2204,7 +2207,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
       <div class="home-community-section" id="seccion-comunidad-resumida-inicio">
         <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:14px; text-align:center;">
           <div class="home-clean-title">
-            <span>👥</span>
+            <span class="emoji-dyn">👥</span>
             <span data-i18n="home_friends_title">Novedades de Amigos</span>
             <span style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;" data-i18n="home_streaks_last_week">Última semana</span>
           </div>
@@ -2223,7 +2226,7 @@ html[data-ui-style="modern"] .btn-modal-cancel {
       <div class="home-discover-section" id="seccion-discover-inicio">
         <div class="home-clean-section-header" style="flex-direction:column; align-items:center; justify-content:center; gap:10px; margin-bottom:14px; text-align:center;">
           <div class="home-clean-title">
-            <span>🧭</span>
+            <span class="emoji-dyn">🧭</span>
             <span>Discover</span>
             <span class="discover-live-badge" style="font-size:0.72rem; padding:2px 8px;"><span class="discover-live-dot"></span> <span id="discover-status-txt">Actualizado</span></span>
           </div>
@@ -9405,6 +9408,7 @@ function aplicarEstilosGlobales() {
   
   r.setAttribute('data-theme', temaEfectivo);
   r.setAttribute('data-ui-style', 'modern');
+  r.setAttribute('data-show-emojis', userPrefs.showEmojis ? 'true' : 'false');
   actualizarMetaThemeColor();
 
   document.querySelectorAll('.emoji-dyn').forEach(el => {
@@ -10209,12 +10213,11 @@ function renderizarObrasEnProgresoInicio() {
     candidatos.push(r);
   }
 
-  // Ordenar estrictamente por subcategorías: 1. temporadas, 2. juegos, 3. lecturas
+  // Ordenar de más nuevo a más antiguo (el último comenzado a la izquierda, el comenzado antes a la derecha)
   candidatos.sort((a, b) => {
-    const cA = clasificarSubcatOnGoing(a);
-    const cB = clasificarSubcatOnGoing(b);
-    if (cA.orden !== cB.orden) return cA.orden - cB.orden;
-    return timestampDeFecha(b.fechaInicio) - timestampDeFecha(a.fechaInicio);
+    const fA = a.fechaInicio || a.fecha_inicio;
+    const fB = b.fechaInicio || b.fecha_inicio;
+    return (timestampDeFecha(fB) || 0) - (timestampDeFecha(fA) || 0);
   });
 
   if (countEl) countEl.textContent = String(candidatos.length);
@@ -10222,32 +10225,62 @@ function renderizarObrasEnProgresoInicio() {
   if (!candidatos.length) {
     listEl.innerHTML = `
       <div style="text-align:center; padding:18px 12px; color:var(--muted); font-size:0.82rem; background:var(--bg); border:1px dashed var(--border); border-radius:12px; width:100%; box-sizing:border-box;">
-        <span style="font-size:1.35rem; display:block; margin-bottom:4px;">✨</span>
+        <span class="emoji-dyn" style="font-size:1.35rem; display:block; margin-bottom:4px;">✨</span>
         <span data-i18n="home_en_progreso_empty">${l === 'en' ? 'You have no titles in progress right now.' : 'No tienes obras en curso en este momento.'}</span>
       </div>
     `;
     return;
   }
 
+  const esTodosLosTiempos = (typeof estado !== 'undefined' && estado.anioActivo === 'todos');
+
   listEl.innerHTML = candidatos.map(r => {
     const info = clasificarSubcatOnGoing(r) || { emoji: '🎬', label: r.subcategoria || r.categoria };
     const posterSrc = r.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'140\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
-    const fechaIniStr = (r.fechaInicio && r.fechaInicio !== 'Sin fecha') ? r.fechaInicio : '';
-    const creadorStr = r.creador ? `${r.creador} ${r.anio ? `(${r.anio})` : ''}` : (r.anio ? `(${r.anio})` : '');
+    const fechaIniRaw = (r.fechaInicio && r.fechaInicio !== 'Sin fecha') ? r.fechaInicio : (r.fecha_inicio && r.fecha_inicio !== 'Sin fecha' ? r.fecha_inicio : '');
+    let fechaIniDisplay = '';
+    if (fechaIniRaw) {
+      const prefix = l === 'en' ? 'Since: ' : 'Desde: ';
+      let d = '', m = '', y = '';
+      const str = String(fechaIniRaw).trim();
+      if (str.includes('/')) {
+        const parts = str.split('/');
+        if (parts.length === 3) {
+          d = parts[0].padStart(2, '0');
+          m = parts[1].padStart(2, '0');
+          y = parts[2];
+        }
+      } else if (str.includes('-')) {
+        const parts = str.split('-');
+        if (parts.length === 3) {
+          if (parts[0].length === 4) {
+            y = parts[0];
+            m = parts[1].padStart(2, '0');
+            d = parts[2].padStart(2, '0');
+          } else {
+            d = parts[0].padStart(2, '0');
+            m = parts[1].padStart(2, '0');
+            y = parts[2];
+          }
+        }
+      }
+      if (d && m) {
+        fechaIniDisplay = (esTodosLosTiempos && y) ? `${prefix}${d}/${m}/${y}` : `${prefix}${d}/${m}`;
+      } else {
+        fechaIniDisplay = `${prefix}${str}`;
+      }
+    }
 
     return `
       <div class="home-en-progreso-card" id="home-prog-${r.id}">
         <div class="home-en-progreso-card-top">
-          <span class="home-en-progreso-card-badge">${info.emoji} ${info.label}</span>
+          <span class="home-en-progreso-card-badge"><span class="emoji-dyn">${info.emoji}</span> ${info.label}</span>
         </div>
+        ${fechaIniDisplay ? `<div class="home-en-progreso-card-date-top">${fechaIniDisplay}</div>` : ''}
         <img src="${posterSrc}" class="home-en-progreso-card-poster" alt="${r.titulo}" onclick="abrirFichaTecnica('${r.id}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">
         <div class="home-en-progreso-card-title" onclick="abrirFichaTecnica('${r.id}')" title="${r.titulo}">${r.titulo}</div>
-        <div class="home-en-progreso-card-sub" title="${creadorStr}">${creadorStr || '—'}</div>
-        <div class="home-en-progreso-card-date">
-          <span class="emoji-dyn">⏳ </span><span>${fechaIniStr ? `${l === 'en' ? 'Started: ' : 'Inicio: '}${fechaIniStr}` : (l === 'en' ? 'In progress' : 'En progreso')}</span>
-        </div>
         <button type="button" class="btn-terminar-card-carousel" onclick="event.stopPropagation(); abrirModalTerminarObra('${r.id}')" title="${l === 'en' ? 'Mark as finished & review' : 'Completar y calificar obra'}">
-          <span>🎉</span> <span>${l === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span>
+          <span class="emoji-dyn">🎉</span> <span>${l === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span>
         </button>
       </div>
     `;
@@ -10273,7 +10306,7 @@ function renderizarSubcategoriasResumenInicio() {
   cont.innerHTML = listaSubcats.map(s => {
     return `
       <button type="button" class="home-indice-btn" onclick="cambiarCat('${s.cat}', '${s.sub}')" title="${s.label}">
-        <span class="home-indice-icon">${s.emoji}</span>
+        <span class="home-indice-icon emoji-dyn">${s.emoji}</span>
         <span class="home-indice-name">${s.label}</span>
       </button>
     `;
@@ -10308,7 +10341,7 @@ function renderizarRachasActualesInicio() {
           </span>
         </div>
         <div class="home-streak-card-body">
-          <span class="home-streak-flame-icon">🔥</span>
+          <span class="home-streak-flame-icon emoji-dyn">🔥</span>
           <span class="home-streak-number">${rPeliculas.rachaActual}</span>
           <span class="home-streak-unit">${rPeliculas.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
@@ -10331,7 +10364,7 @@ function renderizarRachasActualesInicio() {
           </span>
         </div>
         <div class="home-streak-card-body">
-          <span class="home-streak-flame-icon">🔥</span>
+          <span class="home-streak-flame-icon emoji-dyn">🔥</span>
           <span class="home-streak-number">${rMusica.rachaActual}</span>
           <span class="home-streak-unit">${rMusica.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
@@ -10354,13 +10387,13 @@ function renderizarRachasActualesInicio() {
           </span>
         </div>
         <div class="home-streak-card-body">
-          <span class="home-streak-flame-icon">🔥</span>
+          <span class="home-streak-flame-icon emoji-dyn">🔥</span>
           <span class="home-streak-number">${rLectura.rachaActual}</span>
           <span class="home-streak-unit">${rLectura.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
         <div class="home-streak-card-footer">
           <button type="button" class="btn-read-today-streak ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy()" title="${l === 'en' ? 'Click to toggle reading status today' : 'Toca para marcar o desmarcar lectura de hoy'}">
-            <span>${rLectura.esActivaHoy ? '✓' : '✨'}</span>
+            <span class="emoji-dyn">${rLectura.esActivaHoy ? '✓' : '✨'}</span>
             <span>${rLectura.esActivaHoy ? (l === 'en' ? 'Read today' : 'Ya leí hoy') : (l === 'en' ? 'I read today' : 'Ya leí hoy')}</span>
           </button>
         </div>
