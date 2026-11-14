@@ -42,7 +42,7 @@
     }
     const theme = (family || 'slate') + '-' + mode;
     let appTheme = 'default';
-    if (p && p.appTheme) appTheme = p.appTheme;
+    if (p && p.appTheme && p.appTheme !== 'minimalist') appTheme = p.appTheme;
     document.documentElement.setAttribute('data-app-theme', appTheme);
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.setAttribute('data-ui-style', 'modern');
@@ -3642,7 +3642,8 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 <div class="size-line-node" data-val="75%" data-idx="2" onclick="event.stopPropagation(); seleccionarSizeVisual('75%')"></div>
 <div class="size-line-node" data-val="88%" data-idx="3" onclick="event.stopPropagation(); seleccionarSizeVisual('88%')"></div>
 <div class="size-line-node" data-val="100%" data-idx="4" onclick="event.stopPropagation(); seleccionarSizeVisual('100%')"></div> </div> <div class="size-line-labels" id="cfg-size-labels"> <button type="button" class="size-line-lbl-btn" data-val="50%" onclick="seleccionarSizeVisual('50%')"> <span style="font-size:8px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="62%" onclick="seleccionarSizeVisual('62%')"> <span style="font-size:9.5px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="75%" onclick="seleccionarSizeVisual('75%')"> <span style="font-size:11px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="88%" onclick="seleccionarSizeVisual('88%')"> <span style="font-size:13px; font-weight:800;">Aa</span> </button> <button type="button" class="size-line-lbl-btn" data-val="100%" onclick="seleccionarSizeVisual('100%')"> <span style="font-size:15px; font-weight:800;">Aa</span> </button> </div> </div> </div> <!-- SELECCIÓN DE THEMES (ESTILOS GLOBALES DE EXPERIENCIA) -->
-  <div class="form-group" style="margin-bottom:18px;">
+  <!-- SELECCIÓN DE THEMES (ESTILOS GLOBALES DE EXPERIENCIA) - OCULTO EN LA APP POR AHORA (PRESERVADO EN CÓDIGO) -->
+  <div class="form-group" id="cfg-app-theme-section" style="display:none; margin-bottom:18px;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
       <label data-i18n="cfg_app_theme_label" style="font-weight:700; margin:0; font-size:0.92rem;">Theme:</label>
     </div>
@@ -10591,7 +10592,7 @@ function obtenerRegistrosFiltradosPorAnio() {
   return estado.registros.filter(r => extraerAnioDeRegistro(r) === estado.anioActivo);
 }
 
-function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {} userPrefs.uiStyle = 'modern'; if (!userPrefs.appTheme) userPrefs.appTheme = 'default'; if (userPrefs.fontSize && !['50%', '62%', '75%', '88%', '100%'].includes(userPrefs.fontSize)) userPrefs.fontSize = '100%';
+function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {} userPrefs.uiStyle = 'modern'; if (!userPrefs.appTheme || userPrefs.appTheme === 'minimalist') userPrefs.appTheme = 'default'; if (userPrefs.fontSize && !['50%', '62%', '75%', '88%', '100%'].includes(userPrefs.fontSize)) userPrefs.fontSize = '100%';
 if (!userPrefs.notificaciones || typeof userPrefs.notificaciones !== 'object') { userPrefs.notificaciones = { habilitadas: true, racha21: true, likesAmigos: true, novedadesAmigos: true }; }
 try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) estado.anioActivo = anioG; } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
