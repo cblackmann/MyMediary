@@ -301,8 +301,8 @@ textarea.comment-box:hover{border-color:rgba(56,189,248,.4)}textarea.comment-box
 .switch-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:var(--text);transition:.3s;border-radius:50%}.switch-toggle input:checked + .switch-slider{background-color:var(--accent);border-color:var(--accent)}.switch-toggle input:checked + .switch-slider:before{transform:translateX(20px);background-color:#0f172a}
 .toast-popup{position:fixed;top:20px;right:20px;background:var(--card);border:1px solid var(--accent);color:var(--text);padding:14px 20px;border-radius:12px;font-size:0.9rem;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,0.5);z-index:2000;display:flex;align-items:center;gap:10px;animation:slideDownToast 0.3s cubic-bezier(0.34, 1.3, 0.64, 1)}
 @keyframes slideDownToast{from{transform:translateY(-40px);opacity:0}to{transform:translateY(0);opacity:1}}.profile-section-title{font-size:0.82rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin:14px 0 8px}.profile-grid-records{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}.profile-grid-highlights{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
-.profile-grid-fun{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.profile-stat-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center}.profile-stat-label{font-size:0.7rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:0.04em}.profile-stat-val{font-size:1.05rem;font-weight:700;color:var(--text);margin-top:2px;word-break:break-word}
-.profile-stat-sub{font-size:0.75rem;color:var(--accent);margin-top:2px}.profile-bar-row{display:flex;align-items:center;gap:8px;font-size:0.82rem;margin-bottom:6px}.profile-bar-name{width:125px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
+.profile-grid-fun{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.profile-stat-box{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;box-sizing:border-box;}.profile-stat-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:0.04em;text-align:center;}.profile-stat-val{font-size:1.1rem;font-weight:800;color:var(--text);margin-top:3px;word-break:break-word;text-align:center;}
+.profile-stat-sub{font-size:0.75rem;color:var(--accent);margin-top:2px;text-align:center;}.profile-hero-side-actions{display:flex;flex-direction:column;gap:8px;flex-shrink:0;}@media(max-width:640px){.profile-hero-side-actions{flex-direction:row;width:100%;justify-content:center;}}.profile-bar-row{display:flex;align-items:center;gap:8px;font-size:0.82rem;margin-bottom:6px}.profile-bar-name{width:125px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.profile-bar-track{flex:1;height:8px;background:var(--border);border-radius:4px;overflow:hidden}
 .profile-bar-fill{height:100%;background:var(--accent);border-radius:4px;transition:width 0.4s ease}.profile-bar-count{width:65px;text-align:right;font-weight:700;color:var(--text)}@keyframes fadeInModal{from{opacity:0}to{opacity:1}}@keyframes popInModal{from{opacity:0;transform:scale(.92) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
 .streak-celebration-banner{background:linear-gradient(135deg,rgba(245,158,11,0.16) 0%,rgba(234,88,12,0.08) 100%);border:1px solid rgba(245,158,11,0.45);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:14px;box-shadow:0 4px 18px rgba(245,158,11,0.12);animation:slideDownToast 0.35s cubic-bezier(0.34,1.2,0.64,1);position:relative;overflow:hidden;margin-bottom:14px}
 .streak-celebration-banner::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(to bottom,#f59e0b,#ef4444)}
@@ -2427,57 +2427,188 @@ html[data-ui-style="modern"] .btn-modal-cancel {
           <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;" data-i18n="friends_loading_news">Cargando novedades de tus amigos... ⏳</div>
         </div>
       </div>
-    </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" id="perfil-hero-card" style="padding:18px 22px;">
-  <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
-    <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer;flex-shrink:0;">
-      <span>👤</span>
-      <div class="profile-avatar-edit-badge" data-i18n="btn_edit">Editar</div>
-    </div>
-    <div class="profile-info-col" style="flex:1;min-width:0;">
-      <div class="profile-nick-row" style="cursor:pointer;display:inline-flex;align-items:center;gap:6px;" onclick="abrirModalEditarPerfil()" title="Click para editar nombre y bio">
-        <span class="profile-nick-display" id="perfil-nick-render" data-i18n="profile_default_role">Cinéfilo & Lector</span>
-        <span style="font-size:0.75rem;opacity:0.6;">✏️</span>
-      </div>
-      <div class="profile-bio-txt" id="perfil-bio-render" data-i18n="profile_default_bio">Coleccionando historias en Mediary ✨</div>
-      <div style="margin-top:8px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-        <span id="perfil-id-badge" onclick="copiarMiIdUsuario()" title="Click para copiar ID" style="cursor:pointer; font-size:0.8rem; font-weight:700; color:var(--accent); background:rgba(56,189,248,0.12); padding:4px 12px; border-radius:8px; border:1px solid rgba(56,189,248,0.35); display:inline-flex; align-items:center; gap:6px;">
-          <span>🆔 <span id="perfil-id-txt">...</span></span>
-          <span style="font-size:0.7rem; opacity:0.8;">📋</span>
-        </span>
-        <div style="font-size:0.8rem; color:var(--muted); display:inline-flex; align-items:center; gap:6px;" id="perfil-email-render">
-          <span>✉️</span>
-          <span id="perfil-email-txt">Sin cuenta vinculada</span>
+    <!-- VISTA PERFIL (PESTAÑA APARTE) -->
+    <div id="vista-perfil" style="display:none;">
+
+      <!-- 1. HERO CARD DEL PERFIL -->
+      <div class="profile-hero-card" id="perfil-hero-card" style="padding:18px 22px; margin-bottom:14px;">
+        <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
+          <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer; flex-shrink:0;">
+            <span>👤</span>
+          </div>
+          <div class="profile-info-col" style="flex:1; min-width:0;">
+            <div class="profile-nick-row" style="cursor:pointer; display:inline-flex; align-items:center; gap:6px;" onclick="abrirModalEditarPerfil()" title="Click para editar nombre y bio">
+              <span class="profile-nick-display" id="perfil-nick-render" data-i18n="profile_default_role">Cinéfilo & Lector</span>
+              <span style="font-size:0.75rem; opacity:0.6;">✏️</span>
+            </div>
+            <div class="profile-bio-txt" id="perfil-bio-render" data-i18n="profile_default_bio">Coleccionando historias en Mediary ✨</div>
+            <div style="margin-top:8px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+              <span id="perfil-id-badge" onclick="copiarMiIdUsuario()" title="Click para copiar ID" style="cursor:pointer; font-size:0.8rem; font-weight:700; color:var(--accent); background:rgba(56,189,248,0.12); padding:4px 12px; border-radius:8px; border:1px solid rgba(56,189,248,0.35); display:inline-flex; align-items:center; gap:6px;">
+                <span>🆔 <span id="perfil-id-txt">...</span></span>
+                <span style="font-size:0.7rem; opacity:0.8;">📋</span>
+              </span>
+              <div style="font-size:0.8rem; color:var(--muted); display:inline-flex; align-items:center; gap:6px;" id="perfil-email-render">
+                <span>✉️</span>
+                <span id="perfil-email-txt">Sin cuenta vinculada</span>
+              </div>
+            </div>
+          </div>
+          <div class="profile-hero-side-actions">
+            <button type="button" class="btn-change-cover" onclick="abrirModalElegirPortada()" title="Personalizar portada del perfil">
+              <span>🎨</span> <span>Portada</span>
+            </button>
+            <button type="button" class="btn-change-cover" onclick="abrirModalEditarPerfil()" title="Editar información de perfil">
+              <span>✏️</span> <span>Editar</span>
+            </button>
+          </div>
         </div>
       </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 2. PERSONAJE FAVORITO -->
+      <div class="home-clean-section" id="perfil-sec-personaje">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">👑</span>
+            <span data-i18n="profile_fav_char_title">Personaje Favorito</span>
+          </div>
+        </div>
+        <div id="perfil-character-card-container"></div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 3. MÉTRICAS GLOBALES -->
+      <div class="home-clean-section" id="perfil-sec-metricas">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">⚡</span>
+            <span data-i18n="profile_metrics_title">Métricas Globales</span>
+          </div>
+        </div>
+        <div class="profile-grid-highlights">
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_total_entries">Total Registros</div>
+            <div class="profile-stat-val" id="prof-total-val">0</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_avg_rating">Calificación Promedio</div>
+            <div class="profile-stat-val" id="prof-rating-val">★ 0.0</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_game_playtime">Horas en Juegos</div>
+            <div class="profile-stat-val" id="prof-hours-val">0 hrs</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div>
+            <div class="profile-stat-val" id="prof-watched-hours-val">0 hrs</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 4. RÉCORDS DE RITMO -->
+      <div class="home-clean-section" id="perfil-sec-records">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">🏆</span>
+            <span data-i18n="profile_records_title">Récords de Ritmo</span>
+          </div>
+        </div>
+        <div class="profile-grid-records">
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div>
+            <div class="profile-stat-val" id="prof-best-day-val">—</div>
+            <div class="profile-stat-sub" id="prof-best-day-sub">0 registros</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div>
+            <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.9rem; line-height:1.25;">—</div>
+            <div class="profile-stat-sub" id="prof-best-week-sub">0 registros</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
+            <div class="profile-stat-val" id="prof-best-month-val">—</div>
+            <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_best_streak">Racha más alta</div>
+            <div class="profile-stat-val" id="prof-best-streak-val" style="color:#f59e0b;">—</div>
+            <div class="profile-stat-sub" id="prof-best-streak-sub">0 días seguidos</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 5. CURIOSIDADES Y HÁBITOS -->
+      <div class="home-clean-section" id="perfil-sec-curiosidades">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">✨</span>
+            <span data-i18n="profile_curiosities_title">Curiosidades y Hábitos</span>
+          </div>
+        </div>
+        <div class="profile-grid-fun">
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_fav_creator">Creador/Director Favorito</div>
+            <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
+            <div class="profile-stat-sub" id="prof-fav-creator-sub">0 registros</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_rewatch_rate">Tasa de Rewatch / Relectura</div>
+            <div class="profile-stat-val" id="prof-rewatch-rate-val">0%</div>
+            <div class="profile-stat-sub" id="prof-rewatch-rate-sub">0 re-consumos</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 6. MIS FAVORITOS POR CATEGORÍA -->
+      <div class="home-clean-section" id="perfil-sec-favoritos">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">👑</span>
+            <span data-i18n="profile_favs_title">Mis Favoritos por Categoría</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center; align-items:center; margin-bottom:12px;">
+          <button type="button" class="btn-toggle-filter" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()" style="font-size:0.8rem; padding:6px 16px; margin:0 auto; display:inline-flex; align-items:center; gap:6px;">
+            <span>⚙️</span> <span data-i18n="btn_cfg_favs_show">Configurar</span>
+          </button>
+        </div>
+        <div class="favs-grid" id="perfil-favoritos-grid"></div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 7. DISTRIBUCIÓN POR CATEGORÍA -->
+      <div class="home-clean-section" id="perfil-sec-distribucion">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">📊</span>
+            <span data-i18n="profile_dist_title">Distribución por Categoría</span>
+          </div>
+        </div>
+        <div class="cat-wide-card" style="margin-top:4px; padding:16px;">
+          <div id="profile-bars-container"></div>
+        </div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 8. ACCESO DIRECTO A WATCHLISTS -->
+      <div style="display:flex; justify-content:center; align-items:center; width:100%; margin:8px 0 16px;">
+        <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:10px 22px; border-radius:14px; font-weight:700; font-size:0.88rem;">
+          <span class="emoji-dyn">📌</span>
+          <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span>
+        </button>
+      </div>
+
     </div>
-    <div class="profile-hero-side-actions">
-      <button type="button" class="btn-change-cover" onclick="abrirModalElegirPortada()" title="Personalizar portada del perfil">
-        <span>🎨</span> <span>Portada</span>
-      </button>
-      <button type="button" class="btn-change-cover" onclick="abrirModalEditarPerfil()" title="Editar información de perfil">
-        <span>✏️</span> <span>Editar</span>
-      </button>
-    </div>
-  </div>
-</div>
-<!-- SLOT DESTACADO: PERSONAJE FAVORITO -->
-<div id="perfil-character-card-container"></div>
-<div style="margin:12px 0 16px; display:flex; gap:10px; flex-wrap:wrap;">
-  <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:9px 18px; border-radius:12px;">
-    <span class="emoji-dyn">📌</span>
-    <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span>
-  </button>
-</div>
-<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin:14px 0 6px;"> <div class="profile-section-title" style="margin:0;"><span data-i18n="profile_favs_title">👑 Mis Favoritos por Categoría</span></div>
-<button type="button" class="btn-toggle-filter" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()" data-i18n="btn_cfg_favs_show">👁️ Configurar cuáles mostrar</button> </div> <p style="color:var(--muted); font-size:0.83rem; margin-bottom:10px;" data-i18n="profile_favs_hint">Elige tu favorito de cada subcategoría y usa el botón <strong>"Mostrar"</strong> para activar o desactivar los favoritos que quieras exhibir en tu perfil.</p>
-<div class="favs-grid" id="perfil-favoritos-grid"></div> <div class="profile-section-title" data-i18n="profile_metrics_title">⚡ Métricas Globales</div> <div class="profile-grid-highlights"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_total_entries">Total Registros</div> <div class="profile-stat-val" id="prof-total-val">0</div>
-<div class="profile-stat-sub" data-i18n="stat_items_completed">items completados</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_avg_rating">Calificación Promedio</div> <div class="profile-stat-val" id="prof-rating-val">★ 0.0</div> <div class="profile-stat-sub" data-i18n="stat_out_of_stars">de 5.0 estrellas</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_game_playtime">Horas en Juegos</div> <div class="profile-stat-val" id="prof-hours-val">0 hrs</div>
-<div class="profile-stat-sub" data-i18n="stat_time_logged">tiempo invertido</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div> <div class="profile-stat-val" id="prof-watched-hours-val">0 hrs</div> <div class="profile-stat-sub" data-i18n="stat_watched_sub">películas y series</div> </div> </div> <div class="profile-section-title" data-i18n="profile_records_title">🏆 Récords de Ritmo</div> <div class="profile-grid-records"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div> <div class="profile-stat-val" id="prof-best-day-val">—</div> <div class="profile-stat-sub" id="prof-best-day-sub">0 registros</div>
-</div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div> <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.9rem; line-height:1.25;">—</div> <div class="profile-stat-sub" id="prof-best-week-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
-<div class="profile-stat-val" id="prof-best-month-val">—</div> <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_best_streak">Racha más alta</div>
-<div class="profile-stat-val" id="prof-best-streak-val" style="color:#f59e0b;">—</div> <div class="profile-stat-sub" id="prof-best-streak-sub">0 días seguidos</div> </div> </div> <div class="profile-section-title" data-i18n="profile_curiosities_title">✨ Curiosidades y Hábitos</div> <div class="profile-grid-fun"> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_fav_creator">Creador/Director Favorito</div> <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
-<div class="profile-stat-sub" id="prof-fav-creator-sub">0 registros</div> </div> <div class="profile-stat-box"> <div class="profile-stat-label" data-i18n="stat_rewatch_rate">Tasa de Rewatch / Relectura</div> <div class="profile-stat-val" id="prof-rewatch-rate-val">0%</div> <div class="profile-stat-sub" id="prof-rewatch-rate-sub">0 re-consumos</div> </div> </div> <div class="cat-wide-card" style="margin-top:14px;">
-<label style="font-weight:700; display:block; margin-bottom:10px;" data-i18n="profile_dist_title">📊 Distribución de Contenido por Categoría:</label> <div id="profile-bars-container"></div> </div> </div>
 
 <!-- VISTA DEDICADA DE WATCHLISTS -->
 <div id="vista-watchlists" style="display:none;">
@@ -7866,7 +7997,8 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "btn_edit": "Editar",
     "profile_title": "Perfil y Estadísticas",
     "profile_favs_title": "Mis Favoritos por Categoría",
-    "btn_cfg_favs": "Configurar cuáles mostrar",
+    "profile_fav_char_title": "Personaje Favorito",
+    "btn_cfg_favs": "Configurar",
     "profile_metrics_title": "Métricas Globales",
     "profile_records_title": "Récords de Ritmo",
     "profile_curiosities_title": "Curiosidades y Hábitos",
@@ -7923,7 +8055,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "stat_best_week": "Semana récord",
     "stat_best_month": "Mes récord",
     "stat_best_streak": "Racha más alta",
-    "profile_dist_title": "Distribución de Contenido por Categoría:",
+    "profile_dist_title": "Distribución por Categoría",
     "cfg_title": "⚙️ Configuración y Estilo",
     "cfg_title_short": "Configuración",
     "cfg_lang_label": "Idioma de la Interfaz:",
@@ -8024,8 +8156,8 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "modal_reorder_sub": "Ajusta el orden en que quieres ver estas secciones en la página de inicio con las flechas:",
     "btn_reset_order": "Restablecer",
     "discover_loading": "Cargando recomendaciones recientes... ⏳",
-    "btn_cfg_favs_show": "👁️ Configurar cuáles mostrar",
-    "btn_cfg_favs_done": "✓ Listo",
+    "btn_cfg_favs_show": "Configurar",
+    "btn_cfg_favs_done": "Listo",
     "profile_favs_hint": "Elige tu favorito de cada subcategoría y usa el botón \"Mostrar\" para activar o desactivar los favoritos que quieras exhibir en tu perfil.",
     "stat_total_entries": "Total Registros",
     "stat_out_of_stars": "de 5.0 estrellas",
@@ -8291,7 +8423,8 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "btn_edit": "Edit",
     "profile_title": "Profile & Statistics",
     "profile_favs_title": "My Favorites by Category",
-    "btn_cfg_favs": "Configure which to display",
+    "profile_fav_char_title": "Favorite Character",
+    "btn_cfg_favs": "Configure",
     "profile_metrics_title": "Global Metrics",
     "profile_records_title": "Pacing Records",
     "profile_curiosities_title": "Habits & Trivia",
@@ -8348,7 +8481,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "stat_best_week": "Record Week",
     "stat_best_month": "Record Month",
     "stat_best_streak": "Highest Streak",
-    "profile_dist_title": "Media Distribution by Category:",
+    "profile_dist_title": "Distribution by Category",
     "cfg_title": "⚙️ Settings & Theme",
     "cfg_title_short": "Settings",
     "cfg_lang_label": "Interface Language:",
@@ -8449,8 +8582,8 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "modal_reorder_sub": "Organize the home page sections in your preferred order with the arrows:",
     "btn_reset_order": "Reset",
     "discover_loading": "Loading recent recommendations... ⏳",
-    "btn_cfg_favs_show": "👁️ Configure which to show",
-    "btn_cfg_favs_done": "✓ Done",
+    "btn_cfg_favs_show": "Configure",
+    "btn_cfg_favs_done": "Done",
     "profile_favs_hint": "Choose your favorite in each subcategory and use the \"Show\" button to toggle favorites on your profile.",
     "stat_total_entries": "Total Entries",
     "stat_out_of_stars": "out of 5.0 stars",
@@ -8970,14 +9103,11 @@ function renderizarPersonajeFavorito() {
   if (!char || !char.nombre) {
     cont.innerHTML = `
       <div class="fav-char-empty-box" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Click to choose your favorite character' : 'Click para elegir tu personaje favorito'}">
-        <div style="display:flex; align-items:center; gap:14px; min-width:0; flex:1;">
-          <div class="fav-char-empty-icon">👑</div>
+        <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+          <div class="fav-char-empty-icon" style="font-size:1.6rem;">👑</div>
           <div style="min-width:0; flex:1;">
-            <div style="font-weight:700; font-size:0.92rem; color:var(--text); margin-bottom:2px;">
-              ${l === 'en' ? 'Choose your Favorite Character' : '👑 Elige tu Personaje Favorito'}
-            </div>
-            <div style="font-size:0.77rem; color:var(--muted); line-height:1.35;">
-              ${l === 'en' ? 'Feature your top hero, protagonist or companion in your profile header.' : 'Destaca a tu protagonista, héroe o villano predilecto de películas, anime, series, juegos o libros.'}
+            <div style="font-weight:700; font-size:0.92rem; color:var(--text);">
+              ${l === 'en' ? 'Choose your Favorite Character' : 'Elige tu Personaje Favorito'}
             </div>
           </div>
         </div>
@@ -8992,9 +9122,6 @@ function renderizarPersonajeFavorito() {
   const esImg = char.imagen && (char.imagen.startsWith('http') || char.imagen.startsWith('data:'));
   cont.innerHTML = `
     <div class="profile-fav-char-card">
-      <div class="fav-char-header-tag">
-        <span>👑</span> <span>${l === 'en' ? 'Favorite Character' : 'Personaje Favorito'}</span>
-      </div>
       <div class="fav-char-main-row">
         <div class="fav-char-avatar-box">
           ${esImg ? `<img src="${char.imagen}" alt="${char.nombre}" onerror="this.onerror=null;this.parentElement.innerHTML='👑';">` : `<span>${char.imagen || '👑'}</span>`}
@@ -9561,14 +9688,14 @@ function obtenerTodasLasSubcategoriasFavoritos() { const lista = []; Object.keys
 if (!s.esWatchlist && s.id !== 'Temporadas' && s.id !== 'Conciertos') { lista.push({ cat: catKey, catNombre: CONFIG[catKey].nombre, sub: s.id, subNombre: s.nombre, emoji: s.emoji }); }
 }); }); return lista; }
 function toggleModoConfigurarVisiblesFavs() { estado.modoConfigurarFavs = !estado.modoConfigurarFavs; const btn = document.getElementById('btn-modo-mostrar-favs'); if (btn) {
-btn.classList.toggle('active', estado.modoConfigurarFavs); btn.textContent = estado.modoConfigurarFavs ? '✅ Listo (Guardar visibles)' : '👁️ Configurar cuáles mostrar'; }
+btn.classList.toggle('active', estado.modoConfigurarFavs); const l = userPrefs.lang || 'es'; btn.innerHTML = estado.modoConfigurarFavs ? (l === 'en' ? '<span>✅</span> <span>Done</span>' : '<span>✅</span> <span>Listo</span>') : (l === 'en' ? '<span>⚙️</span> <span>Configure</span>' : '<span>⚙️</span> <span>Configurar</span>'); }
 renderizarFavoritosPerfil(); }
 function toggleMostrarFavoritoSub(keyFav) { if (!perfilUsuario.favoritosOcultos) perfilUsuario.favoritosOcultos = {}; if (perfilUsuario.favoritosOcultos[keyFav]) { delete perfilUsuario.favoritosOcultos[keyFav]; } else { perfilUsuario.favoritosOcultos[keyFav] = true; }
 guardarPerfilLocal(); renderizarFavoritosPerfil(); google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail); }
 function renderizarFavoritosPerfil() { const grid = document.getElementById('perfil-favoritos-grid');
 if (!grid) return; grid.innerHTML = ''; if (!perfilUsuario.favoritosOcultos) perfilUsuario.favoritosOcultos = {}; const subs = obtenerTodasLasSubcategoriasFavoritos(); const l = userPrefs.lang || 'es';
 const favFrag = document.createDocumentFragment(); subs.forEach(item => { const keyFav = `${item.cat}__${item.sub}`; const estaOculto = !!perfilUsuario.favoritosOcultos[keyFav]; if (estaOculto && !estado.modoConfigurarFavs) return; const fav = perfilUsuario.favoritos?.[keyFav] || null;
-const subLabel = I18N[l].subs[item.sub] || item.subNombre; const card = document.createElement('div'); card.className = 'fav-slot-card'; if (estaOculto) card.style.opacity = '0.5'; card.innerHTML = ` <div class="fav-slot-poster"> ${fav?.poster ? `<img src="${fav.poster}" alt="${fav.titulo}">` : `<span>${item.emoji}</span>`} </div> <div class="fav-slot-info"> <div class="fav-slot-top-row"> <div class="fav-slot-subcat"><span class="emoji-dyn">${item.emoji} </span>${subLabel}</div> <button type="button" class="btn-toggle-fav-show ${estaOculto ? 'hidden-fav' : ''}" onclick="toggleMostrarFavoritoSub('${keyFav}')" title="Activar o desactivar este favorito en tu perfil"> ${estaOculto ? '🚫 Oculto' : '👁️ Mostrar'} </button> </div> <div class="fav-slot-title" title="${fav ? fav.titulo : 'Sin seleccionar'}">${fav ? fav.titulo : 'Sin elegir aún'}</div> <div class="fav-slot-meta">${fav ? `${fav.creador || ''}${fav.calificacion ? ' · ★ ' + Number(fav.calificacion).toFixed(1) : ''}` : 'Elige tu favorito #1'}</div> <button type="button" class="btn-choose-fav" onclick="abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')"> ${fav ? '🔄 Cambiar favorito' : '👑 Elegir favorito'} </button> </div> `;
+const subLabel = I18N[l].subs[item.sub] || item.subNombre; const card = document.createElement('div'); card.className = 'fav-slot-card'; if (estaOculto) card.style.opacity = '0.5'; card.innerHTML = ` <div class="fav-slot-poster"> ${fav?.poster ? `<img src="${fav.poster}" alt="${fav.titulo}">` : `<span>${item.emoji}</span>`} </div> <div class="fav-slot-info"> <div class="fav-slot-top-row"> <div class="fav-slot-subcat"><span class="emoji-dyn">${item.emoji} </span>${subLabel}</div> <button type="button" class="btn-toggle-fav-show ${estaOculto ? 'hidden-fav' : ''}" onclick="toggleMostrarFavoritoSub('${keyFav}')" title="Activar o desactivar este favorito en tu perfil"> ${estaOculto ? '🚫 Oculto' : '👁️ Mostrar'} </button> </div> <div class="fav-slot-title" title="${fav ? fav.titulo : 'Sin seleccionar'}">${fav ? fav.titulo : 'Sin elegir aún'}</div> <div class="fav-slot-meta">${fav ? `${fav.creador || ''}${fav.calificacion ? ' · ★ ' + Number(fav.calificacion).toFixed(1) : ''}` : 'Sin elegir'}</div> <button type="button" class="btn-choose-fav" onclick="abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')"> ${fav ? '🔄 Cambiar' : '👑 Elegir'} </button> </div> `;
 favFrag.appendChild(card); }); grid.appendChild(favFrag); aplicarEstilosGlobales(); }
 function perteneceASub(x, cat, sub) { if (x.categoria !== cat) return false;
 if (cat === 'Peliculas') return sub === 'Películas' ? (x.subcategoria === 'Películas' || x.subcategoria === 'Nuevas' || x.subcategoria === 'Rewatches') : (sub === 'Documentales' ? x.subcategoria === 'Documentales' : x.subcategoria === sub);
