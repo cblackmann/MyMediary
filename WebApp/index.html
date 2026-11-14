@@ -433,7 +433,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .amigo-wide-card:hover{border-color:var(--accent) !important;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.35);}
 
 /* ESTILOS DE PORTADAS DE PERFIL */
-.cover-espacio {
+.cover-espacio,
+.amigo-wide-card.cover-espacio,
+.profile-hero-card.cover-espacio {
   background-color: #070913 !important;
   background-image: 
     radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
@@ -450,7 +452,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   border: 1.5px solid rgba(168, 85, 247, 0.55) !important;
   box-shadow: 0 10px 32px rgba(17, 24, 54, 0.6) !important;
 }
-.cover-arcade {
+.cover-arcade,
+.amigo-wide-card.cover-arcade,
+.profile-hero-card.cover-arcade {
   background-color: #12061e !important;
   background-image:
     linear-gradient(rgba(244, 63, 94, 0.16) 1.5px, transparent 1.5px),
@@ -462,7 +466,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   border: 1.5px solid rgba(244, 63, 94, 0.6) !important;
   box-shadow: 0 10px 32px rgba(244, 63, 94, 0.3) !important;
 }
-.cover-bosque {
+.cover-bosque,
+.amigo-wide-card.cover-bosque,
+.profile-hero-card.cover-bosque {
   background-color: #051e13 !important;
   background-image:
     radial-gradient(circle at 75% 20%, rgba(52, 211, 153, 0.42) 0%, transparent 45%),
@@ -472,7 +478,9 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   border: 1.5px solid rgba(16, 185, 129, 0.55) !important;
   box-shadow: 0 10px 32px rgba(5, 29, 19, 0.55) !important;
 }
-.cover-castillo {
+.cover-castillo,
+.amigo-wide-card.cover-castillo,
+.profile-hero-card.cover-castillo {
   background-color: #1a0f2e !important;
   background-image:
     radial-gradient(circle at 80% 18%, rgba(251, 191, 36, 0.4) 0%, transparent 45%),
@@ -1057,7 +1065,7 @@ html[data-show-emojis="false"] .emoji-dyn { display: none !important; }
 .stat-subcat-lecturas-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;}
 
 /* REORGANIZACIÓN Y MODO REORDENAR PESTAÑA LISTAS */
-.listas-top-bar{display:flex;justify-content:flex-end;align-items:center;margin:0 0 2px 0;padding:0;width:100%;box-sizing:border-box;}
+.listas-top-bar{display:flex;justify-content:space-between;align-items:center;margin:0 0 10px 0;padding:0;width:100%;box-sizing:border-box;gap:10px;}
 .btn-listas-reorder{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:6px;background:transparent;border:1px solid transparent;color:var(--muted);cursor:pointer;transition:var(--tr);box-shadow:none;padding:0;}
 .btn-listas-reorder:hover{color:var(--accent);background:rgba(255,255,255,0.06);border-color:var(--border);}
 .btn-listas-reorder.active{background:rgba(56,189,248,0.15);border-color:var(--accent);color:var(--accent);}
@@ -2095,16 +2103,16 @@ html[data-ui-style="modern"] .highlight-card {
 }
 
 /* 5. PESTAÑA COMUNIDAD, AMIGOS & PERFIL */
-html[data-ui-style="modern"] .amigo-wide-card,
-html[data-ui-style="modern"] .friend-card {
+html[data-ui-style="modern"] .amigo-wide-card:not(.has-custom-cover),
+html[data-ui-style="modern"] .friend-card:not(.has-custom-cover) {
   background: rgba(255, 255, 255, 0.02) !important;
   border: 1px solid rgba(255, 255, 255, 0.06) !important;
   border-radius: 14px !important;
   box-shadow: none !important;
 }
 
-[data-theme$="-light"][data-ui-style="modern"] .amigo-wide-card,
-[data-theme$="-light"][data-ui-style="modern"] .friend-card {
+[data-theme$="-light"][data-ui-style="modern"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme$="-light"][data-ui-style="modern"] .friend-card:not(.has-custom-cover) {
   background: rgba(0, 0, 0, 0.02) !important;
   border-color: rgba(0, 0, 0, 0.07) !important;
 }
@@ -2342,6 +2350,10 @@ html[data-ui-style="modern"] .btn-modal-cancel {
     </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) -->
     <div id="vista-listas-extendida" style="display:none;">
       <div class="listas-top-bar">
+        <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:6px 14px; font-size:0.82rem; font-weight:700; border-radius:10px; margin:0;" title="Ver mis watchlists y pendientes">
+          <span class="emoji-dyn">📌</span>
+          <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span>
+        </button>
         <button type="button" class="btn-listas-reorder" id="btn-toggle-reordenar-listas" onclick="toggleModoReordenarListas()" title="Organizar y reordenar categorías" aria-label="Organizar y reordenar categorías">
           <svg id="icon-reordenar-listas-idle" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="4" y1="6" x2="20" y2="6"></line>
@@ -2398,13 +2410,6 @@ html[data-ui-style="modern"] .btn-modal-cancel {
         <!-- ii. Tarjetas de mis amigos -->
         <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%; margin-bottom:14px;">
           <div style="color:var(--muted); font-size:0.88rem; padding:20px 0; text-align:center;" data-i18n="friends_no_added_yet">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div>
-        </div>
-
-        <!-- Botón centrado de Mezclar Watchlists abajo de la sección de Mis Amigos -->
-        <div style="display:flex; justify-content:center; align-items:center; width:100%; margin:10px 0 4px;">
-          <button type="button" class="ruleta-btn-girar-banner" onclick="abrirModalRuleta()" style="margin:0 auto; display:inline-flex; align-items:center; gap:8px;">
-            <span class="emoji-dyn">🍿</span> <span data-i18n="banner_coop_btn">Mezclar Watchlists</span>
-          </button>
         </div>
       </div>
 
@@ -3570,16 +3575,18 @@ const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).pa
 const mostrarIngles = (lang && lang !== 'en' && lang !== 'es') && tEng && tEng.toLowerCase() !== tOrig.toLowerCase(); return { titulo: tOrig, tituloOriginal: tOrig, tituloIngles: mostrarIngles ? tEng : '' }; };
 const traducirRolMusical_ = (r) => { if (!r) return ''; const s = String(r).toLowerCase().trim(); if (s.includes('lead vocals') || s.includes('lead vocal')) return 'Vocalista principal'; if (s.includes('backing vocals') || s.includes('background vocal')) return 'Coros'; if (s.includes('vocal') || s.includes('singer')) return 'Vocalista'; if (s.includes('lead guitar')) return 'Guitarrista líder'; if (s.includes('rhythm guitar')) return 'Guitarrista rítmico'; if (s.includes('acoustic guitar')) return 'Guitarra acústica'; if (s.includes('bass guitar') || s.includes('bass') || s.includes('bajo')) return 'Bajista'; if (s.includes('guitar') || s.includes('guitarra')) return 'Guitarrista'; if (s.includes('drum') || s.includes('percussion') || s.includes('bater')) return 'Baterista'; if (s.includes('keyboard') || s.includes('piano') || s.includes('organ') || s.includes('synthesizer') || s.includes('teclado')) return 'Tecladista'; if (s.includes('saxophone') || s.includes('sax')) return 'Saxofonista'; if (s.includes('trumpet') || s.includes('trompeta')) return 'Trompetista'; if (s.includes('violin')) return 'Violinista'; if (s.includes('producer') || s.includes('productor')) return 'Productor'; if (s.includes('composer') || s.includes('songwriter') || s.includes('compositor')) return 'Compositor'; return r.charAt(0).toUpperCase() + r.slice(1); };
 const SERVER_API = { async obtenerDatosAmigosUsuario(userEmail) { try { const email = normEm_(userEmail); if (!email) return { exito: false, error: 'Sin sesión' }; const myP = await SERVER_API.obtenerPerfilUsuario(email); const prefs = myP.preferencias || {}; const amigosEmails = prefs.amigos || []; const solicitudesEmails = prefs.solicitudes_recibidas || []; const [amigosRowsList, solicitudesRowsList, amigosRegsList] = await Promise.all([
-  Promise.all(amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*', 'GET').catch(() => []))),
-  Promise.all(solicitudesEmails.map(sEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(sEmail) + '&select=*', 'GET').catch(() => []))),
-  Promise.all(amigosEmails.map(aEmail => sbFetch_('registros?user_email=eq.' + encodeURIComponent(aEmail) + '&select=categoria,subcategoria,calificacion', 'GET').catch(() => [])))
+  Promise.all(amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=ilike.' + encodeURIComponent(normEm_(aEmail)) + '&select=*', 'GET').catch(() => []))),
+  Promise.all(solicitudesEmails.map(sEmail => sbFetch_('perfiles?user_email=ilike.' + encodeURIComponent(normEm_(sEmail)) + '&select=*', 'GET').catch(() => []))),
+  Promise.all(amigosEmails.map(aEmail => sbFetch_('registros?user_email=ilike.' + encodeURIComponent(normEm_(aEmail)) + '&select=categoria,subcategoria,calificacion', 'GET').catch(() => [])))
 ]);
 const amigosData = [];
 amigosRowsList.forEach((rows, idx) => {
   const aEmail = amigosEmails[idx];
-  if (rows && rows.length > 0) {
-    const p = rows[0];
-    const priv = p.preferencias?.privacidad || {};
+  const p = (rows && rows.length > 0) ? rows[0] : null;
+  if (p) {
+    const pPrefs = (typeof p.preferencias === 'string') ? (JSON.parse(p.preferencias) || {}) : (p.preferencias || {});
+    const pFavs = (typeof p.favoritos === 'string') ? (JSON.parse(p.favoritos) || {}) : (p.favoritos || {});
+    const priv = pPrefs.privacidad || {};
     const regs = (amigosRegsList && amigosRegsList[idx]) ? amigosRegsList[idx] : [];
     let sumC = 0, numC = 0;
     const catCount = {};
@@ -3599,8 +3606,11 @@ amigosRowsList.forEach((rows, idx) => {
       promedio: (!priv.ocultarCalificaciones && numC) ? (sumC / numC).toFixed(1) : null,
       topCat: topCatName
     };
-    const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada');
-    amigosData.push({ email: p.user_email, nickname: p.nickname || p.user_email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: p.preferencias?.userId || aEmail, portada: portAmigo, stats: stats });
+    let portAmigo = p.portada || pPrefs.portada || pFavs.portada || pPrefs.cover || 'predeterminada';
+    if (typeof portAmigo === 'string' && portAmigo.startsWith('cover-')) portAmigo = portAmigo.replace(/^cover-/, '');
+    amigosData.push({ email: p.user_email || aEmail, nickname: p.nickname || (p.user_email || aEmail).split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: pPrefs.userId || aEmail, portada: portAmigo, stats: stats });
+  } else if (aEmail) {
+    amigosData.push({ email: aEmail, nickname: aEmail.split('@')[0], bio: '', avatar: '🦊', userId: aEmail, portada: 'predeterminada', stats: null });
   }
 }); const solicitudesData = []; solicitudesRowsList.forEach((rows, idx) => { const sEmail = solicitudesEmails[idx]; if (rows && rows.length > 0) { const p = rows[0]; solicitudesData.push({ email: p.user_email, nickname: p.nickname || p.user_email.split('@')[0], avatar: p.avatar || '👤', userId: p.preferencias?.userId || sEmail }); } }); return { exito: true, amigos: amigosData, solicitudes: solicitudesData }; } catch (e) { return { exito: false, error: e.toString() }; } }, async enviarSolicitudAmistad(miEmail, idBuscado) { try { const miEm = normEm_(miEmail); const busq = String(idBuscado || '').trim(); if (!miEm) return { exito: false, error: 'Inicia sesión primero.' }; if (!busq) return { exito: false, error: 'Ingresa un ID válido.' }; let rows = await sbFetch_('perfiles?preferencias->>userId=eq.' + encodeURIComponent(busq) + '&select=*', 'GET'); if (!rows || !rows.length) { rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(busq.toLowerCase()) + '&select=*', 'GET'); } if (!rows || !rows.length) { const todos = await sbFetch_('perfiles?select=*', 'GET') || []; rows = todos.filter(p => { const uId = p.preferencias?.userId || ''; return uId.toLowerCase() === busq.toLowerCase() || p.user_email.toLowerCase() === busq.toLowerCase(); }); } if (!rows || !rows.length) { return { exito: false, error: 'No se encontró ningún usuario con ese ID.' }; } const targetUser = rows[0]; const targetEmail = targetUser.user_email; if (targetEmail.toLowerCase() === miEm.toLowerCase()) { return { exito: false, error: 'No puedes agregarte a ti mismo.' }; } const miPerfil = await SERVER_API.obtenerPerfilUsuario(miEm); const misPrefs = miPerfil.preferencias || {}; const misAmigos = misPrefs.amigos || []; if (misAmigos.includes(targetEmail)) { return { exito: false, error: 'Ya tienes a ' + (targetUser.nickname || 'este usuario') + ' en tu lista de amigos.' }; } const targetPrefs = targetUser.preferencias || {}; const targetRecibidas = targetPrefs.solicitudes_recibidas || []; if (!targetRecibidas.includes(miEm)) { targetRecibidas.push(miEm); targetPrefs.solicitudes_recibidas = targetRecibidas; await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(targetEmail), 'PATCH', { preferencias: targetPrefs, updated_at: new Date().toISOString() }); } return { exito: true, mensaje: '¡Solicitud enviada con éxito a ' + (targetUser.nickname || targetEmail) + '!' }; } catch (e) { return { exito: false, error: e.toString() }; } }, async procesarRespuestaSolicitud(miEmail, emailAmigo, aceptar) { try { const miEm = normEm_(miEmail); const amigoEm = normEm_(emailAmigo); if (!miEm || !amigoEm) return { exito: false, error: 'Datos incompletos' }; const miPerfil = await SERVER_API.obtenerPerfilUsuario(miEm); const misPrefs = miPerfil.preferencias || {}; misPrefs.solicitudes_recibidas = (misPrefs.solicitudes_recibidas || []).filter(e => e !== amigoEm); if (aceptar) { const misAmigos = misPrefs.amigos || []; if (!misAmigos.includes(amigoEm)) misAmigos.push(amigoEm); misPrefs.amigos = misAmigos; } await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(miEm), 'PATCH', { preferencias: misPrefs, updated_at: new Date().toISOString() }); const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEm) + '&select=*', 'GET'); if (rows && rows.length > 0) { const amigoP = rows[0]; const amigoPrefs = amigoP.preferencias || {}; if (aceptar) { const suListaAmigos = amigoPrefs.amigos || []; if (!suListaAmigos.includes(miEm)) suListaAmigos.push(miEm); amigoPrefs.amigos = suListaAmigos; } else { amigoPrefs.amigos = (amigoPrefs.amigos || []).filter(e => e !== miEm); } await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(amigoEm), 'PATCH', { preferencias: amigoPrefs, updated_at: new Date().toISOString() }); } return { exito: true }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerRegistrosAmigo(emailAmigo) {
   try {
@@ -3663,12 +3673,15 @@ return await SERVER_API.obtenerPerfilUsuario(email); }
 if (!actual) return { exito: false, error: 'No existe una cuenta con ese correo/usuario. Pulsa en "Crear Cuenta" o "Continuar con Google".' }; const savedHash = actual.preferencias?.passwordHash || ''; if (savedHash && savedHash !== passHash) return { exito: false, error: 'Contraseña incorrecta.' };
 if (!savedHash && passHash) { const prefsUpd = Object.assign({}, actual.preferencias || {}, { passwordHash: passHash }); await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}`, 'PATCH', { preferencias: prefsUpd, updated_at: new Date().toISOString() }); }
 return await SERVER_API.obtenerPerfilUsuario(email); } catch (e) { return { exito: false, error: e.toString() }; }
-}, async iniciarSesionConGoogle(emailManual, passwordOpcional) { const em = normEm_(emailManual); if (!em) return { exito: false, necesitaInputGoogle: true }; return await SERVER_API.autenticarUsuarioSupabase({ modo: 'google', email: em, password: passwordOpcional || '' }); },
-async guardarPerfilUsuario(datos, userEmail) { try { const email = normEm_(userEmail || datos?.emailGoogle); if (!email) return { exito: false, error: 'Inicia sesión primero para guardar tu perfil.' };
-const existentes = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); const actual = existentes && existentes[0] ? existentes[0] : {}; const payload = { user_email: email,
+}, async iniciarSesionConGoogle(emailManual, passwordOpcional) { const em = normEm_(emailManual); if (!em) return { exito: false, necesitaInputGoogle: true }; return await SERVER_API.autenticarUsuarioSupabase({ modo: 'google', email: em, password: passwordOpcional || '' });
+}, async guardarPerfilUsuario(datos, userEmail) { try { const email = normEm_(userEmail || datos?.emailGoogle); if (!email) return { exito: false, error: 'Inicia sesión primero para guardar tu perfil.' };
+const existentes = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); const actual = existentes && existentes[0] ? existentes[0] : {};
+const prefsObj = Object.assign({}, actual.preferencias || {}, datos.preferencias || {});
+if (datos.portada) prefsObj.portada = datos.portada;
+const payload = { user_email: email,
 nickname: datos.nickname !== undefined ? String(datos.nickname) : (actual.nickname || email.split('@')[0]), bio: datos.bio !== undefined ? String(datos.bio) : (actual.bio || 'Coleccionando historias en Mediary ✨'),
 avatar: datos.avatar !== undefined ? String(datos.avatar) : (actual.avatar || '🎬'), favoritos: datos.favoritos !== undefined ? datos.favoritos : (actual.favoritos || {}), favoritos_ocultos: datos.favoritosOcultos !== undefined ? datos.favoritosOcultos : (actual.favoritos_ocultos || {}),
-preferencias: datos.preferencias !== undefined ? Object.assign({}, actual.preferencias || {}, datos.preferencias) : (actual.preferencias || {}), updated_at: new Date().toISOString()
+preferencias: prefsObj, updated_at: new Date().toISOString()
 }; await sbFetch_('perfiles?on_conflict=user_email', 'POST', payload, 'resolution=merge-duplicates,return=representation'); return { exito: true, emailGoogle: email }; } catch (e) { return { exito: false, error: e.toString() }; }
 }, async obtenerRegistros(userEmail) { try { const email = normEm_(userEmail); if (!email) return []; const data = await sbFetch_(`registros?user_email=eq.${encodeURIComponent(email)}&select=*&order=created_at.asc`, 'GET') || [];
 const lista = data.map(r => {
@@ -6510,8 +6523,9 @@ function renderizarListaAmigos(amigos) {
     const avgRating = a.stats && a.stats.promedio ? a.stats.promedio : '-';
     const emailEscaped = (a.email || '').replace(/'/g, "\\'");
     const nickEscaped = (a.nickname || '').replace(/'/g, "\\'");
-    const coverId = a.portada || 'predeterminada';
-    const hasCustomCover = coverId && coverId !== 'predeterminada';
+    let coverId = String(a.portada || 'predeterminada').trim().toLowerCase();
+    if (coverId.startsWith('cover-')) coverId = coverId.replace(/^cover-/, '');
+    const hasCustomCover = !!(coverId && coverId !== 'predeterminada');
     const coverClass = hasCustomCover ? `cover-${coverId} has-custom-cover` : '';
 
     return `
