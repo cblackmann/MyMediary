@@ -2319,38 +2319,93 @@ html[data-ui-style="modern"] .btn-modal-cancel {
       </div>
       <div id="contenedor-modo-reordenar-listas" style="display:none; margin-bottom:16px;"></div>
       <div class="dashboard-vertical-list" id="grid-stats"></div>
-    </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) --> <div id="vista-amigos" style="display:none;"> <div class="discover-header-bar" style="margin-bottom:18px;"> <div> <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;"> <span>👥 <span data-i18n="amigos_title">Comunidad y Amigos</span></span> </h2> <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="amigos_subtitle">Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.</p> </div> <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45);color:#c084fc;background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button> <button type="button" class="btn-action-manual" style="height:38px;padding:0 14px;font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button> <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button> </div> </div>
-
-<!-- 1. AGREGAR ID -->
-<!-- BUSCADOR DE AMIGOS POR ID --> <div class="cat-wide-card" style="margin-bottom:20px;"> <div style="font-weight:700;font-size:0.95rem;margin-bottom:8px;color:var(--accent);display:flex;align-items:center;gap:6px;"> <span>🔍</span> <span data-i18n="amigos_search_title">Agregar Amigo por ID</span> </div> <p style="font-size:0.8rem;color:var(--muted);margin-bottom:12px;" data-i18n="amigos_search_hint">Pídele a tu amigo su ID de perfil (visible en su pestaña de Perfil) e ingrésalo aquí:</p> <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;"> <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1;min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234"> <button type="button" class="btn-save" style="width:auto;min-height:44px;padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button> </div> <div id="msg-buscar-amigo-feedback" style="display:none;font-size:0.82rem;margin-top:10px;padding:8px 12px;border-radius:8px;"></div> </div>
-<!-- SOLICITUDES PENDIENTES --> <div id="seccion-solicitudes-pendientes" style="display:none;margin-bottom:20px;"> <div class="profile-section-title" style="color:#fbbf24;margin-bottom:10px;">📬 Solicitudes de Amistad Recibidas (<span id="count-solicitudes-amigos">0</span>)</div> <div id="lista-solicitudes-amigos" style="display:flex;flex-direction:column;gap:10px;"></div> </div>
-
-<!-- 2. AMIGOS -->
-<div style="margin-bottom:22px;">
-  <!-- LISTA DE AMIGOS --> <div class="profile-section-title" style="margin-bottom:10px;">👥 Mis Amigos (<span id="count-mis-amigos">0</span>)</div> <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;"> <div style="color:var(--muted);font-size:0.88rem;padding:20px 0;" data-i18n="friends_no_added_yet">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div> </div>
-</div>
-
-<!-- 3. MEZCLAR WATCHLISTS -->
-<!-- BANNER CO-OP ROULETTE -->
-<div class="ruleta-banner-card">
-  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
-    <div style="flex:1; min-width:240px;">
-      <div style="font-weight:800; font-size:1.05rem; color:var(--text); display:flex; align-items:center; gap:8px;">
-        <span style="font-size:1.35rem;">🍿</span>
-        <span data-i18n="banner_coop_title">Mezclar Watchlists con un Amigo</span>
-        <span class="ruleta-badge-coop" data-i18n="banner_coop_badge">🎲 Ruleta Co-op</span>
+    </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) -->
+    <div id="vista-amigos" style="display:none;">
+      <!-- ACCIONES SUPERIORES -->
+      <div style="display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+        <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45); color:#c084fc; background:rgba(168,85,247,0.12);"><span class="emoji-dyn">🔒</span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button>
+        <button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn">📋</span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button>
+        <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span></button>
       </div>
-      <p style="font-size:0.8rem; color:var(--muted); margin-top:4px; line-height:1.35;" data-i18n="banner_coop_desc">¿No se deciden qué ver, escuchar, leer o jugar? Combina tu Watchlist con la de un amigo y dejen que el azar elija una obra (en común o sumando ambas listas).</p>
-    </div>
-    <button type="button" class="ruleta-btn-girar-banner" onclick="abrirModalRuleta()">
-      <span>🎲</span> <span data-i18n="banner_coop_btn">Mezclar Watchlists</span>
-    </button>
-  </div>
-</div>
 
-<!-- 4. ÚLTIMOS AGREGADOS -->
-<!-- SECCIÓN: NOVEDADES Y ÚLTIMOS AGREGADOS DE AMIGOS --> <div class="cat-wide-card" style="margin-bottom:22px; padding:18px 20px;"> <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(51,65,85,0.45); padding-bottom:12px;"> <div> <div style="font-weight:700; font-size:1.05rem; color:var(--accent); display:flex; align-items:center; gap:8px;"> <span>⚡</span> <span data-i18n="feed_amigos_title">Últimos Agregados de Amigos</span> <span id="badge-feed-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:800;">0</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-top:3px;" data-i18n="feed_amigos_desc">Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.</p> </div> <button type="button" class="btn-today-pill" style="height:34px; padding:0 12px; font-size:0.75rem; margin:0;" onclick="cargarFeedActividadAmigos(true)" title="Refrescar feed"> <span class="emoji-dyn">🔄</span> <span data-i18n="btn_actualizar">Actualizar</span> </button> </div> <div class="discover-filter-bar" id="feed-amigos-filtros" style="margin-bottom:14px;"> <button type="button" class="subtab-btn active" data-fcat="todas" onclick="filtrarFeedAmigos('todas')">🌟 <span data-i18n="feed_filtro_todos">Todos</span> (<span id="count-feed-todas">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Peliculas" onclick="filtrarFeedAmigos('Peliculas')">🎬 <span data-i18n="nav_peliculas">Películas</span> (<span id="count-feed-pelis">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Series" onclick="filtrarFeedAmigos('Series')">📺 <span data-i18n="nav_series">Series</span> (<span id="count-feed-series">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Musica" onclick="filtrarFeedAmigos('Musica')">🎵 <span data-i18n="nav_musica">Música</span> (<span id="count-feed-musica">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Juegos" onclick="filtrarFeedAmigos('Juegos')">🎮 <span data-i18n="nav_juegos">Juegos</span> (<span id="count-feed-juegos">0</span>)</button> <button type="button" class="subtab-btn" data-fcat="Lecturas" onclick="filtrarFeedAmigos('Lecturas')">📖 <span data-i18n="nav_lecturas">Lecturas</span> (<span id="count-feed-lecturas">0</span>)</button> </div> <div id="lista-feed-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%;"> <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;" data-i18n="friends_loading_news">Cargando novedades de tus amigos... ⏳</div> </div> </div>
-</div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" id="perfil-hero-card" style="padding:18px 22px;">
+      <hr class="home-section-divider">
+
+      <!-- 1. AGREGAR AMIGO POR ID -->
+      <div class="home-clean-section" id="seccion-agregar-amigo">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">🔍</span>
+            <span data-i18n="amigos_search_title">Agregar Amigo por ID</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; justify-content:center; flex-wrap:wrap; max-width:540px; margin:0 auto;">
+          <input type="text" id="input-buscar-amigo-id" class="form-input" style="flex:1; min-width:220px;" placeholder="Ej: CARLOS-7910 o CJ-1234">
+          <button type="button" class="btn-save" style="width:auto; min-height:44px; padding:0 20px;" onclick="enviarSolicitudAmistadPorId()" data-i18n="btn_enviar_solicitud">➕ Enviar Solicitud</button>
+        </div>
+        <div id="msg-buscar-amigo-feedback" style="display:none; font-size:0.82rem; margin-top:10px; padding:8px 12px; border-radius:8px; text-align:center;"></div>
+      </div>
+
+      <!-- SOLICITUDES PENDIENTES (CONDICIONAL) -->
+      <div id="seccion-solicitudes-pendientes" style="display:none;">
+        <hr class="home-section-divider">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title" style="color:#fbbf24;">
+            <span class="emoji-dyn">📬</span>
+            <span>Solicitudes de Amistad</span>
+            <span class="pill-count" style="font-size:0.75rem; background:rgba(251,191,36,0.18); color:#fbbf24; border-radius:10px; padding:1px 8px; font-weight:800;"><span id="count-solicitudes-amigos">0</span></span>
+          </div>
+        </div>
+        <div id="lista-solicitudes-amigos" style="display:flex; flex-direction:column; gap:10px;"></div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 2. MIS AMIGOS -->
+      <div class="home-clean-section" id="seccion-mis-amigos">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">👥</span>
+            <span data-i18n="amigos_my_friends_title">Mis Amigos</span>
+            <span class="pill-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border-radius:10px; padding:1px 8px; font-weight:800;"><span id="count-mis-amigos">0</span></span>
+          </div>
+        </div>
+        <div id="lista-mis-amigos" style="display:flex; flex-direction:column; gap:10px; width:100%;">
+          <div style="color:var(--muted); font-size:0.88rem; padding:20px 0; text-align:center;" data-i18n="friends_no_added_yet">No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!</div>
+        </div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 3. MEZCLAR WATCHLISTS -->
+      <div class="home-clean-section" id="seccion-mezclar-watchlists">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">🍿</span>
+            <span data-i18n="banner_coop_btn">Mezclar Watchlists</span>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center; align-items:center; width:100%; margin:2px 0;">
+          <button type="button" class="ruleta-btn-girar-banner" onclick="abrirModalRuleta()" style="margin:0 auto;">
+            <span class="emoji-dyn">🎲</span> <span data-i18n="banner_coop_btn">Mezclar Watchlists</span>
+          </button>
+        </div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 4. ÚLTIMOS AGREGADOS DE AMIGOS -->
+      <div class="home-clean-section" id="seccion-feed-amigos">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">⚡</span>
+            <span data-i18n="feed_amigos_title">Últimos Agregados de Amigos</span>
+          </div>
+        </div>
+        <div id="lista-feed-amigos" style="display:flex; flex-direction:column; gap:12px; width:100%;">
+          <div style="color:var(--muted); font-size:0.86rem; padding:20px 0; text-align:center;" data-i18n="friends_loading_news">Cargando novedades de tus amigos... ⏳</div>
+        </div>
+      </div>
+    </div> <!-- VISTA PERFIL (PESTAÑA APARTE) --> <div id="vista-perfil" style="display:none;"> <div class="profile-hero-card" id="perfil-hero-card" style="padding:18px 22px;">
   <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
     <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer;flex-shrink:0;">
       <span>👤</span>
@@ -5680,6 +5735,7 @@ function abrirVistaAmigos(pushNav = true) {
   const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
   const vAm = document.getElementById('vista-amigos');
   if (vAm) vAm.style.display = 'block';
+  estado.amigosFeedFiltro = 'todas';
   cargarAmigosYSolicitudes();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -7694,6 +7750,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "wl_global_btn": "Ver mis Watchlists y Pendientes",
     "amigos_title": "Comunidad y Amigos",
     "amigos_subtitle": "Agrega amigos mediante su ID único y explora sus gustos, favoritos y estadísticas en tiempo real.",
+    "amigos_my_friends_title": "Mis Amigos",
     "feed_amigos_title": "Últimos Agregados de Amigos",
     "feed_amigos_desc": "Mira qué acaban de escuchar, leer, ver o jugar tus amigos, sus notas y reseñas.",
     "feed_filtro_todos": "Todos",
@@ -8118,6 +8175,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "wl_global_btn": "View my Watchlists & Pending Items",
     "amigos_title": "Community & Friends",
     "amigos_subtitle": "Add friends by their unique ID and explore their tastes, favorites, and statistics in real time.",
+    "amigos_my_friends_title": "My Friends",
     "feed_amigos_title": "Latest Friend Activity",
     "feed_amigos_desc": "See what your friends just listened to, read, watched, or played, with ratings and reviews.",
     "feed_filtro_todos": "All",
