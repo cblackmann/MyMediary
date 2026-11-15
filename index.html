@@ -4579,8 +4579,10 @@ html[data-app-theme="minimalist"] .nav-categories-row {
       <button type="button" class="btn-modal-save" onclick="guardarPrivacidadAmigos()" data-i18n="btn_save_privacy">Guardar Privacidad</button>
     </div>
   </div>
+</div>
+
 <!-- MODAL CONECTAR SPOTIFY (PKCE OAUTH) -->
-<div id="modal-spotify-connect" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConectarSpotify()">
+<div id="modal-spotify-connect" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalConectarSpotify()">
   <div class="modal-box" style="max-width:480px; max-height:90vh; overflow-y:auto;">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
       <div style="display:flex; align-items:center; gap:8px;">
@@ -4637,7 +4639,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 </div>
 
 <!-- MODAL ESTADÍSTICAS SPOTIFY -->
-<div id="modal-spotify-stats" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalEstadisticasSpotify()">
+<div id="modal-spotify-stats" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalEstadisticasSpotify()">
   <div class="modal-box" style="max-width:580px; max-height:90vh; overflow-y:auto; display:flex; flex-direction:column; padding:0; border-radius:20px; overflow:hidden;">
     
     <!-- Encabezado -->
