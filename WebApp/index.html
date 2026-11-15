@@ -13760,7 +13760,8 @@ async function procesarRetornoSpotifyAuth() {
 
     const savedState = localStorage.getItem('mediary_spotify_auth_state');
     const verifier = localStorage.getItem('mediary_spotify_code_verifier');
-    const clientId = localStorage.getItem('mediary_spotify_client_id');
+    let clientId = localStorage.getItem('mediary_spotify_client_id') || window.SPOTIFY_CLIENT_ID || '955a1a0ccb814981b647d24c54b38d60';
+    localStorage.setItem('mediary_spotify_client_id', clientId);
     const redirectUri = obtenerSpotifyRedirectUri();
 
     if (state && savedState && state !== savedState) {
@@ -13800,7 +13801,8 @@ async function procesarRetornoSpotifyAuth() {
     const data = await res.json();
     const token = data.access_token;
     const refreshToken = data.refresh_token;
-    const expiresAt = Date.now() + (data.expires_in * 1000);
+    const expSec = Number(data.expires_in) || 3600;
+    const expiresAt = Date.now() + (expSec * 1000);
 
     localStorage.setItem('mediary_spotify_token', token);
     if (refreshToken) localStorage.setItem('mediary_spotify_refresh_token', refreshToken);
@@ -13827,13 +13829,19 @@ function limpiarSpotifyParamsUrl() {
   } catch (e) {}
 }
 
-async function obtenerTokenSpotifyValido() {
+async function obtenerTokenSpotifyValido(forzarRefresh = false) {
   let token = localStorage.getItem('mediary_spotify_token');
   const expiresAt = Number(localStorage.getItem('mediary_spotify_expires_at')) || 0;
   const refreshToken = localStorage.getItem('mediary_spotify_refresh_token');
-  const clientId = localStorage.getItem('mediary_spotify_client_id');
+  const clientId = localStorage.getItem('mediary_spotify_client_id') || window.SPOTIFY_CLIENT_ID || '955a1a0ccb814981b647d24c54b38d60';
 
-  if ((!token || Date.now() > expiresAt - 60000) && refreshToken && clientId) {
+  if (!localStorage.getItem('mediary_spotify_client_id')) {
+    localStorage.setItem('mediary_spotify_client_id', clientId);
+  }
+
+  const necesitaRefresco = forzarRefresh || !token || (expiresAt > 0 && Date.now() > expiresAt - 60000);
+
+  if (necesitaRefresco && refreshToken && clientId) {
     try {
       const res = await fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
@@ -13849,10 +13857,20 @@ async function obtenerTokenSpotifyValido() {
         token = data.access_token;
         localStorage.setItem('mediary_spotify_token', token);
         if (data.refresh_token) localStorage.setItem('mediary_spotify_refresh_token', data.refresh_token);
-        localStorage.setItem('mediary_spotify_expires_at', String(Date.now() + (data.expires_in * 1000)));
+        const expSec = Number(data.expires_in) || 3600;
+        localStorage.setItem('mediary_spotify_expires_at', String(Date.now() + (expSec * 1000)));
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        console.warn('Error renovando token Spotify (HTTP ' + res.status + '):', errData);
+        if (res.status === 400 || res.status === 401) {
+          localStorage.removeItem('mediary_spotify_token');
+          localStorage.removeItem('mediary_spotify_refresh_token');
+          localStorage.removeItem('mediary_spotify_expires_at');
+          token = null;
+        }
       }
     } catch (e) {
-      console.warn('Error refrescando token Spotify:', e);
+      console.warn('Error de red refrescando token Spotify:', e);
     }
   }
   return token;
@@ -14280,22 +14298,45 @@ function rankearDispositivoSpotify(d, isMobile, preferredId) {
 }
 
 async function consultarSpotifyCurrentlyPlaying() {
-  const token = await obtenerTokenSpotifyValido();
+  let token = await obtenerTokenSpotifyValido();
   if (!token) return { conectado: false };
 
   try {
-    // Intentar primero con /me/player para obtener también el device activo
-    let res = await fetch('https://api.spotify.com/v1/me/player', {
+    // 1. Intentar con /me/player para obtener el dispositivo y el track activo (soporta canciones y podcasts)
+    let res = await fetch('https://api.spotify.com/v1/me/player?additional_types=track,episode', {
       headers: { Authorization: `Bearer ${token}` }
     }).catch(() => null);
 
-    // Si devuelve 204 o falla, comprobar /currently-playing que a veces tiene el track antes que /player
+    // Si el token expiró (401), forzar renovación inmediata y reintentar
+    if (res && res.status === 401) {
+      token = await obtenerTokenSpotifyValido(true);
+      if (token) {
+        res = await fetch('https://api.spotify.com/v1/me/player?additional_types=track,episode', {
+          headers: { Authorization: `Bearer ${token}` }
+        }).catch(() => null);
+      }
+    }
+
+    // 2. Si /me/player devuelve 204 (sin dispositivo activo), 202, o 403 (falta permiso player-state o Free),
+    // consultar /currently-playing que solo requiere user-read-currently-playing
     if (!res || res.status === 204 || res.status === 202 || res.status === 403) {
-      const resCurr = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+      let resCurr = await fetch('https://api.spotify.com/v1/me/player/currently-playing?additional_types=track,episode', {
         headers: { Authorization: `Bearer ${token}` }
       }).catch(() => null);
+
+      if (resCurr && resCurr.status === 401) {
+        token = await obtenerTokenSpotifyValido(true);
+        if (token) {
+          resCurr = await fetch('https://api.spotify.com/v1/me/player/currently-playing?additional_types=track,episode', {
+            headers: { Authorization: `Bearer ${token}` }
+          }).catch(() => null);
+        }
+      }
+
       if (resCurr && resCurr.ok && resCurr.status !== 204 && resCurr.status !== 202) {
         res = resCurr;
+      } else if (resCurr && (resCurr.status === 204 || resCurr.status === 202)) {
+        return { conectado: true, reproduciendo: false };
       }
     }
 
@@ -14304,6 +14345,9 @@ async function consultarSpotifyCurrentlyPlaying() {
     }
     if (res.status === 401) {
       return { conectado: false, error: 'unauthorized' };
+    }
+    if (res.status === 403) {
+      return { conectado: true, reproduciendo: false, error: 'forbidden_scopes' };
     }
     if (!res.ok) {
       return { conectado: true, reproduciendo: false };
@@ -14619,10 +14663,15 @@ function dibujarTarjetaSpotifyCompacta(data) {
   const durationMs = Number(item.duration_ms) || 1;
   const progressPct = Math.min(100, Math.max(0, (progressMs / durationMs) * 100));
 
+  const isEpisode = data.currently_playing_type === 'episode' || item.type === 'episode';
   const trackTitle = item.name || (l === 'en' ? 'Unknown track' : 'Canción desconocida');
-  const artistNames = (item.artists || []).map(a => a.name).join(', ') || (l === 'en' ? 'Unknown artist' : 'Artista desconocido');
-  const albumName = item.album?.name || '';
-  const coverUrl = item.album?.images?.[0]?.url || item.album?.images?.[1]?.url || '';
+  const artistNames = isEpisode
+    ? (item.show?.name || (item.artists || []).map(a => a.name).join(', ') || 'Podcast')
+    : ((item.artists || []).map(a => a.name).join(', ') || (l === 'en' ? 'Unknown artist' : 'Artista desconocido'));
+  const albumName = isEpisode
+    ? (item.show?.publisher || (item.release_date ? 'Episodio · ' + item.release_date : 'Episodio'))
+    : (item.album?.name || '');
+  const coverUrl = item.album?.images?.[0]?.url || item.album?.images?.[1]?.url || item.images?.[0]?.url || item.show?.images?.[0]?.url || '';
 
   window.spotifyCurrentTrackState = {
     isPlaying: isPlaying,
@@ -14705,10 +14754,10 @@ function dibujarTarjetaSpotifyCompacta(data) {
           <button type="button" class="btn-spotify-ctrl" onclick="controlarSpotifyPlayback('next')" title="${l === 'en' ? 'Next' : 'Siguiente'}">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
           </button>
-          <span class="home-np-live-status-pill ${isPlaying ? '' : 'paused'}">
+          <button type="button" class="home-np-live-status-pill ${isPlaying ? '' : 'paused'}" onclick="forzarActualizacionSpotifyLive(this)" title="${l === 'en' ? 'Tap to sync now' : 'Toca para sincronizar ahora'}" style="background:none; border:none; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px;">
             <span class="home-np-dot"></span>
             <span>${isPlaying ? (l === 'en' ? 'Live' : 'En vivo') : (l === 'en' ? 'Paused' : 'En pausa')}</span>
-          </span>
+          </button>
         </div>
       </div>
 
@@ -14725,19 +14774,26 @@ function dibujarTarjetaSpotifyCompacta(data) {
   `;
 }
 
-function dibujarTarjetaSpotifyCompactaIdle() {
+function dibujarTarjetaSpotifyCompactaIdle(isForbidden = false) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
   const artistTxt = l === 'en' ? 'Spotify' : 'Spotify';
-  const albumTxt = l === 'en' ? 'Playback Inactive' : 'Sin reproducción activa';
-  const titleTxt = l === 'en' ? 'No music playing right now' : 'Nada sonando en este momento';
-  const statusTxt = l === 'en' ? 'Inactive' : 'Inactivo';
+  const albumTxt = isForbidden
+    ? (l === 'en' ? 'Permissions update needed' : 'Permisos desactualizados')
+    : (l === 'en' ? 'Playback Inactive' : 'Sin reproducción activa');
+  const titleTxt = isForbidden
+    ? (l === 'en' ? 'Tap here to re-authorize account' : 'Toca aquí para re-sincronizar cuenta')
+    : (l === 'en' ? 'No music playing right now' : 'Nada sonando en este momento');
+  const statusTxt = isForbidden
+    ? (l === 'en' ? 'Re-sync' : 'Re-vincular')
+    : (l === 'en' ? 'Inactive' : 'Inactivo');
   const openTxt = l === 'en' ? 'Open Spotify' : 'Abrir Spotify';
+  const clickAccion = isForbidden ? 'iniciarFlujoSpotifyAuth()' : 'forzarActualizacionSpotifyLive(this)';
 
   return `
     <div class="home-spotify-card-compact">
       <!-- i. A la izquierda: Portada placeholder -->
-      <div class="home-np-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85;">
-        <span>🎧</span>
+      <div class="home-np-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="${clickAccion}">
+        <span>${isForbidden ? '⚠️' : '🎧'}</span>
       </div>
 
       <!-- ii, iii, iv. Centro -->
@@ -14745,10 +14801,10 @@ function dibujarTarjetaSpotifyCompactaIdle() {
         <div class="home-np-artist-compact home-np-text-wrap">
           <span class="home-np-scrollable">${artistTxt}</span>
         </div>
-        <div class="home-np-album-compact home-np-text-wrap">
+        <div class="home-np-album-compact home-np-text-wrap" style="${isForbidden ? 'color:#f59e0b;' : ''}">
           <span class="home-np-scrollable">${albumTxt}</span>
         </div>
-        <div class="home-np-title-compact home-np-text-wrap">
+        <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="${clickAccion}">
           <span class="home-np-scrollable">${titleTxt}</span>
         </div>
 
@@ -14773,10 +14829,10 @@ function dibujarTarjetaSpotifyCompactaIdle() {
           <button type="button" class="btn-spotify-ctrl" onclick="controlarSpotifyPlayback('next')" title="${l === 'en' ? 'Next' : 'Siguiente'}">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
           </button>
-          <span class="home-np-live-status-pill paused">
-            <span class="home-np-dot"></span>
-            <span>${statusTxt}</span>
-          </span>
+          <button type="button" class="home-np-live-status-pill paused" onclick="${clickAccion}" title="${isForbidden ? (l === 'en' ? 'Click to re-authorize' : 'Clic para re-vincular cuenta') : (l === 'en' ? 'Tap to sync now' : 'Toca para sincronizar ahora')}" style="background:none; border:none; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px;">
+            <span class="home-np-dot" style="${isForbidden ? 'background:#f59e0b;' : ''}"></span>
+            <span style="${isForbidden ? 'color:#f59e0b; font-weight:700;' : ''}">${statusTxt}</span>
+          </button>
         </div>
       </div>
 
@@ -14837,7 +14893,7 @@ async function renderizarEscuchandoAhoraInicio(forzar = false) {
   const container = document.getElementById('home-now-playing-container');
   if (!container) return;
 
-  const token = localStorage.getItem('mediary_spotify_token');
+  const token = await obtenerTokenSpotifyValido();
   if (!token) {
     detenerPollingSpotifyLive();
     container.style.display = 'block';
@@ -14846,7 +14902,7 @@ async function renderizarEscuchandoAhoraInicio(forzar = false) {
   }
 
   const ahora = Date.now();
-  if (!forzar && _spotifyNowPlayingCache && (ahora - _spotifyUltimaConsultaLive < 8000)) {
+  if (!forzar && _spotifyNowPlayingCache && (ahora - _spotifyUltimaConsultaLive < 5000)) {
     actualizarVistaSegunResultadoAct(_spotifyNowPlayingCache);
     return;
   }
@@ -14868,7 +14924,8 @@ function actualizarVistaSegunResultadoAct(resultado) {
   if (resultado && resultado.conectado && resultado.reproduciendo && resultado.data) {
     container.innerHTML = dibujarTarjetaSpotifyCompacta(resultado.data);
   } else if (resultado && resultado.conectado) {
-    container.innerHTML = dibujarTarjetaSpotifyCompactaIdle();
+    const isForbidden = resultado.error === 'forbidden_scopes';
+    container.innerHTML = dibujarTarjetaSpotifyCompactaIdle(isForbidden);
     if (window.spotifyTickerInterval) {
       clearInterval(window.spotifyTickerInterval);
       window.spotifyTickerInterval = null;
@@ -14885,6 +14942,21 @@ function actualizarVistaSegunResultadoAct(resultado) {
     setTimeout(ajustarMarqueeSpotify, 50);
   });
 }
+
+async function forzarActualizacionSpotifyLive(btnEl) {
+  if (btnEl) {
+    btnEl.style.opacity = '0.5';
+    btnEl.style.pointerEvents = 'none';
+  }
+  _spotifyUltimaConsultaLive = 0;
+  _spotifyNowPlayingCache = null;
+  await renderizarEscuchandoAhoraInicio(true);
+  if (btnEl) {
+    btnEl.style.opacity = '1';
+    btnEl.style.pointerEvents = 'auto';
+  }
+}
+window.forzarActualizacionSpotifyLive = forzarActualizacionSpotifyLive;
 
 function ajustarMarqueeSpotify() {
   const container = document.getElementById('home-now-playing-container');
@@ -14919,7 +14991,7 @@ function iniciarPollingSpotifyLive() {
     if (typeof estado !== 'undefined' && estado.categoria === 'inicio' && !document.hidden) {
       renderizarEscuchandoAhoraInicio(false);
     }
-  }, 15000);
+  }, 10000);
 }
 
 function detenerPollingSpotifyLive() {
@@ -14951,7 +15023,9 @@ function registrarMusicaActualEnMediary(titulo, artista) {
 
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden && typeof estado !== 'undefined' && estado.categoria === 'inicio') {
-    renderizarEscuchandoAhoraInicio(false);
+    _spotifyNowPlayingCache = null;
+    _spotifyUltimaConsultaLive = 0;
+    renderizarEscuchandoAhoraInicio(true);
   }
 });
 
