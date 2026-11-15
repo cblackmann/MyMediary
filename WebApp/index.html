@@ -668,34 +668,34 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .spotify-pill-tab{background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:0.76rem;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;transition:var(--tr);}
 .spotify-pill-tab.active{background:rgba(29,185,84,0.16);border-color:rgba(29,185,84,0.4);color:#10b981;}
 [data-theme$="-dark"] .spotify-pill-tab.active{color:#1ed760;}
-/* ESCUCHANDO AHORA (INICIO) */
-.home-np-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;display:flex;gap:16px;align-items:center;transition:var(--tr);box-shadow:0 4px 16px rgba(0,0,0,0.15);position:relative;overflow:hidden;}
-.home-np-card:hover{border-color:rgba(29,185,84,0.45);box-shadow:0 6px 20px rgba(29,185,84,0.12);}
-.home-np-card::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:#1DB954;opacity:0.85;}
-.home-np-cover-box{width:84px;height:84px;border-radius:12px;overflow:hidden;background:#1e293b;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,0.25);position:relative;}
-.home-np-cover-img{width:100%;height:100%;object-fit:cover;display:block;}
-.home-np-content{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;}
-.home-np-header-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
-.home-np-badge-status{display:inline-flex;align-items:center;gap:6px;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(29,185,84,0.12);color:#10b981;border:1px solid rgba(29,185,84,0.35);}
-.home-np-badge-status.paused{background:rgba(245,158,11,0.12);color:#f59e0b;border-color:rgba(245,158,11,0.35);}
-.home-np-dot{width:7px;height:7px;border-radius:50%;background:#10b981;box-shadow:0 0 6px #10b981;animation:pulseDot 1.8s infinite;}
-.home-np-badge-status.paused .home-np-dot{background:#f59e0b;box-shadow:none;animation:none;}
-.home-np-title{font-size:1.02rem;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;}
-.home-np-title a{color:inherit;text-decoration:none;}
-.home-np-title a:hover{color:#1DB954;}
-.home-np-artist{font-size:0.85rem;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
-.home-np-album{font-size:0.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.home-np-progress-wrap{display:flex;flex-direction:column;gap:3px;margin-top:2px;}
-.home-np-progress-bg{width:100%;height:5px;background:var(--bg);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
-.home-np-progress-fill{height:100%;background:linear-gradient(90deg,#10b981,#1DB954);border-radius:6px;transition:width 0.35s ease;}
-.home-np-times{display:flex;justify-content:space-between;font-size:0.68rem;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums;}
-.home-np-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px;}
-.btn-np-pill{padding:6px 12px;font-size:0.76rem;font-weight:700;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:var(--tr);text-decoration:none;border:1px solid transparent;}
-.btn-np-log{background:rgba(16,185,129,0.16);border-color:rgba(16,185,129,0.4);color:#10b981;}
-.btn-np-log:hover{background:#10b981;color:#0f172a;transform:translateY(-1px);}
-.btn-np-spotify{background:rgba(29,185,84,0.14);border-color:rgba(29,185,84,0.35);color:#1DB954;}
-.btn-np-spotify:hover{background:#1DB954;color:#000;transform:translateY(-1px);}
-@media(max-width:580px){.home-np-card{flex-direction:column;align-items:flex-start;}.home-np-card::before{width:100%;height:4px;bottom:auto;}.home-np-cover-box{width:68px;height:68px;}}
+/* ESCUCHANDO AHORA COMPACTO (EN PROCESO) */
+.home-spotify-card-compact{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 12px rgba(0,0,0,0.12);transition:var(--tr);position:relative;overflow:hidden;margin-bottom:12px;}
+.home-spotify-card-compact:hover{border-color:rgba(29,185,84,0.45);box-shadow:0 4px 16px rgba(29,185,84,0.12);}
+.home-spotify-card-compact::before{content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:#1DB954;opacity:0.9;}
+.home-np-cover-compact{width:64px;height:64px;border-radius:8px;overflow:hidden;background:#1e293b;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,0.25);}
+.home-np-cover-compact img{width:100%;height:100%;object-fit:cover;display:block;}
+.home-np-center-compact{flex:1;min-width:0;display:flex;flex-direction:column;gap:1.5px;}
+.home-np-artist-compact{font-size:0.78rem;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
+.home-np-album-compact{font-size:0.69rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15;}
+.home-np-title-compact{font-size:0.96rem;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;}
+.home-np-prog-row-compact{display:flex;align-items:center;gap:8px;margin:3px 0 2px 0;}
+.home-np-prog-bg-compact{flex:1;height:4px;background:var(--bg);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+.home-np-prog-fill-compact{height:100%;background:linear-gradient(90deg,#10b981,#1DB954);border-radius:6px;transition:width 0.35s ease;}
+.home-np-times-compact{font-size:0.65rem;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums;display:inline-flex;gap:2px;flex-shrink:0;}
+.home-np-ctrls-compact{display:flex;align-items:center;gap:8px;}
+.btn-spotify-ctrl{background:var(--bg);border:1px solid var(--border);color:var(--text);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;cursor:pointer;transition:var(--tr);padding:0;}
+.btn-spotify-ctrl:hover{background:var(--card);border-color:#1DB954;color:#1DB954;transform:scale(1.1);}
+.btn-spotify-ctrl-play{width:26px;height:26px;background:rgba(29,185,84,0.15);border-color:rgba(29,185,84,0.4);color:#10b981;}
+.btn-spotify-ctrl-play:hover{background:#1DB954;color:#000;border-color:#1DB954;}
+.home-np-live-status-pill{display:inline-flex;align-items:center;gap:4px;margin-left:6px;font-size:0.68rem;color:#10b981;}
+.home-np-live-status-pill.paused{color:#f59e0b;}
+.home-np-dot{width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 6px #10b981;animation:pulseDot 1.8s infinite;}
+.home-np-live-status-pill.paused .home-np-dot{background:#f59e0b;box-shadow:none;animation:none;}
+.home-np-right-col{display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:64px;flex-shrink:0;padding-left:4px;}
+.home-np-sp-logo-link{display:grid;place-items:center;width:24px;height:24px;transition:var(--tr);}
+.home-np-sp-logo-link:hover{transform:scale(1.18);}
+.btn-np-quick-add{width:28px;height:28px;border-radius:8px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.38);color:#10b981;display:grid;place-items:center;font-size:0.8rem;cursor:pointer;transition:var(--tr);padding:0;}
+.btn-np-quick-add:hover{background:#10b981;color:#0f172a;transform:translateY(-1px);}
 /* TOGGLE VISTA Y CUADRICULA LISTAS */
 .view-mode-toggle{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;gap:4px}
 .btn-view-mode{background:transparent;border:none;color:var(--muted);font-size:0.8rem;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--tr)}
@@ -2915,6 +2915,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
             <span class="pill-count" id="home-en-progreso-count" style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border-radius:10px; padding:1px 8px; font-weight:800;">0</span>
           </div>
         </div>
+        <div id="home-now-playing-container" style="display:none; margin-bottom:12px;"></div>
         <div id="home-en-progreso-list" class="home-en-progreso-carousel">
           <!-- Generado dinámicamente por renderizarObrasEnProgresoInicio -->
         </div>
@@ -2967,27 +2968,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
       <hr class="home-section-divider">
 
-      <!-- 6. ESCUCHANDO AHORA (SPOTIFY) -->
-      <div class="home-clean-section" id="home-sec-now-playing">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title">
-            <span class="emoji-dyn">🎧</span>
-            <span data-i18n="home_now_playing_title">Escuchando Ahora</span>
-            <span class="discover-live-badge" style="font-size:0.72rem; padding:2px 8px; background:rgba(29,185,84,0.12); color:#10b981; border:1px solid rgba(29,185,84,0.35);">
-              <span class="discover-live-dot" style="background:#10b981; box-shadow:0 0 8px #10b981;"></span>
-              <span>Spotify</span>
-            </span>
-          </div>
-          <button type="button" class="btn-spotify-sub-action" onclick="renderizarEscuchandoAhoraInicio(true)" title="Actualizar" style="padding:4px 10px; font-size:0.75rem; border-radius:14px; gap:4px; border:1px solid var(--border); background:var(--card); color:var(--text);">
-            <span>🔄</span> <span data-i18n="btn_refresh">Actualizar</span>
-          </button>
-        </div>
-        <div id="home-now-playing-container"></div>
-      </div>
-
-      <hr class="home-section-divider">
-
-      <!-- 7. NOVEDADES DE AMIGOS -->
+      <!-- 6. NOVEDADES DE AMIGOS -->
       <div class="home-community-section" id="seccion-comunidad-resumida-inicio">
         <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:14px; text-align:center;">
           <div class="home-clean-title">
@@ -13724,7 +13705,9 @@ async function iniciarFlujoSpotifyAuth() {
     'user-read-email',
     'user-top-read',
     'user-read-recently-played',
-    'user-read-currently-playing'
+    'user-read-currently-playing',
+    'user-read-playback-state',
+    'user-modify-playback-state'
   ].join(' ');
 
   const params = new URLSearchParams({
@@ -14268,66 +14251,45 @@ async function consultarSpotifyCurrentlyPlaying() {
   }
 }
 
-function dibujarTarjetaSpotifyDesconectado() {
-  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const titulo = l === 'en' ? 'Listening Now' : 'Escuchando Ahora';
-  const desc = l === 'en'
-    ? 'Connect your Spotify account to see what you are currently listening to in real time.'
-    : 'Conecta tu cuenta de Spotify para ver aquí en tiempo real la música que estás escuchando.';
-  const btnTxt = l === 'en' ? 'Connect Spotify' : 'Conectar con Spotify';
+async function controlarSpotifyPlayback(accion) {
+  const token = await obtenerTokenSpotifyValido();
+  if (!token) return;
 
-  return `
-    <div class="home-np-card" style="padding:16px 20px;">
-      <div style="font-size:2rem; flex-shrink:0;">🎵</div>
-      <div style="flex:1; min-width:0;">
-        <div style="font-weight:700; font-size:0.92rem; color:var(--text); margin-bottom:4px;">${titulo}</div>
-        <div style="font-size:0.8rem; color:var(--muted); margin-bottom:10px; line-height:1.4;">${desc}</div>
-        <button type="button" class="btn-np-pill btn-np-spotify" onclick="abrirModalConectarSpotify()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
-          <span>${btnTxt}</span>
-        </button>
-      </div>
-    </div>
-  `;
+  let url = '';
+  let method = 'POST';
+
+  if (accion === 'next') {
+    url = 'https://api.spotify.com/v1/me/player/next';
+    method = 'POST';
+  } else if (accion === 'previous') {
+    url = 'https://api.spotify.com/v1/me/player/previous';
+    method = 'POST';
+  } else if (accion === 'play') {
+    url = 'https://api.spotify.com/v1/me/player/play';
+    method = 'PUT';
+  } else if (accion === 'pause') {
+    url = 'https://api.spotify.com/v1/me/player/pause';
+    method = 'PUT';
+  }
+
+  try {
+    const res = await fetch(url, {
+      method: method,
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (res.status === 403) {
+      const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
+      mostrarToastPersonalizado(isEn ? 'Playback control requires Spotify Premium.' : 'El control multimedia requiere Spotify Premium.');
+    }
+    setTimeout(() => {
+      renderizarEscuchandoAhoraInicio(true);
+    }, 450);
+  } catch (err) {
+    console.warn('Error controlando reproducción Spotify:', err);
+  }
 }
 
-function dibujarTarjetaSpotifyIdle() {
-  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const badgeTxt = l === 'en' ? 'Playback Inactive' : 'Sin reproducción activa';
-  const idleDesc = l === 'en'
-    ? 'Spotify is paused or no active playback was detected right now.'
-    : 'Spotify en pausa o no se detecta música activa en este momento.';
-  const openTxt = l === 'en' ? 'Open Spotify' : 'Abrir en Spotify';
-  const checkTxt = l === 'en' ? 'Check now' : 'Comprobar';
-
-  return `
-    <div class="home-np-card" style="padding:14px 18px;">
-      <div style="font-size:1.8rem; flex-shrink:0; opacity:0.85;">💤</div>
-      <div style="flex:1; min-width:0;">
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-          <span class="home-np-badge-status paused">
-            <span class="home-np-dot"></span>
-            <span>${badgeTxt}</span>
-          </span>
-        </div>
-        <div style="font-size:0.8rem; color:var(--muted); margin-bottom:8px; line-height:1.35;">
-          ${idleDesc}
-        </div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="btn-np-pill btn-np-spotify">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
-            <span>${openTxt}</span>
-          </a>
-          <button type="button" class="btn-np-pill" onclick="renderizarEscuchandoAhoraInicio(true)" style="background:var(--bg); border-color:var(--border); color:var(--text);">
-            <span>🔄</span> <span>${checkTxt}</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function dibujarTarjetaSpotifyLive(data) {
+function dibujarTarjetaSpotifyCompacta(data) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
   const item = data.item || {};
   const isPlaying = !!data.is_playing;
@@ -14340,11 +14302,6 @@ function dibujarTarjetaSpotifyLive(data) {
   const albumName = item.album?.name || '';
   const coverUrl = item.album?.images?.[0]?.url || item.album?.images?.[1]?.url || '';
   const spotifyUrl = item.external_urls?.spotify || 'https://open.spotify.com';
-
-  const statusClass = isPlaying ? '' : 'paused';
-  const statusLabel = isPlaying ? (l === 'en' ? 'Now Playing' : 'En reproducción') : (l === 'en' ? 'Paused' : 'En pausa');
-  const logBtnText = l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary';
-  const openBtnText = l === 'en' ? 'Open in Spotify' : 'Abrir en Spotify';
 
   window.spotifyCurrentTrackState = {
     isPlaying: isPlaying,
@@ -14375,59 +14332,66 @@ function dibujarTarjetaSpotifyLive(data) {
   }
 
   const coverHtml = coverUrl
-    ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="Cover" class="home-np-cover-img" loading="lazy">`
-    : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.8rem;">🎵</div>`;
+    ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="Cover" loading="lazy">`
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;">🎵</div>`;
 
   const safeTituloParam = encodeURIComponent(trackTitle);
   const safeArtistaParam = encodeURIComponent(artistNames);
 
   return `
-    <div class="home-np-card">
-      <div class="home-np-cover-box">
+    <div class="home-spotify-card-compact">
+      <!-- i. A la izquierda: Portada de la canción -->
+      <div class="home-np-cover-compact">
         ${coverHtml}
       </div>
-      <div class="home-np-content">
-        <div class="home-np-header-row">
-          <span class="home-np-badge-status ${statusClass}">
-            <span class="home-np-dot"></span>
-            <span>${statusLabel}</span>
-          </span>
-          <span style="font-size:0.72rem; color:var(--muted); font-weight:600; display:inline-flex; align-items:center; gap:4px;">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
-            <span>Spotify</span>
-          </span>
-        </div>
 
-        <div>
-          <div class="home-np-title">
-            <a href="${escHtmlSpotify_(spotifyUrl)}" target="_blank" rel="noopener noreferrer" title="${escHtmlSpotify_(trackTitle)}">
-              ${escHtmlSpotify_(trackTitle)}
-            </a>
-          </div>
-          <div class="home-np-artist" title="${escHtmlSpotify_(artistNames)}">
-            ${escHtmlSpotify_(artistNames)}
-          </div>
-          ${albumName ? `<div class="home-np-album" title="${escHtmlSpotify_(albumName)}">💿 ${escHtmlSpotify_(albumName)}</div>` : ''}
-        </div>
+      <!-- ii, iii, iv. Centro: Textos, barra de progreso y controlador multimedia -->
+      <div class="home-np-center-compact">
+        <!-- iii. Orden: Artista/Grupo; Disco; Nombre canción (de arriba a abajo) -->
+        <div class="home-np-artist-compact" title="${escHtmlSpotify_(artistNames)}">${escHtmlSpotify_(artistNames)}</div>
+        <div class="home-np-album-compact" title="${escHtmlSpotify_(albumName || '—')}">${escHtmlSpotify_(albumName || '—')}</div>
+        <div class="home-np-title-compact" title="${escHtmlSpotify_(trackTitle)}">${escHtmlSpotify_(trackTitle)}</div>
 
-        <div class="home-np-progress-wrap">
-          <div class="home-np-progress-bg">
-            <div id="home-np-prog-fill" class="home-np-progress-fill" style="width:${progressPct}%;"></div>
+        <!-- ii. Barra de progreso hasta poco antes del borde derecho -->
+        <div class="home-np-prog-row-compact">
+          <div class="home-np-prog-bg-compact">
+            <div id="home-np-prog-fill" class="home-np-prog-fill-compact" style="width:${progressPct}%;"></div>
           </div>
-          <div class="home-np-times">
+          <div class="home-np-times-compact">
             <span id="home-np-time-cur">${formatearMinSegSpotify(progressMs)}</span>
+            <span>/</span>
             <span id="home-np-time-tot">${formatearMinSegSpotify(durationMs)}</span>
           </div>
         </div>
 
-        <div class="home-np-actions">
-          <button type="button" class="btn-np-pill btn-np-log" onclick="registrarMusicaActualEnMediary(decodeURIComponent('${safeTituloParam}'), decodeURIComponent('${safeArtistaParam}'))">
-            <span>✍️</span> <span>${logBtnText}</span>
+        <!-- iv. Debajo de la barra: controlador multimedia << > >> -->
+        <div class="home-np-ctrls-compact">
+          <button type="button" class="btn-spotify-ctrl" onclick="controlarSpotifyPlayback('previous')" title="${l === 'en' ? 'Previous' : 'Anterior'}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
           </button>
-          <a href="${escHtmlSpotify_(spotifyUrl)}" target="_blank" rel="noopener noreferrer" class="btn-np-pill btn-np-spotify">
-            <span>▶️</span> <span>${openBtnText}</span>
-          </a>
+          <button type="button" class="btn-spotify-ctrl btn-spotify-ctrl-play" onclick="controlarSpotifyPlayback('${isPlaying ? 'pause' : 'play'}')" title="${isPlaying ? (l === 'en' ? 'Pause' : 'Pausar') : (l === 'en' ? 'Play' : 'Reanudar')}">
+            ${isPlaying
+              ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
+              : `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`}
+          </button>
+          <button type="button" class="btn-spotify-ctrl" onclick="controlarSpotifyPlayback('next')" title="${l === 'en' ? 'Next' : 'Siguiente'}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+          </button>
+          <span class="home-np-live-status-pill ${isPlaying ? '' : 'paused'}">
+            <span class="home-np-dot"></span>
+            <span>${isPlaying ? (l === 'en' ? 'Live' : 'En vivo') : (l === 'en' ? 'Paused' : 'En pausa')}</span>
+          </span>
         </div>
+      </div>
+
+      <!-- v. Borde derecho: Logo de Spotify arriba, botón sencillo para agregar abajo -->
+      <div class="home-np-right-col">
+        <a href="${escHtmlSpotify_(spotifyUrl)}" target="_blank" rel="noopener noreferrer" class="home-np-sp-logo-link" title="${l === 'en' ? 'Open in Spotify' : 'Abrir en Spotify'}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+        </a>
+        <button type="button" class="btn-np-quick-add" onclick="registrarMusicaActualEnMediary(decodeURIComponent('${safeTituloParam}'), decodeURIComponent('${safeArtistaParam}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
       </div>
     </div>
   `;
@@ -14440,7 +14404,8 @@ async function renderizarEscuchandoAhoraInicio(forzar = false) {
   const token = localStorage.getItem('mediary_spotify_token');
   if (!token) {
     detenerPollingSpotifyLive();
-    container.innerHTML = dibujarTarjetaSpotifyDesconectado();
+    container.style.display = 'none';
+    container.innerHTML = '';
     return;
   }
 
@@ -14448,17 +14413,6 @@ async function renderizarEscuchandoAhoraInicio(forzar = false) {
   if (!forzar && _spotifyNowPlayingCache && (ahora - _spotifyUltimaConsultaLive < 8000)) {
     actualizarVistaSegunResultadoAct(_spotifyNowPlayingCache);
     return;
-  }
-
-  if (!container.innerHTML.trim()) {
-    container.innerHTML = `
-      <div class="home-np-card" style="padding:14px 18px; opacity:0.8;">
-        <div style="font-size:1.6rem; flex-shrink:0;">⏳</div>
-        <div style="font-size:0.82rem; color:var(--muted);">
-          ${(typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Checking Spotify playback...' : 'Consultando música en Spotify...'}
-        </div>
-      </div>
-    `;
   }
 
   const resultado = await consultarSpotifyCurrentlyPlaying();
@@ -14473,12 +14427,16 @@ function actualizarVistaSegunResultadoAct(resultado) {
   const container = document.getElementById('home-now-playing-container');
   if (!container) return;
 
-  if (!resultado || !resultado.conectado) {
-    container.innerHTML = dibujarTarjetaSpotifyDesconectado();
-  } else if (resultado.reproduciendo && resultado.data) {
-    container.innerHTML = dibujarTarjetaSpotifyLive(resultado.data);
+  if (resultado && resultado.conectado && resultado.reproduciendo && resultado.data) {
+    container.style.display = 'block';
+    container.innerHTML = dibujarTarjetaSpotifyCompacta(resultado.data);
   } else {
-    container.innerHTML = dibujarTarjetaSpotifyIdle();
+    container.style.display = 'none';
+    container.innerHTML = '';
+    if (window.spotifyTickerInterval) {
+      clearInterval(window.spotifyTickerInterval);
+      window.spotifyTickerInterval = null;
+    }
   }
 }
 
