@@ -698,9 +698,14 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .btn-spotify-ctrl-play{width:26px;height:26px;background:rgba(29,185,84,0.15);border-color:rgba(29,185,84,0.4);color:#10b981;}
 .btn-spotify-ctrl-play:hover{background:#1DB954;color:#000;border-color:#1DB954;}
 .home-np-live-status-pill{display:inline-flex;align-items:center;gap:4px;margin-left:6px;font-size:0.68rem;color:#10b981;}
-.home-np-live-status-pill.paused{color:#f59e0b;}
-.home-np-dot{width:6px;height:6px;border-radius:50%;background:#10b981;box-shadow:0 0 6px #10b981;animation:pulseDot 1.8s infinite;}
 .home-np-live-status-pill.paused .home-np-dot{background:#f59e0b;box-shadow:none;animation:none;}
+.btn-spotify-device-pill{background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:12px;padding:2px 7px;font-size:0.67rem;color:var(--muted);display:inline-flex;align-items:center;gap:4px;cursor:pointer;transition:var(--tr);max-width:115px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;margin-left:auto;}
+.btn-spotify-device-pill:hover{background:rgba(29,185,84,0.14);border-color:rgba(29,185,84,0.38);color:var(--text);transform:translateY(-1px);}
+.home-np-device-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;}
+[data-theme$="-light"] .btn-spotify-device-pill{background:rgba(0,0,0,0.04);}
+.spotify-device-option{transition:var(--tr);}
+.spotify-device-option:hover{border-color:rgba(29,185,84,0.45) !important;transform:translateX(2px);}
+.spotify-device-option.is-active{background:rgba(16,185,129,0.09) !important;}
 .home-np-right-col{display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:64px;flex-shrink:0;padding-left:4px;}
 .home-np-sp-logo-link{display:grid;place-items:center;width:24px;height:24px;transition:var(--tr);text-decoration:none;}
 .home-np-sp-logo-link:hover{transform:scale(1.18);}
@@ -4760,6 +4765,30 @@ html[data-app-theme="minimalist"] .nav-categories-row {
     <div style="padding:12px 20px; border-top:1px solid var(--border); background:var(--header-bg); display:flex; justify-content:space-between; align-items:center;">
       <span id="spotify-stats-sync-time" style="font-size:0.72rem; color:var(--muted);">Sincronizado</span>
       <button type="button" class="btn-modal-save" onclick="cerrarModalEstadisticasSpotify()" style="padding:6px 16px; font-size:0.84rem;">Listo</button>
+    </div>
+</div>
+
+<!-- MODAL SELECTOR DE DISPOSITIVOS SPOTIFY -->
+<div id="modal-spotify-devices" class="modal-overlay" style="display:none; z-index:2050;" onclick="if(event.target===this) cerrarSelectorDispositivosSpotify()">
+  <div class="modal-box" style="max-width:440px; padding:0; border-radius:18px; overflow:hidden;">
+    <div style="padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--header-bg);">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:1.1rem;">🎧</span>
+        <div>
+          <h3 style="margin:0; font-size:1rem; font-weight:800; color:var(--text);">Dispositivos de Spotify</h3>
+          <span style="font-size:0.7rem; color:var(--muted);">Elige dónde escuchar tu música</span>
+        </div>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarSelectorDispositivosSpotify()">✕</button>
+    </div>
+    <div id="spotify-devices-list" style="padding:14px; max-height:60vh; overflow-y:auto; display:flex; flex-direction:column; gap:8px;">
+      <!-- Renders devices dynamically -->
+    </div>
+    <div style="padding:10px 14px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--bg);">
+      <a href="spotify://" class="btn-today-pill" style="font-size:0.75rem; text-decoration:none;" title="Abrir app de Spotify">
+        <span>↗ Abrir app Spotify</span>
+      </a>
+      <button type="button" class="btn-modal-cancel" style="padding:4px 14px; font-size:0.78rem;" onclick="cerrarSelectorDispositivosSpotify()">Cerrar</button>
     </div>
   </div>
 </div>
@@ -14223,6 +14252,9 @@ let _spotifyNowPlayingCache = null;
 window.spotifyNowPlayingInterval = null;
 window.spotifyTickerInterval = null;
 window.spotifyCurrentTrackState = null;
+window.spotifyActiveDeviceId = null;
+window.spotifyActiveDeviceName = '';
+window.spotifyActiveDeviceType = '';
 
 function formatearMinSegSpotify(ms) {
   if (!ms || isNaN(ms) || ms < 0) return '0:00';
@@ -14230,6 +14262,50 @@ function formatearMinSegSpotify(ms) {
   const min = Math.floor(totalSeg / 60);
   const seg = totalSeg % 60;
   return `${min}:${seg < 10 ? '0' : ''}${seg}`;
+}
+
+function obtenerIconoTipoDispositivoSpotify(type) {
+  const t = (type || '').toLowerCase();
+  if (t === 'smartphone') return '📱';
+  if (t === 'computer') return '💻';
+  if (t === 'tablet') return '📟';
+  if (t === 'castvideo' || t === 'tv') return '📺';
+  if (t === 'speaker' || t === 'castaudio') return '🔊';
+  if (t === 'gameconsole') return '🎮';
+  return '🎧';
+}
+
+function rankearDispositivoSpotify(d, isMobile, preferredId) {
+  let score = 0;
+  if (preferredId && d.id === preferredId) score += 100;
+  if (d.is_active) score += 40;
+  
+  const typeLow = (d.type || '').toLowerCase();
+  const nameLow = (d.name || '').toLowerCase();
+  const ua = navigator.userAgent.toLowerCase();
+
+  if (isMobile) {
+    if (typeLow === 'smartphone') score += 50;
+    if (typeLow === 'tablet') score += 25;
+    if (ua.includes('iphone') && nameLow.includes('iphone')) score += 35;
+    if (ua.includes('ipad') && nameLow.includes('ipad')) score += 35;
+    if (ua.includes('android') && (nameLow.includes('android') || nameLow.includes('galaxy') || nameLow.includes('pixel') || nameLow.includes('xiaomi') || nameLow.includes('redmi') || nameLow.includes('huawei') || nameLow.includes('motorola'))) score += 35;
+    
+    // Penalización drástica para NUNCA despertar una TV o consola o parlante ajeno por error
+    if (typeLow === 'castvideo' || typeLow === 'tv' || nameLow.includes('tv') || nameLow.includes('chromecast') || typeLow === 'avr' || typeLow === 'gameconsole') {
+      score -= 80;
+    }
+    if (typeLow === 'speaker' || typeLow === 'castaudio') {
+      score -= 30;
+    }
+  } else {
+    // Si estamos en Computadora / Laptop
+    if (typeLow === 'computer') score += 50;
+    if (ua.includes('mac') && (nameLow.includes('mac') || nameLow.includes('apple'))) score += 35;
+    if (ua.includes('windows') && (nameLow.includes('pc') || nameLow.includes('laptop') || nameLow.includes('desktop') || nameLow.includes('windows'))) score += 35;
+    if (typeLow === 'castvideo' || typeLow === 'tv' || nameLow.includes('tv')) score -= 70;
+  }
+  return score;
 }
 
 async function consultarSpotifyCurrentlyPlaying() {
@@ -14265,8 +14341,10 @@ async function consultarSpotifyCurrentlyPlaying() {
     if (!data || !data.item) {
       return { conectado: true, reproduciendo: false };
     }
-    if (data.device && data.device.id) {
+    if (data.device) {
       window.spotifyActiveDeviceId = data.device.id;
+      window.spotifyActiveDeviceName = data.device.name;
+      window.spotifyActiveDeviceType = data.device.type;
     }
     return { conectado: true, reproduciendo: true, data };
   } catch (err) {
@@ -14301,21 +14379,64 @@ async function controlarSpotifyPlayback(accion) {
     }
   }
 
-  let deviceId = window.spotifyActiveDeviceId || '';
-  if (!deviceId) {
-    try {
-      const devRes = await fetch('https://api.spotify.com/v1/me/player/devices', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (devRes.ok) {
-        const devData = await devRes.json();
-        const activeDev = (devData.devices || []).find(d => d.is_active) || devData.devices?.[0];
-        if (activeDev) {
-          deviceId = activeDev.id;
-          window.spotifyActiveDeviceId = deviceId;
-        }
+  const isMobile = /iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent);
+  const preferredId = localStorage.getItem('mediary_spotify_preferred_device_id') || '';
+
+  let deviceId = '';
+  let devicesDisponibles = [];
+
+  try {
+    const devRes = await fetch('https://api.spotify.com/v1/me/player/devices', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (devRes.ok) {
+      const devData = await devRes.json();
+      devicesDisponibles = devData.devices || [];
+    }
+  } catch (e) {}
+
+  if (devicesDisponibles.length > 0) {
+    const activo = devicesDisponibles.find(d => d.is_active);
+
+    // Ordenar dispositivos por idoneidad para el usuario actual
+    const ranked = [...devicesDisponibles].sort((a, b) => 
+      rankearDispositivoSpotify(b, isMobile, preferredId) - rankearDispositivoSpotify(a, isMobile, preferredId)
+    );
+
+    const mejorDispositivo = ranked[0];
+    const scoreMejor = rankearDispositivoSpotify(mejorDispositivo, isMobile, preferredId);
+
+    // Si la acción es play y no hay nada reproduciéndose:
+    if (accion === 'play' && (!activo || !activo.is_active)) {
+      // Si el mejor dispositivo es un Cast lejano o Smart TV (score negativo) y estamos en celular:
+      // NO activar la TV o parlante lejano de sorpresa
+      if (scoreMejor < 0 && isMobile) {
+        mostrarToastPersonalizado(userPrefs.lang === 'en'
+          ? 'Open Spotify on your phone/headphones first 🎧'
+          : 'Abre Spotify en tu celular para activar tus audífonos 🎧');
+        abrirSelectorDispositivosSpotify();
+        return;
       }
-    } catch (e) {}
+      deviceId = mejorDispositivo.id;
+      window.spotifyActiveDeviceId = deviceId;
+      window.spotifyActiveDeviceName = mejorDispositivo.name;
+      window.spotifyActiveDeviceType = mejorDispositivo.type;
+    } else if (activo) {
+      deviceId = activo.id;
+      window.spotifyActiveDeviceId = deviceId;
+      window.spotifyActiveDeviceName = activo.name;
+      window.spotifyActiveDeviceType = activo.type;
+    } else {
+      deviceId = mejorDispositivo ? mejorDispositivo.id : (window.spotifyActiveDeviceId || '');
+    }
+  } else {
+    // Si no hay dispositivos visibles en Spotify Connect
+    if (accion === 'play') {
+      mostrarToastPersonalizado(userPrefs.lang === 'en'
+        ? 'No active Spotify player. Open Spotify on your phone 🎧'
+        : 'Abre Spotify en tu celular o audífonos para escuchar 🎧');
+      return;
+    }
   }
 
   const queryDev = deviceId ? `?device_id=${encodeURIComponent(deviceId)}` : '';
@@ -14399,6 +14520,108 @@ async function controlarSpotifyPlayback(accion) {
   }
 }
 
+async function abrirSelectorDispositivosSpotify() {
+  const modal = document.getElementById('modal-spotify-devices');
+  const listEl = document.getElementById('spotify-devices-list');
+  if (!modal || !listEl) return;
+
+  const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
+  listEl.innerHTML = `
+    <div style="padding:22px; text-align:center; color:var(--muted); font-size:0.8rem;">
+      <span style="display:inline-block; animation:spin 1s linear infinite;">⏳</span> ${isEn ? 'Searching Spotify devices...' : 'Buscando dispositivos Spotify...'}
+    </div>
+  `;
+  modal.style.display = 'flex';
+
+  const token = await obtenerTokenSpotifyValido();
+  if (!token) {
+    listEl.innerHTML = `<div style="padding:16px; text-align:center; color:var(--muted); font-size:0.8rem;">${isEn ? 'Please connect Spotify first' : 'Conecta Spotify primero'}</div>`;
+    return;
+  }
+
+  try {
+    const res = await fetch('https://api.spotify.com/v1/me/player/devices', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Failed to fetch devices');
+    const data = await res.json();
+    const devices = data.devices || [];
+
+    if (!devices.length) {
+      listEl.innerHTML = `
+        <div style="padding:18px 10px; text-align:center; color:var(--muted); font-size:0.82rem; line-height:1.45;">
+          <div style="font-size:2rem; margin-bottom:8px;">📱🎧💤</div>
+          <strong style="color:var(--text); display:block; margin-bottom:6px;">${isEn ? 'No active devices found' : 'No se detectaron dispositivos abiertos'}</strong>
+          <span>${isEn ? 'Open Spotify on your phone, headphones or computer to wake it up.' : 'Abre Spotify en tu celular o audífonos para activarlo.'}</span>
+        </div>
+      `;
+      return;
+    }
+
+    const isMobile = /iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent);
+    const prefId = localStorage.getItem('mediary_spotify_preferred_device_id') || '';
+
+    devices.sort((a, b) => rankearDispositivoSpotify(b, isMobile, prefId) - rankearDispositivoSpotify(a, isMobile, prefId));
+
+    listEl.innerHTML = devices.map(d => {
+      const icon = obtenerIconoTipoDispositivoSpotify(d.type);
+      const isActive = !!d.is_active;
+      const isPref = d.id === prefId;
+      const badgeText = isActive ? (isEn ? 'Active now' : 'Activo ahora') : (isPref ? (isEn ? 'Preferred' : 'Preferido') : '');
+
+      return `
+        <div class="spotify-device-option ${isActive ? 'is-active' : ''}" onclick="transferirPlaybackSpotify('${d.id}', '${encodeURIComponent(d.name)}')" style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:var(--bg); border:1px solid ${isActive ? '#10b981' : 'var(--border)'}; border-radius:10px; cursor:pointer;">
+          <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+            <span style="font-size:1.35rem; flex-shrink:0;">${icon}</span>
+            <div style="min-width:0; flex:1;">
+              <strong style="font-size:0.86rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtmlSpotify_(d.name)}</strong>
+              <span style="font-size:0.72rem; color:var(--muted);">${d.type || 'Device'}${d.volume_percent !== null ? ` • Vol ${d.volume_percent}%` : ''}</span>
+            </div>
+          </div>
+          ${badgeText ? `<span style="font-size:0.68rem; font-weight:700; color:${isActive ? '#10b981' : 'var(--accent)'}; background:rgba(${isActive ? '16,185,129' : '56,189,248'},0.12); border:1px solid rgba(${isActive ? '16,185,129' : '56,189,248'},0.3); padding:2px 8px; border-radius:8px; margin-left:8px; flex-shrink:0;">${badgeText}</span>` : ''}
+        </div>
+      `;
+    }).join('');
+  } catch (err) {
+    listEl.innerHTML = `<div style="padding:16px; text-align:center; color:var(--muted); font-size:0.8rem;">Error consultando dispositivos.</div>`;
+  }
+}
+
+function cerrarSelectorDispositivosSpotify() {
+  const modal = document.getElementById('modal-spotify-devices');
+  if (modal) modal.style.display = 'none';
+}
+
+async function transferirPlaybackSpotify(deviceId, nameEncoded) {
+  const token = await obtenerTokenSpotifyValido();
+  if (!token || !deviceId) return;
+  const devName = nameEncoded ? decodeURIComponent(nameEncoded) : 'Dispositivo';
+  const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
+
+  try {
+    const res = await fetch('https://api.spotify.com/v1/me/player', {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ device_ids: [deviceId], play: true })
+    });
+    
+    window.spotifyActiveDeviceId = deviceId;
+    window.spotifyActiveDeviceName = devName;
+    localStorage.setItem('mediary_spotify_preferred_device_id', deviceId);
+
+    cerrarSelectorDispositivosSpotify();
+    mostrarToastPersonalizado(isEn ? `Playing on ${devName} 🎧` : `Reproduciendo en ${devName} 🎧`);
+
+    setTimeout(() => {
+      _spotifyNowPlayingCache = null;
+      _spotifyUltimaConsultaLive = 0;
+      renderizarEscuchandoAhoraInicio(true);
+    }, 700);
+  } catch (err) {
+    console.warn('Error transfiriendo playback:', err);
+  }
+}
+
 function registrarDiscoActualEnMediary(album, artista) {
   let busqueda = (album && album !== '—') ? album.trim() : '';
   if (artista) {
@@ -14430,6 +14653,13 @@ function dibujarTarjetaSpotifyCompacta(data) {
   const artistNames = (item.artists || []).map(a => a.name).join(', ') || (l === 'en' ? 'Unknown artist' : 'Artista desconocido');
   const albumName = item.album?.name || '';
   const coverUrl = item.album?.images?.[0]?.url || item.album?.images?.[1]?.url || '';
+
+  const curDevName = (data && data.device && data.device.name) || window.spotifyActiveDeviceName || '';
+  const curDevType = (data && data.device && data.device.type) || window.spotifyActiveDeviceType || '';
+  const deviceIcon = obtenerIconoTipoDispositivoSpotify(curDevType);
+  const isMobile = /iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent);
+  const fallbackDevName = isMobile ? (l === 'en' ? 'Phone' : 'Celular') : (l === 'en' ? 'Computer' : 'Equipo');
+  const deviceNameDisplay = curDevName || fallbackDevName;
 
   window.spotifyCurrentTrackState = {
     isPlaying: isPlaying,
@@ -14516,6 +14746,10 @@ function dibujarTarjetaSpotifyCompacta(data) {
             <span class="home-np-dot"></span>
             <span>${isPlaying ? (l === 'en' ? 'Live' : 'En vivo') : (l === 'en' ? 'Paused' : 'En pausa')}</span>
           </span>
+          <button type="button" class="btn-spotify-device-pill" onclick="abrirSelectorDispositivosSpotify()" title="${l === 'en' ? 'Playback device' : 'Dispositivo de reproducción'}">
+            <span>${deviceIcon}</span>
+            <span class="home-np-device-name">${escHtmlSpotify_(deviceNameDisplay)}</span>
+          </button>
         </div>
       </div>
 
@@ -14539,6 +14773,13 @@ function dibujarTarjetaSpotifyCompactaIdle() {
   const titleTxt = l === 'en' ? 'No music playing right now' : 'Nada sonando en este momento';
   const statusTxt = l === 'en' ? 'Inactive' : 'Inactivo';
   const openTxt = l === 'en' ? 'Open Spotify' : 'Abrir Spotify';
+
+  const curDevName = window.spotifyActiveDeviceName || '';
+  const curDevType = window.spotifyActiveDeviceType || '';
+  const deviceIcon = obtenerIconoTipoDispositivoSpotify(curDevType);
+  const isMobile = /iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent);
+  const fallbackDevName = isMobile ? (l === 'en' ? 'Phone' : 'Celular') : (l === 'en' ? 'Computer' : 'Equipo');
+  const deviceNameDisplay = curDevName || fallbackDevName;
 
   return `
     <div class="home-spotify-card-compact">
@@ -14584,6 +14825,10 @@ function dibujarTarjetaSpotifyCompactaIdle() {
             <span class="home-np-dot"></span>
             <span>${statusTxt}</span>
           </span>
+          <button type="button" class="btn-spotify-device-pill" onclick="abrirSelectorDispositivosSpotify()" title="${l === 'en' ? 'Playback device' : 'Dispositivo de reproducción'}">
+            <span>${deviceIcon}</span>
+            <span class="home-np-device-name">${escHtmlSpotify_(deviceNameDisplay)}</span>
+          </button>
         </div>
       </div>
 
