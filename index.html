@@ -668,6 +668,13 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .spotify-pill-tab{background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:0.76rem;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;transition:var(--tr);}
 .spotify-pill-tab.active{background:rgba(29,185,84,0.16);border-color:rgba(29,185,84,0.4);color:#10b981;}
 [data-theme$="-dark"] .spotify-pill-tab.active{color:#1ed760;}
+/* ESTILOS INTEGRACIÓN GOODREADS / KINDLE */
+.btn-goodreads-connect{background:var(--card);color:var(--text);border:1px solid rgba(217,119,6,0.38);font-weight:700;font-size:0.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr);box-shadow:0 2px 8px rgba(0,0,0,0.15);text-decoration:none;}
+.btn-goodreads-connect:hover{background:#d97706;color:#fff;border-color:#d97706;transform:translateY(-1px);box-shadow:0 4px 14px rgba(217,119,6,0.35);}
+.btn-goodreads-connect svg path{fill:#d97706;transition:fill 0.2s;}
+.btn-goodreads-connect:hover svg path{fill:#fff;}
+.btn-goodreads-sub-action{height:34px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:0.78rem;font-weight:700;border-radius:8px;cursor:pointer;transition:var(--tr);text-decoration:none;}
+.btn-goodreads-sub-action:hover{transform:translateY(-1px);filter:brightness(1.15);}
 /* ESCUCHANDO AHORA COMPACTO (EN PROCESO) */
 .home-spotify-card-compact{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:var(--tr);position:relative;overflow:hidden;margin-bottom:12px;}
 .home-spotify-card-compact:hover{border-color:rgba(29,185,84,0.45);box-shadow:0 4px 16px rgba(29,185,84,0.12);}
@@ -4177,6 +4184,56 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
 </div>
 
+<!-- INTEGRACIÓN CON GOODREADS / KINDLE -->
+<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;" id="cfg-goodreads-section">
+  
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:8px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div style="width:26px; height:26px; border-radius:7px; background:rgba(217,119,6,0.14); border:1px solid rgba(217,119,6,0.3); display:grid; place-items:center; flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#d97706">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.88 15.65c-2.48 0-4.22-1.39-4.22-3.87 0-2.44 1.77-3.87 4.22-3.87 2.45 0 4.22 1.43 4.22 3.87 0 2.48-1.74 3.87-4.22 3.87zm3.17-7.23h-1.55c-.48-.68-1.25-1.07-2.17-1.07-2.07 0-3.64 1.54-3.64 3.69 0 2.14 1.57 3.69 3.64 3.69.92 0 1.69-.39 2.17-1.07h.08v.85c0 1.48-.79 2.27-2.25 2.27-.99 0-1.71-.38-2.04-.98l-1.35.8c.61 1.09 1.84 1.76 3.39 1.76 2.4 0 3.83-1.34 3.83-3.92V9.42z"/>
+        </svg>
+      </div>
+      <span>Cuenta y Sincronización Goodreads / Kindle</span>
+    </div>
+    <span class="profile-google-pill" id="cfg-goodreads-badge" style="display:none; background:rgba(217,119,6,0.14); border:1px solid rgba(217,119,6,0.38); color:#d97706; font-weight:700; font-size:0.72rem;">✓ Conectado</span>
+  </div>
+
+  <!-- Estado Desconectado -->
+  <div id="cfg-goodreads-disconnected-box">
+    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" id="cfg-goodreads-desc">
+      Sincroniza tus lecturas de Kindle automáticamente vinculando tu usuario o RSS de Goodreads. Tus libros leídos se sumarán a tus lecturas y estadísticas.
+    </p>
+    <button type="button" class="btn-goodreads-connect" id="btn-goodreads-login" onclick="abrirModalConectarGoodreads()" style="width:100%;">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.88 15.65c-2.48 0-4.22-1.39-4.22-3.87 0-2.44 1.77-3.87 4.22-3.87 2.45 0 4.22 1.43 4.22 3.87 0 2.48-1.74 3.87-4.22 3.87zm3.17-7.23h-1.55c-.48-.68-1.25-1.07-2.17-1.07-2.07 0-3.64 1.54-3.64 3.69 0 2.14 1.57 3.69 3.64 3.69.92 0 1.69-.39 2.17-1.07h.08v.85c0 1.48-.79 2.27-2.25 2.27-.99 0-1.71-.38-2.04-.98l-1.35.8c.61 1.09 1.84 1.76 3.39 1.76 2.4 0 3.83-1.34 3.83-3.92V9.42z"/></svg>
+      <span id="txt-btn-goodreads">Vincular con Goodreads / Kindle</span>
+    </button>
+  </div>
+
+  <!-- Estado Conectado -->
+  <div id="cfg-goodreads-connected-box" style="display:none;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:10px 12px; background:rgba(217,119,6,0.08); border:1px solid rgba(217,119,6,0.25); border-radius:10px;">
+      <div id="cfg-goodreads-user-avatar" style="width:40px; height:40px; border-radius:50%; overflow:hidden; background:var(--card); border:2px solid #d97706; display:grid; place-items:center; font-size:1.2rem; flex-shrink:0;">
+        📖
+      </div>
+      <div style="min-width:0; flex:1;">
+        <strong id="cfg-goodreads-user-name" style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Lector Kindle</strong>
+        <span id="cfg-goodreads-user-sub" style="font-size:0.74rem; color:var(--muted); display:block; margin-top:2px;">Sincronización activa (Kindle)</span>
+      </div>
+    </div>
+    
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+      <button type="button" class="btn-goodreads-sub-action" style="background:rgba(217,119,6,0.14); color:#d97706; border:1px solid rgba(217,119,6,0.38);" onclick="sincronizarLecturasGoodreads(true)" title="Sincronizar libros desde Goodreads/Kindle">
+        <span>🔄 Sincronizar</span>
+      </button>
+      <button type="button" class="btn-goodreads-sub-action" style="background:rgba(239,68,68,0.08); color:#f87171; border:1px solid rgba(239,68,68,0.25);" onclick="desconectarGoodreads()" title="Desvincular cuenta">
+        <span>Desconectar</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
 
@@ -4847,6 +4904,64 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
     <div class="modal-actions" style="margin-top:14px; justify-content:flex-end;">
       <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarSpotify()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONECTAR GOODREADS / KINDLE -->
+<div id="modal-goodreads-connect" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalConectarGoodreads()">
+  <div class="modal-box" style="max-width:520px; max-height:90vh; overflow-y:auto; padding:20px; border-radius:18px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <div style="width:30px; height:30px; border-radius:8px; background:rgba(217,119,6,0.14); border:1px solid rgba(217,119,6,0.3); display:grid; place-items:center; flex-shrink:0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#d97706">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.88 15.65c-2.48 0-4.22-1.39-4.22-3.87 0-2.44 1.77-3.87 4.22-3.87 2.45 0 4.22 1.43 4.22 3.87 0 2.48-1.74 3.87-4.22 3.87zm3.17-7.23h-1.55c-.48-.68-1.25-1.07-2.17-1.07-2.07 0-3.64 1.54-3.64 3.69 0 2.14 1.57 3.69 3.64 3.69.92 0 1.69-.39 2.17-1.07h.08v.85c0 1.48-.79 2.27-2.25 2.27-.99 0-1.71-.38-2.04-.98l-1.35.8c.61 1.09 1.84 1.76 3.39 1.76 2.4 0 3.83-1.34 3.83-3.92V9.42z"/>
+          </svg>
+        </div>
+        <h3 style="margin:0; font-size:1.15rem; color:var(--text);">Vincular con Goodreads / Kindle</h3>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalConectarGoodreads()">✕</button>
+    </div>
+
+    <p style="font-size:0.83rem; color:var(--muted); margin-bottom:14px; line-height:1.45;">
+      Sincroniza automáticamente los libros que lees en tu Kindle. Solo necesitas ingresar tu ID de usuario de Goodreads o el enlace de tu perfil público.
+    </p>
+
+    <!-- Instrucciones claras y amigables paso a paso -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-bottom:14px; font-size:0.8rem; line-height:1.45;">
+      <div style="font-weight:700; color:var(--text); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+        <span>📖</span> <span>¿Cómo funciona el puente con tu Kindle?</span>
+      </div>
+      <ol style="margin:0 0 10px 18px; padding:0; color:var(--muted);">
+        <li style="margin-bottom:5px;">En tu <strong>Kindle</strong>, ve a <em>Configuración → Cuentas vinculadas</em> y activa Goodreads (Kindle enviará tus libros solos).</li>
+        <li style="margin-bottom:5px;">En tu navegador, abre tu perfil de Goodreads (ej: <code style="font-size:0.75rem;">goodreads.com/user/show/12345678</code>) y copia tu enlace o ID numérico.</li>
+        <li style="margin-bottom:0;">Pégalo abajo y haz clic en <strong>Guardar y Conectar</strong>.</li>
+      </ol>
+    </div>
+
+    <div class="form-group" style="margin-bottom:14px;">
+      <label style="font-weight:700; font-size:0.84rem; display:block; margin-bottom:4px;">Enlace de Perfil, ID o URL de RSS de Goodreads:</label>
+      <input type="text" id="goodreads-input-user-id" class="form-input" placeholder="Ej: https://www.goodreads.com/user/show/12345678 o solo 12345678">
+      <small style="color:var(--muted); font-size:0.72rem; display:block; margin-top:4px;">
+        * Recuerda tener tu perfil y estanterías en público para que Mediary pueda leer tu feed de lectura.
+      </small>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <button type="button" class="btn-goodreads-connect" onclick="guardarYConectarGoodreads()" style="width:100%; justify-content:center; padding:12px; background:#d97706; color:#fff; border-color:#d97706;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm.88 15.65c-2.48 0-4.22-1.39-4.22-3.87 0-2.44 1.77-3.87 4.22-3.87 2.45 0 4.22 1.43 4.22 3.87 0 2.48-1.74 3.87-4.22 3.87zm3.17-7.23h-1.55c-.48-.68-1.25-1.07-2.17-1.07-2.07 0-3.64 1.54-3.64 3.69 0 2.14 1.57 3.69 3.64 3.69.92 0 1.69-.39 2.17-1.07h.08v.85c0 1.48-.79 2.27-2.25 2.27-.99 0-1.71-.38-2.04-.98l-1.35.8c.61 1.09 1.84 1.76 3.39 1.76 2.4 0 3.83-1.34 3.83-3.92V9.42z"/>
+        </svg>
+        <span>Guardar y Conectar con Goodreads</span>
+      </button>
+      
+      <button type="button" class="btn-today-pill" onclick="cargarDatosDemoGoodreads()" style="height:36px; width:100%; justify-content:center; font-size:0.8rem; background:rgba(217,119,6,0.1); border-color:rgba(217,119,6,0.3); color:#d97706;">
+        ✨ Probar con lectura de demostración de Kindle
+      </button>
+    </div>
+
+    <div class="modal-actions" style="margin-top:14px; justify-content:flex-end;">
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarGoodreads()">Cerrar</button>
     </div>
   </div>
 </div>
@@ -14642,6 +14757,7 @@ function abrirModalConfiguracion() {
     actualizarTarjetasVisualesConfig(); 
     if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
     if (typeof actualizarUISpotify === 'function') actualizarUISpotify();
+    if (typeof actualizarUIGoodreads === 'function') actualizarUIGoodreads();
     const modalCfg = document.getElementById('modal-configuracion');
     if (modalCfg) modalCfg.style.display = 'flex';
   } catch(err) {
@@ -16109,6 +16225,382 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
+// --- INTEGRACIÓN GOODREADS / KINDLE (RSS & SYNC AUTOMÁTICO) ---
+function actualizarUIGoodreads() {
+  const goodreadsId = localStorage.getItem('mediary_goodreads_id');
+  const userJson = localStorage.getItem('mediary_goodreads_user');
+  let user = null;
+  if (userJson) {
+    try { user = JSON.parse(userJson); } catch (e) {}
+  }
+
+  const badge = document.getElementById('cfg-goodreads-badge');
+  const desc = document.getElementById('cfg-goodreads-desc');
+  const disconnBox = document.getElementById('cfg-goodreads-disconnected-box');
+  const connBox = document.getElementById('cfg-goodreads-connected-box');
+  const avatarEl = document.getElementById('cfg-goodreads-user-avatar');
+  const nameEl = document.getElementById('cfg-goodreads-user-name');
+  const subEl = document.getElementById('cfg-goodreads-user-sub');
+
+  if (goodreadsId) {
+    if (badge) {
+      badge.textContent = userPrefs && userPrefs.lang === 'en' ? '✓ Connected' : '✓ Conectado';
+      badge.style.display = 'inline-flex';
+    }
+    if (desc) desc.style.display = 'none';
+    if (disconnBox) disconnBox.style.display = 'none';
+    if (connBox) connBox.style.display = 'block';
+    if (nameEl) nameEl.textContent = (user && user.nombre) ? user.nombre : `Lector Kindle (#${goodreadsId})`;
+    if (subEl) {
+      const cant = (user && user.librosSincronizados !== undefined) ? ` · ${user.librosSincronizados} libros` : '';
+      subEl.textContent = `${userPrefs && userPrefs.lang === 'en' ? 'Kindle Sync Active' : 'Sincronización activa (Kindle)'}${cant}`;
+    }
+    if (avatarEl) {
+      avatarEl.innerHTML = (user && user.avatar)
+        ? `<img src="${user.avatar}" alt="Goodreads" style="width:100%;height:100%;object-fit:cover;">`
+        : `📖`;
+    }
+  } else {
+    if (badge) badge.style.display = 'none';
+    if (desc) desc.style.display = 'block';
+    if (disconnBox) disconnBox.style.display = 'block';
+    if (connBox) connBox.style.display = 'none';
+  }
+}
+
+function abrirModalConectarGoodreads() {
+  const modal = document.getElementById('modal-goodreads-connect');
+  if (!modal) return;
+  const input = document.getElementById('goodreads-input-user-id');
+  if (input) {
+    const saved = localStorage.getItem('mediary_goodreads_id') || '';
+    input.value = saved;
+  }
+  modal.style.display = 'flex';
+}
+
+function cerrarModalConectarGoodreads() {
+  const modal = document.getElementById('modal-goodreads-connect');
+  if (modal) modal.style.display = 'none';
+}
+
+function extraerIdOUrlGoodreads(raw) {
+  if (!raw) return null;
+  const str = String(raw).trim();
+  if (str.includes('list_rss')) {
+    const m = str.match(/list_rss\/(\d+)/);
+    if (m) return { id: m[1], rssUrl: str };
+    return { id: 'custom', rssUrl: str };
+  }
+  const matchPerfil = str.match(/\/show\/(\d+)/);
+  if (matchPerfil) return { id: matchPerfil[1], rssUrl: null };
+  const matchNum = str.match(/^(\d+)$/);
+  if (matchNum) return { id: matchNum[1], rssUrl: null };
+  const matchSlug = str.match(/goodreads\.com\/([a-zA-Z0-9_\-]+)/);
+  if (matchSlug) return { id: matchSlug[1], rssUrl: null };
+  return { id: str, rssUrl: null };
+}
+
+async function guardarYConectarGoodreads() {
+  const input = document.getElementById('goodreads-input-user-id');
+  const val = input ? input.value.trim() : '';
+  if (!val) {
+    alert(userPrefs && userPrefs.lang === 'en' ? 'Please enter your Goodreads user ID or profile link.' : 'Por favor ingresa tu ID o enlace de perfil de Goodreads.');
+    return;
+  }
+  const parsed = extraerIdOUrlGoodreads(val);
+  if (!parsed || !parsed.id) {
+    alert(userPrefs && userPrefs.lang === 'en' ? 'Invalid Goodreads ID or URL.' : 'ID o enlace de Goodreads no válido.');
+    return;
+  }
+
+  localStorage.setItem('mediary_goodreads_id', parsed.id);
+  if (parsed.rssUrl) {
+    localStorage.setItem('mediary_goodreads_rss_custom', parsed.rssUrl);
+  } else {
+    localStorage.removeItem('mediary_goodreads_rss_custom');
+  }
+
+  const prevUser = localStorage.getItem('mediary_goodreads_user');
+  let userObj = { nombre: `Lector Kindle (#${parsed.id})`, librosSincronizados: 0 };
+  if (prevUser) {
+    try { userObj = Object.assign(userObj, JSON.parse(prevUser)); } catch (e) {}
+  }
+  localStorage.setItem('mediary_goodreads_user', JSON.stringify(userObj));
+
+  cerrarModalConectarGoodreads();
+  actualizarUIGoodreads();
+  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Goodreads / Kindle linked! Syncing...' : '¡Goodreads / Kindle vinculado! Sincronizando...');
+  await sincronizarLecturasGoodreads(true);
+}
+
+async function parsearFeedGoodreadsRss(url) {
+  const proxies = [
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    `https://corsproxy.io/?url=${encodeURIComponent(url)}`
+  ];
+  let xmlText = null;
+  for (const pUrl of proxies) {
+    try {
+      const resp = await fetch(pUrl, { cache: 'no-cache' });
+      if (resp.ok) {
+        xmlText = await resp.text();
+        if (xmlText && xmlText.includes('<rss') && xmlText.includes('<item')) {
+          break;
+        }
+      }
+    } catch (e) {}
+  }
+  if (!xmlText) return [];
+
+  try {
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(xmlText, 'text/xml');
+    const items = Array.from(doc.querySelectorAll('item'));
+    const libros = [];
+
+    items.forEach(it => {
+      const getTag = tag => {
+        const el = it.getElementsByTagName(tag)[0];
+        return el ? (el.textContent || '').trim() : '';
+      };
+
+      let titulo = getTag('title');
+      titulo = titulo.replace(/\s*\([^)]*#\d+[^)]*\)/g, '').trim();
+
+      const autor = getTag('author_name') || 'Desconocido';
+      let poster = getTag('book_large_image_url') || getTag('book_image_url') || '';
+      if (poster && poster.includes('nophoto')) poster = '';
+
+      const numPaginas = parseInt(getTag('num_pages')) || 0;
+      const ratingRaw = parseInt(getTag('user_rating')) || 0;
+      const userReadAt = getTag('user_read_at');
+      const userDateAdded = getTag('user_date_added') || getTag('pubDate');
+
+      let fechaFin = 'Sin fecha';
+      if (userReadAt) {
+        const d = new Date(userReadAt);
+        if (!isNaN(d.getTime())) {
+          fechaFin = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+        }
+      }
+
+      let fechaInicio = fechaFin;
+      if (userDateAdded) {
+        const dIni = new Date(userDateAdded);
+        if (!isNaN(dIni.getTime())) {
+          fechaInicio = `${String(dIni.getDate()).padStart(2, '0')}/${String(dIni.getMonth() + 1).padStart(2, '0')}/${dIni.getFullYear()}`;
+        }
+      }
+
+      libros.push({
+        titulo,
+        autor,
+        poster,
+        paginas: numPaginas,
+        calificacion: ratingRaw,
+        fechaInicio,
+        fechaFin,
+        userReview: getTag('user_review')
+      });
+    });
+
+    return libros;
+  } catch (err) {
+    console.error('Error parseando XML Goodreads:', err);
+    return [];
+  }
+}
+
+async function sincronizarLecturasGoodreads(notificar) {
+  const goodreadsId = localStorage.getItem('mediary_goodreads_id');
+  if (!goodreadsId) return;
+
+  const btnSync = document.querySelector('#cfg-goodreads-connected-box button');
+  if (btnSync) btnSync.disabled = true;
+
+  try {
+    const customRss = localStorage.getItem('mediary_goodreads_rss_custom');
+    const readUrl = customRss || `https://www.goodreads.com/review/list_rss/${goodreadsId}?shelf=read`;
+    
+    const libros = await parsearFeedGoodreadsRss(readUrl);
+
+    if (!libros || !libros.length) {
+      if (notificar) {
+        mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en'
+          ? 'No public Goodreads books found. Make sure your profile shelf is public.'
+          : 'No se encontraron libros públicos en Goodreads. Verifica que tu perfil y estantería sean públicos.');
+      }
+      return;
+    }
+
+    const existentes = new Set(
+      (estado.registros || [])
+        .filter(r => r.categoria === 'Lecturas')
+        .map(r => (r.titulo || '').toLowerCase().trim())
+    );
+
+    const paraAgregar = [];
+    libros.forEach(b => {
+      const titLow = (b.titulo || '').toLowerCase().trim();
+      if (!existentes.has(titLow)) {
+        existentes.add(titLow);
+        const horasEst = b.paginas ? `${(b.paginas * 1.5 / 60).toFixed(1)} hrs` : '';
+        paraAgregar.push({
+          categoria: 'Lecturas',
+          subcategoria: 'Libros',
+          titulo: b.titulo,
+          subtitulo: '',
+          creador: b.autor,
+          anio: (b.fechaFin && b.fechaFin !== 'Sin fecha') ? b.fechaFin.split('/').pop() : '',
+          fechaInicio: b.fechaInicio || 'Sin fecha',
+          fechaFin: b.fechaFin || 'Sin fecha',
+          calificacion: b.calificacion || 0,
+          comentario: b.userReview ? b.userReview.replace(/<[^>]*>/g, '').trim() : '',
+          poster: b.poster || '',
+          horas: horasEst,
+          esRewatch: false
+        });
+      }
+    });
+
+    let guardados = 0;
+    if (paraAgregar.length > 0) {
+      if (estado.userEmail && typeof google !== 'undefined' && google.script?.run) {
+        await new Promise((resolve) => {
+          google.script.run
+            .withSuccessHandler(res => {
+              if (res && res.exito) guardados = res.insertados || paraAgregar.length;
+              resolve();
+            })
+            .withFailureHandler(() => resolve())
+            .importarRegistrosMasivos(paraAgregar, estado.userEmail);
+        });
+        if (typeof cargarRegistros === 'function') cargarRegistros();
+      } else {
+        paraAgregar.forEach(item => {
+          if (Array.isArray(estado.registros)) {
+            estado.registros.push({
+              id: 'gr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+              ...item
+            });
+          }
+        });
+        guardados = paraAgregar.length;
+        if (typeof guardarRegistrosEnLocalStorage === 'function') guardarRegistrosEnLocalStorage();
+        if (typeof renderizarRegistros === 'function') renderizarRegistros();
+      }
+    }
+
+    const userRaw = localStorage.getItem('mediary_goodreads_user');
+    let userObj = { nombre: `Lector Kindle (#${goodreadsId})`, librosSincronizados: libros.length };
+    if (userRaw) {
+      try { userObj = Object.assign(userObj, JSON.parse(userRaw)); userObj.librosSincronizados = libros.length; } catch (e) {}
+    }
+    localStorage.setItem('mediary_goodreads_user', JSON.stringify(userObj));
+    localStorage.setItem('mediary_goodreads_last_sync', new Date().toISOString());
+
+    actualizarUIGoodreads();
+
+    if (notificar) {
+      if (guardados > 0) {
+        mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en'
+          ? `📚 Synced ${guardados} new books from Kindle!`
+          : `📚 ¡Se sincronizaron ${guardados} libros nuevos de tu Kindle!`);
+      } else {
+        mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en'
+          ? `📚 All your Kindle books are already up to date (${libros.length} books).`
+          : `📚 Tus lecturas de Kindle ya están al día (${libros.length} libros).`);
+      }
+    }
+  } catch (err) {
+    console.error('Error sincronizando Goodreads:', err);
+    if (notificar) {
+      mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Sync error with Goodreads' : 'Error al sincronizar con Goodreads');
+    }
+  } finally {
+    if (btnSync) btnSync.disabled = false;
+  }
+}
+
+function cargarDatosDemoGoodreads() {
+  const demoUser = {
+    nombre: 'Lector Kindle (Demo)',
+    librosSincronizados: 2,
+    avatar: ''
+  };
+
+  const hoy = new Date();
+  const fFin = `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
+  const mesPasado = new Date(hoy.getTime() - 25 * 86400000);
+  const fIni = `${String(mesPasado.getDate()).padStart(2,'0')}/${String(mesPasado.getMonth()+1).padStart(2,'0')}/${mesPasado.getFullYear()}`;
+
+  const librosDemo = [
+    {
+      categoria: 'Lecturas',
+      subcategoria: 'Libros',
+      titulo: 'Project Hail Mary',
+      subtitulo: '',
+      creador: 'Andy Weir',
+      anio: '2021',
+      fechaInicio: fIni,
+      fechaFin: fFin,
+      calificacion: 5,
+      comentario: 'Leído en Kindle Paperwhite. Extraordinaria historia de ciencia ficción y optimismo.',
+      poster: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1597695864i/54493401.jpg',
+      horas: '12.4 hrs',
+      esRewatch: false
+    },
+    {
+      categoria: 'Lecturas',
+      subcategoria: 'Libros',
+      titulo: 'Tomorrow, and Tomorrow, and Tomorrow',
+      subtitulo: '',
+      creador: 'Gabrielle Zevin',
+      anio: '2022',
+      fechaInicio: fIni,
+      fechaFin: fFin,
+      calificacion: 4.5,
+      comentario: 'Hermosa novela sobre la creatividad, los videojuegos y la amistad de por vida.',
+      poster: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1636978687i/58784475.jpg',
+      horas: '10.2 hrs',
+      esRewatch: false
+    }
+  ];
+
+  localStorage.setItem('mediary_goodreads_id', 'demo_kindle_user');
+  localStorage.setItem('mediary_goodreads_user', JSON.stringify(demoUser));
+  localStorage.setItem('mediary_goodreads_last_sync', new Date().toISOString());
+
+  librosDemo.forEach(ld => {
+    const existe = (estado.registros || []).some(r => r.categoria === 'Lecturas' && (r.titulo || '').toLowerCase() === ld.titulo.toLowerCase());
+    if (!existe) {
+      if (typeof estado !== 'undefined' && Array.isArray(estado.registros)) {
+        estado.registros.push({
+          id: 'gr_demo_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          ...ld
+        });
+      }
+    }
+  });
+
+  if (typeof guardarRegistrosEnLocalStorage === 'function') guardarRegistrosEnLocalStorage();
+  if (typeof renderizarRegistros === 'function') renderizarRegistros();
+
+  cerrarModalConectarGoodreads();
+  actualizarUIGoodreads();
+  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? '📚 Kindle / Goodreads demo data loaded!' : '📚 ¡Datos de prueba de Kindle / Goodreads cargados!');
+}
+
+function desconectarGoodreads() {
+  localStorage.removeItem('mediary_goodreads_id');
+  localStorage.removeItem('mediary_goodreads_user');
+  localStorage.removeItem('mediary_goodreads_rss_custom');
+  localStorage.removeItem('mediary_goodreads_last_sync');
+  actualizarUIGoodreads();
+  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Goodreads / Kindle disconnected' : 'Cuenta de Goodreads / Kindle desconectada');
+}
+
 // --- IMPORTAR Y EXPORTAR ARCHIVOS DE TEXTO ---
 function abrirModalImportarExportar() { document.getElementById('modal-configuracion').style.display = 'none'; document.getElementById('input-file-import').value = ''; document.getElementById('textarea-import-raw').value = ''; estado.registrosImportarPendientes = [];
 document.getElementById('import-preview-box').innerHTML = 'Sube un archivo .txt o pega texto arriba para previsualizar los registros detectados.'; document.getElementById('modal-importar-exportar').style.display = 'flex'; }
@@ -16712,6 +17204,9 @@ window.onload = () => {
   }
   if (typeof procesarRetornoSpotifyAuth === 'function') {
     procesarRetornoSpotifyAuth();
+  }
+  if (typeof actualizarUIGoodreads === 'function') {
+    actualizarUIGoodreads();
   }
   setTimeout(() => reposicionarIndicadorNavMovil(), 180);
 };
