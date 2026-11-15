@@ -668,13 +668,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .spotify-pill-tab{background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:0.76rem;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;transition:var(--tr);}
 .spotify-pill-tab.active{background:rgba(29,185,84,0.16);border-color:rgba(29,185,84,0.4);color:#10b981;}
 [data-theme$="-dark"] .spotify-pill-tab.active{color:#1ed760;}
-/* ESTILOS INTEGRACIÓN GOODREADS / KINDLE */
-.btn-goodreads-connect{background:var(--card);color:var(--text);border:1px solid rgba(217,119,6,0.38);font-weight:700;font-size:0.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr);box-shadow:0 2px 8px rgba(0,0,0,0.15);text-decoration:none;}
-.btn-goodreads-connect:hover{background:#d97706;color:#fff;border-color:#d97706;transform:translateY(-1px);box-shadow:0 4px 14px rgba(217,119,6,0.35);}
-.btn-goodreads-connect svg path{fill:#d97706;transition:fill 0.2s;}
-.btn-goodreads-connect:hover svg path{fill:#fff;}
-.btn-goodreads-sub-action{height:34px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:0.78rem;font-weight:700;border-radius:8px;cursor:pointer;transition:var(--tr);text-decoration:none;}
-.btn-goodreads-sub-action:hover{transform:translateY(-1px);filter:brightness(1.15);}
+
 /* ESCUCHANDO AHORA COMPACTO (EN PROCESO) */
 .home-spotify-card-compact{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:var(--tr);position:relative;overflow:hidden;margin-bottom:12px;}
 .home-spotify-card-compact:hover{border-color:rgba(29,185,84,0.45);box-shadow:0 4px 16px rgba(29,185,84,0.12);}
@@ -2914,28 +2908,27 @@ html[data-app-theme="minimalist"] .nav-sections-row {
 }
 html[data-app-theme="minimalist"] .nav-categories-row {
   margin-bottom: 18px !important;
+}
 /* ========================================================
    ESTILOS PARA EL PANEL DE ESTADÍSTICAS DETALLADAS (MODAL)
    ======================================================== */
-.profile-stats-card-cta:hover {
-  border-color: var(--accent) !important;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-}
 .stats-kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 10px;
-  margin-bottom: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
 }
 .stats-kpi-card {
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 .stats-kpi-card:hover {
@@ -2946,28 +2939,32 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   color: var(--muted);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.04em;
   display: flex;
   align-items: center;
   gap: 6px;
+  text-align: center;
 }
 .stats-kpi-val {
-  font-size: 1.45rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--text);
+  margin-top: 3px;
   line-height: 1.2;
+  text-align: center;
 }
 .stats-kpi-sub {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: var(--muted);
-  margin-top: 2px;
+  margin-top: 3px;
+  text-align: center;
 }
 .stats-section-box {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 14px 16px;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 .stats-section-title {
   font-size: 0.88rem;
@@ -2983,7 +2980,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   border-radius: 20px;
   font-size: 0.78rem;
   font-weight: 600;
-  background: var(--card);
+  background: var(--bg);
   border: 1px solid var(--border);
   color: var(--muted);
   cursor: pointer;
@@ -2996,28 +2993,8 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 }
 .stats-cat-tab.active {
   background: var(--accent);
-  color: var(--accent-contrast);
+  color: #0f172a;
   border-color: var(--accent);
-  font-weight: 700;
-}
-.stats-period-btn {
-  padding: 4px 12px;
-  border-radius: 16px;
-  font-size: 0.74rem;
-  font-weight: 600;
-  background: var(--card);
-  border: 1px solid var(--border);
-  color: var(--muted);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-.stats-period-btn:hover {
-  color: var(--text);
-}
-.stats-period-btn.active {
-  background: var(--accent-subtle);
-  border-color: var(--accent-border);
-  color: var(--accent);
   font-weight: 700;
 }
 .stats-ranking-row {
@@ -3281,7 +3258,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
             </div>
           </div>
           <div class="profile-hero-side-actions" style="position:relative; z-index:2; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn-change-cover btn-profile-stats" onclick="abrirModalEstadisticasAvanzadas()" title="Ver estadísticas detalladas" style="background:var(--accent-subtle); border:1.5px solid var(--accent-border); color:var(--accent); font-weight:700;">
+            <button type="button" class="btn-change-cover" onclick="abrirModalEstadisticasAvanzadas()" title="Ver estadísticas detalladas">
               <span>📊</span> <span>Estadísticas</span>
             </button>
             <button type="button" class="btn-change-cover" onclick="abrirModalElegirPortada()" title="Personalizar portada del perfil">
@@ -3294,23 +3271,35 @@ html[data-app-theme="minimalist"] .nav-categories-row {
         </div>
       </div>
 
-      <!-- BANNER DE ENTRADA A ESTADÍSTICAS DETALLADAS -->
-      <div class="profile-stats-card-cta" onclick="abrirModalEstadisticasAvanzadas()" style="background:linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(147,51,234,0.08) 100%); border:1.5px solid var(--accent-border); border-radius:14px; padding:12px 16px; margin-bottom:14px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; gap:12px; transition:all 0.2s ease;">
-        <div style="display:flex; align-items:center; gap:12px; min-width:0;">
-          <div style="width:42px; height:42px; border-radius:10px; background:var(--accent-subtle); border:1px solid var(--accent-border); display:grid; place-items:center; font-size:1.4rem; flex-shrink:0;">📊</div>
-          <div style="min-width:0;">
-            <div style="font-weight:700; font-size:0.92rem; color:var(--text); display:flex; align-items:center; gap:8px;">
-              <span>Estadísticas Detalladas</span>
-              <span style="font-size:0.68rem; background:rgba(16,185,129,0.15); color:#10b981; border:1px solid rgba(16,185,129,0.35); padding:1px 7px; border-radius:20px; font-weight:700;">Ver Todo</span>
+      <!-- SECCIÓN ESTADÍSTICAS DETALLADAS -->
+      <div class="home-clean-section" id="perfil-sec-estadisticas">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn">📊</span>
+            <span>Estadísticas Detalladas</span>
+          </div>
+          <button type="button" class="btn-toggle-filter" onclick="abrirModalEstadisticasAvanzadas()" style="font-size:0.78rem; padding:4px 12px; display:inline-flex; align-items:center; gap:6px;">
+            <span>Abrir panel</span> <span>➔</span>
+          </button>
+        </div>
+        <div class="cat-wide-card" onclick="abrirModalEstadisticasAvanzadas()" style="cursor:pointer; padding:14px 16px; margin-top:4px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <div style="width:38px; height:38px; border-radius:10px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
+                📈
+              </div>
+              <div>
+                <div style="font-weight:700; font-size:0.88rem; color:var(--text);">
+                  Hábitos, Ritmo y Rankings Culturales
+                </div>
+                <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">
+                  Películas, series y música vistas este año y mes, top 5 favoritos y desglose completo.
+                </div>
+              </div>
             </div>
-            <div style="font-size:0.76rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">
-              Películas, series, música este año y mes, top 5 favoritos y más.
-            </div>
+            <span style="font-size:1.1rem; color:var(--muted); margin-right:4px;">›</span>
           </div>
         </div>
-        <button type="button" class="btn-today-pill" style="pointer-events:none; flex-shrink:0; font-size:0.75rem; padding:0 10px; height:30px; background:var(--accent-subtle); border-color:var(--accent-border); color:var(--accent); font-weight:700;">
-          <span>Explorar ➔</span>
-        </button>
       </div>
 
       <hr class="home-section-divider">
@@ -4184,33 +4173,6 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
 </div>
 
-<!-- INTEGRACIÓN CON GOODREADS / KINDLE -->
-<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;" id="cfg-goodreads-section">
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span>📚</span>
-      <span>Cuenta y Sincronización Goodreads / Kindle</span>
-    </div>
-    <span class="profile-google-pill" id="cfg-goodreads-badge" style="display:none;">✓ Conectado</span>
-  </div>
-  <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" id="cfg-goodreads-desc">
-    Vincula tu cuenta o importa tus lecturas de Kindle para sumar tus libros y estadísticas automáticamente.
-  </p>
-  <button type="button" class="btn-google-login" id="btn-goodreads-login" onclick="abrirModalConectarGoodreads()" style="width:100%; justify-content:center;">
-    <span style="font-size:1.15rem; line-height:1;">📖</span>
-    <span id="txt-btn-goodreads">Vincular con Goodreads / Kindle</span>
-  </button>
-  <div id="cfg-goodreads-connected-actions" style="display:none; margin-top:8px;">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <button type="button" class="btn-edit-profile" style="width:100%; justify-content:center; display:flex; align-items:center; gap:6px; font-size:0.78rem;" onclick="sincronizarLecturasGoodreads(true)" title="Sincronizar libros desde Goodreads/Kindle">
-        <span>🔄 Sincronizar</span>
-      </button>
-      <button type="button" class="btn-modal-cancel" style="width:100%; justify-content:center; display:flex; align-items:center; gap:6px; font-size:0.78rem; color:#f87171; border-color:rgba(239,68,68,0.3);" onclick="desconectarGoodreads()" title="Desvincular cuenta">
-        <span>Desvincular</span>
-      </button>
-    </div>
-  </div>
-</div>
 
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
@@ -4886,100 +4848,6 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   </div>
 </div>
 
-<!-- MODAL CONECTAR GOODREADS / KINDLE -->
-<div id="modal-goodreads-connect" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalConectarGoodreads()">
-  <div class="modal-box" style="max-width:540px; max-height:90vh; overflow-y:auto; padding:22px; border-radius:20px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <span style="font-size:1.35rem;">📚</span>
-        <h3 style="margin:0; font-size:1.15rem; color:var(--text); font-weight:800;">Sincronizar Goodreads / Kindle</h3>
-      </div>
-      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalConectarGoodreads()">✕</button>
-    </div>
-
-    <!-- Banner informativo oficial -->
-    <div style="background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.25); border-radius:12px; padding:12px 14px; margin-bottom:16px; font-size:0.8rem; line-height:1.45; color:var(--text);">
-      <div style="font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px; color:var(--accent);">
-        <span>💡</span> <span>¿Cómo sincronizar tus lecturas?</span>
-      </div>
-      <p style="margin:0; color:var(--muted); font-size:0.77rem;">
-        Amazon y Goodreads exigen inicio de sesión y bloquean la extracción directa por enlace. La forma <strong>oficial, completa y garantizada</strong> de importar toda tu biblioteca histórica y calificaciones es mediante tu archivo exportado de Goodreads o tus notas de Kindle.
-      </p>
-    </div>
-
-    <!-- Método 1 (Recomendado): Subir o pegar archivo -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:16px;">
-      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
-        <div style="font-weight:800; font-size:0.88rem; color:var(--text); display:flex; align-items:center; gap:6px;">
-          <span>⭐</span> <span>Método Recomendado (1 Clic)</span>
-        </div>
-        <span class="profile-google-pill" style="font-size:0.68rem; padding:2px 8px;">100% Confiable</span>
-      </div>
-
-      <div style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.45;">
-        <div style="margin-bottom:6px;">
-          <strong>1. En Goodreads:</strong> Abre tu cuenta en <a href="https://www.goodreads.com/review/import" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline; font-weight:700;">goodreads.com/review/import ↗</a> y presiona <strong>"Export Library"</strong> para descargar tu archivo <code>.csv</code>.
-        </div>
-        <div>
-          <strong>2. En Kindle:</strong> Conecta tu Kindle por cable USB a tu PC y busca el archivo <code>My Clippings.txt</code> dentro de la carpeta <em>documents</em>.
-        </div>
-      </div>
-
-      <input type="file" id="input-goodreads-file-direct" accept=".csv,.txt" style="display:none;" onchange="procesarArchivoGoodreadsSubido(event)">
-      
-      <button type="button" class="btn-today-pill" style="width:100%; justify-content:center; height:42px; font-size:0.86rem; background:var(--accent); color:#0f172a; font-weight:800; border:none; box-shadow:0 2px 8px rgba(56,189,248,0.25);" onclick="document.getElementById('input-goodreads-file-direct').click()">
-        <span>📂 Seleccionar archivo CSV o Clippings</span>
-      </button>
-
-      <!-- Toggle para pegar texto / CSV directamente -->
-      <div style="margin-top:10px; text-align:center;">
-        <button type="button" style="background:none; border:none; color:var(--accent); font-size:0.75rem; cursor:pointer; text-decoration:underline;" onclick="const el=document.getElementById('gr-paste-box'); el.style.display = el.style.display==='none'?'block':'none';">
-          O pega aquí el texto o CSV copiado ▼
-        </button>
-      </div>
-
-      <div id="gr-paste-box" style="display:none; margin-top:10px;">
-        <textarea id="gr-textarea-paste" class="form-input" rows="4" placeholder="Pega aquí el contenido de tu goodreads_library_export.csv o My Clippings.txt..." style="font-size:0.75rem; font-family:monospace; resize:vertical;"></textarea>
-        <button type="button" class="btn-today-pill" style="width:100%; margin-top:6px; justify-content:center; height:34px; font-size:0.78rem;" onclick="importarTextoPegadoGoodreads()">
-          <span>📥 Importar texto pegado</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Divisor -->
-    <div style="display:flex; align-items:center; gap:10px; margin:12px 0;">
-      <div style="flex:1; height:1px; background:var(--border);"></div>
-      <span style="font-size:0.72rem; color:var(--muted); text-transform:uppercase; font-weight:700;">otras opciones</span>
-      <div style="flex:1; height:1px; background:var(--border);"></div>
-    </div>
-
-    <!-- Método 2: Enlace de perfil público -->
-    <details style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 14px; margin-bottom:12px; font-size:0.8rem;">
-      <summary style="cursor:pointer; font-weight:700; color:var(--text); list-style:none; display:flex; justify-content:space-between; align-items:center;">
-        <span style="display:flex; align-items:center; gap:6px;"><span>🔗</span> Probar sincronización por perfil público</span>
-        <span style="font-size:0.75rem; color:var(--muted);">▼</span>
-      </summary>
-      <div style="margin-top:10px;">
-        <p style="font-size:0.74rem; color:var(--muted); margin:0 0 8px 0; line-height:1.4;">
-          * Amazon exige inicio de sesión en la gran mayoría de perfiles. Si tu cuenta rechaza la conexión externa, usa el método oficial de exportación de arriba.
-        </p>
-        <input type="text" id="goodreads-input-user-id" class="form-input" placeholder="Ej: https://www.goodreads.com/user/show/12345678 o ID" style="margin-bottom:8px;">
-        <button type="button" id="btn-conectar-perfil-gr" class="btn-google-login" onclick="guardarYConectarGoodreads()" style="width:100%; justify-content:center; padding:9px; font-size:0.8rem;">
-          <span>Conectar perfil público</span>
-        </button>
-      </div>
-    </details>
-
-    <!-- Botón Demo -->
-    <button type="button" class="btn-today-pill" onclick="cargarDatosDemoGoodreads()" style="height:34px; width:100%; justify-content:center; font-size:0.78rem; background:rgba(217,119,6,0.08); border-color:rgba(217,119,6,0.3); color:#d97706; margin-bottom:12px;">
-      ✨ Probar con lectura de demostración de Kindle
-    </button>
-
-    <div class="modal-actions" style="margin-top:8px; justify-content:flex-end;">
-      <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarGoodreads()">Cerrar</button>
-    </div>
-  </div>
-</div>
 
 <!-- MODAL ESTADÍSTICAS SPOTIFY -->
 <div id="modal-spotify-stats" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalEstadisticasSpotify()">
@@ -5052,33 +4920,35 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
 <!-- MODAL DE ESTADÍSTICAS DETALLADAS (GENERALES Y POR CATEGORÍA) -->
 <div id="modal-estadisticas-avanzadas" class="modal-overlay" style="display:none; z-index:99999;" onclick="if(event.target===this) cerrarModalEstadisticasAvanzadas()">
-  <div class="modal-box" style="max-width:760px; width:95vw; max-height:90vh; padding:0; display:flex; flex-direction:column; overflow:hidden; border-radius:20px;">
-    <!-- Encabezado fijo -->
-    <div style="padding:16px 20px 12px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--card); flex-shrink:0;">
+  <div class="modal-box" style="max-width:760px; width:95vw; max-height:90vh; padding:0; display:flex; flex-direction:column; overflow:hidden; border-radius:24px;">
+    <!-- Encabezado moderno unificado -->
+    <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--header-bg); flex-shrink:0;">
       <div style="display:flex; align-items:center; gap:10px;">
-        <span style="font-size:1.4rem;">📊</span>
+        <div style="width:36px; height:36px; border-radius:12px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.25); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
+          <span>📊</span>
+        </div>
         <div>
-          <h3 style="margin:0; font-size:1.15rem; color:var(--text); font-weight:800;">Estadísticas Detalladas</h3>
-          <p style="margin:2px 0 0; font-size:0.75rem; color:var(--muted);">Análisis completo de consumo cultural y hábitos</p>
+          <h3 style="margin:0; font-size:1.12rem; color:var(--text); font-weight:800; line-height:1.2;">Estadísticas Detalladas</h3>
+          <span style="font-size:0.72rem; color:var(--muted); font-weight:600;">Hábitos, ritmos y favoritos</span>
         </div>
       </div>
       <button type="button" class="btn-close-form" onclick="cerrarModalEstadisticasAvanzadas()" style="position:static; margin:0;">✕</button>
     </div>
 
     <!-- Barra de Filtros: Período y Categorías -->
-    <div style="padding:10px 18px 8px; background:var(--bg); border-bottom:1px solid var(--border); flex-shrink:0; display:flex; flex-direction:column; gap:8px;">
+    <div style="padding:10px 18px; background:var(--card); border-bottom:1px solid var(--border); flex-shrink:0; display:flex; flex-direction:column; gap:8px;">
       <!-- Selector de Período -->
       <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
-        <span style="font-size:0.72rem; font-weight:700; color:var(--muted); text-transform:uppercase;">Filtrar período:</span>
+        <span style="font-size:0.72rem; font-weight:700; color:var(--muted); text-transform:uppercase;">Período:</span>
         <div style="display:flex; gap:6px;">
-          <button type="button" class="stats-period-btn active" id="stats-period-btn-all" onclick="cambiarPeriodoStats('all')">🌐 Todo el tiempo</button>
-          <button type="button" class="stats-period-btn" id="stats-period-btn-year" onclick="cambiarPeriodoStats('year')">📅 Este Año (<span id="stats-lbl-cur-year">2026</span>)</button>
-          <button type="button" class="stats-period-btn" id="stats-period-btn-month" onclick="cambiarPeriodoStats('month')">🗓️ Este Mes (<span id="stats-lbl-cur-month">Nov</span>)</button>
+          <button type="button" class="btn-toggle-filter active" id="stats-period-btn-all" onclick="cambiarPeriodoStats('all')">🌐 Todo el tiempo</button>
+          <button type="button" class="btn-toggle-filter" id="stats-period-btn-year" onclick="cambiarPeriodoStats('year')">📅 Este Año (<span id="stats-lbl-cur-year">2026</span>)</button>
+          <button type="button" class="btn-toggle-filter" id="stats-period-btn-month" onclick="cambiarPeriodoStats('month')">🗓️ Este Mes (<span id="stats-lbl-cur-month">Nov</span>)</button>
         </div>
       </div>
 
       <!-- Selector de Categoría -->
-      <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; -webkit-overflow-scrolling:touch;">
+      <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; -webkit-overflow-scrolling:touch;">
         <button type="button" class="stats-cat-tab active" data-cat="General" onclick="cambiarCatStats('General')">⚡ Resumen</button>
         <button type="button" class="stats-cat-tab" data-cat="Peliculas" onclick="cambiarCatStats('Peliculas')">🎬 Películas</button>
         <button type="button" class="stats-cat-tab" data-cat="Series" onclick="cambiarCatStats('Series')">📺 Series</button>
@@ -5094,9 +4964,9 @@ html[data-app-theme="minimalist"] .nav-categories-row {
     </div>
 
     <!-- Pie del Modal -->
-    <div style="padding:10px 20px; border-top:1px solid var(--border); background:var(--card); display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+    <div style="padding:12px 20px; border-top:1px solid var(--border); background:var(--header-bg); display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
       <span id="stats-modal-summary-tag" style="font-size:0.72rem; color:var(--muted);">Cargando estadísticas...</span>
-      <button type="button" class="btn-modal-save" onclick="cerrarModalEstadisticasAvanzadas()" style="padding:6px 18px; font-size:0.84rem;">Cerrar</button>
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalEstadisticasAvanzadas()" style="padding:6px 18px; font-size:0.84rem;">Cerrar</button>
     </div>
   </div>
 </div>
@@ -13990,7 +13860,7 @@ function renderizarStatsGeneral_(ctx) {
     </div>
 
     <!-- TARJETA DESTACADA: TIEMPO VISTO Y ESCUCHADO (AÑO Y MES) -->
-    <div class="stats-section-box" style="background:linear-gradient(135deg, rgba(56,189,248,0.06) 0%, rgba(147,51,234,0.06) 100%);">
+    <div class="stats-section-box">
       <div class="stats-section-title">
         <span>⚡ Ritmo de Consumo: Este Año vs Este Mes</span>
         <span style="font-size:0.75rem; color:var(--muted);">${mesesLargo[nowMonth]} ${nowYear}</span>
@@ -14772,8 +14642,7 @@ function abrirModalConfiguracion() {
     actualizarTarjetasVisualesConfig(); 
     if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
     if (typeof actualizarUISpotify === 'function') actualizarUISpotify();
-    if (typeof actualizarUIGoodreads === 'function') actualizarUIGoodreads();
-    const modalCfg = document.getElementById('modal-configuracion');
+        const modalCfg = document.getElementById('modal-configuracion');
     if (modalCfg) modalCfg.style.display = 'flex';
   } catch(err) {
     console.error('Error al abrir modal configuracion:', err);
@@ -16240,766 +16109,13 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// --- INTEGRACIÓN GOODREADS / KINDLE (SYNC PROFILE, CSV & CLIPPINGS) ---
-function actualizarUIGoodreads() {
-  const goodreadsId = localStorage.getItem('mediary_goodreads_id');
-  const userJson = localStorage.getItem('mediary_goodreads_user');
-  let user = null;
-  if (userJson) {
-    try { user = JSON.parse(userJson); } catch (e) {}
-  }
-
-  const badge = document.getElementById('cfg-goodreads-badge');
-  const desc = document.getElementById('cfg-goodreads-desc');
-  const txtBtn = document.getElementById('txt-btn-goodreads');
-  const connActions = document.getElementById('cfg-goodreads-connected-actions');
-
-  if (goodreadsId) {
-    if (badge) {
-      badge.textContent = userPrefs && userPrefs.lang === 'en' ? '✓ Connected' : '✓ Conectado';
-      badge.style.display = 'inline-flex';
-    }
-    if (desc) {
-      const nombre = (user && user.nombre) ? user.nombre : `Lector Kindle (#${goodreadsId})`;
-      const cant = (user && user.librosSincronizados !== undefined) ? ` · ${user.librosSincronizados} libros` : '';
-      desc.textContent = `${userPrefs && userPrefs.lang === 'en' ? 'Connected as' : 'Conectado como'} ${nombre}${cant}.`;
-      desc.style.display = 'block';
-    }
-    if (txtBtn) {
-      txtBtn.textContent = userPrefs && userPrefs.lang === 'en' ? 'Gestionar / Importar lecturas' : 'Gestionar / Importar lecturas';
-    }
-    if (connActions) connActions.style.display = 'block';
-  } else {
-    if (badge) badge.style.display = 'none';
-    if (desc) {
-      desc.textContent = userPrefs && userPrefs.lang === 'en'
-        ? 'Link your account or import Kindle readings to add your books and stats automatically.'
-        : 'Vincula tu cuenta o importa tus lecturas de Kindle para sumar tus libros y estadísticas automáticamente.';
-      desc.style.display = 'block';
-    }
-    if (txtBtn) {
-      txtBtn.textContent = userPrefs && userPrefs.lang === 'en' ? 'Vincular con Goodreads / Kindle' : 'Vincular con Goodreads / Kindle';
-    }
-    if (connActions) connActions.style.display = 'none';
-  }
-}
-
-function abrirModalConectarGoodreads() {
-  const modal = document.getElementById('modal-goodreads-connect');
-  if (!modal) return;
-  const input = document.getElementById('goodreads-input-user-id');
-  if (input) {
-    const saved = localStorage.getItem('mediary_goodreads_id') || '';
-    input.value = saved.startsWith('file_') ? '' : saved;
-  }
-  modal.style.display = 'flex';
-}
-
-function cerrarModalConectarGoodreads() {
-  const modal = document.getElementById('modal-goodreads-connect');
-  if (modal) modal.style.display = 'none';
-}
-
-function extraerIdOUrlGoodreads(raw) {
-  if (!raw) return null;
-  const str = String(raw).trim();
-  if (str.includes('list_rss')) {
-    const m = str.match(/list_rss\/(\d+)/);
-    if (m) return { id: m[1], rssUrl: str };
-    return { id: 'custom', rssUrl: str };
-  }
-  const matchPerfil = str.match(/\/show\/(\d+)/);
-  if (matchPerfil) return { id: matchPerfil[1], rssUrl: null };
-  const matchNum = str.match(/^(\d+)$/);
-  if (matchNum) return { id: matchNum[1], rssUrl: null };
-  const matchSlug = str.match(/goodreads\.com\/([a-zA-Z0-9_\-]+)/);
-  if (matchSlug) return { id: matchSlug[1], rssUrl: null };
-  return { id: str, rssUrl: null };
-}
-
-async function guardarYConectarGoodreads() {
-  const input = document.getElementById('goodreads-input-user-id');
-  const val = input ? input.value.trim() : '';
-  if (!val) {
-    alert(userPrefs && userPrefs.lang === 'en' ? 'Please enter your Goodreads user ID or profile link.' : 'Por favor ingresa tu ID o enlace de perfil de Goodreads.');
-    return;
-  }
-  const btn = document.getElementById('btn-conectar-perfil-gr');
-  if (btn) {
-    btn.disabled = true;
-    btn.innerHTML = userPrefs && userPrefs.lang === 'en' ? '<span>⏳ Verifying...</span>' : '<span>⏳ Verificando...</span>';
-  }
-
-  const parsed = extraerIdOUrlGoodreads(val);
-  if (!parsed || !parsed.id) {
-    if (btn) {
-      btn.disabled = false;
-      btn.innerHTML = userPrefs && userPrefs.lang === 'en' ? '<span>Connect public profile</span>' : '<span>Conectar perfil público</span>';
-    }
-    alert(userPrefs && userPrefs.lang === 'en' ? 'Invalid Goodreads ID or URL.' : 'ID o enlace de Goodreads no válido.');
-    return;
-  }
-
-  const libros = await parsearFeedGoodreads(parsed.rssUrl || parsed.id);
-  if (btn) {
-    btn.disabled = false;
-    btn.innerHTML = userPrefs && userPrefs.lang === 'en' ? '<span>Connect public profile</span>' : '<span>Conectar perfil público</span>';
-  }
-
-  if (!libros || !libros.length) {
-    alert(userPrefs && userPrefs.lang === 'en'
-      ? 'Amazon/Goodreads requires an active login and blocks external access to this profile.\n\n👉 Easy solution: Go to goodreads.com/review/import, click "Export Library", and select the downloaded CSV file in the button above!'
-      : 'Amazon/Goodreads exige inicio de sesión y bloquea la lectura externa de este perfil.\n\n👉 Solución fácil: Entra a goodreads.com/review/import, descarga tu archivo haciendo clic en "Export Library", y selecciónalo en el botón "Seleccionar archivo" de arriba.');
-    return;
-  }
-
-  localStorage.setItem('mediary_goodreads_id', parsed.id);
-  if (parsed.rssUrl) {
-    localStorage.setItem('mediary_goodreads_rss_custom', parsed.rssUrl);
-  } else {
-    localStorage.removeItem('mediary_goodreads_rss_custom');
-  }
-
-  const prevUser = localStorage.getItem('mediary_goodreads_user');
-  let userObj = { nombre: `Lector Kindle (#${parsed.id})`, librosSincronizados: libros.length };
-  if (prevUser) {
-    try { userObj = Object.assign(userObj, JSON.parse(prevUser)); } catch (e) {}
-  }
-  localStorage.setItem('mediary_goodreads_user', JSON.stringify(userObj));
-
-  cerrarModalConectarGoodreads();
-  actualizarUIGoodreads();
-  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Goodreads / Kindle linked! Syncing...' : '¡Goodreads / Kindle vinculado! Sincronizando...');
-  await sincronizarLecturasGoodreads(true);
-}
-
-function procesarCsvGoodreads(csvText) {
-  const rows = [];
-  let row = [''];
-  let inQuotes = false;
-  for (let i = 0; i < csvText.length; i++) {
-    const c = csvText[i];
-    const next = csvText[i + 1];
-    if (c === '"' && inQuotes && next === '"') {
-      row[row.length - 1] += '"';
-      i++;
-    } else if (c === '"') {
-      inQuotes = !inQuotes;
-    } else if (c === ',' && !inQuotes) {
-      row.push('');
-    } else if ((c === '\r' || c === '\n') && !inQuotes) {
-      if (c === '\r' && next === '\n') i++;
-      rows.push(row);
-      row = [''];
-    } else {
-      row[row.length - 1] += c;
-    }
-  }
-  if (row.length > 1 || row[0] !== '') rows.push(row);
-  if (rows.length < 2) return [];
-
-  const headers = rows[0].map(h => (h || '').trim().toLowerCase());
-  const colIndex = (name) => headers.findIndex(h => h === name.toLowerCase());
-
-  const idxTitle = colIndex('title');
-  const idxAuthor = colIndex('author');
-  const idxRating = colIndex('my rating');
-  const idxPages = colIndex('number of pages');
-  const idxDateRead = colIndex('date read');
-  const idxDateAdded = colIndex('date added');
-  const idxShelf = colIndex('exclusive shelf');
-  const idxReview = colIndex('my review');
-  const idxBookId = colIndex('book id');
-
-  if (idxTitle === -1) return [];
-
-  const formatearFecha = (str) => {
-    if (!str) return 'Sin fecha';
-    const m = str.match(/(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
-    if (m) {
-      return `${String(m[3]).padStart(2, '0')}/${String(m[2]).padStart(2, '0')}/${m[1]}`;
-    }
-    const d = new Date(str);
-    if (!isNaN(d.getTime())) {
-      return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-    }
-    return 'Sin fecha';
-  };
-
-  const libros = [];
-  for (let r = 1; r < rows.length; r++) {
-    const rowData = rows[r];
-    if (!rowData || !rowData[idxTitle]) continue;
-
-    let titulo = String(rowData[idxTitle] || '').trim();
-    titulo = titulo.replace(/\s*\([^)]*#\d+[^)]*\)/g, '').trim();
-    if (!titulo) continue;
-
-    const autor = idxAuthor !== -1 && rowData[idxAuthor] ? String(rowData[idxAuthor]).trim() : 'Desconocido';
-    const ratingRaw = idxRating !== -1 ? (parseFloat(rowData[idxRating]) || 0) : 0;
-    const paginas = idxPages !== -1 ? (parseInt(rowData[idxPages], 10) || 0) : 0;
-    const dateRead = idxDateRead !== -1 ? String(rowData[idxDateRead] || '').trim() : '';
-    const dateAdded = idxDateAdded !== -1 ? String(rowData[idxDateAdded] || '').trim() : '';
-    const shelf = idxShelf !== -1 ? String(rowData[idxShelf] || '').trim().toLowerCase() : '';
-    const review = idxReview !== -1 ? String(rowData[idxReview] || '').trim() : '';
-    const bookId = idxBookId !== -1 ? String(rowData[idxBookId] || '').trim() : '';
-
-    let fechaFin = formatearFecha(dateRead);
-    let fechaInicio = dateAdded ? formatearFecha(dateAdded) : fechaFin;
-    let anio = (fechaFin !== 'Sin fecha') ? fechaFin.split('/').pop() : '';
-
-    let poster = '';
-    if (bookId) {
-      poster = `https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/${bookId}.jpg`;
-    }
-
-    const horasEst = paginas ? `${(paginas * 1.5 / 60).toFixed(1)} hrs` : '';
-
-    libros.push({
-      categoria: 'Lecturas',
-      subcategoria: 'Libros',
-      titulo,
-      subtitulo: '',
-      creador: autor,
-      anio,
-      fechaInicio,
-      fechaFin,
-      calificacion: ratingRaw,
-      comentario: review ? review.replace(/<[^>]*>/g, '').trim() : '',
-      poster,
-      horas: horasEst,
-      esRewatch: false
-    });
-  }
-
-  return libros;
-}
-
-function procesarKindleClippings(txt) {
-  const entries = txt.split(/={5,}/);
-  const booksMap = new Map();
-
-  entries.forEach(entry => {
-    const lines = entry.trim().split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-    if (lines.length >= 1) {
-      const titleLine = lines[0];
-      const match = titleLine.match(/^(.*?)(?:\s*\(([^)]+)\))?$/);
-      if (match) {
-        const rawTitle = match[1].replace(/^\uFEFF/, '').trim();
-        const rawAuthor = match[2] ? match[2].trim() : 'Kindle';
-        if (rawTitle && !booksMap.has(rawTitle.toLowerCase())) {
-          let fecha = 'Sin fecha';
-          let anio = '';
-          if (lines.length >= 2) {
-            const metaLine = lines[1];
-            const cleanMeta = metaLine.replace(/.*?Added on |.*?Añadido el /i, '');
-            const d = new Date(cleanMeta);
-            if (!isNaN(d.getTime())) {
-              fecha = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-              anio = String(d.getFullYear());
-            }
-          }
-
-          booksMap.set(rawTitle.toLowerCase(), {
-            categoria: 'Lecturas',
-            subcategoria: 'Libros',
-            titulo: rawTitle,
-            subtitulo: '',
-            creador: rawAuthor,
-            anio: anio || (fecha !== 'Sin fecha' ? fecha.split('/').pop() : ''),
-            fechaInicio: fecha,
-            fechaFin: fecha,
-            calificacion: 0,
-            comentario: 'Leído en Kindle (My Clippings)',
-            poster: '',
-            horas: '',
-            esRewatch: false
-          });
-        }
-      }
-    }
-  });
-
-  return Array.from(booksMap.values());
-}
-
-async function procesarArchivoGoodreadsSubido(event) {
-  const file = event?.target?.files?.[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = async (ev) => {
-    try {
-      const content = ev.target?.result || '';
-      let libros = [];
-      const fileNameLower = file.name.toLowerCase();
-
-      if (fileNameLower.endsWith('.csv') || content.includes('Book Id,Title')) {
-        libros = procesarCsvGoodreads(content);
-      } else if (fileNameLower.endsWith('.txt') || content.includes('==========')) {
-        libros = procesarKindleClippings(content);
-      } else {
-        libros = procesarCsvGoodreads(content);
-        if (!libros.length) libros = procesarKindleClippings(content);
-      }
-
-      if (!libros || !libros.length) {
-        alert(userPrefs && userPrefs.lang === 'en'
-          ? 'No valid books detected in the file. Ensure it is goodreads_library_export.csv or My Clippings.txt.'
-          : 'No se detectaron libros válidos en el archivo. Asegúrate de que sea goodreads_library_export.csv o My Clippings.txt.');
-        return;
-      }
-
-      const existentes = new Set(
-        (estado.registros || [])
-          .filter(r => r.categoria === 'Lecturas')
-          .map(r => (r.titulo || '').toLowerCase().trim())
-      );
-
-      const paraAgregar = [];
-      libros.forEach(b => {
-        const titLow = (b.titulo || '').toLowerCase().trim();
-        if (!existentes.has(titLow)) {
-          existentes.add(titLow);
-          paraAgregar.push(b);
-        }
-      });
-
-      let guardados = 0;
-      if (paraAgregar.length > 0) {
-        if (estado.userEmail && typeof google !== 'undefined' && google.script?.run) {
-          await new Promise((resolve) => {
-            google.script.run
-              .withSuccessHandler(res => {
-                if (res && res.exito) guardados = res.insertados || paraAgregar.length;
-                resolve();
-              })
-              .withFailureHandler(() => resolve())
-              .importarRegistrosMasivos(paraAgregar, estado.userEmail);
-          });
-          if (typeof cargarRegistros === 'function') cargarRegistros();
-        } else {
-          paraAgregar.forEach(item => {
-            if (Array.isArray(estado.registros)) {
-              estado.registros.push({
-                id: 'gr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-                ...item
-              });
-            }
-          });
-          guardados = paraAgregar.length;
-          if (typeof guardarRegistrosEnLocalStorage === 'function') guardarRegistrosEnLocalStorage();
-          if (typeof renderizarRegistros === 'function') renderizarRegistros();
-        }
-      }
-
-      const userObj = {
-        nombre: file.name.replace(/\.[^/.]+$/, ''),
-        librosSincronizados: libros.length
-      };
-      localStorage.setItem('mediary_goodreads_id', 'file_' + Date.now());
-      localStorage.setItem('mediary_goodreads_user', JSON.stringify(userObj));
-      localStorage.setItem('mediary_goodreads_last_sync', new Date().toISOString());
-
-      cerrarModalConectarGoodreads();
-      actualizarUIGoodreads();
-
-      const msg = userPrefs && userPrefs.lang === 'en'
-        ? `📚 Successfully imported! ${guardados} new books added (${libros.length} detected).`
-        : `📚 ¡Importación exitosa! Se añadieron ${guardados} libros nuevos (${libros.length} detectados).`;
-      mostrarToastPersonalizado(msg);
-    } catch (err) {
-      console.error('Error procesando archivo Goodreads/Kindle:', err);
-      alert(userPrefs && userPrefs.lang === 'en' ? 'Error processing the file.' : 'Error al procesar el archivo.');
-    } finally {
-      if (event.target) event.target.value = '';
-    }
-  };
-  reader.readAsText(file, 'UTF-8');
-}
-
-async function importarTextoPegadoGoodreads() {
-  const ta = document.getElementById('gr-textarea-paste');
-  const txt = ta ? ta.value.trim() : '';
-  if (!txt) {
-    alert(userPrefs && userPrefs.lang === 'en' ? 'Please paste your CSV or Clippings text first.' : 'Por favor pega el texto de tu CSV o Clippings primero.');
-    return;
-  }
-  let libros = [];
-  if (txt.includes('Book Id,Title') || txt.includes('Title,Author') || txt.includes('Number of Pages')) {
-    libros = procesarCsvGoodreads(txt);
-  } else if (txt.includes('==========')) {
-    libros = procesarKindleClippings(txt);
-  } else {
-    libros = procesarCsvGoodreads(txt);
-    if (!libros.length) libros = procesarKindleClippings(txt);
-  }
-
-  if (!libros || !libros.length) {
-    alert(userPrefs && userPrefs.lang === 'en'
-      ? 'No valid books detected in text. Ensure it is Goodreads CSV or Kindle Clippings text.'
-      : 'No se detectaron libros válidos en el texto. Asegúrate de que sea el formato CSV de Goodreads o notas de Kindle.');
-    return;
-  }
-
-  const existentes = new Set(
-    (estado.registros || [])
-      .filter(r => r.categoria === 'Lecturas')
-      .map(r => (r.titulo || '').toLowerCase().trim())
-  );
-
-  const paraAgregar = [];
-  libros.forEach(b => {
-    const titLow = (b.titulo || '').toLowerCase().trim();
-    if (!existentes.has(titLow)) {
-      existentes.add(titLow);
-      paraAgregar.push(b);
-    }
-  });
-
-  let guardados = 0;
-  if (paraAgregar.length > 0) {
-    if (estado.userEmail && typeof google !== 'undefined' && google.script?.run) {
-      await new Promise((resolve) => {
-        google.script.run
-          .withSuccessHandler(res => {
-            if (res && res.exito) guardados = res.insertados || paraAgregar.length;
-            resolve();
-          })
-          .withFailureHandler(() => resolve())
-          .importarRegistrosMasivos(paraAgregar, estado.userEmail);
-      });
-      if (typeof cargarRegistros === 'function') cargarRegistros();
-    } else {
-      paraAgregar.forEach(item => {
-        if (Array.isArray(estado.registros)) {
-          estado.registros.push({
-            id: 'gr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-            ...item
-          });
-        }
-      });
-      guardados = paraAgregar.length;
-      if (typeof guardarRegistrosEnLocalStorage === 'function') guardarRegistrosEnLocalStorage();
-      if (typeof renderizarRegistros === 'function') renderizarRegistros();
-    }
-  }
-
-  const userObj = {
-    nombre: 'Lecturas Importadas',
-    librosSincronizados: libros.length
-  };
-  localStorage.setItem('mediary_goodreads_id', 'file_' + Date.now());
-  localStorage.setItem('mediary_goodreads_user', JSON.stringify(userObj));
-  localStorage.setItem('mediary_goodreads_last_sync', new Date().toISOString());
-
-  cerrarModalConectarGoodreads();
-  actualizarUIGoodreads();
-
-  const msg = userPrefs && userPrefs.lang === 'en'
-    ? `📚 Successfully imported! ${guardados} new books added (${libros.length} detected).`
-    : `📚 ¡Importación exitosa! Se añadieron ${guardados} libros nuevos (${libros.length} detectados).`;
-  mostrarToastPersonalizado(msg);
-}
-
-async function parsearFeedGoodreads(urlOrId) {
-  let targetUrl = urlOrId;
-  if (/^\d+$/.test(urlOrId)) {
-    targetUrl = `https://www.goodreads.com/user/show/${urlOrId}`;
-  }
-  const proxies = [
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
-    `https://corsproxy.io/?url=${encodeURIComponent(targetUrl)}`
-  ];
-  let text = null;
-  for (const pUrl of proxies) {
-    try {
-      const resp = await fetch(pUrl, { cache: 'no-cache' });
-      if (resp.ok) {
-        text = await resp.text();
-        if (text && (text.includes('<rss') || text.includes('goodreads.com') || text.includes('<html'))) {
-          break;
-        }
-      }
-    } catch (e) {}
-  }
-  if (!text) return [];
-
-  // 1. RSS XML parsing if available
-  if (text.includes('<rss') && text.includes('<item')) {
-    try {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(text, 'text/xml');
-      const items = Array.from(doc.querySelectorAll('item'));
-      const libros = [];
-      items.forEach(it => {
-        const getTag = tag => {
-          const el = it.getElementsByTagName(tag)[0];
-          return el ? (el.textContent || '').trim() : '';
-        };
-        let titulo = getTag('title');
-        titulo = titulo.replace(/\s*\([^)]*#\d+[^)]*\)/g, '').trim();
-        const autor = getTag('author_name') || 'Desconocido';
-        let poster = getTag('book_large_image_url') || getTag('book_image_url') || '';
-        if (poster && poster.includes('nophoto')) poster = '';
-        const numPaginas = parseInt(getTag('num_pages'), 10) || 0;
-        const ratingRaw = parseInt(getTag('user_rating'), 10) || 0;
-        const userReadAt = getTag('user_read_at');
-        const userDateAdded = getTag('user_date_added') || getTag('pubDate');
-
-        let fechaFin = 'Sin fecha';
-        if (userReadAt) {
-          const d = new Date(userReadAt);
-          if (!isNaN(d.getTime())) {
-            fechaFin = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
-          }
-        }
-        let fechaInicio = fechaFin;
-        if (userDateAdded) {
-          const dIni = new Date(userDateAdded);
-          if (!isNaN(dIni.getTime())) {
-            fechaInicio = `${String(dIni.getDate()).padStart(2, '0')}/${String(dIni.getMonth() + 1).padStart(2, '0')}/${dIni.getFullYear()}`;
-          }
-        }
-        libros.push({
-          categoria: 'Lecturas',
-          subcategoria: 'Libros',
-          titulo,
-          subtitulo: '',
-          creador: autor,
-          anio: (fechaFin !== 'Sin fecha') ? fechaFin.split('/').pop() : '',
-          fechaInicio,
-          fechaFin,
-          calificacion: ratingRaw,
-          comentario: getTag('user_review') ? getTag('user_review').replace(/<[^>]*>/g, '').trim() : '',
-          poster,
-          horas: numPaginas ? `${(numPaginas * 1.5 / 60).toFixed(1)} hrs` : '',
-          esRewatch: false
-        });
-      });
-      return libros;
-    } catch (e) {}
-  }
-
-  // 2. HTML profile parsing fallback
-  try {
-    const libros = [];
-    const seenTitles = new Set();
-    const regex = /<img[^>]+alt="([^"]+?)\s+by\s+([^"]+?)"[^>]+src="([^"]+?)"/gi;
-    let match;
-    while ((match = regex.exec(text)) !== null) {
-      const tit = match[1].trim();
-      const aut = match[2].trim();
-      const cov = match[3].trim();
-      if (tit && !seenTitles.has(tit.toLowerCase())) {
-        seenTitles.add(tit.toLowerCase());
-        libros.push({
-          categoria: 'Lecturas',
-          subcategoria: 'Libros',
-          titulo: tit,
-          subtitulo: '',
-          creador: aut,
-          anio: '',
-          fechaInicio: 'Sin fecha',
-          fechaFin: 'Sin fecha',
-          calificacion: 0,
-          comentario: 'Sincronizado desde perfil de Goodreads',
-          poster: cov.includes('nophoto') ? '' : cov,
-          horas: '',
-          esRewatch: false
-        });
-      }
-    }
-    return libros;
-  } catch (e) {
-    return [];
-  }
-}
-
-async function sincronizarLecturasGoodreads(notificar) {
-  const goodreadsId = localStorage.getItem('mediary_goodreads_id');
-  if (!goodreadsId) return;
-
-  const btnSync = document.querySelector('#cfg-goodreads-connected-actions button');
-  if (btnSync) btnSync.disabled = true;
-
-  try {
-    if (goodreadsId.startsWith('file_') || goodreadsId === 'demo_kindle_user') {
-      if (notificar) {
-        mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en'
-          ? '📚 Library loaded from file. Select a new export file to refresh anytime.'
-          : '📚 Biblioteca cargada desde archivo. Sube un nuevo archivo para actualizar cuando desees.');
-        setTimeout(() => abrirModalConectarGoodreads(), 400);
-      }
-      return;
-    }
-
-    const customRss = localStorage.getItem('mediary_goodreads_rss_custom');
-    const readUrl = customRss || goodreadsId;
-    
-    const libros = await parsearFeedGoodreads(readUrl);
-
-    if (!libros || !libros.length) {
-      if (notificar) {
-        alert(userPrefs && userPrefs.lang === 'en'
-          ? 'Amazon/Goodreads requires login and restricts external profile sync.\n\n👉 Easy solution: Go to goodreads.com/review/import, click "Export Library", and select the downloaded CSV file in the button above!'
-          : 'Amazon/Goodreads exige inicio de sesión y bloquea la lectura externa de este perfil.\n\n👉 Solución fácil: Entra a goodreads.com/review/import, descarga tu archivo haciendo clic en "Export Library", y selecciónalo en el botón "Seleccionar archivo" de la ventana.');
-        setTimeout(() => abrirModalConectarGoodreads(), 300);
-      }
-      return;
-    }
-
-    const existentes = new Set(
-      (estado.registros || [])
-        .filter(r => r.categoria === 'Lecturas')
-        .map(r => (r.titulo || '').toLowerCase().trim())
-    );
-
-    const paraAgregar = [];
-    libros.forEach(b => {
-      const titLow = (b.titulo || '').toLowerCase().trim();
-      if (!existentes.has(titLow)) {
-        existentes.add(titLow);
-        paraAgregar.push(b);
-      }
-    });
-
-    let guardados = 0;
-    if (paraAgregar.length > 0) {
-      if (estado.userEmail && typeof google !== 'undefined' && google.script?.run) {
-        await new Promise((resolve) => {
-          google.script.run
-            .withSuccessHandler(res => {
-              if (res && res.exito) guardados = res.insertados || paraAgregar.length;
-              resolve();
-            })
-            .withFailureHandler(() => resolve())
-            .importarRegistrosMasivos(paraAgregar, estado.userEmail);
-        });
-        if (typeof cargarRegistros === 'function') cargarRegistros();
-      } else {
-        paraAgregar.forEach(item => {
-          if (Array.isArray(estado.registros)) {
-            estado.registros.push({
-              id: 'gr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-              ...item
-            });
-          }
-        });
-        guardados = paraAgregar.length;
-        if (typeof guardarRegistrosEnLocalStorage === 'function') guardarRegistrosEnLocalStorage();
-        if (typeof renderizarRegistros === 'function') renderizarRegistros();
-      }
-    }
-
-    const userRaw = localStorage.getItem('mediary_goodreads_user');
-    let userObj = { nombre: `Lector Kindle (#${goodreadsId})`, librosSincronizados: libros.length };
-    if (userRaw) {
-      try { userObj = Object.assign(userObj, JSON.parse(userRaw)); userObj.librosSincronizados = libros.length; } catch (e) {}
-    }
-    localStorage.setItem('mediary_goodreads_user', JSON.stringify(userObj));
-    localStorage.setItem('mediary_goodreads_last_sync', new Date().toISOString());
-
-    actualizarUIGoodreads();
-
-    if (notificar) {
-      if (guardados > 0) {
-        mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en'
-          ? `📚 Synced ${guardados} new books from Kindle!`
-          : `📚 ¡Se sincronizaron ${guardados} libros nuevos de tu Kindle!`);
-      } else {
-        mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en'
-          ? `📚 All your Kindle books are already up to date (${libros.length} books).`
-          : `📚 Tus lecturas de Kindle ya están al día (${libros.length} libros).`);
-      }
-    }
-  } catch (err) {
-    console.error('Error sincronizando Goodreads:', err);
-    if (notificar) {
-      mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Sync error with Goodreads' : 'Error al sincronizar con Goodreads');
-    }
-  } finally {
-    if (btnSync) btnSync.disabled = false;
-  }
-}
-
-function cargarDatosDemoGoodreads() {
-  const demoUser = {
-    nombre: 'Lector Kindle (Demo)',
-    librosSincronizados: 2,
-    avatar: ''
-  };
-
-  const hoy = new Date();
-  const fFin = `${String(hoy.getDate()).padStart(2,'0')}/${String(hoy.getMonth()+1).padStart(2,'0')}/${hoy.getFullYear()}`;
-  const mesPasado = new Date(hoy.getTime() - 25 * 86400000);
-  const fIni = `${String(mesPasado.getDate()).padStart(2,'0')}/${String(mesPasado.getMonth()+1).padStart(2,'0')}/${mesPasado.getFullYear()}`;
-
-  const librosDemo = [
-    {
-      categoria: 'Lecturas',
-      subcategoria: 'Libros',
-      titulo: 'Project Hail Mary',
-      subtitulo: '',
-      creador: 'Andy Weir',
-      anio: '2021',
-      fechaInicio: fIni,
-      fechaFin: fFin,
-      calificacion: 5,
-      comentario: 'Leído en Kindle Paperwhite. Extraordinaria historia de ciencia ficción y optimismo.',
-      poster: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1597695864i/54493401.jpg',
-      horas: '12.4 hrs',
-      esRewatch: false
-    },
-    {
-      categoria: 'Lecturas',
-      subcategoria: 'Libros',
-      titulo: 'Tomorrow, and Tomorrow, and Tomorrow',
-      subtitulo: '',
-      creador: 'Gabrielle Zevin',
-      anio: '2022',
-      fechaInicio: fIni,
-      fechaFin: fFin,
-      calificacion: 4.5,
-      comentario: 'Hermosa novela sobre la creatividad, los videojuegos y la amistad de por vida.',
-      poster: 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1636978687i/58784475.jpg',
-      horas: '10.2 hrs',
-      esRewatch: false
-    }
-  ];
-
-  localStorage.setItem('mediary_goodreads_id', 'demo_kindle_user');
-  localStorage.setItem('mediary_goodreads_user', JSON.stringify(demoUser));
-  localStorage.setItem('mediary_goodreads_last_sync', new Date().toISOString());
-
-  librosDemo.forEach(ld => {
-    const existe = (estado.registros || []).some(r => r.categoria === 'Lecturas' && (r.titulo || '').toLowerCase() === ld.titulo.toLowerCase());
-    if (!existe) {
-      if (typeof estado !== 'undefined' && Array.isArray(estado.registros)) {
-        estado.registros.push({
-          id: 'gr_demo_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-          ...ld
-        });
-      }
-    }
-  });
-
-  if (typeof guardarRegistrosEnLocalStorage === 'function') guardarRegistrosEnLocalStorage();
-  if (typeof renderizarRegistros === 'function') renderizarRegistros();
-
-  cerrarModalConectarGoodreads();
-  actualizarUIGoodreads();
-  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? '📚 Kindle / Goodreads demo data loaded!' : '📚 ¡Datos de prueba de Kindle / Goodreads cargados!');
-}
-
-function desconectarGoodreads() {
-  localStorage.removeItem('mediary_goodreads_id');
-  localStorage.removeItem('mediary_goodreads_user');
-  localStorage.removeItem('mediary_goodreads_rss_custom');
-  localStorage.removeItem('mediary_goodreads_last_sync');
-  actualizarUIGoodreads();
-  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Goodreads / Kindle disconnected' : 'Cuenta de Goodreads / Kindle desconectada');
-}
+// Limpieza de datos residuales de Goodreads / Kindle
+try {
+  localStorage.removeItem("mediary_goodreads_id");
+  localStorage.removeItem("mediary_goodreads_user");
+  localStorage.removeItem("mediary_goodreads_rss_custom");
+  localStorage.removeItem("mediary_goodreads_last_sync");
+} catch (e) {}
 
 // --- IMPORTAR Y EXPORTAR ARCHIVOS DE TEXTO ---
 function abrirModalImportarExportar() { document.getElementById('modal-configuracion').style.display = 'none'; document.getElementById('input-file-import').value = ''; document.getElementById('textarea-import-raw').value = ''; estado.registrosImportarPendientes = [];
@@ -17605,10 +16721,7 @@ window.onload = () => {
   if (typeof procesarRetornoSpotifyAuth === 'function') {
     procesarRetornoSpotifyAuth();
   }
-  if (typeof actualizarUIGoodreads === 'function') {
-    actualizarUIGoodreads();
-  }
-  setTimeout(() => reposicionarIndicadorNavMovil(), 180);
+    setTimeout(() => reposicionarIndicadorNavMovil(), 180);
 };
 const irInicio = (pushNav = true) => {
   if (pushNav) registrarNavegacionApp('inicio');
