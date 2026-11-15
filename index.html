@@ -652,6 +652,18 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 [data-theme$="-light"] .btn-like-resena{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.12);color:var(--muted);}
 [data-theme$="-light"] .btn-like-resena:hover{background:rgba(244,63,94,0.08);border-color:rgba(244,63,94,0.4);color:#e11d48;}
 [data-theme$="-light"] .btn-like-resena.liked{background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.45);color:#e11d48;}
+/* ESTILOS INTEGRACIÓN SPOTIFY */
+.btn-spotify-connect{background:#1DB954;color:#000;border:none;font-weight:800;font-size:0.86rem;padding:10px 16px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 3px 12px rgba(29,185,84,0.3);transition:var(--tr);text-decoration:none;}
+.btn-spotify-connect:hover{background:#1ed760;transform:translateY(-1px);box-shadow:0 5px 16px rgba(29,185,84,0.45);color:#000;}
+.spotify-stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;transition:var(--tr);}
+.spotify-stat-card:hover{border-color:rgba(29,185,84,0.4);transform:translateY(-1px);}
+.spotify-item-row{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--border);transition:var(--tr);margin-bottom:8px;}
+.spotify-item-row:hover{border-color:rgba(29,185,84,0.45);transform:translateX(2px);}
+.spotify-rank-badge{width:24px;height:24px;border-radius:6px;background:rgba(29,185,84,0.14);border:1px solid rgba(29,185,84,0.3);color:#10b981;display:grid;place-items:center;font-size:0.75rem;font-weight:900;flex-shrink:0;}
+[data-theme$="-dark"] .spotify-rank-badge{color:#1ed760;}
+.spotify-pill-tab{background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:0.76rem;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;transition:var(--tr);}
+.spotify-pill-tab.active{background:rgba(29,185,84,0.16);border-color:rgba(29,185,84,0.4);color:#10b981;}
+[data-theme$="-dark"] .spotify-pill-tab.active{color:#1ed760;}
 /* TOGGLE VISTA Y CUADRICULA LISTAS */
 .view-mode-toggle{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;gap:4px}
 .btn-view-mode{background:transparent;border:none;color:var(--muted);font-size:0.8rem;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--tr)}
@@ -3910,6 +3922,48 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   </div>
 </div>
 <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;"> <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;"> <div style="display:flex; align-items:center; gap:8px;"> <span>☁️</span> <span data-i18n="cfg_account_title">Cuenta y Sincronización Supabase Cloud</span> </div> <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;">✓ Supabase Cloud Activo</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;" id="cfg-account-status" data-i18n="cfg_account_hint">Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.</p> <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;"> <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span> </button> <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:var(--accent-border); color:var(--accent); background:var(--accent-subtle); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets"> <span data-i18n="cfg_btn_migrar">☁️ Migrar mis datos de Google Sheets a Supabase</span> </button> </div>
+
+<!-- INTEGRACIÓN CON SPOTIFY -->
+<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;" id="cfg-spotify-section">
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954" style="flex-shrink:0;">
+        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/>
+      </svg>
+      <span data-i18n="cfg_spotify_title">Spotify</span>
+    </div>
+    <span class="profile-google-pill" id="cfg-spotify-badge" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--muted); font-size:0.72rem;">No conectado</span>
+  </div>
+  <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.35;" id="cfg-spotify-desc" data-i18n="cfg_spotify_hint">
+    Conecta tu cuenta para sincronizar estadísticas musicales, ver tus artistas y canciones favoritas y calcular tus horas escuchadas.
+  </p>
+  
+  <div id="cfg-spotify-connected-box" style="display:none; margin-bottom:12px; background:rgba(29,185,84,0.08); border:1px solid rgba(29,185,84,0.3); border-radius:10px; padding:10px 12px;">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div id="cfg-spotify-user-avatar" style="width:36px; height:36px; border-radius:50%; overflow:hidden; background:var(--bg); border:1.5px solid #1db954; display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;">
+        🟢
+      </div>
+      <div style="min-width:0; flex:1;">
+        <strong id="cfg-spotify-user-name" style="font-size:0.86rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario Spotify</strong>
+        <span id="cfg-spotify-user-sub" style="font-size:0.72rem; color:var(--muted); display:block;">Conectado</span>
+      </div>
+      <button type="button" class="btn-today-pill" style="height:28px; padding:0 10px; font-size:0.72rem; background:rgba(239,68,68,0.1); color:#f87171; border-color:rgba(239,68,68,0.3);" onclick="desconectarSpotify()" title="Desconectar cuenta">
+        Desconectar
+      </button>
+    </div>
+  </div>
+
+  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <button type="button" class="btn-spotify-connect" id="btn-spotify-login" onclick="abrirModalConectarSpotify()" style="flex:1; min-width:180px; justify-content:center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/></svg>
+      <span id="txt-btn-spotify" data-i18n="cfg_spotify_btn_connect">Conectar con Spotify</span>
+    </button>
+    <button type="button" class="btn-today-pill" id="btn-spotify-ver-stats" style="height:38px; padding:0 14px; font-size:0.8rem; display:none; align-items:center; gap:6px;" onclick="abrirModalEstadisticasSpotify()">
+      <span>📊</span> <span data-i18n="cfg_spotify_btn_stats">Ver Estadísticas</span>
+    </button>
+  </div>
+</div>
+
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
 
@@ -4525,7 +4579,133 @@ html[data-app-theme="minimalist"] .nav-categories-row {
       <button type="button" class="btn-modal-save" onclick="guardarPrivacidadAmigos()" data-i18n="btn_save_privacy">Guardar Privacidad</button>
     </div>
   </div>
-</div> <!-- MODAL AUTENTICACIÓN MULTI-USUARIO (SUPABASE + GOOGLE + CONTRASEÑA) --> <div id="modal-auth-supabase" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:440px;"> <h3 style="display:flex; align-items:center; justify-content:space-between;">
+<!-- MODAL CONECTAR SPOTIFY (PKCE OAUTH) -->
+<div id="modal-spotify-connect" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConectarSpotify()">
+  <div class="modal-box" style="max-width:480px; max-height:90vh; overflow-y:auto;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#1DB954">
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/>
+        </svg>
+        <h3 style="margin:0; font-size:1.15rem; color:var(--text);">Conectar con Spotify</h3>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalConectarSpotify()">✕</button>
+    </div>
+
+    <p style="font-size:0.83rem; color:var(--muted); margin-bottom:14px; line-height:1.4;">
+      Conecta tu cuenta de Spotify mediante autorización segura oficial (OAuth PKCE) para sincronizar tus artistas favoritos, pistas más escuchadas y tiempo de música.
+    </p>
+
+    <!-- Instrucciones claras y amigables paso a paso -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-bottom:14px; font-size:0.8rem; line-height:1.45;">
+      <div style="font-weight:700; color:var(--text); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+        <span>ℹ️</span> <span>Pasos para habilitar la conexión:</span>
+      </div>
+      <ol style="margin:0 0 10px 18px; padding:0; color:var(--muted);">
+        <li style="margin-bottom:4px;">Abre gratis el <a href="https://developer.spotify.com/dashboard" target="_blank" rel="noopener noreferrer" style="color:#10b981; font-weight:700; text-decoration:underline;">Spotify Developer Dashboard</a> y crea una aplicación.</li>
+        <li style="margin-bottom:6px;">En los Ajustes (Settings) de tu app, añade este <strong>Redirect URI</strong>:</li>
+      </ol>
+      <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:6px 10px;">
+        <span id="spotify-redirect-uri-display" style="font-size:0.75rem; color:var(--text); font-family:monospace; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1;"></span>
+        <button type="button" class="btn-today-pill" style="height:26px; padding:0 8px; font-size:0.72rem; flex-shrink:0;" onclick="copiarSpotifyRedirectUri()">📋 Copiar</button>
+      </div>
+      <div style="color:var(--muted); font-size:0.78rem;">
+        3. Copia el <strong>Client ID</strong> de tu app de Spotify y pégalo abajo:
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-bottom:14px;">
+      <label style="font-weight:700; font-size:0.84rem; display:block; margin-bottom:4px;">Spotify Client ID:</label>
+      <input type="text" id="spotify-input-client-id" class="form-input" placeholder="Ej: 4d28f804ab7242... (Client ID de 32 caracteres)">
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:8px;">
+      <button type="button" class="btn-spotify-connect" onclick="iniciarFlujoSpotifyAuth()" style="width:100%; justify-content:center; padding:12px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#000"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/></svg>
+        <span>Autorizar y Conectar con Spotify</span>
+      </button>
+      
+      <button type="button" class="btn-today-pill" onclick="cargarDatosDemoSpotify()" style="height:36px; width:100%; justify-content:center; font-size:0.8rem; background:rgba(56,189,248,0.08); border-color:rgba(56,189,248,0.3); color:var(--accent);">
+        ✨ ¿Quieres probarlo ya? Cargar datos de prueba
+      </button>
+    </div>
+
+    <div class="modal-actions" style="margin-top:14px; justify-content:flex-end;">
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarSpotify()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ESTADÍSTICAS SPOTIFY -->
+<div id="modal-spotify-stats" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalEstadisticasSpotify()">
+  <div class="modal-box" style="max-width:580px; max-height:90vh; overflow-y:auto; display:flex; flex-direction:column; padding:0; border-radius:20px; overflow:hidden;">
+    
+    <!-- Encabezado -->
+    <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--header-bg);">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#1DB954" style="flex-shrink:0;">
+          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/>
+        </svg>
+        <div>
+          <h3 style="margin:0; font-size:1.15rem; color:var(--text); font-weight:800; line-height:1.2;">Estadísticas de Spotify</h3>
+          <span id="spotify-stats-user-display" style="font-size:0.72rem; color:var(--muted); font-weight:600;">Mi actividad musical</span>
+        </div>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalEstadisticasSpotify()">✕</button>
+    </div>
+
+    <!-- Contenido Scrollable -->
+    <div style="padding:16px 20px; overflow-y:auto; flex:1; display:flex; flex-direction:column; gap:16px;">
+      
+      <!-- Resumen Métricas Rápidas -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px;">
+        <div class="spotify-stat-card">
+          <span style="font-size:1.6rem;">⏱️</span>
+          <div>
+            <div id="sp-stat-minutes" style="font-size:1.1rem; font-weight:800; color:var(--text);">--</div>
+            <div style="font-size:0.72rem; color:var(--muted);">Minutos recientes</div>
+          </div>
+        </div>
+        <div class="spotify-stat-card">
+          <span style="font-size:1.6rem;">🎵</span>
+          <div>
+            <div id="sp-stat-tracks-count" style="font-size:1.1rem; font-weight:800; color:var(--text);">--</div>
+            <div style="font-size:0.72rem; color:var(--muted);">Canciones analizadas</div>
+          </div>
+        </div>
+        <div class="spotify-stat-card">
+          <span style="font-size:1.6rem;">🎤</span>
+          <div>
+            <div id="sp-stat-top-genre" style="font-size:0.95rem; font-weight:800; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">--</div>
+            <div style="font-size:0.72rem; color:var(--muted);">Género favorito</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selector de Secciones (Top Artistas vs Top Canciones) -->
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+        <div style="display:flex; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:3px; gap:4px;">
+          <button type="button" class="spotify-pill-tab active" id="sp-tab-artists" onclick="cambiarTabSpotifyStats('artists')">🎤 Top Artistas</button>
+          <button type="button" class="spotify-pill-tab" id="sp-tab-tracks" onclick="cambiarTabSpotifyStats('tracks')">🎵 Top Canciones</button>
+        </div>
+        <button type="button" class="btn-today-pill" style="height:30px; font-size:0.75rem; padding:0 10px;" onclick="actualizarDatosSpotify(true)">
+          <span>🔄 Actualizar</span>
+        </button>
+      </div>
+
+      <!-- Contenedor Listado -->
+      <div id="spotify-stats-content-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+
+    <!-- Pie del Modal -->
+    <div style="padding:12px 20px; border-top:1px solid var(--border); background:var(--header-bg); display:flex; justify-content:space-between; align-items:center;">
+      <span id="spotify-stats-sync-time" style="font-size:0.72rem; color:var(--muted);">Sincronizado</span>
+      <button type="button" class="btn-modal-save" onclick="cerrarModalEstadisticasSpotify()" style="padding:6px 16px; font-size:0.84rem;">Listo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL AUTENTICACIÓN MULTI-USUARIO (SUPABASE + GOOGLE + CONTRASEÑA) --> <div id="modal-auth-supabase" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:440px;"> <h3 style="display:flex; align-items:center; justify-content:space-between;">
 <span data-i18n="auth_modal_title">🔐 Cuenta Mediary</span> <span style="font-size:0.7rem; background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.35); padding:3px 8px; border-radius:20px; font-weight:700;">⚡ Supabase Cloud</span> </h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" data-i18n="auth_modal_desc">Cada usuario tiene su propio historial, watchlists, estadísticas y favoritos sincronizados en la nube.</p>
 <div id="auth-saved-accounts-box" style="display:none; margin-bottom:12px;"> <label style="font-size:0.76rem; color:var(--muted); display:block; margin-bottom:5px;" data-i18n="auth_recent_accounts">Cuentas recientes en este dispositivo:</label> <div id="auth-saved-accounts-list" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
 </div> <button type="button" class="btn-google-login" style="width:100%; justify-content:center; padding:11px 16px; font-size:0.9rem; margin-bottom:12px;" onclick="iniciarFlujoGoogleAuth()"> <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
@@ -9862,6 +10042,10 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cfg_account_hint": "Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.",
     "cfg_btn_auth": "Iniciar sesión / Cambiar cuenta",
     "cfg_btn_migrar": "☁️ Migrar mis datos de Google Sheets a Supabase",
+    "cfg_spotify_title": "Spotify",
+    "cfg_spotify_hint": "Conecta tu cuenta para sincronizar estadísticas musicales, ver tus artistas y canciones favoritas y calcular tus horas escuchadas.",
+    "cfg_spotify_btn_connect": "Conectar con Spotify",
+    "cfg_spotify_btn_stats": "Ver Estadísticas",
     "amigo_stat_title": "Métricas de Contenido",
     "amigo_stat_total_lbl": "Total Registros",
     "amigo_stat_total_sub": "items completados",
@@ -10297,6 +10481,10 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cfg_account_hint": "Sign in with your account to back up and sync your library in the cloud.",
     "cfg_btn_auth": "Sign in / Switch account",
     "cfg_btn_migrar": "☁️ Migrate my data from Google Sheets to Supabase",
+    "cfg_spotify_title": "Spotify",
+    "cfg_spotify_hint": "Connect your account to sync music stats, favorite artists and top tracks, and calculate your listening hours.",
+    "cfg_spotify_btn_connect": "Connect with Spotify",
+    "cfg_spotify_btn_stats": "View Stats",
     "amigo_stat_title": "Content Metrics",
     "amigo_stat_total_lbl": "Total Records",
     "amigo_stat_total_sub": "completed items",
@@ -13293,6 +13481,7 @@ function abrirModalConfiguracion() {
     if (igdbTokInp) igdbTokInp.value = window.IGDB_TOKEN || IGDB_TOKEN || '';
     actualizarTarjetasVisualesConfig(); 
     if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
+    if (typeof actualizarUISpotify === 'function') actualizarUISpotify();
     const modalCfg = document.getElementById('modal-configuracion');
     if (modalCfg) modalCfg.style.display = 'flex';
   } catch(err) {
@@ -13375,6 +13564,582 @@ function guardarYCerrarConfiguracion() {
   }
 }
 function restablecerConfiguracionPorDefecto() { try { localStorage.removeItem('mediary_user_custom_font'); } catch (e) {} userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "default", appTheme: "default", uiStyle: "modern", showEmojis: true, lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
+
+// --- INTEGRACIÓN SPOTIFY (WEB API PKCE OAUTH & ESTADÍSTICAS) ---
+var estadoSpotify = {
+  currentTab: 'artists'
+};
+
+function escHtmlSpotify_(str) {
+  if (str === undefined || str === null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function obtenerSpotifyRedirectUri() {
+  return window.location.origin + window.location.pathname;
+}
+
+function generarCadenaAleatoriaSpotify(length = 64) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+  let result = '';
+  const values = new Uint8Array(length);
+  if (window.crypto && window.crypto.getRandomValues) {
+    window.crypto.getRandomValues(values);
+    for (let i = 0; i < length; i++) {
+      result += chars[values[i] % chars.length];
+    }
+  } else {
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+  }
+  return result;
+}
+
+async function generarCodeChallengeSpotify(verifier) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(verifier);
+  const digest = await window.crypto.subtle.digest('SHA-256', data);
+  const bin = String.fromCharCode.apply(null, [...new Uint8Array(digest)]);
+  return btoa(bin)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/, '');
+}
+
+async function iniciarFlujoSpotifyAuth() {
+  const clientIdInput = document.getElementById('spotify-input-client-id');
+  let clientId = clientIdInput ? clientIdInput.value.trim() : '';
+  if (!clientId) {
+    clientId = localStorage.getItem('mediary_spotify_client_id') || '';
+  }
+  if (!clientId) {
+    mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Please enter your Spotify Client ID' : 'Por favor ingresa tu Spotify Client ID');
+    if (clientIdInput) clientIdInput.focus();
+    return;
+  }
+  localStorage.setItem('mediary_spotify_client_id', clientId);
+
+  const verifier = generarCadenaAleatoriaSpotify(64);
+  const challenge = await generarCodeChallengeSpotify(verifier);
+  const state = generarCadenaAleatoriaSpotify(16);
+  const redirectUri = obtenerSpotifyRedirectUri();
+
+  localStorage.setItem('mediary_spotify_code_verifier', verifier);
+  localStorage.setItem('mediary_spotify_auth_state', state);
+
+  const scopes = [
+    'user-read-private',
+    'user-read-email',
+    'user-top-read',
+    'user-read-recently-played',
+    'user-read-currently-playing'
+  ].join(' ');
+
+  const params = new URLSearchParams({
+    client_id: clientId,
+    response_type: 'code',
+    redirect_uri: redirectUri,
+    code_challenge_method: 'S256',
+    code_challenge: challenge,
+    state: state,
+    scope: scopes
+  });
+
+  window.location.href = `https://accounts.spotify.com/authorize?${params.toString()}`;
+}
+
+async function procesarRetornoSpotifyAuth() {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const state = urlParams.get('state');
+    const error = urlParams.get('error');
+
+    if (error) {
+      console.warn('Spotify auth error:', error);
+      mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Spotify connection cancelled' : 'Conexión con Spotify cancelada');
+      limpiarSpotifyParamsUrl();
+      actualizarUISpotify();
+      return;
+    }
+
+    if (!code) {
+      actualizarUISpotify();
+      return;
+    }
+
+    const savedState = localStorage.getItem('mediary_spotify_auth_state');
+    const verifier = localStorage.getItem('mediary_spotify_code_verifier');
+    const clientId = localStorage.getItem('mediary_spotify_client_id');
+    const redirectUri = obtenerSpotifyRedirectUri();
+
+    if (state && savedState && state !== savedState) {
+      console.error('Spotify state mismatch');
+      limpiarSpotifyParamsUrl();
+      actualizarUISpotify();
+      return;
+    }
+
+    if (!verifier || !clientId) {
+      limpiarSpotifyParamsUrl();
+      actualizarUISpotify();
+      return;
+    }
+
+    const res = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        client_id: clientId,
+        grant_type: 'authorization_code',
+        code: code,
+        redirect_uri: redirectUri,
+        code_verifier: verifier
+      })
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      console.error('Error exchanging Spotify code:', errData);
+      mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Failed to authorize Spotify' : 'Error al autorizar con Spotify');
+      limpiarSpotifyParamsUrl();
+      actualizarUISpotify();
+      return;
+    }
+
+    const data = await res.json();
+    const token = data.access_token;
+    const refreshToken = data.refresh_token;
+    const expiresAt = Date.now() + (data.expires_in * 1000);
+
+    localStorage.setItem('mediary_spotify_token', token);
+    if (refreshToken) localStorage.setItem('mediary_spotify_refresh_token', refreshToken);
+    localStorage.setItem('mediary_spotify_expires_at', String(expiresAt));
+
+    localStorage.removeItem('mediary_spotify_code_verifier');
+    localStorage.removeItem('mediary_spotify_auth_state');
+    limpiarSpotifyParamsUrl();
+
+    await actualizarDatosSpotify(false);
+    mostrarToastPersonalizado(userPrefs.lang === 'en' ? '🎉 Connected to Spotify successfully!' : '🎉 ¡Conectado exitosamente con Spotify!');
+    actualizarUISpotify();
+  } catch (err) {
+    console.error('Error procesando retorno Spotify:', err);
+    limpiarSpotifyParamsUrl();
+    actualizarUISpotify();
+  }
+}
+
+function limpiarSpotifyParamsUrl() {
+  try {
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+  } catch (e) {}
+}
+
+async function obtenerTokenSpotifyValido() {
+  let token = localStorage.getItem('mediary_spotify_token');
+  const expiresAt = Number(localStorage.getItem('mediary_spotify_expires_at')) || 0;
+  const refreshToken = localStorage.getItem('mediary_spotify_refresh_token');
+  const clientId = localStorage.getItem('mediary_spotify_client_id');
+
+  if ((!token || Date.now() > expiresAt - 60000) && refreshToken && clientId) {
+    try {
+      const res = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken,
+          client_id: clientId
+        })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        token = data.access_token;
+        localStorage.setItem('mediary_spotify_token', token);
+        if (data.refresh_token) localStorage.setItem('mediary_spotify_refresh_token', data.refresh_token);
+        localStorage.setItem('mediary_spotify_expires_at', String(Date.now() + (data.expires_in * 1000)));
+      }
+    } catch (e) {
+      console.warn('Error refrescando token Spotify:', e);
+    }
+  }
+  return token;
+}
+
+async function actualizarDatosSpotify(notificar = false) {
+  const token = await obtenerTokenSpotifyValido();
+  if (!token) {
+    if (notificar) mostrarToastPersonalizado('No hay sesión activa de Spotify');
+    return;
+  }
+
+  try {
+    const [meRes, topArtRes, topTracksRes, recentRes] = await Promise.all([
+      fetch('https://api.spotify.com/v1/me', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
+      fetch('https://api.spotify.com/v1/me/top/artists?limit=15&time_range=medium_term', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
+      fetch('https://api.spotify.com/v1/me/top/tracks?limit=15&time_range=medium_term', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
+      fetch('https://api.spotify.com/v1/me/player/recently-played?limit=50', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null)
+    ]);
+
+    if (meRes && meRes.ok) {
+      const me = await meRes.json();
+      localStorage.setItem('mediary_spotify_user', JSON.stringify({
+        id: me.id,
+        display_name: me.display_name || me.id,
+        avatar: me.images?.[0]?.url || '',
+        followers: me.followers?.total || 0,
+        product: me.product || 'free',
+        country: me.country || ''
+      }));
+    }
+
+    const stats = {};
+    if (topArtRes && topArtRes.ok) {
+      const artData = await topArtRes.json();
+      stats.topArtists = (artData.items || []).map(a => ({
+        id: a.id,
+        name: a.name,
+        genres: (a.genres || []).slice(0, 3),
+        image: a.images?.[0]?.url || '',
+        popularity: a.popularity,
+        url: a.external_urls?.spotify || ''
+      }));
+    }
+
+    if (topTracksRes && topTracksRes.ok) {
+      const trkData = await topTracksRes.json();
+      stats.topTracks = (trkData.items || []).map(t => ({
+        id: t.id,
+        name: t.name,
+        artist: t.artists?.map(x => x.name).join(', ') || '',
+        album: t.album?.name || '',
+        image: t.album?.images?.[0]?.url || '',
+        duration_ms: t.duration_ms,
+        url: t.external_urls?.spotify || ''
+      }));
+    }
+
+    if (recentRes && recentRes.ok) {
+      const recData = await recentRes.json();
+      const items = recData.items || [];
+      const totalMs = items.reduce((acc, it) => acc + (it.track?.duration_ms || 0), 0);
+      stats.recentlyPlayedCount = items.length;
+      stats.recentMinutes = Math.round(totalMs / 60000);
+      stats.recentHours = (totalMs / 3600000).toFixed(1);
+    }
+
+    stats.lastUpdated = new Date().toISOString();
+    localStorage.setItem('mediary_spotify_stats', JSON.stringify(stats));
+
+    actualizarUISpotify();
+    renderizarContenidoModalSpotifyStats();
+    if (notificar) mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Spotify stats updated!' : '¡Estadísticas de Spotify actualizadas!');
+  } catch (err) {
+    console.error('Error actualizando datos Spotify:', err);
+    if (notificar) mostrarToastPersonalizado('Error al consultar Spotify');
+  }
+}
+
+function desconectarSpotify() {
+  localStorage.removeItem('mediary_spotify_token');
+  localStorage.removeItem('mediary_spotify_refresh_token');
+  localStorage.removeItem('mediary_spotify_expires_at');
+  localStorage.removeItem('mediary_spotify_user');
+  localStorage.removeItem('mediary_spotify_stats');
+  mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Spotify disconnected' : 'Cuenta de Spotify desconectada');
+  actualizarUISpotify();
+}
+
+function actualizarUISpotify() {
+  const token = localStorage.getItem('mediary_spotify_token');
+  const userJson = localStorage.getItem('mediary_spotify_user');
+  let user = null;
+  if (userJson) {
+    try { user = JSON.parse(userJson); } catch (e) {}
+  }
+
+  const badge = document.getElementById('cfg-spotify-badge');
+  const connectedBox = document.getElementById('cfg-spotify-connected-box');
+  const btnLogin = document.getElementById('btn-spotify-login');
+  const txtLogin = document.getElementById('txt-btn-spotify');
+  const btnStats = document.getElementById('btn-spotify-ver-stats');
+  const avatarEl = document.getElementById('cfg-spotify-user-avatar');
+  const nameEl = document.getElementById('cfg-spotify-user-name');
+  const subEl = document.getElementById('cfg-spotify-user-sub');
+
+  if (token && user) {
+    if (badge) {
+      badge.textContent = userPrefs.lang === 'en' ? '✓ Connected' : '✓ Conectado';
+      badge.style.background = 'rgba(29, 185, 84, 0.16)';
+      badge.style.borderColor = 'rgba(29, 185, 84, 0.45)';
+      badge.style.color = '#10b981';
+      badge.style.fontWeight = '700';
+    }
+    if (connectedBox) connectedBox.style.display = 'block';
+    if (nameEl) nameEl.textContent = user.display_name || 'Usuario Spotify';
+    if (subEl) subEl.textContent = `${user.product === 'premium' ? 'Spotify Premium' : 'Spotify Free'} · ${user.followers ? user.followers + ' seguidores' : 'Conectado'}`;
+    if (avatarEl) {
+      avatarEl.innerHTML = user.avatar
+        ? `<img src="${user.avatar}" alt="Spotify Avatar" style="width:100%;height:100%;object-fit:cover;">`
+        : `🟢`;
+    }
+    if (txtLogin) txtLogin.textContent = userPrefs.lang === 'en' ? 'Spotify Settings' : 'Ajustes de Spotify';
+    if (btnStats) btnStats.style.display = 'inline-flex';
+  } else {
+    if (badge) {
+      badge.textContent = userPrefs.lang === 'en' ? 'Not connected' : 'No conectado';
+      badge.style.background = 'rgba(255, 255, 255, 0.06)';
+      badge.style.borderColor = 'var(--border)';
+      badge.style.color = 'var(--muted)';
+      badge.style.fontWeight = '600';
+    }
+    if (connectedBox) connectedBox.style.display = 'none';
+    if (txtLogin) txtLogin.textContent = userPrefs.lang === 'en' ? 'Connect with Spotify' : 'Conectar con Spotify';
+    if (btnStats) btnStats.style.display = 'none';
+  }
+}
+
+function abrirModalConectarSpotify() {
+  const modal = document.getElementById('modal-spotify-connect');
+  if (!modal) return;
+  const inClientId = document.getElementById('spotify-input-client-id');
+  if (inClientId) inClientId.value = localStorage.getItem('mediary_spotify_client_id') || '';
+  const uriDisp = document.getElementById('spotify-redirect-uri-display');
+  if (uriDisp) uriDisp.textContent = obtenerSpotifyRedirectUri();
+  modal.style.display = 'flex';
+}
+
+function cerrarModalConectarSpotify() {
+  const modal = document.getElementById('modal-spotify-connect');
+  if (modal) modal.style.display = 'none';
+}
+
+function copiarSpotifyRedirectUri() {
+  const uri = obtenerSpotifyRedirectUri();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(uri).then(() => {
+      mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Redirect URI copied to clipboard! 📋' : '¡Redirect URI copiado al portapapeles! 📋');
+    }).catch(() => {
+      prompt('Copia esta URL:', uri);
+    });
+  } else {
+    prompt('Copia esta URL:', uri);
+  }
+}
+
+function cargarDatosDemoSpotify() {
+  const demoUser = {
+    id: 'spotify_demo_user',
+    display_name: 'Cinéfilo & Melómano',
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+    followers: 142,
+    product: 'premium',
+    country: 'CL'
+  };
+  const demoStats = {
+    topArtists: [
+      { id: '1', name: 'Radiohead', genres: ['art rock', 'alternative rock'], image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', popularity: 84 },
+      { id: '2', name: 'Daft Punk', genres: ['electronic', 'french house'], image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', popularity: 86 },
+      { id: '3', name: 'Hans Zimmer', genres: ['soundtrack', 'orchestral'], image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=120&auto=format&fit=crop&q=80', popularity: 82 },
+      { id: '4', name: 'Pink Floyd', genres: ['progressive rock', 'psychedelic'], image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=120&auto=format&fit=crop&q=80', popularity: 85 },
+      { id: '5', name: 'The Weeknd', genres: ['pop', 'r&b'], image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=120&auto=format&fit=crop&q=80', popularity: 95 }
+    ],
+    topTracks: [
+      { id: 't1', name: 'Starboy', artist: 'The Weeknd, Daft Punk', album: 'Starboy', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=120&auto=format&fit=crop&q=80', duration_ms: 230453 },
+      { id: 't2', name: 'Time', artist: 'Hans Zimmer', album: 'Inception (OST)', image: 'https://images.unsplash.com/photo-1442504028989-ab58b5f29a4a?w=120&auto=format&fit=crop&q=80', duration_ms: 275000 },
+      { id: 't3', name: 'Paranoid Android', artist: 'Radiohead', album: 'OK Computer', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', duration_ms: 383000 },
+      { id: 't4', name: 'One More Time', artist: 'Daft Punk', album: 'Discovery', image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', duration_ms: 320000 },
+      { id: 't5', name: 'Comfortably Numb', artist: 'Pink Floyd', album: 'The Wall', image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=120&auto=format&fit=crop&q=80', duration_ms: 382000 }
+    ],
+    recentlyPlayedCount: 50,
+    recentMinutes: 185,
+    recentHours: '3.1',
+    lastUpdated: new Date().toISOString()
+  };
+
+  localStorage.setItem('mediary_spotify_token', 'demo_token_' + Date.now());
+  localStorage.setItem('mediary_spotify_expires_at', String(Date.now() + 86400000));
+  localStorage.setItem('mediary_spotify_user', JSON.stringify(demoUser));
+  localStorage.setItem('mediary_spotify_stats', JSON.stringify(demoStats));
+
+  cerrarModalConectarSpotify();
+  actualizarUISpotify();
+  mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Demo Spotify account loaded! 🟢' : '¡Cuenta de prueba Spotify cargada! 🟢');
+  abrirModalEstadisticasSpotify();
+}
+
+function abrirModalEstadisticasSpotify() {
+  const modal = document.getElementById('modal-spotify-stats');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  renderizarContenidoModalSpotifyStats();
+}
+
+function cerrarModalEstadisticasSpotify() {
+  const modal = document.getElementById('modal-spotify-stats');
+  if (modal) modal.style.display = 'none';
+}
+
+function cambiarTabSpotifyStats(tab) {
+  estadoSpotify.currentTab = tab;
+  const btnArt = document.getElementById('sp-tab-artists');
+  const btnTrk = document.getElementById('sp-tab-tracks');
+  if (btnArt) btnArt.classList.toggle('active', tab === 'artists');
+  if (btnTrk) btnTrk.classList.toggle('active', tab === 'tracks');
+  renderizarContenidoModalSpotifyStats();
+}
+
+function renderizarContenidoModalSpotifyStats() {
+  const statsRaw = localStorage.getItem('mediary_spotify_stats');
+  const userRaw = localStorage.getItem('mediary_spotify_user');
+  let stats = null;
+  let user = null;
+  try { if (statsRaw) stats = JSON.parse(statsRaw); } catch(e) {}
+  try { if (userRaw) user = JSON.parse(userRaw); } catch(e) {}
+
+  const l = userPrefs.lang || 'es';
+  const displayUser = document.getElementById('spotify-stats-user-display');
+  if (displayUser && user) {
+    displayUser.textContent = `${user.display_name} (${user.product === 'premium' ? 'Premium' : 'Free'})`;
+  }
+
+  const minEl = document.getElementById('sp-stat-minutes');
+  const countEl = document.getElementById('sp-stat-tracks-count');
+  const genreEl = document.getElementById('sp-stat-top-genre');
+  const syncTimeEl = document.getElementById('spotify-stats-sync-time');
+
+  if (stats) {
+    if (minEl) minEl.textContent = stats.recentMinutes ? `${stats.recentMinutes} min` : (stats.recentHours ? `${stats.recentHours} hrs` : '--');
+    if (countEl) countEl.textContent = (stats.topTracks?.length || 0) + (stats.topArtists?.length || 0);
+    const topG = stats.topArtists?.[0]?.genres?.[0];
+    if (genreEl) genreEl.textContent = topG ? (topG.charAt(0).toUpperCase() + topG.slice(1)) : 'Música Variada';
+    if (syncTimeEl && stats.lastUpdated) {
+      try {
+        const d = new Date(stats.lastUpdated);
+        syncTimeEl.textContent = `${l === 'en' ? 'Synced at' : 'Sincronizado:'} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      } catch (e) {}
+    }
+  }
+
+  const listContainer = document.getElementById('spotify-stats-content-list');
+  if (!listContainer) return;
+
+  if (!stats) {
+    listContainer.innerHTML = `
+      <div style="text-align:center; padding:30px 20px; color:var(--muted); font-size:0.85rem;">
+        <span style="font-size:2rem; display:block; margin-bottom:8px;">🎵</span>
+        ${l === 'en' ? 'No stats available yet. Click "Update" to fetch from Spotify.' : 'No hay estadísticas disponibles aún. Haz clic en "Actualizar" para consultar Spotify.'}
+      </div>
+    `;
+    return;
+  }
+
+  if (estadoSpotify.currentTab === 'artists') {
+    const artists = stats.topArtists || [];
+    if (!artists.length) {
+      listContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--muted); font-size:0.85rem;">${l === 'en' ? 'No artist data found.' : 'No se encontraron artistas.'}</div>`;
+      return;
+    }
+    listContainer.innerHTML = artists.map((a, idx) => {
+      const imgHtml = a.image
+        ? `<img src="${a.image}" alt="${escHtmlSpotify_(a.name)}" style="width:42px;height:42px;border-radius:50%;object-fit:cover;border:1.5px solid rgba(29,185,84,0.4);">`
+        : `<div style="width:42px;height:42px;border-radius:50%;background:var(--bg);border:1px solid var(--border);display:grid;place-items:center;font-size:1.2rem;">🎤</div>`;
+      const genresHtml = (a.genres || []).map(g => `<span class="feed-cat-badge" style="font-size:0.68rem;padding:1px 6px;">${escHtmlSpotify_(g)}</span>`).join(' ');
+      
+      const payloadEnc = encodeURIComponent(JSON.stringify({
+        titulo: a.name,
+        tituloOriginal: a.name,
+        creador: a.name,
+        categoria: 'Musica',
+        subcategoria: 'Álbum',
+        poster: a.image
+      }));
+
+      return `
+        <div class="spotify-item-row">
+          <div class="spotify-rank-badge">#${idx + 1}</div>
+          ${imgHtml}
+          <div style="min-width:0; flex:1;">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:6px;">
+              <strong style="font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtmlSpotify_(a.name)}</strong>
+              ${a.popularity ? `<span style="font-size:0.7rem; color:#10b981; font-weight:700;">★ ${a.popularity}%</span>` : ''}
+            </div>
+            <div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:2px;">
+              ${genresHtml || '<span style="font-size:0.7rem; color:var(--muted);">Artista</span>'}
+            </div>
+          </div>
+          <button type="button" class="btn-today-pill" style="height:28px; padding:0 8px; font-size:0.72rem; flex-shrink:0;" onclick="guardarItemSpotifyEnMediary('${payloadEnc}', this)" title="${l === 'en' ? 'Add artist album to Watchlist' : 'Guardar en mi Watchlist de música'}">
+            <span>📌</span>
+          </button>
+        </div>
+      `;
+    }).join('');
+  } else {
+    const tracks = stats.topTracks || [];
+    if (!tracks.length) {
+      listContainer.innerHTML = `<div style="text-align:center; padding:20px; color:var(--muted); font-size:0.85rem;">${l === 'en' ? 'No track data found.' : 'No se encontraron canciones.'}</div>`;
+      return;
+    }
+    listContainer.innerHTML = tracks.map((t, idx) => {
+      const min = Math.floor((t.duration_ms || 0) / 60000);
+      const sec = Math.floor(((t.duration_ms || 0) % 60000) / 1000).toString().padStart(2, '0');
+      const durationStr = `${min}:${sec}`;
+      const imgHtml = t.image
+        ? `<img src="${t.image}" alt="${escHtmlSpotify_(t.name)}" style="width:40px;height:40px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);">`
+        : `<div style="width:40px;height:40px;border-radius:6px;background:var(--bg);border:1px solid var(--border);display:grid;place-items:center;font-size:1.1rem;">🎵</div>`;
+
+      const payloadEnc = encodeURIComponent(JSON.stringify({
+        titulo: t.album || t.name,
+        tituloOriginal: t.name,
+        creador: t.artist,
+        categoria: 'Musica',
+        subcategoria: 'Canción',
+        poster: t.image
+      }));
+
+      return `
+        <div class="spotify-item-row">
+          <div class="spotify-rank-badge">#${idx + 1}</div>
+          ${imgHtml}
+          <div style="min-width:0; flex:1;">
+            <strong style="font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlSpotify_(t.name)}</strong>
+            <span style="font-size:0.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlSpotify_(t.artist)} ${t.album ? '· ' + escHtmlSpotify_(t.album) : ''}</span>
+          </div>
+          <span style="font-size:0.72rem; color:var(--muted); font-weight:600; flex-shrink:0;">${durationStr}</span>
+          <button type="button" class="btn-today-pill" style="height:28px; padding:0 8px; font-size:0.72rem; flex-shrink:0;" onclick="guardarItemSpotifyEnMediary('${payloadEnc}', this)" title="${l === 'en' ? 'Add track to Watchlist' : 'Guardar canción en mi Watchlist'}">
+            <span>📌</span>
+          </button>
+        </div>
+      `;
+    }).join('');
+  }
+}
+
+function guardarItemSpotifyEnMediary(itemPayloadEnc, btnEl) {
+  try {
+    const item = JSON.parse(decodeURIComponent(itemPayloadEnc));
+    if (btnEl) {
+      btnEl.classList.add('added');
+      btnEl.innerHTML = `<span>✓</span>`;
+      btnEl.style.color = '#10b981';
+      btnEl.style.borderColor = 'rgba(16,185,129,0.4)';
+      btnEl.disabled = true;
+    }
+    agregarAWatchlistDirecto(item, btnEl);
+    mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Added to your Music Watchlist!' : '¡Agregado a tu Watchlist de Música! 🎵');
+  } catch (err) {
+    console.error('Error guardando item de Spotify en Mediary:', err);
+  }
+}
+
 // --- IMPORTAR Y EXPORTAR ARCHIVOS DE TEXTO ---
 function abrirModalImportarExportar() { document.getElementById('modal-configuracion').style.display = 'none'; document.getElementById('input-file-import').value = ''; document.getElementById('textarea-import-raw').value = ''; estado.registrosImportarPendientes = [];
 document.getElementById('import-preview-box').innerHTML = 'Sube un archivo .txt o pega texto arriba para previsualizar los registros detectados.'; document.getElementById('modal-importar-exportar').style.display = 'flex'; }
@@ -13975,6 +14740,9 @@ window.onload = () => {
   inicializarManejoBotonAtras(); inicializarEventosBuscadores();
   if (typeof inicializarSistemaNotificaciones === 'function') {
     inicializarSistemaNotificaciones();
+  }
+  if (typeof procesarRetornoSpotifyAuth === 'function') {
+    procesarRetornoSpotifyAuth();
   }
   setTimeout(() => reposicionarIndicadorNavMovil(), 180);
 };
