@@ -3953,14 +3953,15 @@ html[data-app-theme="minimalist"] .nav-categories-row {
     </div>
   </div>
 
-  <div style="display:flex; gap:8px; flex-wrap:wrap;">
-    <button type="button" class="btn-spotify-connect" id="btn-spotify-login" onclick="abrirModalConectarSpotify()" style="flex:1; min-width:180px; justify-content:center;">
+  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+    <button type="button" class="btn-spotify-connect" id="btn-spotify-login" onclick="iniciarFlujoSpotifyAuth()" style="flex:1; min-width:180px; justify-content:center;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/></svg>
       <span id="txt-btn-spotify" data-i18n="cfg_spotify_btn_connect">Conectar con Spotify</span>
     </button>
     <button type="button" class="btn-today-pill" id="btn-spotify-ver-stats" style="height:38px; padding:0 14px; font-size:0.8rem; display:none; align-items:center; gap:6px;" onclick="abrirModalEstadisticasSpotify()">
       <span>📊</span> <span data-i18n="cfg_spotify_btn_stats">Ver Estadísticas</span>
     </button>
+    <button type="button" class="btn-today-pill" style="height:38px; width:38px; padding:0; display:inline-flex; align-items:center; justify-content:center; font-size:0.85rem;" onclick="abrirModalConectarSpotify()" title="Opciones avanzadas / Modo prueba">⚙️</button>
   </div>
 </div>
 
@@ -4730,9 +4731,11 @@ var COMICVINE_K = '6a65faa0799e008b056e5883d0c3183048419314';
 var MARVEL_K = localStorage.getItem('mediary_marvel_key') || '';
 var IGDB_CLIENT_ID = localStorage.getItem('mediary_igdb_client_id') || '';
 var IGDB_TOKEN = localStorage.getItem('mediary_igdb_token') || '';
+var SPOTIFY_CLIENT_ID = '955a1a0ccb814981b647d24c54b38d60';
 window.TMDB_K = TMDB_K; window.RAWG_K = RAWG_K;
 window.COMICVINE_K = COMICVINE_K; window.MARVEL_K = MARVEL_K;
 window.IGDB_CLIENT_ID = IGDB_CLIENT_ID; window.IGDB_TOKEN = IGDB_TOKEN;
+window.SPOTIFY_CLIENT_ID = SPOTIFY_CLIENT_ID;
 
 var JSON_CACHE_ = new Map();
 var getJson_ = async u => {
@@ -13583,7 +13586,17 @@ function escHtmlSpotify_(str) {
 }
 
 function obtenerSpotifyRedirectUri() {
-  return window.location.origin + window.location.pathname;
+  if (window.location.hostname.includes('github.io')) {
+    return 'https://cblackmann.github.io/MyMediary/';
+  }
+  let base = window.location.origin + window.location.pathname;
+  if (base.endsWith('index.html')) {
+    base = base.slice(0, -10);
+  }
+  if (!base.endsWith('/')) {
+    base += '/';
+  }
+  return base;
 }
 
 function generarCadenaAleatoriaSpotify(length = 64) {
@@ -13616,15 +13629,7 @@ async function generarCodeChallengeSpotify(verifier) {
 
 async function iniciarFlujoSpotifyAuth() {
   const clientIdInput = document.getElementById('spotify-input-client-id');
-  let clientId = clientIdInput ? clientIdInput.value.trim() : '';
-  if (!clientId) {
-    clientId = localStorage.getItem('mediary_spotify_client_id') || '';
-  }
-  if (!clientId) {
-    mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Please enter your Spotify Client ID' : 'Por favor ingresa tu Spotify Client ID');
-    if (clientIdInput) clientIdInput.focus();
-    return;
-  }
+  let clientId = (clientIdInput && clientIdInput.value.trim()) || localStorage.getItem('mediary_spotify_client_id') || window.SPOTIFY_CLIENT_ID || '955a1a0ccb814981b647d24c54b38d60';
   localStorage.setItem('mediary_spotify_client_id', clientId);
 
   const verifier = generarCadenaAleatoriaSpotify(64);
@@ -13893,7 +13898,8 @@ function actualizarUISpotify() {
         ? `<img src="${user.avatar}" alt="Spotify Avatar" style="width:100%;height:100%;object-fit:cover;">`
         : `🟢`;
     }
-    if (txtLogin) txtLogin.textContent = userPrefs.lang === 'en' ? 'Spotify Settings' : 'Ajustes de Spotify';
+    if (btnLogin) btnLogin.onclick = () => actualizarDatosSpotify(true);
+    if (txtLogin) txtLogin.textContent = userPrefs.lang === 'en' ? 'Sync Spotify' : 'Sincronizar Spotify';
     if (btnStats) btnStats.style.display = 'inline-flex';
   } else {
     if (badge) {
@@ -13904,6 +13910,7 @@ function actualizarUISpotify() {
       badge.style.fontWeight = '600';
     }
     if (connectedBox) connectedBox.style.display = 'none';
+    if (btnLogin) btnLogin.onclick = () => iniciarFlujoSpotifyAuth();
     if (txtLogin) txtLogin.textContent = userPrefs.lang === 'en' ? 'Connect with Spotify' : 'Conectar con Spotify';
     if (btnStats) btnStats.style.display = 'none';
   }
@@ -13913,7 +13920,7 @@ function abrirModalConectarSpotify() {
   const modal = document.getElementById('modal-spotify-connect');
   if (!modal) return;
   const inClientId = document.getElementById('spotify-input-client-id');
-  if (inClientId) inClientId.value = localStorage.getItem('mediary_spotify_client_id') || '';
+  if (inClientId) inClientId.value = localStorage.getItem('mediary_spotify_client_id') || window.SPOTIFY_CLIENT_ID || '955a1a0ccb814981b647d24c54b38d60';
   const uriDisp = document.getElementById('spotify-redirect-uri-display');
   if (uriDisp) uriDisp.textContent = obtenerSpotifyRedirectUri();
   modal.style.display = 'flex';
