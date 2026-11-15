@@ -674,10 +674,19 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-spotify-card-compact::before{content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:#1DB954;opacity:0.9;}
 .home-np-cover-compact{width:64px;height:64px;border-radius:8px;overflow:hidden;background:var(--card);border:1px solid var(--border);flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
 .home-np-cover-compact img{width:100%;height:100%;object-fit:cover;display:block;}
-.home-np-center-compact{flex:1;min-width:0;display:flex;flex-direction:column;gap:1.5px;}
-.home-np-artist-compact{font-size:0.78rem;font-weight:600;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
-.home-np-album-compact{font-size:0.69rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.15;}
-.home-np-title-compact{font-size:0.96rem;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;}
+.home-np-center-compact{flex:1;min-width:0;display:flex;flex-direction:column;gap:1.5px;overflow:hidden;}
+.home-np-text-wrap{width:100%;overflow:hidden;white-space:nowrap;position:relative;}
+.home-np-text-wrap.has-overflow{mask-image:linear-gradient(to right, black calc(100% - 14px), transparent 100%);-webkit-mask-image:linear-gradient(to right, black calc(100% - 14px), transparent 100%);}
+.home-np-scrollable{display:inline-block;white-space:nowrap;will-change:transform;}
+.home-np-scrollable.is-overflowing{animation:spotifyMarquee 8s cubic-bezier(0.42, 0, 0.58, 1) infinite;}
+@keyframes spotifyMarquee{
+  0%, 20% { transform: translateX(0); }
+  60%, 80% { transform: translateX(calc(-1 * var(--overflow-dist, 30px))); }
+  95%, 100% { transform: translateX(0); }
+}
+.home-np-artist-compact{font-size:0.78rem;font-weight:600;color:var(--accent);line-height:1.2;}
+.home-np-album-compact{font-size:0.69rem;color:var(--muted);line-height:1.15;}
+.home-np-title-compact{font-size:0.96rem;font-weight:800;color:var(--text);line-height:1.25;}
 .home-np-prog-row-compact{display:flex;align-items:center;gap:8px;margin:3px 0 2px 0;}
 .home-np-prog-bg-compact{flex:1;height:4px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
 [data-theme$="-light"] .home-np-prog-bg-compact{background:rgba(0,0,0,0.08);}
@@ -1413,7 +1422,7 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-en-progreso-card-poster:hover{transform:scale(1.03);}
 .home-en-progreso-card-title{width:100%;font-weight:700;font-size:0.86rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;margin-bottom:2px;}
 .home-en-progreso-card-title:hover{color:var(--accent);}
-.home-en-progreso-card-date-top{display:none;}
+.home-en-progreso-card-date-top{font-size:0.72rem;font-weight:700;color:var(--accent);background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.18);border-radius:6px;padding:2px 6px;text-align:center;margin:0 0 6px 0;white-space:nowrap;width:100%;box-sizing:border-box;}
 .home-en-progreso-card-sub{width:100%;font-size:0.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:2px 0 6px 0;line-height:1.2;}
 .home-en-progreso-card-date{display:none;}
 .btn-terminar-card-carousel{width:auto;min-width:110px;max-width:140px;background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.32);border-radius:20px;padding:4px 12px;min-height:28px;height:28px;font-size:0.72rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 1px 4px rgba(0,0,0,0.08);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);margin:auto auto 0 auto;white-space:nowrap;letter-spacing:0.01em;}
@@ -12682,12 +12691,13 @@ function renderizarObrasEnProgresoInicio() {
 
     return `
       <div class="home-en-progreso-card" id="home-prog-${r.id}">
+        ${fechaIniDisplay ? `<div class="home-en-progreso-card-date-top">${fechaIniDisplay}</div>` : ''}
         <div class="home-en-progreso-poster-wrap" onclick="abrirFichaTecnica('${r.id}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">
           <span class="home-en-progreso-card-badge-overlay"><span class="emoji-dyn">${info.emoji}</span> ${info.label}</span>
           <img src="${posterSrc}" class="home-en-progreso-card-poster" alt="${r.titulo}">
         </div>
         <div class="home-en-progreso-card-title" onclick="abrirFichaTecnica('${r.id}')" title="${r.titulo}">${r.titulo}</div>
-        <div class="home-en-progreso-card-sub" title="${creadorStr}">${creadorStr || '—'}${fechaIniDisplay ? ` · <span style="color:var(--accent); font-weight:600;">${fechaIniDisplay}</span>` : ''}</div>
+        <div class="home-en-progreso-card-sub" title="${creadorStr}">${creadorStr || '—'}</div>
         <button type="button" class="btn-terminar-card-carousel" onclick="event.stopPropagation(); abrirModalTerminarObra('${r.id}')" title="${l === 'en' ? 'Mark as finished & review' : 'Completar y calificar obra'}">
           <span class="emoji-dyn">✓</span> <span>${l === 'en' ? 'Finish' : 'Terminar'}</span>
         </button>
@@ -13981,13 +13991,7 @@ function actualizarUISpotify() {
 }
 
 function abrirModalConectarSpotify() {
-  const modal = document.getElementById('modal-spotify-connect');
-  if (!modal) return;
-  const inClientId = document.getElementById('spotify-input-client-id');
-  if (inClientId) inClientId.value = localStorage.getItem('mediary_spotify_client_id') || window.SPOTIFY_CLIENT_ID || '955a1a0ccb814981b647d24c54b38d60';
-  const uriDisp = document.getElementById('spotify-redirect-uri-display');
-  if (uriDisp) uriDisp.textContent = obtenerSpotifyRedirectUri();
-  modal.style.display = 'flex';
+  iniciarFlujoSpotifyAuth();
 }
 
 function cerrarModalConectarSpotify() {
@@ -14238,14 +14242,17 @@ async function consultarSpotifyCurrentlyPlaying() {
       headers: { Authorization: `Bearer ${token}` }
     }).catch(() => null);
 
-    // Fallback a /currently-playing si /player da 403 (por falta de scope de playback)
-    if (!res || res.status === 403) {
-      res = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+    // Si devuelve 204 o falla, comprobar /currently-playing que a veces tiene el track antes que /player
+    if (!res || res.status === 204 || res.status === 202 || res.status === 403) {
+      const resCurr = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
         headers: { Authorization: `Bearer ${token}` }
-      });
+      }).catch(() => null);
+      if (resCurr && resCurr.ok && resCurr.status !== 204 && resCurr.status !== 202) {
+        res = resCurr;
+      }
     }
 
-    if (res.status === 204 || res.status === 202) {
+    if (!res || res.status === 204 || res.status === 202) {
       return { conectado: true, reproduciendo: false };
     }
     if (res.status === 401) {
@@ -14275,6 +14282,25 @@ async function controlarSpotifyPlayback(accion) {
     return;
   }
 
+  // Feedback optimista inmediato en la UI
+  const playBtn = document.querySelector('.btn-spotify-ctrl-play');
+  const statusPill = document.querySelector('.home-np-live-status-pill');
+  if (playBtn) {
+    if (accion === 'play') {
+      playBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+      if (statusPill) {
+        statusPill.classList.remove('paused');
+        statusPill.innerHTML = `<span class="home-np-dot"></span><span>${(typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Starting...' : 'Iniciando...'}</span>`;
+      }
+    } else if (accion === 'pause') {
+      playBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+      if (statusPill) {
+        statusPill.classList.add('paused');
+        statusPill.innerHTML = `<span class="home-np-dot"></span><span>${(typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Paused' : 'En pausa'}</span>`;
+      }
+    }
+  }
+
   let deviceId = window.spotifyActiveDeviceId || '';
   if (!deviceId) {
     try {
@@ -14284,7 +14310,10 @@ async function controlarSpotifyPlayback(accion) {
       if (devRes.ok) {
         const devData = await devRes.json();
         const activeDev = (devData.devices || []).find(d => d.is_active) || devData.devices?.[0];
-        if (activeDev) deviceId = activeDev.id;
+        if (activeDev) {
+          deviceId = activeDev.id;
+          window.spotifyActiveDeviceId = deviceId;
+        }
       }
     } catch (e) {}
   }
@@ -14353,9 +14382,18 @@ async function controlarSpotifyPlayback(accion) {
       }
     }
 
-    setTimeout(() => {
-      renderizarEscuchandoAhoraInicio(true);
-    }, 400);
+    // Invalidar caché y ejecutar sondeo escalonado para reflejar de inmediato la reproducción en la tarjeta
+    _spotifyNowPlayingCache = null;
+    _spotifyUltimaConsultaLive = 0;
+
+    const delays = [500, 1200, 2200, 3800];
+    delays.forEach(delay => {
+      setTimeout(async () => {
+        _spotifyNowPlayingCache = null;
+        _spotifyUltimaConsultaLive = 0;
+        await renderizarEscuchandoAhoraInicio(true);
+      }, delay);
+    });
   } catch (err) {
     console.warn('Error en controlarSpotifyPlayback:', err);
   }
@@ -14439,9 +14477,15 @@ function dibujarTarjetaSpotifyCompacta(data) {
       <!-- ii, iii, iv. Centro: Textos, barra de progreso y controlador multimedia -->
       <div class="home-np-center-compact">
         <!-- iii. Orden: Artista/Grupo; Disco; Nombre canción (de arriba a abajo) -->
-        <div class="home-np-artist-compact" title="${escHtmlSpotify_(artistNames)}">${escHtmlSpotify_(artistNames)}</div>
-        <div class="home-np-album-compact" title="${escHtmlSpotify_(albumName || '—')}">${escHtmlSpotify_(albumName || '—')}</div>
-        <div class="home-np-title-compact" title="${escHtmlSpotify_(trackTitle)}">${escHtmlSpotify_(trackTitle)}</div>
+        <div class="home-np-artist-compact home-np-text-wrap" title="${escHtmlSpotify_(artistNames)}">
+          <span class="home-np-scrollable">${escHtmlSpotify_(artistNames)}</span>
+        </div>
+        <div class="home-np-album-compact home-np-text-wrap" title="${escHtmlSpotify_(albumName || '—')}">
+          <span class="home-np-scrollable">${escHtmlSpotify_(albumName || '—')}</span>
+        </div>
+        <div class="home-np-title-compact home-np-text-wrap" title="${escHtmlSpotify_(trackTitle)}">
+          <span class="home-np-scrollable">${escHtmlSpotify_(trackTitle)}</span>
+        </div>
 
         <!-- ii. Barra de progreso hasta poco antes del borde derecho -->
         <div class="home-np-prog-row-compact">
@@ -14505,9 +14549,15 @@ function dibujarTarjetaSpotifyCompactaIdle() {
 
       <!-- ii, iii, iv. Centro -->
       <div class="home-np-center-compact">
-        <div class="home-np-artist-compact">${artistTxt}</div>
-        <div class="home-np-album-compact">${albumTxt}</div>
-        <div class="home-np-title-compact">${titleTxt}</div>
+        <div class="home-np-artist-compact home-np-text-wrap">
+          <span class="home-np-scrollable">${artistTxt}</span>
+        </div>
+        <div class="home-np-album-compact home-np-text-wrap">
+          <span class="home-np-scrollable">${albumTxt}</span>
+        </div>
+        <div class="home-np-title-compact home-np-text-wrap">
+          <span class="home-np-scrollable">${titleTxt}</span>
+        </div>
 
         <div class="home-np-prog-row-compact">
           <div class="home-np-prog-bg-compact">
@@ -14563,9 +14613,15 @@ function dibujarTarjetaSpotifyCompactaDesconectado() {
         <span>🎵</span>
       </div>
       <div class="home-np-center-compact">
-        <div class="home-np-artist-compact">${artistTxt}</div>
-        <div class="home-np-album-compact">${albumTxt}</div>
-        <div class="home-np-title-compact" style="cursor:pointer;" onclick="abrirModalConectarSpotify()">${titleTxt}</div>
+        <div class="home-np-artist-compact home-np-text-wrap">
+          <span class="home-np-scrollable">${artistTxt}</span>
+        </div>
+        <div class="home-np-album-compact home-np-text-wrap">
+          <span class="home-np-scrollable">${albumTxt}</span>
+        </div>
+        <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="abrirModalConectarSpotify()">
+          <span class="home-np-scrollable">${titleTxt}</span>
+        </div>
         <div style="margin-top:3px;">
           <button type="button" class="btn-spotify-sub-action" onclick="abrirModalConectarSpotify()" style="height:24px; padding:0 10px; font-size:0.72rem; border-radius:6px; background:rgba(29,185,84,0.15); border:1px solid rgba(29,185,84,0.4); color:#10b981;">
             <span>⚡ ${connectBtnTxt}</span>
@@ -14631,7 +14687,38 @@ function actualizarVistaSegunResultadoAct(resultado) {
       window.spotifyTickerInterval = null;
     }
   }
+
+  requestAnimationFrame(() => {
+    setTimeout(ajustarMarqueeSpotify, 50);
+  });
 }
+
+function ajustarMarqueeSpotify() {
+  const container = document.getElementById('home-now-playing-container');
+  if (!container) return;
+  const elements = container.querySelectorAll('.home-np-scrollable');
+  elements.forEach(el => {
+    const parent = el.parentElement;
+    if (!parent) return;
+    el.classList.remove('is-overflowing');
+    parent.classList.remove('has-overflow');
+    el.style.transform = '';
+    const overflow = el.scrollWidth - parent.clientWidth;
+    if (overflow > 6) {
+      el.style.setProperty('--overflow-dist', `${overflow + 10}px`);
+      const dur = Math.max(7, Math.min(16, 5 + overflow / 20));
+      el.style.animationDuration = `${dur}s`;
+      el.classList.add('is-overflowing');
+      parent.classList.add('has-overflow');
+    }
+  });
+}
+window.ajustarMarqueeSpotify = ajustarMarqueeSpotify;
+window.addEventListener('resize', () => {
+  if (typeof estado !== 'undefined' && estado.categoria === 'inicio') {
+    ajustarMarqueeSpotify();
+  }
+});
 
 function iniciarPollingSpotifyLive() {
   if (window.spotifyNowPlayingInterval) return;
