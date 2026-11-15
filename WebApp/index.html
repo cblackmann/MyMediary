@@ -616,10 +616,15 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .btn-hero-quick-add{background:var(--accent);color:var(--accent-contrast);border:none;font-weight:800;font-size:0.95rem;padding:11px 20px;border-radius:12px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(var(--accent-rgb),0.35);transition:var(--tr)}
 .btn-hero-quick-add:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 6px 20px rgba(var(--accent-rgb),0.45)}
 .home-community-section{background:transparent;border:none;border-radius:0;padding:0;margin-bottom:0;box-shadow:none;}
-.home-friend-feed-scroll{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 12px;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.home-friend-feed-scroll{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;scroll-snap-type:x mandatory;}
 .home-friend-feed-scroll::-webkit-scrollbar{height:6px}
 .home-friend-feed-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px}
-.home-friend-card{flex:0 0 300px;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:13px 14px;display:flex;flex-direction:column;gap:10px;justify-content:space-between;box-shadow:0 3px 12px rgba(0,0,0,0.12);transition:var(--tr)}
+.home-friend-feed-scroll .amigo-feed-card,
+.home-friend-card{flex:0 0 340px;min-width:340px;max-width:340px;box-sizing:border-box;scroll-snap-align:start;cursor:pointer;}
+@media (max-width: 600px){
+  .home-friend-feed-scroll .amigo-feed-card,
+  .home-friend-card{flex:0 0 295px;min-width:295px;max-width:295px;padding:12px 14px;}
+}
 .home-friend-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.22)}
 .home-friend-media-box{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:8px;border-radius:10px;}
 .home-friend-review-box{background:rgba(56,189,248,0.09);border:1px solid rgba(56,189,248,0.24);border-left:3px solid var(--accent);padding:7px 9px;border-radius:6px;word-break:break-word;}
@@ -2185,15 +2190,16 @@ html[data-ui-style="modern"] .stat-subcat-lecturas-card .highlight-card {
 }
 
 /* NOVEDADES DE AMIGOS & DISCOVER */
-html[data-ui-style="modern"] .home-friend-card {
+html[data-ui-style="modern"] .home-friend-card,
+html[data-ui-style="modern"] .home-friend-feed-scroll .amigo-feed-card {
   background: rgba(255, 255, 255, 0.04) !important;
   border: 1px solid rgba(255, 255, 255, 0.09) !important;
   border-radius: 14px !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12) !important;
-  padding: 13px 14px !important;
 }
 
-[data-theme$="-light"][data-ui-style="modern"] .home-friend-card {
+[data-theme$="-light"][data-ui-style="modern"] .home-friend-card,
+[data-theme$="-light"][data-ui-style="modern"] .home-friend-feed-scroll .amigo-feed-card {
   background: var(--card) !important;
   border-color: rgba(0, 0, 0, 0.08) !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
@@ -7463,19 +7469,34 @@ function renderizarFeedAmigosResumidoInicio() {
   itemsSemana.forEach(it => {
     const frase = generarFraseActividadAmigo(it, l);
     const timeStr = formatearTiempoRelativoFeed(it.createdAt || it.fechaFin || it.fechaInicio, l);
-    const catIco = catIcons[it.categoria] || '📌';
-    const posterSrc = it.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'60\' height=\'85\' fill=\'%231e293b\'><rect width=\'60\' height=\'85\' rx=\'6\'/><text x=\'50%\' y=\'50%\' fill=\'%2364748b\' font-size=\'20\' text-anchor=\'middle\' dominant-baseline=\'middle\'>🎬</text></svg>';
+    const enProg = esEnProgresoTexto(it.fechaFin);
     const avatarHtml = (it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:')))
       ? `<img src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
       : `<span>${escHtmlFeed_(it.amigoAvatar || '👤')}</span>`;
+    const catNom = I18N[l]?.cats?.[it.categoria] || it.categoria || '';
+    const subNom = I18N[l]?.subs?.[it.subcategoria] || it.subcategoria || '';
+    const catIcon = catIcons[it.categoria] || '✨';
+
+    const posterHtml = it.poster
+      ? `<img src="${it.poster}" loading="lazy" alt="${escHtmlFeed_(it.titulo)}" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\\'width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);\\\'>${catIcon}</div>';">`
+      : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`;
+
     const califNum = Number(it.calificacion) || 0;
-    const enProg = esEnProgresoTexto(it.fechaFin);
-    let ratingHtml = '';
+    let ratingOrStatusHtml = '';
     if (enProg) {
-      ratingHtml = `<span style="font-size:0.72rem;color:var(--accent);font-weight:700;">⏳ ${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span>`;
+      ratingOrStatusHtml = `<span class="feed-status-inprog"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.9;"></span><span>${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span></span>`;
     } else if (califNum > 0) {
-      ratingHtml = `<div style="display:flex;align-items:center;gap:4px;font-size:0.8rem;color:var(--star-active);">${renderEstrellasVisuales(califNum)} <strong style="color:var(--accent);font-size:0.75rem;">${califNum.toFixed(1)}</strong></div>`;
+      ratingOrStatusHtml = `
+        <div style="display:inline-flex;align-items:center;background:var(--bg);border:1px solid var(--border);padding:3px 8px;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+          ${renderEstrellasVisuales(califNum)}
+        </div>
+      `;
     }
+
+    const horasHtml = (it.horas && String(it.horas).trim() !== '' && it.horas !== '0')
+      ? `<span class="feed-cat-badge" style="background:rgba(16,185,129,0.1);color:#10b981;border-color:rgba(16,185,129,0.3);font-weight:700;border-radius:20px;padding:3px 9px;">⏱️ ${it.horas} hrs</span>`
+      : '';
+
     const isLiked = esResenaLikeada(it.id);
     const likeCount = obtenerConteoLikesResena(it.id, it.userEmail, it.likes);
     const likeBtnHtml = `
@@ -7484,15 +7505,20 @@ function renderizarFeedAmigosResumidoInicio() {
         <span class="like-counter" style="font-size:0.75rem;font-weight:700;color:var(--muted);">${likeCount > 0 ? likeCount : ''}</span>
       </button>
     `;
-    const comSnippet = it.comentario ? `
-      <div class="home-friend-review-box">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
-          <span style="font-size:0.68rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;display:flex;align-items:center;gap:3px;"><span>💬</span> <span>${l === 'en' ? 'Comment' : 'Comentario'}</span></span>
-          ${likeBtnHtml}
+
+    const reviewHtml = (it.comentario && it.comentario.trim() !== '')
+      ? `
+        <div class="feed-review-box">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
+            <div class="feed-review-title" style="font-size:0.75rem;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:5px;"><span>💬</span> <span>${l === 'en' ? 'Comment' : 'Comentario'}</span></div>
+            ${likeBtnHtml}
+          </div>
+          <div class="feed-review-text">"${escHtmlFeed_(it.comentario)}"</div>
         </div>
-        <div class="home-friend-review-text">“${escHtmlFeed_(it.comentario)}”</div>
-      </div>
-    ` : '';
+      `
+      : '';
+
+    const yaTengoEsteProducto = usuarioYaTieneObra(it);
     const itemPayload = encodeURIComponent(JSON.stringify({
       titulo: it.titulo,
       tituloOriginal: it.titulo,
@@ -7502,35 +7528,51 @@ function renderizarFeedAmigosResumidoInicio() {
       subcategoria: it.subcategoria,
       poster: it.poster
     }));
+    const btnWatchlistTopRight = !yaTengoEsteProducto ? `
+      <button type="button" class="btn-today-pill" style="width:30px;min-width:30px;height:30px;padding:0;margin:0;flex-shrink:0;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--border);color:var(--accent);font-size:0.92rem;cursor:pointer;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,0.06);transition:var(--tr);" onclick="event.stopPropagation(); agregarFeedItemDirectoDesdeHome(this, '${itemPayload}')" title="${l === 'en' ? 'Add to Watchlist' : 'Agregar a Watchlist'}">
+        <span>📌</span>
+      </button>
+    ` : '';
 
     html += `
-      <div class="home-friend-card" onclick="abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(it.amigoNickname)}', '${escHtmlFeed_(it.categoria)}')">
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
-          <div style="display:flex;align-items:center;gap:8px;min-width:0;">
-            <div class="friend-avatar-wrap" data-avatar-zoom="${it.amigoAvatar || '🦊'}" data-avatar-name="${escHtmlFeed_(it.amigoNickname)}" style="width:30px;height:30px;border-radius:50%;border:1.5px solid var(--accent);overflow:hidden;display:grid;place-items:center;font-size:1rem;flex-shrink:0;background:var(--bg);">
+      <div class="amigo-feed-card home-friend-card" onclick="abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(it.amigoNickname)}', '${escHtmlFeed_(it.categoria)}')">
+        <div class="feed-card-header">
+          <div class="feed-card-user-info">
+            <div class="feed-user-avatar friend-avatar-wrap" data-avatar-zoom="${it.amigoAvatar || '🦊'}" data-avatar-name="${escHtmlFeed_(it.amigoNickname)}" onclick="event.stopPropagation(); verPerfilDeAmigo('${it.userEmail}')" title="${l === 'en' ? 'View Profile' : 'Ver Perfil'}">
               ${avatarHtml}
             </div>
-            <div style="min-width:0;line-height:1.2;">
-              <strong style="font-size:0.82rem;color:var(--text);display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${escHtmlFeed_(it.amigoNickname)}</strong>
-              <span style="font-size:0.68rem;color:var(--muted);">${escHtmlFeed_(timeStr)}</span>
+            <div style="min-width:0;flex:1;">
+              <div class="feed-card-phrase">${frase}</div>
+              <div class="feed-card-time">
+                <span>🕒 ${timeStr}</span>
+              </div>
             </div>
           </div>
-          <span style="font-size:0.85rem;" title="${it.categoria}">${catIco}</span>
         </div>
-        <div style="font-size:0.78rem;color:var(--muted);line-height:1.25;">${frase}</div>
-        <div class="home-friend-media-box">
-          <img src="${escHtmlFeed_(posterSrc)}" style="width:42px;height:60px;object-fit:cover;border-radius:6px;flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.4);" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'42\\' height=\\'60\\' fill=\\'%231e293b\\'><rect width=\\'42\\' height=\\'60\\' rx=\\'6\\'/></svg>';">
-          <div style="min-width:0;flex:1;display:flex;flex-direction:column;gap:3px;">
-            <strong style="font-size:0.82rem;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;" title="${escHtmlFeed_(it.titulo)}">${escHtmlFeed_(it.titulo)}</strong>
-            <span style="font-size:0.72rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;">${escHtmlFeed_(it.creador || it.subcategoria || '')}</span>
-            ${ratingHtml}
+
+        <div class="feed-card-body">
+          <div class="feed-card-poster-wrap">
+            ${posterHtml}
           </div>
-        </div>
-        ${comSnippet}
-        <div style="display:flex;justify-content:flex-end;margin-top:auto;padding-top:4px;" onclick="event.stopPropagation()">
-          <button type="button" class="btn-today-pill" style="height:28px;padding:0 10px;font-size:0.72rem;margin:0;display:inline-flex;align-items:center;gap:4px;" onclick="agregarFeedItemDirectoDesdeHome(this, '${itemPayload}')" title="Guardar en mi Watchlist">
-            <span>📌</span> <span>+ Watchlist</span>
-          </button>
+          <div class="feed-card-info">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;">
+                <span class="feed-cat-badge">${catIcon} ${subNom || catNom}</span>
+                ${it.esRewatch ? `<span class="feed-cat-badge" style="background:rgba(168,85,247,0.14);border-color:rgba(168,85,247,0.35);color:#c084fc;">🔁 Rewatch</span>` : ''}
+              </div>
+              ${btnWatchlistTopRight}
+            </div>
+            <div class="feed-card-title">${escHtmlFeed_(it.titulo)}</div>
+            ${it.subtitulo && it.subtitulo !== it.titulo ? `<div style="font-size:0.78rem;color:var(--muted);font-style:italic;margin-top:-2px;margin-bottom:3px;">${escHtmlFeed_(it.subtitulo)}</div>` : ''}
+            <div class="feed-card-meta">${escHtmlFeed_(it.creador || '')} ${it.anio ? '(' + escHtmlFeed_(it.anio) + ')' : ''}</div>
+            ${(horasHtml || ratingOrStatusHtml) ? `
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;">
+                ${horasHtml}
+                ${ratingOrStatusHtml}
+              </div>
+            ` : ''}
+            ${reviewHtml}
+          </div>
         </div>
       </div>
     `;
@@ -7543,14 +7585,13 @@ function agregarFeedItemDirectoDesdeHome(btnEl, payloadEnc) {
   try {
     const item = JSON.parse(decodeURIComponent(payloadEnc));
     if (btnEl) {
-      btnEl.style.pointerEvents = 'none';
-      btnEl.innerHTML = '<span>⏳</span> <span>Guardando...</span>';
+      btnEl.classList.add('added');
+      btnEl.innerHTML = `<span>✓</span>`;
+      btnEl.style.color = '#10b981';
+      btnEl.style.borderColor = 'rgba(16,185,129,0.4)';
+      btnEl.disabled = true;
     }
     agregarAWatchlistDirecto(item, btnEl);
-    if (btnEl) {
-      btnEl.innerHTML = '<span>✓</span> <span>En Watchlist</span>';
-      btnEl.classList.add('added');
-    }
   } catch (err) {
     console.error('Error al agregar desde feed home:', err);
   }
