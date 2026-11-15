@@ -3925,36 +3925,45 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
 <!-- INTEGRACIÓN CON SPOTIFY -->
 <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;" id="cfg-spotify-section">
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:8px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
     <div style="display:flex; align-items:center; gap:8px;">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954" style="flex-shrink:0;">
         <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/>
       </svg>
       <span data-i18n="cfg_spotify_title">Spotify</span>
     </div>
-    <span class="profile-google-pill" id="cfg-spotify-badge" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:var(--muted); font-size:0.72rem;">No conectado</span>
+    <span class="profile-google-pill" id="cfg-spotify-badge" style="display:none; background:rgba(29,185,84,0.14); border:1px solid rgba(29,185,84,0.38); color:#10b981; font-weight:700; font-size:0.72rem;">✓ Conectado</span>
   </div>
-  <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.35;" id="cfg-spotify-desc" data-i18n="cfg_spotify_hint">
+  
+  <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" id="cfg-spotify-desc" data-i18n="cfg_spotify_hint">
     Conecta tu cuenta para sincronizar estadísticas musicales, ver tus artistas y canciones favoritas y calcular tus horas escuchadas.
   </p>
   
-  <div id="cfg-spotify-connected-box" style="display:none; margin-bottom:12px; background:rgba(29,185,84,0.08); border:1px solid rgba(29,185,84,0.3); border-radius:10px; padding:10px 12px;">
-    <div style="display:flex; align-items:center; gap:10px;">
-      <div id="cfg-spotify-user-avatar" style="width:36px; height:36px; border-radius:50%; overflow:hidden; background:var(--bg); border:1.5px solid #1db954; display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;">
+  <!-- Tarjeta con cuenta conectada -->
+  <div id="cfg-spotify-connected-box" style="display:none; background:var(--card); border:1px solid rgba(29,185,84,0.28); border-radius:10px; padding:12px;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+      <div id="cfg-spotify-user-avatar" style="width:40px; height:40px; border-radius:50%; overflow:hidden; background:var(--bg); border:2px solid #1db954; display:grid; place-items:center; font-size:1.2rem; flex-shrink:0;">
         🟢
       </div>
       <div style="min-width:0; flex:1;">
-        <strong id="cfg-spotify-user-name" style="font-size:0.86rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario Spotify</strong>
-        <span id="cfg-spotify-user-sub" style="font-size:0.72rem; color:var(--muted); display:block;">Conectado</span>
+        <strong id="cfg-spotify-user-name" style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario Spotify</strong>
+        <span id="cfg-spotify-user-sub" style="font-size:0.74rem; color:var(--muted); display:block; margin-top:2px;">Conectado</span>
       </div>
-      <button type="button" class="btn-today-pill" style="height:28px; padding:0 10px; font-size:0.72rem; background:rgba(239,68,68,0.1); color:#f87171; border-color:rgba(239,68,68,0.3);" onclick="desconectarSpotify()" title="Desconectar cuenta">
-        Desconectar
+    </div>
+    
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+      <button type="button" class="btn-today-pill" style="height:34px; justify-content:center; font-size:0.78rem; font-weight:700; background:rgba(29,185,84,0.12); color:#10b981; border-color:rgba(29,185,84,0.35);" onclick="actualizarDatosSpotify(true)" title="Sincronizar datos de Spotify">
+        <span>🔄 Sincronizar</span>
+      </button>
+      <button type="button" class="btn-today-pill" style="height:34px; justify-content:center; font-size:0.78rem; font-weight:700; background:rgba(239,68,68,0.08); color:#f87171; border-color:rgba(239,68,68,0.25);" onclick="desconectarSpotify()" title="Desconectar cuenta">
+        <span>Desconectar</span>
       </button>
     </div>
   </div>
 
-  <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-    <button type="button" class="btn-spotify-connect" id="btn-spotify-login" onclick="iniciarFlujoSpotifyAuth()" style="flex:1; min-width:180px; justify-content:center;">
+  <!-- Botón de conexión inicial -->
+  <div id="cfg-spotify-disconnected-box">
+    <button type="button" class="btn-spotify-connect" id="btn-spotify-login" onclick="iniciarFlujoSpotifyAuth()" style="width:100%; justify-content:center; height:40px;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="#000"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/></svg>
       <span id="txt-btn-spotify" data-i18n="cfg_spotify_btn_connect">Conectar con Spotify</span>
     </button>
@@ -13870,10 +13879,9 @@ function actualizarUISpotify() {
   }
 
   const badge = document.getElementById('cfg-spotify-badge');
-  const connectedBox = document.getElementById('cfg-spotify-connected-box');
-  const btnLogin = document.getElementById('btn-spotify-login');
-  const txtLogin = document.getElementById('txt-btn-spotify');
-  const btnStats = document.getElementById('btn-spotify-ver-stats');
+  const desc = document.getElementById('cfg-spotify-desc');
+  const disconnBox = document.getElementById('cfg-spotify-disconnected-box');
+  const connBox = document.getElementById('cfg-spotify-connected-box');
   const avatarEl = document.getElementById('cfg-spotify-user-avatar');
   const nameEl = document.getElementById('cfg-spotify-user-name');
   const subEl = document.getElementById('cfg-spotify-user-sub');
@@ -13881,34 +13889,26 @@ function actualizarUISpotify() {
   if (token && user) {
     if (badge) {
       badge.textContent = userPrefs.lang === 'en' ? '✓ Connected' : '✓ Conectado';
-      badge.style.background = 'rgba(29, 185, 84, 0.16)';
-      badge.style.borderColor = 'rgba(29, 185, 84, 0.45)';
-      badge.style.color = '#10b981';
-      badge.style.fontWeight = '700';
+      badge.style.display = 'inline-flex';
     }
-    if (connectedBox) connectedBox.style.display = 'block';
+    if (desc) desc.style.display = 'none';
+    if (disconnBox) disconnBox.style.display = 'none';
+    if (connBox) connBox.style.display = 'block';
     if (nameEl) nameEl.textContent = user.display_name || 'Usuario Spotify';
-    if (subEl) subEl.textContent = `${user.product === 'premium' ? 'Spotify Premium' : 'Spotify Free'} · ${user.followers ? user.followers + ' seguidores' : 'Conectado'}`;
+    if (subEl) {
+      const followersTxt = user.followers ? ` · ${user.followers} ${userPrefs.lang === 'en' ? 'followers' : 'seguidores'}` : '';
+      subEl.textContent = `${user.product === 'premium' ? 'Spotify Premium' : 'Spotify Free'}${followersTxt}`;
+    }
     if (avatarEl) {
       avatarEl.innerHTML = user.avatar
         ? `<img src="${user.avatar}" alt="Spotify Avatar" style="width:100%;height:100%;object-fit:cover;">`
         : `🟢`;
     }
-    if (btnLogin) btnLogin.onclick = () => actualizarDatosSpotify(true);
-    if (txtLogin) txtLogin.textContent = userPrefs.lang === 'en' ? 'Sync Spotify' : 'Sincronizar Spotify';
-    if (btnStats) btnStats.style.display = 'inline-flex';
   } else {
-    if (badge) {
-      badge.textContent = userPrefs.lang === 'en' ? 'Not connected' : 'No conectado';
-      badge.style.background = 'rgba(255, 255, 255, 0.06)';
-      badge.style.borderColor = 'var(--border)';
-      badge.style.color = 'var(--muted)';
-      badge.style.fontWeight = '600';
-    }
-    if (connectedBox) connectedBox.style.display = 'none';
-    if (btnLogin) btnLogin.onclick = () => iniciarFlujoSpotifyAuth();
-    if (txtLogin) txtLogin.textContent = userPrefs.lang === 'en' ? 'Connect with Spotify' : 'Conectar con Spotify';
-    if (btnStats) btnStats.style.display = 'none';
+    if (badge) badge.style.display = 'none';
+    if (desc) desc.style.display = 'block';
+    if (disconnBox) disconnBox.style.display = 'block';
+    if (connBox) connBox.style.display = 'none';
   }
 }
 
