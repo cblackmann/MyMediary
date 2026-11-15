@@ -773,15 +773,41 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   border: 1.5px solid rgba(251, 191, 36, 0.5) !important;
   box-shadow: 0 10px 32px rgba(47, 18, 70, 0.5) !important;
 }
+.profile-hero-card {
+  position: relative;
+  overflow: hidden;
+  background: var(--card);
+  border: 1.5px solid var(--border);
+  border-radius: 18px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.16);
+  transition: var(--tr);
+}
+.profile-hero-card .profile-identity-wrap,
+.profile-hero-card .profile-hero-side-actions {
+  position: relative !important;
+  z-index: 2 !important;
+}
+.profile-hero-card.cover-predeterminada,
+.profile-hero-card:not(.has-custom-cover) {
+  background: var(--card) !important;
+  border: 1.5px solid var(--border) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.16) !important;
+}
+[data-theme$="-light"] .profile-hero-card:not(.has-custom-cover) {
+  background: var(--card) !important;
+  border: 1.5px solid var(--border) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06) !important;
+}
 .profile-hero-card.has-custom-cover {
   position: relative;
   overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45) !important;
 }
 .profile-hero-card.has-custom-cover::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(15, 23, 42, 0.65) 0%, rgba(15, 23, 42, 0.35) 55%, rgba(15, 23, 42, 0.15) 100%);
+  background: rgba(10, 14, 23, 0.38) !important;
   pointer-events: none;
   z-index: 1;
 }
@@ -797,14 +823,15 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 }
 .profile-hero-card.has-custom-cover #perfil-id-badge,
 .profile-hero-card.has-custom-cover #amigo-modal-id-badge {
-  background: rgba(15, 23, 42, 0.75) !important;
+  background: rgba(15, 23, 42, 0.85) !important;
   backdrop-filter: blur(8px);
-  border-color: rgba(255, 255, 255, 0.3) !important;
+  -webkit-backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 .profile-hero-card.has-custom-cover #perfil-email-render {
-  color: rgba(255, 255, 255, 0.85) !important;
+  color: rgba(255, 255, 255, 0.9) !important;
   text-shadow: 0 1px 4px rgba(0,0,0,0.7);
 }
 .amigo-wide-card.has-custom-cover {
@@ -819,17 +846,33 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
   color: rgba(255, 255, 255, 0.9) !important;
   text-shadow: 0 1px 4px rgba(0,0,0,0.7);
 }
+.amigo-card-avg-badge .amigo-card-avg-star {
+  color: var(--star-active);
+}
+.amigo-card-avg-badge .amigo-card-avg-val {
+  color: var(--text);
+}
 .amigo-wide-card.has-custom-cover .amigo-card-avg-badge {
-  background: rgba(15, 23, 42, 0.72) !important;
-  backdrop-filter: blur(8px);
-  border-color: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(11, 15, 25, 0.88) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.38) !important;
   color: #ffffff !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+}
+.amigo-wide-card.has-custom-cover .amigo-card-avg-badge * {
+  color: #ffffff !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8) !important;
+}
+.amigo-wide-card.has-custom-cover .amigo-card-avg-badge .amigo-card-avg-star {
+  color: #fbbf24 !important;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.7) !important;
 }
 .amigo-wide-card.has-custom-cover .amigo-card-regs-btn {
-  background: rgba(15, 23, 42, 0.7) !important;
+  background: rgba(15, 23, 42, 0.75) !important;
   backdrop-filter: blur(8px);
-  border-color: rgba(255, 255, 255, 0.3) !important;
+  -webkit-backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.35) !important;
   color: #ffffff !important;
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
@@ -2997,8 +3040,8 @@ html[data-app-theme="minimalist"] .nav-categories-row {
     <div id="vista-perfil" style="display:none;">
 
       <!-- 1. HERO CARD DEL PERFIL -->
-      <div class="profile-hero-card" id="perfil-hero-card" style="padding:18px 22px; margin-bottom:14px;">
-        <div class="profile-identity-wrap" style="align-items:center; gap:18px;">
+      <div class="profile-hero-card cover-predeterminada" id="perfil-hero-card" style="padding:18px 22px; margin-bottom:14px; position:relative; overflow:hidden;">
+        <div class="profile-identity-wrap" style="align-items:center; gap:18px; position:relative; z-index:2; width:100%;">
           <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer; flex-shrink:0;">
             <span>👤</span>
           </div>
@@ -3019,7 +3062,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
               </div>
             </div>
           </div>
-          <div class="profile-hero-side-actions">
+          <div class="profile-hero-side-actions" style="position:relative; z-index:2; display:flex; align-items:center; gap:8px;">
             <button type="button" class="btn-change-cover" onclick="abrirModalElegirPortada()" title="Personalizar portada del perfil">
               <span>🎨</span> <span>Portada</span>
             </button>
@@ -8328,8 +8371,8 @@ function renderizarListaAmigos(amigos) {
 
           <!-- Calificación promedio en la esquina superior derecha -->
           <div class="amigo-card-avg-badge" style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:4px 10px; font-size:0.82rem; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; box-shadow:0 1px 3px rgba(0,0,0,0.06);" title="${l === 'en' ? 'Average Rating' : 'Calificación Promedio'}">
-            <span style="color:var(--star-active); font-size:0.95rem;">★</span>
-            <span style="font-weight:800; color:var(--text);">${avgRating}</span>
+            <span class="amigo-card-avg-star" style="font-size:0.95rem; line-height:1;">★</span>
+            <span class="amigo-card-avg-val" style="font-weight:800; line-height:1;">${avgRating}</span>
           </div>
         </div>
 
