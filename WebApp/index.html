@@ -13785,11 +13785,11 @@ function renderizarContenidoEstadisticasAvanzadas() {
 }
 
 function renderizarStatsGeneral_(ctx) {
-  const { regsPeriodo, todosRegs, seriesConTemporadas, nowYear, nowMonth, mesesLargo } = ctx;
+  const { regsPeriodo, todosRegs, seriesConTemporadas, nowYear, nowMonth, mesesLargo, spotifyStats } = ctx;
   const total = regsPeriodo.length;
 
-  let horasPelis = 0, horasSeries = 0, horasMusica = 0, horasJuegos = 0, horasLecturas = 0;
-  let countPelis = 0, countSeries = 0, countMusica = 0, countJuegos = 0, countLecturas = 0;
+  let horasPelis = 0, horasSeries = 0, horasJuegos = 0, horasLecturas = 0;
+  let countPelis = 0, countSeries = 0, countJuegos = 0, countLecturas = 0;
   let sumCalifs = 0, numCalifs = 0, rewatches = 0;
 
   regsPeriodo.forEach(r => {
@@ -13803,15 +13803,22 @@ function renderizarStatsGeneral_(ctx) {
     const h = calcularHorasObraStats_(r, seriesConTemporadas);
     if (cat === 'Peliculas') { horasPelis += h; countPelis++; }
     else if (cat === 'Series') { horasSeries += h; countSeries++; }
-    else if (cat === 'Musica') { horasMusica += h; countMusica++; }
     else if (cat === 'Juegos') { horasJuegos += h; countJuegos++; }
     else if (cat === 'Lecturas') { horasLecturas += h; countLecturas++; }
   });
 
-  const horasTotal = horasPelis + horasSeries + horasMusica + horasJuegos + horasLecturas;
+  const tieneSpotify = !!(spotifyStats && (spotifyStats.recentHours != null || spotifyStats.recentMinutes != null || (spotifyStats.topArtists && spotifyStats.topArtists.length) || (spotifyStats.topTracks && spotifyStats.topTracks.length)));
+  const horasMusicaSpotify = tieneSpotify
+    ? (spotifyStats.recentHours != null ? parseFloat(spotifyStats.recentHours) : (spotifyStats.recentMinutes ? (spotifyStats.recentMinutes / 60) : 0))
+    : 0;
+  const tracksSpotifyCount = tieneSpotify
+    ? (spotifyStats.recentlyPlayedCount || (spotifyStats.topTracks?.length || 0))
+    : 0;
+
+  const horasTotal = horasPelis + horasSeries + horasMusicaSpotify + horasJuegos + horasLecturas;
   const ratingAvg = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
 
-  // Métricas de Películas, Series y Música del año y mes actual para acceso rápido
+  // Métricas de Películas y Series del año y mes actual para acceso rápido
   const pelisAnio = todosRegs.filter(r => r.categoria === 'Peliculas' && obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
   const pelisMes = pelisAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
   const hPelisAnio = pelisAnio.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
@@ -13822,15 +13829,10 @@ function renderizarStatsGeneral_(ctx) {
   const hSeriesAnio = seriesAnio.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
   const hSeriesMes = seriesMes.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
 
-  const musicaAnio = todosRegs.filter(r => r.categoria === 'Musica' && obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
-  const musicaMes = musicaAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
-  const hMusicaAnio = musicaAnio.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
-  const hMusicaMes = musicaMes.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
-
   // Barra de distribución proporcional
   const pctPelis = horasTotal ? Math.round((horasPelis / horasTotal) * 100) : 0;
   const pctSeries = horasTotal ? Math.round((horasSeries / horasTotal) * 100) : 0;
-  const pctMusica = horasTotal ? Math.round((horasMusica / horasTotal) * 100) : 0;
+  const pctMusica = horasTotal ? Math.round((horasMusicaSpotify / horasTotal) * 100) : 0;
   const pctJuegos = horasTotal ? Math.round((horasJuegos / horasTotal) * 100) : 0;
   const pctLecturas = horasTotal ? Math.round((horasLecturas / horasTotal) * 100) : 0;
 
@@ -13843,7 +13845,7 @@ function renderizarStatsGeneral_(ctx) {
         <div class="stats-kpi-sub">Consumo cultural total</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>📦</span> <span>Obras Vistas/Completadas</span></div>
+        <div class="stats-kpi-label"><span>📦</span> <span>Obras Registradas</span></div>
         <div class="stats-kpi-val">${total}</div>
         <div class="stats-kpi-sub">${rewatches} re-consumos (${total ? Math.round((rewatches/total)*100) : 0}%)</div>
       </div>
@@ -13852,10 +13854,10 @@ function renderizarStatsGeneral_(ctx) {
         <div class="stats-kpi-val" style="color:#f59e0b;">★ ${ratingAvg}</div>
         <div class="stats-kpi-sub">Sobre ${numCalifs} notas otorgadas</div>
       </div>
-      <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>🎵</span> <span>Música Escuchada</span></div>
-        <div class="stats-kpi-val" style="color:#10b981;">${formatearHorasStats_(horasMusica)}</div>
-        <div class="stats-kpi-sub">${countMusica} discos / temas</div>
+      <div class="stats-kpi-card" style="border-left: 3px solid #10b981; cursor:pointer;" onclick="${tieneSpotify ? "cambiarCatStats('Musica')" : "abrirModalConectarSpotify()"}">
+        <div class="stats-kpi-label"><span>🎵</span> <span>Música (Spotify)</span></div>
+        <div class="stats-kpi-val" style="color:#10b981;">${tieneSpotify ? formatearHorasStats_(horasMusicaSpotify) : '—'}</div>
+        <div class="stats-kpi-sub">${tieneSpotify ? `🟢 ${tracksSpotifyCount} pistas analizadas` : 'Conectar con Spotify ➔'}</div>
       </div>
     </div>
 
@@ -13896,19 +13898,28 @@ function renderizarStatsGeneral_(ctx) {
           </div>
         </div>
 
-        <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; cursor:pointer;" onclick="cambiarCatStats('Musica')">
+        <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; cursor:pointer;" onclick="${tieneSpotify ? "cambiarCatStats('Musica')" : "abrirModalConectarSpotify()"}">
           <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong style="font-size:0.85rem; color:var(--text);">🎵 Música</strong>
-            <span style="font-size:0.72rem; color:var(--accent);">Ver ➔</span>
+            <strong style="font-size:0.85rem; color:var(--text);">🎵 Música (Spotify)</strong>
+            <span style="font-size:0.72rem; color:#10b981;">${tieneSpotify ? 'Ver ➔' : 'Vincular ➔'}</span>
           </div>
-          <div style="margin-top:6px; display:flex; justify-content:space-between; font-size:0.8rem;">
-            <span style="color:var(--muted);">Este Año:</span>
-            <strong style="color:var(--text);">${formatearHorasStats_(hMusicaAnio)} (${musicaAnio.length})</strong>
-          </div>
-          <div style="margin-top:3px; display:flex; justify-content:space-between; font-size:0.8rem;">
-            <span style="color:var(--muted);">Este Mes:</span>
-            <strong style="color:#10b981;">${formatearHorasStats_(hMusicaMes)} (${musicaMes.length})</strong>
-          </div>
+          ${tieneSpotify ? `
+            <div style="margin-top:6px; display:flex; justify-content:space-between; font-size:0.8rem;">
+              <span style="color:var(--muted);">Tiempo Reciente:</span>
+              <strong style="color:var(--text);">${formatearHorasStats_(horasMusicaSpotify)}</strong>
+            </div>
+            <div style="margin-top:3px; display:flex; justify-content:space-between; font-size:0.8rem;">
+              <span style="color:var(--muted);">Artista Top:</span>
+              <strong style="color:#10b981; max-width:110px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtmlStats_(spotifyStats.topArtists?.[0]?.name || 'Spotify')}</strong>
+            </div>
+          ` : `
+            <div style="margin-top:6px; font-size:0.78rem; color:var(--muted); line-height:1.3;">
+              Conecta Spotify para ver tiempo y artistas favoritos exclusivos.
+            </div>
+            <div style="margin-top:4px; font-size:0.75rem; color:#10b981; font-weight:600;">
+              🟢 Conectar cuenta
+            </div>
+          `}
         </div>
       </div>
     </div>
@@ -13922,7 +13933,7 @@ function renderizarStatsGeneral_(ctx) {
       <div style="height:10px; border-radius:5px; background:var(--bg); display:flex; overflow:hidden; margin-bottom:12px;">
         <div style="width:${pctPelis}%; background:#38bdf8;" title="Películas: ${pctPelis}%"></div>
         <div style="width:${pctSeries}%; background:#9333ea;" title="Series: ${pctSeries}%"></div>
-        <div style="width:${pctMusica}%; background:#10b981;" title="Música: ${pctMusica}%"></div>
+        <div style="width:${pctMusica}%; background:#10b981;" title="Música (Spotify): ${pctMusica}%"></div>
         <div style="width:${pctJuegos}%; background:#f59e0b;" title="Juegos: ${pctJuegos}%"></div>
         <div style="width:${pctLecturas}%; background:#ec4899;" title="Lecturas: ${pctLecturas}%"></div>
       </div>
@@ -13938,7 +13949,7 @@ function renderizarStatsGeneral_(ctx) {
         </div>
         <div style="display:flex; align-items:center; gap:8px; font-size:0.78rem;">
           <span style="width:10px; height:10px; border-radius:2px; background:#10b981; flex-shrink:0;"></span>
-          <span style="color:var(--text);">🎵 Música: <strong>${formatearHorasStats_(horasMusica)}</strong> (${pctMusica}%)</span>
+          <span style="color:var(--text);">🎵 Música: <strong>${tieneSpotify ? formatearHorasStats_(horasMusicaSpotify) : '0 hrs'}</strong> (${pctMusica}%)</span>
         </div>
         <div style="display:flex; align-items:center; gap:8px; font-size:0.78rem;">
           <span style="width:10px; height:10px; border-radius:2px; background:#f59e0b; flex-shrink:0;"></span>
@@ -14151,94 +14162,165 @@ function renderizarStatsSeries_(ctx) {
 }
 
 function renderizarStatsMusica_(ctx) {
-  const { regsPeriodo, todosRegs, seriesConTemporadas, nowYear, nowMonth, mesesLargo, spotifyStats } = ctx;
-  const musicaPeriodo = regsPeriodo.filter(r => r.categoria === 'Musica');
-  const musicaTotales = todosRegs.filter(r => r.categoria === 'Musica');
+  const { spotifyStats } = ctx;
 
-  const musicaAnio = musicaTotales.filter(r => obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
-  const musicaMes = musicaAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
+  const tieneSpotify = !!(spotifyStats && (spotifyStats.recentHours != null || spotifyStats.recentMinutes != null || (spotifyStats.topArtists && spotifyStats.topArtists.length) || (spotifyStats.topTracks && spotifyStats.topTracks.length)));
 
-  const hPeriodo = musicaPeriodo.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
-  const hAnio = musicaAnio.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
-  const hMes = musicaMes.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
+  if (!tieneSpotify) {
+    return `
+      <div class="stats-section-box" style="text-align:center; padding:36px 20px;">
+        <div style="width:68px; height:68px; border-radius:50%; background:rgba(29,185,84,0.12); border:1.5px solid rgba(29,185,84,0.35); display:flex; align-items:center; justify-content:center; margin:0 auto 16px auto; color:#1db954;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+        </div>
+        <h3 style="font-size:1.15rem; font-weight:700; color:var(--text); margin-bottom:8px;">Estadísticas Musicales con Spotify</h3>
+        <p style="font-size:0.84rem; color:var(--muted); max-width:390px; margin:0 auto 22px auto; line-height:1.45;">
+          Tus estadísticas musicales (tiempo total escuchado, 5 artistas favoritos, 5 temas favoritos y géneros) se basan <strong>exclusivamente en tu cuenta de Spotify</strong>.
+        </p>
+        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="btn-primary" onclick="abrirModalConectarSpotify()" style="background:#1db954; color:#fff; border:none; padding:10px 22px; border-radius:12px; font-weight:700; font-size:0.88rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+            <span>🟢</span> <span>Conectar Spotify</span>
+          </button>
+          <button type="button" class="btn-secondary" onclick="conectarSpotifyDemo(); renderizarContenidoEstadisticasAvanzadas();" style="border:1px solid var(--border); background:var(--card); color:var(--text); padding:10px 16px; border-radius:12px; font-size:0.84rem; cursor:pointer;">
+            Probar con datos demo
+          </button>
+        </div>
+      </div>
+    `;
+  }
 
-  let sumCalifs = 0, numCalifs = 0;
-  musicaPeriodo.forEach(r => {
-    if (Number(r.calificacion) > 0) { sumCalifs += Number(r.calificacion); numCalifs++; }
-  });
-  const avgCal = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
+  const horasNum = spotifyStats.recentHours != null
+    ? parseFloat(spotifyStats.recentHours)
+    : (spotifyStats.recentMinutes ? (spotifyStats.recentMinutes / 60) : 0);
+  const tiempoEscuchadoTxt = formatearHorasStats_(horasNum);
 
-  // Obtener 5 Artistas Favoritos (Combinando registros de Mediary + Spotify)
-  const top5Artistas = obtenerTop5ArtistasStats_(musicaPeriodo.length ? musicaPeriodo : musicaTotales, spotifyStats);
+  const top5Artistas = (spotifyStats.topArtists || []).slice(0, 5);
+  const top5Canciones = (spotifyStats.topTracks || []).slice(0, 5);
+  const topGenero = (spotifyStats.topArtists?.[0]?.genres?.[0]) || 'Música Variada';
 
-  // Obtener 5 Canciones / Obras favoritas
-  const top5Canciones = obtenerTop5CancionesStats_(musicaPeriodo.length ? musicaPeriodo : musicaTotales, spotifyStats);
+  let spUser = null;
+  try {
+    const rawU = localStorage.getItem('mediary_spotify_user');
+    if (rawU) spUser = JSON.parse(rawU);
+  } catch (e) {}
+
+  let fechaSync = '';
+  if (spotifyStats.lastUpdated) {
+    try {
+      const d = new Date(spotifyStats.lastUpdated);
+      fechaSync = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    } catch (e) {}
+  }
+
+  // Popularidad promedio de artistas top
+  let avgPop = 0;
+  if (top5Artistas.length) {
+    const sumP = top5Artistas.reduce((acc, a) => acc + (Number(a.popularity) || 0), 0);
+    avgPop = Math.round(sumP / top5Artistas.length);
+  }
 
   return `
-    <!-- KPIS TIEMPO DE MÚSICA -->
+    <!-- BANNER DE USUARIO SPOTIFY Y SINCRONIZACIÓN -->
+    <div style="background:var(--bg); border:1px solid rgba(29,185,84,0.3); border-radius:14px; padding:12px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+      <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+        ${spUser?.avatar
+          ? `<img src="${escHtmlStats_(spUser.avatar)}" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid #1db954; flex-shrink:0;">`
+          : `<div style="width:38px; height:38px; border-radius:50%; background:rgba(29,185,84,0.15); display:grid; place-items:center; color:#1db954; font-size:1.15rem; flex-shrink:0;">🟢</div>`}
+        <div style="min-width:0;">
+          <div style="font-weight:700; font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+            ${escHtmlStats_(spUser?.display_name || 'Spotify')}
+            <span style="font-size:0.72rem; font-weight:400; color:#1db954; background:rgba(29,185,84,0.12); padding:1px 6px; border-radius:6px; margin-left:4px;">${spUser?.product === 'premium' ? 'Premium' : 'Conectado'}</span>
+          </div>
+          <div style="font-size:0.72rem; color:var(--muted); margin-top:1px;">
+            ${fechaSync ? `Sincronizado: ${fechaSync}` : 'Datos en vivo de Spotify'}
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSpotify(true).then(() => renderizarContenidoEstadisticasAvanzadas())" title="Actualizar datos de Spotify" style="font-size:0.75rem; padding:6px 12px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0;">
+        <span>🔄</span> <span>Actualizar</span>
+      </button>
+    </div>
+
+    <!-- KPIS SPOTIFY -->
     <div class="stats-kpi-grid">
-      <div class="stats-kpi-card" style="border-left: 3px solid #10b981;">
-        <div class="stats-kpi-label"><span>🎵</span> <span>Tiempo Escuchado</span></div>
-        <div class="stats-kpi-val" style="color:#10b981;">${formatearHorasStats_(hPeriodo)}</div>
-        <div class="stats-kpi-sub">${musicaPeriodo.length} obras registradas</div>
+      <div class="stats-kpi-card" style="border-left: 3px solid #1db954;">
+        <div class="stats-kpi-label"><span>⏱️</span> <span>Tiempo Escuchado</span></div>
+        <div class="stats-kpi-val" style="color:#1db954;">${tiempoEscuchadoTxt}</div>
+        <div class="stats-kpi-sub">${spotifyStats.recentMinutes ? `${spotifyStats.recentMinutes} minutos recientes` : 'Historial reciente'}</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>📅</span> <span>Este Año (${nowYear})</span></div>
-        <div class="stats-kpi-val" style="color:var(--text);">${formatearHorasStats_(hAnio)}</div>
-        <div class="stats-kpi-sub">${musicaAnio.length} álbumes/temas en ${nowYear}</div>
+        <div class="stats-kpi-label"><span>🎧</span> <span>Pistas Analizadas</span></div>
+        <div class="stats-kpi-val">${spotifyStats.recentlyPlayedCount || top5Canciones.length || 0}</div>
+        <div class="stats-kpi-sub">Reproducciones registradas</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>🗓️</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:#10b981;">${formatearHorasStats_(hMes)}</div>
-        <div class="stats-kpi-sub">${musicaMes.length} escuchados este mes</div>
+        <div class="stats-kpi-label"><span>🎸</span> <span>Género Principal</span></div>
+        <div class="stats-kpi-val" style="color:#10b981; font-size:1.05rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escHtmlStats_(topGenero)}">${escHtmlStats_(topGenero.charAt(0).toUpperCase() + topGenero.slice(1))}</div>
+        <div class="stats-kpi-sub">Estilo predominante</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>★</span> <span>Nota Media Música</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">★ ${avgCal}</div>
-        <div class="stats-kpi-sub">${spotifyStats ? '🟢 Spotify Conectado' : 'Sin Spotify'}</div>
+        <div class="stats-kpi-label"><span>★</span> <span>Popularidad Media</span></div>
+        <div class="stats-kpi-val" style="color:#f59e0b;">★ ${avgPop ? avgPop + '%' : '100%'}</div>
+        <div class="stats-kpi-sub">Índice Spotify</div>
       </div>
     </div>
 
-    <!-- TOP 5 ARTISTAS FAVORITOS -->
+    <!-- TOP 5 ARTISTAS FAVORITOS (SPOTIFY) -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>🎤 5 Artistas Favoritos</span>
-        <span style="font-size:0.75rem; color:#10b981; font-weight:700;">★ Más escuchados / valorados</span>
+        <span>🎤 5 Artistas Favoritos (Spotify)</span>
+        <span style="font-size:0.74rem; color:#1db954; font-weight:700;">★ Más escuchados</span>
       </div>
       ${top5Artistas.length ? top5Artistas.map((a, idx) => `
-        <div class="stats-ranking-row">
+        <div class="stats-ranking-row" style="cursor:pointer;" onclick="${a.url ? `window.open('${escHtmlStats_(a.url)}', '_blank')` : ''}">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-          ${a.poster 
-            ? `<img src="${escHtmlStats_(a.poster)}" alt="${escHtmlStats_(a.nombre)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(16,185,129,0.3); flex-shrink:0;">`
+          ${a.image
+            ? `<img src="${escHtmlStats_(a.image)}" alt="${escHtmlStats_(a.name)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(29,185,84,0.35); flex-shrink:0;">`
             : `<div style="width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;">🎙️</div>`}
           <div style="flex:1; min-width:0;">
-            <strong style="font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(a.nombre)}</strong>
-            <span style="font-size:0.72rem; color:var(--muted);">${(a.genres && a.genres.length) ? escHtmlStats_(a.genres.slice(0, 2).join(' · ')) : (a.origen === 'spotify' ? 'Top Spotify' : `${a.count} registros en Mediary`)}</span>
+            <strong style="font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(a.name)}</strong>
+            <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">
+              ${(a.genres && a.genres.length) ? escHtmlStats_(a.genres.map(g => g.charAt(0).toUpperCase() + g.slice(1)).join(' · ')) : 'Artista Spotify'}
+            </span>
           </div>
-          <div style="font-size:0.78rem; font-weight:700; color:#10b981; flex-shrink:0;">★ ${a.avg ? Number(a.avg).toFixed(1) : '5.0'}</div>
+          <div style="font-size:0.78rem; font-weight:700; color:#1db954; flex-shrink:0; text-align:right;">
+            <div>★ ${a.popularity != null ? a.popularity + '%' : 'Top'}</div>
+            <span style="font-size:0.68rem; color:var(--muted); font-weight:400;">popularidad</span>
+          </div>
         </div>
-      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Registra discos o conecta Spotify para ver tus artistas favoritos.</div>'}
+      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de artistas en Spotify todavía.</div>'}
     </div>
 
-    <!-- TOP 5 CANCIONES / OBRAS FAVORITAS -->
+    <!-- TOP 5 CANCIONES FAVORITAS (SPOTIFY) -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>🎧 5 Canciones / Obras Favoritas</span>
-        <span style="font-size:0.75rem; color:#f59e0b; font-weight:700;">★ Calificación 5 Estrellas</span>
+        <span>🎧 5 Canciones Favoritas (Spotify)</span>
+        <span style="font-size:0.74rem; color:#f59e0b; font-weight:700;">★ Top Tracks</span>
       </div>
-      ${top5Canciones.length ? top5Canciones.map((c, idx) => `
-        <div class="stats-ranking-row">
+      ${top5Canciones.length ? top5Canciones.map((t, idx) => {
+        const ms = t.duration_ms || 0;
+        const totalSec = Math.floor(ms / 1000);
+        const mins = Math.floor(totalSec / 60);
+        const secs = String(totalSec % 60).padStart(2, '0');
+        const durTxt = ms > 0 ? `${mins}:${secs}` : '';
+        return `
+        <div class="stats-ranking-row" style="cursor:pointer;" onclick="${t.url ? `window.open('${escHtmlStats_(t.url)}', '_blank')` : ''}">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-          ${c.poster
-            ? `<img src="${escHtmlStats_(c.poster)}" alt="${escHtmlStats_(c.titulo)}" style="width:42px; height:42px; border-radius:8px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
+          ${t.image
+            ? `<img src="${escHtmlStats_(t.image)}" alt="${escHtmlStats_(t.name)}" style="width:42px; height:42px; border-radius:8px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
             : `<div style="width:42px; height:42px; border-radius:8px; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;">🎵</div>`}
           <div style="flex:1; min-width:0;">
-            <strong style="font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(c.titulo)}</strong>
-            <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(c.artista)} · ${escHtmlStats_(c.subcategoria)}</span>
+            <strong style="font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(t.name)}</strong>
+            <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(t.artist || 'Spotify')} ${t.album ? `· ${escHtmlStats_(t.album)}` : ''}</span>
           </div>
-          <div style="font-size:0.82rem; font-weight:700; color:#f59e0b; flex-shrink:0;">★ ${Number(c.calificacion) ? Number(c.calificacion).toFixed(1) : '5.0'}</div>
+          <div style="font-size:0.78rem; font-weight:700; color:var(--muted); flex-shrink:0; text-align:right;">
+            <div>${durTxt}</div>
+            <span style="font-size:0.68rem; color:#1db954;">Spotify ↗</span>
+          </div>
         </div>
-      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Registra canciones o discos con buena calificación para destacar tus favoritos aquí.</div>'}
+      `;
+      }).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de canciones en Spotify todavía.</div>'}
     </div>
   `;
 }
@@ -14372,95 +14454,32 @@ function renderizarStatsLecturas_(ctx) {
 }
 
 function obtenerTop5ArtistasStats_(musicaRegs, spotifyStats) {
-  const conteo = {};
-  (musicaRegs || []).forEach(r => {
-    const art = (r.creador || '').trim();
-    if (!art || art === 'Desconocido' || art === 'Artista desconocido') return;
-    if (!conteo[art]) conteo[art] = { nombre: art, count: 0, sumRating: 0, numRating: 0, poster: r.poster || '', genres: [] };
-    conteo[art].count++;
-    if (Number(r.calificacion) > 0) {
-      conteo[art].sumRating += Number(r.calificacion);
-      conteo[art].numRating++;
-    }
-    if (!conteo[art].poster && r.poster) conteo[art].poster = r.poster;
-  });
-
-  if (spotifyStats && Array.isArray(spotifyStats.topArtists) && spotifyStats.topArtists.length) {
-    spotifyStats.topArtists.forEach(spA => {
-      const artName = spA.name;
-      if (conteo[artName]) {
-        conteo[artName].count += 4;
-        if (spA.image && !conteo[artName].poster) conteo[artName].poster = spA.image;
-        if (spA.genres) conteo[artName].genres = spA.genres;
-      } else {
-        conteo[artName] = {
-          nombre: artName,
-          count: 3,
-          sumRating: 15,
-          numRating: 3,
-          poster: spA.image || '',
-          genres: spA.genres || [],
-          origen: 'spotify'
-        };
-      }
-    });
+  if (!spotifyStats || !Array.isArray(spotifyStats.topArtists) || !spotifyStats.topArtists.length) {
+    return [];
   }
-
-  const list = Object.values(conteo).map(a => ({
-    ...a,
-    avg: a.numRating ? (a.sumRating / a.numRating) : 4.8,
-    score: (a.count * 2) + ((a.numRating ? (a.sumRating / a.numRating) : 4) * 3)
+  return spotifyStats.topArtists.slice(0, 5).map((a, idx) => ({
+    nombre: a.name,
+    poster: a.image || '',
+    genres: a.genres || [],
+    popularity: a.popularity,
+    url: a.url || '',
+    score: (5 - idx) * 10
   }));
-
-  list.sort((a, b) => b.score - a.score || b.avg - a.avg || b.count - a.count);
-  return list.slice(0, 5);
 }
 
 function obtenerTop5CancionesStats_(musicaRegs, spotifyStats) {
-  const favoritasMediary = [...(musicaRegs || [])].sort((a, b) => {
-    const calA = Number(a.calificacion) || 0;
-    const calB = Number(b.calificacion) || 0;
-    if (calB !== calA) return calB - calA;
-    return (b.id || 0) - (a.id || 0);
-  });
-
-  const res = [];
-  const titulosVistos = new Set();
-
-  favoritasMediary.forEach(r => {
-    const key = (r.titulo || '').toLowerCase().trim();
-    if (!titulosVistos.has(key) && (Number(r.calificacion) >= 4 || res.length < 5)) {
-      titulosVistos.add(key);
-      res.push({
-        titulo: r.titulo,
-        artista: r.creador || 'Música',
-        calificacion: Number(r.calificacion) || 5,
-        poster: r.poster || '',
-        subcategoria: r.subcategoria || 'Disco',
-        origen: 'mediary'
-      });
-    }
-  });
-
-  if (res.length < 5 && spotifyStats && Array.isArray(spotifyStats.topTracks)) {
-    spotifyStats.topTracks.forEach(spT => {
-      if (res.length >= 5) return;
-      const key = (spT.name || '').toLowerCase().trim();
-      if (!titulosVistos.has(key)) {
-        titulosVistos.add(key);
-        res.push({
-          titulo: spT.name,
-          artista: spT.artist || '',
-          calificacion: 5,
-          poster: spT.image || '',
-          subcategoria: 'Canción Spotify',
-          origen: 'spotify'
-        });
-      }
-    });
+  if (!spotifyStats || !Array.isArray(spotifyStats.topTracks) || !spotifyStats.topTracks.length) {
+    return [];
   }
-
-  return res.slice(0, 5);
+  return spotifyStats.topTracks.slice(0, 5).map((t, idx) => ({
+    titulo: t.name,
+    artista: t.artist || '',
+    album: t.album || '',
+    poster: t.image || '',
+    duration_ms: t.duration_ms,
+    url: t.url || '',
+    calificacion: 5
+  }));
 }
 
 function actualizarTarjetasVisualesConfig() {
