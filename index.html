@@ -4888,61 +4888,94 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
 <!-- MODAL CONECTAR GOODREADS / KINDLE -->
 <div id="modal-goodreads-connect" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalConectarGoodreads()">
-  <div class="modal-box" style="max-width:520px; max-height:90vh; overflow-y:auto; padding:20px; border-radius:18px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+  <div class="modal-box" style="max-width:540px; max-height:90vh; overflow-y:auto; padding:22px; border-radius:20px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
       <div style="display:flex; align-items:center; gap:8px;">
-        <span style="font-size:1.3rem;">📚</span>
-        <h3 style="margin:0; font-size:1.15rem; color:var(--text);">Vincular con Goodreads / Kindle</h3>
+        <span style="font-size:1.35rem;">📚</span>
+        <h3 style="margin:0; font-size:1.15rem; color:var(--text); font-weight:800;">Sincronizar Goodreads / Kindle</h3>
       </div>
       <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalConectarGoodreads()">✕</button>
     </div>
 
-    <p style="font-size:0.83rem; color:var(--muted); margin-bottom:14px; line-height:1.45;">
-      Sincroniza tus libros leídos desde tu Kindle. Puedes ingresar tu perfil público de Goodreads o subir directamente tu archivo exportado de lecturas.
-    </p>
-
-    <!-- Opción A: Por enlace o ID -->
-    <div class="form-group" style="margin-bottom:12px;">
-      <label style="font-weight:700; font-size:0.84rem; display:block; margin-bottom:4px;">Enlace de Perfil o ID de Goodreads:</label>
-      <input type="text" id="goodreads-input-user-id" class="form-input" placeholder="Ej: https://www.goodreads.com/user/show/12345678 o tu ID">
-      <small style="color:var(--muted); font-size:0.72rem; display:block; margin-top:4px;">
-        * Tu perfil debe ser público para poder leer tus lecturas.
-      </small>
+    <!-- Banner informativo oficial -->
+    <div style="background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.25); border-radius:12px; padding:12px 14px; margin-bottom:16px; font-size:0.8rem; line-height:1.45; color:var(--text);">
+      <div style="font-weight:700; margin-bottom:4px; display:flex; align-items:center; gap:6px; color:var(--accent);">
+        <span>💡</span> <span>¿Cómo sincronizar tus lecturas?</span>
+      </div>
+      <p style="margin:0; color:var(--muted); font-size:0.77rem;">
+        Amazon y Goodreads exigen inicio de sesión y bloquean la extracción directa por enlace. La forma <strong>oficial, completa y garantizada</strong> de importar toda tu biblioteca histórica y calificaciones es mediante tu archivo exportado de Goodreads o tus notas de Kindle.
+      </p>
     </div>
 
-    <button type="button" class="btn-google-login" onclick="guardarYConectarGoodreads()" style="width:100%; justify-content:center; padding:11px; margin-bottom:14px; background:var(--accent); color:#0f172a; border-color:var(--accent);">
-      <span style="font-size:1.05rem;">🔗</span>
-      <span style="font-weight:700;">Conectar y Sincronizar Perfil</span>
-    </button>
+    <!-- Método 1 (Recomendado): Subir o pegar archivo -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:16px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;">
+        <div style="font-weight:800; font-size:0.88rem; color:var(--text); display:flex; align-items:center; gap:6px;">
+          <span>⭐</span> <span>Método Recomendado (1 Clic)</span>
+        </div>
+        <span class="profile-google-pill" style="font-size:0.68rem; padding:2px 8px;">100% Confiable</span>
+      </div>
+
+      <div style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.45;">
+        <div style="margin-bottom:6px;">
+          <strong>1. En Goodreads:</strong> Abre tu cuenta en <a href="https://www.goodreads.com/review/import" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline; font-weight:700;">goodreads.com/review/import ↗</a> y presiona <strong>"Export Library"</strong> para descargar tu archivo <code>.csv</code>.
+        </div>
+        <div>
+          <strong>2. En Kindle:</strong> Conecta tu Kindle por cable USB a tu PC y busca el archivo <code>My Clippings.txt</code> dentro de la carpeta <em>documents</em>.
+        </div>
+      </div>
+
+      <input type="file" id="input-goodreads-file-direct" accept=".csv,.txt" style="display:none;" onchange="procesarArchivoGoodreadsSubido(event)">
+      
+      <button type="button" class="btn-today-pill" style="width:100%; justify-content:center; height:42px; font-size:0.86rem; background:var(--accent); color:#0f172a; font-weight:800; border:none; box-shadow:0 2px 8px rgba(56,189,248,0.25);" onclick="document.getElementById('input-goodreads-file-direct').click()">
+        <span>📂 Seleccionar archivo CSV o Clippings</span>
+      </button>
+
+      <!-- Toggle para pegar texto / CSV directamente -->
+      <div style="margin-top:10px; text-align:center;">
+        <button type="button" style="background:none; border:none; color:var(--accent); font-size:0.75rem; cursor:pointer; text-decoration:underline;" onclick="const el=document.getElementById('gr-paste-box'); el.style.display = el.style.display==='none'?'block':'none';">
+          O pega aquí el texto o CSV copiado ▼
+        </button>
+      </div>
+
+      <div id="gr-paste-box" style="display:none; margin-top:10px;">
+        <textarea id="gr-textarea-paste" class="form-input" rows="4" placeholder="Pega aquí el contenido de tu goodreads_library_export.csv o My Clippings.txt..." style="font-size:0.75rem; font-family:monospace; resize:vertical;"></textarea>
+        <button type="button" class="btn-today-pill" style="width:100%; margin-top:6px; justify-content:center; height:34px; font-size:0.78rem;" onclick="importarTextoPegadoGoodreads()">
+          <span>📥 Importar texto pegado</span>
+        </button>
+      </div>
+    </div>
 
     <!-- Divisor -->
-    <div style="display:flex; align-items:center; gap:10px; margin:10px 0 14px;">
+    <div style="display:flex; align-items:center; gap:10px; margin:12px 0;">
       <div style="flex:1; height:1px; background:var(--border);"></div>
-      <span style="font-size:0.74rem; color:var(--muted); text-transform:uppercase; font-weight:700;">o importa tu archivo directo</span>
+      <span style="font-size:0.72rem; color:var(--muted); text-transform:uppercase; font-weight:700;">otras opciones</span>
       <div style="flex:1; height:1px; background:var(--border);"></div>
     </div>
 
-    <!-- Opción B: Subida directa de CSV / My Clippings.txt -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-bottom:14px; font-size:0.8rem; line-height:1.45;">
-      <div style="font-weight:700; color:var(--text); margin-bottom:6px; display:flex; align-items:center; gap:6px;">
-        <span>📁</span> <span>Importación directa de biblioteca (100% infalible)</span>
+    <!-- Método 2: Enlace de perfil público -->
+    <details style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 14px; margin-bottom:12px; font-size:0.8rem;">
+      <summary style="cursor:pointer; font-weight:700; color:var(--text); list-style:none; display:flex; justify-content:space-between; align-items:center;">
+        <span style="display:flex; align-items:center; gap:6px;"><span>🔗</span> Probar sincronización por perfil público</span>
+        <span style="font-size:0.75rem; color:var(--muted);">▼</span>
+      </summary>
+      <div style="margin-top:10px;">
+        <p style="font-size:0.74rem; color:var(--muted); margin:0 0 8px 0; line-height:1.4;">
+          * Amazon exige inicio de sesión en la gran mayoría de perfiles. Si tu cuenta rechaza la conexión externa, usa el método oficial de exportación de arriba.
+        </p>
+        <input type="text" id="goodreads-input-user-id" class="form-input" placeholder="Ej: https://www.goodreads.com/user/show/12345678 o ID" style="margin-bottom:8px;">
+        <button type="button" id="btn-conectar-perfil-gr" class="btn-google-login" onclick="guardarYConectarGoodreads()" style="width:100%; justify-content:center; padding:9px; font-size:0.8rem;">
+          <span>Conectar perfil público</span>
+        </button>
       </div>
-      <p style="font-size:0.76rem; color:var(--muted); margin:0 0 10px 0;">
-        Puedes subir tu archivo <strong>goodreads_library_export.csv</strong> (desde <em>My Books → Export</em> en Goodreads) o el archivo <strong>My Clippings.txt</strong> (en la carpeta <em>documents</em> de tu Kindle conectado por USB).
-      </p>
-      <input type="file" id="input-goodreads-file-direct" accept=".csv,.txt" style="display:none;" onchange="procesarArchivoGoodreadsSubido(event)">
-      <button type="button" class="btn-today-pill" style="width:100%; justify-content:center; height:38px; font-size:0.82rem; background:rgba(56,189,248,0.1); border-color:var(--accent); color:var(--accent); font-weight:700;" onclick="document.getElementById('input-goodreads-file-direct').click()">
-        <span>📂 Seleccionar archivo (.csv de Goodreads o My Clippings.txt)</span>
-      </button>
-    </div>
+    </details>
 
-    <div style="display:flex; flex-direction:column; gap:8px;">
-      <button type="button" class="btn-today-pill" onclick="cargarDatosDemoGoodreads()" style="height:36px; width:100%; justify-content:center; font-size:0.8rem; background:rgba(217,119,6,0.1); border-color:rgba(217,119,6,0.3); color:#d97706;">
-        ✨ Probar con lectura de demostración de Kindle
-      </button>
-    </div>
+    <!-- Botón Demo -->
+    <button type="button" class="btn-today-pill" onclick="cargarDatosDemoGoodreads()" style="height:34px; width:100%; justify-content:center; font-size:0.78rem; background:rgba(217,119,6,0.08); border-color:rgba(217,119,6,0.3); color:#d97706; margin-bottom:12px;">
+      ✨ Probar con lectura de demostración de Kindle
+    </button>
 
-    <div class="modal-actions" style="margin-top:14px; justify-content:flex-end;">
+    <div class="modal-actions" style="margin-top:8px; justify-content:flex-end;">
       <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarGoodreads()">Cerrar</button>
     </div>
   </div>
@@ -16291,9 +16324,32 @@ async function guardarYConectarGoodreads() {
     alert(userPrefs && userPrefs.lang === 'en' ? 'Please enter your Goodreads user ID or profile link.' : 'Por favor ingresa tu ID o enlace de perfil de Goodreads.');
     return;
   }
+  const btn = document.getElementById('btn-conectar-perfil-gr');
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = userPrefs && userPrefs.lang === 'en' ? '<span>⏳ Verifying...</span>' : '<span>⏳ Verificando...</span>';
+  }
+
   const parsed = extraerIdOUrlGoodreads(val);
   if (!parsed || !parsed.id) {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = userPrefs && userPrefs.lang === 'en' ? '<span>Connect public profile</span>' : '<span>Conectar perfil público</span>';
+    }
     alert(userPrefs && userPrefs.lang === 'en' ? 'Invalid Goodreads ID or URL.' : 'ID o enlace de Goodreads no válido.');
+    return;
+  }
+
+  const libros = await parsearFeedGoodreads(parsed.rssUrl || parsed.id);
+  if (btn) {
+    btn.disabled = false;
+    btn.innerHTML = userPrefs && userPrefs.lang === 'en' ? '<span>Connect public profile</span>' : '<span>Conectar perfil público</span>';
+  }
+
+  if (!libros || !libros.length) {
+    alert(userPrefs && userPrefs.lang === 'en'
+      ? 'Amazon/Goodreads requires an active login and blocks external access to this profile.\n\n👉 Easy solution: Go to goodreads.com/review/import, click "Export Library", and select the downloaded CSV file in the button above!'
+      : 'Amazon/Goodreads exige inicio de sesión y bloquea la lectura externa de este perfil.\n\n👉 Solución fácil: Entra a goodreads.com/review/import, descarga tu archivo haciendo clic en "Export Library", y selecciónalo en el botón "Seleccionar archivo" de arriba.');
     return;
   }
 
@@ -16305,7 +16361,7 @@ async function guardarYConectarGoodreads() {
   }
 
   const prevUser = localStorage.getItem('mediary_goodreads_user');
-  let userObj = { nombre: `Lector Kindle (#${parsed.id})`, librosSincronizados: 0 };
+  let userObj = { nombre: `Lector Kindle (#${parsed.id})`, librosSincronizados: libros.length };
   if (prevUser) {
     try { userObj = Object.assign(userObj, JSON.parse(prevUser)); } catch (e) {}
   }
@@ -16562,6 +16618,90 @@ async function procesarArchivoGoodreadsSubido(event) {
   reader.readAsText(file, 'UTF-8');
 }
 
+async function importarTextoPegadoGoodreads() {
+  const ta = document.getElementById('gr-textarea-paste');
+  const txt = ta ? ta.value.trim() : '';
+  if (!txt) {
+    alert(userPrefs && userPrefs.lang === 'en' ? 'Please paste your CSV or Clippings text first.' : 'Por favor pega el texto de tu CSV o Clippings primero.');
+    return;
+  }
+  let libros = [];
+  if (txt.includes('Book Id,Title') || txt.includes('Title,Author') || txt.includes('Number of Pages')) {
+    libros = procesarCsvGoodreads(txt);
+  } else if (txt.includes('==========')) {
+    libros = procesarKindleClippings(txt);
+  } else {
+    libros = procesarCsvGoodreads(txt);
+    if (!libros.length) libros = procesarKindleClippings(txt);
+  }
+
+  if (!libros || !libros.length) {
+    alert(userPrefs && userPrefs.lang === 'en'
+      ? 'No valid books detected in text. Ensure it is Goodreads CSV or Kindle Clippings text.'
+      : 'No se detectaron libros válidos en el texto. Asegúrate de que sea el formato CSV de Goodreads o notas de Kindle.');
+    return;
+  }
+
+  const existentes = new Set(
+    (estado.registros || [])
+      .filter(r => r.categoria === 'Lecturas')
+      .map(r => (r.titulo || '').toLowerCase().trim())
+  );
+
+  const paraAgregar = [];
+  libros.forEach(b => {
+    const titLow = (b.titulo || '').toLowerCase().trim();
+    if (!existentes.has(titLow)) {
+      existentes.add(titLow);
+      paraAgregar.push(b);
+    }
+  });
+
+  let guardados = 0;
+  if (paraAgregar.length > 0) {
+    if (estado.userEmail && typeof google !== 'undefined' && google.script?.run) {
+      await new Promise((resolve) => {
+        google.script.run
+          .withSuccessHandler(res => {
+            if (res && res.exito) guardados = res.insertados || paraAgregar.length;
+            resolve();
+          })
+          .withFailureHandler(() => resolve())
+          .importarRegistrosMasivos(paraAgregar, estado.userEmail);
+      });
+      if (typeof cargarRegistros === 'function') cargarRegistros();
+    } else {
+      paraAgregar.forEach(item => {
+        if (Array.isArray(estado.registros)) {
+          estado.registros.push({
+            id: 'gr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+            ...item
+          });
+        }
+      });
+      guardados = paraAgregar.length;
+      if (typeof guardarRegistrosEnLocalStorage === 'function') guardarRegistrosEnLocalStorage();
+      if (typeof renderizarRegistros === 'function') renderizarRegistros();
+    }
+  }
+
+  const userObj = {
+    nombre: 'Lecturas Importadas',
+    librosSincronizados: libros.length
+  };
+  localStorage.setItem('mediary_goodreads_id', 'file_' + Date.now());
+  localStorage.setItem('mediary_goodreads_user', JSON.stringify(userObj));
+  localStorage.setItem('mediary_goodreads_last_sync', new Date().toISOString());
+
+  cerrarModalConectarGoodreads();
+  actualizarUIGoodreads();
+
+  const msg = userPrefs && userPrefs.lang === 'en'
+    ? `📚 Successfully imported! ${guardados} new books added (${libros.length} detected).`
+    : `📚 ¡Importación exitosa! Se añadieron ${guardados} libros nuevos (${libros.length} detectados).`;
+  mostrarToastPersonalizado(msg);
+}
+
 async function parsearFeedGoodreads(urlOrId) {
   let targetUrl = urlOrId;
   if (/^\d+$/.test(urlOrId)) {
@@ -16684,20 +16824,27 @@ async function sincronizarLecturasGoodreads(notificar) {
   if (btnSync) btnSync.disabled = true;
 
   try {
+    if (goodreadsId.startsWith('file_') || goodreadsId === 'demo_kindle_user') {
+      if (notificar) {
+        mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en'
+          ? '📚 Library loaded from file. Select a new export file to refresh anytime.'
+          : '📚 Biblioteca cargada desde archivo. Sube un nuevo archivo para actualizar cuando desees.');
+        setTimeout(() => abrirModalConectarGoodreads(), 400);
+      }
+      return;
+    }
+
     const customRss = localStorage.getItem('mediary_goodreads_rss_custom');
     const readUrl = customRss || goodreadsId;
     
-    let libros = [];
-    if (!goodreadsId.startsWith('file_')) {
-      libros = await parsearFeedGoodreads(readUrl);
-    }
+    const libros = await parsearFeedGoodreads(readUrl);
 
     if (!libros || !libros.length) {
       if (notificar) {
-        mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en'
-          ? 'Goodreads profile sync restricted. Opening menu to import your file!'
-          : 'Goodreads restringe la lectura externa. Puedes importar tu archivo CSV o My Clippings.');
-        setTimeout(() => abrirModalConectarGoodreads(), 500);
+        alert(userPrefs && userPrefs.lang === 'en'
+          ? 'Amazon/Goodreads requires login and restricts external profile sync.\n\n👉 Easy solution: Go to goodreads.com/review/import, click "Export Library", and select the downloaded CSV file in the button above!'
+          : 'Amazon/Goodreads exige inicio de sesión y bloquea la lectura externa de este perfil.\n\n👉 Solución fácil: Entra a goodreads.com/review/import, descarga tu archivo haciendo clic en "Export Library", y selecciónalo en el botón "Seleccionar archivo" de la ventana.');
+        setTimeout(() => abrirModalConectarGoodreads(), 300);
       }
       return;
     }
