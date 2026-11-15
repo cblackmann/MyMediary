@@ -13624,6 +13624,16 @@ function abrirModalEstadisticasAvanzadas(catInicial) {
 
   actualizarPillsFiltroStats();
   renderizarContenidoEstadisticasAvanzadas();
+
+  // Auto-sincronización con Spotify en segundo plano para alimentar el acumulador incremental
+  const token = localStorage.getItem('mediary_spotify_token');
+  const lastSyncTime = Number(localStorage.getItem('mediary_spotify_last_auto_sync') || 0);
+  if (token && (Date.now() - lastSyncTime > 5 * 60 * 1000)) {
+    localStorage.setItem('mediary_spotify_last_auto_sync', String(Date.now()));
+    actualizarDatosSpotify(false).then(() => {
+      renderizarContenidoEstadisticasAvanzadas();
+    }).catch(() => {});
+  }
 }
 
 function cerrarModalEstadisticasAvanzadas() {
@@ -13709,6 +13719,57 @@ function calcularHorasObraStats_(r, seriesConTemporadas) {
   return 0;
 }
 
+function obtenerMetricasMusicaSpotifyStats_(spotifyStats, spotifyAccumulator, nowYear, nowMonth) {
+  const yrStr = String(nowYear);
+  const moStr = yrStr + '-' + String(nowMonth + 1).padStart(2, '0');
+
+  const acc = spotifyAccumulator || (spotifyStats && spotifyStats.accumulator) || null;
+
+  let horasTotal = 0;
+  let countTotal = 0;
+  let horasAnio = 0;
+  let countAnio = 0;
+  let horasMes = 0;
+  let countMes = 0;
+
+  if (acc && acc.totalMs) {
+    horasTotal = acc.totalMs / 3600000;
+    countTotal = acc.totalTracks || 0;
+    if (acc.byYear && acc.byYear[yrStr]) {
+      horasAnio = acc.byYear[yrStr].ms / 3600000;
+      countAnio = acc.byYear[yrStr].count || 0;
+    }
+    if (acc.byMonth && acc.byMonth[moStr]) {
+      horasMes = acc.byMonth[moStr].ms / 3600000;
+      countMes = acc.byMonth[moStr].count || 0;
+    }
+  }
+
+  // Fallbacks si el acumulador aún no ha guardado datos históricos
+  const fallbackHoras = spotifyStats && spotifyStats.recentHours != null
+    ? parseFloat(spotifyStats.recentHours)
+    : (spotifyStats && spotifyStats.recentMinutes ? (spotifyStats.recentMinutes / 60) : 0);
+  const fallbackCount = spotifyStats && (spotifyStats.recentlyPlayedCount || spotifyStats.topTracks?.length || 0);
+
+  if (horasTotal === 0 && fallbackHoras > 0) horasTotal = fallbackHoras;
+  if (horasAnio === 0 && fallbackHoras > 0) horasAnio = fallbackHoras;
+  if (horasMes === 0 && fallbackHoras > 0) horasMes = fallbackHoras;
+  if (countTotal === 0 && fallbackCount > 0) countTotal = fallbackCount;
+  if (countAnio === 0 && fallbackCount > 0) countAnio = fallbackCount;
+  if (countMes === 0 && fallbackCount > 0) countMes = fallbackCount;
+
+  return {
+    horasTotal,
+    countTotal,
+    horasAnio,
+    countAnio,
+    horasMes,
+    countMes,
+    horasRecientes: fallbackHoras,
+    countRecientes: fallbackCount
+  };
+}
+
 function renderizarContenidoEstadisticasAvanzadas() {
   const container = document.getElementById('stats-modal-body');
   const tagSummary = document.getElementById('stats-modal-summary-tag');
@@ -13750,11 +13811,16 @@ function renderizarContenidoEstadisticasAvanzadas() {
     tagSummary.textContent = `${regsPeriodo.length} registros en ${periodTxt}`;
   }
 
-  // Cargar datos de Spotify si existen en localStorage
+  // Cargar datos de Spotify y acumulador si existen en localStorage
   let spotifyStats = null;
+  let spotifyAccumulator = null;
   try {
     const spRaw = localStorage.getItem('mediary_spotify_stats');
     if (spRaw) spotifyStats = JSON.parse(spRaw);
+  } catch (e) {}
+  try {
+    const accRaw = localStorage.getItem('mediary_spotify_accumulator');
+    if (accRaw) spotifyAccumulator = JSON.parse(accRaw);
   } catch (e) {}
 
   const ctx = {
@@ -13765,7 +13831,8 @@ function renderizarContenidoEstadisticasAvanzadas() {
     nowMonth,
     mesesLargo,
     periodTxt,
-    spotifyStats
+    spotifyStats,
+    spotifyAccumulator
   };
 
   const cat = estadoStatsModal.categoria;
@@ -13785,7 +13852,7 @@ function renderizarContenidoEstadisticasAvanzadas() {
 }
 
 function renderizarStatsGeneral_(ctx) {
-  const { regsPeriodo, todosRegs, seriesConTemporadas, nowYear, nowMonth, mesesLargo, spotifyStats } = ctx;
+  const { regsPeriodo, todosRegs, seriesConTemporadas, nowYear, nowMonth, mesesLargo, spotifyStats, spotifyAccumulator } = ctx;
   const total = regsPeriodo.length;
 
   let horasPelis = 0, horasSeries = 0, horasJuegos = 0, horasLecturas = 0;
@@ -13808,12 +13875,22 @@ function renderizarStatsGeneral_(ctx) {
   });
 
   const tieneSpotify = !!(spotifyStats && (spotifyStats.recentHours != null || spotifyStats.recentMinutes != null || (spotifyStats.topArtists && spotifyStats.topArtists.length) || (spotifyStats.topTracks && spotifyStats.topTracks.length)));
-  const horasMusicaSpotify = tieneSpotify
-    ? (spotifyStats.recentHours != null ? parseFloat(spotifyStats.recentHours) : (spotifyStats.recentMinutes ? (spotifyStats.recentMinutes / 60) : 0))
-    : 0;
-  const tracksSpotifyCount = tieneSpotify
-    ? (spotifyStats.recentlyPlayedCount || (spotifyStats.topTracks?.length || 0))
-    : 0;
+  const metricasSp = obtenerMetricasMusicaSpotifyStats_(spotifyStats, spotifyAccumulator, nowYear, nowMonth);
+
+  let horasMusicaSpotify = 0;
+  let countMusicaSpotify = 0;
+  if (tieneSpotify) {
+    if (estadoStatsModal.periodo === 'month') {
+      horasMusicaSpotify = metricasSp.horasMes;
+      countMusicaSpotify = metricasSp.countMes;
+    } else if (estadoStatsModal.periodo === 'year') {
+      horasMusicaSpotify = metricasSp.horasAnio;
+      countMusicaSpotify = metricasSp.countAnio;
+    } else {
+      horasMusicaSpotify = metricasSp.horasTotal;
+      countMusicaSpotify = metricasSp.countTotal;
+    }
+  }
 
   const horasTotal = horasPelis + horasSeries + horasMusicaSpotify + horasJuegos + horasLecturas;
   const ratingAvg = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
@@ -13857,7 +13934,7 @@ function renderizarStatsGeneral_(ctx) {
       <div class="stats-kpi-card" style="border-left: 3px solid #10b981; cursor:pointer;" onclick="${tieneSpotify ? "cambiarCatStats('Musica')" : "abrirModalConectarSpotify()"}">
         <div class="stats-kpi-label"><span>🎵</span> <span>Música (Spotify)</span></div>
         <div class="stats-kpi-val" style="color:#10b981;">${tieneSpotify ? formatearHorasStats_(horasMusicaSpotify) : '—'}</div>
-        <div class="stats-kpi-sub">${tieneSpotify ? `🟢 ${tracksSpotifyCount} pistas analizadas` : 'Conectar con Spotify ➔'}</div>
+        <div class="stats-kpi-sub">${tieneSpotify ? `🟢 ${countMusicaSpotify} temas acumulados` : 'Conectar con Spotify ➔'}</div>
       </div>
     </div>
 
@@ -13905,16 +13982,16 @@ function renderizarStatsGeneral_(ctx) {
           </div>
           ${tieneSpotify ? `
             <div style="margin-top:6px; display:flex; justify-content:space-between; font-size:0.8rem;">
-              <span style="color:var(--muted);">Tiempo Reciente:</span>
-              <strong style="color:var(--text);">${formatearHorasStats_(horasMusicaSpotify)}</strong>
+              <span style="color:var(--muted);">Este Año:</span>
+              <strong style="color:var(--text);">${formatearHorasStats_(metricasSp.horasAnio)} (${metricasSp.countAnio})</strong>
             </div>
             <div style="margin-top:3px; display:flex; justify-content:space-between; font-size:0.8rem;">
-              <span style="color:var(--muted);">Artista Top:</span>
-              <strong style="color:#10b981; max-width:110px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${escHtmlStats_(spotifyStats.topArtists?.[0]?.name || 'Spotify')}</strong>
+              <span style="color:var(--muted);">Este Mes:</span>
+              <strong style="color:#10b981;">${formatearHorasStats_(metricasSp.horasMes)} (${metricasSp.countMes})</strong>
             </div>
           ` : `
             <div style="margin-top:6px; font-size:0.78rem; color:var(--muted); line-height:1.3;">
-              Conecta Spotify para ver tiempo y artistas favoritos exclusivos.
+              Conecta Spotify para acumular horas de música y ver artistas favoritos.
             </div>
             <div style="margin-top:4px; font-size:0.75rem; color:#10b981; font-weight:600;">
               🟢 Conectar cuenta
@@ -14161,8 +14238,30 @@ function renderizarStatsSeries_(ctx) {
   `;
 }
 
+function cambiarRangoSpotifyStats(rango) {
+  if (!['short_term', 'medium_term', 'long_term'].includes(rango)) return;
+  localStorage.setItem('mediary_spotify_selected_range', rango);
+
+  let stats = null;
+  try {
+    const raw = localStorage.getItem('mediary_spotify_stats');
+    if (raw) stats = JSON.parse(raw);
+  } catch(e) {}
+  if (stats) {
+    stats.selectedRange = rango;
+    if (stats.topArtistsByRange && stats.topArtistsByRange[rango]) {
+      stats.topArtists = stats.topArtistsByRange[rango];
+    }
+    if (stats.topTracksByRange && stats.topTracksByRange[rango]) {
+      stats.topTracks = stats.topTracksByRange[rango];
+    }
+    localStorage.setItem('mediary_spotify_stats', JSON.stringify(stats));
+  }
+  renderizarContenidoEstadisticasAvanzadas();
+}
+
 function renderizarStatsMusica_(ctx) {
-  const { spotifyStats } = ctx;
+  const { nowYear, nowMonth, mesesLargo, spotifyStats, spotifyAccumulator } = ctx;
 
   const tieneSpotify = !!(spotifyStats && (spotifyStats.recentHours != null || spotifyStats.recentMinutes != null || (spotifyStats.topArtists && spotifyStats.topArtists.length) || (spotifyStats.topTracks && spotifyStats.topTracks.length)));
 
@@ -14176,7 +14275,7 @@ function renderizarStatsMusica_(ctx) {
         </div>
         <h3 style="font-size:1.15rem; font-weight:700; color:var(--text); margin-bottom:8px;">Estadísticas Musicales con Spotify</h3>
         <p style="font-size:0.84rem; color:var(--muted); max-width:390px; margin:0 auto 22px auto; line-height:1.45;">
-          Tus estadísticas musicales (tiempo total escuchado, 5 artistas favoritos, 5 temas favoritos y géneros) se basan <strong>exclusivamente en tu cuenta de Spotify</strong>.
+          Tus estadísticas musicales se basan <strong>exclusivamente en tu cuenta de Spotify</strong> con acumulador progresivo de horas, top 5 de artistas y canciones por períodos.
         </p>
         <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
           <button type="button" class="btn-primary" onclick="abrirModalConectarSpotify()" style="background:#1db954; color:#fff; border:none; padding:10px 22px; border-radius:12px; font-weight:700; font-size:0.88rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
@@ -14190,14 +14289,24 @@ function renderizarStatsMusica_(ctx) {
     `;
   }
 
-  const horasNum = spotifyStats.recentHours != null
-    ? parseFloat(spotifyStats.recentHours)
-    : (spotifyStats.recentMinutes ? (spotifyStats.recentMinutes / 60) : 0);
-  const tiempoEscuchadoTxt = formatearHorasStats_(horasNum);
+  const metricasSp = obtenerMetricasMusicaSpotifyStats_(spotifyStats, spotifyAccumulator, nowYear, nowMonth);
 
-  const top5Artistas = (spotifyStats.topArtists || []).slice(0, 5);
-  const top5Canciones = (spotifyStats.topTracks || []).slice(0, 5);
-  const topGenero = (spotifyStats.topArtists?.[0]?.genres?.[0]) || 'Música Variada';
+  // Rango activo de Tops (short_term: 4 semanas, medium_term: 6 meses, long_term: histórico)
+  const rangoActivo = localStorage.getItem('mediary_spotify_selected_range') || (spotifyStats && spotifyStats.selectedRange) || 'medium_term';
+  const labelRango = rangoActivo === 'short_term'
+    ? 'Últimas 4 semanas (Tendencia actual)'
+    : (rangoActivo === 'long_term' ? 'Histórico completo (Varios años)' : 'Últimos 6 meses (Semestre)');
+
+  const topArtistsList = (spotifyStats.topArtistsByRange && spotifyStats.topArtistsByRange[rangoActivo])
+    || spotifyStats.topArtists
+    || [];
+  const topTracksList = (spotifyStats.topTracksByRange && spotifyStats.topTracksByRange[rangoActivo])
+    || spotifyStats.topTracks
+    || [];
+
+  const top5Artistas = topArtistsList.slice(0, 5);
+  const top5Canciones = topTracksList.slice(0, 5);
+  const topGenero = (top5Artistas[0]?.genres?.[0]) || 'Música Variada';
 
   let spUser = null;
   try {
@@ -14213,13 +14322,6 @@ function renderizarStatsMusica_(ctx) {
     } catch (e) {}
   }
 
-  // Popularidad promedio de artistas top
-  let avgPop = 0;
-  if (top5Artistas.length) {
-    const sumP = top5Artistas.reduce((acc, a) => acc + (Number(a.popularity) || 0), 0);
-    avgPop = Math.round(sumP / top5Artistas.length);
-  }
-
   return `
     <!-- BANNER DE USUARIO SPOTIFY Y SINCRONIZACIÓN -->
     <div style="background:var(--bg); border:1px solid rgba(29,185,84,0.3); border-radius:14px; padding:12px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
@@ -14233,36 +14335,60 @@ function renderizarStatsMusica_(ctx) {
             <span style="font-size:0.72rem; font-weight:400; color:#1db954; background:rgba(29,185,84,0.12); padding:1px 6px; border-radius:6px; margin-left:4px;">${spUser?.product === 'premium' ? 'Premium' : 'Conectado'}</span>
           </div>
           <div style="font-size:0.72rem; color:var(--muted); margin-top:1px;">
-            ${fechaSync ? `Sincronizado: ${fechaSync}` : 'Datos en vivo de Spotify'}
+            ${fechaSync ? `Sincronizado: ${fechaSync}` : 'Acumulador de horas activo'}
           </div>
         </div>
       </div>
-      <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSpotify(true).then(() => renderizarContenidoEstadisticasAvanzadas())" title="Actualizar datos de Spotify" style="font-size:0.75rem; padding:6px 12px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0;">
+      <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSpotify(true).then(() => renderizarContenidoEstadisticasAvanzadas())" title="Actualizar y acumular reproducciones de Spotify" style="font-size:0.75rem; padding:6px 12px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0;">
         <span>🔄</span> <span>Actualizar</span>
       </button>
     </div>
 
-    <!-- KPIS SPOTIFY -->
+    <!-- KPIS SPOTIFY CON ACUMULADOR INCREMENTAL -->
     <div class="stats-kpi-grid">
       <div class="stats-kpi-card" style="border-left: 3px solid #1db954;">
-        <div class="stats-kpi-label"><span>⏱️</span> <span>Tiempo Escuchado</span></div>
-        <div class="stats-kpi-val" style="color:#1db954;">${tiempoEscuchadoTxt}</div>
-        <div class="stats-kpi-sub">${spotifyStats.recentMinutes ? `${spotifyStats.recentMinutes} minutos recientes` : 'Historial reciente'}</div>
+        <div class="stats-kpi-label"><span>📅</span> <span>Este Año (${nowYear})</span></div>
+        <div class="stats-kpi-val" style="color:#1db954;">${formatearHorasStats_(metricasSp.horasAnio)}</div>
+        <div class="stats-kpi-sub">${metricasSp.countAnio} pistas en ${nowYear}</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>🎧</span> <span>Pistas Analizadas</span></div>
-        <div class="stats-kpi-val">${spotifyStats.recentlyPlayedCount || top5Canciones.length || 0}</div>
-        <div class="stats-kpi-sub">Reproducciones registradas</div>
+        <div class="stats-kpi-label"><span>🗓️</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
+        <div class="stats-kpi-val" style="color:#10b981;">${formatearHorasStats_(metricasSp.horasMes)}</div>
+        <div class="stats-kpi-sub">${metricasSp.countMes} pistas este mes</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>🎸</span> <span>Género Principal</span></div>
-        <div class="stats-kpi-val" style="color:#10b981; font-size:1.05rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escHtmlStats_(topGenero)}">${escHtmlStats_(topGenero.charAt(0).toUpperCase() + topGenero.slice(1))}</div>
-        <div class="stats-kpi-sub">Estilo predominante</div>
+        <div class="stats-kpi-label"><span>⏱️</span> <span>Total Acumulado</span></div>
+        <div class="stats-kpi-val" style="color:var(--accent);">${formatearHorasStats_(metricasSp.horasTotal)}</div>
+        <div class="stats-kpi-sub">${metricasSp.countTotal} temas registrados</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>★</span> <span>Popularidad Media</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">★ ${avgPop ? avgPop + '%' : '100%'}</div>
-        <div class="stats-kpi-sub">Índice Spotify</div>
+        <div class="stats-kpi-label"><span>🎧</span> <span>Sesión Reciente</span></div>
+        <div class="stats-kpi-val" style="color:#f59e0b;">${formatearHorasStats_(metricasSp.horasRecientes)}</div>
+        <div class="stats-kpi-sub">Últimas ${metricasSp.countRecientes || 50} pistas en Spotify</div>
+      </div>
+    </div>
+
+    <!-- SELECTOR DE PERÍODO PARA TOPS EN SPOTIFY -->
+    <div class="stats-section-box" style="padding:12px 14px; margin-bottom:12px;">
+      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:1.15rem;">⏳</span>
+          <div>
+            <strong style="font-size:0.86rem; color:var(--text); display:block;">Período de Favoritos en Spotify</strong>
+            <span style="font-size:0.73rem; color:var(--muted);">${labelRango}</span>
+          </div>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button type="button" class="btn-toggle-filter ${rangoActivo === 'short_term' ? 'active' : ''}" onclick="cambiarRangoSpotifyStats('short_term')">
+            ⚡ 4 Semanas
+          </button>
+          <button type="button" class="btn-toggle-filter ${rangoActivo === 'medium_term' ? 'active' : ''}" onclick="cambiarRangoSpotifyStats('medium_term')">
+            📅 6 Meses
+          </button>
+          <button type="button" class="btn-toggle-filter ${rangoActivo === 'long_term' ? 'active' : ''}" onclick="cambiarRangoSpotifyStats('long_term')">
+            👑 Histórico
+          </button>
+        </div>
       </div>
     </div>
 
@@ -14270,7 +14396,7 @@ function renderizarStatsMusica_(ctx) {
     <div class="stats-section-box">
       <div class="stats-section-title">
         <span>🎤 5 Artistas Favoritos (Spotify)</span>
-        <span style="font-size:0.74rem; color:#1db954; font-weight:700;">★ Más escuchados</span>
+        <span style="font-size:0.74rem; color:#1db954; font-weight:700;">★ ${rangoActivo === 'short_term' ? 'Más escuchados (4 sem)' : (rangoActivo === 'long_term' ? 'De siempre (Años)' : 'Top Semestre')}</span>
       </div>
       ${top5Artistas.length ? top5Artistas.map((a, idx) => `
         <div class="stats-ranking-row" style="cursor:pointer;" onclick="${a.url ? `window.open('${escHtmlStats_(a.url)}', '_blank')` : ''}">
@@ -14289,7 +14415,7 @@ function renderizarStatsMusica_(ctx) {
             <span style="font-size:0.68rem; color:var(--muted); font-weight:400;">popularidad</span>
           </div>
         </div>
-      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de artistas en Spotify todavía.</div>'}
+      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de artistas en Spotify todavía. Pulsa Actualizar para sincronizar.</div>'}
     </div>
 
     <!-- TOP 5 CANCIONES FAVORITAS (SPOTIFY) -->
@@ -14320,7 +14446,7 @@ function renderizarStatsMusica_(ctx) {
           </div>
         </div>
       `;
-      }).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de canciones en Spotify todavía.</div>'}
+      }).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de canciones en Spotify todavía. Pulsa Actualizar para sincronizar.</div>'}
     </div>
   `;
 }
@@ -14975,6 +15101,68 @@ async function obtenerTokenSpotifyValido(forzarRefresh = false) {
   return token;
 }
 
+function procesarReproduccionesRecientesSpotify_(items) {
+  let acc = null;
+  try {
+    const raw = localStorage.getItem('mediary_spotify_accumulator');
+    if (raw) acc = JSON.parse(raw);
+  } catch (e) {}
+
+  if (!acc || typeof acc !== 'object') {
+    acc = {
+      totalMs: 0,
+      totalTracks: 0,
+      byYear: {},
+      byMonth: {},
+      seenKeys: [],
+      firstSync: new Date().toISOString(),
+      lastSync: new Date().toISOString()
+    };
+  }
+  if (!acc.byYear) acc.byYear = {};
+  if (!acc.byMonth) acc.byMonth = {};
+  if (!Array.isArray(acc.seenKeys)) acc.seenKeys = [];
+
+  const seenSet = new Set(acc.seenKeys);
+
+  (items || []).forEach(it => {
+    const track = it.track;
+    if (!track) return;
+    const key = it.played_at || (track.id + '_' + (it.played_at || ''));
+    if (!key || seenSet.has(key)) return;
+
+    seenSet.add(key);
+    acc.seenKeys.push(key);
+
+    const dur = Number(track.duration_ms) || 0;
+    const playDate = it.played_at ? new Date(it.played_at) : new Date();
+    const yr = String(playDate.getFullYear());
+    const mo = yr + '-' + String(playDate.getMonth() + 1).padStart(2, '0');
+
+    acc.totalMs = (acc.totalMs || 0) + dur;
+    acc.totalTracks = (acc.totalTracks || 0) + 1;
+
+    if (!acc.byYear[yr]) acc.byYear[yr] = { ms: 0, count: 0 };
+    acc.byYear[yr].ms += dur;
+    acc.byYear[yr].count++;
+
+    if (!acc.byMonth[mo]) acc.byMonth[mo] = { ms: 0, count: 0 };
+    acc.byMonth[mo].ms += dur;
+    acc.byMonth[mo].count++;
+  });
+
+  if (acc.seenKeys.length > 5000) {
+    acc.seenKeys = acc.seenKeys.slice(-5000);
+  }
+  acc.lastSync = new Date().toISOString();
+
+  try {
+    localStorage.setItem('mediary_spotify_accumulator', JSON.stringify(acc));
+  } catch (e) {}
+
+  return acc;
+}
+
 async function actualizarDatosSpotify(notificar = false) {
   const token = await obtenerTokenSpotifyValido();
   if (!token) {
@@ -14983,11 +15171,20 @@ async function actualizarDatosSpotify(notificar = false) {
   }
 
   try {
-    const [meRes, topArtRes, topTracksRes, recentRes] = await Promise.all([
+    const [
+      meRes,
+      recentRes,
+      artShortRes, artMedRes, artLongRes,
+      trkShortRes, trkMedRes, trkLongRes
+    ] = await Promise.all([
       fetch('https://api.spotify.com/v1/me', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
+      fetch('https://api.spotify.com/v1/me/player/recently-played?limit=50', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
+      fetch('https://api.spotify.com/v1/me/top/artists?limit=15&time_range=short_term', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
       fetch('https://api.spotify.com/v1/me/top/artists?limit=15&time_range=medium_term', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
+      fetch('https://api.spotify.com/v1/me/top/artists?limit=15&time_range=long_term', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
+      fetch('https://api.spotify.com/v1/me/top/tracks?limit=15&time_range=short_term', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
       fetch('https://api.spotify.com/v1/me/top/tracks?limit=15&time_range=medium_term', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null),
-      fetch('https://api.spotify.com/v1/me/player/recently-played?limit=50', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null)
+      fetch('https://api.spotify.com/v1/me/top/tracks?limit=15&time_range=long_term', { headers: { Authorization: `Bearer ${token}` } }).catch(() => null)
     ]);
 
     if (meRes && meRes.ok) {
@@ -15002,31 +15199,63 @@ async function actualizarDatosSpotify(notificar = false) {
       }));
     }
 
-    const stats = {};
-    if (topArtRes && topArtRes.ok) {
-      const artData = await topArtRes.json();
-      stats.topArtists = (artData.items || []).map(a => ({
-        id: a.id,
-        name: a.name,
-        genres: (a.genres || []).slice(0, 3),
-        image: a.images?.[0]?.url || '',
-        popularity: a.popularity,
-        url: a.external_urls?.spotify || ''
-      }));
+    const mapperArt = (items) => (items || []).map(a => ({
+      id: a.id,
+      name: a.name,
+      genres: (a.genres || []).slice(0, 3),
+      image: a.images?.[0]?.url || '',
+      popularity: a.popularity,
+      url: a.external_urls?.spotify || ''
+    }));
+
+    const mapperTrk = (items) => (items || []).map(t => ({
+      id: t.id,
+      name: t.name,
+      artist: t.artists?.map(x => x.name).join(', ') || '',
+      album: t.album?.name || '',
+      image: t.album?.images?.[0]?.url || '',
+      duration_ms: t.duration_ms,
+      url: t.external_urls?.spotify || ''
+    }));
+
+    let stats = {};
+    try {
+      const prevRaw = localStorage.getItem('mediary_spotify_stats');
+      if (prevRaw) stats = JSON.parse(prevRaw);
+    } catch(e) {}
+    if (!stats.topArtistsByRange) stats.topArtistsByRange = {};
+    if (!stats.topTracksByRange) stats.topTracksByRange = {};
+
+    if (artShortRes && artShortRes.ok) {
+      const d = await artShortRes.json();
+      stats.topArtistsByRange.short_term = mapperArt(d.items);
+    }
+    if (artMedRes && artMedRes.ok) {
+      const d = await artMedRes.json();
+      stats.topArtistsByRange.medium_term = mapperArt(d.items);
+    }
+    if (artLongRes && artLongRes.ok) {
+      const d = await artLongRes.json();
+      stats.topArtistsByRange.long_term = mapperArt(d.items);
     }
 
-    if (topTracksRes && topTracksRes.ok) {
-      const trkData = await topTracksRes.json();
-      stats.topTracks = (trkData.items || []).map(t => ({
-        id: t.id,
-        name: t.name,
-        artist: t.artists?.map(x => x.name).join(', ') || '',
-        album: t.album?.name || '',
-        image: t.album?.images?.[0]?.url || '',
-        duration_ms: t.duration_ms,
-        url: t.external_urls?.spotify || ''
-      }));
+    if (trkShortRes && trkShortRes.ok) {
+      const d = await trkShortRes.json();
+      stats.topTracksByRange.short_term = mapperTrk(d.items);
     }
+    if (trkMedRes && trkMedRes.ok) {
+      const d = await trkMedRes.json();
+      stats.topTracksByRange.medium_term = mapperTrk(d.items);
+    }
+    if (trkLongRes && trkLongRes.ok) {
+      const d = await trkLongRes.json();
+      stats.topTracksByRange.long_term = mapperTrk(d.items);
+    }
+
+    const selRange = localStorage.getItem('mediary_spotify_selected_range') || 'medium_term';
+    stats.selectedRange = selRange;
+    stats.topArtists = stats.topArtistsByRange[selRange] || stats.topArtistsByRange.medium_term || stats.topArtistsByRange.short_term || stats.topArtists || [];
+    stats.topTracks = stats.topTracksByRange[selRange] || stats.topTracksByRange.medium_term || stats.topTracksByRange.short_term || stats.topTracks || [];
 
     if (recentRes && recentRes.ok) {
       const recData = await recentRes.json();
@@ -15035,6 +15264,15 @@ async function actualizarDatosSpotify(notificar = false) {
       stats.recentlyPlayedCount = items.length;
       stats.recentMinutes = Math.round(totalMs / 60000);
       stats.recentHours = (totalMs / 3600000).toFixed(1);
+
+      const acc = procesarReproduccionesRecientesSpotify_(items);
+      stats.accumulator = {
+        totalMs: acc.totalMs,
+        totalTracks: acc.totalTracks,
+        byYear: acc.byYear,
+        byMonth: acc.byMonth,
+        lastSync: acc.lastSync
+      };
     }
 
     stats.lastUpdated = new Date().toISOString();
@@ -15049,86 +15287,6 @@ async function actualizarDatosSpotify(notificar = false) {
   }
 }
 
-function desconectarSpotify() {
-  localStorage.removeItem('mediary_spotify_token');
-  localStorage.removeItem('mediary_spotify_refresh_token');
-  localStorage.removeItem('mediary_spotify_expires_at');
-  localStorage.removeItem('mediary_spotify_user');
-  localStorage.removeItem('mediary_spotify_stats');
-  mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Spotify disconnected' : 'Cuenta de Spotify desconectada');
-  actualizarUISpotify();
-}
-
-function actualizarUISpotify() {
-  const token = localStorage.getItem('mediary_spotify_token');
-  const userJson = localStorage.getItem('mediary_spotify_user');
-  let user = null;
-  if (userJson) {
-    try { user = JSON.parse(userJson); } catch (e) {}
-  }
-
-  const badge = document.getElementById('cfg-spotify-badge');
-  const desc = document.getElementById('cfg-spotify-desc');
-  const disconnBox = document.getElementById('cfg-spotify-disconnected-box');
-  const connBox = document.getElementById('cfg-spotify-connected-box');
-  const avatarEl = document.getElementById('cfg-spotify-user-avatar');
-  const nameEl = document.getElementById('cfg-spotify-user-name');
-  const subEl = document.getElementById('cfg-spotify-user-sub');
-
-  if (token && user) {
-    if (badge) {
-      badge.textContent = userPrefs.lang === 'en' ? '✓ Connected' : '✓ Conectado';
-      badge.style.display = 'inline-flex';
-      badge.style.background = 'rgba(29, 185, 84, 0.14)';
-      badge.style.borderColor = 'rgba(29, 185, 84, 0.38)';
-      badge.style.color = '#10b981';
-    }
-    if (desc) desc.style.display = 'none';
-    if (disconnBox) disconnBox.style.display = 'none';
-    if (connBox) connBox.style.display = 'block';
-    if (nameEl) nameEl.textContent = user.display_name || 'Usuario Spotify';
-    if (subEl) {
-      const followersTxt = user.followers ? ` · ${user.followers} ${userPrefs.lang === 'en' ? 'followers' : 'seguidores'}` : '';
-      subEl.textContent = `${user.product === 'premium' ? 'Spotify Premium' : 'Spotify Free'}${followersTxt}`;
-    }
-    if (avatarEl) {
-      avatarEl.innerHTML = user.avatar
-        ? `<img src="${user.avatar}" alt="Spotify Avatar" style="width:100%;height:100%;object-fit:cover;">`
-        : `🟢`;
-    }
-  } else {
-    if (badge) badge.style.display = 'none';
-    if (desc) desc.style.display = 'block';
-    if (disconnBox) disconnBox.style.display = 'block';
-    if (connBox) connBox.style.display = 'none';
-  }
-  if (typeof renderizarEscuchandoAhoraInicio === 'function' && typeof estado !== 'undefined' && estado.categoria === 'inicio') {
-    renderizarEscuchandoAhoraInicio(true);
-  }
-}
-
-function abrirModalConectarSpotify() {
-  iniciarFlujoSpotifyAuth();
-}
-
-function cerrarModalConectarSpotify() {
-  const modal = document.getElementById('modal-spotify-connect');
-  if (modal) modal.style.display = 'none';
-}
-
-function copiarSpotifyRedirectUri() {
-  const uri = obtenerSpotifyRedirectUri();
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(uri).then(() => {
-      mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Redirect URI copied to clipboard! 📋' : '¡Redirect URI copiado al portapapeles! 📋');
-    }).catch(() => {
-      prompt('Copia esta URL:', uri);
-    });
-  } else {
-    prompt('Copia esta URL:', uri);
-  }
-}
-
 function cargarDatosDemoSpotify() {
   const demoUser = {
     id: 'spotify_demo_user',
@@ -15138,24 +15296,93 @@ function cargarDatosDemoSpotify() {
     product: 'premium',
     country: 'CL'
   };
+
+  const artistsShort = [
+    { id: '1', name: 'The Weeknd', genres: ['pop', 'r&b'], image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=120&auto=format&fit=crop&q=80', popularity: 95 },
+    { id: '2', name: 'Daft Punk', genres: ['electronic', 'french house'], image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', popularity: 86 },
+    { id: '3', name: 'Radiohead', genres: ['art rock', 'alternative rock'], image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', popularity: 84 },
+    { id: '4', name: 'Dua Lipa', genres: ['dance pop', 'pop'], image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80', popularity: 89 },
+    { id: '5', name: 'Arctic Monkeys', genres: ['indie rock', 'garage rock'], image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=120&auto=format&fit=crop&q=80', popularity: 87 }
+  ];
+
+  const artistsMedium = [
+    { id: '1', name: 'Radiohead', genres: ['art rock', 'alternative rock'], image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', popularity: 84 },
+    { id: '2', name: 'Daft Punk', genres: ['electronic', 'french house'], image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', popularity: 86 },
+    { id: '3', name: 'Hans Zimmer', genres: ['soundtrack', 'orchestral'], image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=120&auto=format&fit=crop&q=80', popularity: 82 },
+    { id: '4', name: 'Pink Floyd', genres: ['progressive rock', 'psychedelic'], image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=120&auto=format&fit=crop&q=80', popularity: 85 },
+    { id: '5', name: 'The Weeknd', genres: ['pop', 'r&b'], image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=120&auto=format&fit=crop&q=80', popularity: 95 }
+  ];
+
+  const artistsLong = [
+    { id: '4', name: 'Pink Floyd', genres: ['progressive rock', 'psychedelic'], image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=120&auto=format&fit=crop&q=80', popularity: 85 },
+    { id: '1', name: 'Radiohead', genres: ['art rock', 'alternative rock'], image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', popularity: 84 },
+    { id: '6', name: 'David Bowie', genres: ['glam rock', 'art rock'], image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=120&auto=format&fit=crop&q=80', popularity: 81 },
+    { id: '7', name: 'Queen', genres: ['classic rock', 'glam rock'], image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', popularity: 88 },
+    { id: '2', name: 'Daft Punk', genres: ['electronic', 'french house'], image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', popularity: 86 }
+  ];
+
+  const tracksShort = [
+    { id: 't1', name: 'Starboy', artist: 'The Weeknd, Daft Punk', album: 'Starboy', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=120&auto=format&fit=crop&q=80', duration_ms: 230453 },
+    { id: 't6', name: 'Blinding Lights', artist: 'The Weeknd', album: 'After Hours', image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=120&auto=format&fit=crop&q=80', duration_ms: 200040 },
+    { id: 't7', name: 'Get Lucky', artist: 'Daft Punk, Pharrell Williams', album: 'RAM', image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', duration_ms: 248000 },
+    { id: 't4', name: 'One More Time', artist: 'Daft Punk', album: 'Discovery', image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', duration_ms: 320000 },
+    { id: 't8', name: 'Creep', artist: 'Radiohead', album: 'Pablo Honey', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', duration_ms: 238000 }
+  ];
+
+  const tracksMedium = [
+    { id: 't1', name: 'Starboy', artist: 'The Weeknd, Daft Punk', album: 'Starboy', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=120&auto=format&fit=crop&q=80', duration_ms: 230453 },
+    { id: 't2', name: 'Time', artist: 'Hans Zimmer', album: 'Inception (OST)', image: 'https://images.unsplash.com/photo-1442504028989-ab58b5f29a4a?w=120&auto=format&fit=crop&q=80', duration_ms: 275000 },
+    { id: 't3', name: 'Paranoid Android', artist: 'Radiohead', album: 'OK Computer', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', duration_ms: 383000 },
+    { id: 't4', name: 'One More Time', artist: 'Daft Punk', album: 'Discovery', image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', duration_ms: 320000 },
+    { id: 't5', name: 'Comfortably Numb', artist: 'Pink Floyd', album: 'The Wall', image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=120&auto=format&fit=crop&q=80', duration_ms: 382000 }
+  ];
+
+  const tracksLong = [
+    { id: 't5', name: 'Comfortably Numb', artist: 'Pink Floyd', album: 'The Wall', image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=120&auto=format&fit=crop&q=80', duration_ms: 382000 },
+    { id: 't9', name: 'Bohemian Rhapsody', artist: 'Queen', album: 'A Night at the Opera', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', duration_ms: 354000 },
+    { id: 't10', name: 'Heroes', artist: 'David Bowie', album: 'Heroes', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=120&auto=format&fit=crop&q=80', duration_ms: 367000 },
+    { id: 't2', name: 'Time', artist: 'Hans Zimmer', album: 'Inception (OST)', image: 'https://images.unsplash.com/photo-1442504028989-ab58b5f29a4a?w=120&auto=format&fit=crop&q=80', duration_ms: 275000 },
+    { id: 't3', name: 'Paranoid Android', artist: 'Radiohead', album: 'OK Computer', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', duration_ms: 383000 }
+  ];
+
+  const now = new Date();
+  const yr = String(now.getFullYear());
+  const mo = yr + '-' + String(now.getMonth() + 1).padStart(2, '0');
+
+  const demoAccumulator = {
+    totalMs: 142 * 3600000,
+    totalTracks: 2150,
+    byYear: {
+      [yr]: { ms: 118 * 3600000, count: 1820 },
+      '2025': { ms: 24 * 3600000, count: 330 }
+    },
+    byMonth: {
+      [mo]: { ms: 21.5 * 3600000, count: 340 }
+    },
+    seenKeys: [],
+    firstSync: new Date(Date.now() - 90 * 86400000).toISOString(),
+    lastSync: new Date().toISOString()
+  };
+
+  const selRange = localStorage.getItem('mediary_spotify_selected_range') || 'medium_term';
   const demoStats = {
-    topArtists: [
-      { id: '1', name: 'Radiohead', genres: ['art rock', 'alternative rock'], image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', popularity: 84 },
-      { id: '2', name: 'Daft Punk', genres: ['electronic', 'french house'], image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', popularity: 86 },
-      { id: '3', name: 'Hans Zimmer', genres: ['soundtrack', 'orchestral'], image: 'https://images.unsplash.com/photo-1465847899084-d164df4dedc6?w=120&auto=format&fit=crop&q=80', popularity: 82 },
-      { id: '4', name: 'Pink Floyd', genres: ['progressive rock', 'psychedelic'], image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=120&auto=format&fit=crop&q=80', popularity: 85 },
-      { id: '5', name: 'The Weeknd', genres: ['pop', 'r&b'], image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=120&auto=format&fit=crop&q=80', popularity: 95 }
-    ],
-    topTracks: [
-      { id: 't1', name: 'Starboy', artist: 'The Weeknd, Daft Punk', album: 'Starboy', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=120&auto=format&fit=crop&q=80', duration_ms: 230453 },
-      { id: 't2', name: 'Time', artist: 'Hans Zimmer', album: 'Inception (OST)', image: 'https://images.unsplash.com/photo-1442504028989-ab58b5f29a4a?w=120&auto=format&fit=crop&q=80', duration_ms: 275000 },
-      { id: 't3', name: 'Paranoid Android', artist: 'Radiohead', album: 'OK Computer', image: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=120&auto=format&fit=crop&q=80', duration_ms: 383000 },
-      { id: 't4', name: 'One More Time', artist: 'Daft Punk', album: 'Discovery', image: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=120&auto=format&fit=crop&q=80', duration_ms: 320000 },
-      { id: 't5', name: 'Comfortably Numb', artist: 'Pink Floyd', album: 'The Wall', image: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?w=120&auto=format&fit=crop&q=80', duration_ms: 382000 }
-    ],
+    topArtistsByRange: {
+      short_term: artistsShort,
+      medium_term: artistsMedium,
+      long_term: artistsLong
+    },
+    topTracksByRange: {
+      short_term: tracksShort,
+      medium_term: tracksMedium,
+      long_term: tracksLong
+    },
+    selectedRange: selRange,
+    topArtists: selRange === 'short_term' ? artistsShort : (selRange === 'long_term' ? artistsLong : artistsMedium),
+    topTracks: selRange === 'short_term' ? tracksShort : (selRange === 'long_term' ? tracksLong : tracksMedium),
     recentlyPlayedCount: 50,
     recentMinutes: 185,
     recentHours: '3.1',
+    accumulator: demoAccumulator,
     lastUpdated: new Date().toISOString()
   };
 
@@ -15163,12 +15390,17 @@ function cargarDatosDemoSpotify() {
   localStorage.setItem('mediary_spotify_expires_at', String(Date.now() + 86400000));
   localStorage.setItem('mediary_spotify_user', JSON.stringify(demoUser));
   localStorage.setItem('mediary_spotify_stats', JSON.stringify(demoStats));
+  localStorage.setItem('mediary_spotify_accumulator', JSON.stringify(demoAccumulator));
 
   cerrarModalConectarSpotify();
   actualizarUISpotify();
   mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Demo Spotify account loaded! 🟢' : '¡Cuenta de prueba Spotify cargada! 🟢');
-  abrirModalEstadisticasSpotify();
 }
+
+function conectarSpotifyDemo() {
+  cargarDatosDemoSpotify();
+}
+
 
 function abrirModalEstadisticasSpotify() {
   const modal = document.getElementById('modal-spotify-stats');
