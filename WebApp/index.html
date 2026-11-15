@@ -7284,7 +7284,7 @@ function renderizarFeedAmigos() {
     const likeBtnHtml = `
       <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${it.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${it.id}', '${escHtmlFeed_(it.userEmail)}', this)" style="background:transparent;border:none;padding:0 4px;font-size:1.15rem;cursor:pointer;display:inline-flex;align-items:center;gap:4px;line-height:1;" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
         <span class="like-heart-icon">${isLiked ? '❤️' : '🤍'}</span>
-        ${likeCount > 0 ? `<span class="like-counter" style="font-size:0.75rem;font-weight:700;color:var(--muted);">${likeCount}</span>` : ''}
+        <span class="like-counter" style="font-size:0.75rem;font-weight:700;color:var(--muted);">${likeCount > 0 ? likeCount : ''}</span>
       </button>
     `;
 
@@ -7479,16 +7479,15 @@ function renderizarFeedAmigosResumidoInicio() {
     const isLiked = esResenaLikeada(it.id);
     const likeCount = obtenerConteoLikesResena(it.id, it.userEmail, it.likes);
     const likeBtnHtml = `
-      <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${it.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${it.id}', '${escHtmlFeed_(it.userEmail)}', this)" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
+      <button type="button" class="btn-like-resena ${isLiked ? 'liked' : ''}" data-like-id="${it.id}" onclick="event.stopPropagation(); toggleLikeResenaAmigo('${it.id}', '${escHtmlFeed_(it.userEmail)}', this)" style="background:transparent;border:none;padding:0 4px;font-size:1.15rem;cursor:pointer;display:inline-flex;align-items:center;gap:4px;line-height:1;" title="${isLiked ? (l === 'en' ? 'Unlike review' : 'Ya no me gusta') : (l === 'en' ? 'Like review' : 'Me gusta la reseña')}">
         <span class="like-heart-icon">${isLiked ? '❤️' : '🤍'}</span>
-        <span class="like-counter">${likeCount > 0 ? likeCount : ''}</span>
-        <span class="like-text">${isLiked ? (l === 'en' ? 'Liked' : 'Te gusta') : (l === 'en' ? 'Like' : 'Me gusta')}</span>
+        <span class="like-counter" style="font-size:0.75rem;font-weight:700;color:var(--muted);">${likeCount > 0 ? likeCount : ''}</span>
       </button>
     `;
     const comSnippet = it.comentario ? `
       <div class="home-friend-review-box">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
-          <span style="font-size:0.68rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;display:flex;align-items:center;gap:3px;"><span>💬</span> <span>${l === 'en' ? 'Review' : 'Reseña'}</span></span>
+          <span style="font-size:0.68rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.04em;display:flex;align-items:center;gap:3px;"><span>💬</span> <span>${l === 'en' ? 'Comment' : 'Comentario'}</span></span>
           ${likeBtnHtml}
         </div>
         <div class="home-friend-review-text">“${escHtmlFeed_(it.comentario)}”</div>
