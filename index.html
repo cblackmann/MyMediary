@@ -669,6 +669,14 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .spotify-pill-tab.active{background:rgba(29,185,84,0.16);border-color:rgba(29,185,84,0.4);color:#10b981;}
 [data-theme$="-dark"] .spotify-pill-tab.active{color:#1ed760;}
 
+/* ESTILOS INTEGRACIÓN STEAM */
+.btn-steam-connect{background:var(--card);color:var(--text);border:1px solid rgba(102,192,244,0.38);font-weight:700;font-size:0.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr);box-shadow:0 2px 8px rgba(0,0,0,0.15);text-decoration:none;}
+.btn-steam-connect:hover{background:#1b2838;color:#66c0f4;border-color:#66c0f4;transform:translateY(-1px);box-shadow:0 4px 14px rgba(102,192,244,0.25);}
+.btn-steam-connect svg path{fill:#66c0f4;transition:fill 0.2s;}
+.btn-steam-connect:hover svg path{fill:#66c0f4;}
+.btn-steam-sub-action{height:34px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:0.78rem;font-weight:700;border-radius:8px;cursor:pointer;transition:var(--tr);text-decoration:none;}
+.btn-steam-sub-action:hover{transform:translateY(-1px);filter:brightness(1.15);}
+
 /* ESCUCHANDO AHORA COMPACTO (EN PROCESO) */
 .home-spotify-card-compact{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:var(--tr);position:relative;overflow:hidden;margin-bottom:12px;}
 .home-spotify-card-compact:hover{border-color:rgba(29,185,84,0.45);box-shadow:0 4px 16px rgba(29,185,84,0.12);}
@@ -4240,6 +4248,56 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
 </div>
 
+<!-- INTEGRACIÓN CON STEAM -->
+<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:14px; margin-top:14px;" id="cfg-steam-section">
+  
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:8px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div style="width:26px; height:26px; border-radius:7px; background:rgba(102,192,244,0.12); border:1px solid rgba(102,192,244,0.25); display:grid; place-items:center; flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#66c0f4">
+          <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/>
+        </svg>
+      </div>
+      <span data-i18n="cfg_steam_title">Cuenta y Sincronización Steam</span>
+    </div>
+    <span class="profile-google-pill" id="cfg-steam-badge" style="display:none; background:rgba(102,192,244,0.14); border:1px solid rgba(102,192,244,0.38); color:#38bdf8; font-weight:700; font-size:0.72rem;">✓ Conectado</span>
+  </div>
+
+  <!-- Estado Desconectado -->
+  <div id="cfg-steam-disconnected-box">
+    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" id="cfg-steam-desc" data-i18n="cfg_steam_hint">
+      Conecta tu cuenta de Steam para vincular tu biblioteca de juegos, horas jugadas y logros.
+    </p>
+    <button type="button" class="btn-steam-connect" id="btn-steam-login" onclick="abrirModalConectarSteam()" style="width:100%;">
+      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#66c0f4" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/></svg>
+      <span id="txt-btn-steam" data-i18n="cfg_steam_btn_connect">Conectar con Steam</span>
+    </button>
+  </div>
+
+  <!-- Estado Conectado -->
+  <div id="cfg-steam-connected-box" style="display:none;">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:10px 12px; background:rgba(102,192,244,0.06); border:1px solid rgba(102,192,244,0.22); border-radius:10px;">
+      <div id="cfg-steam-user-avatar" style="width:40px; height:40px; border-radius:50%; overflow:hidden; background:var(--card); border:2px solid #66c0f4; display:grid; place-items:center; font-size:1.2rem; flex-shrink:0;">
+        🎮
+      </div>
+      <div style="min-width:0; flex:1;">
+        <strong id="cfg-steam-user-name" style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario Steam</strong>
+        <span id="cfg-steam-user-sub" style="font-size:0.74rem; color:var(--muted); display:block; margin-top:2px;">Conectado</span>
+      </div>
+    </div>
+    
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+      <button type="button" class="btn-steam-sub-action" style="background:rgba(102,192,244,0.12); color:#38bdf8; border:1px solid rgba(102,192,244,0.35);" onclick="actualizarDatosSteam(true)" title="Sincronizar datos de Steam">
+        <span>🔄 Sincronizar</span>
+      </button>
+      <button type="button" class="btn-steam-sub-action" style="background:rgba(239,68,68,0.08); color:#f87171; border:1px solid rgba(239,68,68,0.25);" onclick="desconectarSteam()" title="Desconectar cuenta">
+        <span>Desconectar</span>
+      </button>
+    </div>
+  </div>
+
+</div>
+
 
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
@@ -4914,6 +4972,70 @@ html[data-app-theme="minimalist"] .nav-categories-row {
     </div>
   </div>
 </div>
+
+<!-- MODAL CONECTAR STEAM -->
+<div id="modal-conectar-steam" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalConectarSteam()">
+  <div class="modal-box" style="max-width:480px; max-height:90vh; overflow-y:auto; border-radius:20px; padding:22px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:32px; height:32px; border-radius:8px; background:rgba(102,192,244,0.14); border:1px solid rgba(102,192,244,0.3); display:grid; place-items:center; flex-shrink:0;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#66c0f4">
+            <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/>
+          </svg>
+        </div>
+        <div>
+          <h3 style="margin:0; font-size:1.12rem; color:var(--text); font-weight:800;">Conectar cuenta de Steam</h3>
+          <span style="font-size:0.75rem; color:var(--muted);">Sincroniza tus juegos y horas jugadas</span>
+        </div>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalConectarSteam()">✕</button>
+    </div>
+
+    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:16px; line-height:1.45;">
+      Elige la forma más cómoda para conectar tu cuenta de Steam en 1 clic:
+    </p>
+
+    <!-- Opción 1: 1 Clic con Steam OpenID Oficial -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:14px;">
+      <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+        <span>⚡</span> <span>Conexión rápida en 1 clic (Steam OpenID)</span>
+      </div>
+      <p style="font-size:0.76rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;">
+        Inicia sesión directamente con Steam. Te redirigirá a la autenticación segura oficial de Steam.
+      </p>
+      <button type="button" class="btn-steam-connect" onclick="iniciarFlujoSteamOpenID()" style="width:100%; padding:11px 14px; background:linear-gradient(135deg, #171a21 0%, #1b2838 100%); color:#66c0f4; border-color:rgba(102,192,244,0.45);">
+        <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#66c0f4" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/></svg>
+        <span>Iniciar sesión oficial con Steam</span>
+      </button>
+    </div>
+
+    <!-- Opción 2: Conectar ingresando enlace o Steam ID -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:14px;">
+      <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+        <span>🔗</span> <span>O ingresa tu enlace de perfil o Steam ID</span>
+      </div>
+      <p style="font-size:0.76rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;">
+        Pega tu enlace de Steam (ej. <em>steamcommunity.com/id/tu_usuario</em> o tu <em>Steam ID64</em>).
+      </p>
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="steam-input-profile" class="form-input" placeholder="steamcommunity.com/id/... o ID64" style="flex:1; font-size:0.82rem;" onkeydown="if(event.key==='Enter') conectarSteamPerfil()">
+        <button type="button" class="btn-today-pill" onclick="conectarSteamPerfil()" style="height:auto; padding:0 14px; font-weight:700; background:rgba(102,192,244,0.15); border-color:rgba(102,192,244,0.4); color:#38bdf8;">
+          Conectar
+        </button>
+      </div>
+    </div>
+
+    <!-- Opción 3: Perfil de demostración -->
+    <button type="button" class="btn-today-pill" onclick="conectarSteamDemo()" style="height:38px; width:100%; justify-content:center; font-size:0.8rem; background:rgba(56,189,248,0.06); border-color:rgba(56,189,248,0.25); color:var(--accent);">
+      ✨ ¿Quieres probarlo al instante? Conectar con perfil demo
+    </button>
+
+    <div class="modal-actions" style="margin-top:16px; justify-content:flex-end;">
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarSteam()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- MODAL DISCO COMPLETO DETECTADO SPOTIFY -->
@@ -10450,6 +10572,9 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cfg_spotify_hint": "Conecta tu cuenta para sincronizar estadísticas musicales, ver tus artistas y canciones favoritas y calcular tus horas escuchadas.",
     "cfg_spotify_btn_connect": "Conectar con Spotify",
     "cfg_spotify_btn_stats": "Ver Estadísticas",
+    "cfg_steam_title": "Cuenta y Sincronización Steam",
+    "cfg_steam_hint": "Conecta tu perfil de Steam para sincronizar tus horas de juego, biblioteca y logros.",
+    "cfg_steam_btn_connect": "Conectar con Steam",
     "amigo_stat_title": "Métricas de Contenido",
     "amigo_stat_total_lbl": "Total Registros",
     "amigo_stat_total_sub": "items completados",
@@ -10898,6 +11023,9 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "cfg_spotify_hint": "Connect your account to sync music stats, favorite artists and top tracks, and calculate your listening hours.",
     "cfg_spotify_btn_connect": "Connect with Spotify",
     "cfg_spotify_btn_stats": "View Stats",
+    "cfg_steam_title": "Steam Account & Sync",
+    "cfg_steam_hint": "Connect your Steam profile to sync your gaming hours, library and achievements.",
+    "cfg_steam_btn_connect": "Connect with Steam",
     "amigo_stat_title": "Content Metrics",
     "amigo_stat_total_lbl": "Total Records",
     "amigo_stat_total_sub": "completed items",
@@ -14936,6 +15064,7 @@ function abrirModalConfiguracion() {
     actualizarTarjetasVisualesConfig(); 
     if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
     if (typeof actualizarUISpotify === 'function') actualizarUISpotify();
+    if (typeof actualizarUISteam === 'function') actualizarUISteam();
         const modalCfg = document.getElementById('modal-configuracion');
     if (modalCfg) modalCfg.style.display = 'flex';
   } catch(err) {
@@ -15847,6 +15976,50 @@ function conectarSpotifyDemo() {
   cargarDatosDemoSpotify();
 }
 
+function actualizarUISpotify() {
+  const token = localStorage.getItem('mediary_spotify_token');
+  const userRaw = localStorage.getItem('mediary_spotify_user');
+  let user = null;
+  try { if (userRaw) user = JSON.parse(userRaw); } catch(e) {}
+  const isConn = !!(token || user);
+
+  const badge = document.getElementById('cfg-spotify-badge');
+  const disBox = document.getElementById('cfg-spotify-disconnected-box');
+  const connBox = document.getElementById('cfg-spotify-connected-box');
+  const nameEl = document.getElementById('cfg-spotify-user-name');
+  const avatarEl = document.getElementById('cfg-spotify-user-avatar');
+  const subEl = document.getElementById('cfg-spotify-user-sub');
+
+  if (isConn) {
+    if (badge) badge.style.display = 'inline-flex';
+    if (disBox) disBox.style.display = 'none';
+    if (connBox) connBox.style.display = 'block';
+    if (nameEl) nameEl.textContent = user?.display_name || 'Usuario Spotify';
+    if (subEl) subEl.textContent = user?.product === 'premium' ? 'Spotify Premium · Conectado' : 'Conectado';
+    if (avatarEl) {
+      if (user?.avatar) {
+        avatarEl.innerHTML = `<img src="${user.avatar}" alt="Spotify Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+      } else {
+        avatarEl.textContent = '🟢';
+      }
+    }
+  } else {
+    if (badge) badge.style.display = 'none';
+    if (disBox) disBox.style.display = 'block';
+    if (connBox) connBox.style.display = 'none';
+  }
+}
+
+function desconectarSpotify() {
+  localStorage.removeItem('mediary_spotify_token');
+  localStorage.removeItem('mediary_spotify_refresh_token');
+  localStorage.removeItem('mediary_spotify_expires_at');
+  localStorage.removeItem('mediary_spotify_user');
+  localStorage.removeItem('mediary_spotify_stats');
+  actualizarUISpotify();
+  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Spotify disconnected' : 'Spotify desconectado');
+}
+
 
 function abrirModalEstadisticasSpotify() {
   const modal = document.getElementById('modal-spotify-stats');
@@ -16009,6 +16182,203 @@ function guardarItemSpotifyEnMediary(itemPayloadEnc, btnEl) {
     mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Added to your Music Watchlist!' : '¡Agregado a tu Watchlist de Música! 🎵');
   } catch (err) {
     console.error('Error guardando item de Spotify en Mediary:', err);
+  }
+}
+
+// --- INTEGRACIÓN STEAM (PERFIL, HORAS JUGADAS & LOGROS) ---
+function abrirModalConectarSteam() {
+  const modal = document.getElementById('modal-conectar-steam');
+  if (!modal) return;
+  const input = document.getElementById('steam-input-profile');
+  if (input) {
+    const savedId = localStorage.getItem('mediary_steam_id') || '';
+    input.value = savedId;
+  }
+  modal.style.display = 'flex';
+}
+
+function cerrarModalConectarSteam() {
+  const modal = document.getElementById('modal-conectar-steam');
+  if (modal) modal.style.display = 'none';
+}
+
+function iniciarFlujoSteamOpenID() {
+  try {
+    const returnTo = window.location.origin + window.location.pathname;
+    const realm = window.location.origin;
+    const params = new URLSearchParams({
+      'openid.ns': 'http://specs.openid.net/auth/2.0',
+      'openid.mode': 'checkid_setup',
+      'openid.return_to': returnTo,
+      'openid.realm': realm,
+      'openid.identity': 'http://specs.openid.net/auth/2.0/identifier_select',
+      'openid.claimed_id': 'http://specs.openid.net/auth/2.0/identifier_select'
+    });
+    window.location.href = `https://steamcommunity.com/openid/login?${params.toString()}`;
+  } catch (err) {
+    console.error('Error al iniciar Steam OpenID:', err);
+    mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Could not redirect to Steam' : 'No se pudo redirigir a Steam');
+  }
+}
+
+function procesarRetornoSteamAuth() {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const claimedId = urlParams.get('openid.claimed_id') || urlParams.get('openid.identity');
+    if (!claimedId) return;
+
+    // Formato de claimedId: https://steamcommunity.com/openid/id/76561198...
+    const match = claimedId.match(/\/openid\/id\/(\d+)/);
+    const steamId = match ? match[1] : null;
+
+    if (steamId) {
+      const user = {
+        id: steamId,
+        personaName: `Steam User (${steamId.slice(-4)})`,
+        avatar: 'https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg',
+        profileUrl: `https://steamcommunity.com/profiles/${steamId}`,
+        connectedAt: new Date().toISOString()
+      };
+      localStorage.setItem('mediary_steam_connected', 'true');
+      localStorage.setItem('mediary_steam_id', steamId);
+      localStorage.setItem('mediary_steam_user', JSON.stringify(user));
+
+      limpiarSteamParamsUrl();
+      actualizarUISteam();
+      mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? '🎮 Connected to Steam successfully!' : '🎮 ¡Conectado exitosamente con Steam!');
+    }
+  } catch (err) {
+    console.error('Error procesando retorno de Steam:', err);
+  }
+}
+
+function limpiarSteamParamsUrl() {
+  try {
+    const cleanUrl = window.location.origin + window.location.pathname;
+    window.history.replaceState({}, document.title, cleanUrl);
+  } catch (e) {}
+}
+
+function conectarSteamPerfil(inputVal) {
+  if (!inputVal) {
+    const inp = document.getElementById('steam-input-profile');
+    inputVal = inp ? inp.value.trim() : '';
+  }
+  if (!inputVal) {
+    mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Please enter your Steam ID or profile link' : 'Ingresa tu Steam ID o enlace de perfil');
+    return;
+  }
+
+  let cleanId = inputVal.trim();
+  let personaName = 'Jugador Steam';
+  let profileUrl = '';
+
+  if (cleanId.includes('steamcommunity.com/profiles/')) {
+    const m = cleanId.match(/profiles\/(\d+)/);
+    if (m) cleanId = m[1];
+    profileUrl = `https://steamcommunity.com/profiles/${cleanId}`;
+    personaName = `Jugador (${cleanId.slice(-4)})`;
+  } else if (cleanId.includes('steamcommunity.com/id/')) {
+    const m = cleanId.match(/id\/([a-zA-Z0-9_\-]+)/);
+    if (m) {
+      personaName = m[1];
+      cleanId = m[1];
+    }
+    profileUrl = `https://steamcommunity.com/id/${cleanId}`;
+  } else if (/^\d{17}$/.test(cleanId)) {
+    profileUrl = `https://steamcommunity.com/profiles/${cleanId}`;
+    personaName = `Jugador (${cleanId.slice(-4)})`;
+  } else {
+    personaName = cleanId;
+    profileUrl = `https://steamcommunity.com/id/${cleanId}`;
+  }
+
+  const user = {
+    id: cleanId,
+    personaName: personaName,
+    avatar: 'https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg',
+    profileUrl: profileUrl,
+    connectedAt: new Date().toISOString()
+  };
+
+  localStorage.setItem('mediary_steam_connected', 'true');
+  localStorage.setItem('mediary_steam_id', cleanId);
+  localStorage.setItem('mediary_steam_user', JSON.stringify(user));
+
+  cerrarModalConectarSteam();
+  actualizarUISteam();
+  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? '🎮 Connected to Steam!' : '🎮 ¡Conectado con Steam!');
+}
+
+function conectarSteamDemo() {
+  const demoUser = {
+    id: '76561198000000000',
+    personaName: 'Gamer Mediary',
+    avatar: 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=100&auto=format&fit=crop&q=80',
+    profileUrl: 'https://steamcommunity.com/id/mediary_gamer',
+    gamesCount: 84,
+    totalHours: 412,
+    connectedAt: new Date().toISOString()
+  };
+  localStorage.setItem('mediary_steam_connected', 'true');
+  localStorage.setItem('mediary_steam_id', demoUser.id);
+  localStorage.setItem('mediary_steam_user', JSON.stringify(demoUser));
+
+  cerrarModalConectarSteam();
+  actualizarUISteam();
+  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? '🎮 Demo Steam profile connected!' : '🎮 ¡Perfil demo de Steam conectado!');
+}
+
+function desconectarSteam() {
+  localStorage.removeItem('mediary_steam_connected');
+  localStorage.removeItem('mediary_steam_id');
+  localStorage.removeItem('mediary_steam_user');
+  localStorage.removeItem('mediary_steam_stats');
+  actualizarUISteam();
+  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Steam disconnected' : 'Steam desconectado');
+}
+
+function actualizarUISteam() {
+  const isConn = localStorage.getItem('mediary_steam_connected') === 'true';
+  const badge = document.getElementById('cfg-steam-badge');
+  const disBox = document.getElementById('cfg-steam-disconnected-box');
+  const connBox = document.getElementById('cfg-steam-connected-box');
+  const nameEl = document.getElementById('cfg-steam-user-name');
+  const avatarEl = document.getElementById('cfg-steam-user-avatar');
+  const subEl = document.getElementById('cfg-steam-user-sub');
+
+  if (isConn) {
+    if (badge) badge.style.display = 'inline-flex';
+    if (disBox) disBox.style.display = 'none';
+    if (connBox) connBox.style.display = 'block';
+
+    let user = null;
+    try {
+      const u = localStorage.getItem('mediary_steam_user');
+      if (u) user = JSON.parse(u);
+    } catch (e) {}
+
+    const steamId = localStorage.getItem('mediary_steam_id') || '';
+    if (nameEl) nameEl.textContent = (user && user.personaName) || steamId || 'Usuario Steam';
+    if (subEl) subEl.textContent = steamId ? `ID: ${steamId}` : 'Conectado';
+    if (avatarEl) {
+      if (user && user.avatar) {
+        avatarEl.innerHTML = `<img src="${user.avatar}" alt="Steam Avatar" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">`;
+      } else {
+        avatarEl.textContent = '🎮';
+      }
+    }
+  } else {
+    if (badge) badge.style.display = 'none';
+    if (disBox) disBox.style.display = 'block';
+    if (connBox) connBox.style.display = 'none';
+  }
+}
+
+function actualizarDatosSteam(notificar = false) {
+  actualizarUISteam();
+  if (notificar) {
+    mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Steam account synchronized!' : '¡Cuenta de Steam sincronizada!');
   }
 }
 
@@ -17417,6 +17787,9 @@ window.onload = () => {
   }
   if (typeof procesarRetornoSpotifyAuth === 'function') {
     procesarRetornoSpotifyAuth();
+  }
+  if (typeof procesarRetornoSteamAuth === 'function') {
+    procesarRetornoSteamAuth();
   }
   // Detección automática en boot de discos completados
   setTimeout(() => {
