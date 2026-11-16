@@ -716,6 +716,12 @@ header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-di
 .home-np-sp-logo-link:hover{transform:scale(1.18);}
 .btn-np-quick-add{width:28px;height:28px;border-radius:8px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.38);color:#10b981;display:grid;place-items:center;font-size:0.8rem;cursor:pointer;transition:var(--tr);padding:0;}
 .btn-np-quick-add:hover{background:#10b981;color:#0f172a;transform:translateY(-1px);}
+/* TARJETA DE ÚLTIMA CANCIÓN ESCUCHADA POR AMIGOS */
+.home-friend-music-card{position:relative;overflow:hidden;margin-bottom:14px;transition:var(--tr);}
+.home-friend-music-card::before{content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:linear-gradient(180deg,#1DB954,#38bdf8);opacity:0.95;}
+.home-friend-music-card:hover{border-color:rgba(56,189,248,0.45);box-shadow:0 4px 16px rgba(56,189,248,0.14);}
+.home-np-friend-avatar-badge{position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;overflow:hidden;border:1.5px solid var(--card);background:var(--bg);display:grid;place-items:center;font-size:0.72rem;box-shadow:0 1px 4px rgba(0,0,0,0.35);z-index:2;}
+.home-np-friend-avatar-badge img{width:100%;height:100%;object-fit:cover;}
 /* TOGGLE VISTA Y CUADRICULA LISTAS */
 .view-mode-toggle{display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;gap:4px}
 .btn-view-mode{background:transparent;border:none;color:var(--muted);font-size:0.8rem;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--tr)}
@@ -3176,18 +3182,19 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
       <hr class="home-section-divider">
 
-      <!-- 6. NOVEDADES DE AMIGOS -->
+      <!-- 6. ACTIVIDAD RECIENTE DE TUS AMIGOS -->
       <div class="home-community-section" id="seccion-comunidad-resumida-inicio">
         <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; margin-bottom:14px; text-align:center;">
           <div class="home-clean-title">
             <span class="emoji-dyn">👥</span>
-            <span data-i18n="home_friends_title">Novedades de Amigos</span>
+            <span data-i18n="home_friends_title">Actividad Reciente de tus Amigos</span>
             <span style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:12px; padding:2px 8px; font-weight:700;" data-i18n="home_streaks_last_week">Última semana</span>
           </div>
           <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem; margin:0 auto;">
             <span data-i18n="btn_view_all_community">Ver toda la comunidad ➔</span>
           </button>
         </div>
+        <div id="home-friends-last-track-container" style="display:none; margin-bottom:14px;"></div>
         <div id="lista-comunidad-resumen-inicio">
           <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;" data-i18n="friends_loading_recent">Cargando actividad reciente de amigos... ⏳</div>
         </div>
@@ -7734,6 +7741,16 @@ function cargarFeedActividadAmigos(mostrarToast = false) {
     renderizarFeedAmigosResumidoInicio();
     return;
   }
+  if ((!estado.amigosFeedCache || !estado.amigosFeedCache.length) && estado.userEmail) {
+    try {
+      const cached = localStorage.getItem('mediary_cache_friends_feed_' + estado.userEmail.toLowerCase());
+      if (cached) {
+        estado.amigosFeedCache = JSON.parse(cached);
+        actualizarContadoresFeedAmigos();
+        renderizarFeedAmigosResumidoInicio();
+      }
+    } catch(e) {}
+  }
   if (contenedor && (!estado.amigosFeedCache || !estado.amigosFeedCache.length)) {
     contenedor.innerHTML = `<div style="color:var(--muted);font-size:0.86rem;padding:24px 0;text-align:center;"><span class="spinning" style="display:inline-block;margin-bottom:8px;">⏳</span><div>${l === 'en' ? 'Loading friends updates...' : 'Cargando novedades de tus amigos...'}</div></div>`;
   }
@@ -7744,13 +7761,18 @@ function cargarFeedActividadAmigos(mostrarToast = false) {
       return;
     }
     estado.amigosFeedCache = res.feed || [];
+    try {
+      if (estado.userEmail) {
+        localStorage.setItem('mediary_cache_friends_feed_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.amigosFeedCache));
+      }
+    } catch(e) {}
     actualizarContadoresFeedAmigos();
     renderizarFeedAmigos();
     renderizarFeedAmigosResumidoInicio();
     if (typeof verificarNuevasActividadesAmigos === 'function') {
       verificarNuevasActividadesAmigos(estado.amigosFeedCache);
     }
-    if (mostrarToast) mostrarToastPersonalizado(l === 'en' ? 'Friends feed updated ⚡' : 'Novedades de amigos actualizadas ⚡');
+    if (mostrarToast) mostrarToastPersonalizado(l === 'en' ? 'Friends feed updated ⚡' : 'Actividad de amigos actualizada ⚡');
   }).obtenerFeedAmigos(estado.userEmail);
 }
 function actualizarContadoresFeedAmigos() {
@@ -8151,7 +8173,208 @@ function esFechaDeUltimaSemana(it) {
   return false;
 }
 
+function obtenerUltimaCancionAmigos() {
+  const feed = estado.amigosFeedCache || [];
+  if (!feed.length) return null;
+
+  // 1. Si algún amigo está escuchando música en vivo / en progreso (Aún escuchando)
+  const enVivo = feed.find(it => it.categoria === 'Musica' && esEnProgresoTexto(it.fechaFin));
+  if (enVivo) return enVivo;
+
+  // 2. Priorizar canciones / singles específicos
+  const cancion = feed.find(it => {
+    if (it.categoria !== 'Musica') return false;
+    const sub = String(it.subcategoria || '').toLowerCase();
+    return sub.includes('canc') || sub.includes('single') || sub.includes('track');
+  });
+  if (cancion) return cancion;
+
+  // 3. Cualquier registro de Música en orden cronológico (Discos, Álbumes, etc.)
+  return feed.find(it => it.categoria === 'Musica') || null;
+}
+
+function dibujarTarjetaUltimaCancionAmigos(it) {
+  if (!it) return '';
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  const enProg = esEnProgresoTexto(it.fechaFin);
+  const timeStr = formatearTiempoRelativoFeed(it.createdAt || it.fechaFin || it.fechaInicio, l);
+  const artist = it.creador || 'Artista';
+  const album = it.subtitulo || it.subcategoria || (l === 'en' ? 'Music' : 'Música');
+  const title = it.titulo || (l === 'en' ? 'Untitled' : 'Sin título');
+  const nick = it.amigoNickname || (it.userEmail ? it.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
+  const califNum = Number(it.calificacion) || 0;
+
+  const coverHtml = it.poster
+    ? `<img src="${escHtmlFeed_(it.poster)}" alt="${escHtmlFeed_(title)}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\\'width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;\\\'>🎵</div>';">`
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;">🎵</div>`;
+
+  const avatarHtml = (it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:')))
+    ? `<img src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
+    : `<span>${escHtmlFeed_(it.amigoAvatar || '👤')}</span>`;
+
+  const safeTitle = encodeURIComponent(title);
+  const safeArtist = encodeURIComponent(artist);
+  const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent((title + ' ' + (it.creador || '')).trim())}`;
+  const modalAccion = `abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(nick)}', 'Musica')`;
+  const perfilAccion = `verPerfilDeAmigo('${escHtmlFeed_(it.userEmail)}')`;
+
+  return `
+    <div class="home-spotify-card-compact home-friend-music-card">
+      <!-- Portada con mini-avatar superpuesto del amigo -->
+      <div class="home-np-cover-compact" style="position:relative; cursor:pointer;" onclick="${modalAccion}" title="${l === 'en' ? 'View friend details' : 'Ver actividad del amigo'}">
+        ${coverHtml}
+        <div class="home-np-friend-avatar-badge" title="${escHtmlFeed_(nick)}">
+          ${avatarHtml}
+        </div>
+      </div>
+
+      <!-- Centro: Quien escucha, Artista, Disco/Subcat, Título y Estado -->
+      <div class="home-np-center-compact">
+        <!-- Fila de identificación del amigo -->
+        <div style="display:flex; align-items:center; gap:5px; font-size:0.72rem; line-height:1.2; margin-bottom:1px; overflow:hidden;">
+          <span style="width:15px; height:15px; border-radius:50%; overflow:hidden; display:inline-grid; place-items:center; flex-shrink:0; border:1px solid var(--border); font-size:0.65rem; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}">
+            ${avatarHtml}
+          </span>
+          <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:130px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
+            ${escHtmlFeed_(nick)}
+          </strong>
+          <span style="color:var(--muted); font-size:0.68rem; white-space:nowrap;">
+            ${enProg ? (l === 'en' ? 'is listening to' : 'está escuchando') : (l === 'en' ? 'listened to' : 'escuchó')}
+          </span>
+          ${timeStr ? `<span style="color:var(--muted); font-size:0.66rem; margin-left:auto; flex-shrink:0; white-space:nowrap;">🕒 ${timeStr}</span>` : ''}
+        </div>
+
+        <!-- Artista -->
+        <div class="home-np-artist-compact home-np-text-wrap" title="${escHtmlFeed_(artist)}">
+          <span class="home-np-scrollable">${escHtmlFeed_(artist)}</span>
+        </div>
+
+        <!-- Disco / Álbum -->
+        <div class="home-np-album-compact home-np-text-wrap" title="${escHtmlFeed_(album)}">
+          <span class="home-np-scrollable">${escHtmlFeed_(album)}</span>
+        </div>
+
+        <!-- Título de la canción -->
+        <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="${modalAccion}" title="${escHtmlFeed_(title)}">
+          <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
+        </div>
+
+        <!-- Fila inferior: Estado de escucha y calificación -->
+        <div class="home-np-ctrls-compact" style="margin-top:2px; gap:6px; flex-wrap:nowrap; overflow:hidden;">
+          ${enProg ? `
+            <span class="home-np-live-status-pill" style="font-size:0.68rem; color:#10b981; display:inline-flex; align-items:center; gap:4px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:2px 7px; flex-shrink:0;">
+              <span class="home-np-dot" style="width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
+              <span>${l === 'en' ? 'Listening now' : 'Escuchando ahora'}</span>
+            </span>
+          ` : `
+            <span class="home-np-live-status-pill paused" style="font-size:0.68rem; color:var(--accent); display:inline-flex; align-items:center; gap:4px; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.25); border-radius:12px; padding:2px 7px; flex-shrink:0;">
+              <span style="font-size:0.75rem;">🎵</span>
+              <span>${l === 'en' ? 'Friends latest track' : 'Última canción de amigos'}</span>
+            </span>
+          `}
+          ${califNum > 0 ? `
+            <div style="display:inline-flex; align-items:center; background:var(--bg); border:1px solid var(--border); padding:1px 6px; border-radius:12px; font-size:0.68rem; line-height:1; flex-shrink:0;">
+              ${renderEstrellasVisuales(califNum)}
+            </div>
+          ` : ''}
+          ${it.comentario ? `
+            <span style="cursor:pointer; font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px; line-height:1;" onclick="${modalAccion}" title="${escHtmlFeed_(it.comentario)}">
+              💬 "${escHtmlFeed_(it.comentario)}"
+            </span>
+          ` : ''}
+        </div>
+      </div>
+
+      <!-- Borde derecho: Logo de Spotify arriba, botón rápido de agregar abajo -->
+      <div class="home-np-right-col">
+        <a href="${spotifySearchUrl}" target="_blank" rel="noopener noreferrer" class="home-np-sp-logo-link" title="${l === 'en' ? 'Search on Spotify' : 'Escuchar en Spotify'}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+        </a>
+        <button type="button" class="btn-np-quick-add" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function dibujarTarjetaUltimaCancionAmigosIdle() {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  const artistTxt = l === 'en' ? 'Friends Activity' : 'Actividad de Amigos';
+  const albumTxt = l === 'en' ? 'No recent songs' : 'Sin canciones recientes';
+  const titleTxt = l === 'en' ? 'No friends listening to music right now' : 'Ningún amigo ha escuchado canciones recientemente';
+  const btnTxt = l === 'en' ? 'Explore Music' : 'Explorar Música';
+
+  return `
+    <div class="home-spotify-card-compact home-friend-music-card">
+      <div class="home-np-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="cambiarCat('Musica', 'Discos')">
+        <span>🎧</span>
+      </div>
+      <div class="home-np-center-compact">
+        <div class="home-np-artist-compact home-np-text-wrap">
+          <span class="home-np-scrollable">${artistTxt}</span>
+        </div>
+        <div class="home-np-album-compact home-np-text-wrap">
+          <span class="home-np-scrollable">${albumTxt}</span>
+        </div>
+        <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="cambiarCat('Musica', 'Discos')">
+          <span class="home-np-scrollable">${titleTxt}</span>
+        </div>
+        <div style="margin-top:3px;">
+          <button type="button" class="btn-spotify-sub-action" onclick="cambiarCat('Musica', 'Discos')" style="height:24px; padding:0 10px; font-size:0.72rem; border-radius:6px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.35); color:var(--accent);">
+            <span>🎵 ${btnTxt}</span>
+          </button>
+        </div>
+      </div>
+      <div class="home-np-right-col">
+        <span class="home-np-sp-logo-link" style="cursor:pointer;" onclick="cambiarCat('Musica', 'Discos')" title="Música">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+        </span>
+        <button type="button" class="btn-np-quick-add" onclick="cambiarCat('Musica', 'Discos')" title="${l === 'en' ? 'Go to Music' : 'Ir a Música'}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderizarUltimaCancionAmigosInicio() {
+  const container = document.getElementById('home-friends-last-track-container');
+  if (!container) return;
+
+  if (!estado.userEmail) {
+    container.style.display = 'none';
+    container.innerHTML = '';
+    return;
+  }
+
+  const item = obtenerUltimaCancionAmigos();
+  if (!item) {
+    const feed = estado.amigosFeedCache || [];
+    if (feed.length > 0) {
+      container.style.display = 'block';
+      container.innerHTML = dibujarTarjetaUltimaCancionAmigosIdle();
+      requestAnimationFrame(() => {
+        setTimeout(ajustarMarqueeSpotify, 50);
+      });
+    } else {
+      container.style.display = 'none';
+      container.innerHTML = '';
+    }
+    return;
+  }
+
+  container.style.display = 'block';
+  container.innerHTML = dibujarTarjetaUltimaCancionAmigos(item);
+
+  requestAnimationFrame(() => {
+    setTimeout(ajustarMarqueeSpotify, 50);
+  });
+}
+window.renderizarUltimaCancionAmigosInicio = renderizarUltimaCancionAmigosInicio;
+
 function renderizarFeedAmigosResumidoInicio() {
+  renderizarUltimaCancionAmigosInicio();
   const contenedor = document.getElementById('lista-comunidad-resumen-inicio');
   if (!contenedor) return;
   const l = userPrefs.lang || 'es';
@@ -10444,7 +10667,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "nav_inicio": "Inicio",
     "nav_dashboard_listas": "Listas",
     "btn_quick_add_hero": "Agregado Rápido",
-    "home_friends_title": "Novedades de Amigos",
+    "home_friends_title": "Actividad Reciente de tus Amigos",
     "home_friends_sub": "Lo que han registrado tus amigos en los últimos 7 días.",
     "btn_view_all_community": "Ver toda la comunidad ➔",
     "lists_dashboard_title": "Índice General de Listas",
@@ -10895,7 +11118,7 @@ const CONFIG = { Peliculas: { nombre: 'Películas', emoji: '🎬', subs: [ { id:
     "nav_inicio": "Home",
     "nav_dashboard_listas": "Lists",
     "btn_quick_add_hero": "Quick Add",
-    "home_friends_title": "Friends Updates",
+    "home_friends_title": "Friends' Recent Activity",
     "home_friends_sub": "What your friends have logged in the last 7 days.",
     "btn_view_all_community": "View full community ➔",
     "lists_dashboard_title": "Master Lists Index",
@@ -18111,23 +18334,27 @@ async function forzarActualizacionSpotifyLive(btnEl) {
 window.forzarActualizacionSpotifyLive = forzarActualizacionSpotifyLive;
 
 function ajustarMarqueeSpotify() {
-  const container = document.getElementById('home-now-playing-container');
-  if (!container) return;
-  const elements = container.querySelectorAll('.home-np-scrollable');
-  elements.forEach(el => {
-    const parent = el.parentElement;
-    if (!parent) return;
-    el.classList.remove('is-overflowing');
-    parent.classList.remove('has-overflow');
-    el.style.transform = '';
-    const overflow = el.scrollWidth - parent.clientWidth;
-    if (overflow > 6) {
-      el.style.setProperty('--overflow-dist', `${overflow + 10}px`);
-      const dur = Math.max(7, Math.min(16, 5 + overflow / 20));
-      el.style.animationDuration = `${dur}s`;
-      el.classList.add('is-overflowing');
-      parent.classList.add('has-overflow');
-    }
+  const containers = [
+    document.getElementById('home-now-playing-container'),
+    document.getElementById('home-friends-last-track-container')
+  ].filter(Boolean);
+  containers.forEach(container => {
+    const elements = container.querySelectorAll('.home-np-scrollable');
+    elements.forEach(el => {
+      const parent = el.parentElement;
+      if (!parent) return;
+      el.classList.remove('is-overflowing');
+      parent.classList.remove('has-overflow');
+      el.style.transform = '';
+      const overflow = el.scrollWidth - parent.clientWidth;
+      if (overflow > 6) {
+        el.style.setProperty('--overflow-dist', `${overflow + 10}px`);
+        const dur = Math.max(7, Math.min(16, 5 + overflow / 20));
+        el.style.animationDuration = `${dur}s`;
+        el.classList.add('is-overflowing');
+        parent.classList.add('has-overflow');
+      }
+    });
   });
 }
 window.ajustarMarqueeSpotify = ajustarMarqueeSpotify;
