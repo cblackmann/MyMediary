@@ -2914,25 +2914,26 @@ html[data-app-theme="minimalist"] .nav-categories-row {
    ======================================================== */
 .stats-kpi-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
-  gap: 8px;
-  margin-bottom: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
 }
 .stats-kpi-card {
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  justify-content: space-between;
   box-sizing: border-box;
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  min-height: 84px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .stats-kpi-card:hover {
   border-color: var(--accent);
+  transform: translateY(-1px);
 }
 .stats-kpi-label {
   font-size: 0.72rem;
@@ -2943,79 +2944,127 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   display: flex;
   align-items: center;
   gap: 6px;
-  text-align: center;
 }
 .stats-kpi-val {
-  font-size: 1.25rem;
-  font-weight: 800;
+  font-size: 1.35rem;
+  font-weight: 900;
   color: var(--text);
-  margin-top: 3px;
-  line-height: 1.2;
-  text-align: center;
+  margin-top: 4px;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
 }
 .stats-kpi-sub {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   color: var(--muted);
-  margin-top: 3px;
-  text-align: center;
+  margin-top: 4px;
+  line-height: 1.25;
 }
 .stats-section-box {
-  background: var(--card);
+  background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
   padding: 14px 16px;
   margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
 }
 .stats-section-title {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 700;
   color: var(--text);
   margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 }
-.stats-cat-tab {
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 0.78rem;
-  font-weight: 600;
+.stats-cat-tabs-bar {
+  display: flex;
+  gap: 4px;
   background: var(--bg);
   border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 3px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.stats-cat-tab {
+  padding: 6px 12px;
+  border-radius: 9px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: transparent;
+  border: none;
   color: var(--muted);
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 .stats-cat-tab:hover {
   color: var(--text);
-  border-color: var(--accent);
 }
 .stats-cat-tab.active {
-  background: var(--accent);
-  color: #0f172a;
-  border-color: var(--accent);
+  background: var(--card);
+  color: var(--text);
   font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  border: 1px solid var(--border);
+}
+.stats-period-group {
+  display: inline-flex;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2px;
+  gap: 2px;
+}
+.stats-period-btn {
+  padding: 4px 10px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.stats-period-btn:hover {
+  color: var(--text);
+}
+.stats-period-btn.active {
+  background: var(--card);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid var(--border);
 }
 .stats-ranking-row {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: var(--bg);
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--card);
   border: 1px solid var(--border);
   margin-bottom: 6px;
-  transition: background 0.15s ease;
+  transition: all 0.15s ease;
 }
 .stats-ranking-row:hover {
-  background: var(--card-hover);
+  border-color: var(--accent);
+  background: var(--card-hover, var(--bg));
+  transform: translateY(-1px);
 }
 .stats-rank-num {
-  font-size: 0.8rem;
+  font-size: 0.76rem;
   font-weight: 800;
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 6px;
   display: grid;
   place-items: center;
@@ -3023,9 +3072,27 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   color: var(--muted);
   flex-shrink: 0;
 }
-.stats-rank-num.rank-1 { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); }
-.stats-rank-num.rank-2 { background: rgba(156, 163, 175, 0.2); color: #e5e7eb; border: 1px solid rgba(156, 163, 175, 0.4); }
-.stats-rank-num.rank-3 { background: rgba(180, 83, 9, 0.2); color: #d97706; border: 1px solid rgba(180, 83, 9, 0.4); }
+.stats-rank-num.rank-1 { background: rgba(200, 149, 90, 0.18); color: #c8955a; border: 1px solid rgba(200, 149, 90, 0.35); }
+.stats-rank-num.rank-2 { background: rgba(148, 163, 184, 0.15); color: var(--text); border: 1px solid rgba(148, 163, 184, 0.3); }
+.stats-rank-num.rank-3 { background: rgba(180, 120, 70, 0.15); color: #b47846; border: 1px solid rgba(180, 120, 70, 0.3); }
+.stats-chip-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.stats-chip-cat:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
 </style> </head> <body>
 <header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:var(--accent-border); color:var(--accent); background:var(--accent-subtle);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button> <button type="button" class="btn-header-icon" id="btn-notifications" title="Notificaciones" onclick="abrirModalNotificaciones()"><span class="btn-icon-glyph">🔔</span><span id="badge-notif-count" class="notif-badge-pill" style="display:none;">0</span></button>
 <button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button>
@@ -3279,7 +3346,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
             <span>Estadísticas Detalladas</span>
           </div>
           <button type="button" class="btn-toggle-filter" onclick="abrirModalEstadisticasAvanzadas()" style="font-size:0.78rem; padding:4px 12px; display:inline-flex; align-items:center; gap:6px;">
-            <span>Abrir panel</span> <span>➔</span>
+            <span>Abrir</span> <span>›</span>
           </button>
         </div>
         <div class="cat-wide-card" onclick="abrirModalEstadisticasAvanzadas()" style="cursor:pointer; padding:14px 16px; margin-top:4px;">
@@ -3290,10 +3357,10 @@ html[data-app-theme="minimalist"] .nav-categories-row {
               </div>
               <div>
                 <div style="font-weight:700; font-size:0.88rem; color:var(--text);">
-                  Hábitos, Ritmo y Rankings Culturales
+                  Hábitos y Métricas Culturales
                 </div>
                 <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">
-                  Películas, series y música vistas este año y mes, top 5 favoritos y desglose completo.
+                  Desglose por período, ritmo de consumo, música en Spotify y rankings favoritos.
                 </div>
               </div>
             </div>
@@ -4992,53 +5059,50 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
 <!-- MODAL DE ESTADÍSTICAS DETALLADAS (GENERALES Y POR CATEGORÍA) -->
 <div id="modal-estadisticas-avanzadas" class="modal-overlay" style="display:none; z-index:99999;" onclick="if(event.target===this) cerrarModalEstadisticasAvanzadas()">
-  <div class="modal-box" style="max-width:760px; width:95vw; max-height:90vh; padding:0; display:flex; flex-direction:column; overflow:hidden; border-radius:24px;">
-    <!-- Encabezado moderno unificado -->
-    <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--header-bg); flex-shrink:0;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div style="width:36px; height:36px; border-radius:12px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.25); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">
+  <div class="modal-box" style="max-width:740px; width:95vw; max-height:88vh; padding:0; display:flex; flex-direction:column; overflow:hidden; border-radius:20px;">
+    <!-- Encabezado moderno unificado y compacto -->
+    <div style="padding:14px 18px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:var(--header-bg); flex-shrink:0; gap:10px;">
+      <div style="display:flex; align-items:center; gap:10px; min-width:0;">
+        <div style="width:34px; height:34px; border-radius:10px; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.15rem; flex-shrink:0;">
           <span>📊</span>
         </div>
-        <div>
-          <h3 style="margin:0; font-size:1.12rem; color:var(--text); font-weight:800; line-height:1.2;">Estadísticas Detalladas</h3>
-          <span style="font-size:0.72rem; color:var(--muted); font-weight:600;">Hábitos, ritmos y favoritos</span>
+        <div style="min-width:0;">
+          <h3 style="margin:0; font-size:1.05rem; color:var(--text); font-weight:800; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Estadísticas</h3>
+          <span style="font-size:0.72rem; color:var(--muted); font-weight:600;">Hábitos y métricas culturales</span>
         </div>
       </div>
-      <button type="button" class="btn-close-form" onclick="cerrarModalEstadisticasAvanzadas()" style="position:static; margin:0;">✕</button>
+      <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+        <!-- Selector de Período segmentado y compacto -->
+        <div class="stats-period-group">
+          <button type="button" class="stats-period-btn active" id="stats-period-btn-all" onclick="cambiarPeriodoStats('all')">Todo</button>
+          <button type="button" class="stats-period-btn" id="stats-period-btn-year" onclick="cambiarPeriodoStats('year')"><span id="stats-lbl-cur-year">2026</span></button>
+          <button type="button" class="stats-period-btn" id="stats-period-btn-month" onclick="cambiarPeriodoStats('month')"><span id="stats-lbl-cur-month">Nov</span></button>
+        </div>
+        <button type="button" class="btn-close-form" onclick="cerrarModalEstadisticasAvanzadas()" style="position:static; margin:0;" title="Cerrar">✕</button>
+      </div>
     </div>
 
-    <!-- Barra de Filtros: Período y Categorías -->
-    <div style="padding:10px 18px; background:var(--card); border-bottom:1px solid var(--border); flex-shrink:0; display:flex; flex-direction:column; gap:8px;">
-      <!-- Selector de Período -->
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
-        <span style="font-size:0.72rem; font-weight:700; color:var(--muted); text-transform:uppercase;">Período:</span>
-        <div style="display:flex; gap:6px;">
-          <button type="button" class="btn-toggle-filter active" id="stats-period-btn-all" onclick="cambiarPeriodoStats('all')">🌐 Todo el tiempo</button>
-          <button type="button" class="btn-toggle-filter" id="stats-period-btn-year" onclick="cambiarPeriodoStats('year')">📅 Este Año (<span id="stats-lbl-cur-year">2026</span>)</button>
-          <button type="button" class="btn-toggle-filter" id="stats-period-btn-month" onclick="cambiarPeriodoStats('month')">🗓️ Este Mes (<span id="stats-lbl-cur-month">Nov</span>)</button>
-        </div>
-      </div>
-
-      <!-- Selector de Categoría -->
-      <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:2px; -webkit-overflow-scrolling:touch;">
-        <button type="button" class="stats-cat-tab active" data-cat="General" onclick="cambiarCatStats('General')">⚡ Resumen</button>
-        <button type="button" class="stats-cat-tab" data-cat="Peliculas" onclick="cambiarCatStats('Peliculas')">🎬 Películas</button>
-        <button type="button" class="stats-cat-tab" data-cat="Series" onclick="cambiarCatStats('Series')">📺 Series</button>
-        <button type="button" class="stats-cat-tab" data-cat="Musica" onclick="cambiarCatStats('Musica')">🎵 Música</button>
-        <button type="button" class="stats-cat-tab" data-cat="Juegos" onclick="cambiarCatStats('Juegos')">🎮 Juegos</button>
-        <button type="button" class="stats-cat-tab" data-cat="Lecturas" onclick="cambiarCatStats('Lecturas')">📚 Lecturas</button>
+    <!-- Barra de Categorías estilo segment control -->
+    <div style="padding:8px 16px; background:var(--card); border-bottom:1px solid var(--border); flex-shrink:0;">
+      <div class="stats-cat-tabs-bar">
+        <button type="button" class="stats-cat-tab active" data-cat="General" onclick="cambiarCatStats('General')"><span class="emoji-dyn">⚡</span><span>Resumen</span></button>
+        <button type="button" class="stats-cat-tab" data-cat="Peliculas" onclick="cambiarCatStats('Peliculas')"><span class="emoji-dyn">🎬</span><span>Películas</span></button>
+        <button type="button" class="stats-cat-tab" data-cat="Series" onclick="cambiarCatStats('Series')"><span class="emoji-dyn">📺</span><span>Series</span></button>
+        <button type="button" class="stats-cat-tab" data-cat="Musica" onclick="cambiarCatStats('Musica')"><span class="emoji-dyn">🎵</span><span>Música</span></button>
+        <button type="button" class="stats-cat-tab" data-cat="Juegos" onclick="cambiarCatStats('Juegos')"><span class="emoji-dyn">🎮</span><span>Juegos</span></button>
+        <button type="button" class="stats-cat-tab" data-cat="Lecturas" onclick="cambiarCatStats('Lecturas')"><span class="emoji-dyn">📚</span><span>Lecturas</span></button>
       </div>
     </div>
 
     <!-- Contenido Scrollable Dinámico -->
-    <div id="stats-modal-body" style="padding:16px 20px; overflow-y:auto; flex:1; -webkit-overflow-scrolling:touch;">
+    <div id="stats-modal-body" style="padding:16px 18px; overflow-y:auto; flex:1; -webkit-overflow-scrolling:touch;">
       <!-- Renderizado por JS -->
     </div>
 
     <!-- Pie del Modal -->
-    <div style="padding:12px 20px; border-top:1px solid var(--border); background:var(--header-bg); display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
+    <div style="padding:10px 18px; border-top:1px solid var(--border); background:var(--header-bg); display:flex; justify-content:space-between; align-items:center; flex-shrink:0;">
       <span id="stats-modal-summary-tag" style="font-size:0.72rem; color:var(--muted);">Cargando estadísticas...</span>
-      <button type="button" class="btn-modal-cancel" onclick="cerrarModalEstadisticasAvanzadas()" style="padding:6px 18px; font-size:0.84rem;">Cerrar</button>
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalEstadisticasAvanzadas()" style="padding:5px 16px; font-size:0.82rem;">Cerrar</button>
     </div>
   </div>
 </div>
@@ -13988,125 +14052,122 @@ function renderizarStatsGeneral_(ctx) {
   return `
     <!-- KPI HERO GRIDS -->
     <div class="stats-kpi-grid">
-      <div class="stats-kpi-card" style="border-left: 3px solid var(--accent);">
+      <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>⏱️</span> <span>Tiempo Total</span></div>
-        <div class="stats-kpi-val" style="color:var(--accent);">${formatearHorasStats_(horasTotal)}</div>
-        <div class="stats-kpi-sub">Consumo cultural total</div>
+        <div class="stats-kpi-val">${formatearHorasStats_(horasTotal)}</div>
+        <div class="stats-kpi-sub">Consumo cultural acumulado</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>📦</span> <span>Obras Registradas</span></div>
+        <div class="stats-kpi-label"><span>📦</span> <span>Obras Vistas</span></div>
         <div class="stats-kpi-val">${total}</div>
         <div class="stats-kpi-sub">${rewatches} re-consumos (${total ? Math.round((rewatches/total)*100) : 0}%)</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>★</span> <span>Calificación Media</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">★ ${ratingAvg}</div>
-        <div class="stats-kpi-sub">Sobre ${numCalifs} notas otorgadas</div>
+        <div class="stats-kpi-label"><span>★</span> <span>Nota Media</span></div>
+        <div class="stats-kpi-val" style="color:var(--star-active, #c8955a);">★ ${ratingAvg}</div>
+        <div class="stats-kpi-sub">${numCalifs} notas otorgadas</div>
       </div>
-      <div class="stats-kpi-card" style="border-left: 3px solid #10b981; cursor:pointer;" onclick="${tieneSpotify ? "cambiarCatStats('Musica')" : "abrirModalConectarSpotify()"}">
+      <div class="stats-kpi-card" style="cursor:pointer;" onclick="${tieneSpotify ? "cambiarCatStats('Musica')" : "abrirModalConectarSpotify()"}">
         <div class="stats-kpi-label"><span>🎵</span> <span>Música (Spotify)</span></div>
-        <div class="stats-kpi-val" style="color:#10b981;">${tieneSpotify ? formatearHorasStats_(horasMusicaSpotify) : '—'}</div>
-        <div class="stats-kpi-sub">${tieneSpotify ? `🟢 ${countMusicaSpotify} temas acumulados` : 'Conectar con Spotify ➔'}</div>
-      </div>
-    </div>
-
-    <!-- TARJETA DESTACADA: TIEMPO VISTO Y ESCUCHADO (AÑO Y MES) -->
-    <div class="stats-section-box">
-      <div class="stats-section-title">
-        <span>⚡ Ritmo de Consumo: Este Año vs Este Mes</span>
-        <span style="font-size:0.75rem; color:var(--muted);">${mesesLargo[nowMonth]} ${nowYear}</span>
-      </div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-        <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; cursor:pointer;" onclick="cambiarCatStats('Peliculas')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong style="font-size:0.85rem; color:var(--text);">🎬 Películas</strong>
-            <span style="font-size:0.72rem; color:var(--accent);">Ver ➔</span>
-          </div>
-          <div style="margin-top:6px; display:flex; justify-content:space-between; font-size:0.8rem;">
-            <span style="color:var(--muted);">Este Año:</span>
-            <strong style="color:var(--text);">${formatearHorasStats_(hPelisAnio)} (${pelisAnio.length})</strong>
-          </div>
-          <div style="margin-top:3px; display:flex; justify-content:space-between; font-size:0.8rem;">
-            <span style="color:var(--muted);">Este Mes:</span>
-            <strong style="color:var(--accent);">${formatearHorasStats_(hPelisMes)} (${pelisMes.length})</strong>
-          </div>
-        </div>
-
-        <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; cursor:pointer;" onclick="cambiarCatStats('Series')">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong style="font-size:0.85rem; color:var(--text);">📺 Series</strong>
-            <span style="font-size:0.72rem; color:var(--accent);">Ver ➔</span>
-          </div>
-          <div style="margin-top:6px; display:flex; justify-content:space-between; font-size:0.8rem;">
-            <span style="color:var(--muted);">Este Año:</span>
-            <strong style="color:var(--text);">${formatearHorasStats_(hSeriesAnio)} (${seriesAnio.length})</strong>
-          </div>
-          <div style="margin-top:3px; display:flex; justify-content:space-between; font-size:0.8rem;">
-            <span style="color:var(--muted);">Este Mes:</span>
-            <strong style="color:var(--accent);">${formatearHorasStats_(hSeriesMes)} (${seriesMes.length})</strong>
-          </div>
-        </div>
-
-        <div style="background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:10px 12px; cursor:pointer;" onclick="${tieneSpotify ? "cambiarCatStats('Musica')" : "abrirModalConectarSpotify()"}">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong style="font-size:0.85rem; color:var(--text);">🎵 Música (Spotify)</strong>
-            <span style="font-size:0.72rem; color:#10b981;">${tieneSpotify ? 'Ver ➔' : 'Vincular ➔'}</span>
-          </div>
-          ${tieneSpotify ? `
-            <div style="margin-top:6px; display:flex; justify-content:space-between; font-size:0.8rem;">
-              <span style="color:var(--muted);">Este Año:</span>
-              <strong style="color:var(--text);">${formatearHorasStats_(metricasSp.horasAnio)} (${metricasSp.countAnio})</strong>
-            </div>
-            <div style="margin-top:3px; display:flex; justify-content:space-between; font-size:0.8rem;">
-              <span style="color:var(--muted);">Este Mes:</span>
-              <strong style="color:#10b981;">${formatearHorasStats_(metricasSp.horasMes)} (${metricasSp.countMes})</strong>
-            </div>
-          ` : `
-            <div style="margin-top:6px; font-size:0.78rem; color:var(--muted); line-height:1.3;">
-              Conecta Spotify para acumular horas de música y ver artistas favoritos.
-            </div>
-            <div style="margin-top:4px; font-size:0.75rem; color:#10b981; font-weight:600;">
-              🟢 Conectar cuenta
-            </div>
-          `}
-        </div>
+        <div class="stats-kpi-val" style="color:#4fa888;">${tieneSpotify ? formatearHorasStats_(horasMusicaSpotify) : '—'}</div>
+        <div class="stats-kpi-sub">${tieneSpotify ? `${countMusicaSpotify} pistas registradas` : 'Conectar Spotify ➔'}</div>
       </div>
     </div>
 
     <!-- DISTRIBUCIÓN DE TIEMPO POR CATEGORÍA -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>📊 Distribución de Horas en este Período</span>
-        <span style="font-size:0.75rem; color:var(--muted);">${formatearHorasStats_(horasTotal)} en total</span>
+        <span>Distribución del Tiempo</span>
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${formatearHorasStats_(horasTotal)} total</span>
       </div>
-      <div style="height:10px; border-radius:5px; background:var(--bg); display:flex; overflow:hidden; margin-bottom:12px;">
-        <div style="width:${pctPelis}%; background:#38bdf8;" title="Películas: ${pctPelis}%"></div>
-        <div style="width:${pctSeries}%; background:#9333ea;" title="Series: ${pctSeries}%"></div>
-        <div style="width:${pctMusica}%; background:#10b981;" title="Música (Spotify): ${pctMusica}%"></div>
-        <div style="width:${pctJuegos}%; background:#f59e0b;" title="Juegos: ${pctJuegos}%"></div>
-        <div style="width:${pctLecturas}%; background:#ec4899;" title="Lecturas: ${pctLecturas}%"></div>
+      <div style="height:8px; border-radius:4px; background:var(--card); display:flex; overflow:hidden; margin-bottom:12px;">
+        <div style="width:${pctPelis}%; background:#5ea3c9;" title="Películas: ${pctPelis}%"></div>
+        <div style="width:${pctSeries}%; background:#9177b9;" title="Series: ${pctSeries}%"></div>
+        <div style="width:${pctMusica}%; background:#4fa888;" title="Música: ${pctMusica}%"></div>
+        <div style="width:${pctJuegos}%; background:#c8955a;" title="Juegos: ${pctJuegos}%"></div>
+        <div style="width:${pctLecturas}%; background:#cf7098;" title="Lecturas: ${pctLecturas}%"></div>
       </div>
 
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:8px;">
-        <div style="display:flex; align-items:center; gap:8px; font-size:0.78rem;">
-          <span style="width:10px; height:10px; border-radius:2px; background:#38bdf8; flex-shrink:0;"></span>
-          <span style="color:var(--text);">🎬 Pelis: <strong>${formatearHorasStats_(horasPelis)}</strong> (${pctPelis}%)</span>
+      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+        <div class="stats-chip-cat" onclick="cambiarCatStats('Peliculas')">
+          <span style="width:8px; height:8px; border-radius:50%; background:#5ea3c9; flex-shrink:0;"></span>
+          <span>🎬 Pelis: <strong>${formatearHorasStats_(horasPelis)}</strong> (${pctPelis}%)</span>
         </div>
-        <div style="display:flex; align-items:center; gap:8px; font-size:0.78rem;">
-          <span style="width:10px; height:10px; border-radius:2px; background:#9333ea; flex-shrink:0;"></span>
-          <span style="color:var(--text);">📺 Series: <strong>${formatearHorasStats_(horasSeries)}</strong> (${pctSeries}%)</span>
+        <div class="stats-chip-cat" onclick="cambiarCatStats('Series')">
+          <span style="width:8px; height:8px; border-radius:50%; background:#9177b9; flex-shrink:0;"></span>
+          <span>📺 Series: <strong>${formatearHorasStats_(horasSeries)}</strong> (${pctSeries}%)</span>
         </div>
-        <div style="display:flex; align-items:center; gap:8px; font-size:0.78rem;">
-          <span style="width:10px; height:10px; border-radius:2px; background:#10b981; flex-shrink:0;"></span>
-          <span style="color:var(--text);">🎵 Música: <strong>${tieneSpotify ? formatearHorasStats_(horasMusicaSpotify) : '0 hrs'}</strong> (${pctMusica}%)</span>
+        <div class="stats-chip-cat" onclick="cambiarCatStats('Musica')">
+          <span style="width:8px; height:8px; border-radius:50%; background:#4fa888; flex-shrink:0;"></span>
+          <span>🎵 Música: <strong>${tieneSpotify ? formatearHorasStats_(horasMusicaSpotify) : '0 hrs'}</strong> (${pctMusica}%)</span>
         </div>
-        <div style="display:flex; align-items:center; gap:8px; font-size:0.78rem;">
-          <span style="width:10px; height:10px; border-radius:2px; background:#f59e0b; flex-shrink:0;"></span>
-          <span style="color:var(--text);">🎮 Juegos: <strong>${formatearHorasStats_(horasJuegos)}</strong> (${pctJuegos}%)</span>
+        <div class="stats-chip-cat" onclick="cambiarCatStats('Juegos')">
+          <span style="width:8px; height:8px; border-radius:50%; background:#c8955a; flex-shrink:0;"></span>
+          <span>🎮 Juegos: <strong>${formatearHorasStats_(horasJuegos)}</strong> (${pctJuegos}%)</span>
         </div>
-        <div style="display:flex; align-items:center; gap:8px; font-size:0.78rem;">
-          <span style="width:10px; height:10px; border-radius:2px; background:#ec4899; flex-shrink:0;"></span>
-          <span style="color:var(--text);">📚 Libros: <strong>${formatearHorasStats_(horasLecturas)}</strong> (${pctLecturas}%)</span>
+        <div class="stats-chip-cat" onclick="cambiarCatStats('Lecturas')">
+          <span style="width:8px; height:8px; border-radius:50%; background:#cf7098; flex-shrink:0;"></span>
+          <span>📚 Libros: <strong>${formatearHorasStats_(horasLecturas)}</strong> (${pctLecturas}%)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPARATIVA DE RITMO (ESTE AÑO VS ESTE MES) -->
+    <div class="stats-section-box">
+      <div class="stats-section-title">
+        <span>Ritmo de Consumo</span>
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${mesesLargo[nowMonth]} ${nowYear}</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
+        <div style="background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; cursor:pointer; transition:all .15s ease;" onclick="cambiarCatStats('Peliculas')">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:0.86rem; color:var(--text);">🎬 Películas</strong>
+            <span style="font-size:0.74rem; color:var(--muted);">Ver ›</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+            <span style="color:var(--muted);">Este Año:</span>
+            <strong style="color:var(--text);">${formatearHorasStats_(hPelisAnio)} (${pelisAnio.length})</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
+            <span style="color:var(--muted);">Este Mes:</span>
+            <strong style="color:var(--accent);">${formatearHorasStats_(hPelisMes)} (${pelisMes.length})</strong>
+          </div>
+        </div>
+
+        <div style="background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; cursor:pointer; transition:all .15s ease;" onclick="cambiarCatStats('Series')">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:0.86rem; color:var(--text);">📺 Series</strong>
+            <span style="font-size:0.74rem; color:var(--muted);">Ver ›</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+            <span style="color:var(--muted);">Este Año:</span>
+            <strong style="color:var(--text);">${formatearHorasStats_(hSeriesAnio)} (${seriesAnio.length})</strong>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
+            <span style="color:var(--muted);">Este Mes:</span>
+            <strong style="color:var(--accent);">${formatearHorasStats_(hSeriesMes)} (${seriesMes.length})</strong>
+          </div>
+        </div>
+
+        <div style="background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; cursor:pointer; transition:all .15s ease;" onclick="${tieneSpotify ? "cambiarCatStats('Musica')" : "abrirModalConectarSpotify()"}">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <strong style="font-size:0.86rem; color:var(--text);">🎵 Música (Spotify)</strong>
+            <span style="font-size:0.74rem; color:var(--muted);">${tieneSpotify ? 'Ver ›' : 'Vincular ›'}</span>
+          </div>
+          ${tieneSpotify ? `
+            <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+              <span style="color:var(--muted);">Este Año:</span>
+              <strong style="color:var(--text);">${formatearHorasStats_(metricasSp.horasAnio)} (${metricasSp.countAnio})</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
+              <span style="color:var(--muted);">Este Mes:</span>
+              <strong style="color:#4fa888;">${formatearHorasStats_(metricasSp.horasMes)} (${metricasSp.countMes})</strong>
+            </div>
+          ` : `
+            <div style="font-size:0.78rem; color:var(--muted); line-height:1.35; margin-top:2px;">
+              Conecta Spotify para registrar horas y artistas favoritos.
+            </div>
+          `}
         </div>
       </div>
     </div>
@@ -14121,7 +14182,6 @@ function renderizarStatsPeliculas_(ctx) {
   const pelisAnio = pelisTotales.filter(r => obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
   const pelisMes = pelisAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
 
-  const hTotal = pelisTotales.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
   const hAnio = pelisAnio.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
   const hMes = pelisMes.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
   const hPeriodo = pelisPeriodo.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
@@ -14133,12 +14193,10 @@ function renderizarStatsPeliculas_(ctx) {
   });
   const avgCal = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
 
-  // Top 5 Películas Favoritas
   const top5Pelis = [...pelisPeriodo]
     .sort((a, b) => (Number(b.calificacion) || 0) - (Number(a.calificacion) || 0) || (b.esRewatch ? 1 : 0) - (a.esRewatch ? 1 : 0))
     .slice(0, 5);
 
-  // Top 5 Directores
   const dirMap = {};
   pelisPeriodo.forEach(r => {
     const d = (r.creador || '').trim();
@@ -14154,24 +14212,24 @@ function renderizarStatsPeliculas_(ctx) {
 
   return `
     <div class="stats-kpi-grid">
-      <div class="stats-kpi-card" style="border-left: 3px solid #38bdf8;">
-        <div class="stats-kpi-label"><span>🎬</span> <span>Tiempo en Películas</span></div>
-        <div class="stats-kpi-val" style="color:#38bdf8;">${formatearHorasStats_(hPeriodo)}</div>
+      <div class="stats-kpi-card">
+        <div class="stats-kpi-label"><span>🎬</span> <span>Tiempo Total</span></div>
+        <div class="stats-kpi-val">${formatearHorasStats_(hPeriodo)}</div>
         <div class="stats-kpi-sub">${pelisPeriodo.length} películas vistas</div>
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>📅</span> <span>Este Año (${nowYear})</span></div>
         <div class="stats-kpi-val">${formatearHorasStats_(hAnio)}</div>
-        <div class="stats-kpi-sub">${pelisAnio.length} películas este año</div>
+        <div class="stats-kpi-sub">${pelisAnio.length} películas en ${nowYear}</div>
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>🗓️</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:#10b981;">${formatearHorasStats_(hMes)}</div>
+        <div class="stats-kpi-val" style="color:var(--accent);">${formatearHorasStats_(hMes)}</div>
         <div class="stats-kpi-sub">${pelisMes.length} películas este mes</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>★</span> <span>Nota Media Cine</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">★ ${avgCal}</div>
+        <div class="stats-kpi-label"><span>★</span> <span>Nota Media</span></div>
+        <div class="stats-kpi-val" style="color:var(--star-active, #c8955a);">★ ${avgCal}</div>
         <div class="stats-kpi-sub">${rewatches} rewatches</div>
       </div>
     </div>
@@ -14179,18 +14237,18 @@ function renderizarStatsPeliculas_(ctx) {
     <!-- TOP 5 PELÍCULAS FAVORITAS -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>👑 Top 5 Películas Favoritas / Mejor Calificadas</span>
-        <span style="font-size:0.75rem; color:var(--muted);">En este período</span>
+        <span>Top 5 Películas Favoritas</span>
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">En este período</span>
       </div>
       ${top5Pelis.length ? top5Pelis.map((p, idx) => `
         <div class="stats-ranking-row">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-          <img src="${escHtmlStats_(p.poster || '')}" onerror="this.src='./icon.png'" style="width:36px; height:50px; border-radius:6px; object-fit:cover; background:var(--card); flex-shrink:0;">
+          <img src="${escHtmlStats_(p.poster || '')}" onerror="this.src='./icon.png'" style="width:38px; height:52px; border-radius:8px; object-fit:cover; background:var(--card); flex-shrink:0;">
           <div style="flex:1; min-width:0;">
             <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(p.titulo)}</strong>
-            <span style="font-size:0.74rem; color:var(--muted);">${escHtmlStats_(p.creador || 'Director desconocido')} ${p.anio ? `· ${p.anio}` : ''}</span>
+            <span style="font-size:0.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(p.creador || 'Director')} ${p.anio ? `· ${p.anio}` : ''}</span>
           </div>
-          <div style="font-weight:700; font-size:0.82rem; color:#f59e0b; flex-shrink:0;">★ ${Number(p.calificacion) ? Number(p.calificacion).toFixed(1) : '—'}</div>
+          <div style="font-weight:700; font-size:0.84rem; color:var(--star-active, #c8955a); flex-shrink:0;">★ ${Number(p.calificacion) ? Number(p.calificacion).toFixed(1) : '—'}</div>
         </div>
       `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">No hay películas registradas en este período.</div>'}
     </div>
@@ -14198,16 +14256,16 @@ function renderizarStatsPeliculas_(ctx) {
     <!-- TOP 5 DIRECTORES -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>🎥 Directores Más Vistos</span>
+        <span>Directores Más Vistos</span>
       </div>
       ${topDirectores.length ? topDirectores.map((d, idx) => `
         <div class="stats-ranking-row">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
           <div style="flex:1; min-width:0;">
             <strong style="font-size:0.86rem; color:var(--text);">${escHtmlStats_(d.nombre)}</strong>
-            <span style="font-size:0.74rem; color:var(--muted); display:block;">${d.count} ${d.count === 1 ? 'película vista' : 'películas vistas'}</span>
+            <span style="font-size:0.74rem; color:var(--muted); display:block;">${d.count} ${d.count === 1 ? 'película' : 'películas'}</span>
           </div>
-          <div style="font-size:0.78rem; color:var(--muted);">Nota media: <strong style="color:#f59e0b;">★ ${d.avg}</strong></div>
+          <div style="font-size:0.8rem; color:var(--muted); font-weight:600;">Media: <strong style="color:var(--star-active, #c8955a);">★ ${d.avg}</strong></div>
         </div>
       `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:12px;">Sin datos suficientes de directores.</div>'}
     </div>
@@ -14251,24 +14309,24 @@ function renderizarStatsSeries_(ctx) {
 
   return `
     <div class="stats-kpi-grid">
-      <div class="stats-kpi-card" style="border-left: 3px solid #9333ea;">
+      <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>📺</span> <span>Tiempo en Series</span></div>
-        <div class="stats-kpi-val" style="color:#9333ea;">${formatearHorasStats_(hPeriodo)}</div>
+        <div class="stats-kpi-val">${formatearHorasStats_(hPeriodo)}</div>
         <div class="stats-kpi-sub">${seriesPeriodo.length} temporadas / series</div>
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>📅</span> <span>Este Año (${nowYear})</span></div>
         <div class="stats-kpi-val">${formatearHorasStats_(hAnio)}</div>
-        <div class="stats-kpi-sub">${seriesAnio.length} temporadas este año</div>
+        <div class="stats-kpi-sub">${seriesAnio.length} temporadas en ${nowYear}</div>
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>🗓️</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:#10b981;">${formatearHorasStats_(hMes)}</div>
+        <div class="stats-kpi-val" style="color:var(--accent);">${formatearHorasStats_(hMes)}</div>
         <div class="stats-kpi-sub">${seriesMes.length} temporadas este mes</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>★</span> <span>Nota Media Series</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">★ ${avgCal}</div>
+        <div class="stats-kpi-label"><span>★</span> <span>Nota Media</span></div>
+        <div class="stats-kpi-val" style="color:var(--star-active, #c8955a);">★ ${avgCal}</div>
         <div class="stats-kpi-sub">De ${numCalifs} calificadas</div>
       </div>
     </div>
@@ -14276,17 +14334,17 @@ function renderizarStatsSeries_(ctx) {
     <!-- TOP 5 SERIES FAVORITAS -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>👑 Top 5 Series Favoritas</span>
+        <span>Top 5 Series Favoritas</span>
       </div>
       ${top5Series.length ? top5Series.map((s, idx) => `
         <div class="stats-ranking-row">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-          <img src="${escHtmlStats_(s.poster || '')}" onerror="this.src='./icon.png'" style="width:36px; height:50px; border-radius:6px; object-fit:cover; background:var(--card); flex-shrink:0;">
+          <img src="${escHtmlStats_(s.poster || '')}" onerror="this.src='./icon.png'" style="width:38px; height:52px; border-radius:8px; object-fit:cover; background:var(--card); flex-shrink:0;">
           <div style="flex:1; min-width:0;">
             <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(s.titulo)}</strong>
-            <span style="font-size:0.74rem; color:var(--muted);">${escHtmlStats_(s.creador || 'Showrunner')} ${s.anio ? `· ${s.anio}` : ''}</span>
+            <span style="font-size:0.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(s.creador || 'Showrunner')} ${s.anio ? `· ${s.anio}` : ''}</span>
           </div>
-          <div style="font-weight:700; font-size:0.82rem; color:#f59e0b; flex-shrink:0;">★ ${Number(s.calificacion) ? Number(s.calificacion).toFixed(1) : '—'}</div>
+          <div style="font-weight:700; font-size:0.84rem; color:var(--star-active, #c8955a); flex-shrink:0;">★ ${Number(s.calificacion) ? Number(s.calificacion).toFixed(1) : '—'}</div>
         </div>
       `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">No hay series registradas en este período.</div>'}
     </div>
@@ -14294,16 +14352,16 @@ function renderizarStatsSeries_(ctx) {
     <!-- TOP CREADORES DE SERIES -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>🎬 Creadores / Showrunners Más Vistos</span>
+        <span>Creadores y Showrunners Más Vistos</span>
       </div>
       ${topCreadores.length ? topCreadores.map((c, idx) => `
         <div class="stats-ranking-row">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
           <div style="flex:1; min-width:0;">
             <strong style="font-size:0.86rem; color:var(--text);">${escHtmlStats_(c.nombre)}</strong>
-            <span style="font-size:0.74rem; color:var(--muted); display:block;">${c.count} ${c.count === 1 ? 'temporada/serie' : 'temporadas/series'}</span>
+            <span style="font-size:0.74rem; color:var(--muted); display:block;">${c.count} ${c.count === 1 ? 'temporada' : 'temporadas'}</span>
           </div>
-          <div style="font-size:0.78rem; color:var(--muted);">Nota: <strong style="color:#f59e0b;">★ ${c.avg}</strong></div>
+          <div style="font-size:0.8rem; color:var(--muted); font-weight:600;">Media: <strong style="color:var(--star-active, #c8955a);">★ ${c.avg}</strong></div>
         </div>
       `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:12px;">Sin datos suficientes.</div>'}
     </div>
@@ -14340,21 +14398,21 @@ function renderizarStatsMusica_(ctx) {
   if (!tieneSpotify) {
     return `
       <div class="stats-section-box" style="text-align:center; padding:36px 20px;">
-        <div style="width:68px; height:68px; border-radius:50%; background:rgba(29,185,84,0.12); border:1.5px solid rgba(29,185,84,0.35); display:flex; align-items:center; justify-content:center; margin:0 auto 16px auto; color:#1db954;">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor">
+        <div style="width:60px; height:60px; border-radius:50%; background:rgba(79,158,131,0.14); border:1px solid rgba(79,158,131,0.32); display:grid; place-items:center; margin:0 auto 16px auto; color:#4fa888;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
           </svg>
         </div>
-        <h3 style="font-size:1.15rem; font-weight:700; color:var(--text); margin-bottom:8px;">Estadísticas Musicales con Spotify</h3>
-        <p style="font-size:0.84rem; color:var(--muted); max-width:390px; margin:0 auto 22px auto; line-height:1.45;">
-          Tus estadísticas musicales se basan <strong>exclusivamente en tu cuenta de Spotify</strong> con acumulador progresivo de horas, top 5 de artistas y canciones por períodos.
+        <h3 style="font-size:1.1rem; font-weight:700; color:var(--text); margin-bottom:8px;">Música sincronizada con Spotify</h3>
+        <p style="font-size:0.82rem; color:var(--muted); max-width:380px; margin:0 auto 20px auto; line-height:1.45;">
+          Tus estadísticas de música se alimentan de tu cuenta de Spotify: tiempo acumulado, reproducciones, artistas favoritos y discos escuchados.
         </p>
         <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-          <button type="button" class="btn-primary" onclick="abrirModalConectarSpotify()" style="background:#1db954; color:#fff; border:none; padding:10px 22px; border-radius:12px; font-weight:700; font-size:0.88rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+          <button type="button" class="btn-primary" onclick="abrirModalConectarSpotify()" style="background:#4fa888; color:#fff; border:none; padding:9px 20px; border-radius:10px; font-weight:700; font-size:0.86rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
             <span>🟢</span> <span>Conectar Spotify</span>
           </button>
-          <button type="button" class="btn-secondary" onclick="conectarSpotifyDemo(); renderizarContenidoEstadisticasAvanzadas();" style="border:1px solid var(--border); background:var(--card); color:var(--text); padding:10px 16px; border-radius:12px; font-size:0.84rem; cursor:pointer;">
-            Probar con datos demo
+          <button type="button" class="btn-secondary" onclick="conectarSpotifyDemo(); renderizarContenidoEstadisticasAvanzadas();" style="border:1px solid var(--border); background:var(--card); color:var(--text); padding:9px 16px; border-radius:10px; font-size:0.84rem; cursor:pointer;">
+            Probar demo
           </button>
         </div>
       </div>
@@ -14363,11 +14421,10 @@ function renderizarStatsMusica_(ctx) {
 
   const metricasSp = obtenerMetricasMusicaSpotifyStats_(spotifyStats, spotifyAccumulator, nowYear, nowMonth);
 
-  // Rango activo de Tops (short_term: 4 semanas, medium_term: 6 meses, long_term: histórico)
   const rangoActivo = localStorage.getItem('mediary_spotify_selected_range') || (spotifyStats && spotifyStats.selectedRange) || 'medium_term';
   const labelRango = rangoActivo === 'short_term'
-    ? 'Últimas 4 semanas (Tendencia actual)'
-    : (rangoActivo === 'long_term' ? 'Histórico completo (Varios años)' : 'Últimos 6 meses (Semestre)');
+    ? '4 semanas'
+    : (rangoActivo === 'long_term' ? 'Histórico' : '6 meses');
 
   const topArtistsList = (spotifyStats.topArtistsByRange && spotifyStats.topArtistsByRange[rangoActivo])
     || spotifyStats.topArtists
@@ -14378,7 +14435,6 @@ function renderizarStatsMusica_(ctx) {
 
   const top5Artistas = topArtistsList.slice(0, 5);
   const top5Canciones = topTracksList.slice(0, 5);
-  const topGenero = (top5Artistas[0]?.genres?.[0]) || 'Música Variada';
 
   let spUser = null;
   try {
@@ -14396,71 +14452,60 @@ function renderizarStatsMusica_(ctx) {
 
   return `
     <!-- BANNER DE USUARIO SPOTIFY Y SINCRONIZACIÓN -->
-    <div style="background:var(--bg); border:1px solid rgba(29,185,84,0.3); border-radius:14px; padding:12px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:14px; padding:12px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
       <div style="display:flex; align-items:center; gap:10px; min-width:0;">
         ${spUser?.avatar
-          ? `<img src="${escHtmlStats_(spUser.avatar)}" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid #1db954; flex-shrink:0;">`
-          : `<div style="width:38px; height:38px; border-radius:50%; background:rgba(29,185,84,0.15); display:grid; place-items:center; color:#1db954; font-size:1.15rem; flex-shrink:0;">🟢</div>`}
+          ? `<img src="${escHtmlStats_(spUser.avatar)}" style="width:36px; height:36px; border-radius:50%; object-fit:cover; border:1px solid rgba(79,158,131,0.5); flex-shrink:0;">`
+          : `<div style="width:36px; height:36px; border-radius:50%; background:rgba(79,158,131,0.15); display:grid; place-items:center; color:#4fa888; font-size:1.1rem; flex-shrink:0;">🟢</div>`}
         <div style="min-width:0;">
-          <div style="font-weight:700; font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+          <div style="font-weight:700; font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
             ${escHtmlStats_(spUser?.display_name || 'Spotify')}
-            <span style="font-size:0.72rem; font-weight:400; color:#1db954; background:rgba(29,185,84,0.12); padding:1px 6px; border-radius:6px; margin-left:4px;">${spUser?.product === 'premium' ? 'Premium' : 'Conectado'}</span>
+            <span style="font-size:0.7rem; font-weight:600; color:#4fa888; background:rgba(79,158,131,0.14); padding:1px 6px; border-radius:6px; margin-left:4px;">${spUser?.product === 'premium' ? 'Premium' : 'Conectado'}</span>
           </div>
           <div style="font-size:0.72rem; color:var(--muted); margin-top:1px;">
-            ${fechaSync ? `Sincronizado: ${fechaSync}` : 'Acumulador de horas activo'}
+            ${fechaSync ? `Actualizado: ${fechaSync}` : 'Acumulador de horas activo'}
           </div>
         </div>
       </div>
-      <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSpotify(true).then(() => renderizarContenidoEstadisticasAvanzadas())" title="Actualizar y acumular reproducciones de Spotify" style="font-size:0.75rem; padding:6px 12px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0;">
-        <span>🔄</span> <span>Actualizar</span>
+      <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSpotify(true).then(() => renderizarContenidoEstadisticasAvanzadas())" title="Actualizar reproducciones" style="font-size:0.75rem; padding:5px 12px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0;">
+        <span>🔄</span> <span>Sincronizar</span>
       </button>
     </div>
 
     <!-- KPIS SPOTIFY CON ACUMULADOR INCREMENTAL -->
     <div class="stats-kpi-grid">
-      <div class="stats-kpi-card" style="border-left: 3px solid #1db954;">
+      <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>📅</span> <span>Este Año (${nowYear})</span></div>
-        <div class="stats-kpi-val" style="color:#1db954;">${formatearHorasStats_(metricasSp.horasAnio)}</div>
+        <div class="stats-kpi-val" style="color:#4fa888;">${formatearHorasStats_(metricasSp.horasAnio)}</div>
         <div class="stats-kpi-sub">${metricasSp.countAnio} pistas en ${nowYear}</div>
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>🗓️</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:#10b981;">${formatearHorasStats_(metricasSp.horasMes)}</div>
+        <div class="stats-kpi-val" style="color:#4fa888;">${formatearHorasStats_(metricasSp.horasMes)}</div>
         <div class="stats-kpi-sub">${metricasSp.countMes} pistas este mes</div>
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>⏱️</span> <span>Total Acumulado</span></div>
-        <div class="stats-kpi-val" style="color:var(--accent);">${formatearHorasStats_(metricasSp.horasTotal)}</div>
-        <div class="stats-kpi-sub">${metricasSp.countTotal} temas registrados</div>
+        <div class="stats-kpi-val">${formatearHorasStats_(metricasSp.horasTotal)}</div>
+        <div class="stats-kpi-sub">${metricasSp.countTotal} pistas registradas</div>
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>🎧</span> <span>Sesión Reciente</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">${formatearHorasStats_(metricasSp.horasRecientes)}</div>
-        <div class="stats-kpi-sub">Últimas ${metricasSp.countRecientes || 50} pistas en Spotify</div>
+        <div class="stats-kpi-val" style="color:var(--star-active, #c8955a);">${formatearHorasStats_(metricasSp.horasRecientes)}</div>
+        <div class="stats-kpi-sub">Últimas ${metricasSp.countRecientes || 50} canciones</div>
       </div>
     </div>
 
     <!-- SELECTOR DE PERÍODO PARA TOPS EN SPOTIFY -->
-    <div class="stats-section-box" style="padding:12px 14px; margin-bottom:12px;">
-      <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-        <div style="display:flex; align-items:center; gap:8px;">
-          <span style="font-size:1.15rem;">⏳</span>
-          <div>
-            <strong style="font-size:0.86rem; color:var(--text); display:block;">Período de Favoritos en Spotify</strong>
-            <span style="font-size:0.73rem; color:var(--muted);">${labelRango}</span>
-          </div>
-        </div>
-        <div style="display:flex; gap:6px; flex-wrap:wrap;">
-          <button type="button" class="btn-toggle-filter ${rangoActivo === 'short_term' ? 'active' : ''}" onclick="cambiarRangoSpotifyStats('short_term')">
-            ⚡ 4 Semanas
-          </button>
-          <button type="button" class="btn-toggle-filter ${rangoActivo === 'medium_term' ? 'active' : ''}" onclick="cambiarRangoSpotifyStats('medium_term')">
-            📅 6 Meses
-          </button>
-          <button type="button" class="btn-toggle-filter ${rangoActivo === 'long_term' ? 'active' : ''}" onclick="cambiarRangoSpotifyStats('long_term')">
-            👑 Histórico
-          </button>
-        </div>
+    <div class="stats-section-box" style="padding:10px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+      <div style="font-size:0.84rem; font-weight:700; color:var(--text);">
+        <span>Tops de Spotify</span>
+        <span style="font-size:0.72rem; color:var(--muted); font-weight:400; margin-left:6px;">(${labelRango})</span>
+      </div>
+      <div class="stats-period-group">
+        <button type="button" class="stats-period-btn ${rangoActivo === 'short_term' ? 'active' : ''}" onclick="cambiarRangoSpotifyStats('short_term')">4 Semanas</button>
+        <button type="button" class="stats-period-btn ${rangoActivo === 'medium_term' ? 'active' : ''}" onclick="cambiarRangoSpotifyStats('medium_term')">6 Meses</button>
+        <button type="button" class="stats-period-btn ${rangoActivo === 'long_term' ? 'active' : ''}" onclick="cambiarRangoSpotifyStats('long_term')">Histórico</button>
       </div>
     </div>
 
@@ -14477,18 +14522,18 @@ function renderizarStatsMusica_(ctx) {
         <div class="stats-section-box">
           <div class="stats-section-title">
             <span>💿 Discos Escuchados Completos</span>
-            <span style="font-size:0.74rem; color:#10b981; font-weight:700;">★ ${comps.length} álbumes</span>
+            <span style="font-size:0.74rem; color:#4fa888; font-weight:700;">${comps.length} álbumes</span>
           </div>
-          <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="display:flex; flex-direction:column; gap:6px;">
             ${comps.map(alb => `
               <div class="stats-ranking-row">
-                <img src="${escHtmlStats_(alb.poster || '')}" onerror="this.src='./icon.png'" style="width:42px; height:42px; border-radius:8px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">
+                <img src="${escHtmlStats_(alb.poster || '')}" onerror="this.src='./icon.png'" style="width:38px; height:38px; border-radius:8px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">
                 <div style="flex:1; min-width:0;">
-                  <strong style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtmlStats_(alb.titulo)}</strong>
+                  <strong style="font-size:0.86rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtmlStats_(alb.titulo)}</strong>
                   <span style="font-size:0.72rem; color:var(--muted); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtmlStats_(alb.artista)}</span>
                 </div>
                 <div style="text-align:right; flex-shrink:0;">
-                  <span style="font-size:0.72rem; color:#10b981; font-weight:700; display:block;">✓ ${alb.totalTracks}/${alb.totalTracks} temas</span>
+                  <span style="font-size:0.72rem; color:#4fa888; font-weight:700; display:block;">✓ ${alb.totalTracks}/${alb.totalTracks}</span>
                   <span style="font-size:0.68rem; color:var(--muted);">${alb.completedDate ? alb.completedDate : 'Completado'}</span>
                 </div>
               </div>
@@ -14501,34 +14546,33 @@ function renderizarStatsMusica_(ctx) {
     <!-- TOP 5 ARTISTAS FAVORITOS (SPOTIFY) -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>🎤 5 Artistas Favoritos (Spotify)</span>
-        <span style="font-size:0.74rem; color:#1db954; font-weight:700;">★ ${rangoActivo === 'short_term' ? 'Más escuchados (4 sem)' : (rangoActivo === 'long_term' ? 'De siempre (Años)' : 'Top Semestre')}</span>
+        <span>Artistas Más Escuchados</span>
+        <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">${labelRango}</span>
       </div>
       ${top5Artistas.length ? top5Artistas.map((a, idx) => `
         <div class="stats-ranking-row" style="cursor:pointer;" onclick="${a.url ? `window.open('${escHtmlStats_(a.url)}', '_blank')` : ''}">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
           ${a.image
-            ? `<img src="${escHtmlStats_(a.image)}" alt="${escHtmlStats_(a.name)}" style="width:42px; height:42px; border-radius:50%; object-fit:cover; border:1.5px solid rgba(29,185,84,0.35); flex-shrink:0;">`
-            : `<div style="width:42px; height:42px; border-radius:50%; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;">🎙️</div>`}
+            ? `<img src="${escHtmlStats_(a.image)}" alt="${escHtmlStats_(a.name)}" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
+            : `<div style="width:38px; height:38px; border-radius:50%; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;">🎙️</div>`}
           <div style="flex:1; min-width:0;">
-            <strong style="font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(a.name)}</strong>
+            <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(a.name)}</strong>
             <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">
-              ${(a.genres && a.genres.length) ? escHtmlStats_(a.genres.map(g => g.charAt(0).toUpperCase() + g.slice(1)).join(' · ')) : 'Artista Spotify'}
+              ${(a.genres && a.genres.length) ? escHtmlStats_(a.genres.map(g => g.charAt(0).toUpperCase() + g.slice(1)).join(' · ')) : 'Artista'}
             </span>
           </div>
-          <div style="font-size:0.78rem; font-weight:700; color:#1db954; flex-shrink:0; text-align:right;">
-            <div>★ ${a.popularity != null ? a.popularity + '%' : 'Top'}</div>
-            <span style="font-size:0.68rem; color:var(--muted); font-weight:400;">popularidad</span>
+          <div style="font-size:0.76rem; font-weight:700; color:#4fa888; flex-shrink:0; text-align:right;">
+            ${a.popularity != null ? a.popularity + '%' : 'Top'}
           </div>
         </div>
-      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de artistas en Spotify todavía. Pulsa Actualizar para sincronizar.</div>'}
+      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de artistas en Spotify todavía. Pulsa Sincronizar.</div>'}
     </div>
 
     <!-- TOP 5 CANCIONES FAVORITAS (SPOTIFY) -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>🎧 5 Canciones Favoritas (Spotify)</span>
-        <span style="font-size:0.74rem; color:#f59e0b; font-weight:700;">★ Top Tracks</span>
+        <span>Canciones Más Escuchadas</span>
+        <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">${labelRango}</span>
       </div>
       ${top5Canciones.length ? top5Canciones.map((t, idx) => {
         const ms = t.duration_ms || 0;
@@ -14540,19 +14584,18 @@ function renderizarStatsMusica_(ctx) {
         <div class="stats-ranking-row" style="cursor:pointer;" onclick="${t.url ? `window.open('${escHtmlStats_(t.url)}', '_blank')` : ''}">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
           ${t.image
-            ? `<img src="${escHtmlStats_(t.image)}" alt="${escHtmlStats_(t.name)}" style="width:42px; height:42px; border-radius:8px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
-            : `<div style="width:42px; height:42px; border-radius:8px; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;">🎵</div>`}
+            ? `<img src="${escHtmlStats_(t.image)}" alt="${escHtmlStats_(t.name)}" style="width:38px; height:38px; border-radius:8px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
+            : `<div style="width:38px; height:38px; border-radius:8px; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.1rem; flex-shrink:0;">🎵</div>`}
           <div style="flex:1; min-width:0;">
-            <strong style="font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(t.name)}</strong>
+            <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(t.name)}</strong>
             <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(t.artist || 'Spotify')} ${t.album ? `· ${escHtmlStats_(t.album)}` : ''}</span>
           </div>
-          <div style="font-size:0.78rem; font-weight:700; color:var(--muted); flex-shrink:0; text-align:right;">
-            <div>${durTxt}</div>
-            <span style="font-size:0.68rem; color:#1db954;">Spotify ↗</span>
+          <div style="font-size:0.78rem; font-weight:600; color:var(--muted); flex-shrink:0; text-align:right;">
+            ${durTxt}
           </div>
         </div>
       `;
-      }).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de canciones en Spotify todavía. Pulsa Actualizar para sincronizar.</div>'}
+      }).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de canciones en Spotify todavía. Pulsa Sincronizar.</div>'}
     </div>
   `;
 }
@@ -14581,24 +14624,24 @@ function renderizarStatsJuegos_(ctx) {
 
   return `
     <div class="stats-kpi-grid">
-      <div class="stats-kpi-card" style="border-left: 3px solid #f59e0b;">
+      <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>🎮</span> <span>Horas Jugadas</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">${formatearHorasStats_(hPeriodo)}</div>
+        <div class="stats-kpi-val">${formatearHorasStats_(hPeriodo)}</div>
         <div class="stats-kpi-sub">${juegosPeriodo.length} juegos completados</div>
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>📅</span> <span>Este Año (${nowYear})</span></div>
         <div class="stats-kpi-val">${formatearHorasStats_(hAnio)}</div>
-        <div class="stats-kpi-sub">${juegosAnio.length} juegos este año</div>
+        <div class="stats-kpi-sub">${juegosAnio.length} juegos en ${nowYear}</div>
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>🗓️</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:#10b981;">${formatearHorasStats_(hMes)}</div>
+        <div class="stats-kpi-val" style="color:var(--accent);">${formatearHorasStats_(hMes)}</div>
         <div class="stats-kpi-sub">${juegosMes.length} juegos este mes</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>★</span> <span>Nota Media Juegos</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">★ ${avgCal}</div>
+        <div class="stats-kpi-label"><span>★</span> <span>Nota Media</span></div>
+        <div class="stats-kpi-val" style="color:var(--star-active, #c8955a);">★ ${avgCal}</div>
         <div class="stats-kpi-sub">De ${numCalifs} evaluados</div>
       </div>
     </div>
@@ -14606,17 +14649,17 @@ function renderizarStatsJuegos_(ctx) {
     <!-- TOP 5 VIDEOJUEGOS -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>👑 Top 5 Videojuegos Favoritos</span>
+        <span>Top 5 Videojuegos Favoritos</span>
       </div>
       ${top5Juegos.length ? top5Juegos.map((j, idx) => `
         <div class="stats-ranking-row">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-          <img src="${escHtmlStats_(j.poster || '')}" onerror="this.src='./icon.png'" style="width:36px; height:50px; border-radius:6px; object-fit:cover; background:var(--card); flex-shrink:0;">
+          <img src="${escHtmlStats_(j.poster || '')}" onerror="this.src='./icon.png'" style="width:38px; height:52px; border-radius:8px; object-fit:cover; background:var(--card); flex-shrink:0;">
           <div style="flex:1; min-width:0;">
             <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(j.titulo)}</strong>
-            <span style="font-size:0.74rem; color:var(--muted);">${escHtmlStats_(j.creador || 'Estudio')} ${j.horas ? `· ${j.horas}` : ''}</span>
+            <span style="font-size:0.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(j.creador || 'Estudio')} ${j.horas ? `· ${j.horas}` : ''}</span>
           </div>
-          <div style="font-weight:700; font-size:0.82rem; color:#f59e0b; flex-shrink:0;">★ ${Number(j.calificacion) ? Number(j.calificacion).toFixed(1) : '—'}</div>
+          <div style="font-weight:700; font-size:0.84rem; color:var(--star-active, #c8955a); flex-shrink:0;">★ ${Number(j.calificacion) ? Number(j.calificacion).toFixed(1) : '—'}</div>
         </div>
       `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">No hay videojuegos registrados en este período.</div>'}
     </div>
@@ -14643,9 +14686,9 @@ function renderizarStatsLecturas_(ctx) {
 
   return `
     <div class="stats-kpi-grid">
-      <div class="stats-kpi-card" style="border-left: 3px solid #ec4899;">
+      <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>📚</span> <span>Lecturas Totales</span></div>
-        <div class="stats-kpi-val" style="color:#ec4899;">${lecturasPeriodo.length}</div>
+        <div class="stats-kpi-val">${lecturasPeriodo.length}</div>
         <div class="stats-kpi-sub">Libros, cómics y mangas</div>
       </div>
       <div class="stats-kpi-card">
@@ -14655,12 +14698,12 @@ function renderizarStatsLecturas_(ctx) {
       </div>
       <div class="stats-kpi-card">
         <div class="stats-kpi-label"><span>🗓️</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:#10b981;">${lecturasMes.length}</div>
+        <div class="stats-kpi-val" style="color:var(--accent);">${lecturasMes.length}</div>
         <div class="stats-kpi-sub">Lecturas este mes</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>★</span> <span>Nota Media Lecturas</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">★ ${avgCal}</div>
+        <div class="stats-kpi-label"><span>★</span> <span>Nota Media</span></div>
+        <div class="stats-kpi-val" style="color:var(--star-active, #c8955a);">★ ${avgCal}</div>
         <div class="stats-kpi-sub">De ${numCalifs} evaluadas</div>
       </div>
     </div>
@@ -14668,17 +14711,17 @@ function renderizarStatsLecturas_(ctx) {
     <!-- TOP 5 LECTURAS FAVORITAS -->
     <div class="stats-section-box">
       <div class="stats-section-title">
-        <span>👑 Top 5 Lecturas Favoritas</span>
+        <span>Top 5 Lecturas Favoritas</span>
       </div>
       ${top5Lecturas.length ? top5Lecturas.map((l, idx) => `
         <div class="stats-ranking-row">
           <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-          <img src="${escHtmlStats_(l.poster || '')}" onerror="this.src='./icon.png'" style="width:36px; height:50px; border-radius:6px; object-fit:cover; background:var(--card); flex-shrink:0;">
+          <img src="${escHtmlStats_(l.poster || '')}" onerror="this.src='./icon.png'" style="width:38px; height:52px; border-radius:8px; object-fit:cover; background:var(--card); flex-shrink:0;">
           <div style="flex:1; min-width:0;">
             <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(l.titulo)}</strong>
-            <span style="font-size:0.74rem; color:var(--muted);">${escHtmlStats_(l.creador || 'Autor')} ${l.anio ? `· ${l.anio}` : ''}</span>
+            <span style="font-size:0.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(l.creador || 'Autor')} ${l.anio ? `· ${l.anio}` : ''}</span>
           </div>
-          <div style="font-weight:700; font-size:0.82rem; color:#f59e0b; flex-shrink:0;">★ ${Number(l.calificacion) ? Number(l.calificacion).toFixed(1) : '—'}</div>
+          <div style="font-weight:700; font-size:0.84rem; color:var(--star-active, #c8955a); flex-shrink:0;">★ ${Number(l.calificacion) ? Number(l.calificacion).toFixed(1) : '—'}</div>
         </div>
       `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">No hay lecturas registradas en este período.</div>'}
     </div>
