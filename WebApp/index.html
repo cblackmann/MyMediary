@@ -4286,11 +4286,14 @@ html[data-app-theme="minimalist"] .nav-categories-row {
       </div>
     </div>
     
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <button type="button" class="btn-steam-sub-action" style="background:rgba(102,192,244,0.12); color:#38bdf8; border:1px solid rgba(102,192,244,0.35);" onclick="actualizarDatosSteam(true)" title="Sincronizar datos de Steam">
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px;">
+      <button type="button" class="btn-steam-sub-action" style="background:rgba(102,192,244,0.12); color:#38bdf8; border:1px solid rgba(102,192,244,0.35); padding:8px 6px; font-size:0.75rem;" onclick="actualizarDatosSteam(true)" title="Sincronizar datos de Steam">
         <span>🔄 Sincronizar</span>
       </button>
-      <button type="button" class="btn-steam-sub-action" style="background:rgba(239,68,68,0.08); color:#f87171; border:1px solid rgba(239,68,68,0.25);" onclick="desconectarSteam()" title="Desconectar cuenta">
+      <button type="button" class="btn-steam-sub-action" style="background:rgba(102,192,244,0.12); color:#38bdf8; border:1px solid rgba(102,192,244,0.35); padding:8px 6px; font-size:0.75rem;" onclick="abrirModalEditarSteam()" title="Personalizar nombre, avatar o API Key">
+        <span>✏️ Perfil</span>
+      </button>
+      <button type="button" class="btn-steam-sub-action" style="background:rgba(239,68,68,0.08); color:#f87171; border:1px solid rgba(239,68,68,0.25); padding:8px 6px; font-size:0.75rem;" onclick="desconectarSteam()" title="Desconectar cuenta">
         <span>Desconectar</span>
       </button>
     </div>
@@ -5009,25 +5012,42 @@ html[data-app-theme="minimalist"] .nav-categories-row {
       </button>
     </div>
 
-    <!-- Opción 2: Conectar ingresando enlace o Steam ID -->
+    <!-- Opción 2: Conectar ingresando enlace, usuario o Steam ID -->
     <div style="background:var(--bg); border:1px solid var(--border); border-radius:14px; padding:14px; margin-bottom:14px;">
       <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-        <span>🔗</span> <span>O ingresa tu enlace de perfil o Steam ID</span>
+        <span>🔗</span> <span>O ingresa tu usuario, enlace o Steam ID</span>
       </div>
       <p style="font-size:0.76rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;">
-        Pega tu enlace de Steam (ej. <em>steamcommunity.com/id/tu_usuario</em> o tu <em>Steam ID64</em>).
+        Pega tu enlace de Steam (ej. <em>steamcommunity.com/id/tu_usuario</em>), tu <em>Steam ID64</em> o tu nombre de usuario.
       </p>
-      <div style="display:flex; gap:8px;">
-        <input type="text" id="steam-input-profile" class="form-input" placeholder="steamcommunity.com/id/... o ID64" style="flex:1; font-size:0.82rem;" onkeydown="if(event.key==='Enter') conectarSteamPerfil()">
-        <button type="button" class="btn-today-pill" onclick="conectarSteamPerfil()" style="height:auto; padding:0 14px; font-weight:700; background:rgba(102,192,244,0.15); border-color:rgba(102,192,244,0.4); color:#38bdf8;">
-          Conectar
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <input type="text" id="steam-input-profile" class="form-input" placeholder="steamcommunity.com/id/... o ID64 o Usuario" style="font-size:0.82rem;" onkeydown="if(event.key==='Enter') conectarSteamPerfil()">
+        <input type="text" id="steam-input-persona" class="form-input" placeholder="Tu nombre o gamertag en Steam (opcional)" style="font-size:0.82rem;" onkeydown="if(event.key==='Enter') conectarSteamPerfil()">
+        
+        <details style="font-size:0.74rem; color:var(--muted); margin-top:2px;">
+          <summary style="cursor:pointer; color:#66c0f4; font-weight:600; outline:none;">🔑 ¿Biblioteca privada? Usa tu Steam Web API Key</summary>
+          <div style="margin-top:6px; padding:8px 10px; background:var(--card); border:1px solid var(--border); border-radius:8px;">
+            <p style="margin:0 0 6px 0; line-height:1.35; font-size:0.72rem;">
+              Para leer horas y juegos aunque tu privacidad esté en privado, ingresa tu clave gratuita de <a href="https://steamcommunity.com/dev/apikey" target="_blank" style="color:#66c0f4; text-decoration:underline;">steamcommunity.com/dev/apikey</a>:
+            </p>
+            <input type="text" id="steam-input-apikey" class="form-input" placeholder="Clave Steam Web API Key..." style="font-size:0.76rem;">
+          </div>
+        </details>
+
+        <button type="button" class="btn-today-pill" onclick="conectarSteamPerfil()" style="height:36px; width:100%; justify-content:center; font-weight:700; background:rgba(102,192,244,0.18); border-color:rgba(102,192,244,0.45); color:#38bdf8; margin-top:4px;">
+          🎮 Conectar y Sincronizar Cuenta
         </button>
       </div>
     </div>
 
+    <!-- Tip de privacidad -->
+    <div style="font-size:0.73rem; color:var(--muted); line-height:1.4; padding:8px 12px; background:rgba(102,192,244,0.06); border:1px solid rgba(102,192,244,0.22); border-radius:10px; margin-bottom:12px;">
+      💡 <strong>Consejo para sincronizar juegos reales:</strong> En Steam, ve a <em>Editar perfil → Ajustes de privacidad</em> y pon <strong>"Detalles de los juegos: Público"</strong> (o ingresa tu clave API gratuita).
+    </div>
+
     <!-- Opción 3: Perfil de demostración -->
-    <button type="button" class="btn-today-pill" onclick="conectarSteamDemo()" style="height:38px; width:100%; justify-content:center; font-size:0.8rem; background:rgba(56,189,248,0.06); border-color:rgba(56,189,248,0.25); color:var(--accent);">
-      ✨ ¿Quieres probarlo al instante? Conectar con perfil demo
+    <button type="button" class="btn-today-pill" onclick="conectarSteamDemo()" style="height:36px; width:100%; justify-content:center; font-size:0.78rem; background:rgba(56,189,248,0.06); border-color:rgba(56,189,248,0.25); color:var(--accent);">
+      ✨ ¿Quieres probarlo al instante? Conectar perfil demo
     </button>
 
     <div class="modal-actions" style="margin-top:16px; justify-content:flex-end;">
@@ -5035,6 +5055,60 @@ html[data-app-theme="minimalist"] .nav-categories-row {
     </div>
   </div>
 </div>
+
+<!-- MODAL EDITAR PERFIL STEAM -->
+<div id="modal-editar-steam" class="modal-overlay" style="display:none; z-index:2100;" onclick="if(event.target===this) cerrarModalEditarSteam()">
+  <div class="modal-box" style="max-width:440px; max-height:90vh; overflow-y:auto; border-radius:20px; padding:22px; background:var(--card); border:1px solid var(--border);">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div style="width:34px; height:34px; border-radius:10px; background:rgba(102,192,244,0.15); border:1px solid rgba(102,192,244,0.35); display:grid; place-items:center; flex-shrink:0;">
+          <span style="font-size:1.15rem;">🎮</span>
+        </div>
+        <div>
+          <h3 style="margin:0; font-size:1.1rem; color:var(--text); font-weight:800;">Personalizar Perfil de Steam</h3>
+          <span style="font-size:0.74rem; color:var(--muted);">Ajusta tu nombre, foto y sincronización</span>
+        </div>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static; width:28px; height:28px; font-size:0.9rem;" onclick="cerrarModalEditarSteam()">✕</button>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:12px;">
+      <div class="form-group" style="margin:0;">
+        <label style="font-size:0.76rem; font-weight:700; color:var(--muted); margin-bottom:4px; display:block;">NOMBRE / GAMERTAG EN STEAM:</label>
+        <input type="text" id="steam-edit-name" class="form-input" placeholder="Tu nombre real en Steam...">
+      </div>
+
+      <div class="form-group" style="margin:0;">
+        <label style="font-size:0.76rem; font-weight:700; color:var(--muted); margin-bottom:4px; display:block;">STEAM ID O ENLACE DE PERFIL:</label>
+        <input type="text" id="steam-edit-id" class="form-input" placeholder="ID64 o steamcommunity.com/id/tu_usuario">
+      </div>
+
+      <div class="form-group" style="margin:0;">
+        <label style="font-size:0.76rem; font-weight:700; color:var(--muted); margin-bottom:4px; display:block;">FOTO DE PERFIL / AVATAR (URL):</label>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <input type="text" id="steam-edit-avatar" class="form-input" placeholder="https://avatars.steamstatic.com/..." style="flex:1;">
+          <div id="steam-edit-avatar-preview" style="width:36px; height:36px; border-radius:50%; overflow:hidden; border:1.5px solid #66c0f4; flex-shrink:0; display:grid; place-items:center; background:var(--bg);">
+            🎮
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin:0;">
+        <label style="font-size:0.76rem; font-weight:700; color:var(--muted); margin-bottom:4px; display:block;">STEAM WEB API KEY (OPCIONAL):</label>
+        <input type="text" id="steam-edit-apikey" class="form-input" placeholder="Clave para sincronizar juegos privados...">
+        <span style="font-size:0.7rem; color:var(--muted); margin-top:3px; display:block;">
+          Genera tu clave gratis en <a href="https://steamcommunity.com/dev/apikey" target="_blank" style="color:#66c0f4; text-decoration:underline;">steamcommunity.com/dev/apikey</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="modal-actions" style="margin-top:18px; display:flex; justify-content:space-between; align-items:center;">
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalEditarSteam()">Cancelar</button>
+      <button type="button" class="btn-modal-save" style="background:#66c0f4; color:#0f172a; font-weight:700;" onclick="guardarEdicionPerfilSteam()">Guardar y Sincronizar</button>
+    </div>
+  </div>
+</div>
+
 
 
 
@@ -14822,9 +14896,12 @@ function renderizarStatsJuegos_(ctx) {
             </div>
           </div>
         </div>
-        <div style="display:flex; align-items:center; gap:8px;">
-          <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSteam(true)" title="Actualizar datos de Steam" style="font-size:0.75rem; padding:5px 12px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:rgba(102,192,244,0.12); border:1px solid rgba(102,192,244,0.3); color:#66c0f4;">
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSteam(true)" title="Actualizar datos de Steam" style="font-size:0.75rem; padding:5px 10px; display:inline-flex; align-items:center; gap:4px; flex-shrink:0; background:rgba(102,192,244,0.12); border:1px solid rgba(102,192,244,0.3); color:#66c0f4;">
             <span>🔄</span> <span>Sincronizar</span>
+          </button>
+          <button type="button" class="btn-toggle-filter" onclick="abrirModalEditarSteam()" title="Personalizar nombre, foto o API Key" style="font-size:0.75rem; padding:5px 10px; display:inline-flex; align-items:center; gap:4px; flex-shrink:0; background:rgba(102,192,244,0.12); border:1px solid rgba(102,192,244,0.3); color:#66c0f4;">
+            <span>⚙️</span> <span>Perfil</span>
           </button>
         </div>
       </div>
@@ -16480,7 +16557,7 @@ function iniciarFlujoSteamOpenID() {
   }
 }
 
-function procesarRetornoSteamAuth() {
+async function procesarRetornoSteamAuth() {
   try {
     const urlParams = new URLSearchParams(window.location.search);
     const claimedId = urlParams.get('openid.claimed_id') || urlParams.get('openid.identity');
@@ -16491,21 +16568,9 @@ function procesarRetornoSteamAuth() {
     const steamId = match ? match[1] : null;
 
     if (steamId) {
-      const user = {
-        id: steamId,
-        personaName: `Steam User (${steamId.slice(-4)})`,
-        avatar: 'https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg',
-        profileUrl: `https://steamcommunity.com/profiles/${steamId}`,
-        connectedAt: new Date().toISOString()
-      };
-      localStorage.setItem('mediary_steam_connected', 'true');
-      localStorage.setItem('mediary_steam_id', steamId);
-      localStorage.setItem('mediary_steam_user', JSON.stringify(user));
-      localStorage.setItem('mediary_steam_stats', JSON.stringify(generarStatsSteamPorDefecto(user.personaName, 84, 412.5)));
-
       limpiarSteamParamsUrl();
-      actualizarUISteam();
-      mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? '🎮 Connected to Steam successfully!' : '🎮 ¡Conectado exitosamente con Steam!');
+      mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? '🎮 Steam authenticated. Syncing your profile...' : '🎮 Steam autenticado. Sincronizando tu perfil real...');
+      await sincronizarCuentaSteam(steamId, null, null, true);
     }
   } catch (err) {
     console.error('Error procesando retorno de Steam:', err);
@@ -16517,6 +16582,292 @@ function limpiarSteamParamsUrl() {
     const cleanUrl = window.location.origin + window.location.pathname;
     window.history.replaceState({}, document.title, cleanUrl);
   } catch (e) {}
+}
+
+async function obtenerPerfilSteamXml(steamIdOrCustom) {
+  if (!steamIdOrCustom) return null;
+  const isId64 = /^\d{17}$/.test(steamIdOrCustom);
+  const targetUrl = isId64
+    ? `https://steamcommunity.com/profiles/${steamIdOrCustom}/?xml=1`
+    : `https://steamcommunity.com/id/${steamIdOrCustom}/?xml=1`;
+
+  try {
+    const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}&timestamp=${Date.now()}`;
+    const resp = await fetch(proxyUrl);
+    if (!resp.ok) return null;
+    const json = await resp.json();
+    if (!json || !json.contents) return null;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(json.contents, 'text/xml');
+    if (doc.querySelector('parsererror')) return null;
+
+    const personaName = doc.querySelector('steamID')?.textContent?.trim() || null;
+    const avatarFull = doc.querySelector('avatarFull')?.textContent?.trim() || 
+                       doc.querySelector('avatarMedium')?.textContent?.trim() || null;
+    const steamID64 = doc.querySelector('steamID64')?.textContent?.trim() || null;
+    const customURL = doc.querySelector('customURL')?.textContent?.trim() || null;
+    const privacyState = doc.querySelector('privacyState')?.textContent?.trim() || 'public';
+
+    const gameEls = doc.querySelectorAll('mostPlayedGame');
+    const topGames = [];
+    let recentHoursSum = 0;
+    let totalHoursSum = 0;
+
+    gameEls.forEach(g => {
+      const name = g.querySelector('gameName')?.textContent?.trim();
+      const link = g.querySelector('gameLink')?.textContent?.trim() || '';
+      const appMatch = link.match(/\/app\/(\d+)/);
+      const appid = appMatch ? appMatch[1] : '';
+      const hoursPlayed = parseFloat(g.querySelector('hoursPlayed')?.textContent || 0) || 0;
+      const hoursOnRecord = parseFloat((g.querySelector('hoursOnRecord')?.textContent || '0').replace(/,/g, '')) || 0;
+      const logo = g.querySelector('gameLogo')?.textContent?.trim() || '';
+
+      if (name) {
+        topGames.push({
+          name: name,
+          hours: Number((hoursOnRecord || hoursPlayed).toFixed(1)),
+          recentHours: hoursPlayed,
+          appid: appid,
+          header: appid ? `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg` : logo
+        });
+        recentHoursSum += hoursPlayed;
+        totalHoursSum += (hoursOnRecord || hoursPlayed);
+      }
+    });
+
+    return {
+      personaName,
+      avatar: avatarFull,
+      steamID64,
+      customURL,
+      privacyState,
+      topGames,
+      recentHours: Number(recentHoursSum.toFixed(1)),
+      totalHours: Number(totalHoursSum.toFixed(1))
+    };
+  } catch (e) {
+    console.warn('No se pudo obtener XML de perfil Steam:', e);
+    return null;
+  }
+}
+
+async function obtenerDatosSteamConApiKey(steamId64, apiKey) {
+  if (!apiKey || !steamId64) return null;
+  try {
+    const summaryUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${apiKey}&steamids=${steamId64}`)}`;
+    const gamesUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${apiKey}&steamid=${steamId64}&include_appinfo=1&include_played_free_games=1`)}`;
+    const recentUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=${apiKey}&steamid=${steamId64}`)}`;
+
+    const [sumRes, gamesRes, recRes] = await Promise.all([
+      fetch(summaryUrl).then(r => r.json()).catch(() => null),
+      fetch(gamesUrl).then(r => r.json()).catch(() => null),
+      fetch(recentUrl).then(r => r.json()).catch(() => null)
+    ]);
+
+    let personaName = null, avatar = null;
+    if (sumRes && sumRes.contents) {
+      try {
+        const sumData = JSON.parse(sumRes.contents);
+        const player = sumData?.response?.players?.[0];
+        if (player) {
+          personaName = player.personaname;
+          avatar = player.avatarfull || player.avatarmedium;
+        }
+      } catch(e) {}
+    }
+
+    let topGames = [];
+    let totalHours = 0;
+    let gamesCount = 0;
+
+    if (gamesRes && gamesRes.contents) {
+      try {
+        const gData = JSON.parse(gamesRes.contents);
+        const games = gData?.response?.games || [];
+        gamesCount = gData?.response?.game_count || games.length;
+        
+        let sumMinutes = 0;
+        games.forEach(g => {
+          sumMinutes += (g.playtime_forever || 0);
+        });
+        totalHours = Number((sumMinutes / 60).toFixed(1));
+
+        topGames = [...games]
+          .sort((a, b) => (b.playtime_forever || 0) - (a.playtime_forever || 0))
+          .slice(0, 10)
+          .map(g => ({
+            name: g.name,
+            hours: Number(((g.playtime_forever || 0) / 60).toFixed(1)),
+            appid: String(g.appid),
+            header: `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${g.appid}/header.jpg`
+          }));
+      } catch(e) {}
+    }
+
+    let recentHours = 0;
+    if (recRes && recRes.contents) {
+      try {
+        const rData = JSON.parse(recRes.contents);
+        const recGames = rData?.response?.games || [];
+        let recMinutes = 0;
+        recGames.forEach(g => { recMinutes += (g.playtime_2weeks || 0); });
+        recentHours = Number((recMinutes / 60).toFixed(1));
+      } catch(e) {}
+    }
+
+    return {
+      personaName,
+      avatar,
+      topGames,
+      totalHours,
+      gamesCount,
+      recentHours
+    };
+  } catch(err) {
+    console.warn('Error con Steam Web API:', err);
+    return null;
+  }
+}
+
+async function sincronizarCuentaSteam(idManual = null, apiKeyManual = null, customNameManual = null, notificar = false) {
+  let steamId = idManual || localStorage.getItem('mediary_steam_id') || '';
+  let apiKey = apiKeyManual !== null ? apiKeyManual : (localStorage.getItem('mediary_steam_api_key') || '');
+  let customName = customNameManual || '';
+
+  let cleanId = steamId.trim();
+  if (cleanId.includes('steamcommunity.com/profiles/')) {
+    const m = cleanId.match(/profiles\/(\d+)/);
+    if (m) cleanId = m[1];
+  } else if (cleanId.includes('steamcommunity.com/id/')) {
+    const m = cleanId.match(/id\/([a-zA-Z0-9_\-]+)/);
+    if (m) cleanId = m[1];
+  }
+
+  if (!cleanId && !customName) {
+    if (notificar) mostrarToastPersonalizado('No hay Steam ID o perfil configurado');
+    return false;
+  }
+
+  localStorage.setItem('mediary_steam_connected', 'true');
+  if (cleanId) localStorage.setItem('mediary_steam_id', cleanId);
+  if (apiKey) localStorage.setItem('mediary_steam_api_key', apiKey);
+
+  let prevUser = null;
+  try {
+    const uRaw = localStorage.getItem('mediary_steam_user');
+    if (uRaw) prevUser = JSON.parse(uRaw);
+  } catch(e) {}
+
+  let personaName = customName || (prevUser?.personaName && !prevUser.personaName.startsWith('Steam User') && !prevUser.personaName.startsWith('Jugador (') ? prevUser.personaName : '');
+  let avatar = (prevUser?.avatar && !prevUser.avatar.includes('fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb')) ? prevUser.avatar : '';
+  let topGames = [];
+  let totalHours = prevUser?.totalHours || 0;
+  let gamesCount = prevUser?.gamesCount || 0;
+  let recentHours = 0;
+
+  // 1. Si hay API key y el ID es numérico (SteamID64), consultar Steam Web API
+  if (apiKey && /^\d{17}$/.test(cleanId)) {
+    const apiData = await obtenerDatosSteamConApiKey(cleanId, apiKey);
+    if (apiData) {
+      if (apiData.personaName) personaName = apiData.personaName;
+      if (apiData.avatar) avatar = apiData.avatar;
+      if (apiData.topGames && apiData.topGames.length) topGames = apiData.topGames;
+      if (apiData.totalHours) totalHours = apiData.totalHours;
+      if (apiData.gamesCount) gamesCount = apiData.gamesCount;
+      if (apiData.recentHours) recentHours = apiData.recentHours;
+    }
+  }
+
+  // 2. Si no se tienen datos reales, intentar vía XML público de Steam
+  if (!personaName || !topGames.length) {
+    const xmlData = await obtenerPerfilSteamXml(cleanId);
+    if (xmlData) {
+      if (xmlData.personaName && (!personaName || personaName.startsWith('Steam User') || personaName.startsWith('Jugador'))) {
+        personaName = xmlData.personaName;
+      }
+      if (xmlData.avatar && (!avatar || avatar.includes('fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb'))) {
+        avatar = xmlData.avatar;
+      }
+      if (xmlData.topGames && xmlData.topGames.length) {
+        topGames = xmlData.topGames;
+        if (xmlData.totalHours) totalHours = xmlData.totalHours;
+        if (xmlData.recentHours) recentHours = xmlData.recentHours;
+        gamesCount = xmlData.topGames.length;
+      }
+    }
+  }
+
+  // 3. Fallback de nombre: usar nombre ingresado o ID limpio
+  if (!personaName || personaName.startsWith('Steam User') || personaName.startsWith('Jugador (')) {
+    if (customName) {
+      personaName = customName;
+    } else if (!/^\d{17}$/.test(cleanId) && cleanId) {
+      personaName = cleanId;
+    } else {
+      personaName = cleanId ? `Jugador (${cleanId.slice(-4)})` : 'Jugador Steam';
+    }
+  }
+
+  // 4. Fallback de avatar personalizado
+  if (!avatar || avatar.includes('fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb')) {
+    avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(personaName)}&background=171a21&color=66c0f4&bold=true`;
+  }
+
+  // 5. Fallback de juegos si la privacidad de Steam bloqueó la lista de juegos
+  let statsObj = null;
+  try {
+    const sRaw = localStorage.getItem('mediary_steam_stats');
+    if (sRaw) statsObj = JSON.parse(sRaw);
+  } catch(e) {}
+
+  if (!topGames.length) {
+    if (statsObj && Array.isArray(statsObj.topGames) && statsObj.topGames.length) {
+      topGames = statsObj.topGames;
+      totalHours = statsObj.totalHours || totalHours;
+      recentHours = statsObj.recentHours || recentHours;
+      gamesCount = statsObj.gamesCount || gamesCount;
+    } else {
+      const def = generarStatsSteamPorDefecto(personaName, 84, 412.5);
+      topGames = def.topGames;
+      totalHours = def.totalHours;
+      recentHours = def.recentHours;
+      gamesCount = def.gamesCount;
+    }
+  }
+
+  const user = {
+    id: cleanId,
+    personaName: personaName,
+    avatar: avatar,
+    profileUrl: /^\d{17}$/.test(cleanId) ? `https://steamcommunity.com/profiles/${cleanId}` : `https://steamcommunity.com/id/${cleanId}`,
+    gamesCount: gamesCount || topGames.length,
+    totalHours: totalHours,
+    connectedAt: prevUser?.connectedAt || new Date().toISOString()
+  };
+
+  const newStats = {
+    totalHours: totalHours,
+    recentHours: recentHours,
+    gamesCount: gamesCount || topGames.length,
+    lastSync: new Date().toISOString(),
+    topGames: topGames
+  };
+
+  localStorage.setItem('mediary_steam_user', JSON.stringify(user));
+  localStorage.setItem('mediary_steam_stats', JSON.stringify(newStats));
+
+  actualizarUISteam();
+
+  const modalStats = document.getElementById('modal-estadisticas-avanzadas');
+  if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
+    renderizarContenidoEstadisticasAvanzadas();
+  }
+
+  if (notificar) {
+    mostrarToastPersonalizado(`🎮 Steam conectado: ${personaName}`);
+  }
+  return true;
 }
 
 function generarStatsSteamPorDefecto(personaName = 'Gamer Steam', gamesCount = 84, totalHours = 412.5) {
@@ -16581,59 +16932,102 @@ function registrarTopSteamByIndex(index) {
   }
 }
 
-
-function conectarSteamPerfil(inputVal) {
+async function conectarSteamPerfil(inputVal) {
   if (!inputVal) {
     const inp = document.getElementById('steam-input-profile');
     inputVal = inp ? inp.value.trim() : '';
   }
-  if (!inputVal) {
-    mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Please enter your Steam ID or profile link' : 'Ingresa tu Steam ID o enlace de perfil');
+  const customNameInp = document.getElementById('steam-input-persona');
+  const customName = customNameInp ? customNameInp.value.trim() : '';
+
+  const apiKeyInp = document.getElementById('steam-input-apikey');
+  const apiKey = apiKeyInp ? apiKeyInp.value.trim() : '';
+
+  if (!inputVal && !customName) {
+    mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Please enter your Steam username, ID or profile link' : 'Ingresa tu usuario, Steam ID o enlace de perfil');
     return;
   }
 
-  let cleanId = inputVal.trim();
-  let personaName = 'Jugador Steam';
-  let profileUrl = '';
+  const idToUse = inputVal || customName;
+  mostrarToastPersonalizado('🎮 Conectando y sincronizando con Steam...');
+  cerrarModalConectarSteam();
 
-  if (cleanId.includes('steamcommunity.com/profiles/')) {
-    const m = cleanId.match(/profiles\/(\d+)/);
-    if (m) cleanId = m[1];
-    profileUrl = `https://steamcommunity.com/profiles/${cleanId}`;
-    personaName = `Jugador (${cleanId.slice(-4)})`;
-  } else if (cleanId.includes('steamcommunity.com/id/')) {
-    const m = cleanId.match(/id\/([a-zA-Z0-9_\-]+)/);
-    if (m) {
-      personaName = m[1];
-      cleanId = m[1];
+  await sincronizarCuentaSteam(idToUse, apiKey, customName, true);
+}
+
+function abrirModalEditarSteam() {
+  const modal = document.getElementById('modal-editar-steam');
+  if (!modal) return;
+
+  let user = null;
+  try {
+    const u = localStorage.getItem('mediary_steam_user');
+    if (u) user = JSON.parse(u);
+  } catch (e) {}
+
+  const steamId = localStorage.getItem('mediary_steam_id') || '';
+  const apiKey = localStorage.getItem('mediary_steam_api_key') || '';
+
+  const nameInp = document.getElementById('steam-edit-name');
+  const idInp = document.getElementById('steam-edit-id');
+  const avInp = document.getElementById('steam-edit-avatar');
+  const keyInp = document.getElementById('steam-edit-apikey');
+  const prevEl = document.getElementById('steam-edit-avatar-preview');
+
+  if (nameInp) nameInp.value = (user && user.personaName && !user.personaName.startsWith('Steam User') && !user.personaName.startsWith('Jugador (')) ? user.personaName : '';
+  if (idInp) idInp.value = (user && user.id) || steamId || '';
+  if (avInp) avInp.value = (user && user.avatar && !user.avatar.includes('fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb')) ? user.avatar : '';
+  if (keyInp) keyInp.value = apiKey || '';
+
+  if (prevEl) {
+    if (user && user.avatar) {
+      prevEl.innerHTML = `<img src="${user.avatar}" style="width:100%;height:100%;object-fit:cover;">`;
+    } else {
+      prevEl.textContent = '🎮';
     }
-    profileUrl = `https://steamcommunity.com/id/${cleanId}`;
-  } else if (/^\d{17}$/.test(cleanId)) {
-    profileUrl = `https://steamcommunity.com/profiles/${cleanId}`;
-    personaName = `Jugador (${cleanId.slice(-4)})`;
-  } else {
-    personaName = cleanId;
-    profileUrl = `https://steamcommunity.com/id/${cleanId}`;
   }
 
-  const user = {
-    id: cleanId,
-    personaName: personaName,
-    avatar: 'https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg',
-    profileUrl: profileUrl,
-    gamesCount: 84,
-    totalHours: 412.5,
-    connectedAt: new Date().toISOString()
-  };
+  modal.style.display = 'flex';
+}
 
-  localStorage.setItem('mediary_steam_connected', 'true');
-  localStorage.setItem('mediary_steam_id', cleanId);
-  localStorage.setItem('mediary_steam_user', JSON.stringify(user));
-  localStorage.setItem('mediary_steam_stats', JSON.stringify(generarStatsSteamPorDefecto(personaName, 84, 412.5)));
+function cerrarModalEditarSteam() {
+  const modal = document.getElementById('modal-editar-steam');
+  if (modal) modal.style.display = 'none';
+}
 
-  cerrarModalConectarSteam();
-  actualizarUISteam();
-  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? '🎮 Connected to Steam!' : '🎮 ¡Conectado con Steam!');
+async function guardarEdicionPerfilSteam() {
+  const nameInp = document.getElementById('steam-edit-name');
+  const idInp = document.getElementById('steam-edit-id');
+  const avInp = document.getElementById('steam-edit-avatar');
+  const keyInp = document.getElementById('steam-edit-apikey');
+
+  const customName = nameInp ? nameInp.value.trim() : '';
+  const customId = idInp ? idInp.value.trim() : '';
+  const customAvatar = avInp ? avInp.value.trim() : '';
+  const apiKey = keyInp ? keyInp.value.trim() : '';
+
+  if (apiKey) localStorage.setItem('mediary_steam_api_key', apiKey);
+  else localStorage.removeItem('mediary_steam_api_key');
+
+  let targetId = customId || customName || localStorage.getItem('mediary_steam_id') || '';
+  if (!targetId && !customName) {
+    mostrarToastPersonalizado('Ingresa al menos tu nombre o ID de Steam');
+    return;
+  }
+
+  cerrarModalEditarSteam();
+  mostrarToastPersonalizado('🎮 Guardando y sincronizando Steam...');
+
+  if (customAvatar) {
+    let u = null;
+    try { const rawU = localStorage.getItem('mediary_steam_user'); if (rawU) u = JSON.parse(rawU); } catch(e) {}
+    if (u) {
+      u.avatar = customAvatar;
+      localStorage.setItem('mediary_steam_user', JSON.stringify(u));
+    }
+  }
+
+  await sincronizarCuentaSteam(targetId, apiKey, customName, true);
 }
 
 function conectarSteamDemo() {
@@ -16661,6 +17055,7 @@ function desconectarSteam() {
   localStorage.removeItem('mediary_steam_id');
   localStorage.removeItem('mediary_steam_user');
   localStorage.removeItem('mediary_steam_stats');
+  localStorage.removeItem('mediary_steam_api_key');
   actualizarUISteam();
   const modalStats = document.getElementById('modal-estadisticas-avanzadas');
   if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
@@ -16706,31 +17101,17 @@ function actualizarUISteam() {
   }
 }
 
-function actualizarDatosSteam(notificar = false) {
+async function actualizarDatosSteam(notificar = false) {
   actualizarUISteam();
-  let stats = null;
-  try {
-    const raw = localStorage.getItem('mediary_steam_stats');
-    if (raw) stats = JSON.parse(raw);
-  } catch(e) {}
-  if (!stats) {
-    let u = null;
-    try { const rawU = localStorage.getItem('mediary_steam_user'); if (rawU) u = JSON.parse(rawU); } catch(e) {}
-    stats = generarStatsSteamPorDefecto(u?.personaName, u?.gamesCount, u?.totalHours);
-    localStorage.setItem('mediary_steam_stats', JSON.stringify(stats));
+  const steamId = localStorage.getItem('mediary_steam_id');
+  if (steamId) {
+    if (notificar) mostrarToastPersonalizado('🔄 Sincronizando datos de Steam...');
+    await sincronizarCuentaSteam(steamId, null, null, notificar);
   } else {
-    stats.lastSync = new Date().toISOString();
-    localStorage.setItem('mediary_steam_stats', JSON.stringify(stats));
-  }
-
-  const modalStats = document.getElementById('modal-estadisticas-avanzadas');
-  if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
-    renderizarContenidoEstadisticasAvanzadas();
-  }
-  if (notificar) {
-    mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Steam data synchronized!' : '¡Datos de Steam sincronizados!');
+    if (notificar) mostrarToastPersonalizado('No hay cuenta de Steam vinculada');
   }
 }
+
 
 
 // --- ESCUCHANDO AHORA (SPOTIFY LIVE) ---
@@ -18142,6 +18523,20 @@ window.onload = () => {
   if (typeof procesarRetornoSteamAuth === 'function') {
     procesarRetornoSteamAuth();
   }
+  // Auto-sincronización de Steam si ya estaba conectado con datos genéricos
+  setTimeout(() => {
+    try {
+      const isSteamConn = localStorage.getItem('mediary_steam_connected') === 'true';
+      const steamId = localStorage.getItem('mediary_steam_id');
+      if (isSteamConn && steamId && typeof sincronizarCuentaSteam === 'function') {
+        let u = null;
+        try { const rawU = localStorage.getItem('mediary_steam_user'); if (rawU) u = JSON.parse(rawU); } catch(e) {}
+        if (!u || !u.personaName || u.personaName.startsWith('Steam User') || u.personaName.startsWith('Jugador (')) {
+          sincronizarCuentaSteam(steamId, null, null, false);
+        }
+      }
+    } catch(e) {}
+  }, 1200);
   // Detección automática en boot de discos completados
   setTimeout(() => {
     const spTok = localStorage.getItem('mediary_spotify_token');
