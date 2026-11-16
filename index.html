@@ -5378,7 +5378,20 @@ if (btn) btn.style.display = 'inline-grid'; }); window.addEventListener('appinst
 if (typeof mostrarToastPersonalizado === 'function') mostrarToastPersonalizado(userPrefs.lang === 'en' ? '🎉 Mediary installed as an App on your device!' : '🎉 ¡Mediary instalada como App en tu dispositivo!'); }); function instalarAppMediary() { if (deferredPwaPrompt) { deferredPwaPrompt.prompt(); deferredPwaPrompt.userChoice.then(() => { deferredPwaPrompt = null; });
 } else { mostrarToastPersonalizado(userPrefs.lang === 'en' ? '📱 To install: open your browser menu (⋮ or Share) and select "Install app" or "Add to home screen".' : '📱 Para instalar: abre el menú de tu navegador (⋮ o Compartir) y elige "Instalar aplicación" o "Agregar a pantalla de inicio".'); }
 }
-if (!window.IS_APPS_SCRIPT && 'serviceWorker' in navigator && location.protocol.startsWith('http')) { window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(() => {}); }); }
+if (!window.IS_APPS_SCRIPT && 'serviceWorker' in navigator && location.protocol.startsWith('http')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').then(reg => {
+      reg.update().catch(() => {});
+    }).catch(() => {});
+  });
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!refreshing) {
+      refreshing = true;
+      window.location.reload();
+    }
+  });
+}
 if (!window.IS_APPS_SCRIPT) { window.addEventListener('DOMContentLoaded', () => { const btnMig = document.getElementById('btn-migrar-sheets'); if (btnMig) btnMig.style.display = 'none'; }); const SB_URL = 'https://cpksupowjteqilsiklde.supabase.co/rest/v1';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwa3N1cG93anRlcWlsc2lrbGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NzIxMTUsImV4cCI6MjEwOTA0ODExNX0.-ojqwNdX7wXkCUGDU6wHComRNi2Uy-XrWket6zeEAVU';
 const uuid_ = () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
