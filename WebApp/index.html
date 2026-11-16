@@ -14092,15 +14092,17 @@ function renderizarContenidoEstadisticasAvanzadas() {
   } catch (e) {}
   try {
     const stSRaw = localStorage.getItem('mediary_steam_stats');
-    if (stSRaw) steamStats = JSON.parse(stSRaw);
-  } catch (e) {}
-
-  if (steamConnected && (!steamStats || !Array.isArray(steamStats.topGames))) {
-    if (typeof generarStatsSteamPorDefecto === 'function') {
-      steamStats = generarStatsSteamPorDefecto(steamUser?.personaName, steamUser?.gamesCount, steamUser?.totalHours);
-      localStorage.setItem('mediary_steam_stats', JSON.stringify(steamStats));
+    if (stSRaw) {
+      const parsed = JSON.parse(stSRaw);
+      const esFake = parsed && parsed.totalHours === 412.5 && Array.isArray(parsed.topGames) && parsed.topGames.some(g => g.name === 'Elden Ring');
+      if (esFake) {
+        localStorage.removeItem('mediary_steam_stats');
+        steamStats = null;
+      } else {
+        steamStats = parsed;
+      }
     }
-  }
+  } catch (e) {}
 
   const ctx = {
     todosRegs,
@@ -14174,8 +14176,18 @@ function renderizarStatsGeneral_(ctx) {
     }
   }
 
-  const tieneSteam = !!(steamConnected && steamStats);
-  const horasJuegosTotal = tieneSteam ? (steamStats.totalHours || 0) : horasJuegos;
+  const tieneSteam = !!(steamConnected && steamStats && !steamStats.isPrivate && (steamStats.totalHours > 0 || (steamStats.topGames && steamStats.topGames.length)));
+  let horasSteamParaPeriodo = 0;
+  if (tieneSteam) {
+    if (estadoStatsModal.periodo === 'month') {
+      horasSteamParaPeriodo = steamStats.recentHours || 0;
+    } else if (estadoStatsModal.periodo === 'year') {
+      horasSteamParaPeriodo = Math.max(steamStats.recentHours || 0, horasJuegos);
+    } else {
+      horasSteamParaPeriodo = steamStats.totalHours || 0;
+    }
+  }
+  const horasJuegosTotal = Math.max(horasSteamParaPeriodo, horasJuegos);
 
   const horasTotal = horasPelis + horasSeries + horasMusicaSpotify + horasJuegosTotal + horasLecturas;
   const ratingAvg = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
@@ -14798,13 +14810,95 @@ function renderizarStatsJuegos_(ctx) {
     .sort((a, b) => (Number(b.calificacion) || 0) - (Number(a.calificacion) || 0) || (parseFloat(b.horas) || 0) - (parseFloat(a.horas) || 0))
     .slice(0, 5);
 
-  const tieneSteam = !!(steamConnected && steamStats);
+  const tieneSteam = !!steamConnected;
 
   if (tieneSteam) {
     const fechaSync = steamStats?.lastSync ? new Date(steamStats.lastSync).toLocaleDateString(undefined, { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : null;
-    const horasSteamTotal = Number(steamStats.totalHours) || 0;
-    const horasSteamRecientes = Number(steamStats.recentHours) || 0;
-    const totalJuegosSteam = Number(steamStats.gamesCount) || (Array.isArray(steamStats.topGames) ? steamStats.topGames.length : 0);
+    const horasSteamTotal = Number(steamStats?.totalHours) || 0;
+    const horasSteamRecientes = Number(steamStats?.recentHours) || 0;
+    const totalJuegosSteam = Number(steamStats?.gamesCount) || (Array.isArray(steamStats?.topGames) ? steamStats.topGames.length : 0);
+    const esPrivado = !!(steamStats?.isPrivate || (!steamStats?.topGames?.length && horasSteamTotal === 0));
+
+    let steamContentHtml = '';
+
+    if (esPrivado) {
+      steamContentHtml = `
+        <!-- AVISO DE PRIVACIDAD DE JUEGOS EN STEAM -->
+        <div class="stats-section-box" style="padding:16px 18px; border-left:4px solid #66c0f4; background:linear-gradient(135deg, rgba(23, 26, 33, 0.95), rgba(27, 40, 56, 0.9)); border:1px solid rgba(102,192,244,0.3); border-radius:12px; margin-bottom:14px;">
+          <div style="display:flex; align-items:flex-start; gap:12px;">
+            <span style="font-size:1.5rem; line-height:1; flex-shrink:0;">🔒</span>
+            <div style="flex:1;">
+              <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:5px;">Detalles de juegos en modo privado en Steam</strong>
+              <p style="font-size:0.77rem; color:#8f98a0; margin:0 0 10px 0; line-height:1.45;">
+                Por defecto, Steam mantiene oculta la lista de tus juegos y las horas jugadas. Para que tus horas totales de juego en Steam y tu ranking de títulos reales aparezcan aquí automáticamente:
+              </p>
+              <ol style="font-size:0.76rem; color:#c6d4df; margin:0 0 12px 0; padding-left:18px; line-height:1.65;">
+                <li>Entra en Steam y ve a tu <strong>Perfil → Modificar perfil</strong>.</li>
+                <li>En la barra lateral izquierda, selecciona <strong>Ajustes de privacidad</strong>.</li>
+                <li>En <strong>"Detalles de los juegos"</strong>, cámbialo a: <strong>Público</strong>.</li>
+                <li>Desmarca la casilla <em>"Mantener siempre privado el tiempo de juego"</em>.</li>
+              </ol>
+              <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSteam(true)" style="background:#66c0f4; color:#171a21; font-weight:700; border:none; padding:7px 16px; border-radius:8px; font-size:0.8rem; display:inline-flex; align-items:center; gap:6px; cursor:pointer;">
+                <span>🔄</span> <span>Volver a sincronizar mis estadísticas</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      steamContentHtml = `
+        <!-- KPIS CON TIEMPO DE STEAM ESPECIFICADO -->
+        <div class="stats-kpi-grid">
+          <div class="stats-kpi-card" style="border-left:3px solid #66c0f4;">
+            <div class="stats-kpi-label"><span>⏱️</span> <span>Tiempo de juego en Steam</span></div>
+            <div class="stats-kpi-val" style="color:#66c0f4;">${formatearHorasStats_(horasSteamTotal)}</div>
+            <div class="stats-kpi-sub">Total acumulado en cuenta de Steam</div>
+          </div>
+          <div class="stats-kpi-card">
+            <div class="stats-kpi-label"><span>⚡</span> <span>Reciente en Steam (2 sem)</span></div>
+            <div class="stats-kpi-val" style="color:#66c0f4;">${horasSteamRecientes ? horasSteamRecientes + ' hrs' : '0 hrs'}</div>
+            <div class="stats-kpi-sub">Horas jugadas en Steam recientemente</div>
+          </div>
+          <div class="stats-kpi-card">
+            <div class="stats-kpi-label"><span>🎮</span> <span>Biblioteca de Steam</span></div>
+            <div class="stats-kpi-val">${totalJuegosSteam} juegos</div>
+            <div class="stats-kpi-sub">Títulos en tu cuenta de Steam</div>
+          </div>
+          <div class="stats-kpi-card">
+            <div class="stats-kpi-label"><span>★</span> <span>Nota Media (Mediary)</span></div>
+            <div class="stats-kpi-val" style="color:var(--star-active, #c8955a);">★ ${avgCal}</div>
+            <div class="stats-kpi-sub">De ${numCalifs} evaluados en Mediary</div>
+          </div>
+        </div>
+
+        <!-- RANKING: JUEGOS CON MÁS TIEMPO EN STEAM -->
+        <div class="stats-section-box">
+          <div class="stats-section-title">
+            <span>🏆 Juegos con más tiempo en Steam</span>
+            <span style="font-size:0.74rem; color:#66c0f4; font-weight:600;">Tiempo de juego en Steam</span>
+          </div>
+          ${Array.isArray(steamStats?.topGames) && steamStats.topGames.length ? steamStats.topGames.map((g, idx) => {
+            const yaRegistrado = todosRegs.some(r => r.categoria === 'Juegos' && (r.titulo || '').toLowerCase().trim() === (g.name || '').toLowerCase().trim());
+            return `
+              <div class="stats-ranking-row" style="align-items:center;">
+                <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
+                <img src="${escHtmlStats_(g.header || '')}" onerror="this.src='./icon.png'" alt="${escHtmlStats_(g.name)}" style="width:72px; height:34px; border-radius:6px; object-fit:cover; background:var(--card); flex-shrink:0; border:1px solid rgba(102,192,244,0.25);">
+                <div style="flex:1; min-width:0; margin-left:2px;">
+                  <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(g.name)}</strong>
+                  <span style="font-size:0.74rem; color:#66c0f4; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">⏱️ ${g.hours} hrs de juego en Steam${g.recentHours > 0 ? ` · ⚡ ${g.recentHours}h recientes` : ''}</span>
+                </div>
+                <div style="flex-shrink:0; margin-left:8px;">
+                  ${yaRegistrado
+                    ? `<span style="font-size:0.72rem; color:var(--muted); font-weight:600; padding:4px 8px; border-radius:6px; background:var(--bg); border:1px solid var(--border); display:inline-flex; align-items:center; gap:3px;"><span>✓</span> <span>En diario</span></span>`
+                    : `<button type="button" class="btn-toggle-filter" onclick="registrarTopSteamByIndex(${idx})" style="font-size:0.72rem; padding:4px 10px; display:inline-flex; align-items:center; gap:4px; border-radius:6px; background:var(--card); border:1px solid var(--border);" title="Registrar este juego en Mediary"><span>➕</span> <span>Registrar</span></button>`
+                  }
+                </div>
+              </div>
+            `;
+          }).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin juegos registrados en Steam todavía. Pulsa Sincronizar.</div>'}
+        </div>
+      `;
+    }
 
     return `
       <!-- BANNER DE USUARIO STEAM VINCULADO -->
@@ -14819,7 +14913,7 @@ function renderizarStatsJuegos_(ctx) {
               <span style="font-size:0.68rem; padding:2px 7px; border-radius:10px; background:rgba(102,192,244,0.18); color:#66c0f4; font-weight:700; letter-spacing:0.3px;">STEAM</span>
             </div>
             <div style="font-size:0.72rem; color:#8f98a0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-              ${fechaSync ? `Actualizado: ${fechaSync}` : 'Biblioteca vinculada'} · ${totalJuegosSteam} títulos en Steam
+              ${fechaSync ? `Actualizado: ${fechaSync}` : 'Biblioteca vinculada'} · ${totalJuegosSteam ? totalJuegosSteam + ' títulos en Steam' : (esPrivado ? 'Privacidad privada en Steam' : 'Biblioteca vinculada')}
             </div>
           </div>
         </div>
@@ -14830,56 +14924,7 @@ function renderizarStatsJuegos_(ctx) {
         </div>
       </div>
 
-      <!-- KPIS CON TIEMPO DE STEAM ESPECIFICADO -->
-      <div class="stats-kpi-grid">
-        <div class="stats-kpi-card" style="border-left:3px solid #66c0f4;">
-          <div class="stats-kpi-label"><span>⏱️</span> <span>Tiempo de juego en Steam</span></div>
-          <div class="stats-kpi-val" style="color:#66c0f4;">${formatearHorasStats_(horasSteamTotal)}</div>
-          <div class="stats-kpi-sub">Total acumulado en cuenta de Steam</div>
-        </div>
-        <div class="stats-kpi-card">
-          <div class="stats-kpi-label"><span>⚡</span> <span>Reciente en Steam (2 sem)</span></div>
-          <div class="stats-kpi-val" style="color:#66c0f4;">${horasSteamRecientes ? horasSteamRecientes + ' hrs' : '0 hrs'}</div>
-          <div class="stats-kpi-sub">Horas jugadas en Steam recientemente</div>
-        </div>
-        <div class="stats-kpi-card">
-          <div class="stats-kpi-label"><span>🎮</span> <span>Biblioteca de Steam</span></div>
-          <div class="stats-kpi-val">${totalJuegosSteam} juegos</div>
-          <div class="stats-kpi-sub">Títulos en tu cuenta de Steam</div>
-        </div>
-        <div class="stats-kpi-card">
-          <div class="stats-kpi-label"><span>★</span> <span>Nota Media (Mediary)</span></div>
-          <div class="stats-kpi-val" style="color:var(--star-active, #c8955a);">★ ${avgCal}</div>
-          <div class="stats-kpi-sub">De ${numCalifs} evaluados en Mediary</div>
-        </div>
-      </div>
-
-      <!-- RANKING: JUEGOS CON MÁS TIEMPO EN STEAM -->
-      <div class="stats-section-box">
-        <div class="stats-section-title">
-          <span>🏆 Juegos con más tiempo en Steam</span>
-          <span style="font-size:0.74rem; color:#66c0f4; font-weight:600;">Tiempo de juego en Steam</span>
-        </div>
-        ${Array.isArray(steamStats.topGames) && steamStats.topGames.length ? steamStats.topGames.map((g, idx) => {
-          const yaRegistrado = todosRegs.some(r => r.categoria === 'Juegos' && (r.titulo || '').toLowerCase().trim() === (g.name || '').toLowerCase().trim());
-          return `
-            <div class="stats-ranking-row" style="align-items:center;">
-              <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-              <img src="${escHtmlStats_(g.header || '')}" onerror="this.src='./icon.png'" alt="${escHtmlStats_(g.name)}" style="width:72px; height:34px; border-radius:6px; object-fit:cover; background:var(--card); flex-shrink:0; border:1px solid rgba(102,192,244,0.25);">
-              <div style="flex:1; min-width:0; margin-left:2px;">
-                <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(g.name)}</strong>
-                <span style="font-size:0.74rem; color:#66c0f4; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">⏱️ ${g.hours} hrs de juego en Steam</span>
-              </div>
-              <div style="flex-shrink:0; margin-left:8px;">
-                ${yaRegistrado
-                  ? `<span style="font-size:0.72rem; color:var(--muted); font-weight:600; padding:4px 8px; border-radius:6px; background:var(--bg); border:1px solid var(--border); display:inline-flex; align-items:center; gap:3px;"><span>✓</span> <span>En diario</span></span>`
-                  : `<button type="button" class="btn-toggle-filter" onclick="registrarTopSteamByIndex(${idx})" style="font-size:0.72rem; padding:4px 10px; display:inline-flex; align-items:center; gap:4px; border-radius:6px; background:var(--card); border:1px solid var(--border);" title="Registrar este juego en Mediary"><span>➕</span> <span>Registrar</span></button>`
-                }
-              </div>
-            </div>
-          `;
-        }).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin juegos registrados en Steam todavía. Pulsa Sincronizar.</div>'}
-      </div>
+      ${steamContentHtml}
 
       <!-- VIDEOJUEGOS REGISTRADOS EN MEDIARY -->
       <div class="stats-section-box">
@@ -16511,84 +16556,30 @@ function limpiarSteamParamsUrl() {
 async function fetchSteamProxyContent_(targetUrl) {
   const enc = encodeURIComponent(targetUrl);
   const proxies = [
-    `https://api.allorigins.win/get?url=${enc}&timestamp=${Date.now()}`,
-    `https://api.codetabs.com/v1/proxy?quest=${enc}`
+    { url: `https://api.codetabs.com/v1/proxy?quest=${enc}`, type: 'raw' },
+    { url: `https://api.allorigins.win/get?url=${enc}&_ts=${Date.now()}`, type: 'allorigins' },
+    { url: `https://corsproxy.io/?url=${enc}`, type: 'raw' }
   ];
 
   for (const p of proxies) {
     try {
-      const res = await fetch(p, { signal: AbortSignal.timeout(6000) });
+      const res = await fetch(p.url, { signal: AbortSignal.timeout(7000) });
       if (!res.ok) continue;
-      const json = await res.json().catch(() => null);
-      if (json && json.contents) return json.contents;
-      if (typeof json === 'string') return json;
-      if (json && typeof json === 'object') return JSON.stringify(json);
+      if (p.type === 'allorigins') {
+        const json = await res.json().catch(() => null);
+        if (json && json.contents && typeof json.contents === 'string' && json.contents.length > 5) {
+          return json.contents;
+        }
+      } else {
+        const text = await res.text().catch(() => null);
+        if (text && typeof text === 'string' && text.length > 5) {
+          if (text.includes('Too Many Requests') || text.includes('Error 502') || text.includes('Cloudflare')) continue;
+          return text;
+        }
+      }
     } catch(e) {}
   }
   return null;
-}
-
-async function obtenerPerfilSteamXml(steamIdOrCustom) {
-  if (!steamIdOrCustom) return null;
-  const isId64 = /^\d{17}$/.test(steamIdOrCustom);
-  const targetUrl = isId64
-    ? `https://steamcommunity.com/profiles/${steamIdOrCustom}/?xml=1`
-    : `https://steamcommunity.com/id/${steamIdOrCustom}/?xml=1`;
-
-  try {
-    const rawContent = await fetchSteamProxyContent_(targetUrl);
-    if (!rawContent) return null;
-
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(rawContent, 'text/xml');
-    if (doc.querySelector('parsererror')) return null;
-
-    const personaName = doc.querySelector('steamID')?.textContent?.trim() || null;
-    const avatarFull = doc.querySelector('avatarFull')?.textContent?.trim() || 
-                       doc.querySelector('avatarMedium')?.textContent?.trim() || null;
-    const steamID64 = doc.querySelector('steamID64')?.textContent?.trim() || null;
-    const customURL = doc.querySelector('customURL')?.textContent?.trim() || null;
-
-    const gameEls = doc.querySelectorAll('mostPlayedGame');
-    const topGames = [];
-    let recentHoursSum = 0;
-    let totalHoursSum = 0;
-
-    gameEls.forEach(g => {
-      const name = g.querySelector('gameName')?.textContent?.trim();
-      const link = g.querySelector('gameLink')?.textContent?.trim() || '';
-      const appMatch = link.match(/\/app\/(\d+)/);
-      const appid = appMatch ? appMatch[1] : '';
-      const hoursPlayed = parseFloat(g.querySelector('hoursPlayed')?.textContent || 0) || 0;
-      const hoursOnRecord = parseFloat((g.querySelector('hoursOnRecord')?.textContent || '0').replace(/,/g, '')) || 0;
-      const logo = g.querySelector('gameLogo')?.textContent?.trim() || '';
-
-      if (name) {
-        topGames.push({
-          name: name,
-          hours: Number((hoursOnRecord || hoursPlayed).toFixed(1)),
-          recentHours: hoursPlayed,
-          appid: appid,
-          header: appid ? `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg` : logo
-        });
-        recentHoursSum += hoursPlayed;
-        totalHoursSum += (hoursOnRecord || hoursPlayed);
-      }
-    });
-
-    return {
-      personaName,
-      avatar: avatarFull,
-      steamID64,
-      customURL,
-      topGames,
-      recentHours: Number(recentHoursSum.toFixed(1)),
-      totalHours: Number(totalHoursSum.toFixed(1))
-    };
-  } catch (e) {
-    console.warn('Error obteniendo perfil XML de Steam:', e);
-    return null;
-  }
 }
 
 async function obtenerSteamMiniprofile_(steamId64) {
@@ -16598,7 +16589,16 @@ async function obtenerSteamMiniprofile_(steamId64) {
     const url = `https://steamcommunity.com/miniprofile/${accId}/json`;
     const raw = await fetchSteamProxyContent_(url);
     if (!raw) return null;
-    const data = JSON.parse(raw);
+    let data = null;
+    try {
+      data = JSON.parse(raw);
+    } catch(e) {
+      const m = raw.match(/"persona_name"\s*:\s*"([^"]+)"/);
+      const mAv = raw.match(/"avatar_url"\s*:\s*"([^"]+)"/);
+      if (m) {
+        data = { persona_name: m[1], avatar_url: mAv ? mAv[1] : null };
+      }
+    }
     if (data && data.persona_name) {
       return {
         personaName: data.persona_name,
@@ -16609,6 +16609,165 @@ async function obtenerSteamMiniprofile_(steamId64) {
     console.warn('Error obteniendo miniprofile de Steam:', e);
   }
   return null;
+}
+
+async function obtenerDatosSteamCompletos(steamIdOrCustom) {
+  if (!steamIdOrCustom) return null;
+  const isId64 = /^\d{17}$/.test(steamIdOrCustom);
+
+  const profileUrl = isId64
+    ? `https://steamcommunity.com/profiles/${steamIdOrCustom}/?xml=1`
+    : `https://steamcommunity.com/id/${steamIdOrCustom}/?xml=1`;
+
+  const gamesUrl = isId64
+    ? `https://steamcommunity.com/profiles/${steamIdOrCustom}/games/?tab=all&xml=1`
+    : `https://steamcommunity.com/id/${steamIdOrCustom}/games/?tab=all&xml=1`;
+
+  const [profileRaw, gamesRaw, miniData] = await Promise.all([
+    fetchSteamProxyContent_(profileUrl),
+    fetchSteamProxyContent_(gamesUrl),
+    isId64 ? obtenerSteamMiniprofile_(steamIdOrCustom) : Promise.resolve(null)
+  ]);
+
+  let personaName = miniData?.personaName || null;
+  let avatar = miniData?.avatar || null;
+  let steamID64 = isId64 ? steamIdOrCustom : null;
+  let customURL = !isId64 ? steamIdOrCustom : null;
+  let isPrivate = false;
+  let privacyState = 'public';
+
+  const parser = new DOMParser();
+
+  // 1. Perfil XML
+  if (profileRaw) {
+    try {
+      const docP = parser.parseFromString(profileRaw, 'text/xml');
+      if (!docP.querySelector('parsererror')) {
+        const idXml = docP.querySelector('steamID')?.textContent?.trim();
+        if (idXml && !personaName) personaName = idXml;
+        const avXml = docP.querySelector('avatarFull')?.textContent?.trim() || docP.querySelector('avatarMedium')?.textContent?.trim();
+        if (avXml && !avatar) avatar = avXml;
+        const id64Xml = docP.querySelector('steamID64')?.textContent?.trim();
+        if (id64Xml) steamID64 = id64Xml;
+        const custXml = docP.querySelector('customURL')?.textContent?.trim();
+        if (custXml) customURL = custXml;
+        const priv = docP.querySelector('privacyState')?.textContent?.trim();
+        if (priv) {
+          privacyState = priv.toLowerCase();
+          if (privacyState !== 'public') isPrivate = true;
+        }
+      }
+    } catch(e) {}
+  }
+
+  // 2. Si no teníamos personaName o avatar y tenemos steamID64
+  if ((!personaName || !avatar) && steamID64) {
+    const mini2 = await obtenerSteamMiniprofile_(steamID64);
+    if (mini2) {
+      if (mini2.personaName && !personaName) personaName = mini2.personaName;
+      if (mini2.avatar && !avatar) avatar = mini2.avatar;
+    }
+  }
+
+  // 3. Juegos XML
+  let allGames = [];
+  let totalHours = 0;
+  let recentHours = 0;
+  let gamesCount = 0;
+
+  if (gamesRaw) {
+    try {
+      const docG = parser.parseFromString(gamesRaw, 'text/xml');
+      if (!docG.querySelector('parsererror')) {
+        const err = docG.querySelector('error')?.textContent?.trim();
+        if (err && /private/i.test(err)) {
+          isPrivate = true;
+        }
+
+        const id64G = docG.querySelector('steamID64')?.textContent?.trim();
+        if (id64G && !steamID64) steamID64 = id64G;
+        const nameG = docG.querySelector('steamID')?.textContent?.trim();
+        if (nameG && !personaName) personaName = nameG;
+
+        const gameNodes = docG.querySelectorAll('games > game, game');
+        gamesCount = gameNodes.length;
+
+        gameNodes.forEach(g => {
+          const appid = g.querySelector('appID')?.textContent?.trim() || '';
+          const name = g.querySelector('name')?.textContent?.trim() || '';
+          const rawH = (g.querySelector('hoursOnRecord')?.textContent || '0').replace(/,/g, '');
+          const h = parseFloat(rawH) || 0;
+          const rawRec = (g.querySelector('hoursLast2Weeks')?.textContent || '0').replace(/,/g, '');
+          const rec = parseFloat(rawRec) || 0;
+          const logo = g.querySelector('logo')?.textContent?.trim() || '';
+
+          if (name) {
+            totalHours += h;
+            recentHours += rec;
+            if (h > 0 || rec > 0) {
+              allGames.push({
+                name,
+                hours: Number(h.toFixed(1)),
+                recentHours: Number(rec.toFixed(1)),
+                appid,
+                header: appid ? `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg` : logo
+              });
+            }
+          }
+        });
+      }
+    } catch(e) {}
+  }
+
+  // 4. Fallback a mostPlayedGames si juegos XML estuvo vacío pero perfil XML tiene mostPlayedGames
+  if (!allGames.length && profileRaw) {
+    try {
+      const docP = parser.parseFromString(profileRaw, 'text/xml');
+      const mostPlayed = docP.querySelectorAll('mostPlayedGame');
+      mostPlayed.forEach(g => {
+        const name = g.querySelector('gameName')?.textContent?.trim();
+        const link = g.querySelector('gameLink')?.textContent?.trim() || '';
+        const m = link.match(/\/app\/(\d+)/);
+        const appid = m ? m[1] : '';
+        const rec = parseFloat(g.querySelector('hoursPlayed')?.textContent || 0) || 0;
+        const h = parseFloat((g.querySelector('hoursOnRecord')?.textContent || '0').replace(/,/g, '')) || 0;
+        const logo = g.querySelector('gameLogo')?.textContent?.trim() || '';
+
+        if (name) {
+          totalHours += (h || rec);
+          recentHours += rec;
+          allGames.push({
+            name,
+            hours: Number((h || rec).toFixed(1)),
+            recentHours: Number(rec.toFixed(1)),
+            appid,
+            header: appid ? `https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/${appid}/header.jpg` : logo
+          });
+        }
+      });
+      if (mostPlayed.length && !gamesCount) gamesCount = mostPlayed.length;
+    } catch(e) {}
+  }
+
+  allGames.sort((a, b) => (b.hours || 0) - (a.hours || 0));
+  const topGames = allGames.slice(0, 10);
+
+  if (!topGames.length && totalHours === 0) {
+    isPrivate = true;
+  }
+
+  return {
+    personaName,
+    avatar,
+    steamID64,
+    customURL,
+    isPrivate,
+    privacyState,
+    gamesCount: gamesCount || allGames.length,
+    totalHours: Number(totalHours.toFixed(1)),
+    recentHours: Number(recentHours.toFixed(1)),
+    topGames
+  };
 }
 
 async function sincronizarCuentaSteam(idManual = null, notificar = false) {
@@ -16637,75 +16796,42 @@ async function sincronizarCuentaSteam(idManual = null, notificar = false) {
     if (uRaw) prevUser = JSON.parse(uRaw);
   } catch(e) {}
 
-  let personaName = (prevUser?.personaName && !prevUser.personaName.startsWith('Steam User') && !prevUser.personaName.startsWith('Jugador (')) ? prevUser.personaName : '';
-  let avatar = (prevUser?.avatar && !prevUser.avatar.includes('fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb')) ? prevUser.avatar : '';
-  let topGames = [];
-  let totalHours = prevUser?.totalHours || 0;
-  let gamesCount = prevUser?.gamesCount || 0;
-  let recentHours = 0;
+  let prevStats = null;
+  try {
+    const sRaw = localStorage.getItem('mediary_steam_stats');
+    if (sRaw) {
+      const parsed = JSON.parse(sRaw);
+      const esFake = parsed && parsed.totalHours === 412.5 && Array.isArray(parsed.topGames) && parsed.topGames.some(g => g.name === 'Elden Ring');
+      if (!esFake) prevStats = parsed;
+    }
+  } catch(e) {}
 
-  // 1. Consultar XML del perfil y miniprofile en paralelo para máxima rapidez
+  const steamData = await obtenerDatosSteamCompletos(cleanId);
+
+  let personaName = steamData?.personaName || prevUser?.personaName || '';
+  let avatar = steamData?.avatar || prevUser?.avatar || '';
   const isId64 = /^\d{17}$/.test(cleanId);
-  const [miniData, xmlData] = await Promise.all([
-    isId64 ? obtenerSteamMiniprofile_(cleanId) : Promise.resolve(null),
-    obtenerPerfilSteamXml(cleanId)
-  ]);
 
-  if (miniData) {
-    if (miniData.personaName) personaName = miniData.personaName;
-    if (miniData.avatar) avatar = miniData.avatar;
-  }
-
-  if (xmlData) {
-    if (xmlData.personaName && !personaName) personaName = xmlData.personaName;
-    if (xmlData.avatar && !avatar) avatar = xmlData.avatar;
-    if (xmlData.topGames && xmlData.topGames.length) {
-      topGames = xmlData.topGames;
-      totalHours = xmlData.totalHours;
-      recentHours = xmlData.recentHours;
-      gamesCount = xmlData.topGames.length;
-    }
-  }
-
-  // 2. Si es vanity URL y aún no teníamos avatar, intentar con ID64 resuelto del XML
-  if (!personaName && xmlData?.steamID64) {
-    const mini2 = await obtenerSteamMiniprofile_(xmlData.steamID64);
-    if (mini2) {
-      if (mini2.personaName) personaName = mini2.personaName;
-      if (mini2.avatar) avatar = mini2.avatar;
-    }
-  }
-
-  // 3. Fallback de nombre si no se pudo resolver de los servidores de Steam
   if (!personaName || personaName.startsWith('Steam User') || personaName.startsWith('Jugador (')) {
     personaName = (!isId64 && cleanId) ? cleanId : (cleanId ? `Gamer (${cleanId.slice(-4)})` : 'Jugador Steam');
   }
 
-  // 4. Fallback de avatar personalizado con el nombre real
   if (!avatar || avatar.includes('fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb')) {
     avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(personaName)}&background=171a21&color=66c0f4&bold=true`;
   }
 
-  // 5. Conservar estadísticas previas si no cambiaron
-  let statsObj = null;
-  try {
-    const sRaw = localStorage.getItem('mediary_steam_stats');
-    if (sRaw) statsObj = JSON.parse(sRaw);
-  } catch(e) {}
+  let topGames = steamData?.topGames || [];
+  let totalHours = steamData?.totalHours || 0;
+  let recentHours = steamData?.recentHours || 0;
+  let gamesCount = steamData?.gamesCount || 0;
+  let isPrivate = !!steamData?.isPrivate;
 
-  if (!topGames.length) {
-    if (statsObj && Array.isArray(statsObj.topGames) && statsObj.topGames.length) {
-      topGames = statsObj.topGames;
-      totalHours = statsObj.totalHours || totalHours;
-      recentHours = statsObj.recentHours || recentHours;
-      gamesCount = statsObj.gamesCount || gamesCount;
-    } else {
-      const def = generarStatsSteamPorDefecto(personaName, 84, 412.5);
-      topGames = def.topGames;
-      totalHours = def.totalHours;
-      recentHours = def.recentHours;
-      gamesCount = def.gamesCount;
-    }
+  if (!topGames.length && prevStats && Array.isArray(prevStats.topGames) && prevStats.topGames.length) {
+    topGames = prevStats.topGames;
+    totalHours = prevStats.totalHours || totalHours;
+    recentHours = prevStats.recentHours || recentHours;
+    gamesCount = prevStats.gamesCount || gamesCount;
+    isPrivate = false;
   }
 
   const user = {
@@ -16719,6 +16845,7 @@ async function sincronizarCuentaSteam(idManual = null, notificar = false) {
   };
 
   const newStats = {
+    isPrivate: isPrivate,
     totalHours: totalHours,
     recentHours: recentHours,
     gamesCount: gamesCount || topGames.length,
@@ -16737,9 +16864,12 @@ async function sincronizarCuentaSteam(idManual = null, notificar = false) {
   }
 
   if (notificar) {
-    mostrarToastPersonalizado(`🎮 Steam sincronizado: ${personaName}`);
+    if (isPrivate && !topGames.length) {
+      mostrarToastPersonalizado(`🎮 Steam conectado: ${personaName} (Biblioteca en privado)`);
+    } else {
+      mostrarToastPersonalizado(`🎮 Steam sincronizado: ${personaName} (${topGames.length} juegos)`);
+    }
   }
-  return true;
 }
 
 function generarStatsSteamPorDefecto(personaName = 'Gamer Steam', gamesCount = 84, totalHours = 412.5) {
@@ -18322,7 +18452,10 @@ window.onload = () => {
       if (isSteamConn && steamId && typeof sincronizarCuentaSteam === 'function') {
         let u = null;
         try { const rawU = localStorage.getItem('mediary_steam_user'); if (rawU) u = JSON.parse(rawU); } catch(e) {}
-        if (!u || !u.personaName || u.personaName.startsWith('Steam User') || u.personaName.startsWith('Jugador (')) {
+        let sStats = null;
+        try { const rawS = localStorage.getItem('mediary_steam_stats'); if (rawS) sStats = JSON.parse(rawS); } catch(e) {}
+        const tieneFake = sStats && sStats.totalHours === 412.5 && Array.isArray(sStats.topGames) && sStats.topGames.some(g => g.name === 'Elden Ring');
+        if (tieneFake || !sStats || !u || !u.personaName || u.personaName.startsWith('Steam User') || u.personaName.startsWith('Jugador (')) {
           sincronizarCuentaSteam(steamId, false);
         }
       }
