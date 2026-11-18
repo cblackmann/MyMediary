@@ -706,6 +706,33 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .live-dot-btn.active{background:var(--card);color:var(--text);border-color:var(--accent);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,0.12);}
 .live-dot-icon{font-size:0.8rem;}
 
+/* TARJETAS REDUCTIBLES (ESTILO NOTIFICACIONES ANDROID) */
+.home-live-expandable-card{cursor:pointer;user-select:none;transition:padding .32s cubic-bezier(.2,0,0,1),min-height .32s cubic-bezier(.2,0,0,1),border-color .2s ease,box-shadow .25s ease !important;will-change:min-height,padding;position:relative;}
+.home-live-expandable-card:active{transform:scale(0.992);}
+.home-live-expandable-card button, .home-live-expandable-card a{cursor:pointer;}
+.home-live-expandable-card.is-collapsed{padding:7px 11px !important;min-height:56px !important;}
+.home-live-expandable-card.is-collapsed .home-np-cover-compact,
+.home-live-expandable-card.is-collapsed .home-psn-cover-compact{width:42px !important;height:42px !important;border-radius:6px !important;transition:width .28s cubic-bezier(.2,0,0,1),height .28s cubic-bezier(.2,0,0,1) !important;}
+.home-live-expandable-card.is-collapsed .live-card-expanded-only{max-height:0 !important;opacity:0 !important;margin:0 !important;padding:0 !important;overflow:hidden !important;pointer-events:none !important;transform:translateY(-6px);transition:max-height .28s cubic-bezier(.2,0,0,1),opacity .18s ease,transform .22s ease,margin .2s ease !important;}
+.home-live-expandable-card.is-collapsed .home-np-right-col,
+.home-live-expandable-card.is-collapsed .home-psn-right-col{height:42px !important;justify-content:center !important;gap:4px !important;}
+.home-live-expandable-card.is-collapsed .home-np-right-col .home-np-sp-logo-link,
+.home-live-expandable-card.is-collapsed .home-np-right-col .btn-np-quick-add,
+.home-live-expandable-card.is-collapsed .home-psn-right-col .home-psn-logo-link,
+.home-live-expandable-card.is-collapsed .home-psn-right-col .btn-psn-quick-add{display:none !important;}
+.live-card-collapsed-only{display:none;}
+.home-live-expandable-card.is-collapsed .live-card-collapsed-only{display:flex !important;align-items:center !important;}
+.home-live-expandable-card.is-expanded{padding:9px 12px !important;min-height:86px !important;}
+.home-live-expandable-card.is-expanded .home-np-cover-compact,
+.home-live-expandable-card.is-expanded .home-psn-cover-compact{width:64px !important;height:64px !important;border-radius:8px !important;transition:width .28s cubic-bezier(.2,0,0,1),height .28s cubic-bezier(.2,0,0,1) !important;}
+.home-live-expandable-card.is-expanded .live-card-expanded-only{max-height:160px !important;opacity:1 !important;overflow:visible !important;pointer-events:auto !important;transform:translateY(0);transition:max-height .32s cubic-bezier(.2,0,0,1),opacity .25s ease,transform .25s ease,margin .2s ease !important;}
+.home-live-expandable-card.is-expanded .live-card-collapsed-only{display:none !important;}
+.home-live-expandable-card.is-expanded .home-np-right-col,
+.home-live-expandable-card.is-expanded .home-psn-right-col{height:auto !important;align-self:stretch !important;justify-content:space-between !important;gap:4px !important;}
+.live-card-expand-indicator{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;color:var(--muted);background:rgba(255,255,255,0.06);transition:transform .3s cubic-bezier(.2,0,0,1),color .2s ease,background .2s ease;flex-shrink:0;}
+.home-live-expandable-card:hover .live-card-expand-indicator{color:var(--accent);background:rgba(56,189,248,0.12);}
+.home-live-expandable-card.is-expanded .live-card-expand-indicator{transform:rotate(180deg);color:var(--accent);}
+
 /* TARJETA PLAYSTATION COMPACTA (JUGANDO AHORA) */
 .home-playstation-card-compact{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:var(--tr);position:relative;overflow:hidden;}
 .home-playstation-card-compact:hover{border-color:rgba(0,112,209,0.45);box-shadow:0 4px 16px rgba(0,112,209,0.14);}
@@ -19271,6 +19298,51 @@ function registrarDiscoActualEnMediary(album, artista) {
   }, 120);
 }
 
+function estaLiveCardExpandida(tipo) {
+  if (tipo === 'spotify') {
+    if (typeof window.spotifyCardExpanded !== 'undefined') return !!window.spotifyCardExpanded;
+    return localStorage.getItem('mediary_spotify_card_expanded') === 'true';
+  } else if (tipo === 'playstation') {
+    if (typeof window.psnCardExpanded !== 'undefined') return !!window.psnCardExpanded;
+    return localStorage.getItem('mediary_psn_card_expanded') === 'true';
+  }
+  return false;
+}
+window.estaLiveCardExpandida = estaLiveCardExpandida;
+
+function toggleLiveCardExpansion(tipo, ev) {
+  if (ev) {
+    if (ev.target.closest('button, a, input, select, .btn-spotify-ctrl, .btn-np-quick-add, .btn-psn-quick-add, .home-np-sp-logo-link, .home-psn-logo-link')) return;
+  }
+  if (tipo === 'spotify') {
+    const nuevo = !estaLiveCardExpandida('spotify');
+    window.spotifyCardExpanded = nuevo;
+    try { localStorage.setItem('mediary_spotify_card_expanded', nuevo ? 'true' : 'false'); } catch(e) {}
+    const card = document.querySelector('#home-now-playing-container .home-spotify-card-compact');
+    if (card) {
+      card.classList.toggle('is-expanded', nuevo);
+      card.classList.toggle('is-collapsed', !nuevo);
+      const ind = card.querySelector('.live-card-expand-indicator');
+      if (ind) ind.title = nuevo ? (userPrefs?.lang === 'en' ? 'Collapse' : 'Reducir') : (userPrefs?.lang === 'en' ? 'Expand' : 'Expandir');
+    }
+  } else if (tipo === 'playstation') {
+    const nuevo = !estaLiveCardExpandida('playstation');
+    window.psnCardExpanded = nuevo;
+    try { localStorage.setItem('mediary_psn_card_expanded', nuevo ? 'true' : 'false'); } catch(e) {}
+    const card = document.querySelector('#home-psn-now-playing-container .home-playstation-card-compact');
+    if (card) {
+      card.classList.toggle('is-expanded', nuevo);
+      card.classList.toggle('is-collapsed', !nuevo);
+      const ind = card.querySelector('.live-card-expand-indicator');
+      if (ind) ind.title = nuevo ? (userPrefs?.lang === 'en' ? 'Collapse' : 'Reducir') : (userPrefs?.lang === 'en' ? 'Expand' : 'Expandir');
+    }
+  }
+  setTimeout(() => {
+    if (typeof ajustarMarqueeSpotify === 'function') ajustarMarqueeSpotify();
+  }, 180);
+}
+window.toggleLiveCardExpansion = toggleLiveCardExpansion;
+
 function dibujarTarjetaSpotifyCompacta(data) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
   const item = data.item || {};
@@ -19324,67 +19396,99 @@ function dibujarTarjetaSpotifyCompacta(data) {
   const albumParaRegistrar = albumName || trackTitle;
   const safeAlbumParam = encodeURIComponent(albumParaRegistrar);
   const safeArtistaParam = encodeURIComponent(artistNames);
+  const isExp = estaLiveCardExpandida('spotify');
 
   return `
-    <div class="home-spotify-card-compact">
+    <div class="home-spotify-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('spotify', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
       <!-- i. A la izquierda: Portada de la canción -->
       <div class="home-np-cover-compact">
         ${coverHtml}
       </div>
 
-      <!-- ii, iii, iv. Centro: Textos, barra de progreso y controlador multimedia -->
+      <!-- ii. Centro: Textos, barra de progreso y controlador multimedia -->
       <div class="home-np-center-compact">
-        <!-- iii. Orden: Artista/Grupo; Disco; Nombre canción (de arriba a abajo) -->
-        <div class="home-np-artist-compact home-np-text-wrap" title="${escHtmlSpotify_(artistNames)}">
-          <span class="home-np-scrollable">${escHtmlSpotify_(artistNames)}</span>
-        </div>
-        <div class="home-np-album-compact home-np-text-wrap" title="${escHtmlSpotify_(albumName || '—')}">
-          <span class="home-np-scrollable">${escHtmlSpotify_(albumName || '—')}</span>
-        </div>
-        <div class="home-np-title-compact home-np-text-wrap" title="${escHtmlSpotify_(trackTitle)}">
-          <span class="home-np-scrollable">${escHtmlSpotify_(trackTitle)}</span>
-        </div>
-
-        <!-- ii. Barra de progreso hasta poco antes del borde derecho -->
-        <div class="home-np-prog-row-compact">
-          <div class="home-np-prog-bg-compact">
-            <div id="home-np-prog-fill" class="home-np-prog-fill-compact" style="width:${progressPct}%;"></div>
-          </div>
-          <div class="home-np-times-compact">
-            <span id="home-np-time-cur">${formatearMinSegSpotify(progressMs)}</span>
-            <span>/</span>
-            <span id="home-np-time-tot">${formatearMinSegSpotify(durationMs)}</span>
+        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN ANDROID) -->
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-np-title-compact home-np-text-wrap" title="${escHtmlSpotify_(trackTitle)}">
+              <span class="home-np-scrollable">${escHtmlSpotify_(trackTitle)}</span>
+            </div>
+            <div style="font-size:0.73rem; color:var(--accent); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px; margin-top:1px;">
+              <span>${escHtmlSpotify_(artistNames)}</span>
+              <span style="opacity:0.5;">·</span>
+              <span style="color:${isPlaying ? '#10b981' : '#f59e0b'}; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
+                <span class="home-np-dot" style="${isPlaying ? '' : 'background:#f59e0b; box-shadow:none; animation:none;'}"></span>
+                <span>${isPlaying ? (l === 'en' ? 'Live' : 'En vivo') : (l === 'en' ? 'Paused' : 'En pausa')}</span>
+              </span>
+            </div>
           </div>
         </div>
 
-        <!-- iv. Debajo de la barra: controlador multimedia << > >> -->
-        <div class="home-np-ctrls-compact">
-          <button type="button" class="btn-spotify-ctrl" onclick="controlarSpotifyPlayback('previous')" title="${l === 'en' ? 'Previous' : 'Anterior'}">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-          </button>
-          <button type="button" class="btn-spotify-ctrl btn-spotify-ctrl-play" onclick="controlarSpotifyPlayback('${isPlaying ? 'pause' : 'play'}')" title="${isPlaying ? (l === 'en' ? 'Pause' : 'Pausar') : (l === 'en' ? 'Play' : 'Reanudar')}">
-            ${isPlaying
-              ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
-              : `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`}
-          </button>
-          <button type="button" class="btn-spotify-ctrl" onclick="controlarSpotifyPlayback('next')" title="${l === 'en' ? 'Next' : 'Siguiente'}">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-          </button>
-          <button type="button" class="home-np-live-status-pill ${isPlaying ? '' : 'paused'}" onclick="forzarActualizacionSpotifyLive(this)" title="${l === 'en' ? 'Tap to sync now' : 'Toca para sincronizar ahora'}" style="background:none; border:none; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px;">
-            <span class="home-np-dot"></span>
-            <span>${isPlaying ? (l === 'en' ? 'Live' : 'En vivo') : (l === 'en' ? 'Paused' : 'En pausa')}</span>
-          </button>
+        <!-- VISTA EXPANDIDA: DETALLES COMPLETOS -->
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <div class="home-np-artist-compact home-np-text-wrap" title="${escHtmlSpotify_(artistNames)}">
+            <span class="home-np-scrollable">${escHtmlSpotify_(artistNames)}</span>
+          </div>
+          <div class="home-np-album-compact home-np-text-wrap" title="${escHtmlSpotify_(albumName || '—')}">
+            <span class="home-np-scrollable">${escHtmlSpotify_(albumName || '—')}</span>
+          </div>
+          <div class="home-np-title-compact home-np-text-wrap" title="${escHtmlSpotify_(trackTitle)}">
+            <span class="home-np-scrollable">${escHtmlSpotify_(trackTitle)}</span>
+          </div>
+
+          <!-- Barra de progreso hasta poco antes del borde derecho -->
+          <div class="home-np-prog-row-compact">
+            <div class="home-np-prog-bg-compact">
+              <div id="home-np-prog-fill" class="home-np-prog-fill-compact" style="width:${progressPct}%;"></div>
+            </div>
+            <div class="home-np-times-compact">
+              <span id="home-np-time-cur">${formatearMinSegSpotify(progressMs)}</span>
+              <span>/</span>
+              <span id="home-np-time-tot">${formatearMinSegSpotify(durationMs)}</span>
+            </div>
+          </div>
+
+          <!-- Debajo de la barra: controlador multimedia << > >> -->
+          <div class="home-np-ctrls-compact">
+            <button type="button" class="btn-spotify-ctrl" onclick="event.stopPropagation(); controlarSpotifyPlayback('previous')" title="${l === 'en' ? 'Previous' : 'Anterior'}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+            </button>
+            <button type="button" class="btn-spotify-ctrl btn-spotify-ctrl-play" onclick="event.stopPropagation(); controlarSpotifyPlayback('${isPlaying ? 'pause' : 'play'}')" title="${isPlaying ? (l === 'en' ? 'Pause' : 'Pausar') : (l === 'en' ? 'Play' : 'Reanudar')}">
+              ${isPlaying
+                ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
+                : `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`}
+            </button>
+            <button type="button" class="btn-spotify-ctrl" onclick="event.stopPropagation(); controlarSpotifyPlayback('next')" title="${l === 'en' ? 'Next' : 'Siguiente'}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+            <button type="button" class="home-np-live-status-pill ${isPlaying ? '' : 'paused'}" onclick="event.stopPropagation(); forzarActualizacionSpotifyLive(this)" title="${l === 'en' ? 'Tap to sync now' : 'Toca para sincronizar ahora'}" style="background:none; border:none; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px;">
+              <span class="home-np-dot"></span>
+              <span>${isPlaying ? (l === 'en' ? 'Live' : 'En vivo') : (l === 'en' ? 'Paused' : 'En pausa')}</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- v. Borde derecho: Logo de Spotify arriba, botón sencillo para agregar abajo -->
+      <!-- iii. Borde derecho -->
       <div class="home-np-right-col">
-        <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="home-np-sp-logo-link" title="${l === 'en' ? 'Open Spotify' : 'Abrir Spotify'}">
+        <div class="live-card-collapsed-only" style="margin-right:2px;">
+          <button type="button" class="btn-spotify-ctrl btn-spotify-ctrl-play" onclick="event.stopPropagation(); controlarSpotifyPlayback('${isPlaying ? 'pause' : 'play'}')" title="${isPlaying ? (l === 'en' ? 'Pause' : 'Pausar') : (l === 'en' ? 'Play' : 'Reanudar')}">
+            ${isPlaying
+              ? `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`
+              : `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`}
+          </button>
+        </div>
+        <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="home-np-sp-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${l === 'en' ? 'Open Spotify' : 'Abrir Spotify'}">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
         </a>
-        <button type="button" class="btn-np-quick-add" onclick="registrarDiscoActualEnMediary(decodeURIComponent('${safeAlbumParam}'), decodeURIComponent('${safeArtistaParam}'))" title="${l === 'en' ? 'Log album in Mediary' : 'Registrar disco en Mediary'}">
+        <button type="button" class="btn-np-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeAlbumParam}'), decodeURIComponent('${safeArtistaParam}'))" title="${l === 'en' ? 'Log album in Mediary' : 'Registrar disco en Mediary'}">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
       </div>
     </div>
   `;
@@ -19404,62 +19508,57 @@ function dibujarTarjetaSpotifyCompactaIdle(isForbidden = false) {
     : (l === 'en' ? 'Inactive' : 'Inactivo');
   const openTxt = l === 'en' ? 'Open Spotify' : 'Abrir Spotify';
   const clickAccion = isForbidden ? 'iniciarFlujoSpotifyAuth()' : 'forzarActualizacionSpotifyLive(this)';
+  const isExp = estaLiveCardExpandida('spotify');
 
   return `
-    <div class="home-spotify-card-compact">
+    <div class="home-spotify-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('spotify', event)">
       <!-- i. A la izquierda: Portada placeholder -->
-      <div class="home-np-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="${clickAccion}">
+      <div class="home-np-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="event.stopPropagation(); ${clickAccion}">
         <span>${isForbidden ? '⚠️' : '🎧'}</span>
       </div>
 
-      <!-- ii, iii, iv. Centro -->
+      <!-- ii. Centro -->
       <div class="home-np-center-compact">
-        <div class="home-np-artist-compact home-np-text-wrap">
-          <span class="home-np-scrollable">${artistTxt}</span>
-        </div>
-        <div class="home-np-album-compact home-np-text-wrap" style="${isForbidden ? 'color:#f59e0b;' : ''}">
-          <span class="home-np-scrollable">${albumTxt}</span>
-        </div>
-        <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="${clickAccion}">
-          <span class="home-np-scrollable">${titleTxt}</span>
-        </div>
-
-        <div class="home-np-prog-row-compact">
-          <div class="home-np-prog-bg-compact">
-            <div id="home-np-prog-fill" class="home-np-prog-fill-compact" style="width:0%;"></div>
-          </div>
-          <div class="home-np-times-compact">
-            <span>0:00</span>
-            <span>/</span>
-            <span>0:00</span>
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-np-title-compact home-np-text-wrap" title="${artistTxt}">
+              <span class="home-np-scrollable">${artistTxt}</span>
+            </div>
+            <div style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+              <span>${albumTxt}</span>
+            </div>
           </div>
         </div>
 
-        <div class="home-np-ctrls-compact">
-          <button type="button" class="btn-spotify-ctrl" onclick="controlarSpotifyPlayback('previous')" title="${l === 'en' ? 'Previous' : 'Anterior'}">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-          </button>
-          <button type="button" class="btn-spotify-ctrl btn-spotify-ctrl-play" onclick="controlarSpotifyPlayback('play')" title="${l === 'en' ? 'Play' : 'Reanudar'}">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          </button>
-          <button type="button" class="btn-spotify-ctrl" onclick="controlarSpotifyPlayback('next')" title="${l === 'en' ? 'Next' : 'Siguiente'}">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-          </button>
-          <button type="button" class="home-np-live-status-pill paused" onclick="${clickAccion}" title="${isForbidden ? (l === 'en' ? 'Click to re-authorize' : 'Clic para re-vincular cuenta') : (l === 'en' ? 'Tap to sync now' : 'Toca para sincronizar ahora')}" style="background:none; border:none; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px;">
-            <span class="home-np-dot" style="${isForbidden ? 'background:#f59e0b;' : ''}"></span>
-            <span style="${isForbidden ? 'color:#f59e0b; font-weight:700;' : ''}">${statusTxt}</span>
-          </button>
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <div class="home-np-artist-compact home-np-text-wrap">
+            <span class="home-np-scrollable">${artistTxt}</span>
+          </div>
+          <div class="home-np-album-compact home-np-text-wrap" style="${isForbidden ? 'color:#f59e0b;' : ''}">
+            <span class="home-np-scrollable">${albumTxt}</span>
+          </div>
+          <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="event.stopPropagation(); ${clickAccion}">
+            <span class="home-np-scrollable">${titleTxt}</span>
+          </div>
+          <div class="home-np-ctrls-compact" style="margin-top:4px;">
+            <button type="button" class="home-np-live-status-pill paused" onclick="event.stopPropagation(); ${clickAccion}" title="${isForbidden ? (l === 'en' ? 'Click to re-authorize' : 'Clic para re-vincular cuenta') : (l === 'en' ? 'Tap to sync now' : 'Toca para sincronizar ahora')}" style="background:none; border:none; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:5px;">
+              <span class="home-np-dot" style="${isForbidden ? 'background:#f59e0b;' : ''}"></span>
+              <span style="${isForbidden ? 'color:#f59e0b; font-weight:700;' : ''}">${statusTxt}</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- v. Borde derecho -->
+      <!-- iii. Borde derecho -->
       <div class="home-np-right-col">
-        <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="home-np-sp-logo-link" title="${openTxt}">
+        <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="home-np-sp-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${openTxt}">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
         </a>
-        <button type="button" class="btn-np-quick-add" onclick="cambiarCat('Musica', 'Discos')" title="${l === 'en' ? 'Go to Music' : 'Ir a Música'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
       </div>
     </div>
   `;
@@ -19471,33 +19570,54 @@ function dibujarTarjetaSpotifyCompactaDesconectado() {
   const albumTxt = l === 'en' ? 'Account disconnected' : 'Cuenta no conectada';
   const titleTxt = l === 'en' ? 'Connect Spotify to sync music' : 'Conectar Spotify para ver tu música';
   const connectBtnTxt = l === 'en' ? 'Connect' : 'Conectar';
+  const isExp = estaLiveCardExpandida('spotify');
 
   return `
-    <div class="home-spotify-card-compact">
-      <div class="home-np-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="abrirModalConectarSpotify()">
+    <div class="home-spotify-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('spotify', event)">
+      <div class="home-np-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarSpotify()">
         <span>🎵</span>
       </div>
       <div class="home-np-center-compact">
-        <div class="home-np-artist-compact home-np-text-wrap">
-          <span class="home-np-scrollable">${artistTxt}</span>
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-np-title-compact home-np-text-wrap" title="${artistTxt}">
+              <span class="home-np-scrollable">${artistTxt}</span>
+            </div>
+            <div style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+              <span>${albumTxt}</span>
+            </div>
+          </div>
         </div>
-        <div class="home-np-album-compact home-np-text-wrap">
-          <span class="home-np-scrollable">${albumTxt}</span>
-        </div>
-        <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="abrirModalConectarSpotify()">
-          <span class="home-np-scrollable">${titleTxt}</span>
-        </div>
-        <div style="margin-top:3px;">
-          <button type="button" class="btn-spotify-sub-action" onclick="abrirModalConectarSpotify()" style="height:24px; padding:0 10px; font-size:0.72rem; border-radius:6px; background:rgba(29,185,84,0.15); border:1px solid rgba(29,185,84,0.4); color:#10b981;">
-            <span>⚡ ${connectBtnTxt}</span>
-          </button>
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <div class="home-np-artist-compact home-np-text-wrap">
+            <span class="home-np-scrollable">${artistTxt}</span>
+          </div>
+          <div class="home-np-album-compact home-np-text-wrap">
+            <span class="home-np-scrollable">${albumTxt}</span>
+          </div>
+          <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarSpotify()">
+            <span class="home-np-scrollable">${titleTxt}</span>
+          </div>
+          <div style="margin-top:4px;">
+            <button type="button" class="btn-spotify-sub-action" onclick="event.stopPropagation(); abrirModalConectarSpotify()" style="height:24px; padding:0 10px; font-size:0.72rem; border-radius:6px; background:rgba(29,185,84,0.15); border:1px solid rgba(29,185,84,0.4); color:#10b981;">
+              <span>⚡ ${connectBtnTxt}</span>
+            </button>
+          </div>
         </div>
       </div>
       <div class="home-np-right-col">
-        <span class="home-np-sp-logo-link" style="cursor:pointer;" onclick="abrirModalConectarSpotify()" title="Spotify">
+        <span class="home-np-sp-logo-link live-card-expanded-only" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarSpotify()" title="Spotify">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
         </span>
-        <button type="button" class="btn-np-quick-add" onclick="cambiarCat('Musica', 'Discos')" title="Música">
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
+      </div>
+    </div>
+  `;
+}
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
       </div>
@@ -20098,57 +20218,84 @@ function dibujarTarjetaPlayStationCompacta(data) {
     : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:linear-gradient(135deg,#003791,#001a44);color:#60a5fa;">🎮</div>`;
 
   const isDemo = localStorage.getItem('mediary_psn_username') === 'Gamer_Mediary';
+  const isExp = estaLiveCardExpandida('playstation');
 
   return `
-    <div class="home-playstation-card-compact">
+    <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
       <!-- i. A la izquierda: Portada del juego -->
       <div class="home-psn-cover-compact">
         ${coverHtml}
         <span class="home-psn-platform-badge">${platform}</span>
       </div>
 
-      <!-- ii. Centro: Plataforma, Estudio/Estado, Título y Status en vivo -->
+      <!-- ii. Centro: Vistas reducida y expandida -->
       <div class="home-psn-center-compact">
-        <div class="home-psn-platform-label">
-          <span>🎮</span>
-          <span>PlayStation Network</span>
-          ${trophyProgress ? `<span style="font-size:0.66rem; background:rgba(0,112,209,0.18); color:#38bdf8; padding:1px 6px; border-radius:10px; font-weight:700;">🏆 ${trophyProgress}</span>` : ''}
-        </div>
-        <div class="home-psn-meta-compact home-np-text-wrap" title="${escHtmlSpotify_(studio)}">
-          <span class="home-np-scrollable">${escHtmlSpotify_(studio)}</span>
-        </div>
-        <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleName)}">
-          <span class="home-np-scrollable">${escHtmlSpotify_(titleName)}</span>
+        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN ANDROID) -->
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleName)}">
+              <span class="home-np-scrollable">${escHtmlSpotify_(titleName)}</span>
+            </div>
+            <div style="font-size:0.73rem; color:#38bdf8; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px; margin-top:1px;">
+              <span>${platform}</span>
+              <span style="opacity:0.5;">·</span>
+              <span style="color:${isPlaying ? '#10b981' : '#64748b'}; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
+                <span class="home-np-dot" style="${isPlaying ? 'background:#10b981;' : 'background:#64748b; box-shadow:none; animation:none;'}"></span>
+                <span>${isPlaying ? (l === 'en' ? 'Live · Playing' : 'En vivo · Jugando') : (l === 'en' ? 'Rest Mode' : 'En reposo')}</span>
+              </span>
+              ${hours > 0 ? `<span style="opacity:0.5;">·</span><span style="color:var(--muted); font-size:0.68rem;">⏱️ ${hours}h</span>` : ''}
+            </div>
+          </div>
         </div>
 
-        <div class="home-psn-status-row">
-          <div class="home-psn-live-pill ${isPlaying ? '' : 'idle'}" title="${statusTxt}">
-            <span class="home-np-dot" style="${isPlaying ? 'background:#10b981;' : 'background:#64748b;'}"></span>
-            <span>${isPlaying ? (l === 'en' ? 'Live · Playing' : 'En vivo · Jugando') : (l === 'en' ? 'Rest Mode' : 'En reposo')}</span>
+        <!-- VISTA EXPANDIDA: DETALLES COMPLETOS -->
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <div class="home-psn-platform-label">
+            <span>🎮</span>
+            <span>PlayStation Network</span>
+            ${trophyProgress ? `<span style="font-size:0.66rem; background:rgba(0,112,209,0.18); color:#38bdf8; padding:1px 6px; border-radius:10px; font-weight:700;">🏆 ${trophyProgress}</span>` : ''}
           </div>
-          ${hours > 0 ? `<span style="font-size:0.67rem; color:var(--muted); font-weight:600;">⏱️ ${hours} hrs</span>` : ''}
-          ${isDemo ? `
-            <button type="button" onclick="alternarJuegoDemoPlayStation()" title="Cambiar juego demo" style="background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.35); color:#38bdf8; font-size:0.68rem; font-weight:700; border-radius:6px; padding:1px 7px; cursor:pointer;">
-              ⇄ Alternar juego
-            </button>
-          ` : `
-            <button type="button" onclick="sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Sync PlayStation status' : 'Sincronizar PlayStation'}" style="background:none; border:none; cursor:pointer; color:#38bdf8; font-size:0.75rem; padding:0; display:inline-flex; align-items:center;">
-              🔄
-            </button>
-          `}
+          <div class="home-psn-meta-compact home-np-text-wrap" title="${escHtmlSpotify_(studio)}">
+            <span class="home-np-scrollable">${escHtmlSpotify_(studio)}</span>
+          </div>
+          <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleName)}">
+            <span class="home-np-scrollable">${escHtmlSpotify_(titleName)}</span>
+          </div>
+
+          <div class="home-psn-status-row">
+            <div class="home-psn-live-pill ${isPlaying ? '' : 'idle'}" title="${statusTxt}">
+              <span class="home-np-dot" style="${isPlaying ? 'background:#10b981;' : 'background:#64748b;'}"></span>
+              <span>${isPlaying ? (l === 'en' ? 'Live · Playing' : 'En vivo · Jugando') : (l === 'en' ? 'Rest Mode' : 'En reposo')}</span>
+            </div>
+            ${hours > 0 ? `<span style="font-size:0.67rem; color:var(--muted); font-weight:600;">⏱️ ${hours} hrs</span>` : ''}
+            ${isDemo ? `
+              <button type="button" onclick="event.stopPropagation(); alternarJuegoDemoPlayStation()" title="Cambiar juego demo" style="background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.35); color:#38bdf8; font-size:0.68rem; font-weight:700; border-radius:6px; padding:1px 7px; cursor:pointer;">
+                ⇄ Alternar juego
+              </button>
+            ` : `
+              <button type="button" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Sync PlayStation status' : 'Sincronizar PlayStation'}" style="background:none; border:none; cursor:pointer; color:#38bdf8; font-size:0.75rem; padding:0; display:inline-flex; align-items:center;">
+                🔄
+              </button>
+            `}
+          </div>
         </div>
       </div>
 
       <!-- iii. Borde derecho: Logo oficial de PlayStation y botón rápido para registrar -->
       <div class="home-psn-right-col">
-        <a href="https://www.playstation.com" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link" title="${l === 'en' ? 'Open PlayStation' : 'Abrir PlayStation'}">
+        <a href="https://www.playstation.com" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${l === 'en' ? 'Open PlayStation' : 'Abrir PlayStation'}">
           <svg width="22" height="18" viewBox="0 0 24 20" fill="none">
             <path fill="#0070d1" d="M11.332 0C8.835 0 8.01 1.637 8.01 3.518v12.27c1.782.88 3.567.88 5.349 0V2.138c0-1.464-.326-2.138-2.027-2.138zm2.027 15.788c-1.782.88-3.567.88-5.349 0v.018c-3.14 1.547-5.59 1.488-7.25.753-.526-.233-.76-.475-.76-.475s.256.402.772.696c2.19 1.25 5.568 1.155 8.908-.344l3.679-1.648zm4.721-3.69c-2.313 0-4.32.91-5.717 2.378l2.951 1.34c1.11-.84 2.275-1.298 3.488-1.298 1.763 0 2.656.76 2.656 1.834 0 1.25-1.285 1.76-2.935 2.155-2.222.532-4.996.96-7.143 2.05l3.292 1.472c1.75-.688 3.864-1.127 5.766-1.583 2.355-.564 4.542-1.564 4.542-4.376 0-2.585-2.484-3.972-6.9-3.972z"/>
           </svg>
         </a>
-        <button type="button" class="btn-psn-quick-add" onclick="registrarJuegoActualEnMediary(decodeURIComponent('${safeTituloParam}'), '${platform}')" title="${l === 'en' ? 'Log game in Mediary' : 'Registrar juego en Mediary'}">
+        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarJuegoActualEnMediary(decodeURIComponent('${safeTituloParam}'), '${platform}')" title="${l === 'en' ? 'Log game in Mediary' : 'Registrar juego en Mediary'}">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
       </div>
     </div>
   `;
@@ -20159,50 +20306,76 @@ function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
   const titleTxt = lastGame?.name || (l === 'en' ? 'Console in Rest Mode' : 'Consola en reposo');
   const subTxt = lastGame ? (l === 'en' ? `Last played · ${lastGame.hours || 0} hrs` : `Último jugado · ${lastGame.hours || 0} hrs`) : (l === 'en' ? 'No active game session' : 'Sin sesión de juego activa');
   const isDemo = localStorage.getItem('mediary_psn_username') === 'Gamer_Mediary';
+  const isExp = estaLiveCardExpandida('playstation');
 
   return `
-    <div class="home-playstation-card-compact">
-      <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; cursor:pointer;" onclick="sincronizarCuentaPlayStation(null, true)">
+    <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem;">
         ${lastGame?.image ? `<img src="${escHtmlSpotify_(lastGame.image)}" alt="Last game">` : `<span>🎮</span>`}
       </div>
 
       <div class="home-psn-center-compact">
-        <div class="home-psn-platform-label">
-          <span>🎮</span> <span>PlayStation Network</span>
-        </div>
-        <div class="home-psn-meta-compact home-np-text-wrap">
-          <span class="home-np-scrollable">${subTxt}</span>
-        </div>
-        <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="sincronizarCuentaPlayStation(null, true)">
-          <span class="home-np-scrollable">${escHtmlSpotify_(titleTxt)}</span>
+        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN ANDROID) -->
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleTxt)}">
+              <span class="home-np-scrollable">${escHtmlSpotify_(titleTxt)}</span>
+            </div>
+            <div style="font-size:0.73rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px; margin-top:1px;">
+              <span>PlayStation</span>
+              <span style="opacity:0.5;">·</span>
+              <span style="color:var(--muted); display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
+                <span class="home-np-dot" style="background:#64748b; box-shadow:none; animation:none;"></span>
+                <span>${l === 'en' ? 'Rest Mode' : 'En reposo'}</span>
+              </span>
+            </div>
+          </div>
         </div>
 
-        <div class="home-psn-status-row">
-          <div class="home-psn-live-pill idle" title="En reposo">
-            <span class="home-np-dot" style="background:#64748b;"></span>
-            <span>${l === 'en' ? 'Rest Mode' : 'En reposo'}</span>
+        <!-- VISTA EXPANDIDA -->
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <div class="home-psn-platform-label">
+            <span>🎮</span> <span>PlayStation Network</span>
           </div>
-          ${isDemo ? `
-            <button type="button" onclick="alternarJuegoDemoPlayStation()" title="Cambiar a juego activo" style="background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.35); color:#38bdf8; font-size:0.68rem; font-weight:700; border-radius:6px; padding:1px 7px; cursor:pointer;">
-              ⚡ Activar juego demo
-            </button>
-          ` : `
-            <button type="button" onclick="sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Check active game' : 'Comprobar si estás jugando'}" style="background:none; border:none; cursor:pointer; color:#38bdf8; font-size:0.75rem; padding:0; display:inline-flex; align-items:center;">
-              🔄 Sincronizar
-            </button>
-          `}
+          <div class="home-psn-meta-compact home-np-text-wrap">
+            <span class="home-np-scrollable">${subTxt}</span>
+          </div>
+          <div class="home-psn-title-compact home-np-text-wrap">
+            <span class="home-np-scrollable">${escHtmlSpotify_(titleTxt)}</span>
+          </div>
+
+          <div class="home-psn-status-row">
+            <div class="home-psn-live-pill idle" title="En reposo">
+              <span class="home-np-dot" style="background:#64748b;"></span>
+              <span>${l === 'en' ? 'Rest Mode' : 'En reposo'}</span>
+            </div>
+            ${isDemo ? `
+              <button type="button" onclick="event.stopPropagation(); alternarJuegoDemoPlayStation()" title="Cambiar a juego activo" style="background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.35); color:#38bdf8; font-size:0.68rem; font-weight:700; border-radius:6px; padding:1px 7px; cursor:pointer;">
+                ⚡ Activar juego demo
+              </button>
+            ` : `
+              <button type="button" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Check active game' : 'Comprobar si estás jugando'}" style="background:none; border:none; cursor:pointer; color:#38bdf8; font-size:0.75rem; padding:0; display:inline-flex; align-items:center;">
+                🔄 Sincronizar
+              </button>
+            `}
+          </div>
         </div>
       </div>
 
       <div class="home-psn-right-col">
-        <a href="https://www.playstation.com" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link" title="PlayStation">
+        <a href="https://www.playstation.com" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="PlayStation">
           <svg width="22" height="18" viewBox="0 0 24 20" fill="none">
             <path fill="#0070d1" d="M11.332 0C8.835 0 8.01 1.637 8.01 3.518v12.27c1.782.88 3.567.88 5.349 0V2.138c0-1.464-.326-2.138-2.027-2.138zm2.027 15.788c-1.782.88-3.567.88-5.349 0v.018c-3.14 1.547-5.59 1.488-7.25.753-.526-.233-.76-.475-.76-.475s.256.402.772.696c2.19 1.25 5.568 1.155 8.908-.344l3.679-1.648zm4.721-3.69c-2.313 0-4.32.91-5.717 2.378l2.951 1.34c1.11-.84 2.275-1.298 3.488-1.298 1.763 0 2.656.76 2.656 1.834 0 1.25-1.285 1.76-2.935 2.155-2.222.532-4.996.96-7.143 2.05l3.292 1.472c1.75-.688 3.864-1.127 5.766-1.583 2.355-.564 4.542-1.564 4.542-4.376 0-2.585-2.484-3.972-6.9-3.972z"/>
           </svg>
         </a>
-        <button type="button" class="btn-psn-quick-add" onclick="cambiarCat('Juegos', 'Consolas')" title="Ver Juegos">
+        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="Ver Juegos">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
       </div>
     </div>
   `;
@@ -20210,39 +20383,60 @@ function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
 
 function dibujarTarjetaPlayStationCompactaDesconectado() {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  const isExp = estaLiveCardExpandida('playstation');
   return `
-    <div class="home-playstation-card-compact">
-      <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; cursor:pointer;" onclick="abrirModalConectarPsn()">
+    <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
         <span style="opacity:0.8;">🎮</span>
       </div>
 
       <div class="home-psn-center-compact">
-        <div class="home-psn-platform-label">
-          <span>🎮</span> <span>PlayStation Network</span>
-        </div>
-        <div class="home-psn-meta-compact home-np-text-wrap">
-          <span class="home-np-scrollable">${l === 'en' ? 'Not connected' : 'Sin cuenta vinculada'}</span>
-        </div>
-        <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="abrirModalConectarPsn()">
-          <span class="home-np-scrollable" style="color:#38bdf8;">${l === 'en' ? 'Tap here to connect PSN account' : 'Toca aquí para conectar PlayStation'}</span>
+        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN ANDROID) -->
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-psn-title-compact home-np-text-wrap" style="color:#38bdf8; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
+              <span class="home-np-scrollable">${l === 'en' ? 'Connect PlayStation' : 'Conectar PlayStation'}</span>
+            </div>
+            <div style="font-size:0.73rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+              <span>PlayStation Network</span>
+            </div>
+          </div>
         </div>
 
-        <div class="home-psn-status-row">
-          <button type="button" class="btn-today-pill" onclick="abrirModalConectarPsn()" style="height:22px; font-size:0.68rem; padding:0 10px; background:rgba(0,112,209,0.15); border-color:rgba(0,112,209,0.4); color:#38bdf8;">
-            + Vincular PSN
-          </button>
+        <!-- VISTA EXPANDIDA -->
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <div class="home-psn-platform-label">
+            <span>🎮</span> <span>PlayStation Network</span>
+          </div>
+          <div class="home-psn-meta-compact home-np-text-wrap">
+            <span class="home-np-scrollable">${l === 'en' ? 'Not connected' : 'Sin cuenta vinculada'}</span>
+          </div>
+          <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
+            <span class="home-np-scrollable" style="color:#38bdf8;">${l === 'en' ? 'Tap here to connect PSN account' : 'Toca aquí para conectar PlayStation'}</span>
+          </div>
+
+          <div class="home-psn-status-row">
+            <button type="button" class="btn-today-pill" onclick="event.stopPropagation(); abrirModalConectarPsn()" style="height:22px; font-size:0.68rem; padding:0 10px; background:rgba(0,112,209,0.15); border-color:rgba(0,112,209,0.4); color:#38bdf8;">
+              + Vincular PSN
+            </button>
+          </div>
         </div>
       </div>
 
       <div class="home-psn-right-col">
-        <span class="home-psn-logo-link" style="cursor:pointer;" onclick="abrirModalConectarPsn()" title="PlayStation">
+        <span class="home-psn-logo-link live-card-expanded-only" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()" title="PlayStation">
           <svg width="22" height="18" viewBox="0 0 24 20" fill="none">
             <path fill="#0070d1" d="M11.332 0C8.835 0 8.01 1.637 8.01 3.518v12.27c1.782.88 3.567.88 5.349 0V2.138c0-1.464-.326-2.138-2.027-2.138zm2.027 15.788c-1.782.88-3.567.88-5.349 0v.018c-3.14 1.547-5.59 1.488-7.25.753-.526-.233-.76-.475-.76-.475s.256.402.772.696c2.19 1.25 5.568 1.155 8.908-.344l3.679-1.648zm4.721-3.69c-2.313 0-4.32.91-5.717 2.378l2.951 1.34c1.11-.84 2.275-1.298 3.488-1.298 1.763 0 2.656.76 2.656 1.834 0 1.25-1.285 1.76-2.935 2.155-2.222.532-4.996.96-7.143 2.05l3.292 1.472c1.75-.688 3.864-1.127 5.766-1.583 2.355-.564 4.542-1.564 4.542-4.376 0-2.585-2.484-3.972-6.9-3.972z"/>
           </svg>
         </span>
-        <button type="button" class="btn-psn-quick-add" onclick="cambiarCat('Juegos', 'Consolas')" title="Juegos">
+        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="Juegos">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
       </div>
     </div>
   `;
