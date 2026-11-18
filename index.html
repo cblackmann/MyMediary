@@ -480,8 +480,10 @@ body, button, input, select, textarea{font-family:var(--font-family)}
 input, textarea, [contenteditable="true"], .selectable-text{-webkit-touch-callout:default !important;-webkit-user-select:text !important;user-select:text !important}
 img{-webkit-touch-callout:none !important;-webkit-user-select:none !important;user-select:none !important;-webkit-user-drag:none !important;user-drag:none !important}
 .avatar img, .user-avatar img, .ruleta-amigo-avatar img, .friend-card-avatar img, .profile-avatar-wrapper img, .modal-perfil-amigo-avatar img, .profile-avatar-box img, .friend-item-avatar img, .friend-avatar-wrap img, #amigo-modal-avatar img, .feed-user-avatar img, .discover-item-avatar img, .col-thumb, .m-card-thumb, .ficha-poster{pointer-events:none !important;-webkit-touch-callout:none !important;-webkit-user-drag:none !important;user-drag:none !important;user-select:none !important}
-body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px}header{background:var(--header-bg);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}.header-brand, .header-actions{display:flex;align-items:center;gap:16px}.header-actions{gap:8px}.logo{font-size:1.25rem;font-weight:700;color:var(--accent);cursor:pointer;transition:var(--tr)}
-.logo:hover{filter:drop-shadow(0 0 8px rgba(var(--accent-rgb),.5))}.year-display{font-family:'Cinzel',serif;font-size:1.55rem;font-weight:700;letter-spacing:0.1em;background:linear-gradient(135deg,#f8fafc 0%,var(--accent) 65%,var(--muted) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;user-select:none;line-height:1;filter:drop-shadow(0 0 10px rgba(56,189,248,0.3))}
+body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px}header,header.app-header-integrated{background:transparent !important;border:none !important;border-bottom:none !important;box-shadow:none !important;padding:14px 20px 8px !important;display:grid !important;grid-template-columns:1fr auto 1fr !important;align-items:center !important;position:relative !important;z-index:100;width:100%;box-sizing:border-box}.header-corner-left{justify-self:start;display:flex;align-items:center}.header-title-centered{justify-self:center;display:flex;align-items:center;justify-content:center;text-align:center}.header-corner-right{justify-self:end;display:flex;align-items:center;gap:12px !important}.header-brand, .header-actions{display:flex;align-items:center;gap:12px}.logo{font-size:1.68rem;font-weight:800;color:var(--accent);cursor:pointer;transition:var(--tr);display:flex;align-items:center;gap:9px}.header-brand-text{font-family:'Cinzel',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,serif;font-size:1.68rem !important;font-weight:800 !important;letter-spacing:-0.02em !important;background:linear-gradient(135deg,var(--text) 0%,var(--accent) 85%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:var(--accent);line-height:1}
+.logo:hover{filter:drop-shadow(0 0 10px rgba(var(--accent-rgb),.5))}.header-logo-icon{width:32px;height:32px;border-radius:8px;object-fit:cover;box-shadow:0 2px 8px rgba(0,0,0,0.28)}.year-display{font-family:'Cinzel',serif;font-size:1.55rem;font-weight:700;letter-spacing:0.1em;background:linear-gradient(135deg,#f8fafc 0%,var(--accent) 65%,var(--muted) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;user-select:none;line-height:1;filter:drop-shadow(0 0 10px rgba(56,189,248,0.3))}
+.btn-year-picker-compact{background:transparent !important;border:1px solid rgba(255,255,255,0.14) !important;padding:2px 8px !important;border-radius:8px !important;gap:4px !important;box-shadow:none !important}.btn-year-picker-compact:hover{background:var(--accent-subtle) !important;border-color:var(--accent-border) !important;transform:translateY(-1px)}.btn-year-picker-compact .year-display-txt{font-size:1.02rem !important;letter-spacing:0.04em !important}.btn-year-picker-compact .year-picker-arrow{font-size:0.65rem !important}
+.btn-header-clean-icon{background:transparent !important;border:none !important;border-radius:0 !important;box-shadow:none !important;color:var(--text) !important;padding:4px 6px !important;margin:0 !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;cursor:pointer !important;font-size:1.18rem !important;line-height:1 !important;transition:transform .15s ease,opacity .15s ease,color .15s ease !important;outline:none !important;position:relative !important;overflow:visible !important}.btn-header-clean-icon .btn-clean-glyph{display:inline-flex;align-items:center;justify-content:center;font-size:1.18rem;line-height:1}.btn-header-clean-icon:hover{opacity:.82;transform:scale(1.12);color:var(--accent)}.btn-header-clean-icon:active{transform:scale(.94)}.btn-header-clean-icon .notif-badge-pill{top:-4px;right:-5px;border:2px solid var(--bg)}
 .btn-header-icon{background:var(--card);border:1px solid var(--border);color:var(--text);border-radius:50%;width:38px;height:38px;padding:0;margin:0;display:inline-grid;place-items:center;cursor:pointer;font-size:1.12rem;line-height:1;transition:var(--tr);outline:none;overflow:hidden}.btn-header-icon .btn-icon-glyph{display:flex;align-items:center;justify-content:center;width:100%;height:100%;line-height:1;text-align:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;margin:0;padding:0}.btn-header-icon:hover{background:var(--accent);color:#0f172a;transform:translateY(-1px);box-shadow:0 0 14px rgba(56,189,248,0.4)}.btn-refresh.spinning{animation:spinRefresh 0.8s linear infinite}
 #btn-notifications{position:relative;overflow:visible !important;}
 .notif-badge-pill{position:absolute;top:-4px;right:-4px;background:var(--danger);color:var(--danger-contrast);font-size:0.62rem;font-weight:800;min-width:17px;height:17px;padding:0 4px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--header-bg, var(--bg));box-shadow:0 2px 6px rgba(0,0,0,0.35);pointer-events:none;z-index:2;line-height:1;}
@@ -606,7 +608,7 @@ textarea.comment-box:hover{border-color:rgba(56,189,248,.4)}textarea.comment-box
 body{padding-bottom:calc(var(--b-nav) + 24px)}.web-nav-wrapper{display:none}.mobile-bottom-nav{display:flex}.container{padding:0 12px;margin:12px auto}.search-row{flex-direction:column;align-items:stretch}.btn-action-manual{justify-content:center}.cat-wide-body{grid-template-columns:1fr;gap:12px}.cat-subtotals-wrap{grid-column:span 1}.date-row{flex-direction:column;gap:8px;align-items:stretch}.btn-today-pill{width:100%;height:38px}.table-container{display:none}.mobile-history-list{display:flex}.modal-overlay{align-items:flex-end}.modal-box{width:100%;max-width:100%;border-bottom-left-radius:0;border-bottom-right-radius:0;padding:20px 20px calc(24px + env(safe-area-inset-bottom));animation:slideUpModal .25s cubic-bezier(.34,1.2,.64,1);position:relative;touch-action:pan-y;will-change:transform}
 .modal-swipe-handle{width:42px;height:5px;background:rgba(148,163,184,0.4);border-radius:4px;margin:-8px auto 14px auto;cursor:grab;touch-action:none;display:block;transition:background 0.15s ease, transform 0.15s ease}
 .modal-box.swiping-down .modal-swipe-handle{background:var(--accent);transform:scaleX(1.15)}.ficha-grid{flex-direction:column;align-items:center;text-align:center}.ficha-poster{width:135px;height:195px}.profile-grid-records{grid-template-columns:repeat(2,1fr);gap:8px}.profile-grid-fun{grid-template-columns:1fr;gap:8px}.profile-grid-highlights{grid-template-columns:repeat(2,1fr);gap:8px}
-header{padding:10px 14px}.header-brand{gap:10px}.logo{font-size:1.15rem}.year-display{font-size:1.35rem}.year-display-txt{font-size:1.1rem}.btn-year-picker{padding:3px 8px;gap:4px}.header-actions{gap:6px}.btn-header-icon{width:36px;height:36px;font-size:1.05rem}.profile-hero-card{flex-direction:column;align-items:center;text-align:center;padding:18px 14px;gap:14px}.profile-identity-wrap{flex-direction:column;align-items:center;text-align:center;min-width:100%;gap:12px}.profile-avatar-box{width:90px;height:90px;margin:0 auto}.profile-nick-row{justify-content:center}.profile-info-col{display:flex;flex-direction:column;align-items:center}.profile-google-box{align-items:stretch;width:100%;gap:8px}.profile-google-box button{width:100%;justify-content:center}
+header,header.app-header-integrated{padding:10px 14px 4px !important;background:transparent !important;border:none !important;display:grid !important;grid-template-columns:1fr auto 1fr !important;align-items:center !important}.header-brand{gap:10px}.logo{font-size:1.45rem !important}.header-brand-text{font-size:1.45rem !important}.header-logo-icon{width:26px !important;height:26px !important}.year-display{font-size:1.15rem}.year-display-txt{font-size:0.96rem !important}.btn-year-picker{padding:2px 7px;gap:4px}.header-actions{gap:8px !important}.btn-header-clean-icon{font-size:1.08rem !important;padding:3px 4px !important}.profile-hero-card{flex-direction:column;align-items:center;text-align:center;padding:18px 14px;gap:14px}.profile-identity-wrap{flex-direction:column;align-items:center;text-align:center;min-width:100%;gap:12px}.profile-avatar-box{width:90px;height:90px;margin:0 auto}.profile-nick-row{justify-content:center}.profile-info-col{display:flex;flex-direction:column;align-items:center}.profile-google-box{align-items:stretch;width:100%;gap:8px}.profile-google-box button{width:100%;justify-content:center}
 @keyframes slideUpModal{from{transform:translateY(100%)}to{transform:translateY(0)}}
 }
 /* NUEVA PANTALLA DE INICIO REORGANIZADA */
@@ -3161,9 +3163,55 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   transform: translateY(-1px);
 }
 </style> </head> <body>
-<header> <div class="header-brand"> <div class="logo" onclick="irInicio()" style="display:flex;align-items:center;gap:8px;"><img src="./icon.png" alt="Logo" style="width:28px;height:28px;border-radius:6px;object-fit:cover;box-shadow:0 2px 6px rgba(0,0,0,0.3);"> <span>Mediary</span></div> <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;"> <button type="button" id="btn-selector-anio" class="btn-year-picker" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año"> <span id="label-anio-activo" class="year-display-txt">2026</span> <span class="year-picker-arrow" id="arrow-selector-anio">▾</span> </button> <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()"> <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div> <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')"> <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span> </button> <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')"> <span>📅 2025</span> </button> <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')"> <span>📅 2024</span> </button> <div class="year-dropdown-divider"></div> <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')"> <span data-i18n="year_all_time">🌐 Todos los Tiempos</span> </button> </div> </div> </div> <div class="header-actions"> <button type="button" class="btn-header-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none; border-color:var(--accent-border); color:var(--accent); background:var(--accent-subtle);" onclick="instalarAppMediary()"><span class="btn-icon-glyph">📲</span></button> <button type="button" class="btn-header-icon btn-refresh" id="btn-refresh" title="Sincronizar y reparar datos" onclick="refrescarDatosApp()"><span class="btn-icon-glyph">🔄</span></button> <button type="button" class="btn-header-icon" id="btn-notifications" title="Notificaciones" onclick="abrirModalNotificaciones()"><span class="btn-icon-glyph">🔔</span><span id="badge-notif-count" class="notif-badge-pill" style="display:none;">0</span></button>
-<button type="button" class="btn-header-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()"><span class="btn-icon-glyph">⚙️</span></button>
-</div> </header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio">
+<header class="app-header-integrated">
+  <!-- 1. Esquina superior izquierda: Selector de año (más pequeño e integrado) -->
+  <div class="header-corner-left">
+    <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;">
+      <button type="button" id="btn-selector-anio" class="btn-year-picker btn-year-picker-compact" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año">
+        <span id="label-anio-activo" class="year-display-txt">2026</span>
+        <span class="year-picker-arrow" id="arrow-selector-anio">▾</span>
+      </button>
+      <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()">
+        <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div>
+        <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')">
+          <span>✨ 2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span>
+        </button>
+        <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')">
+          <span>📅 2025</span>
+        </button>
+        <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')">
+          <span>📅 2024</span>
+        </button>
+        <div class="year-dropdown-divider"></div>
+        <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')">
+          <span data-i18n="year_all_time">🌐 Todos los Tiempos</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Centro: Título Mediary más grande y centrado -->
+  <div class="header-title-centered">
+    <div class="logo header-logo-prominent" onclick="irInicio()" title="Mediary - Inicio">
+      <img src="./icon.png" alt="Logo" class="header-logo-icon">
+      <span class="header-brand-text">Mediary</span>
+    </div>
+  </div>
+
+  <!-- 3. Esquina superior derecha: Notificaciones y Configuración (de izq a der, sin círculos) -->
+  <div class="header-corner-right header-actions">
+    <button type="button" class="btn-header-clean-icon" id="btn-install-pwa" title="Instalar aplicación Mediary en tu dispositivo" style="display:none;" onclick="instalarAppMediary()">
+      <span class="btn-clean-glyph">📲</span>
+    </button>
+    <button type="button" class="btn-header-clean-icon" id="btn-notifications" title="Notificaciones" onclick="abrirModalNotificaciones()">
+      <span class="btn-clean-glyph">🔔</span>
+      <span id="badge-notif-count" class="notif-badge-pill" style="display:none;">0</span>
+    </button>
+    <button type="button" class="btn-header-clean-icon" id="btn-settings" title="Configuración" onclick="abrirModalConfiguracion()">
+      <span class="btn-clean-glyph">⚙️</span>
+    </button>
+  </div>
+</header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn">🏠</span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn">⭐</span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn">👥</span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn">👤</span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn">📌</span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn">🎬</span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn">📺</span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn">🎵</span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn">🎮</span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn">📚</span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio">
       <!-- 1. SALUDO INICIAL -->
       <div class="home-greeting-banner" id="home-greeting-banner">
         <h1 class="home-greeting-title">
@@ -20788,11 +20836,10 @@ window.onload = () => {
   const opts = { locale: (userPrefs.lang === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true };
   fpInicio = flatpickr('#input-fecha-inicio', opts);
   fpFin = flatpickr('#input-fecha-fin', opts);
-  sincronizarPerfilDesdeServidor();
-  if (estado.userEmail) { cargarRegistros(); cargarWatchlist(); cargarFeedActividadAmigos(); } else { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); }
   precargarDiscoverEnSegundoPlano(1);
   iniciarLoopAutoActualizacionDiscover();
-  inicializarManejoBotonAtras(); inicializarEventosBuscadores();
+  inicializarManejoBotonAtras();
+  inicializarEventosBuscadores();
   if (typeof inicializarSistemaNotificaciones === 'function') {
     inicializarSistemaNotificaciones();
   }
@@ -20802,44 +20849,50 @@ window.onload = () => {
   if (typeof procesarRetornoSteamAuth === 'function') {
     procesarRetornoSteamAuth();
   }
-  // Auto-sincronización de Steam si ya estaba conectado con datos genéricos
-  setTimeout(() => {
-    try {
-      const isSteamConn = localStorage.getItem('mediary_steam_connected') === 'true';
-      const steamId = localStorage.getItem('mediary_steam_id');
-      if (isSteamConn && steamId && typeof sincronizarCuentaSteam === 'function') {
-        let u = null;
-        try { const rawU = localStorage.getItem('mediary_steam_user'); if (rawU) u = JSON.parse(rawU); } catch(e) {}
-        let sStats = null;
-        try { const rawS = localStorage.getItem('mediary_steam_stats'); if (rawS) sStats = JSON.parse(rawS); } catch(e) {}
-        const tieneFake = sStats && sStats.totalHours === 412.5 && Array.isArray(sStats.topGames) && sStats.topGames.some(g => g.name === 'Elden Ring');
-        if (tieneFake || !sStats || !u || !u.personaName || u.personaName.startsWith('Steam User') || u.personaName.startsWith('Jugador (')) {
-          sincronizarCuentaSteam(steamId, false);
-        }
-      }
-    } catch(e) {}
-  }, 1200);
+
+  // Sincronización integrada de datos, productos y estadísticas al recargar/abrir la app
+  recargarYSincronizarApp(false);
+
+  // Inicializar pull-to-refresh para recarga manual fluida en móviles
+  if (typeof inicializarPullToRefresh === 'function') {
+    inicializarPullToRefresh();
+  }
+
   // Detección automática en boot de discos completados
   setTimeout(() => {
-    const spTok = localStorage.getItem('mediary_spotify_token');
-    if (spTok && typeof actualizarDatosSpotify === 'function') {
-      actualizarDatosSpotify(false).then(() => {
-        if (typeof verificarYMostrarPromptDiscoCompletado === 'function') {
-          verificarYMostrarPromptDiscoCompletado();
-        }
-      }).catch(() => {
-        if (typeof verificarYMostrarPromptDiscoCompletado === 'function') {
-          verificarYMostrarPromptDiscoCompletado();
-        }
-      });
-    } else {
-      if (typeof verificarYMostrarPromptDiscoCompletado === 'function') {
-        verificarYMostrarPromptDiscoCompletado();
-      }
+    if (typeof verificarYMostrarPromptDiscoCompletado === 'function') {
+      verificarYMostrarPromptDiscoCompletado();
     }
-  }, 1000);
+  }, 1200);
+
   setTimeout(() => reposicionarIndicadorNavMovil(), 180);
 };
+
+function inicializarPullToRefresh() {
+  let touchStartY = 0;
+  let isPulling = false;
+  window.addEventListener('touchstart', (e) => {
+    if (window.scrollY === 0 && e.touches.length === 1) {
+      touchStartY = e.touches[0].clientY;
+      isPulling = true;
+    } else {
+      isPulling = false;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!isPulling) return;
+    const currentY = e.touches[0].clientY;
+    if (currentY - touchStartY > 95 && window.scrollY === 0) {
+      isPulling = false;
+      recargarYSincronizarApp(true);
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    isPulling = false;
+  }, { passive: true });
+}
 const irInicio = (pushNav = true) => {
   if (pushNav) registrarNavegacionApp('inicio');
   actualizarBarraNavegacionMovil('m-btn-inicio');
@@ -20870,84 +20923,151 @@ function actualizarBarraNavegacionMovil(btnId) {
   }
 }
 window.addEventListener('resize', () => reposicionarIndicadorNavMovil());
-function refrescarDatosApp() {
-  const btn = document.getElementById('btn-refresh');
-  if (btn) btn.classList.add('spinning');
-  const l = userPrefs.lang || 'es';
-
-  let stoppedSpinning = false;
-  const detenerSpin = () => {
-    if (!stoppedSpinning) {
-      stoppedSpinning = true;
-      if (btn) setTimeout(() => btn.classList.remove('spinning'), 400);
-    }
-  };
-
-  // Temporizador de seguridad para garantizar que el botón nunca se quede pegado girando
-  setTimeout(detenerSpin, 7000);
-
-  if (!estado.userEmail) {
-    detenerSpin();
-    renderizarResumenInicio();
-    renderizarFeedAmigosResumidoInicio();
-    mostrarToastPersonalizado(l === 'en' ? 'Log in to sync your data with Supabase.' : 'Inicia sesión para sincronizar tus datos con Supabase.');
-    return;
+async function recargarYSincronizarApp(notificar = false) {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  if (notificar) {
+    mostrarToastPersonalizado(l === 'en' ? '🔄 Sincronizando datos, productos y estadísticas...' : '🔄 Sincronizando datos, productos y estadísticas...');
   }
 
-  // Refrescar en paralelo perfil, watchlist y feed de amigos
-  sincronizarPerfilDesdeServidor();
-  cargarWatchlist();
-  cargarFeedActividadAmigos(false);
-  if (typeof verificarLikesRecibidosEnNube === 'function') verificarLikesRecibidosEnNube();
-  if (typeof verificarRecordatorioRacha21 === 'function') verificarRecordatorioRacha21();
+  // 1. SINCRONIZACIÓN DE DATOS (Supabase / Perfil / Registros / Watchlist / Amigos / Rachas)
+  try {
+    if (typeof sincronizarPerfilDesdeServidor === 'function') {
+      sincronizarPerfilDesdeServidor();
+    }
+    if (estado && estado.userEmail) {
+      if (typeof cargarWatchlist === 'function') cargarWatchlist();
+      if (typeof cargarFeedActividadAmigos === 'function') cargarFeedActividadAmigos(false);
+      if (typeof verificarLikesRecibidosEnNube === 'function') verificarLikesRecibidosEnNube();
+      if (typeof verificarRecordatorioRacha21 === 'function') verificarRecordatorioRacha21();
 
-  // Sincronizar registros del usuario y actualizar las vistas activas
-  google.script.run
-    .withSuccessHandler(d => {
-      detenerSpin();
-      estado.registros = (d || []).map(r => ({
-        ...r,
-        fechaInicio: sanitizarFechaFrontend(r.fechaInicio),
-        fechaFin: sanitizarFechaFrontend(r.fechaFin)
-      }));
-      try {
-        if (estado.categoria === 'inicio') {
-          renderizarResumenInicio();
-          renderizarFeedAmigosResumidoInicio();
-          renderizarDiscoverVista();
-        } else if (estado.categoria === 'listas') {
-          renderizarStats();
-        } else if (estado.categoria === 'discover') {
-          renderizarDiscoverVista();
-        } else if (estado.categoria === 'perfil') {
-          renderizarFavoritosPerfil();
-          calcularYMostrarEstadisticasPerfil();
-        } else {
-          if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist();
-          else filtrarYMostrarHistorial();
+      if (window.google && google.script && google.script.run && typeof google.script.run.obtenerRegistros === 'function') {
+        google.script.run
+          .withSuccessHandler(d => {
+            estado.registros = (d || []).map(r => ({
+              ...r,
+              fechaInicio: sanitizarFechaFrontend(r.fechaInicio),
+              fechaFin: sanitizarFechaFrontend(r.fechaFin)
+            }));
+            recalcularYActualizarVistasTrasSync();
+          })
+          .withFailureHandler(err => {
+            console.error('Error al sincronizar registros:', err);
+          })
+          .obtenerRegistros(estado.userEmail);
+
+        if (typeof google.script.run.sincronizarYRepararRegistros === 'function') {
+          google.script.run
+            .withSuccessHandler(res => {
+              if (res && res.reparados > 0 && typeof cargarRegistros === 'function') cargarRegistros();
+            })
+            .withFailureHandler(() => {})
+            .sincronizarYRepararRegistros(estado.userEmail);
         }
-      } catch (err) {
-        console.error('Error al actualizar vistas tras sincronizar:', err);
-      }
-      mostrarToastPersonalizado(l === 'en' ? 'Mediary is up to date! All entries verified. ✨' : '¡Mediary verificado y al día con Supabase! Todo en orden. ✨');
-    })
-    .withFailureHandler(err => {
-      detenerSpin();
-      console.error('Error al sincronizar registros:', err);
-      mostrarToastPersonalizado(l === 'en' ? 'Could not sync with Supabase. Check connection.' : 'No se pudo sincronizar con Supabase. Revisa tu conexión.');
-    })
-    .obtenerRegistros(estado.userEmail);
-
-  // Ejecutar auditoría/reparación en segundo plano sin bloquear la respuesta del botón
-  google.script.run
-    .withSuccessHandler(res => {
-      if (res && res.reparados > 0) {
-        mostrarToastPersonalizado(l === 'en' ? `Audit complete: ${res.reparados} entry(ies) fixed! 🛠️` : `¡Auditoría completa! Se repararon ${res.reparados} registro(s) con directores o formatos antiguos. 🛠️`);
+      } else if (typeof cargarRegistros === 'function') {
         cargarRegistros();
       }
-    })
-    .withFailureHandler(() => {})
-    .sincronizarYRepararRegistros(estado.userEmail);
+    } else {
+      recalcularYActualizarVistasTrasSync();
+    }
+  } catch (err) {
+    console.error('Error en sincronización de datos:', err);
+  }
+
+  // 2. SINCRONIZACIÓN DE PRODUCTOS Y SERVICIOS CONECTADOS (Spotify, Last.fm, Steam, PlayStation)
+  const promesasServicios = [];
+
+  // A. Spotify
+  try {
+    const spTok = localStorage.getItem('mediary_spotify_token');
+    if (spTok) {
+      if (typeof actualizarNowPlayingSpotify === 'function') {
+        promesasServicios.push(actualizarNowPlayingSpotify().catch(() => null));
+      }
+      if (typeof sincronizarReproduccionesRecientesSpotify === 'function') {
+        promesasServicios.push(sincronizarReproduccionesRecientesSpotify(false).catch(() => null));
+      }
+      if (typeof actualizarDatosSpotify === 'function') {
+        promesasServicios.push(actualizarDatosSpotify(false).catch(() => null));
+      }
+    }
+  } catch(e) {}
+
+  // B. Last.fm
+  try {
+    const lfmUser = localStorage.getItem('mediary_lastfm_user') || localStorage.getItem('mediary_lastfm_username');
+    if (lfmUser && typeof sincronizarCuentaLastFm === 'function') {
+      promesasServicios.push(sincronizarCuentaLastFm(lfmUser, false).catch(() => null));
+    }
+  } catch(e) {}
+
+  // C. Steam
+  try {
+    const isSteamConn = localStorage.getItem('mediary_steam_connected') === 'true';
+    const steamId = localStorage.getItem('mediary_steam_id');
+    if (isSteamConn && steamId && typeof sincronizarCuentaSteam === 'function') {
+      promesasServicios.push(sincronizarCuentaSteam(steamId, false).catch(() => null));
+    }
+  } catch(e) {}
+
+  // D. PlayStation Network
+  try {
+    const isPsnConn = localStorage.getItem('mediary_psn_connected') === 'true';
+    const psnUser = localStorage.getItem('mediary_psn_username');
+    if (isPsnConn && psnUser && typeof sincronizarCuentaPlayStation === 'function') {
+      promesasServicios.push(sincronizarCuentaPlayStation(psnUser, false).catch(() => null));
+    }
+  } catch(e) {}
+
+  if (promesasServicios.length > 0) {
+    try { await Promise.allSettled(promesasServicios); } catch (_) {}
+  }
+
+  // 3. SINCRONIZACIÓN Y RECALCULO DE ESTADÍSTICAS Y VISTAS
+  recalcularYActualizarVistasTrasSync();
+
+  if (notificar) {
+    mostrarToastPersonalizado(l === 'en' ? '✨ Mediary synchronized: data, products & statistics updated!' : '✨ Mediary al día: datos, productos y estadísticas actualizados.');
+  }
+}
+
+function recalcularYActualizarVistasTrasSync() {
+  try {
+    if (typeof renderizarResumenInicio === 'function') renderizarResumenInicio();
+    if (typeof renderizarFeedAmigosResumidoInicio === 'function') renderizarFeedAmigosResumidoInicio();
+    if (typeof renderizarPlayStationNowPlayingInicio === 'function') renderizarPlayStationNowPlayingInicio(true);
+    if (typeof actualizarUIPlayStation === 'function') actualizarUIPlayStation();
+    if (typeof actualizarUILastFm === 'function') actualizarUILastFm();
+    if (typeof actualizarUISteam === 'function') actualizarUISteam();
+    if (typeof actualizarMetricasResumenInicio === 'function') actualizarMetricasResumenInicio();
+
+    if (estado) {
+      if (estado.categoria === 'perfil') {
+        if (typeof renderizarFavoritosPerfil === 'function') renderizarFavoritosPerfil();
+        if (typeof calcularYMostrarEstadisticasPerfil === 'function') calcularYMostrarEstadisticasPerfil();
+      } else if (estado.categoria === 'listas') {
+        if (typeof renderizarStats === 'function') renderizarStats();
+      } else if (estado.categoria === 'discover') {
+        if (typeof renderizarDiscoverVista === 'function') renderizarDiscoverVista();
+      } else if (estado.categoria && estado.categoria !== 'inicio') {
+        if (typeof esSubcategoriaWatchlist === 'function' && esSubcategoriaWatchlist(estado.subcategoria)) {
+          if (typeof renderizarWatchlist === 'function') renderizarWatchlist();
+        } else if (typeof filtrarYMostrarHistorial === 'function') {
+          filtrarYMostrarHistorial();
+        }
+      }
+    }
+
+    const modalStats = document.getElementById('modal-estadisticas-avanzadas');
+    if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
+      renderizarContenidoEstadisticasAvanzadas();
+    }
+  } catch (err) {
+    console.error('Error al actualizar vistas tras sincronizar:', err);
+  }
+}
+
+function refrescarDatosApp() {
+  return recargarYSincronizarApp(true);
 }
 function obtenerTipoFicha(categoria, subcategoria) {
   const c = categoria || '';
