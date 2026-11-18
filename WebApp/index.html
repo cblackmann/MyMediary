@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Mediary — Your Media, Your Diary</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#111827">
+<meta name="theme-color" content="#0f172a">
 <meta name="color-scheme" content="light dark">
 <script>
 (function() {
@@ -56,18 +56,12 @@
       'espresso-dark': '#1c1917', 'espresso-light': '#eee5d7',
       'dracula-dark': '#181923', 'dracula-light': '#e6e0ef'
     };
-    const headerMap = {
-      'slate-dark': '#0b1120', 'slate-light': '#cbd5e1',
-      'emerald-dark': '#040a08', 'emerald-light': '#ceddc8',
-      'espresso-dark': '#141210', 'espresso-light': '#e2d5c2',
-      'dracula-dark': '#12131b', 'dracula-light': '#d6ccdf'
-    };
     if (bgMap[theme]) {
       document.documentElement.style.backgroundColor = bgMap[theme];
-    }
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta && headerMap[theme]) {
-      meta.setAttribute('content', headerMap[theme]);
+      const meta = document.querySelector('meta[name="theme-color"]');
+      if (meta) {
+        meta.setAttribute('content', bgMap[theme]);
+      }
     }
   } catch(e) {}
 })();
@@ -480,7 +474,8 @@ body, button, input, select, textarea{font-family:var(--font-family)}
 input, textarea, [contenteditable="true"], .selectable-text{-webkit-touch-callout:default !important;-webkit-user-select:text !important;user-select:text !important}
 img{-webkit-touch-callout:none !important;-webkit-user-select:none !important;user-select:none !important;-webkit-user-drag:none !important;user-drag:none !important}
 .avatar img, .user-avatar img, .ruleta-amigo-avatar img, .friend-card-avatar img, .profile-avatar-wrapper img, .modal-perfil-amigo-avatar img, .profile-avatar-box img, .friend-item-avatar img, .friend-avatar-wrap img, #amigo-modal-avatar img, .feed-user-avatar img, .discover-item-avatar img, .col-thumb, .m-card-thumb, .ficha-poster{pointer-events:none !important;-webkit-touch-callout:none !important;-webkit-user-drag:none !important;user-drag:none !important;user-select:none !important}
-body{background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px}header,header.app-header-integrated{background:transparent !important;border:none !important;border-bottom:none !important;box-shadow:none !important;padding:calc(env(safe-area-inset-top, 0px) + 26px) 24px 14px !important;display:grid !important;grid-template-columns:1fr auto 1fr !important;align-items:center !important;position:relative !important;z-index:100;width:100%;box-sizing:border-box}.header-corner-left{justify-self:start;display:flex;align-items:center}.header-title-centered{justify-self:center;display:flex;align-items:center;justify-content:center;text-align:center}.header-corner-right{justify-self:end;display:flex;align-items:center;gap:18px !important}.header-brand, .header-actions{display:flex;align-items:center;gap:18px}.logo{font-size:2.8rem;font-weight:800;color:var(--accent);cursor:pointer;transition:var(--tr);display:flex;align-items:center;justify-content:center;gap:0}.header-brand-text{font-family:'Cinzel',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,serif;font-size:2.8rem !important;font-weight:800 !important;letter-spacing:-0.02em !important;background:linear-gradient(135deg,var(--text) 0%,var(--accent) 85%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:var(--accent);line-height:1;text-align:center}
+html{background:var(--bg) !important;background-color:var(--bg) !important;min-height:100%}
+body{background:var(--bg) !important;background-color:var(--bg) !important;color:var(--text);min-height:100vh;min-height:-webkit-fill-available;padding-bottom:40px}header,header.app-header-integrated{background:transparent !important;border:none !important;border-bottom:none !important;box-shadow:none !important;padding:calc(env(safe-area-inset-top, 0px) + 26px) 24px 14px !important;display:grid !important;grid-template-columns:1fr auto 1fr !important;align-items:center !important;position:relative !important;z-index:100;width:100%;box-sizing:border-box}.header-corner-left{justify-self:start;display:flex;align-items:center}.header-title-centered{justify-self:center;display:flex;align-items:center;justify-content:center;text-align:center}.header-corner-right{justify-self:end;display:flex;align-items:center;gap:18px !important}.header-brand, .header-actions{display:flex;align-items:center;gap:18px}.logo{font-size:2.8rem;font-weight:800;color:var(--accent);cursor:pointer;transition:var(--tr);display:flex;align-items:center;justify-content:center;gap:0}.header-brand-text{font-family:'Cinzel',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,serif;font-size:2.8rem !important;font-weight:800 !important;letter-spacing:-0.02em !important;background:linear-gradient(135deg,var(--text) 0%,var(--accent) 85%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;color:var(--accent);line-height:1;text-align:center}
 .logo:hover{filter:drop-shadow(0 0 14px rgba(var(--accent-rgb),.55))}.header-logo-icon{width:38px;height:38px;border-radius:10px;object-fit:cover;box-shadow:0 3px 10px rgba(0,0,0,0.32)}.year-display{font-family:'Cinzel',serif;font-size:1.65rem;font-weight:700;letter-spacing:0.1em;background:linear-gradient(135deg,#f8fafc 0%,var(--accent) 65%,var(--muted) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;user-select:none;line-height:1;filter:drop-shadow(0 0 10px rgba(56,189,248,0.3))}
 .btn-year-picker-compact{background:rgba(255,255,255,0.04) !important;border:1px solid rgba(255,255,255,0.18) !important;padding:6px 14px !important;border-radius:12px !important;gap:7px !important;box-shadow:none !important}.btn-year-picker-compact:hover{background:var(--accent-subtle) !important;border-color:var(--accent-border) !important;transform:translateY(-1px)}.btn-year-picker-compact .year-display-txt{font-size:1.55rem !important;letter-spacing:0.05em !important;font-weight:800 !important;line-height:1 !important}.btn-year-picker-compact .year-picker-arrow{font-size:0.95rem !important}
 .btn-header-clean-icon{background:transparent !important;border:none !important;border-radius:0 !important;box-shadow:none !important;color:var(--text) !important;padding:6px 8px !important;margin:0 !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;cursor:pointer !important;font-size:1.55rem !important;line-height:1 !important;transition:transform .15s ease,opacity .15s ease,color .15s ease !important;outline:none !important;position:relative !important;overflow:visible !important}.btn-header-clean-icon .btn-clean-glyph{display:inline-flex;align-items:center;justify-content:center;font-size:1.55rem;line-height:1}.btn-header-clean-icon:hover{opacity:.82;transform:scale(1.12);color:var(--accent)}.btn-header-clean-icon:active{transform:scale(.94)}.btn-header-clean-icon .notif-badge-pill{top:-4px;right:-5px;border:2px solid var(--bg)}
@@ -1481,7 +1476,9 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .home-en-progreso-carousel::-webkit-scrollbar{height:6px;}
 .home-en-progreso-carousel::-webkit-scrollbar-track{background:transparent;}
 .home-en-progreso-carousel::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
-.home-en-progreso-card{flex:0 0 180px;width:180px;max-width:180px;box-sizing:border-box;scroll-snap-align:start;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:10px 9px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:var(--tr);position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
+.home-en-progreso-item-wrap{flex:0 0 180px;width:180px;max-width:180px;box-sizing:border-box;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;text-align:center;}
+.home-en-progreso-item-date{font-size:0.75rem;font-weight:700;color:var(--muted);text-align:center;margin-bottom:6px;white-space:nowrap;letter-spacing:0.02em;user-select:none;min-height:18px;line-height:18px;width:100%;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;justify-content:center;}
+.home-en-progreso-card{width:100%;max-width:180px;box-sizing:border-box;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:10px 9px;display:flex;flex-direction:column;align-items:center;text-align:center;transition:var(--tr);position:relative;box-shadow:0 2px 8px rgba(0,0,0,0.06);}
 .home-en-progreso-card:hover{border-color:rgba(56,189,248,0.45);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.18);}
 .home-en-progreso-poster-wrap{position:relative;width:96px;height:136px;border-radius:8px;overflow:hidden;margin-bottom:8px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,0.28);cursor:pointer;}
 .home-en-progreso-poster-wrap:hover .home-en-progreso-card-poster{transform:scale(1.04);}
@@ -1493,7 +1490,7 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .home-en-progreso-card-poster:hover{transform:scale(1.03);}
 .home-en-progreso-card-title{width:100%;font-weight:700;font-size:0.86rem;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;margin-bottom:2px;}
 .home-en-progreso-card-title:hover{color:var(--accent);}
-.home-en-progreso-card-date-top{font-size:0.72rem;font-weight:700;color:var(--accent);background:rgba(56,189,248,0.08);border:1px solid rgba(56,189,248,0.18);border-radius:6px;padding:2px 6px;text-align:center;margin:0 0 6px 0;white-space:nowrap;width:100%;box-sizing:border-box;}
+.home-en-progreso-card-date-top{display:none !important;}
 .home-en-progreso-card-sub{width:100%;font-size:0.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:2px 0 6px 0;line-height:1.2;}
 .home-en-progreso-card-date{display:none;}
 .btn-terminar-card-carousel{width:auto;min-width:110px;max-width:140px;background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.32);border-radius:20px;padding:4px 12px;min-height:28px;height:28px;font-size:0.72rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;box-shadow:0 1px 4px rgba(0,0,0,0.08);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);margin:auto auto 0 auto;white-space:nowrap;letter-spacing:0.01em;}
@@ -1502,7 +1499,9 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 [data-theme$="-light"] .btn-terminar-card-carousel,[data-theme="nordic-light"] .btn-terminar-card-carousel,[data-theme="creme-latte"] .btn-terminar-card-carousel,[data-theme="parchment"] .btn-terminar-card-carousel,[data-theme="sage-garden"] .btn-terminar-card-carousel{background:rgba(5,150,105,0.09) !important;color:#047857 !important;border-color:rgba(5,150,105,0.28) !important;}
 [data-theme$="-light"] .btn-terminar-card-carousel:hover,[data-theme="nordic-light"] .btn-terminar-card-carousel:hover,[data-theme="creme-latte"] .btn-terminar-card-carousel:hover,[data-theme="parchment"] .btn-terminar-card-carousel:hover,[data-theme="sage-garden"] .btn-terminar-card-carousel:hover{background:linear-gradient(135deg,#059669 0%,#047857 100%) !important;color:#ffffff !important;}
 @media (max-width: 480px){
-  .home-en-progreso-card{flex:0 0 155px;width:155px;max-width:155px;padding:9px 7px;}
+  .home-en-progreso-item-wrap{flex:0 0 155px;width:155px;max-width:155px;}
+  .home-en-progreso-item-date{font-size:0.71rem;margin-bottom:5px;min-height:16px;line-height:16px;}
+  .home-en-progreso-card{padding:9px 7px;}
   .home-en-progreso-poster-wrap{width:86px;height:122px;}
   .home-en-progreso-card-poster{width:86px;height:122px;}
 }
@@ -2185,13 +2184,37 @@ html[data-ui-style="modern"] .home-subcat-pill .pill-count {
 }
 
 /* ON GOING CAROUSEL COMPACTO MINIMALISTA */
+html[data-ui-style="modern"] .home-en-progreso-item-wrap {
+  width: 108px !important;
+  flex: 0 0 108px !important;
+  max-width: 108px !important;
+  box-sizing: border-box !important;
+  scroll-snap-align: start !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+html[data-ui-style="modern"] .home-en-progreso-item-date {
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  color: var(--muted) !important;
+  margin-bottom: 5px !important;
+  min-height: 16px !important;
+  line-height: 16px !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  width: 100% !important;
+}
 html[data-ui-style="modern"] .home-en-progreso-card {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
   padding: 0 !important;
-  width: 108px !important;
-  flex: 0 0 108px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
   min-height: auto !important;
 }
 
@@ -12941,8 +12964,11 @@ function actualizarMetaThemeColor() {
   try {
     const meta = document.querySelector('meta[name="theme-color"]');
     if (!meta) return;
-    const headerBg = getComputedStyle(document.documentElement).getPropertyValue('--header-bg').trim();
-    if (headerBg) meta.setAttribute('content', headerBg);
+    const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+    if (bg) {
+      meta.setAttribute('content', bg);
+      document.documentElement.style.backgroundColor = bg;
+    }
   } catch(e) {}
 }
 
@@ -13824,17 +13850,19 @@ function renderizarObrasEnProgresoInicio() {
     }
 
     return `
-      <div class="home-en-progreso-card" id="home-prog-${r.id}">
-        ${fechaIniDisplay ? `<div class="home-en-progreso-card-date-top">${fechaIniDisplay}</div>` : ''}
-        <div class="home-en-progreso-poster-wrap" onclick="abrirFichaTecnica('${r.id}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">
-          <span class="home-en-progreso-card-badge-overlay"><span class="emoji-dyn">${info.emoji}</span> ${info.label}</span>
-          <img src="${posterSrc}" class="home-en-progreso-card-poster" alt="${r.titulo}">
+      <div class="home-en-progreso-item-wrap" id="home-prog-wrap-${r.id}">
+        <div class="home-en-progreso-item-date">${fechaIniDisplay || '&nbsp;'}</div>
+        <div class="home-en-progreso-card" id="home-prog-${r.id}">
+          <div class="home-en-progreso-poster-wrap" onclick="abrirFichaTecnica('${r.id}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">
+            <span class="home-en-progreso-card-badge-overlay"><span class="emoji-dyn">${info.emoji}</span> ${info.label}</span>
+            <img src="${posterSrc}" class="home-en-progreso-card-poster" alt="${r.titulo}">
+          </div>
+          <div class="home-en-progreso-card-title" onclick="abrirFichaTecnica('${r.id}')" title="${r.titulo}">${r.titulo}</div>
+          <div class="home-en-progreso-card-sub" title="${creadorStr}">${creadorStr || '—'}</div>
+          <button type="button" class="btn-terminar-card-carousel" onclick="event.stopPropagation(); abrirModalTerminarObra('${r.id}')" title="${l === 'en' ? 'Mark as finished & review' : 'Completar y calificar obra'}">
+            <span class="emoji-dyn">✓</span> <span>${l === 'en' ? 'Finish' : 'Terminar'}</span>
+          </button>
         </div>
-        <div class="home-en-progreso-card-title" onclick="abrirFichaTecnica('${r.id}')" title="${r.titulo}">${r.titulo}</div>
-        <div class="home-en-progreso-card-sub" title="${creadorStr}">${creadorStr || '—'}</div>
-        <button type="button" class="btn-terminar-card-carousel" onclick="event.stopPropagation(); abrirModalTerminarObra('${r.id}')" title="${l === 'en' ? 'Mark as finished & review' : 'Completar y calificar obra'}">
-          <span class="emoji-dyn">✓</span> <span>${l === 'en' ? 'Finish' : 'Terminar'}</span>
-        </button>
       </div>
     `;
   }).join('');
