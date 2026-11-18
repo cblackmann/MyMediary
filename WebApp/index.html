@@ -19618,12 +19618,6 @@ function dibujarTarjetaSpotifyCompactaDesconectado() {
     </div>
   `;
 }
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
-      </div>
-    </div>
-  `;
-}
 
 async function renderizarEscuchandoAhoraInicio(forzar = false) {
   const container = document.getElementById('home-now-playing-container');
@@ -21102,9 +21096,13 @@ window.onload = () => {
   cargarPreferenciasLocales();
   inicializarSelectoresFechasAproximadas();
   actualizarUISelectorAnio();
-  const opts = { locale: (userPrefs.lang === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true };
-  fpInicio = flatpickr('#input-fecha-inicio', opts);
-  fpFin = flatpickr('#input-fecha-fin', opts);
+  if (typeof flatpickr !== 'undefined') {
+    const opts = { locale: (userPrefs.lang === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true };
+    try {
+      fpInicio = flatpickr('#input-fecha-inicio', opts);
+      fpFin = flatpickr('#input-fecha-fin', opts);
+    } catch (_) {}
+  }
   precargarDiscoverEnSegundoPlano(1);
   iniciarLoopAutoActualizacionDiscover();
   inicializarManejoBotonAtras();
