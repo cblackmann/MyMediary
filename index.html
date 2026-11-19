@@ -4810,7 +4810,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
           Permite sincronizar el total de horas de toda tu biblioteca de juegos sin importar cuándo los jugaste. <a href="https://steamcommunity.com/dev/apikey" target="_blank" rel="noopener noreferrer" style="color:#66c0f4; text-decoration:underline;">Obtén tu clave gratuita aquí ↗</a>
         </p>
         <div style="display:flex; gap:6px;">
-          <input type="password" id="cfg-steam-api-key-input" class="form-input" placeholder="Pega tu Steam Web API Key" style="font-size:0.78rem; flex:1;">
+          <input type="text" id="cfg-steam-api-key-input" name="steam_api_key_input" class="form-input" placeholder="Pega tu Steam Web API Key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="font-size:0.78rem; flex:1; -webkit-text-security:disc; text-security:disc;">
           <button type="button" class="btn-today-pill" onclick="guardarSteamApiKeyDesdeInput('cfg-steam-api-key-input')" style="height:auto; font-size:0.75rem; padding:0 12px; background:rgba(102,192,244,0.15); color:#66c0f4; border-color:rgba(102,192,244,0.35); font-weight:700;">
             Guardar
           </button>
@@ -4881,7 +4881,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
           Permite consultar en vivo qué juego tienes abierto en tu PS5/PS4 y tus horas jugadas exactas.
         </p>
         <div style="display:flex; gap:6px;">
-          <input type="password" id="cfg-psn-npsso-input" class="form-input" placeholder="Pega tu token NPSSO de 64 caracteres" style="font-size:0.78rem; flex:1;">
+          <input type="text" id="cfg-psn-npsso-input" name="psn_npsso_input" class="form-input" placeholder="Pega tu token NPSSO de 64 caracteres" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="font-size:0.78rem; flex:1; -webkit-text-security:disc; text-security:disc;">
           <button type="button" class="btn-today-pill" onclick="guardarPsnNpssoDesdeInput('cfg-psn-npsso-input')" style="height:auto; font-size:0.75rem; padding:0 12px; background:rgba(0,112,209,0.15); color:#38bdf8; border-color:rgba(0,112,209,0.35); font-weight:700;">
             Guardar
           </button>
@@ -5741,7 +5741,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
         2. Abre <a href="https://ca.account.sony.com/api/v1/ssocookie" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:underline;">ca.account.sony.com/api/v1/ssocookie ↗</a>.<br>
         3. Copia el valor de <strong>npsso</strong> y pégalo abajo:
       </div>
-      <input type="password" id="psn-input-npsso-modal" class="form-input" placeholder="Token NPSSO de 64 caracteres (opcional)" style="font-size:0.8rem; margin-bottom:6px;">
+      <input type="text" id="psn-input-npsso-modal" name="psn_modal_token_input" class="form-input" placeholder="Token NPSSO de 64 caracteres (opcional)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="font-size:0.8rem; margin-bottom:6px; -webkit-text-security:disc; text-security:disc;">
     </div>
 
     <!-- Opción 3: Perfil demo instantáneo -->
@@ -5947,7 +5947,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 <span id="txt-auth-google-btn" data-i18n="auth_btn_google">Continuar con cuenta de Google</span> </button> <div style="display:flex; align-items:center; gap:10px; margin:10px 0 12px;"> <div style="flex:1; height:1px; background:var(--border);"></div> <span style="font-size:0.74rem; color:var(--muted); text-transform:uppercase; font-weight:700;" data-i18n="auth_divider_or">o con correo / usuario y contraseña</span>
 <div style="flex:1; height:1px; background:var(--border);"></div> </div> <div style="display:flex; gap:6px; margin-bottom:12px;"> <button type="button" class="btn-toggle-tipo active" id="btn-auth-tab-login" style="padding:8px; font-size:0.84rem;" onclick="cambiarModoModalAuth('login')" data-i18n="auth_tab_login">Iniciar Sesión</button>
 <button type="button" class="btn-toggle-tipo" id="btn-auth-tab-registro" style="padding:8px; font-size:0.84rem;" onclick="cambiarModoModalAuth('registro')" data-i18n="auth_tab_register">Crear Cuenta</button> </div> <div class="form-group"> <label id="lbl-auth-email" data-i18n="auth_lbl_email">Correo de Google (@gmail.com) o Usuario:</label>
-<input type="text" id="auth-input-email" class="form-input" placeholder="Ej: tucorreo@gmail.com"> </div> <div class="form-group" id="auth-group-pass"> <label id="lbl-auth-pass" data-i18n="auth_lbl_pass">Contraseña:</label> <input type="password" id="auth-input-pass" class="form-input" placeholder="Ingresa tu contraseña..." onkeydown="if(event.key==='Enter') enviarFormularioAuthSupabase()">
+<input type="text" id="auth-input-email" name="mediary_auth_username" class="form-input" placeholder="Ej: tucorreo@gmail.com" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true"> </div> <div class="form-group" id="auth-group-pass"> <label id="lbl-auth-pass" data-i18n="auth_lbl_pass">Contraseña:</label> <input type="password" id="auth-input-pass" name="mediary_auth_password" class="form-input" placeholder="Ingresa tu contraseña..." autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" onkeydown="if(event.key==='Enter') enviarFormularioAuthSupabase()">
 </div> <div class="form-group" id="auth-group-nick" style="display:none;"> <label data-i18n="auth_lbl_nick">Nickname / Nombre para mostrar:</label> <input type="text" id="auth-input-nick" class="form-input" placeholder="Ej: CJ / Cinéfilo"> </div> <div id="auth-error-msg" style="display:none; color:#f87171; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); padding:8px 10px; border-radius:8px; font-size:0.8rem; margin-bottom:10px;"></div>
 <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-auth-logout" style="display:none;" onclick="cerrarSesionUsuarioActual()" data-i18n="auth_btn_logout">Cerrar sesión</button> <div style="display:flex; gap:8px; margin-left:auto;"> <button type="button" class="btn-modal-cancel" id="btn-auth-close" onclick="cerrarModalAuthSupabase()" data-i18n="btn_close">Cerrar</button>
 <button type="button" class="btn-modal-save" id="btn-auth-submit" onclick="enviarFormularioAuthSupabase()" data-i18n="auth_btn_submit">Entrar</button> </div> </div> </div> </div>
@@ -6127,7 +6127,7 @@ if (!window.IS_APPS_SCRIPT && 'serviceWorker' in navigator && location.protocol.
     }
   });
 }
-if (!window.IS_APPS_SCRIPT) { window.addEventListener('DOMContentLoaded', () => { const btnMig = document.getElementById('btn-migrar-sheets'); if (btnMig) btnMig.style.display = 'none'; }); const SB_URL = 'https://cpksupowjteqilsiklde.supabase.co/rest/v1';
+if (!window.IS_APPS_SCRIPT) { window.addEventListener('DOMContentLoaded', () => { const btnMig = document.getElementById('btn-migrar-sheets'); if (btnMig) btnMig.style.display = 'none'; const pAuth = document.getElementById('auth-input-pass'); if (pAuth) pAuth.value = ''; }); const SB_URL = 'https://cpksupowjteqilsiklde.supabase.co/rest/v1';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwa3N1cG93anRlcWlsc2lrbGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NzIxMTUsImV4cCI6MjEwOTA0ODExNX0.-ojqwNdX7wXkCUGDU6wHComRNi2Uy-XrWket6zeEAVU';
 const uuid_ = () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
 const normEm_ = em => String(em || '').trim().toLowerCase(); const hashP_ = async raw => { if (!raw) return ''; const buf = new TextEncoder().encode(String(raw) + '_mb_salt_v1'); const dig = await crypto.subtle.digest('SHA-256', buf);
@@ -13283,7 +13283,7 @@ b.innerHTML = `<span>${c.avatar && !c.avatar.startsWith('data:') && !c.avatar.st
 document.getElementById('auth-input-pass').focus(); }; savedList.appendChild(b); }); } else if (savedBox) { savedBox.style.display = 'none'; }
 } catch (e) {}
 document.getElementById('modal-auth-supabase').style.display = 'flex'; }
-function cerrarModalAuthSupabase() { document.getElementById('modal-auth-supabase').style.display = 'none'; }
+function cerrarModalAuthSupabase() { const p = document.getElementById('auth-input-pass'); if (p) p.value = ''; document.getElementById('modal-auth-supabase').style.display = 'none'; }
 function cambiarModoModalAuth(modo) { estado.modoAuthModal = modo; document.getElementById('btn-auth-tab-login')?.classList.toggle('active', modo === 'login'); document.getElementById('btn-auth-tab-registro')?.classList.toggle('active', modo === 'registro');
 const grpNick = document.getElementById('auth-group-nick'); if (grpNick) grpNick.style.display = modo === 'registro' ? 'block' : 'none'; const btnSub = document.getElementById('btn-auth-submit');
 if (btnSub) btnSub.textContent = modo === 'registro' ? 'Crear cuenta en Supabase' : 'Entrar a mi cuenta'; const errBox = document.getElementById('auth-error-msg'); if (errBox) errBox.style.display = 'none'; }
@@ -16451,7 +16451,7 @@ function renderizarStatsJuegos_(ctx) {
                 Steam Community solo expone en la web los títulos jugados en las últimas 2 semanas. Para sincronizar de inmediato todo tu historial completo de horas acumuladas de todos los juegos de toda la vida, ingresa tu clave gratuita de Steam Web API:
               </p>
               <div style="display:flex; justify-content:center; gap:8px; align-items:center; flex-wrap:wrap;">
-                <input type="password" id="input-steam-api-key-stats" class="form-input" placeholder="Steam Web API Key (ej. 32 caracteres)" style="font-size:0.78rem; max-width:240px; padding:6px 10px;" value="${localStorage.getItem('mediary_steam_api_key') || ''}">
+                <input type="text" id="input-steam-api-key-stats" name="steam_stats_key_input" class="form-input" placeholder="Steam Web API Key (ej. 32 caracteres)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="font-size:0.78rem; max-width:240px; padding:6px 10px; -webkit-text-security:disc; text-security:disc;" value="${localStorage.getItem('mediary_steam_api_key') || ''}">
                 <button type="button" class="btn-toggle-filter" onclick="guardarSteamApiKeyDesdeInput('input-steam-api-key-stats')" style="background:#66c0f4; color:#171a21; font-weight:700; border:none; padding:7px 14px; border-radius:8px; font-size:0.78rem; cursor:pointer;">
                   Guardar y sincronizar
                 </button>
@@ -21596,6 +21596,8 @@ document.addEventListener('selectionchange', function() {
 });
 
 window.onload = () => {
+  const pAuthInit = document.getElementById('auth-input-pass');
+  if (pAuthInit) pAuthInit.value = '';
   inicializarGestosSwipeDownModales();
   cargarPreferenciasLocales();
   inicializarSelectoresFechasAproximadas();
