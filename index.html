@@ -85,10 +85,18 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Mediary">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=Lexend:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://npmcdn.com/flatpickr/dist/l10n/es.js"></script>
+<link rel="stylesheet" href="./flatpickr.min.css">
+<link rel="stylesheet" href="./flatpickr.dark.min.css">
+<script src="./flatpickr.min.js"></script>
+<script src="./flatpickr.es.js"></script>
+<script>
+if (typeof flatpickr === 'undefined') {
+  document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">');
+  document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">');
+  document.write('<script src="https://cdn.jsdelivr.net/npm/flatpickr"><\/script>');
+  document.write('<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"><\/script>');
+}
+</script>
 <style>
 :root{--font-family:'Lexend',sans-serif;--font-scale:100%;--b-nav:84px;--tr:all .2s cubic-bezier(.4,0,.2,1);--color-scheme:dark;}
 
@@ -5953,9 +5961,14 @@ window.getIgdbGames_ = getIgdbGames_;
 
 function estaAppYaInstalada() {
   try {
-    if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+    if (window.matchMedia && (
+      window.matchMedia('(display-mode: standalone)').matches ||
+      window.matchMedia('(display-mode: fullscreen)').matches ||
+      window.matchMedia('(display-mode: minimal-ui)').matches ||
+      window.matchMedia('(display-mode: window-controls-overlay)').matches
+    )) return true;
     if (window.navigator && window.navigator.standalone === true) return true;
-    if (document.referrer && document.referrer.startsWith('android-app://')) return true;
+    if (document.referrer && (document.referrer.startsWith('android-app://') || document.referrer.includes('android-app:'))) return true;
     if (localStorage.getItem('mediary_pwa_installed') === 'true') return true;
   } catch(e) {}
   return false;
@@ -12368,39 +12381,39 @@ const CONFIG = {
  "lbl_en_progreso_inicio": "Started:"
  }
 }; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", appTheme: "default", uiStyle: "modern", lang: "es", categoriasOrden: ['Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'], categoriasOcultas: []
-}; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary', avatar: '', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
-}; const AVATARES_PRESET = ['', '', '', '', '', '', '', '', '', '', '', '']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
+}; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary', avatar: '🦊', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
+}; const AVATARES_PRESET = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐯', '🐨', '🐸', '🦉', '🐻', '🐵', '🐰']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
 const WATCHLIST_ESTRUCTURA = [
- { cat: 'Peliculas', nombre: 'Películas', emoji: '', subs: [
- { id: 'Películas', subWl: 'Watchlist', nombre: 'Películas', emoji: '' },
- { id: 'Documentales', subWl: 'Watchlist: Documentales', nombre: 'Documentales', emoji: '' }
+ { cat: 'Peliculas', nombre: 'Películas', emoji: getHeroIcon('film'), subs: [
+ { id: 'Películas', subWl: 'Watchlist', nombre: 'Películas', emoji: getHeroIcon('film') },
+ { id: 'Documentales', subWl: 'Watchlist: Documentales', nombre: 'Documentales', emoji: getHeroIcon('film') }
  ] },
  { cat: 'Series', nombre: 'Series', emoji: getHeroIcon('tv'), subs: [
  { id: 'Series', subWl: 'Watchlist', nombre: 'Series', emoji: getHeroIcon('tv') },
- { id: 'Series Documentales', subWl: 'Watchlist: Docuseries', nombre: 'Docuseries', emoji: '' }
+ { id: 'Series Documentales', subWl: 'Watchlist: Docuseries', nombre: 'Docuseries', emoji: getHeroIcon('tv') }
  ] },
- { cat: 'Musica', nombre: 'Música', emoji: '', subs: [
- { id: 'Discos', subWl: 'To Listen', nombre: 'Discos / Música', emoji: '' }
+ { cat: 'Musica', nombre: 'Música', emoji: getHeroIcon('musical-note'), subs: [
+ { id: 'Discos', subWl: 'To Listen', nombre: 'Discos / Música', emoji: getHeroIcon('musical-note') }
  ] },
  { cat: 'Juegos', nombre: 'Juegos', emoji: getHeroIcon('gamepad'), subs: [
  { id: 'Videojuegos', subWl: 'To Play', nombre: 'Videojuegos', emoji: getHeroIcon('gamepad') }
  ] },
  { cat: 'Lecturas', nombre: 'Lecturas', emoji: getHeroIcon('book-open'), subs: [
- { id: 'Libros', subWl: 'To Read: Libros', nombre: 'Libros', emoji: '' },
- { id: 'Cómics', subWl: 'To Read: Cómics', nombre: 'Cómics', emoji: '' },
- { id: 'Mangas', subWl: 'To Read: Mangas', nombre: 'Mangas', emoji: '' }
+ { id: 'Libros', subWl: 'To Read: Libros', nombre: 'Libros', emoji: getHeroIcon('book-open') },
+ { id: 'Cómics', subWl: 'To Read: Cómics', nombre: 'Cómics', emoji: getHeroIcon('book-open') },
+ { id: 'Mangas', subWl: 'To Read: Mangas', nombre: 'Mangas', emoji: getHeroIcon('book-open') }
  ] }
 ];
 const TODAS_LAS_WATCHLISTS = [
- { cat: 'Peliculas', sub: 'Watchlist', emoji: '', label: 'Películas' },
- { cat: 'Peliculas', sub: 'Watchlist: Documentales', emoji: '', label: 'Documentales' },
+ { cat: 'Peliculas', sub: 'Watchlist', emoji: getHeroIcon('film'), label: 'Películas' },
+ { cat: 'Peliculas', sub: 'Watchlist: Documentales', emoji: getHeroIcon('film'), label: 'Documentales' },
  { cat: 'Series', sub: 'Watchlist', emoji: getHeroIcon('tv'), label: 'Series' },
- { cat: 'Series', sub: 'Watchlist: Docuseries', emoji: '', label: 'Docuseries' },
- { cat: 'Musica', sub: 'To Listen', emoji: '', label: 'To Listen (Música)' },
- { cat: 'Juegos', sub: 'To Play', emoji: '', label: 'To Play (Juegos)' },
- { cat: 'Lecturas', sub: 'To Read: Libros', emoji: '', label: 'To Read: Libros' },
- { cat: 'Lecturas', sub: 'To Read: Cómics', emoji: '', label: 'To Read: Cómics' },
- { cat: 'Lecturas', sub: 'To Read: Mangas', emoji: '', label: 'To Read: Mangas' }
+ { cat: 'Series', sub: 'Watchlist: Docuseries', emoji: getHeroIcon('tv'), label: 'Docuseries' },
+ { cat: 'Musica', sub: 'To Listen', emoji: getHeroIcon('musical-note'), label: 'To Listen (Música)' },
+ { cat: 'Juegos', sub: 'To Play', emoji: getHeroIcon('gamepad'), label: 'To Play (Juegos)' },
+ { cat: 'Lecturas', sub: 'To Read: Libros', emoji: getHeroIcon('book-open'), label: 'To Read: Libros' },
+ { cat: 'Lecturas', sub: 'To Read: Cómics', emoji: getHeroIcon('book-open'), label: 'To Read: Cómics' },
+ { cat: 'Lecturas', sub: 'To Read: Mangas', emoji: getHeroIcon('book-open'), label: 'To Read: Mangas' }
 ];
 let estado = { userEmail: '', anioActivo: '2026', modoAuthModal: 'login', categoria: 'inicio', subcategoria: 'Películas', wlCategoria: 'Peliculas', wlSubcategoria: 'Películas', ultimaWatchlist: { cat: 'Peliculas', sub: 'Watchlist' }, registros: [], watchlist: [], modoVistaDashboard: localStorage.getItem('mediary_dashboard_view_mode') || 'lista', discoverData: null, discoverSeed: 1, discoverCatsActivas: [...TODAS_CATS_DISCOVER], discoverLimites: {},
 discoverAutoRefresh: true, modoConfigurarFavs: false, seleccionado: null, calificacion: 0, tipoEventoConcierto: 'Concierto', artistasConciertoSeleccionados: [], ocultarRewatches: false, ultimoTerminoBuscado: '', artistaPendienteSugerido: null, subFavEnEdicion: null, registrosImportarPendientes: [], amigosFeedCache: [], amigosFeedFiltro: 'todas', amigos: []
@@ -17197,16 +17210,18 @@ function verificarYMostrarPromptDiscoCompletado() {
 
   // Integrar selector de fecha oficial de la app (flatpickr)
   if (typeof flatpickr !== 'undefined') {
-    if (window.fpDiscoDetectado) {
-      try { window.fpDiscoDetectado.destroy(); } catch (e) {}
-    }
-    window.fpDiscoDetectado = flatpickr('#input-disco-detectado-fecha', {
-      locale: (userPrefs && userPrefs.lang === 'en' ? 'default' : 'es'),
-      dateFormat: 'd/m/Y',
-      defaultDate: fechaInicial,
-      allowInput: false,
-      disableMobile: true
-    });
+    try {
+      if (window.fpDiscoDetectado) {
+        try { window.fpDiscoDetectado.destroy(); } catch (e) {}
+      }
+      window.fpDiscoDetectado = flatpickr('#input-disco-detectado-fecha', {
+        locale: (userPrefs && userPrefs.lang === 'en' ? 'default' : 'es'),
+        dateFormat: 'd/m/Y',
+        defaultDate: fechaInicial,
+        allowInput: false,
+        disableMobile: true
+      });
+    } catch (_) {}
   }
 
   renderizarEstrellasPromptAlbum(5.0);
@@ -23351,11 +23366,41 @@ function obtenerFechasParaGuardarNuevo() {
     return { fI: finalI, fF: finalF };
   }
 }
-const restaurarHoverEstrellas = () => actualizarDisplayEstrellas(estado.calificacion); function toggleSinFecha(sinF) { [fpInicio, fpFin].forEach((fp, idx) => { const inp = document.getElementById(idx === 0 ? 'input-fecha-inicio' : 'input-fecha-fin'); if (fp) {
-if (sinF) { fp.clear(); fp.destroy(); inp.disabled = true; inp.value = 'Sin fecha'; } else { inp.disabled = false; const l = userPrefs.lang === 'en' ? 'default' : 'es'; if (idx === 0) fpInicio = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
-else fpFin = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true }); }
-}
-});
+const restaurarHoverEstrellas = () => actualizarDisplayEstrellas(estado.calificacion);
+function toggleSinFecha(sinF) {
+  [fpInicio, fpFin].forEach((fp, idx) => {
+    const inp = document.getElementById(idx === 0 ? 'input-fecha-inicio' : 'input-fecha-fin');
+    if (fp) {
+      if (sinF) {
+        try { fp.clear(); fp.destroy(); } catch (_) {}
+        if (inp) { inp.disabled = true; inp.value = 'Sin fecha'; }
+      } else {
+        if (inp) inp.disabled = false;
+        const l = userPrefs.lang === 'en' ? 'default' : 'es';
+        if (typeof flatpickr !== 'undefined') {
+          try {
+            if (idx === 0) fpInicio = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+            else fpFin = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+          } catch (_) {}
+        }
+      }
+    } else if (inp) {
+      if (sinF) {
+        inp.disabled = true;
+        inp.value = 'Sin fecha';
+      } else {
+        inp.disabled = false;
+        if (inp.value === 'Sin fecha') inp.value = '';
+        const l = userPrefs.lang === 'en' ? 'default' : 'es';
+        if (typeof flatpickr !== 'undefined') {
+          try {
+            if (idx === 0) fpInicio = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+            else fpFin = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+          } catch (_) {}
+        }
+      }
+    }
+  });
 const tabs = document.getElementById('reg-prec-tabs');
 if (tabs) {
   tabs.style.opacity = sinF ? '0.35' : '1';
@@ -24212,7 +24257,11 @@ function mostrarFechaFinEnEditorCompl() {
   if (wrap) wrap.style.display = 'block';
   if (btn) btn.style.display = 'none';
   const l = userPrefs.lang || 'es';
-  if (!fpComplFin) fpComplFin = flatpickr('#edit-compl-fecha-fin', { locale: (l === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+  if (typeof flatpickr !== 'undefined' && !fpComplFin) {
+    try {
+      fpComplFin = flatpickr('#edit-compl-fecha-fin', { locale: (l === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+    } catch (_) {}
+  }
 }
 function mostrarFechaFinSimple() {
   const wrap = document.getElementById('wrap-edit-fecha-fin');
@@ -24220,7 +24269,11 @@ function mostrarFechaFinSimple() {
   if (wrap) wrap.style.display = 'block';
   if (btn) btn.style.display = 'none';
   const l = userPrefs.lang || 'es';
-  if (!fpFinSimple) fpFinSimple = flatpickr('#edit-fecha-fin', { locale: (l === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+  if (typeof flatpickr !== 'undefined' && !fpFinSimple) {
+    try {
+      fpFinSimple = flatpickr('#edit-fecha-fin', { locale: (l === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+    } catch (_) {}
+  }
 }
 window.mostrarFechaFinEnEditorCompl = mostrarFechaFinEnEditorCompl;
 window.mostrarFechaFinSimple = mostrarFechaFinSimple;
@@ -24284,10 +24337,13 @@ function abrirEditorRegistroCompleto(id) {
     document.getElementById('edit-stars-completo').innerHTML = sHtml;
   };
   window.renderEditStars = renderEditStars;
-  renderEditStars(Number(reg.calificacion) || 0);
   const flatOpts = { locale: (l === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true };
-  flatpickr('#edit-compl-fecha-ini', flatOpts);
-  fpComplFin = flatpickr('#edit-compl-fecha-fin', flatOpts);
+  if (typeof flatpickr !== 'undefined') {
+    try {
+      flatpickr('#edit-compl-fecha-ini', flatOpts);
+      fpComplFin = flatpickr('#edit-compl-fecha-fin', flatOpts);
+    } catch (_) {}
+  }
   document.getElementById('btn-modal-confirmar').onclick = () => {
     const sinF = document.getElementById('edit-compl-sin-fecha').checked;
     const fI = sinF ? 'Sin fecha' : sanitizarFechaFrontend(document.getElementById('edit-compl-fecha-ini').value);
@@ -24489,8 +24545,12 @@ function abrirEditorFecha(id) {
   }
 
   const flatOpts = { locale: (l === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true };
-  flatpickr('#edit-fecha-ini', flatOpts);
-  fpFinSimple = flatpickr('#edit-fecha-fin', flatOpts);
+  if (typeof flatpickr !== 'undefined') {
+    try {
+      flatpickr('#edit-fecha-ini', flatOpts);
+      fpFinSimple = flatpickr('#edit-fecha-fin', flatOpts);
+    } catch (_) {}
+  }
 
   document.getElementById('btn-modal-confirmar').onclick = () => {
     const sinF = document.getElementById('edit-sin-fecha').checked;
