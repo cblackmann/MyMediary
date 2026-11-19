@@ -703,43 +703,51 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .psn-stat-card:hover{border-color:rgba(0,112,209,0.4);transform:translateY(-1px);}
 
 /* CARRUSEL EN VIVO: SPOTIFY + PLAYSTATION */
-.home-live-carousel-wrapper{position:relative;margin-bottom:12px;}
-.home-live-carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 2px 4px 2px;scroll-behavior:smooth;}
+.home-live-carousel-wrapper{position:relative;margin-bottom:12px;display:flex;flex-direction:column;align-items:center;}
+.home-live-carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 2px 4px 2px;scroll-behavior:smooth;width:100%;}
 .home-live-carousel::-webkit-scrollbar{display:none;}
-.home-live-carousel-item{flex:0 0 100%;min-width:100%;scroll-snap-align:start;scroll-snap-stop:always;box-sizing:border-box;}
-.home-live-carousel-item .home-spotify-card-compact{margin-bottom:0;}
-.home-live-carousel-dots{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;}
-.live-dot-btn{background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:0.73rem;font-weight:600;padding:3px 10px;border-radius:14px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:var(--tr);}
-.live-dot-btn:hover{color:var(--text);border-color:var(--border-hover, #64748b);}
-.live-dot-btn.active{background:var(--card);color:var(--text);border-color:var(--accent);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,0.12);}
-.live-dot-icon{font-size:0.8rem;}
+.home-live-carousel-item{flex:0 0 100%;min-width:100%;scroll-snap-align:center;scroll-snap-stop:always;box-sizing:border-box;display:flex;justify-content:center;}
+.home-live-carousel-item .home-spotify-card-compact,
+.home-live-carousel-item .home-playstation-card-compact{margin-bottom:0;}
+.home-live-carousel-dots{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px;}
+.live-dot-btn{background:var(--bg);border:1px solid var(--border);color:var(--muted);width:32px;height:32px;padding:0;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;position:relative;transition:var(--tr);box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+.live-dot-btn:hover{color:var(--text);border-color:var(--border-hover, #64748b);transform:scale(1.08);}
+.live-dot-btn.active{background:var(--card);color:var(--accent);border-color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,0.18);transform:scale(1.06);}
+.live-dot-icon{font-size:0.95rem;display:inline-flex;align-items:center;justify-content:center;}
+.live-dot-icon svg{width:16px;height:16px;}
+#badge-sp-live-pill, #badge-psn-live-pill{position:absolute;top:3px;right:3px;}
 
 /* TARJETAS REDUCTIBLES (ESTILO NOTIFICACIONES ANDROID) */
-.home-live-expandable-card{cursor:pointer;user-select:none;transition:padding .32s cubic-bezier(.2,0,0,1),min-height .32s cubic-bezier(.2,0,0,1),border-color .2s ease,box-shadow .25s ease !important;will-change:min-height,padding;position:relative;}
+.home-live-expandable-card{cursor:pointer;user-select:none;transition:padding .32s cubic-bezier(.2,0,0,1),min-height .32s cubic-bezier(.2,0,0,1),max-width .32s cubic-bezier(.2,0,0,1),border-color .2s ease,box-shadow .25s ease !important;will-change:min-height,padding,max-width;position:relative;}
 .home-live-expandable-card:active{transform:scale(0.992);}
 .home-live-expandable-card button, .home-live-expandable-card a{cursor:pointer;}
-.home-live-expandable-card.is-collapsed{padding:7px 11px !important;min-height:56px !important;}
+.home-live-expandable-card.is-collapsed{padding:4px 9px !important;min-height:36px !important;max-width:260px !important;width:100% !important;margin:0 auto !important;border-radius:12px !important;gap:7px !important;}
 .home-live-expandable-card.is-collapsed .home-np-cover-compact,
-.home-live-expandable-card.is-collapsed .home-psn-cover-compact{width:42px !important;height:42px !important;border-radius:6px !important;transition:width .28s cubic-bezier(.2,0,0,1),height .28s cubic-bezier(.2,0,0,1) !important;}
-.home-live-expandable-card.is-collapsed .live-card-expanded-only{max-height:0 !important;opacity:0 !important;margin:0 !important;padding:0 !important;overflow:hidden !important;pointer-events:none !important;transform:translateY(-6px);transition:max-height .28s cubic-bezier(.2,0,0,1),opacity .18s ease,transform .22s ease,margin .2s ease !important;}
+.home-live-expandable-card.is-collapsed .home-psn-cover-compact{width:28px !important;height:28px !important;border-radius:5px !important;transition:width .28s cubic-bezier(.2,0,0,1),height .28s cubic-bezier(.2,0,0,1) !important;}
+.home-live-expandable-card.is-collapsed .home-psn-platform-badge{font-size:0.48rem !important;padding:0px 2px !important;border-radius:2px !important;bottom:1px !important;right:1px !important;}
+.home-live-expandable-card.is-collapsed .live-card-expanded-only{display:none !important;max-height:0 !important;opacity:0 !important;margin:0 !important;padding:0 !important;overflow:hidden !important;pointer-events:none !important;}
 .home-live-expandable-card.is-collapsed .home-np-right-col,
-.home-live-expandable-card.is-collapsed .home-psn-right-col{height:42px !important;justify-content:center !important;gap:4px !important;}
+.home-live-expandable-card.is-collapsed .home-psn-right-col{height:28px !important;justify-content:center !important;gap:2px !important;padding-left:1px !important;}
 .home-live-expandable-card.is-collapsed .home-np-right-col .home-np-sp-logo-link,
 .home-live-expandable-card.is-collapsed .home-np-right-col .btn-np-quick-add,
 .home-live-expandable-card.is-collapsed .home-psn-right-col .home-psn-logo-link,
 .home-live-expandable-card.is-collapsed .home-psn-right-col .btn-psn-quick-add{display:none !important;}
 .live-card-collapsed-only{display:none;}
 .home-live-expandable-card.is-collapsed .live-card-collapsed-only{display:flex !important;align-items:center !important;}
-.home-live-expandable-card.is-expanded{padding:9px 12px !important;min-height:86px !important;}
+.home-live-expandable-card.is-collapsed .home-np-title-compact,
+.home-live-expandable-card.is-collapsed .home-psn-title-compact{font-size:0.75rem !important;font-weight:700 !important;line-height:1.15 !important;}
+.home-live-expandable-card.is-collapsed .home-np-center-compact,
+.home-live-expandable-card.is-collapsed .home-psn-center-compact{gap:0px !important;}
+.home-live-expandable-card.is-expanded{padding:9px 12px !important;min-height:86px !important;max-width:520px !important;width:100% !important;border-radius:14px !important;}
 .home-live-expandable-card.is-expanded .home-np-cover-compact,
 .home-live-expandable-card.is-expanded .home-psn-cover-compact{width:64px !important;height:64px !important;border-radius:8px !important;transition:width .28s cubic-bezier(.2,0,0,1),height .28s cubic-bezier(.2,0,0,1) !important;}
-.home-live-expandable-card.is-expanded .live-card-expanded-only{max-height:160px !important;opacity:1 !important;overflow:visible !important;pointer-events:auto !important;transform:translateY(0);transition:max-height .32s cubic-bezier(.2,0,0,1),opacity .25s ease,transform .25s ease,margin .2s ease !important;}
+.home-live-expandable-card.is-expanded .live-card-expanded-only{display:flex !important;flex-direction:column !important;gap:1.5px !important;max-height:160px !important;opacity:1 !important;overflow:visible !important;pointer-events:auto !important;transform:translateY(0);transition:max-height .32s cubic-bezier(.2,0,0,1),opacity .25s ease,transform .25s ease,margin .2s ease !important;}
 .home-live-expandable-card.is-expanded .live-card-collapsed-only{display:none !important;}
 .home-live-expandable-card.is-expanded .home-np-right-col,
 .home-live-expandable-card.is-expanded .home-psn-right-col{height:auto !important;align-self:stretch !important;justify-content:space-between !important;gap:4px !important;}
-.live-card-expand-indicator{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;color:var(--muted);background:rgba(255,255,255,0.06);transition:transform .3s cubic-bezier(.2,0,0,1),color .2s ease,background .2s ease;flex-shrink:0;}
+.live-card-expand-indicator{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;color:var(--muted);background:rgba(255,255,255,0.06);transition:transform .3s cubic-bezier(.2,0,0,1),color .2s ease,background .2s ease;flex-shrink:0;}
 .home-live-expandable-card:hover .live-card-expand-indicator{color:var(--accent);background:rgba(56,189,248,0.12);}
-.home-live-expandable-card.is-expanded .live-card-expand-indicator{transform:rotate(180deg);color:var(--accent);}
+.home-live-expandable-card.is-expanded .live-card-expand-indicator{transform:rotate(180deg);color:var(--accent);width:22px;height:22px;}
 
 /* TARJETA PLAYSTATION COMPACTA (JUGANDO AHORA) */
 .home-playstation-card-compact{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:9px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:var(--tr);position:relative;overflow:hidden;}
@@ -3465,15 +3473,13 @@ html[data-app-theme="minimalist"] .nav-categories-row {
             <div id="home-psn-now-playing-container" class="home-live-carousel-item"></div>
           </div>
           <div id="home-live-carousel-dots" class="home-live-carousel-dots">
-            <button type="button" class="live-dot-btn active" id="dot-live-spotify" onclick="cambiarSlideLive(0)" title="Spotify (Música)">
+            <button type="button" class="live-dot-btn active" id="dot-live-spotify" onclick="cambiarSlideLive(0)" title="Spotify (Música)" aria-label="Spotify">
               <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .56-.723V6.375M9 11.25v6a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.94v-3.69Z"/></svg></span>
-              <span>Spotify</span>
-              <span id="badge-sp-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite; margin-left:2px;"></span>
+              <span id="badge-sp-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
             </button>
-            <button type="button" class="live-dot-btn" id="dot-live-psn" onclick="cambiarSlideLive(1)" title="PlayStation (Videojuegos)">
+            <button type="button" class="live-dot-btn" id="dot-live-psn" onclick="cambiarSlideLive(1)" title="PlayStation (Videojuegos)" aria-label="PlayStation">
               <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 12h-2m-3 0H8.5m1-2v4M16.5 10.5h.01m1.99 3h.01M6.75 6.75h10.5a4.5 4.5 0 0 1 4.473 4.954l-.84 7.14a2.25 2.25 0 0 1-2.235 1.906h-1.66a2.25 2.25 0 0 1-2.124-1.492l-.76-2.028a1.5 1.5 0 0 0-1.408-.98h-1.392a1.5 1.5 0 0 0-1.408.98l-.76 2.028A2.25 2.25 0 0 1 6.512 20.75H4.852a2.25 2.25 0 0 1-2.235-1.906l-.84-7.14A4.5 4.5 0 0 1 6.75 6.75Z"/></svg></span>
-              <span>PlayStation</span>
-              <span id="badge-psn-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite; margin-left:2px;"></span>
+              <span id="badge-psn-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
             </button>
           </div>
         </div>
