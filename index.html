@@ -3522,6 +3522,261 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   vertical-align: middle;
 }
 
+/* ========================================================
+   SOPORTE PARA VISTA HORIZONTAL EN TABLETS
+   - Dispositivos tablet en orientación horizontal / landscape
+   - Optimización de alturas verticales, márgenes seguros (safe-area-inset)
+   - Modales centrados y scrolls táctiles fluidos
+   - Grids balanceados para pantallas panorámicas táctiles
+   ======================================================== */
+@media screen and (min-width: 768px) and (orientation: landscape) {
+  :root {
+    --tablet-safe-left: max(20px, env(safe-area-inset-left, 0px));
+    --tablet-safe-right: max(20px, env(safe-area-inset-right, 0px));
+    --tablet-safe-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  }
+
+  body {
+    padding-bottom: 32px !important;
+    padding-left: env(safe-area-inset-left, 0px) !important;
+    padding-right: env(safe-area-inset-right, 0px) !important;
+  }
+
+  /* 1. NAVEGACIÓN SUPERIOR Y CABECERA OPTIMIZADAS */
+  .web-nav-wrapper {
+    display: flex !important;
+  }
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+  header, header.app-header-integrated {
+    padding: calc(env(safe-area-inset-top, 0px) + 10px) var(--tablet-safe-right) 8px var(--tablet-safe-left) !important;
+    min-height: 50px !important;
+  }
+  .logo {
+    font-size: 2.15rem !important;
+  }
+  .header-brand-text {
+    font-size: 2.15rem !important;
+  }
+  .year-display {
+    font-size: 1.35rem !important;
+  }
+  .btn-year-picker-compact {
+    padding: 5px 12px !important;
+  }
+  .btn-year-picker-compact .year-display-txt {
+    font-size: 1.25rem !important;
+  }
+  .btn-header-clean-icon {
+    font-size: 1.35rem !important;
+    padding: 4px 6px !important;
+  }
+
+  .nav-sections-row {
+    padding: 6px var(--tablet-safe-right) 6px var(--tablet-safe-left) !important;
+    gap: 10px !important;
+  }
+  .nav-sec-btn {
+    padding: 6px 14px !important;
+    font-size: 0.83rem !important;
+    border-radius: 16px !important;
+  }
+  .nav-categories-row {
+    padding: 6px var(--tablet-safe-right) 6px var(--tablet-safe-left) !important;
+    gap: 8px !important;
+  }
+  .nav-cat-card {
+    padding: 6px 12px !important;
+    font-size: 0.83rem !important;
+    min-width: 105px !important;
+    border-radius: 10px !important;
+  }
+
+  /* 2. CONTENEDOR PRINCIPAL */
+  .container,
+  html[data-ui-style="modern"] .container {
+    max-width: min(1200px, calc(100vw - 40px)) !important;
+    margin: 10px auto 26px auto !important;
+    padding-left: var(--tablet-safe-left) !important;
+    padding-right: var(--tablet-safe-right) !important;
+  }
+
+  /* 3. SALUDO Y HERO EN PANTALLA DE INICIO */
+  .home-greeting-banner {
+    margin: 0 0 12px 0 !important;
+    gap: 16px !important;
+  }
+  .home-greeting-title {
+    font-size: 1.62rem !important;
+  }
+  .home-greeting-subtitle {
+    font-size: 0.98rem !important;
+  }
+
+  /* 4. CARRUSEL EN VIVO (SPOTIFY + PSN) Y RACHAS */
+  .home-live-carousel-wrapper {
+    max-width: 680px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-bottom: 12px !important;
+  }
+  .home-streaks-strip {
+    max-width: 780px !important;
+    margin: 0 auto 16px auto !important;
+  }
+
+  /* 5. PROCESO E ÍNDICE */
+  .home-en-progreso-carousel {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    gap: 14px !important;
+  }
+  .home-indice-carousel {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    gap: 10px !important;
+  }
+  .home-indice-btn {
+    flex: 0 0 88px !important;
+    min-width: 88px !important;
+    height: 84px !important;
+  }
+
+  /* 6. AMIGOS Y DESCUBRIR */
+  .home-friend-feed-scroll {
+    padding: 4px var(--tablet-safe-left) 12px !important;
+  }
+  .home-friend-feed-scroll .amigo-feed-card,
+  .home-friend-card {
+    flex: 0 0 380px !important;
+    min-width: 380px !important;
+    max-width: 380px !important;
+  }
+  .discover-carousel-track {
+    padding: 6px var(--tablet-safe-left) 12px !important;
+  }
+  .watchlist-grid, .discover-grid {
+    grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  /* 7. MODALES CENTRADOS Y OPTIMIZADOS PARA ALTURA HORIZONTAL */
+  .modal-overlay {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+  }
+  .modal-box,
+  html[data-ui-style="modern"] .modal-box {
+    width: 90% !important;
+    max-width: 620px !important;
+    max-height: 86vh !important;
+    border-radius: 18px !important;
+    padding: 20px 24px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .modal-swipe-handle {
+    display: none !important;
+  }
+  .date-row {
+    flex-direction: row !important;
+    gap: 10px !important;
+    align-items: flex-end !important;
+  }
+  .date-input-group {
+    flex: 1 !important;
+  }
+  .btn-today-pill {
+    width: auto !important;
+    height: 44px !important;
+  }
+  .quick-add-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+  }
+  .ficha-grid {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 18px !important;
+  }
+  .ficha-poster {
+    width: 120px !important;
+    height: 175px !important;
+  }
+
+  /* 8. BOTONES FLOTANTES */
+  .home-floating-actions {
+    right: max(24px, env(safe-area-inset-right, 0px)) !important;
+    bottom: max(24px, env(safe-area-inset-bottom, 0px)) !important;
+    gap: 12px !important;
+  }
+
+  /* 9. VISTA DE PERFIL */
+  .profile-hero-card {
+    flex-direction: row !important;
+    align-items: center !important;
+    text-align: left !important;
+    padding: 20px 24px !important;
+    gap: 20px !important;
+  }
+  .profile-identity-wrap {
+    flex-direction: row !important;
+    align-items: center !important;
+    text-align: left !important;
+    min-width: auto !important;
+    flex: 1 !important;
+  }
+  .profile-avatar-box {
+    width: 84px !important;
+    height: 84px !important;
+    margin: 0 !important;
+  }
+  .profile-nick-row {
+    justify-content: flex-start !important;
+  }
+  .profile-info-col {
+    align-items: flex-start !important;
+  }
+  .profile-hero-side-actions {
+    flex-direction: column !important;
+    width: auto !important;
+  }
+  .profile-grid-records {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+  }
+  .profile-grid-highlights {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+  }
+  .profile-grid-fun {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* 10. VISTA DE CATEGORÍAS */
+  .cat-wide-body {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  .cat-subtotals-wrap {
+    grid-column: span 2 !important;
+  }
+  .table-container {
+    display: block !important;
+    overflow-x: auto !important;
+  }
+  .mobile-history-list {
+    display: none !important;
+  }
+}
 </style> </head> <body>
 <header class="app-header-integrated">
   <!-- 1. Esquina superior izquierda: Selector de año (más pequeño e integrado) -->
@@ -20832,6 +21087,16 @@ window.addEventListener('resize', () => {
   if (typeof estado !== 'undefined' && estado.categoria === 'inicio') {
     ajustarMarqueeSpotify();
   }
+});
+window.addEventListener('orientationchange', () => {
+  setTimeout(() => {
+    if (typeof estado !== 'undefined' && estado.categoria === 'inicio' && typeof ajustarMarqueeSpotify === 'function') {
+      ajustarMarqueeSpotify();
+    }
+    if (typeof reposicionarIndicadorNavMovil === 'function') {
+      reposicionarIndicadorNavMovil();
+    }
+  }, 180);
 });
 
 function iniciarPollingSpotifyLive() {
