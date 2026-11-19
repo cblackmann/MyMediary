@@ -8,11 +8,22 @@
 <meta name="color-scheme" content="light dark">
 <script>
 (function() {
-  try {
-    if (window.screen && screen.orientation && typeof screen.orientation.unlock === 'function') {
-      screen.orientation.unlock().catch(() => {});
-    }
-  } catch(e) {}
+  function intentarDesbloquearOrientacion() {
+    try {
+      if (window.screen && screen.orientation && typeof screen.orientation.unlock === 'function') {
+        screen.orientation.unlock().catch(() => {});
+      }
+    } catch(e) {}
+  }
+  window.intentarDesbloquearOrientacion = intentarDesbloquearOrientacion;
+  intentarDesbloquearOrientacion();
+  window.addEventListener('DOMContentLoaded', intentarDesbloquearOrientacion);
+  window.addEventListener('load', intentarDesbloquearOrientacion);
+  document.addEventListener('pointerdown', intentarDesbloquearOrientacion, { passive: true });
+  document.addEventListener('touchstart', intentarDesbloquearOrientacion, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) intentarDesbloquearOrientacion();
+  });
   try {
     const raw = localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1');
     let family = 'slate';
@@ -20,8 +31,9 @@
     let font = null;
     let fontSize = null;
     let uiStyle = 'modern';
+    let p = null;
     if (raw) {
-      const p = JSON.parse(raw);
+      p = JSON.parse(raw);
       if (p.font) font = p.font;
       if (p.fontSize) fontSize = ['50%', '62%', '75%', '88%', '100%'].includes(p.fontSize) ? p.fontSize : '100%';
       if (p.themeFamily) {
@@ -6550,13 +6562,16 @@ amigosRowsList.forEach((rows, idx) => {
   }
 },
 async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const rawFavs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); const favs = {}; Object.keys(rawFavs).forEach(k => { if (k !== 'portada' && k !== 'personajeFavorito' && k.includes('__') && rawFavs[k] && typeof rawFavs[k] === 'object' && rawFavs[k].titulo) { favs[k] = rawFavs[k]; } }); const charFav = (p.favoritos?.personajeFavorito || p.preferencias?.personajeFavorito || null); const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada'); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: p.preferencias?.userId || email, favoritos: favs, portada: portAmigo, personajeFavorito: charFav }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
-const email = normEm_(userEmail); if (!email) return { exito: false, sinSesion: true, emailGoogle: '', logueadoGoogle: false, nickname: 'Invitado', avatar: '🦊', bio: 'Inicia sesión para guardar tus listas en Supabase', favoritos: {}, favoritosOcultos: {} };
+const email = normEm_(userEmail); if (!email) return { exito: false, sinSesion: true, emailGoogle: '', logueadoGoogle: false, nickname: 'Invitado', avatar: '🦊', bio: 'Inicia sesión para guardar tus listas en Supabase', favoritos: {}, favoritosOcultos: {}, diasLectura: [], tiemposLectura: {} };
 const rows = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); if (rows && rows.length > 0) { const p = rows[0];
-return { exito: true, emailGoogle: p.user_email, logueadoGoogle: true, nickname: p.nickname || email.split('@')[0], avatar: p.avatar || '🦊', bio: p.bio || 'Coleccionando historias en Mediary', favoritos: p.favoritos || {}, favoritosOcultos: p.favoritos_ocultos || {}, preferencias: p.preferencias || {} };
+const pPrefs = p.preferencias || {};
+const dLect = pPrefs.rachas?.diasLectura || pPrefs.diasLectura || [];
+const tLect = pPrefs.rachas?.tiemposLectura || pPrefs.tiemposLectura || {};
+return { exito: true, emailGoogle: p.user_email, logueadoGoogle: true, nickname: p.nickname || email.split('@')[0], avatar: p.avatar || '🦊', bio: p.bio || 'Coleccionando historias en Mediary', favoritos: p.favoritos || {}, favoritosOcultos: p.favoritos_ocultos || {}, preferencias: pPrefs, diasLectura: dLect, tiemposLectura: tLect };
 }
 const nuevo = { user_email: email, nickname: email.includes('@') ? email.split('@')[0] : email, bio: 'Coleccionando historias en Mediary', avatar: '🦊', favoritos: {}, favoritos_ocultos: {}, preferencias: { authMethod: 'google' }, updated_at: new Date().toISOString() };
 await sbFetch_('perfiles?on_conflict=user_email', 'POST', nuevo, 'resolution=merge-duplicates,return=representation');
-return { exito: true, emailGoogle: email, logueadoGoogle: true, nickname: nuevo.nickname, avatar: nuevo.avatar, bio: nuevo.bio, favoritos: {}, favoritosOcultos: {}, preferencias: nuevo.preferencias };
+return { exito: true, emailGoogle: email, logueadoGoogle: true, nickname: nuevo.nickname, avatar: nuevo.avatar, bio: nuevo.bio, favoritos: {}, favoritosOcultos: {}, preferencias: nuevo.preferencias, diasLectura: [], tiemposLectura: {} };
 } catch (e) { return { exito: false, error: e.toString(), emailGoogle: userEmail || '', logueadoGoogle: false }; }
 }, async autenticarUsuarioSupabase(datos) { try { const modo = datos?.modo || 'login'; const email = normEm_(datos?.email); const pass = String(datos?.password || ''); if (!email) return { exito: false, error: 'Ingresa tu correo o nombre de usuario.' };
 const passHash = pass ? await hashP_(pass) : ''; const existentes = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); const actual = existentes && existentes[0] ? existentes[0] : null; if (modo === 'registro') {
@@ -6578,6 +6593,12 @@ return await SERVER_API.obtenerPerfilUsuario(email); } catch (e) { return { exit
 const existentes = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); const actual = existentes && existentes[0] ? existentes[0] : {};
 const prefsObj = Object.assign({}, actual.preferencias || {}, datos.preferencias || {});
 if (datos.portada) prefsObj.portada = datos.portada;
+if (datos.diasLectura || datos.tiemposLectura) {
+  if (!prefsObj.rachas) prefsObj.rachas = {};
+  if (datos.diasLectura) prefsObj.rachas.diasLectura = datos.diasLectura;
+  if (datos.tiemposLectura) prefsObj.rachas.tiemposLectura = datos.tiemposLectura;
+  prefsObj.rachas.updatedAt = Date.now();
+}
 const payload = { user_email: email,
 nickname: datos.nickname !== undefined ? String(datos.nickname) : (actual.nickname || email.split('@')[0]), bio: datos.bio !== undefined ? String(datos.bio) : (actual.bio || 'Coleccionando historias en Mediary'),
 avatar: datos.avatar !== undefined ? String(datos.avatar) : (actual.avatar || '🦊'), favoritos: datos.favoritos !== undefined ? datos.favoritos : (actual.favoritos || {}), favoritos_ocultos: datos.favoritosOcultos !== undefined ? datos.favoritosOcultos : (actual.favoritos_ocultos || {}),
@@ -13318,6 +13339,18 @@ function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false) {
       };
       perfilUsuario.preferencias.cuentas_vinculadas = cuentasVinculadas;
 
+      // 3. Empaquetar rachas (incluyendo racha manual de lectura y mapa de tiempos registrados)
+      const listaDiasLectura = typeof obtenerListaDiasLectura === 'function' ? obtenerListaDiasLectura() : [];
+      const mapaTiemposLectura = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
+      const rachasData = {
+        diasLectura: Array.isArray(listaDiasLectura) ? listaDiasLectura : [],
+        tiemposLectura: (typeof mapaTiemposLectura === 'object' && mapaTiemposLectura !== null) ? mapaTiemposLectura : {},
+        updatedAt: Date.now()
+      };
+      perfilUsuario.preferencias.rachas = rachasData;
+      perfilUsuario.diasLectura = rachasData.diasLectura;
+      perfilUsuario.tiemposLectura = rachasData.tiemposLectura;
+
       guardarPerfilLocal();
       if (typeof google !== 'undefined' && google.script?.run) {
         google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
@@ -13468,8 +13501,60 @@ function restaurarPreferenciasYAppsDesdeNube(prefs) {
     cambio = true;
   }
 
+  // 3. Restaurar rachas (días de lectura y mapa de tiempos de sesión)
+  const rachasCloud = prefs.rachas;
+  if (rachasCloud && typeof rachasCloud === 'object') {
+    const cloudDias = Array.isArray(rachasCloud.diasLectura) ? rachasCloud.diasLectura : [];
+    const cloudTiempos = (typeof rachasCloud.tiemposLectura === 'object' && rachasCloud.tiemposLectura !== null) ? rachasCloud.tiemposLectura : {};
+
+    const claveDias = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
+    const claveTiempos = 'mediary_tiempos_lectura_' + (estado.userEmail || 'default');
+
+    let localesDias = [];
+    try {
+      const raw = localStorage.getItem(claveDias);
+      if (raw) localesDias = JSON.parse(raw);
+    } catch(e) {}
+    if (!Array.isArray(localesDias)) localesDias = [];
+
+    let localesTiempos = {};
+    try {
+      const raw = localStorage.getItem(claveTiempos);
+      if (raw) localesTiempos = JSON.parse(raw);
+    } catch(e) {}
+    if (typeof localesTiempos !== 'object' || localesTiempos === null) localesTiempos = {};
+
+    // Combinar sin duplicados manteniendo los datos de ambos dispositivos
+    const diasCombinados = Array.from(new Set([...localesDias, ...cloudDias])).filter(Boolean);
+    const tiemposCombinados = Object.assign({}, localesTiempos, cloudTiempos);
+
+    try {
+      localStorage.setItem(claveDias, JSON.stringify(diasCombinados));
+      localStorage.setItem(claveTiempos, JSON.stringify(tiemposCombinados));
+    } catch(e) {}
+
+    if (perfilUsuario) {
+      perfilUsuario.diasLectura = diasCombinados;
+      perfilUsuario.tiemposLectura = tiemposCombinados;
+    }
+
+    if (typeof renderizarRachasActualesInicio === 'function') {
+      renderizarRachasActualesInicio();
+    }
+    if (typeof actualizarBotonLecturaHoyInicio === 'function') {
+      actualizarBotonLecturaHoyInicio();
+    }
+    if (typeof actualizarBotonLecturaHoyLibros === 'function') {
+      actualizarBotonLecturaHoyLibros();
+    }
+    if (typeof renderizarBannerRachaSubcategoria === 'function' && estado.categoria === 'Lecturas') {
+      renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria);
+    }
+    cambio = true;
+  }
+
   // Si la nube aún no tenía cuentas o UI pero este dispositivo sí las tiene, sincronizar hacia arriba
-  if (!configUI || !cuentas) {
+  if (!configUI || !cuentas || !rachasCloud) {
     sincronizarPreferenciasYAppsHaciaNube(true);
   }
 
@@ -14816,7 +14901,7 @@ function obtenerListaDiasLectura() {
     if (raw) locales = JSON.parse(raw);
   } catch (e) {}
 
-  let perfilArr = perfilUsuario?.diasLectura || [];
+  let perfilArr = perfilUsuario?.diasLectura || perfilUsuario?.preferencias?.rachas?.diasLectura || [];
   if (!Array.isArray(perfilArr)) perfilArr = [];
 
   const combinado = Array.from(new Set([...locales, ...perfilArr])).filter(Boolean);
@@ -14872,7 +14957,7 @@ function obtenerMapaTiemposLectura() {
     if (raw) locales = JSON.parse(raw);
   } catch (e) {}
 
-  let perfilMap = perfilUsuario?.tiemposLectura || {};
+  let perfilMap = perfilUsuario?.tiemposLectura || perfilUsuario?.preferencias?.rachas?.tiemposLectura || {};
   if (typeof perfilMap !== 'object' || perfilMap === null) perfilMap = {};
 
   const combinado = Object.assign({}, locales, perfilMap);
@@ -14899,6 +14984,10 @@ function guardarTiempoLecturaFecha(fechaStr, tiempoTexto) {
     if (typeof google !== 'undefined' && google.script?.run) {
       google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
     }
+  }
+
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
   }
 }
 
@@ -21406,12 +21495,20 @@ function registrarMusicaActualEnMediary(titulo, artista) {
 }
 
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && typeof estado !== 'undefined' && estado.categoria === 'inicio') {
-    _spotifyNowPlayingCache = null;
-    _spotifyUltimaConsultaLive = 0;
-    renderizarEscuchandoAhoraInicio(true);
-    if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
-      renderizarPlayStationNowPlayingInicio(true);
+  if (!document.hidden) {
+    if (typeof intentarDesbloquearOrientacion === 'function') {
+      intentarDesbloquearOrientacion();
+    }
+    if (typeof estado !== 'undefined' && estado.userEmail && typeof sincronizarPerfilDesdeServidor === 'function') {
+      sincronizarPerfilDesdeServidor();
+    }
+    if (typeof estado !== 'undefined' && estado.categoria === 'inicio') {
+      _spotifyNowPlayingCache = null;
+      _spotifyUltimaConsultaLive = 0;
+      renderizarEscuchandoAhoraInicio(true);
+      if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
+        renderizarPlayStationNowPlayingInicio(true);
+      }
     }
   }
 });
