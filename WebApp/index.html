@@ -6352,7 +6352,10 @@ window.getJson_ = getJson_;
 var getSteamJson_ = async u => {
   if (JSON_CACHE_.has(u)) return JSON_CACHE_.get(u);
   try {
-    const r = await fetch(u);
+    const ctrl1 = new AbortController();
+    const t1 = setTimeout(() => ctrl1.abort(), 1200);
+    const r = await fetch(u, { signal: ctrl1.signal });
+    clearTimeout(t1);
     if (r.ok) {
       const d = await r.json();
       if (d && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d);
@@ -6360,8 +6363,11 @@ var getSteamJson_ = async u => {
     }
   } catch (e) {}
   try {
+    const ctrl2 = new AbortController();
+    const t2 = setTimeout(() => ctrl2.abort(), 1200);
     const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(u)}`;
-    const r2 = await fetch(proxyUrl);
+    const r2 = await fetch(proxyUrl, { signal: ctrl2.signal });
+    clearTimeout(t2);
     if (r2.ok) {
       const d2 = await r2.json();
       if (d2 && JSON_CACHE_.size < 350) JSON_CACHE_.set(u, d2);
@@ -6392,10 +6398,16 @@ var getIgdbGames_ = async (query, limit = 6) => {
     };
     let r = null;
     try {
-      r = await fetch('https://api.igdb.com/v4/games', opts);
+      const ctrl1 = new AbortController();
+      const t1 = setTimeout(() => ctrl1.abort(), 1200);
+      r = await fetch('https://api.igdb.com/v4/games', { ...opts, signal: ctrl1.signal });
+      clearTimeout(t1);
     } catch (e) {
+      const ctrl2 = new AbortController();
+      const t2 = setTimeout(() => ctrl2.abort(), 1200);
       const pUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent('https://api.igdb.com/v4/games')}`;
-      r = await fetch(pUrl, opts).catch(() => null);
+      r = await fetch(pUrl, { ...opts, signal: ctrl2.signal }).catch(() => null);
+      clearTimeout(t2);
     }
     if (r && r.ok) {
       const data = await r.json();
@@ -7725,24 +7737,57 @@ sinopsis: end === 'artist' ? `Seguidores: ${(it.nb_fan || 0).toLocaleString()}` 
 })); }
 if (cat === 'Juegos') {
   const qClean = qTrim;
-  const steamPromise = getSteamJson_(`https://store.steampowered.com/api/storesearch/?term=${q}&l=spanish&cc=US`).catch(() => null);
-  const igdbPromise = getIgdbGames_(qClean, 6).catch(() => null);
-  const rawgPromise = getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=6`).catch(() => null);
+  // RAWG es nuestra fuente principal y más completa (con soporte nativo CORS para juegos de todas las plataformas)
+  const rawgPromise = getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=8`).catch(() => null);
+  // Steam e IGDB con timeout estricto de 1200ms para evitar cuelgues o demoras
+  const steamPromise = Promise.race([
+    getSteamJson_(`https://store.steampowered.com/api/storesearch/?term=${q}&l=spanish&cc=US`),
+    new Promise(r => setTimeout(() => r(null), 1200))
+  ]).catch(() => null);
+  const igdbPromise = Promise.race([
+    getIgdbGames_(qClean, 6),
+    new Promise(r => setTimeout(() => r(null), 1200))
+  ]).catch(() => null);
 
-  const [steamRes, igdbRes, rawgRes] = await Promise.all([steamPromise, igdbPromise, rawgPromise]);
+  const [rawgRes, steamRes, igdbRes] = await Promise.all([rawgPromise, steamPromise, igdbPromise]);
 
   const resultadosJuegos = [];
   const vistos = new Set();
 
+  // 1. Priorizar resultados de RAWG (cubre Nintendo, PlayStation, Xbox, PC, etc.)
+  if (rawgRes?.results?.length) {
+    rawgRes.results.slice(0, 8).forEach(g => {
+      const tit = g.name || '';
+      if (!tit) return;
+      const k = tit.toLowerCase().trim();
+      const plats = (g.platforms || []).map(p => p.platform?.name).filter(Boolean).slice(0, 3).join(', ');
+      const genres = (g.genres || []).map(x => x.name).filter(Boolean).slice(0, 2).join(' / ');
+      const sin = plats ? `Plataformas: ${plats}${g.rating ? ` | Calificación: ${g.rating}/5` : ''}` : (genres || 'Videojuego');
+      if (!vistos.has(k)) {
+        vistos.add(k);
+        resultadosJuegos.push({
+          idRef: g.id,
+          tituloOriginal: tit,
+          tituloIngles: '',
+          creador: genres || 'Videojuego',
+          anio: g.released?.substring(0, 4) || '',
+          sinopsis: sin,
+          poster: g.background_image || ''
+        });
+      }
+    });
+  }
+
+  // 2. Complementar con Steam si hay resultados únicos o detalles adicionales
   if (steamRes?.items?.length) {
     steamRes.items.forEach(it => {
       const tit = it.name || '';
       if (!tit) return;
       const k = tit.toLowerCase().trim();
+      const poster = `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${it.id}/header.jpg`;
+      const meta = it.metacritic ? ` | Metacritic: ${it.metacritic}` : '';
       if (!vistos.has(k)) {
         vistos.add(k);
-        const poster = `https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/${it.id}/header.jpg`;
-        const meta = it.metacritic ? ` | Metacritic: ${it.metacritic}` : '';
         resultadosJuegos.push({
           idRef: `steam_${it.id}`,
           tituloOriginal: tit,
@@ -7752,10 +7797,14 @@ if (cat === 'Juegos') {
           sinopsis: `Disponible en Steam Store${meta}`,
           poster: poster
         });
+      } else {
+        const exist = resultadosJuegos.find(x => x.tituloOriginal.toLowerCase().trim() === k);
+        if (exist && !exist.poster && poster) exist.poster = poster;
       }
     });
   }
 
+  // 3. Complementar con IGDB si está disponible
   if (Array.isArray(igdbRes) && igdbRes.length) {
     igdbRes.forEach(g => {
       const tit = g.name || '';
@@ -7785,46 +7834,18 @@ if (cat === 'Juegos') {
           sinopsis: sin,
           poster: cov
         });
+      } else {
+        const exist = resultadosJuegos.find(x => x.tituloOriginal.toLowerCase().trim() === k);
+        if (exist) {
+          if ((!exist.creador || exist.creador === 'Videojuego' || exist.creador === 'Steam') && cr !== 'IGDB') exist.creador = cr;
+          if (!exist.anio && yr) exist.anio = yr;
+          if (!exist.poster && cov) exist.poster = cov;
+        }
       }
     });
   }
 
-  if (rawgRes?.results?.length) {
-    const listRawg = rawgRes.results.slice(0, 6);
-    await Promise.all(listRawg.map(async g => {
-      const tit = g.name || '';
-      if (!tit) return;
-      const k = tit.toLowerCase().trim();
-      let dev = 'Estudio desarrollador';
-      try {
-        const det = await Promise.race([getJson_(`https://api.rawg.io/api/games/${g.id}?key=${RAWG_K}`), new Promise(r => setTimeout(() => r(null), 800))]);
-        if (det?.developers?.length) dev = det.developers.map(d => d.name).join(', ');
-      } catch (e) {}
-      const plats = (g.platforms || []).map(p => p.platform?.name).slice(0, 3).join(', ');
-      const sin = plats ? `Plataformas: ${plats} | Calificación: ${g.rating || 'N/D'}/5` : 'Videojuego';
-      if (!vistos.has(k)) {
-        vistos.add(k);
-        resultadosJuegos.push({
-          idRef: g.id,
-          tituloOriginal: tit,
-          tituloIngles: '',
-          creador: dev,
-          anio: g.released?.substring(0, 4) || '',
-          sinopsis: sin,
-          poster: g.background_image || ''
-        });
-      } else {
-        const exist = resultadosJuegos.find(x => x.tituloOriginal.toLowerCase().trim() === k);
-        if (exist) {
-          if ((!exist.creador || exist.creador === 'Steam') && dev !== 'Estudio desarrollador') exist.creador = dev;
-          if (!exist.anio && g.released) exist.anio = g.released.substring(0, 4);
-          if (!exist.poster && g.background_image) exist.poster = g.background_image;
-        }
-      }
-    }));
-  }
-
-  return resultadosJuegos.slice(0, 8);
+  return resultadosJuegos.slice(0, 10);
 }
 if (cat === 'Lecturas') { if (sub === 'Mangas' || sub === 'Manga' || sub === 'To Read: Mangas') { const list = ((await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&page[limit]=6`))?.data || []); return await Promise.all(list.map(async it => {
 const a = it.attributes || {}, titles = a.titles || {}, tRom = titles.en_jp || a.canonicalTitle || '', tEng = titles.en || '', mangakas = []; try { const st = await getJson_(`https://kitsu.io/api/edge/manga/${it.id}/staff`);
@@ -8151,7 +8172,7 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
     return { exito: false, error: e.toString(), feed: [] };
   }
 }
-}; const makeRunner_ = (onSuccess = null, onFailure = null) => new Proxy({}, { get(_, prop) { if (prop === 'withSuccessHandler') return fn => makeRunner_(fn, onFailure); if (prop === 'withFailureHandler') return fn => makeRunner_(onSuccess, fn); return (...args) => {
+}; window.SERVER_API = SERVER_API; const makeRunner_ = (onSuccess = null, onFailure = null) => new Proxy({}, { get(_, prop) { if (prop === 'withSuccessHandler') return fn => makeRunner_(fn, onFailure); if (prop === 'withFailureHandler') return fn => makeRunner_(onSuccess, fn); return (...args) => {
 Promise.resolve().then(() => SERVER_API[prop](...args)).then(res => { if (onSuccess) onSuccess(res); }).catch(err => { console.error(`Error en ${String(prop)}:`, err); if (onFailure) onFailure(err); }); }; }
 }); window.google = { script: { run: makeRunner_() } }; }
 // === RECORTADOR INTERACTIVO 1:1 DE AVATAR (PAN, ZOOM, ROTACIÓN Y ENCUADRE) ===
@@ -13263,7 +13284,16 @@ if (!userPrefs.notificaciones || typeof userPrefs.notificaciones !== 'object') {
 try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) estado.anioActivo = anioG; } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
 try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); if (!perfilUsuario.portada && perfilUsuario.preferencias?.portada) perfilUsuario.portada = perfilUsuario.preferencias.portada; if (!perfilUsuario.personajeFavorito && perfilUsuario.favoritos?.personajeFavorito) perfilUsuario.personajeFavorito = perfilUsuario.favoritos.personajeFavorito; } } catch (e) {}
-aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); actualizarUISelectorAnio(); }
+aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); actualizarUISelectorAnio();
+setTimeout(() => {
+  if (estado && estado.userEmail) {
+    const d = typeof obtenerListaDiasLectura === 'function' ? obtenerListaDiasLectura() : [];
+    if (d && d.length > 0) {
+      sincronizarPreferenciasYAppsHaciaNube(false);
+    }
+  }
+}, 1200);
+}
 let _timerSyncCloudPrefs = null;
 function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false) {
   if (!estado || !estado.userEmail) return;
@@ -13503,58 +13533,58 @@ function restaurarPreferenciasYAppsDesdeNube(prefs) {
 
   // 3. Restaurar rachas (días de lectura y mapa de tiempos de sesión)
   const rachasCloud = prefs.rachas;
-  if (rachasCloud && typeof rachasCloud === 'object') {
-    const cloudDias = Array.isArray(rachasCloud.diasLectura) ? rachasCloud.diasLectura : [];
-    const cloudTiempos = (typeof rachasCloud.tiemposLectura === 'object' && rachasCloud.tiemposLectura !== null) ? rachasCloud.tiemposLectura : {};
+  let sincronizarHaciaArribaPorRacha = false;
 
-    const claveDias = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
-    const claveTiempos = 'mediary_tiempos_lectura_' + (estado.userEmail || 'default');
+  const cloudDias = (rachasCloud && Array.isArray(rachasCloud.diasLectura)) ? rachasCloud.diasLectura : [];
+  const cloudTiempos = (rachasCloud && typeof rachasCloud.tiemposLectura === 'object' && rachasCloud.tiemposLectura !== null) ? rachasCloud.tiemposLectura : {};
 
-    let localesDias = [];
-    try {
-      const raw = localStorage.getItem(claveDias);
-      if (raw) localesDias = JSON.parse(raw);
-    } catch(e) {}
-    if (!Array.isArray(localesDias)) localesDias = [];
+  const localesDias = typeof obtenerListaDiasLectura === 'function' ? obtenerListaDiasLectura() : [];
+  const localesTiempos = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
 
-    let localesTiempos = {};
-    try {
-      const raw = localStorage.getItem(claveTiempos);
-      if (raw) localesTiempos = JSON.parse(raw);
-    } catch(e) {}
-    if (typeof localesTiempos !== 'object' || localesTiempos === null) localesTiempos = {};
+  // Combinar sin duplicados manteniendo los datos de todos los dispositivos
+  const diasCombinados = Array.from(new Set([...localesDias, ...cloudDias])).filter(Boolean).sort();
+  const tiemposCombinados = Object.assign({}, localesTiempos, cloudTiempos);
 
-    // Combinar sin duplicados manteniendo los datos de ambos dispositivos
-    const diasCombinados = Array.from(new Set([...localesDias, ...cloudDias])).filter(Boolean);
-    const tiemposCombinados = Object.assign({}, localesTiempos, cloudTiempos);
+  const claveDias = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
+  const claveTiempos = 'mediary_tiempos_lectura_' + (estado.userEmail || 'default');
 
-    try {
-      localStorage.setItem(claveDias, JSON.stringify(diasCombinados));
-      localStorage.setItem(claveTiempos, JSON.stringify(tiemposCombinados));
-    } catch(e) {}
+  try {
+    localStorage.setItem(claveDias, JSON.stringify(diasCombinados));
+    localStorage.setItem('mediary_dias_lectura_default', JSON.stringify(diasCombinados));
+    localStorage.setItem(claveTiempos, JSON.stringify(tiemposCombinados));
+    localStorage.setItem('mediary_tiempos_lectura_default', JSON.stringify(tiemposCombinados));
+  } catch(e) {}
 
-    if (perfilUsuario) {
-      perfilUsuario.diasLectura = diasCombinados;
-      perfilUsuario.tiemposLectura = tiemposCombinados;
-    }
-
-    if (typeof renderizarRachasActualesInicio === 'function') {
-      renderizarRachasActualesInicio();
-    }
-    if (typeof actualizarBotonLecturaHoyInicio === 'function') {
-      actualizarBotonLecturaHoyInicio();
-    }
-    if (typeof actualizarBotonLecturaHoyLibros === 'function') {
-      actualizarBotonLecturaHoyLibros();
-    }
-    if (typeof renderizarBannerRachaSubcategoria === 'function' && estado.categoria === 'Lecturas') {
-      renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria);
-    }
-    cambio = true;
+  if (perfilUsuario) {
+    perfilUsuario.diasLectura = diasCombinados;
+    perfilUsuario.tiemposLectura = tiemposCombinados;
+    if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+    if (!perfilUsuario.preferencias.rachas) perfilUsuario.preferencias.rachas = {};
+    perfilUsuario.preferencias.rachas.diasLectura = diasCombinados;
+    perfilUsuario.preferencias.rachas.tiemposLectura = tiemposCombinados;
   }
 
-  // Si la nube aún no tenía cuentas o UI pero este dispositivo sí las tiene, sincronizar hacia arriba
-  if (!configUI || !cuentas || !rachasCloud) {
+  // Si el dispositivo local tiene más días o tiempos que la nube, o la nube aún no tenía rachas, subir a la nube de inmediato
+  if (diasCombinados.length > cloudDias.length || Object.keys(tiemposCombinados).length > Object.keys(cloudTiempos).length || !rachasCloud) {
+    sincronizarHaciaArribaPorRacha = true;
+  }
+
+  if (typeof renderizarRachasActualesInicio === 'function') {
+    renderizarRachasActualesInicio();
+  }
+  if (typeof actualizarBotonLecturaHoyInicio === 'function') {
+    actualizarBotonLecturaHoyInicio();
+  }
+  if (typeof actualizarBotonLecturaHoyLibros === 'function') {
+    actualizarBotonLecturaHoyLibros();
+  }
+  if (typeof renderizarBannerRachaSubcategoria === 'function' && estado.categoria === 'Lecturas') {
+    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria);
+  }
+  cambio = true;
+
+  // Si la nube aún no tenía cuentas o UI, o si el dispositivo local tenía más días de racha, sincronizar hacia arriba
+  if (!configUI || !cuentas || !rachasCloud || sincronizarHaciaArribaPorRacha) {
     sincronizarPreferenciasYAppsHaciaNube(true);
   }
 
@@ -14894,18 +14924,80 @@ function fechaStrToDayIndex(str) {
 }
 
 function obtenerListaDiasLectura() {
-  const clave = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
-  let locales = [];
+  const setDias = new Set();
+  const claveActual = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
+
+  // 1. Clave actual de usuario
   try {
-    const raw = localStorage.getItem(clave);
-    if (raw) locales = JSON.parse(raw);
+    const raw = localStorage.getItem(claveActual);
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) arr.forEach(d => { if (d) setDias.add(d); });
+    }
   } catch (e) {}
 
-  let perfilArr = perfilUsuario?.diasLectura || perfilUsuario?.preferencias?.rachas?.diasLectura || [];
-  if (!Array.isArray(perfilArr)) perfilArr = [];
+  // 2. Clave default siempre (por si se marcaron días offline o antes de iniciar sesión)
+  try {
+    const raw = localStorage.getItem('mediary_dias_lectura_default');
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) arr.forEach(d => { if (d) setDias.add(d); });
+    }
+  } catch (e) {}
 
-  const combinado = Array.from(new Set([...locales, ...perfilArr])).filter(Boolean);
+  // 3. Clave base sin sufijo
+  try {
+    const raw = localStorage.getItem('mediary_dias_lectura');
+    if (raw) {
+      const arr = JSON.parse(raw);
+      if (Array.isArray(arr)) arr.forEach(d => { if (d) setDias.add(d); });
+    }
+  } catch (e) {}
+
+  // 4. Escaneo exhaustivo de todas las claves en localStorage que comiencen con mediary_dias_lectura
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('mediary_dias_lectura')) {
+        try {
+          const arr = JSON.parse(localStorage.getItem(k));
+          if (Array.isArray(arr)) arr.forEach(d => { if (d) setDias.add(d); });
+        } catch(e) {}
+      }
+    }
+  } catch (e) {}
+
+  // 5. Perfil de usuario en memoria
+  if (Array.isArray(perfilUsuario?.diasLectura)) {
+    perfilUsuario.diasLectura.forEach(d => { if (d) setDias.add(d); });
+  }
+  if (Array.isArray(perfilUsuario?.preferencias?.rachas?.diasLectura)) {
+    perfilUsuario.preferencias.rachas.diasLectura.forEach(d => { if (d) setDias.add(d); });
+  }
+
+  // 6. Perfiles guardados en localStorage
+  ['Mediary_perfil_v1', 'MyMediary_perfil_v1'].forEach(k => {
+    try {
+      const raw = localStorage.getItem(k);
+      if (raw) {
+        const obj = JSON.parse(raw);
+        if (Array.isArray(obj?.diasLectura)) obj.diasLectura.forEach(d => { if (d) setDias.add(d); });
+        if (Array.isArray(obj?.preferencias?.rachas?.diasLectura)) obj.preferencias.rachas.diasLectura.forEach(d => { if (d) setDias.add(d); });
+      }
+    } catch(e) {}
+  });
+
+  const combinado = Array.from(setDias).filter(Boolean).sort();
   if (perfilUsuario) perfilUsuario.diasLectura = combinado;
+
+  // Persistir en ambas claves para que nunca se desvinculen
+  try {
+    localStorage.setItem(claveActual, JSON.stringify(combinado));
+    if (claveActual !== 'mediary_dias_lectura_default') {
+      localStorage.setItem('mediary_dias_lectura_default', JSON.stringify(combinado));
+    }
+  } catch (e) {}
+
   return combinado;
 }
 
@@ -14950,19 +15042,66 @@ function formatTiempoPill(txt) {
 }
 
 function obtenerMapaTiemposLectura() {
-  const clave = 'mediary_tiempos_lectura_' + (estado.userEmail || 'default');
-  let locales = {};
+  const mapa = {};
+  const incorporar = obj => {
+    if (obj && typeof obj === 'object') {
+      Object.keys(obj).forEach(f => {
+        if (!mapa[f] || (obj[f]?.ts && (!mapa[f].ts || obj[f].ts > mapa[f].ts))) {
+          mapa[f] = obj[f];
+        }
+      });
+    }
+  };
+
+  const claveActual = 'mediary_tiempos_lectura_' + (estado.userEmail || 'default');
   try {
-    const raw = localStorage.getItem(clave);
-    if (raw) locales = JSON.parse(raw);
+    const raw = localStorage.getItem(claveActual);
+    if (raw) incorporar(JSON.parse(raw));
   } catch (e) {}
 
-  let perfilMap = perfilUsuario?.tiemposLectura || perfilUsuario?.preferencias?.rachas?.tiemposLectura || {};
-  if (typeof perfilMap !== 'object' || perfilMap === null) perfilMap = {};
+  try {
+    const raw = localStorage.getItem('mediary_tiempos_lectura_default');
+    if (raw) incorporar(JSON.parse(raw));
+  } catch (e) {}
 
-  const combinado = Object.assign({}, locales, perfilMap);
-  if (perfilUsuario) perfilUsuario.tiemposLectura = combinado;
-  return combinado;
+  try {
+    const raw = localStorage.getItem('mediary_tiempos_lectura');
+    if (raw) incorporar(JSON.parse(raw));
+  } catch (e) {}
+
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('mediary_tiempos_lectura')) {
+        try { incorporar(JSON.parse(localStorage.getItem(k))); } catch(e) {}
+      }
+    }
+  } catch (e) {}
+
+  if (perfilUsuario?.tiemposLectura) incorporar(perfilUsuario.tiemposLectura);
+  if (perfilUsuario?.preferencias?.rachas?.tiemposLectura) incorporar(perfilUsuario.preferencias.rachas.tiemposLectura);
+
+  ['Mediary_perfil_v1', 'MyMediary_perfil_v1'].forEach(k => {
+    try {
+      const raw = localStorage.getItem(k);
+      if (raw) {
+        const obj = JSON.parse(raw);
+        if (obj?.tiemposLectura) incorporar(obj.tiemposLectura);
+        if (obj?.preferencias?.rachas?.tiemposLectura) incorporar(obj.preferencias.rachas.tiemposLectura);
+      }
+    } catch(e) {}
+  });
+
+  if (perfilUsuario) perfilUsuario.tiemposLectura = mapa;
+
+  try {
+    localStorage.setItem(claveActual, JSON.stringify(mapa));
+    if (claveActual !== 'mediary_tiempos_lectura_default') {
+      localStorage.setItem('mediary_tiempos_lectura_default', JSON.stringify(mapa));
+    }
+  } catch(e) {}
+
+  return mapa;
 }
 
 function guardarTiempoLecturaFecha(fechaStr, tiempoTexto) {
@@ -23794,10 +23933,17 @@ function mostrarResultadosBuscadorWl(items) {
     const d = document.createElement('div');
     d.className = 'result-item';
     d.setAttribute('role', 'button');
-    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${it.creador || ''} ${it.anio ? '('+it.anio+')' : ''}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, cat)}</div><button type="button" class="btn-wl-play" style="max-width:90px;" onclick="event.stopPropagation(); agregarAWatchlistDirecto(${JSON.stringify(itemConCat).replace(/"/g, '&quot;')})">+ Lista</button>`;
+    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\'100%\\' height=\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${it.creador || ''} ${it.anio ? '('+it.anio+')' : ''}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, cat)}</div><button type="button" class="btn-wl-play btn-item-add-wl" style="max-width:90px;">+ Lista</button>`;
+    const btn = d.querySelector('.btn-item-add-wl');
+    if (btn) {
+      btn.onclick = e => {
+        e.stopPropagation();
+        agregarAWatchlistDirecto(itemConCat, btn);
+      };
+    }
     d.onclick = e => {
       e.stopPropagation();
-      agregarAWatchlistDirecto(itemConCat);
+      agregarAWatchlistDirecto(itemConCat, btn);
     };
     frag.appendChild(d);
   });
@@ -24505,10 +24651,17 @@ function mostrarResultadosBuscador(items) {
     const d = document.createElement('div');
     d.className = 'result-item';
     d.setAttribute('role', 'button');
-    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${it.creador || ''} ${it.anio ? '('+it.anio+')' : ''}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, estado.categoria)}</div>${esWl ? `<button type="button" class="btn-wl-play" style="max-width:90px;" onclick="event.stopPropagation(); agregarAWatchlistDirecto(${JSON.stringify(it).replace(/"/g, '&quot;')})">+ Lista</button>` : ''}`;
+    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${it.creador || ''} ${it.anio ? '('+it.anio+')' : ''}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, estado.categoria)}</div>${esWl ? `<button type="button" class="btn-wl-play btn-item-add-wl" style="max-width:90px;">+ Lista</button>` : ''}`;
+    const btn = d.querySelector('.btn-item-add-wl');
+    if (btn) {
+      btn.onclick = e => {
+        e.stopPropagation();
+        agregarAWatchlistDirecto(it, btn);
+      };
+    }
     d.onclick = e => {
       e.stopPropagation();
-      if (esWl) agregarAWatchlistDirecto(it);
+      if (esWl) agregarAWatchlistDirecto(it, btn);
       else seleccionarItem(it);
     };
     frag.appendChild(d);
