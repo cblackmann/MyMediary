@@ -1813,6 +1813,30 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .books-reading-strip.active-read{background:linear-gradient(135deg,rgba(16,185,129,0.12) 0%,rgba(5,150,105,0.05) 100%);border-color:rgba(16,185,129,0.4);}
 [data-theme$="-light"] .home-reading-tracker-card,[data-theme="nordic-light"] .home-reading-tracker-card,[data-theme="creme-latte"] .home-reading-tracker-card,[data-theme="parchment"] .home-reading-tracker-card,[data-theme="sage-garden"] .home-reading-tracker-card,[data-theme$="-light"] .books-reading-strip,[data-theme="nordic-light"] .books-reading-strip,[data-theme="creme-latte"] .books-reading-strip,[data-theme="parchment"] .books-reading-strip,[data-theme="sage-garden"] .books-reading-strip{background:rgba(245,158,11,0.10);border-color:rgba(217,119,6,0.35);}
 
+/* MODAL SELECTOR HORIZONTAL DE TIEMPO DE LECTURA */
+.reading-time-modal-box{max-width:440px !important;width:100%;border-radius:20px !important;padding:20px 20px 18px !important;box-sizing:border-box;}
+.reading-time-icon-badge{width:36px;height:36px;border-radius:10px;background:rgba(16,185,129,0.14);color:#10b981;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.reading-time-display-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,rgba(16,185,129,0.10) 0%,rgba(5,150,105,0.04) 100%);border:1px solid rgba(16,185,129,0.25);margin-bottom:12px;}
+.reading-time-display-clock{color:#10b981;display:flex;align-items:center;justify-content:center;}
+.reading-time-val-text{font-size:1.35rem;font-weight:800;color:var(--text);letter-spacing:-0.02em;line-height:1.2;}
+.reading-time-sub-text{font-size:0.74rem;color:var(--muted);margin-top:2px;}
+.reading-time-selector-wrap{position:relative;margin-bottom:16px;}
+.reading-time-chip-strip{display:flex;align-items:center;gap:8px;overflow-x:auto;padding:6px 4px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
+.reading-time-chip-strip::-webkit-scrollbar{height:4px;}
+.reading-time-chip-strip::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.reading-time-chip{flex-shrink:0;scroll-snap-align:center;padding:8px 15px;border-radius:9999px;font-size:0.84rem;font-weight:600;cursor:pointer;background:var(--card-hover, rgba(255,255,255,0.04));border:1.5px solid var(--border);color:var(--text);transition:all 0.18s cubic-bezier(0.4,0,0.2,1);white-space:nowrap;user-select:none;outline:none;font-family:inherit;}
+.reading-time-chip:hover{border-color:#10b981;background:rgba(16,185,129,0.08);transform:translateY(-1px);}
+.reading-time-chip.selected{background:#10b981 !important;border-color:#10b981 !important;color:#ffffff !important;font-weight:700;box-shadow:0 4px 14px rgba(16,185,129,0.35);transform:translateY(-1px);}
+.reading-time-actions{display:flex;flex-direction:column;gap:8px;}
+.btn-reading-time-confirm{width:100%;padding:11px 16px;border-radius:12px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:#ffffff;border:none;font-size:0.88rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 4px 14px rgba(16,185,129,0.28);transition:all 0.18s ease;font-family:inherit;}
+.btn-reading-time-confirm:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(16,185,129,0.38);background:linear-gradient(135deg,#16a34a 0%,#047857 100%);}
+.btn-reading-time-cancel{flex:1;padding:9px 14px;border-radius:10px;background:transparent;border:1px solid var(--border);color:var(--muted);font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.15s ease;font-family:inherit;}
+.btn-reading-time-cancel:hover{color:var(--text);border-color:var(--muted);background:var(--card-hover);}
+.btn-reading-time-unmark{flex:1;padding:9px 14px;border-radius:10px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);color:#ef4444;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.15s ease;font-family:inherit;}
+.btn-reading-time-unmark:hover{background:rgba(239,68,68,0.15);border-color:#ef4444;}
+[data-theme$="-light"] .reading-time-display-card,[data-theme="nordic-light"] .reading-time-display-card,[data-theme="creme-latte"] .reading-time-display-card,[data-theme="parchment"] .reading-time-display-card,[data-theme="sage-garden"] .reading-time-display-card{background:rgba(16,185,129,0.08);border-color:rgba(16,185,129,0.2);}
+[data-theme$="-light"] .reading-time-chip{background:rgba(0,0,0,0.03);}
+
 /* ESTILOS DE LA RULETA CO-OP CON AMIGOS (Películas, Series y Juegos) */
 @keyframes popInWinner{0%{transform:scale(0.85);opacity:0;}70%{transform:scale(1.03);}100%{transform:scale(1);opacity:1;}}
 @keyframes pulseBorder{0%,100%{border-color:var(--accent);box-shadow:0 0 20px rgba(56,189,248,0.2);}50%{border-color:#f59e0b;box-shadow:0 0 30px rgba(245,158,11,0.35);}}
@@ -2938,6 +2962,8 @@ html[data-app-theme="minimalist"] .btn-hero-quick-add,
 html[data-app-theme="minimalist"] .btn-toggle-filter,
 html[data-app-theme="minimalist"] .btn-read-today-streak,
 html[data-app-theme="minimalist"] .btn-streak-pill,
+html[data-app-theme="minimalist"] .btn-reading-time-confirm,
+html[data-app-theme="minimalist"] .reading-time-chip,
 html[data-app-theme="minimalist"] .btn-terminar-badge,
 html[data-app-theme="minimalist"] .btn-terminar-card,
 html[data-app-theme="minimalist"] .btn-change-cover,
@@ -5473,6 +5499,53 @@ html[data-app-theme="minimalist"] .nav-categories-row {
     <div class="modal-actions" style="margin-top:16px;">
       <button type="button" class="btn-modal-cancel" onclick="cerrarModalPrivacidadAmigos()" data-i18n="btn_cancel">Cancelar</button>
       <button type="button" class="btn-modal-save" onclick="guardarPrivacidadAmigos()" data-i18n="btn_save_privacy">Guardar Privacidad</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL TIEMPO DE LECTURA (RACHA) -->
+<div id="modal-tiempo-lectura" class="modal-overlay" style="display:none; z-index:2200;" onclick="if(event.target===this) cerrarModalTiempoLectura()">
+  <div class="modal-box reading-time-modal-box">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; gap:10px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span class="reading-time-icon-badge"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span>
+        <div>
+          <h3 style="margin:0; font-size:1.05rem; font-weight:700; color:var(--text); line-height:1.2;">Racha de lectura</h3>
+          <p style="margin:2px 0 0; font-size:0.75rem; color:var(--muted); line-height:1.2;">¿Cuánto tiempo leíste hoy?</p>
+        </div>
+      </div>
+      <button type="button" class="btn-close-form" onclick="cerrarModalTiempoLectura()" style="position:static;" title="Cerrar">
+        <svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="reading-time-display-card">
+      <span class="reading-time-display-clock"><svg style="width:22px;height:22px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+      <div style="text-align:center;">
+        <div id="reading-time-val-display" class="reading-time-val-text">30 minutos</div>
+        <div id="reading-time-sub-display" class="reading-time-sub-text">¡Buen ritmo de lectura hoy!</div>
+      </div>
+    </div>
+
+    <div class="reading-time-selector-wrap">
+      <div id="reading-time-chip-strip" class="reading-time-chip-strip" role="radiogroup" aria-label="Selector interactivo de tiempo de lectura">
+        <!-- 10 opciones interactivas -->
+      </div>
+    </div>
+
+    <div class="reading-time-actions">
+      <button type="button" id="btn-confirmar-tiempo-lectura" class="btn-reading-time-confirm" onclick="confirmarTiempoLectura()">
+        <svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg>
+        <span id="btn-confirmar-tiempo-txt">Confirmar lectura (30 minutos)</span>
+      </button>
+      <div style="display:flex; gap:8px; width:100%;">
+        <button type="button" class="btn-reading-time-cancel" onclick="cerrarModalTiempoLectura()">
+          Cancelar
+        </button>
+        <button type="button" id="btn-desmarcar-lectura" class="btn-reading-time-unmark" onclick="desmarcarLecturaHoy()" style="display:none;">
+          Desmarcar de hoy
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -13894,23 +13967,183 @@ function obtenerDayIndicesDeLecturaDiaria() {
   return set;
 }
 
-function toggleLecturaHoy() {
-  const hoyStr = obtenerFechaHoyStr();
-  let lista = obtenerListaDiasLectura();
-  const l = userPrefs.lang || 'es';
-  const yaLeyo = lista.includes(hoyStr);
+const LISTA_TIEMPOS_LECTURA = [
+  '10 minutos',
+  '20 minutos',
+  '30 minutos',
+  '45 minutos',
+  '1 hora',
+  '1 hora 30 minutos',
+  '2 horas',
+  '2 horas 30 minutos',
+  '3 horas',
+  '4 horas'
+];
 
-  if (yaLeyo) {
-    lista = lista.filter(f => f !== hoyStr);
-    mostrarToastPersonalizado(l === 'en' ? 'Reading session for today unmarked.' : ' Lectura de hoy desmarcada.');
+let tiempoLecturaSeleccionadoActual = '30 minutos';
+
+function formatTiempoPill(txt) {
+  if (!txt) return '';
+  return txt
+    .replace(' minutos', 'm')
+    .replace(' minuto', 'm')
+    .replace(' horas', 'h')
+    .replace(' hora', 'h');
+}
+
+function obtenerMapaTiemposLectura() {
+  const clave = 'mediary_tiempos_lectura_' + (estado.userEmail || 'default');
+  let locales = {};
+  try {
+    const raw = localStorage.getItem(clave);
+    if (raw) locales = JSON.parse(raw);
+  } catch (e) {}
+
+  let perfilMap = perfilUsuario?.tiemposLectura || {};
+  if (typeof perfilMap !== 'object' || perfilMap === null) perfilMap = {};
+
+  const combinado = Object.assign({}, locales, perfilMap);
+  if (perfilUsuario) perfilUsuario.tiemposLectura = combinado;
+  return combinado;
+}
+
+function guardarTiempoLecturaFecha(fechaStr, tiempoTexto) {
+  const mapa = obtenerMapaTiemposLectura();
+  if (tiempoTexto) {
+    mapa[fechaStr] = { texto: tiempoTexto, ts: Date.now() };
   } else {
-    lista.push(hoyStr);
-    mostrarToastPersonalizado(l === 'en' ? ' Reading session logged! Your streak is on fire ' : ' ¡Lectura de hoy registrada! Tu racha sigue encendida ');
+    delete mapa[fechaStr];
   }
 
-  const clave = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
+  const clave = 'mediary_tiempos_lectura_' + (estado.userEmail || 'default');
   try {
-    localStorage.setItem(clave, JSON.stringify(lista));
+    localStorage.setItem(clave, JSON.stringify(mapa));
+  } catch (e) {}
+
+  if (perfilUsuario) {
+    perfilUsuario.tiemposLectura = mapa;
+    guardarPerfilLocal();
+    if (typeof google !== 'undefined' && google.script?.run) {
+      google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+    }
+  }
+}
+
+function abrirModalTiempoLectura() {
+  const hoyStr = obtenerFechaHoyStr();
+  const mapa = obtenerMapaTiemposLectura();
+  const infoHoy = mapa[hoyStr];
+  const yaLeyo = haLeidoHoy();
+
+  if (infoHoy && infoHoy.texto) {
+    tiempoLecturaSeleccionadoActual = infoHoy.texto;
+  } else if (!tiempoLecturaSeleccionadoActual) {
+    tiempoLecturaSeleccionadoActual = '30 minutos';
+  }
+
+  const strip = document.getElementById('reading-time-chip-strip');
+  if (strip) {
+    strip.innerHTML = LISTA_TIEMPOS_LECTURA.map(t => {
+      const isSel = (t === tiempoLecturaSeleccionadoActual);
+      return `<button type="button" class="reading-time-chip ${isSel ? 'selected' : ''}" data-tiempo="${t}" onclick="seleccionarTiempoLectura('${t}')">${t}</button>`;
+    }).join('');
+
+    if (!strip._hasWheelListener) {
+      strip.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          strip.scrollLeft += e.deltaY;
+        }
+      }, { passive: false });
+      strip._hasWheelListener = true;
+    }
+  }
+
+  actualizarDisplayTiempoLectura(tiempoLecturaSeleccionadoActual);
+
+  const btnUnmark = document.getElementById('btn-desmarcar-lectura');
+  if (btnUnmark) {
+    btnUnmark.style.display = yaLeyo ? 'block' : 'none';
+  }
+
+  const modal = document.getElementById('modal-tiempo-lectura');
+  if (modal) {
+    modal.style.display = 'flex';
+    setTimeout(() => {
+      const activeChip = strip?.querySelector('.reading-time-chip.selected');
+      if (activeChip) {
+        activeChip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }, 60);
+  }
+}
+
+function seleccionarTiempoLectura(tiempo) {
+  tiempoLecturaSeleccionadoActual = tiempo;
+  const strip = document.getElementById('reading-time-chip-strip');
+  if (strip) {
+    strip.querySelectorAll('.reading-time-chip').forEach(btn => {
+      if (btn.getAttribute('data-tiempo') === tiempo) {
+        btn.classList.add('selected');
+        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      } else {
+        btn.classList.remove('selected');
+      }
+    });
+  }
+  actualizarDisplayTiempoLectura(tiempo);
+}
+
+function actualizarDisplayTiempoLectura(tiempo) {
+  const disp = document.getElementById('reading-time-val-display');
+  if (disp) disp.textContent = tiempo;
+
+  const sub = document.getElementById('reading-time-sub-display');
+  if (sub) {
+    let msg = '¡Buen ritmo de lectura hoy!';
+    if (tiempo === '10 minutos' || tiempo === '20 minutos') {
+      msg = '¡Cada minuto cuenta para fortalecer tu hábito!';
+    } else if (tiempo === '30 minutos' || tiempo === '45 minutos') {
+      msg = '¡Gran progreso y concentración en tu lectura!';
+    } else if (tiempo === '1 hora' || tiempo === '1 hora 30 minutos') {
+      msg = '¡Excelente tiempo de lectura e inmersión!';
+    } else {
+      msg = '¡Maratón de lectura impresionante hoy!';
+    }
+    sub.textContent = msg;
+  }
+
+  const btnConfirmTxt = document.getElementById('btn-confirmar-tiempo-txt');
+  if (btnConfirmTxt) {
+    btnConfirmTxt.textContent = `Confirmar (${tiempo})`;
+  }
+}
+
+function cerrarModalTiempoLectura() {
+  const modal = document.getElementById('modal-tiempo-lectura');
+  if (modal) modal.style.display = 'none';
+}
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const modal = document.getElementById('modal-tiempo-lectura');
+    if (modal && modal.style.display !== 'none') {
+      cerrarModalTiempoLectura();
+    }
+  }
+});
+
+function confirmarTiempoLectura() {
+  const tiempo = tiempoLecturaSeleccionadoActual || '30 minutos';
+  const hoyStr = obtenerFechaHoyStr();
+  let lista = obtenerListaDiasLectura();
+  if (!lista.includes(hoyStr)) {
+    lista.push(hoyStr);
+  }
+
+  const claveDias = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
+  try {
+    localStorage.setItem(claveDias, JSON.stringify(lista));
   } catch (e) {}
 
   if (perfilUsuario) {
@@ -13921,12 +14154,56 @@ function toggleLecturaHoy() {
     }
   }
 
+  guardarTiempoLecturaFecha(hoyStr, tiempo);
+
+  cerrarModalTiempoLectura();
+
+  const l = userPrefs.lang || 'es';
+  mostrarToastPersonalizado(l === 'en' ? `Reading session logged: ${tiempo}! Streak on fire 🔥` : `¡Lectura registrada (${tiempo})! Tu racha sigue encendida 🔥`);
+
   actualizarBotonLecturaHoyInicio();
   actualizarBotonLecturaHoyLibros();
   renderizarRachasActualesInicio();
   if (estado.categoria === 'Lecturas') {
     renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria);
   }
+}
+
+function desmarcarLecturaHoy() {
+  const hoyStr = obtenerFechaHoyStr();
+  let lista = obtenerListaDiasLectura();
+  lista = lista.filter(f => f !== hoyStr);
+
+  const claveDias = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
+  try {
+    localStorage.setItem(claveDias, JSON.stringify(lista));
+  } catch (e) {}
+
+  if (perfilUsuario) {
+    perfilUsuario.diasLectura = lista;
+    guardarPerfilLocal();
+    if (typeof google !== 'undefined' && google.script?.run) {
+      google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+    }
+  }
+
+  guardarTiempoLecturaFecha(hoyStr, null);
+
+  cerrarModalTiempoLectura();
+
+  const l = userPrefs.lang || 'es';
+  mostrarToastPersonalizado(l === 'en' ? 'Reading session for today unmarked.' : ' Lectura de hoy desmarcada.');
+
+  actualizarBotonLecturaHoyInicio();
+  actualizarBotonLecturaHoyLibros();
+  renderizarRachasActualesInicio();
+  if (estado.categoria === 'Lecturas') {
+    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria);
+  }
+}
+
+function toggleLecturaHoy() {
+  abrirModalTiempoLectura();
 }
 
 function actualizarBotonLecturaHoyInicio() {
@@ -13953,6 +14230,9 @@ function actualizarBotonLecturaHoyLibros() {
   box.style.display = 'block';
   const l = userPrefs.lang || 'es';
   const ya = haLeidoHoy();
+  const mapaTiempos = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
+  const tiempoHoyObj = mapaTiempos[obtenerFechaHoyStr()];
+  const tiempoHoyTxt = tiempoHoyObj?.texto || '';
 
   if (ya) {
     box.innerHTML = `
@@ -13961,11 +14241,11 @@ function actualizarBotonLecturaHoyLibros() {
           <span class="emoji-dyn" style="color:#10b981;">${getHeroIcon('check-circle', '', 24)}</span>
           <div style="min-width:0; flex:1;">
             <strong style="font-size:0.86rem; color:var(--text); display:block;">${l === 'en' ? 'You read today!' : '¡Ya leíste hoy!'}</strong>
-            <span style="font-size:0.75rem; color:var(--muted);">${l === 'en' ? 'Session logged into your streak.' : 'Tu sesión de hoy está sumada a tu racha.'}</span>
+            <span style="font-size:0.75rem; color:var(--muted);">${tiempoHoyTxt ? (l === 'en' ? `Session time: ${tiempoHoyTxt}` : `Tiempo registrado: ${tiempoHoyTxt}`) : (l === 'en' ? 'Session logged into your streak.' : 'Tu sesión de hoy está sumada a tu racha.')}</span>
           </div>
         </div>
-        <button type="button" class="btn-read-today done" onclick="toggleLecturaHoy()" style="padding:8px 18px; font-size:0.84rem;">
-          <span>${getHeroIcon("check", "", 14)}</span> <span>${l === 'en' ? 'Read today' : 'Ya leí hoy'}</span>
+        <button type="button" class="btn-read-today done" onclick="toggleLecturaHoy()" style="padding:8px 18px; font-size:0.84rem;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
+          <span>${getHeroIcon("check", "", 14)}</span> <span>${tiempoHoyTxt ? formatTiempoPill(tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
         </button>
       </div>
     `;
@@ -14686,6 +14966,10 @@ function renderizarRachasActualesInicio() {
   const rMusica = calcularRachaDiscos(estado.registros);
   const rLectura = calcularRachaLectura();
 
+  const mapaTiempos = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
+  const tiempoHoyObj = mapaTiempos[obtenerFechaHoyStr()];
+  const tiempoHoyTxt = tiempoHoyObj?.texto || '';
+
   cont.innerHTML = `
     <div class="home-streaks-strip">
       <!-- 1. Películas -->
@@ -14738,9 +15022,9 @@ function renderizarRachasActualesInicio() {
           <span class="home-streak-unit">${rLectura.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
         <div class="home-streak-col-action">
-          <button type="button" class="btn-streak-pill ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy()" title="${rLectura.esActivaHoy ? (l === 'en' ? 'Read today! Click to toggle' : '¡Leído hoy! Toca para desmarcar') : (l === 'en' ? 'Mark reading today' : 'Marcar lectura de hoy')}">
+          <button type="button" class="btn-streak-pill ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy()" title="${rLectura.esActivaHoy ? (tiempoHoyTxt ? (l === 'en' ? `Read today: ${tiempoHoyTxt}. Click to adjust or unmark` : `Leído hoy: ${tiempoHoyTxt}. Toca para ajustar tiempo o desmarcar`) : (l === 'en' ? 'Read today! Click to adjust or unmark' : '¡Leído hoy! Toca para ajustar tiempo o desmarcar')) : (l === 'en' ? 'Mark reading today' : 'Marcar lectura de hoy')}">
             ${rLectura.esActivaHoy ? getHeroIcon('check', '', 11) : getHeroIcon('plus', '', 11)}
-            <span>${rLectura.esActivaHoy ? (l === 'en' ? 'Today' : 'Hoy') : (l === 'en' ? 'Mark' : 'Marcar')}</span>
+            <span>${rLectura.esActivaHoy ? (tiempoHoyTxt ? formatTiempoPill(tiempoHoyTxt) : (l === 'en' ? 'Today' : 'Hoy')) : (l === 'en' ? 'Mark' : 'Marcar')}</span>
           </button>
         </div>
       </div>
