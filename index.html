@@ -1561,11 +1561,11 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 
 /* APARTADOS INICIO: SALUDO, EN PROCESO, RACHAS & ÍNDICE HORIZONTAL */
 .home-section-divider{border:none;border-top:1px solid var(--border);opacity:0.65;margin:16px 0;width:100%;box-sizing:border-box;}
-.home-greeting-banner{margin:10px 0 16px 0;padding:2px 0;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:4px;width:100%;}
-.home-greeting-title{font-size:1.78rem;font-weight:800;color:var(--text);margin:0 auto;display:flex;align-items:center;justify-content:center;gap:6px;line-height:1.2;text-align:center;letter-spacing:-0.01em;width:100%;}
+.home-greeting-banner{margin:0 0 16px 0;padding:0;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:26px;width:100%;}
+.home-greeting-title{font-size:1.78rem;font-weight:800;color:var(--text);margin:-6px auto 0 auto;display:flex;align-items:center;justify-content:center;gap:6px;line-height:1.2;text-align:center;letter-spacing:-0.01em;width:100%;}
 .home-greeting-title strong{color:var(--accent);}
 .home-greeting-subtitle{font-size:1.06rem;font-weight:600;color:var(--muted);margin:0;letter-spacing:0.01em;text-align:left;align-self:flex-start;width:100%;}
-@media (max-width: 640px){.home-greeting-title{font-size:1.48rem;}.home-greeting-subtitle{font-size:0.95rem;}}
+@media (max-width: 640px){.home-greeting-title{font-size:1.48rem;margin:-6px auto 0 auto;}.home-greeting-subtitle{font-size:0.95rem;}.home-greeting-banner{gap:24px;margin:0 0 14px 0;}}
 
 .home-clean-section{background:transparent;border:none;border-radius:0;padding:0;box-shadow:none;margin-bottom:0;max-width:100%;width:100%;box-sizing:border-box;}
 .home-clean-section-header{display:flex;justify-content:flex-start;align-items:center;margin-bottom:10px;text-align:left;width:100%;}
@@ -2949,11 +2949,13 @@ html[data-app-theme="minimalist"] .modal-box h3 {
 
 html[data-app-theme="minimalist"] .home-greeting-banner {
   align-items: stretch !important;
+  margin: 0 0 16px 0 !important;
+  gap: 26px !important;
 }
 html[data-app-theme="minimalist"] .home-greeting-title {
   text-align: center !important;
   justify-content: center !important;
-  margin: 0 auto !important;
+  margin: -6px auto 0 auto !important;
   width: 100% !important;
 }
 html[data-app-theme="minimalist"] .home-clean-title,
@@ -10252,7 +10254,7 @@ function verPerfilDeAmigo(emailAmigo) {
     }
     document.getElementById('amigo-modal-nick').textContent = a.nickname;
     document.getElementById('amigo-modal-bio').textContent = a.bio || (l === 'en' ? 'Collecting stories in Mediary' : 'Coleccionando historias en Mediary');
-    document.getElementById('amigo-modal-id-badge').textContent = `${getHeroIcon('identification', '', 12)} ${a.userId || 'ID'}`;
+    document.getElementById('amigo-modal-id-badge').innerHTML = `${getHeroIcon('identification', '', 12)} ${a.userId || 'ID'}`;
     const amHero = document.getElementById('amigo-modal-hero-card');
     if (amHero) {
       PORTADAS_DISPONIBLES.forEach(p => amHero.classList.remove(`cover-${p.id}`));
@@ -13679,9 +13681,9 @@ function actualizarTextosInterfaz() {
   if (dStatus) dStatus.textContent = l === 'en' ? 'Live Updated' : 'Actualizado';
   const btnAuto = document.getElementById('btn-discover-autoupdate');
   if (btnAuto) {
-    btnAuto.textContent = estado.discoverAutoRefresh
-      ? `<span class="emoji-dyn">${getHeroIcon('bolt', '', 14)}</span> ${l === 'en' ? 'Auto-update: ON' : 'Auto-actualizar: ON'}`
-      : `<span class="emoji-dyn">${getHeroIcon('bolt', '', 14)}</span> ${l === 'en' ? 'Auto-update: OFF' : 'Auto-actualizar: OFF'}`;
+    btnAuto.innerHTML = estado.discoverAutoRefresh
+      ? `<span class="emoji-dyn">${getHeroIcon('bolt', '', 14)}</span> <span>${l === 'en' ? 'Auto-update: ON' : 'Auto-actualizar: ON'}</span>`
+      : `<span class="emoji-dyn">${getHeroIcon('pause', '', 14)}</span> <span>${l === 'en' ? 'Auto-update: OFF' : 'Auto-actualizar: OFF'}</span>`;
   }
 
   // Profile email & configure favs button
@@ -22921,9 +22923,18 @@ function precargarDiscoverEnSegundoPlano(seed, resetearLimites = false) {
 function iniciarLoopAutoActualizacionDiscover() { if (timerAutoDiscover) clearInterval(timerAutoDiscover); timerAutoDiscover = setInterval(() => { if (estado.discoverAutoRefresh && (estado.categoria === 'discover' || estado.categoria === 'inicio')) { estado.discoverSeed = (estado.discoverSeed % 4) + 1;
 const stEl = document.getElementById('discover-status-txt'); if (stEl) stEl.textContent = 'Actualizando tendencias...'; precargarDiscoverEnSegundoPlano(estado.discoverSeed, false); }
 }, 45000); }
-function toggleAutoRefreshDiscover() { estado.discoverAutoRefresh = !estado.discoverAutoRefresh; const btn = document.getElementById('btn-discover-autoupdate'); if (btn) {
-btn.classList.toggle('active', estado.discoverAutoRefresh); btn.innerHTML = estado.discoverAutoRefresh ? `${getHeroIcon('bolt', '', 14)} Auto-actualizar: ON` : `${getHeroIcon('pause', '', 14)} Auto-actualizar: OFF`; }
-mostrarToastPersonalizado(userPrefs.lang === 'en' ? (estado.discoverAutoRefresh ? 'Auto-refresh enabled' : 'Auto-refresh paused') : (estado.discoverAutoRefresh ? 'Actualización constante activada' : 'Actualización automática en pausa')); }
+function toggleAutoRefreshDiscover() {
+  estado.discoverAutoRefresh = !estado.discoverAutoRefresh;
+  const btn = document.getElementById('btn-discover-autoupdate');
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  if (btn) {
+    btn.classList.toggle('active', estado.discoverAutoRefresh);
+    btn.innerHTML = estado.discoverAutoRefresh
+      ? `<span class="emoji-dyn">${getHeroIcon('bolt', '', 14)}</span> <span>${l === 'en' ? 'Auto-update: ON' : 'Auto-actualizar: ON'}</span>`
+      : `<span class="emoji-dyn">${getHeroIcon('pause', '', 14)}</span> <span>${l === 'en' ? 'Auto-update: OFF' : 'Auto-actualizar: OFF'}</span>`;
+  }
+  mostrarToastPersonalizado(l === 'en' ? (estado.discoverAutoRefresh ? 'Auto-refresh enabled' : 'Auto-refresh paused') : (estado.discoverAutoRefresh ? 'Actualización constante activada' : 'Actualización automática en pausa'));
+}
 function recargarDiscoverManual() { estado.discoverSeed = (estado.discoverSeed % 4) + 1; const stEl = document.getElementById('discover-status-txt'); if (stEl) stEl.textContent = 'Explorando nuevos títulos...'; precargarDiscoverEnSegundoPlano(estado.discoverSeed, true); }
 function actualizarBotonesFiltroDiscoverUI() { const activas = estado.discoverCatsActivas || TODAS_CATS_DISCOVER; const todasActivas = activas.length === TODAS_CATS_DISCOVER.length; document.querySelectorAll('#discover-category-filters .subtab-btn').forEach(btn => {
 const k = btn.dataset.dcat; if (k === 'todos') { btn.classList.toggle('active', todasActivas); } else { btn.classList.toggle('active', !todasActivas && activas.includes(k)); }
@@ -24408,7 +24419,7 @@ function abrirModalTerminarObra(id) {
 
     const btnConfirm = document.getElementById('btn-guardar-terminar-obra');
     if (btnConfirm) {
-      btnConfirm.textContent = l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> Save & Finish!' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> ¡Guardar y Finalizar!';
+      btnConfirm.innerHTML = l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> Save & Finish!' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> ¡Guardar y Finalizar!';
       btnConfirm.disabled = false;
     }
 
