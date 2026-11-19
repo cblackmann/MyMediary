@@ -8769,8 +8769,8 @@ function renderizarFeedAmigos() {
     const catIcon = catIcons[it.categoria] || getHeroIcon('sparkles', '', 16);
 
     const posterHtml = it.poster
-      ? `<img src="${it.poster}" loading="lazy" alt="${escHtmlFeed_(it.titulo)}" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\\'width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);\\\'>${catIcon}</div>';">`
-      : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`;
+      ? `<img src="${escHtmlFeed_(it.poster)}" loading="lazy" alt="${escHtmlFeed_(it.titulo)}" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="feed-poster-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`
+      : `<div class="feed-poster-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`;
 
     const califNum = Number(it.calificacion) || 0;
     let ratingOrStatusHtml = '';
@@ -8953,8 +8953,8 @@ function dibujarTarjetaUltimaCancionAmigos(it) {
   const califNum = Number(it.calificacion) || 0;
 
   const coverHtml = it.poster
-    ? `<img src="${escHtmlFeed_(it.poster)}" alt="${escHtmlFeed_(title)}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\\'width:100%;height:100%;display:grid;place-items:center;color:var(--muted);\\\'><svg class=\\\'h-icon\\\' viewBox=\\\'0 0 24 24\\\' fill=\\\'none\\\' stroke=\\\'currentColor\\\' stroke-width=\\\'1.8\\\' stroke-linecap=\\\'round\\\' stroke-linejoin=\\\'round\\\' style=\\\'width:24px;height:24px;\\\'><path d=\\\'m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .632-.726V6.847l-9.75 2.786v8.43a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 8.25 18.75V9Z\\\'/></svg></div>';">`
-    : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;">${getHeroIcon('musical-note', '', 24)}</div>`;
+    ? `<img src="${escHtmlFeed_(it.poster)}" alt="${escHtmlFeed_(title)}" loading="lazy" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="cover-music-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.5rem;background:var(--bg);">${getHeroIcon('musical-note', '', 24)}</div>`
+    : `<div class="cover-music-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;background:var(--bg);">${getHeroIcon('musical-note', '', 24)}</div>`;
 
   const avatarHtml = (it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:')))
     ? `<img src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
@@ -9182,8 +9182,8 @@ function renderizarFeedAmigosResumidoInicio() {
     const catIcon = catIcons[it.categoria] || getHeroIcon('sparkles', '', 16);
 
     const posterHtml = it.poster
-      ? `<img src="${it.poster}" loading="lazy" alt="${escHtmlFeed_(it.titulo)}" onerror="this.onerror=null;this.parentElement.innerHTML='<div style=\\\'width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);\\\'>${catIcon}</div>';">`
-      : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`;
+      ? `<img src="${escHtmlFeed_(it.poster)}" loading="lazy" alt="${escHtmlFeed_(it.titulo)}" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="feed-poster-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`
+      : `<div class="feed-poster-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`;
 
     const califNum = Number(it.calificacion) || 0;
     let ratingOrStatusHtml = '';
@@ -10228,7 +10228,7 @@ function verPerfilDeAmigo(emailAmigo) {
           <div class="profile-fav-char-card" style="margin-bottom:0;">
             <div class="fav-char-main-row">
               <div class="fav-char-avatar-box">
-                ${esImg ? `<img src="${c.imagen}" alt="${c.nombre}" onerror="this.onerror=null;this.parentElement.innerHTML='<span class=\'emoji-dyn\'>${getHeroIcon('trophy', '', 20)}</span>';">` : `<span>${c.imagen || getHeroIcon('trophy', '', 20)}</span>`}
+                ${esImg ? `<img src="${escHtmlFeed_(c.imagen)}" alt="${escHtmlFeed_(c.nombre)}" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='inline-flex';"><span style="display:none;" class="emoji-dyn">${getHeroIcon('trophy', '', 20)}</span>` : `<span>${escHtmlFeed_(c.imagen) || getHeroIcon('trophy', '', 20)}</span>`}
               </div>
               <div class="fav-char-text-block">
                 <h4 class="fav-char-name-txt" title="${c.nombre}">${c.nombre}</h4>
