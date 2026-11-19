@@ -715,7 +715,7 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .live-dot-btn.active{background:var(--card);color:var(--accent);border-color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,0.18);transform:scale(1.06);}
 .live-dot-icon{display:inline-flex;align-items:center;justify-content:center;}
 .live-dot-icon svg{width:12px;height:12px;}
-#badge-sp-live-pill, #badge-psn-live-pill{position:absolute !important;top:-1px !important;right:-1px !important;width:4.5px !important;height:4.5px !important;}
+#badge-sp-live-pill, #badge-psn-live-pill, #badge-friends-sp-live-pill, #badge-friends-psn-live-pill{position:absolute !important;top:-1px !important;right:-1px !important;width:4.5px !important;height:4.5px !important;}
 
 /* TARJETAS REDUCTIBLES (ESTILO NOTIFICACIONES ANDROID) */
 .home-live-expandable-card{cursor:pointer;user-select:none;transition:padding .32s cubic-bezier(.2,0,0,1),min-height .32s cubic-bezier(.2,0,0,1),max-width .32s cubic-bezier(.2,0,0,1),border-radius .32s cubic-bezier(.2,0,0,1),border-color .2s ease,box-shadow .25s ease !important;will-change:min-height,padding,max-width,border-radius;position:relative;}
@@ -817,10 +817,13 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .home-np-sp-logo-link:hover{transform:scale(1.18);}
 .btn-np-quick-add{width:28px;height:28px;border-radius:8px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.38);color:#10b981;display:grid;place-items:center;font-size:0.8rem;cursor:pointer;transition:var(--tr);padding:0;}
 .btn-np-quick-add:hover{background:#10b981;color:#0f172a;transform:translateY(-1px);}
-/* TARJETA DE ÚLTIMA CANCIÓN ESCUCHADA POR AMIGOS */
-.home-friend-music-card{position:relative;overflow:hidden;margin-bottom:14px;transition:var(--tr);}
+/* TARJETA DE ÚLTIMA CANCIÓN & JUEGO DE AMIGOS */
+.home-friend-music-card, .home-friend-game-card{position:relative;overflow:hidden;margin-bottom:14px;transition:var(--tr);}
+.home-live-carousel-item .home-friend-music-card, .home-live-carousel-item .home-friend-game-card{margin-bottom:0 !important;}
 .home-friend-music-card::before{content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:linear-gradient(180deg,#1DB954,#38bdf8);opacity:0.95;}
 .home-friend-music-card:hover{border-color:rgba(56,189,248,0.45);box-shadow:0 4px 16px rgba(56,189,248,0.14);}
+.home-friend-game-card::before{content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:linear-gradient(180deg,#0070d1,#38bdf8);opacity:0.95;}
+.home-friend-game-card:hover{border-color:rgba(0,112,209,0.45);box-shadow:0 4px 16px rgba(0,112,209,0.14);}
 .home-np-friend-avatar-badge{position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;overflow:hidden;border:1.5px solid var(--card);background:var(--bg);display:grid;place-items:center;font-size:0.72rem;box-shadow:0 1px 4px rgba(0,0,0,0.35);z-index:2;}
 .home-np-friend-avatar-badge img{width:100%;height:100%;object-fit:cover;}
 /* TOGGLE VISTA Y CUADRICULA LISTAS */
@@ -3652,7 +3655,23 @@ html[data-app-theme="minimalist"] .nav-categories-row {
             <span data-i18n="btn_view_all_community">Ver toda la comunidad <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-left:4px;"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></span>
           </button>
         </div>
-        <div id="home-friends-last-track-container" style="display:none; margin-bottom:14px;"></div>
+        <!-- CARRUSEL EN VIVO DE AMIGOS: SPOTIFY + PLAYSTATION -->
+        <div id="home-friends-live-carousel-wrapper" class="home-live-carousel-wrapper" style="display:none; margin-bottom:14px;">
+          <div id="home-friends-live-carousel" class="home-live-carousel">
+            <div id="home-friends-last-track-container" class="home-live-carousel-item"></div>
+            <div id="home-friends-psn-container" class="home-live-carousel-item"></div>
+          </div>
+          <div id="home-friends-live-carousel-dots" class="home-live-carousel-dots">
+            <button type="button" class="live-dot-btn active" id="dot-friends-live-spotify" onclick="cambiarSlideFriendsLive(0)" title="Spotify (Música)" aria-label="Spotify Amigos">
+              <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .56-.723V6.375M9 11.25v6a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.94v-3.69Z"/></svg></span>
+              <span id="badge-friends-sp-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
+            </button>
+            <button type="button" class="live-dot-btn" id="dot-friends-live-psn" onclick="cambiarSlideFriendsLive(1)" title="PlayStation (Videojuegos)" aria-label="PlayStation Amigos">
+              <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 12h-2m-3 0H8.5m1-2v4M16.5 10.5h.01m1.99 3h.01M6.75 6.75h10.5a4.5 4.5 0 0 1 4.473 4.954l-.84 7.14a2.25 2.25 0 0 1-2.235 1.906h-1.66a2.25 2.25 0 0 1-2.124-1.492l-.76-2.028a1.5 1.5 0 0 0-1.408-.98h-1.392a1.5 1.5 0 0 0-1.408.98l-.76 2.028A2.25 2.25 0 0 1 6.512 20.75H4.852a2.25 2.25 0 0 1-2.235-1.906l-.84-7.14A4.5 4.5 0 0 1 6.75 6.75Z"/></svg></span>
+              <span id="badge-friends-psn-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
+            </button>
+          </div>
+        </div>
         <div id="lista-comunidad-resumen-inicio">
           <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;" data-i18n="friends_loading_recent">Cargando actividad reciente de amigos...</div>
         </div>
@@ -8280,8 +8299,9 @@ function abrirModalDetalleActividadAmigo(btnOrAct) {
   } else {
     metaDates.style.display = 'none';
   }
-  if (isVisto && act.horas) {
-    metaHours.innerHTML = `${getHeroIcon('clock', '', 12)} ${act.horas} hrs jugadas`;
+  const hActLimpia = (typeof limpiarTextoHoras === 'function') ? limpiarTextoHoras(act.horas) : '';
+  if (isVisto && hActLimpia) {
+    metaHours.innerHTML = `${getHeroIcon('clock', '', 12)} ${hActLimpia} jugadas`;
     metaHours.style.display = 'inline-block';
   } else {
     metaHours.style.display = 'none';
@@ -8608,6 +8628,18 @@ function escHtmlFeed_(str) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 }
+function limpiarTextoHoras(val) {
+  if (!val) return '';
+  const str = String(val).trim();
+  if (!str || str === '0' || str === '0 hrs' || str === '0h' || str === 'Sin horas') return '';
+  const clean = str.replace(/hrs?/gi, '').replace(/horas?/gi, '').trim();
+  const match = clean.match(/\d+(?:[.,]\d+)?/);
+  if (!match) return '';
+  if (parseFloat(match[0].replace(',', '.')) <= 0) return '';
+  return `${match[0]} hrs`;
+}
+window.limpiarTextoHoras = limpiarTextoHoras;
+
 function formatearTiempoRelativoFeed(val, lang = 'es') {
   if (!val || val === 'Sin fecha') return '';
   const l = lang || 'es';
@@ -8826,20 +8858,23 @@ function renderizarFeedAmigos() {
       : `<div class="feed-poster-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`;
 
     const califNum = Number(it.calificacion) || 0;
-    let ratingOrStatusHtml = '';
+    let secondBadge = '';
     if (enProg) {
-      ratingOrStatusHtml = `<span class="feed-status-inprog"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.9;"></span><span>${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span></span>`;
+      secondBadge = `<span class="feed-status-inprog"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.9;"></span><span>${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span></span>`;
     } else if (califNum > 0) {
-      ratingOrStatusHtml = `
-        <div style="display:inline-flex;align-items:center;background:var(--bg);border:1px solid var(--border);padding:3px 8px;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+      secondBadge = `
+        <div style="display:inline-flex;align-items:center;background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06);font-size:0.75rem;">
           ${renderEstrellasVisuales(califNum)}
         </div>
       `;
     }
 
-    const horasHtml = (it.horas && String(it.horas).trim() !== '' && it.horas !== '0')
-      ? `<span class="feed-cat-badge" style="background:rgba(16,185,129,0.1);color:#10b981;border-color:rgba(16,185,129,0.3);font-weight:700;border-radius:20px;padding:3px 9px;display:inline-flex;align-items:center;gap:4px;">${getHeroIcon('clock', '', 12)} ${it.horas} hrs</span>`
-      : '';
+    const horasLimpia = (typeof limpiarTextoHoras === 'function') ? limpiarTextoHoras(it.horas) : '';
+    const metaPartes = [];
+    if (it.creador && String(it.creador).trim()) metaPartes.push(escHtmlFeed_(it.creador));
+    if (it.anio && String(it.anio).trim()) metaPartes.push(`(${escHtmlFeed_(it.anio)})`);
+    if (horasLimpia) metaPartes.push(`${getHeroIcon('clock', '', 11)} ${horasLimpia}`);
+    const metaTxt = metaPartes.join(' · ');
 
     const isLiked = esResenaLikeada(it.id);
     const likeCount = obtenerConteoLikesResena(it.id, it.userEmail, it.likes);
@@ -8869,6 +8904,8 @@ function renderizarFeedAmigos() {
       </button>
     ` : '';
 
+    const catBadgeText = `${catIcon} ${subNom || catNom}${it.esRewatch ? ' · Rewatch' : ''}`;
+
     return `
       <div class="amigo-feed-card">
         <div class="feed-card-header">
@@ -8890,22 +8927,16 @@ function renderizarFeedAmigos() {
             ${posterHtml}
           </div>
           <div class="feed-card-info">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
-              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;">
-                <span class="feed-cat-badge">${catIcon} ${subNom || catNom}</span>
-                ${it.esRewatch ? `<span class="feed-cat-badge" style="background:rgba(168,85,247,0.14);border-color:rgba(168,85,247,0.35);color:#c084fc;display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('arrow-path', '', 11)} Rewatch</span>` : ''}
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span class="feed-cat-badge">${catBadgeText}</span>
+                ${secondBadge}
               </div>
               ${btnWatchlistTopRight}
             </div>
             <div class="feed-card-title">${escHtmlFeed_(it.titulo)}</div>
             ${it.subtitulo && it.subtitulo !== it.titulo ? `<div style="font-size:0.78rem;color:var(--muted);font-style:italic;margin-top:-2px;margin-bottom:3px;">${escHtmlFeed_(it.subtitulo)}</div>` : ''}
-            <div class="feed-card-meta">${escHtmlFeed_(it.creador || '')} ${it.anio ? '(' + escHtmlFeed_(it.anio) + ')' : ''}</div>
-            ${(horasHtml || ratingOrStatusHtml) ? `
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;">
-                ${horasHtml}
-                ${ratingOrStatusHtml}
-              </div>
-            ` : ''}
+            ${metaTxt ? `<div class="feed-card-meta" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:0.79rem;color:var(--muted);margin-bottom:6px;">${metaTxt}</div>` : ''}
             ${reviewHtml}
           </div>
         </div>
@@ -8994,6 +9025,27 @@ function obtenerUltimaCancionAmigos() {
   return feed.find(it => it.categoria === 'Musica') || null;
 }
 
+function obtenerUltimoJuegoAmigos() {
+  const feed = estado.amigosFeedCache || [];
+  if (!feed.length) return null;
+
+  // 1. Si algún amigo está jugando en vivo / en progreso (Aún jugando)
+  const enVivo = feed.find(it => it.categoria === 'Juegos' && esEnProgresoTexto(it.fechaFin));
+  if (enVivo) return enVivo;
+
+  // 2. Priorizar títulos con mención a PlayStation en plataforma o subcategoría
+  const psn = feed.find(it => {
+    if (it.categoria !== 'Juegos') return false;
+    const sub = String(it.subcategoria || '').toLowerCase();
+    const subtit = String(it.subtitulo || '').toLowerCase();
+    return sub.includes('ps') || sub.includes('playstation') || subtit.includes('ps') || subtit.includes('playstation');
+  });
+  if (psn) return psn;
+
+  // 3. Cualquier videojuego registrado por amigos
+  return feed.find(it => it.categoria === 'Juegos') || null;
+}
+
 function dibujarTarjetaUltimaCancionAmigos(it) {
   if (!it) return '';
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
@@ -9018,82 +9070,109 @@ function dibujarTarjetaUltimaCancionAmigos(it) {
   const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent((title + ' ' + (it.creador || '')).trim())}`;
   const modalAccion = `abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(nick)}', 'Musica')`;
   const perfilAccion = `verPerfilDeAmigo('${escHtmlFeed_(it.userEmail)}')`;
+  const isExp = (typeof estaLiveCardExpandida === 'function') ? estaLiveCardExpandida('friends_spotify') : false;
 
   return `
-    <div class="home-spotify-card-compact home-friend-music-card">
+    <div class="home-spotify-card-compact home-friend-music-card home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('friends_spotify', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
       <!-- Portada con mini-avatar superpuesto del amigo -->
-      <div class="home-np-cover-compact" style="position:relative; cursor:pointer;" onclick="${modalAccion}" title="${l === 'en' ? 'View friend details' : 'Ver actividad del amigo'}">
+      <div class="home-np-cover-compact" style="position:relative; cursor:pointer;" onclick="event.stopPropagation(); ${modalAccion}" title="${l === 'en' ? 'View friend details' : 'Ver actividad del amigo'}">
         ${coverHtml}
         <div class="home-np-friend-avatar-badge" title="${escHtmlFeed_(nick)}">
           ${avatarHtml}
         </div>
       </div>
 
-      <!-- Centro: Quien escucha, Artista, Disco/Subcat, Título y Estado -->
+      <!-- Centro: Vistas reducida y expandida -->
       <div class="home-np-center-compact">
-        <!-- Fila de identificación del amigo -->
-        <div style="display:flex; align-items:center; gap:5px; font-size:0.72rem; line-height:1.2; margin-bottom:1px; overflow:hidden;">
-          <span style="width:15px; height:15px; border-radius:50%; overflow:hidden; display:inline-grid; place-items:center; flex-shrink:0; border:1px solid var(--border); font-size:0.65rem; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}">
-            ${avatarHtml}
-          </span>
-          <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:130px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
-            ${escHtmlFeed_(nick)}
-          </strong>
-          <span style="color:var(--muted); font-size:0.68rem; white-space:nowrap;">
-            ${enProg ? (l === 'en' ? 'is listening to' : 'está escuchando') : (l === 'en' ? 'listened to' : 'escuchó')}
-          </span>
-          ${timeStr ? `<span style="color:var(--muted); font-size:0.66rem; margin-left:auto; flex-shrink:0; white-space:nowrap; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('clock', '', 11)} ${timeStr}</span>` : ''}
-        </div>
-
-        <!-- Artista -->
-        <div class="home-np-artist-compact home-np-text-wrap" title="${escHtmlFeed_(artist)}">
-          <span class="home-np-scrollable">${escHtmlFeed_(artist)}</span>
-        </div>
-
-        <!-- Disco / Álbum -->
-        <div class="home-np-album-compact home-np-text-wrap" title="${escHtmlFeed_(album)}">
-          <span class="home-np-scrollable">${escHtmlFeed_(album)}</span>
-        </div>
-
-        <!-- Título de la canción -->
-        <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="${modalAccion}" title="${escHtmlFeed_(title)}">
-          <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
-        </div>
-
-        <!-- Fila inferior: Estado de escucha y calificación -->
-        <div class="home-np-ctrls-compact" style="margin-top:2px; gap:6px; flex-wrap:nowrap; overflow:hidden;">
-          ${enProg ? `
-            <span class="home-np-live-status-pill" style="font-size:0.68rem; color:#10b981; display:inline-flex; align-items:center; gap:4px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:2px 7px; flex-shrink:0;">
-              <span class="home-np-dot" style="width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
-              <span>${l === 'en' ? 'Listening now' : 'Escuchando ahora'}</span>
-            </span>
-          ` : `
-            <span class="home-np-live-status-pill paused" style="font-size:0.68rem; color:var(--accent); display:inline-flex; align-items:center; gap:4px; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.25); border-radius:12px; padding:2px 7px; flex-shrink:0;">
-              <span>${getHeroIcon('musical-note', '', 12)}</span>
-              <span>${l === 'en' ? 'Friends latest track' : 'Última canción de amigos'}</span>
-            </span>
-          `}
-          ${califNum > 0 ? `
-            <div style="display:inline-flex; align-items:center; background:var(--bg); border:1px solid var(--border); padding:1px 6px; border-radius:12px; font-size:0.68rem; line-height:1; flex-shrink:0;">
-              ${renderEstrellasVisuales(califNum)}
+        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN ANDROID) -->
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-np-title-compact home-np-text-wrap" title="${escHtmlFeed_(title)}">
+              <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
             </div>
-          ` : ''}
-          ${it.comentario ? `
-            <span style="cursor:pointer; font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px; line-height:1;" onclick="${modalAccion}" title="${escHtmlFeed_(it.comentario)}">
-              ${getHeroIcon('chat-bubble-bottom-center-text', '', 12)} "${escHtmlFeed_(it.comentario)}"
+            <div style="font-size:0.73rem; color:#10b981; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; justify-content:center; gap:5px; margin-top:1px;">
+              <span>${escHtmlFeed_(nick)}</span>
+              <span style="opacity:0.5;">·</span>
+              <span style="color:${enProg ? '#10b981' : 'var(--accent)'}; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
+                <span class="home-np-dot" style="${enProg ? 'background:#10b981;' : 'background:var(--accent); box-shadow:none; animation:none;'}"></span>
+                <span>${enProg ? (l === 'en' ? 'Listening' : 'Escuchando') : (l === 'en' ? 'Listened' : 'Escuchó')}</span>
+              </span>
+              ${timeStr ? `<span style="opacity:0.5;">·</span><span style="color:var(--muted); font-size:0.68rem;">${timeStr}</span>` : ''}
+            </div>
+          </div>
+        </div>
+
+        <!-- VISTA EXPANDIDA -->
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <!-- Fila de identificación del amigo -->
+          <div style="display:flex; align-items:center; gap:5px; font-size:0.72rem; line-height:1.2; margin-bottom:1px; overflow:hidden;">
+            <span style="width:15px; height:15px; border-radius:50%; overflow:hidden; display:inline-grid; place-items:center; flex-shrink:0; border:1px solid var(--border); font-size:0.65rem; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}">
+              ${avatarHtml}
             </span>
-          ` : ''}
+            <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:130px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
+              ${escHtmlFeed_(nick)}
+            </strong>
+            <span style="color:var(--muted); font-size:0.68rem; white-space:nowrap;">
+              ${enProg ? (l === 'en' ? 'is listening to' : 'está escuchando') : (l === 'en' ? 'listened to' : 'escuchó')}
+            </span>
+            ${timeStr ? `<span style="color:var(--muted); font-size:0.66rem; margin-left:auto; flex-shrink:0; white-space:nowrap; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('clock', '', 11)} ${timeStr}</span>` : ''}
+          </div>
+
+          <!-- Artista -->
+          <div class="home-np-artist-compact home-np-text-wrap" title="${escHtmlFeed_(artist)}">
+            <span class="home-np-scrollable">${escHtmlFeed_(artist)}</span>
+          </div>
+
+          <!-- Disco / Álbum -->
+          <div class="home-np-album-compact home-np-text-wrap" title="${escHtmlFeed_(album)}">
+            <span class="home-np-scrollable">${escHtmlFeed_(album)}</span>
+          </div>
+
+          <!-- Título de la canción -->
+          <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="${modalAccion}" title="${escHtmlFeed_(title)}">
+            <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
+          </div>
+
+          <!-- Fila inferior: Estado de escucha y calificación -->
+          <div class="home-np-ctrls-compact" style="margin-top:2px; gap:6px; flex-wrap:nowrap; overflow:hidden;">
+            ${enProg ? `
+              <span class="home-np-live-status-pill" style="font-size:0.68rem; color:#10b981; display:inline-flex; align-items:center; gap:4px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:2px 7px; flex-shrink:0;">
+                <span class="home-np-dot" style="width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
+                <span>${l === 'en' ? 'Listening now' : 'Escuchando ahora'}</span>
+              </span>
+            ` : `
+              <span class="home-np-live-status-pill paused" style="font-size:0.68rem; color:var(--accent); display:inline-flex; align-items:center; gap:4px; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.25); border-radius:12px; padding:2px 7px; flex-shrink:0;">
+                <span>${getHeroIcon('musical-note', '', 12)}</span>
+                <span>${l === 'en' ? 'Friends latest track' : 'Última canción de amigos'}</span>
+              </span>
+            `}
+            ${califNum > 0 ? `
+              <div style="display:inline-flex; align-items:center; background:var(--bg); border:1px solid var(--border); padding:1px 6px; border-radius:12px; font-size:0.68rem; line-height:1; flex-shrink:0;">
+                ${renderEstrellasVisuales(califNum)}
+              </div>
+            ` : ''}
+            ${it.comentario ? `
+              <span style="cursor:pointer; font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px; line-height:1;" onclick="${modalAccion}" title="${escHtmlFeed_(it.comentario)}">
+                ${getHeroIcon('chat-bubble-bottom-center-text', '', 12)} "${escHtmlFeed_(it.comentario)}"
+              </span>
+            ` : ''}
+          </div>
         </div>
       </div>
 
       <!-- Borde derecho: Logo de Spotify arriba, botón rápido de agregar abajo -->
       <div class="home-np-right-col">
-        <a href="${spotifySearchUrl}" target="_blank" rel="noopener noreferrer" class="home-np-sp-logo-link" title="${l === 'en' ? 'Search on Spotify' : 'Escuchar en Spotify'}">
+        <a href="${spotifySearchUrl}" target="_blank" rel="noopener noreferrer" class="home-np-sp-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${l === 'en' ? 'Search on Spotify' : 'Escuchar en Spotify'}">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
         </a>
-        <button type="button" class="btn-np-quick-add" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
+        <button type="button" class="btn-np-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
       </div>
     </div>
   `;
@@ -9105,77 +9184,341 @@ function dibujarTarjetaUltimaCancionAmigosIdle() {
   const albumTxt = l === 'en' ? 'No recent songs' : 'Sin canciones recientes';
   const titleTxt = l === 'en' ? 'No friends listening to music right now' : 'Ningún amigo ha escuchado canciones recientemente';
   const btnTxt = l === 'en' ? 'Explore Music' : 'Explorar Música';
+  const isExp = (typeof estaLiveCardExpandida === 'function') ? estaLiveCardExpandida('friends_spotify') : false;
 
   return `
-    <div class="home-spotify-card-compact home-friend-music-card">
-      <div class="home-np-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="cambiarCat('Musica', 'Discos')">
+    <div class="home-spotify-card-compact home-friend-music-card home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('friends_spotify', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
+      <div class="home-np-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="event.stopPropagation(); cambiarCat('Musica', 'Discos')">
         <span>${getHeroIcon('musical-note', '', 14)}</span>
       </div>
       <div class="home-np-center-compact">
-        <div class="home-np-artist-compact home-np-text-wrap">
-          <span class="home-np-scrollable">${artistTxt}</span>
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-np-title-compact home-np-text-wrap" title="${artistTxt}">
+              <span class="home-np-scrollable">${artistTxt}</span>
+            </div>
+            <div style="font-size:0.73rem; color:#10b981; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; justify-content:center; gap:5px; margin-top:1px;">
+              <span>${albumTxt}</span>
+            </div>
+          </div>
         </div>
-        <div class="home-np-album-compact home-np-text-wrap">
-          <span class="home-np-scrollable">${albumTxt}</span>
-        </div>
-        <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="cambiarCat('Musica', 'Discos')">
-          <span class="home-np-scrollable">${titleTxt}</span>
-        </div>
-        <div style="margin-top:3px;">
-          <button type="button" class="btn-spotify-sub-action" onclick="cambiarCat('Musica', 'Discos')" style="height:24px; padding:0 10px; font-size:0.72rem; border-radius:6px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.35); color:var(--accent);">
-            <span>${getHeroIcon('musical-note', '', 14)} ${btnTxt}</span>
-          </button>
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <div class="home-np-artist-compact home-np-text-wrap">
+            <span class="home-np-scrollable">${artistTxt}</span>
+          </div>
+          <div class="home-np-album-compact home-np-text-wrap">
+            <span class="home-np-scrollable">${albumTxt}</span>
+          </div>
+          <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="cambiarCat('Musica', 'Discos')">
+            <span class="home-np-scrollable">${titleTxt}</span>
+          </div>
+          <div style="margin-top:3px;">
+            <button type="button" class="btn-spotify-sub-action" onclick="event.stopPropagation(); cambiarCat('Musica', 'Discos')" style="height:24px; padding:0 10px; font-size:0.72rem; border-radius:6px; background:rgba(56,189,248,0.12); border:1px solid rgba(56,189,248,0.35); color:var(--accent);">
+              <span>${getHeroIcon('musical-note', '', 14)} ${btnTxt}</span>
+            </button>
+          </div>
         </div>
       </div>
       <div class="home-np-right-col">
-        <span class="home-np-sp-logo-link" style="cursor:pointer;" onclick="cambiarCat('Musica', 'Discos')" title="Música">
+        <span class="home-np-sp-logo-link" style="cursor:pointer;" onclick="event.stopPropagation(); cambiarCat('Musica', 'Discos')" title="Música">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
         </span>
-        <button type="button" class="btn-np-quick-add" onclick="cambiarCat('Musica', 'Discos')" title="${l === 'en' ? 'Go to Music' : 'Ir a Música'}">
+        <button type="button" class="btn-np-quick-add" onclick="event.stopPropagation(); cambiarCat('Musica', 'Discos')" title="${l === 'en' ? 'Go to Music' : 'Ir a Música'}">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
       </div>
     </div>
   `;
 }
 
-function renderizarUltimaCancionAmigosInicio() {
-  const container = document.getElementById('home-friends-last-track-container');
-  if (!container) return;
+function dibujarTarjetaUltimoJuegoAmigos(it) {
+  if (!it) return '';
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  const enProg = esEnProgresoTexto(it.fechaFin);
+  const timeStr = formatearTiempoRelativoFeed(it.createdAt || it.fechaFin || it.fechaInicio, l);
+  const studio = it.creador || '';
+  const title = it.titulo || (l === 'en' ? 'Untitled Game' : 'Juego sin título');
+  const nick = it.amigoNickname || (it.userEmail ? it.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
+  const califNum = Number(it.calificacion) || 0;
+  const platform = it.subcategoria || it.subtitulo || 'PlayStation';
+  const horasLimpia = (typeof limpiarTextoHoras === 'function') ? limpiarTextoHoras(it.horas) : '';
+
+  const coverHtml = it.poster
+    ? `<img src="${escHtmlFeed_(it.poster)}" alt="${escHtmlFeed_(title)}" loading="lazy" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="cover-game-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.5rem;background:linear-gradient(135deg,#003791,#001a44);color:#60a5fa;">${getHeroIcon('gamepad', '', 24)}</div>`
+    : `<div class="cover-game-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;background:linear-gradient(135deg,#003791,#001a44);color:#60a5fa;">${getHeroIcon('gamepad', '', 24)}</div>`;
+
+  const avatarHtml = (it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:')))
+    ? `<img src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
+    : `<span>${escHtmlFeed_(it.amigoAvatar || '🦊')}</span>`;
+
+  const safeTitle = encodeURIComponent(title);
+  const safePlatform = encodeURIComponent(platform);
+  const psStoreSearchUrl = `https://store.playstation.com/search/${encodeURIComponent(title)}`;
+  const modalAccion = `abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(nick)}', 'Juegos')`;
+  const perfilAccion = `verPerfilDeAmigo('${escHtmlFeed_(it.userEmail)}')`;
+  const isExp = (typeof estaLiveCardExpandida === 'function') ? estaLiveCardExpandida('friends_playstation') : false;
+
+  return `
+    <div class="home-playstation-card-compact home-friend-game-card home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('friends_playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
+      <!-- Portada con mini-avatar superpuesto del amigo -->
+      <div class="home-psn-cover-compact" style="position:relative; cursor:pointer;" onclick="event.stopPropagation(); ${modalAccion}" title="${l === 'en' ? 'View friend details' : 'Ver actividad del amigo'}">
+        ${coverHtml}
+        <span class="home-psn-platform-badge">${platform.includes('PS5') ? 'PS5' : (platform.includes('PS4') ? 'PS4' : 'PLAY')}</span>
+        <div class="home-np-friend-avatar-badge" title="${escHtmlFeed_(nick)}">
+          ${avatarHtml}
+        </div>
+      </div>
+
+      <!-- Centro: Vistas reducida y expandida -->
+      <div class="home-psn-center-compact">
+        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN ANDROID) -->
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlFeed_(title)}">
+              <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
+            </div>
+            <div style="font-size:0.73rem; color:#38bdf8; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; justify-content:center; gap:5px; margin-top:1px;">
+              <span>${escHtmlFeed_(nick)}</span>
+              <span style="opacity:0.5;">·</span>
+              <span style="color:${enProg ? '#10b981' : '#38bdf8'}; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
+                <span class="home-np-dot" style="${enProg ? 'background:#10b981;' : 'background:#38bdf8; box-shadow:none; animation:none;'}"></span>
+                <span>${enProg ? (l === 'en' ? 'Playing' : 'Jugando') : (l === 'en' ? 'Played' : 'Jugó')}</span>
+              </span>
+              ${horasLimpia ? `<span style="opacity:0.5;">·</span><span style="color:var(--muted); font-size:0.68rem; display:inline-flex; align-items:center; gap:2px;">${getHeroIcon('clock', '', 11)} ${horasLimpia}</span>` : ''}
+            </div>
+          </div>
+        </div>
+
+        <!-- VISTA EXPANDIDA -->
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <!-- Fila de identificación del amigo -->
+          <div style="display:flex; align-items:center; gap:5px; font-size:0.72rem; line-height:1.2; margin-bottom:1px; overflow:hidden;">
+            <span style="width:15px; height:15px; border-radius:50%; overflow:hidden; display:inline-grid; place-items:center; flex-shrink:0; border:1px solid var(--border); font-size:0.65rem; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}">
+              ${avatarHtml}
+            </span>
+            <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:130px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
+              ${escHtmlFeed_(nick)}
+            </strong>
+            <span style="color:var(--muted); font-size:0.68rem; white-space:nowrap;">
+              ${enProg ? (l === 'en' ? 'is playing' : 'está jugando a') : (l === 'en' ? 'played' : 'jugó a')}
+            </span>
+            ${timeStr ? `<span style="color:var(--muted); font-size:0.66rem; margin-left:auto; flex-shrink:0; white-space:nowrap; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('clock', '', 11)} ${timeStr}</span>` : ''}
+          </div>
+
+          <!-- Plataforma y estudio -->
+          <div class="home-psn-platform-label">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 12h-2m-3 0H8.5m1-2v4M16.5 10.5h.01m1.99 3h.01M6.75 6.75h10.5a4.5 4.5 0 0 1 4.473 4.954l-.84 7.14a2.25 2.25 0 0 1-2.235 1.906h-1.66a2.25 2.25 0 0 1-2.124-1.492l-.76-2.028a1.5 1.5 0 0 0-1.408-.98h-1.392a1.5 1.5 0 0 0-1.408.98l-.76 2.028A2.25 2.25 0 0 1 6.512 20.75H4.852a2.25 2.25 0 0 1-2.235-1.906l-.84-7.14A4.5 4.5 0 0 1 6.75 6.75Z"/></svg>
+            <span>${platform}</span>
+            ${studio ? `<span style="opacity:0.65; font-size:0.68rem; font-weight:500;">· ${escHtmlFeed_(studio)}</span>` : ''}
+          </div>
+
+          <!-- Título del juego -->
+          <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="${modalAccion}" title="${escHtmlFeed_(title)}">
+            <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
+          </div>
+
+          <!-- Fila inferior: Estado, Horas y calificación -->
+          <div class="home-psn-status-row" style="margin-top:2px; gap:6px; flex-wrap:nowrap; overflow:hidden;">
+            ${enProg ? `
+              <span class="home-psn-live-pill" style="font-size:0.68rem; color:#10b981; display:inline-flex; align-items:center; gap:4px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:2px 7px; flex-shrink:0;">
+                <span class="home-np-dot" style="width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
+                <span>${l === 'en' ? 'Playing now' : 'Jugando ahora'}</span>
+              </span>
+            ` : `
+              <span class="home-psn-live-pill idle" style="font-size:0.68rem; color:#38bdf8; display:inline-flex; align-items:center; gap:4px; background:rgba(0,112,209,0.12); border:1px solid rgba(0,112,209,0.28); border-radius:12px; padding:2px 7px; flex-shrink:0;">
+                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M15.5 12h-2m-3 0H8.5m1-2v4M16.5 10.5h.01m1.99 3h.01M6.75 6.75h10.5a4.5 4.5 0 0 1 4.473 4.954l-.84 7.14a2.25 2.25 0 0 1-2.235 1.906h-1.66a2.25 2.25 0 0 1-2.124-1.492l-.76-2.028a1.5 1.5 0 0 0-1.408-.98h-1.392a1.5 1.5 0 0 0-1.408.98l-.76 2.028A2.25 2.25 0 0 1 6.512 20.75H4.852a2.25 2.25 0 0 1-2.235-1.906l-.84-7.14A4.5 4.5 0 0 1 6.75 6.75Z"/></svg>
+                <span>${l === 'en' ? 'Friends latest game' : 'Último juego de amigos'}</span>
+              </span>
+            `}
+            ${horasLimpia ? `
+              <span style="font-size:0.68rem; color:var(--muted); font-weight:600; display:inline-flex; align-items:center; gap:3px; background:var(--bg); border:1px solid var(--border); border-radius:12px; padding:2px 6px; flex-shrink:0;">
+                ${getHeroIcon('clock', '', 11)} ${horasLimpia}
+              </span>
+            ` : ''}
+            ${califNum > 0 ? `
+              <div style="display:inline-flex; align-items:center; background:var(--bg); border:1px solid var(--border); padding:1px 6px; border-radius:12px; font-size:0.68rem; line-height:1; flex-shrink:0;">
+                ${renderEstrellasVisuales(califNum)}
+              </div>
+            ` : ''}
+            ${it.comentario ? `
+              <span style="cursor:pointer; font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px; line-height:1;" onclick="${modalAccion}" title="${escHtmlFeed_(it.comentario)}">
+                ${getHeroIcon('chat-bubble-bottom-center-text', '', 12)} "${escHtmlFeed_(it.comentario)}"
+              </span>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+
+      <!-- Borde derecho: Logo oficial PlayStation y botón rápido -->
+      <div class="home-psn-right-col">
+        <a href="${psStoreSearchUrl}" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${l === 'en' ? 'Search on PlayStation Store' : 'Buscar en PlayStation Store'}">
+          <svg width="22" height="18" viewBox="0 0 24 20" fill="none">
+            <path fill="#0070d1" d="M11.332 0C8.835 0 8.01 1.637 8.01 3.518v12.27c1.782.88 3.567.88 5.349 0V2.138c0-1.464-.326-2.138-2.027-2.138zm2.027 15.788c-1.782.88-3.567.88-5.349 0v.018c-3.14 1.547-5.59 1.488-7.25.753-.526-.233-.76-.475-.76-.475s.256.402.772.696c2.19 1.25 5.568 1.155 8.908-.344l3.679-1.648zm4.721-3.69c-2.313 0-4.32.91-5.717 2.378l2.951 1.34c1.11-.84 2.275-1.298 3.488-1.298 1.763 0 2.656.76 2.656 1.834 0 1.25-1.285 1.76-2.935 2.155-2.222.532-4.996.96-7.143 2.05l3.292 1.472c1.75-.688 3.864-1.127 5.766-1.583 2.355-.564 4.542-1.564 4.542-4.376 0-2.585-2.484-3.972-6.9-3.972z"/>
+          </svg>
+        </a>
+        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarJuegoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safePlatform}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+function dibujarTarjetaUltimoJuegoAmigosIdle() {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  const gameTxt = l === 'en' ? 'PlayStation Friends' : 'PlayStation Amigos';
+  const subTxt = l === 'en' ? 'No recent games' : 'Sin juegos recientes';
+  const titleTxt = l === 'en' ? 'No friends playing games right now' : 'Ningún amigo ha jugado recientemente';
+  const btnTxt = l === 'en' ? 'Explore Games' : 'Explorar Juegos';
+  const isExp = (typeof estaLiveCardExpandida === 'function') ? estaLiveCardExpandida('friends_playstation') : false;
+
+  return `
+    <div class="home-playstation-card-compact home-friend-game-card home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('friends_playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 12h-2m-3 0H8.5m1-2v4M16.5 10.5h.01m1.99 3h.01M6.75 6.75h10.5a4.5 4.5 0 0 1 4.473 4.954l-.84 7.14a2.25 2.25 0 0 1-2.235 1.906h-1.66a2.25 2.25 0 0 1-2.124-1.492l-.76-2.028a1.5 1.5 0 0 0-1.408-.98h-1.392a1.5 1.5 0 0 0-1.408.98l-.76 2.028A2.25 2.25 0 0 1 6.512 20.75H4.852a2.25 2.25 0 0 1-2.235-1.906l-.84-7.14A4.5 4.5 0 0 1 6.75 6.75Z"/></svg>
+      </div>
+      <div class="home-psn-center-compact">
+        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
+          <div style="flex:1; min-width:0; overflow:hidden;">
+            <div class="home-psn-title-compact home-np-text-wrap" title="${gameTxt}">
+              <span class="home-np-scrollable">${gameTxt}</span>
+            </div>
+            <div style="font-size:0.73rem; color:#38bdf8; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; justify-content:center; gap:5px; margin-top:1px;">
+              <span>${subTxt}</span>
+            </div>
+          </div>
+        </div>
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+          <div class="home-psn-platform-label">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.5 12h-2m-3 0H8.5m1-2v4M16.5 10.5h.01m1.99 3h.01M6.75 6.75h10.5a4.5 4.5 0 0 1 4.473 4.954l-.84 7.14a2.25 2.25 0 0 1-2.235 1.906h-1.66a2.25 2.25 0 0 1-2.124-1.492l-.76-2.028a1.5 1.5 0 0 0-1.408-.98h-1.392a1.5 1.5 0 0 0-1.408.98l-.76 2.028A2.25 2.25 0 0 1 6.512 20.75H4.852a2.25 2.25 0 0 1-2.235-1.906l-.84-7.14A4.5 4.5 0 0 1 6.75 6.75Z"/></svg>
+            <span>PlayStation</span>
+          </div>
+          <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="cambiarCat('Juegos', 'Consolas')">
+            <span class="home-np-scrollable">${titleTxt}</span>
+          </div>
+          <div style="margin-top:3px;">
+            <button type="button" class="btn-spotify-sub-action" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" style="height:24px; padding:0 10px; font-size:0.72rem; border-radius:6px; background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.35); color:#38bdf8;">
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M15.5 12h-2m-3 0H8.5m1-2v4M16.5 10.5h.01m1.99 3h.01M6.75 6.75h10.5a4.5 4.5 0 0 1 4.473 4.954l-.84 7.14a2.25 2.25 0 0 1-2.235 1.906h-1.66a2.25 2.25 0 0 1-2.124-1.492l-.76-2.028a1.5 1.5 0 0 0-1.408-.98h-1.392a1.5 1.5 0 0 0-1.408.98l-.76 2.028A2.25 2.25 0 0 1 6.512 20.75H4.852a2.25 2.25 0 0 1-2.235-1.906l-.84-7.14A4.5 4.5 0 0 1 6.75 6.75Z"/></svg> <span>${btnTxt}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="home-psn-right-col">
+        <span class="home-psn-logo-link" style="cursor:pointer;" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="PlayStation">
+          <svg width="22" height="18" viewBox="0 0 24 20" fill="none">
+            <path fill="#0070d1" d="M11.332 0C8.835 0 8.01 1.637 8.01 3.518v12.27c1.782.88 3.567.88 5.349 0V2.138c0-1.464-.326-2.138-2.027-2.138zm2.027 15.788c-1.782.88-3.567.88-5.349 0v.018c-3.14 1.547-5.59 1.488-7.25.753-.526-.233-.76-.475-.76-.475s.256.402.772.696c2.19 1.25 5.568 1.155 8.908-.344l3.679-1.648zm4.721-3.69c-2.313 0-4.32.91-5.717 2.378l2.951 1.34c1.11-.84 2.275-1.298 3.488-1.298 1.763 0 2.656.76 2.656 1.834 0 1.25-1.285 1.76-2.935 2.155-2.222.532-4.996.96-7.143 2.05l3.292 1.472c1.75-.688 3.864-1.127 5.766-1.583 2.355-.564 4.542-1.564 4.542-4.376 0-2.585-2.484-3.972-6.9-3.972z"/>
+          </svg>
+        </span>
+        <button type="button" class="btn-psn-quick-add" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="${l === 'en' ? 'Go to Games' : 'Ir a Juegos'}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+function cambiarSlideFriendsLive(idx) {
+  const carousel = document.getElementById('home-friends-live-carousel');
+  if (!carousel) return;
+  const items = carousel.querySelectorAll('.home-live-carousel-item');
+  if (items[idx]) {
+    items[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  }
+  actualizarPillsCarouselFriendsLive(idx);
+}
+
+function actualizarPillsCarouselFriendsLive(idx) {
+  const dotSp = document.getElementById('dot-friends-live-spotify');
+  const dotPsn = document.getElementById('dot-friends-live-psn');
+  if (dotSp) dotSp.classList.toggle('active', idx === 0);
+  if (dotPsn) dotPsn.classList.toggle('active', idx === 1);
+}
+
+function inicializarFriendsLiveCarouselScrollListener() {
+  const carousel = document.getElementById('home-friends-live-carousel');
+  if (!carousel || carousel._hasFriendsScrollListener) return;
+  carousel._hasFriendsScrollListener = true;
+  carousel.addEventListener('scroll', () => {
+    const w = carousel.clientWidth || 1;
+    const idx = Math.round(carousel.scrollLeft / w);
+    actualizarPillsCarouselFriendsLive(idx);
+  }, { passive: true });
+}
+
+function renderizarLiveCardsAmigosInicio() {
+  const wrapper = document.getElementById('home-friends-live-carousel-wrapper');
+  const containerSp = document.getElementById('home-friends-last-track-container');
+  const containerPsn = document.getElementById('home-friends-psn-container');
+  if (!wrapper || !containerSp || !containerPsn) return;
 
   if (!estado.userEmail) {
-    container.style.display = 'none';
-    container.innerHTML = '';
+    wrapper.style.display = 'none';
+    containerSp.innerHTML = '';
+    containerPsn.innerHTML = '';
     return;
   }
 
-  const item = obtenerUltimaCancionAmigos();
-  if (!item) {
-    const feed = estado.amigosFeedCache || [];
-    if (feed.length > 0) {
-      container.style.display = 'block';
-      container.innerHTML = dibujarTarjetaUltimaCancionAmigosIdle();
-      requestAnimationFrame(() => {
-        setTimeout(ajustarMarqueeSpotify, 50);
-      });
-    } else {
-      container.style.display = 'none';
-      container.innerHTML = '';
-    }
+  const itemSp = obtenerUltimaCancionAmigos();
+  const itemPsn = obtenerUltimoJuegoAmigos();
+  const feed = estado.amigosFeedCache || [];
+
+  if (!itemSp && !itemPsn && !feed.length) {
+    wrapper.style.display = 'none';
+    containerSp.innerHTML = '';
+    containerPsn.innerHTML = '';
     return;
   }
 
-  container.style.display = 'block';
-  container.innerHTML = dibujarTarjetaUltimaCancionAmigos(item);
+  wrapper.style.display = 'block';
+  inicializarFriendsLiveCarouselScrollListener();
+
+  // 1. Spotify Amigos
+  const badgeSp = document.getElementById('badge-friends-sp-live-pill');
+  if (itemSp) {
+    const isPlaying = esEnProgresoTexto(itemSp.fechaFin);
+    if (badgeSp) badgeSp.style.display = isPlaying ? 'inline-block' : 'none';
+    containerSp.innerHTML = dibujarTarjetaUltimaCancionAmigos(itemSp);
+  } else {
+    if (badgeSp) badgeSp.style.display = 'none';
+    containerSp.innerHTML = dibujarTarjetaUltimaCancionAmigosIdle();
+  }
+
+  // 2. PlayStation Amigos
+  const badgePsn = document.getElementById('badge-friends-psn-live-pill');
+  if (itemPsn) {
+    const isPlaying = esEnProgresoTexto(itemPsn.fechaFin);
+    if (badgePsn) badgePsn.style.display = isPlaying ? 'inline-block' : 'none';
+    containerPsn.innerHTML = dibujarTarjetaUltimoJuegoAmigos(itemPsn);
+  } else {
+    if (badgePsn) badgePsn.style.display = 'none';
+    containerPsn.innerHTML = dibujarTarjetaUltimoJuegoAmigosIdle();
+  }
 
   requestAnimationFrame(() => {
     setTimeout(ajustarMarqueeSpotify, 50);
   });
 }
-window.renderizarUltimaCancionAmigosInicio = renderizarUltimaCancionAmigosInicio;
+window.renderizarLiveCardsAmigosInicio = renderizarLiveCardsAmigosInicio;
+window.renderizarUltimaCancionAmigosInicio = renderizarLiveCardsAmigosInicio;
+window.cambiarSlideFriendsLive = cambiarSlideFriendsLive;
 
 function renderizarFeedAmigosResumidoInicio() {
-  renderizarUltimaCancionAmigosInicio();
+  renderizarLiveCardsAmigosInicio();
   const contenedor = document.getElementById('lista-comunidad-resumen-inicio');
   if (!contenedor) return;
   const l = userPrefs.lang || 'es';
@@ -9239,20 +9582,23 @@ function renderizarFeedAmigosResumidoInicio() {
       : `<div class="feed-poster-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:var(--bg);">${catIcon}</div>`;
 
     const califNum = Number(it.calificacion) || 0;
-    let ratingOrStatusHtml = '';
+    let secondBadge = '';
     if (enProg) {
-      ratingOrStatusHtml = `<span class="feed-status-inprog"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.9;"></span><span>${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span></span>`;
+      secondBadge = `<span class="feed-status-inprog"><span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.9;"></span><span>${obtenerTextoEnProgreso(it.categoria, it.subcategoria)}</span></span>`;
     } else if (califNum > 0) {
-      ratingOrStatusHtml = `
-        <div style="display:inline-flex;align-items:center;background:var(--bg);border:1px solid var(--border);padding:3px 8px;border-radius:20px;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+      secondBadge = `
+        <div style="display:inline-flex;align-items:center;background:var(--bg);border:1px solid var(--border);padding:2px 7px;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06);font-size:0.75rem;">
           ${renderEstrellasVisuales(califNum)}
         </div>
       `;
     }
 
-    const horasHtml = (it.horas && String(it.horas).trim() !== '' && it.horas !== '0')
-      ? `<span class="feed-cat-badge" style="background:rgba(16,185,129,0.1);color:#10b981;border-color:rgba(16,185,129,0.3);font-weight:700;border-radius:20px;padding:3px 9px;display:inline-flex;align-items:center;gap:4px;">${getHeroIcon('clock', '', 12)} ${it.horas} hrs</span>`
-      : '';
+    const horasLimpia = (typeof limpiarTextoHoras === 'function') ? limpiarTextoHoras(it.horas) : '';
+    const metaPartes = [];
+    if (it.creador && String(it.creador).trim()) metaPartes.push(escHtmlFeed_(it.creador));
+    if (it.anio && String(it.anio).trim()) metaPartes.push(`(${escHtmlFeed_(it.anio)})`);
+    if (horasLimpia) metaPartes.push(`${getHeroIcon('clock', '', 11)} ${horasLimpia}`);
+    const metaTxt = metaPartes.join(' · ');
 
     const isLiked = esResenaLikeada(it.id);
     const likeCount = obtenerConteoLikesResena(it.id, it.userEmail, it.likes);
@@ -9291,6 +9637,8 @@ function renderizarFeedAmigosResumidoInicio() {
       </button>
     ` : '';
 
+    const catBadgeText = `${catIcon} ${subNom || catNom}${it.esRewatch ? ' · Rewatch' : ''}`;
+
     html += `
       <div class="amigo-feed-card home-friend-card" onclick="abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(it.amigoNickname)}', '${escHtmlFeed_(it.categoria)}')">
         <div class="feed-card-header">
@@ -9312,22 +9660,16 @@ function renderizarFeedAmigosResumidoInicio() {
             ${posterHtml}
           </div>
           <div class="feed-card-info">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;">
-              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px;">
-                <span class="feed-cat-badge">${catIcon} ${subNom || catNom}</span>
-                ${it.esRewatch ? `<span class="feed-cat-badge" style="background:rgba(168,85,247,0.14);border-color:rgba(168,85,247,0.35);color:#c084fc;display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('arrow-path', '', 11)} Rewatch</span>` : ''}
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span class="feed-cat-badge">${catBadgeText}</span>
+                ${secondBadge}
               </div>
               ${btnWatchlistTopRight}
             </div>
             <div class="feed-card-title">${escHtmlFeed_(it.titulo)}</div>
             ${it.subtitulo && it.subtitulo !== it.titulo ? `<div style="font-size:0.78rem;color:var(--muted);font-style:italic;margin-top:-2px;margin-bottom:3px;">${escHtmlFeed_(it.subtitulo)}</div>` : ''}
-            <div class="feed-card-meta">${escHtmlFeed_(it.creador || '')} ${it.anio ? '(' + escHtmlFeed_(it.anio) + ')' : ''}</div>
-            ${(horasHtml || ratingOrStatusHtml) ? `
-              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:6px;">
-                ${horasHtml}
-                ${ratingOrStatusHtml}
-              </div>
-            ` : ''}
+            ${metaTxt ? `<div class="feed-card-meta" style="display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-size:0.79rem;color:var(--muted);margin-bottom:6px;">${metaTxt}</div>` : ''}
             ${reviewHtml}
           </div>
         </div>
@@ -10698,8 +11040,8 @@ function filtrarRegistrosAmigoModal() {
           ? `<span class="badge-en-progreso" style="background:rgba(245,158,11,0.12); color:var(--star-active); font-weight:700; padding:2px 8px; border-radius:12px; font-size:0.75rem; border:1px solid rgba(245,158,11,0.3); white-space:nowrap;display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('clock', '', 12)} ${obtenerTextoEnProgreso(r.categoria, r.subcategoria) || (l === 'en' ? 'In progress' : 'En curso')}</span>`
           : (calif > 0 ? renderEstrellasVisuales(calif) : `<span style="color:var(--muted); font-size:0.78rem;">${l === 'en' ? 'No rating' : 'Sin calificar'}</span>`);
         const fecha = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? `${r.fechaInicio} → ${r.fechaFin}` : (r.fechaInicio || '');
-        const fechaHtml = fecha && fecha !== 'Sin fecha' ? `<div class="m-card-dates"><span class="emoji-dyn">${getHeroIcon('calendar', '', 12)} </span>${fecha}</div>` : '';
-        const horasHtml = (r.horas && String(r.horas).trim() !== '' && r.horas !== '0') ? `<div class="m-card-horas" style="font-size:0.75rem; color:var(--accent); font-weight:600;"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${r.horas} hrs</div>` : '';
+        const hRegLimpia = (typeof limpiarTextoHoras === 'function') ? limpiarTextoHoras(r.horas) : '';
+        const horasHtml = hRegLimpia ? `<div class="m-card-horas" style="font-size:0.75rem; color:var(--accent); font-weight:600;"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${hRegLimpia}</div>` : '';
         const rwBadge = r.esRewatch ? `<span class="badge-rewatch" style="margin-left:6px;display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('arrow-path', '', 11)} ${l === 'en' ? 'Rewatch' : 'Revisita'}</span>` : '';
         const isLiked = (typeof esResenaLikeada === 'function') ? esResenaLikeada(r.id) : false;
         const likeCount = (typeof obtenerConteoLikesResena === 'function') ? obtenerConteoLikesResena(r.id, amigoRegsEmailActual, r.likes) : 0;
@@ -20040,6 +20382,12 @@ function estaLiveCardExpandida(tipo) {
   } else if (tipo === 'playstation') {
     if (typeof window.psnCardExpanded !== 'undefined') return !!window.psnCardExpanded;
     return localStorage.getItem('mediary_psn_card_expanded') === 'true';
+  } else if (tipo === 'friends_spotify') {
+    if (typeof window.friendsSpCardExpanded !== 'undefined') return !!window.friendsSpCardExpanded;
+    return localStorage.getItem('mediary_friends_sp_card_expanded') === 'true';
+  } else if (tipo === 'friends_playstation') {
+    if (typeof window.friendsPsnCardExpanded !== 'undefined') return !!window.friendsPsnCardExpanded;
+    return localStorage.getItem('mediary_friends_psn_card_expanded') === 'true';
   }
   return false;
 }
@@ -20047,7 +20395,7 @@ window.estaLiveCardExpandida = estaLiveCardExpandida;
 
 function toggleLiveCardExpansion(tipo, ev) {
   if (ev) {
-    if (ev.target.closest('button, a, input, select, .btn-spotify-ctrl, .btn-np-quick-add, .btn-psn-quick-add, .home-np-sp-logo-link, .home-psn-logo-link')) return;
+    if (ev.target.closest('button, a, input, select, .btn-spotify-ctrl, .btn-np-quick-add, .btn-psn-quick-add, .home-np-sp-logo-link, .home-psn-logo-link, .btn-spotify-sub-action')) return;
   }
   if (tipo === 'spotify') {
     const nuevo = !estaLiveCardExpandida('spotify');
@@ -20065,6 +20413,28 @@ function toggleLiveCardExpansion(tipo, ev) {
     window.psnCardExpanded = nuevo;
     try { localStorage.setItem('mediary_psn_card_expanded', nuevo ? 'true' : 'false'); } catch(e) {}
     const card = document.querySelector('#home-psn-now-playing-container .home-playstation-card-compact');
+    if (card) {
+      card.classList.toggle('is-expanded', nuevo);
+      card.classList.toggle('is-collapsed', !nuevo);
+      const ind = card.querySelector('.live-card-expand-indicator');
+      if (ind) ind.title = nuevo ? (userPrefs?.lang === 'en' ? 'Collapse' : 'Reducir') : (userPrefs?.lang === 'en' ? 'Expand' : 'Expandir');
+    }
+  } else if (tipo === 'friends_spotify') {
+    const nuevo = !estaLiveCardExpandida('friends_spotify');
+    window.friendsSpCardExpanded = nuevo;
+    try { localStorage.setItem('mediary_friends_sp_card_expanded', nuevo ? 'true' : 'false'); } catch(e) {}
+    const card = document.querySelector('#home-friends-last-track-container .home-spotify-card-compact');
+    if (card) {
+      card.classList.toggle('is-expanded', nuevo);
+      card.classList.toggle('is-collapsed', !nuevo);
+      const ind = card.querySelector('.live-card-expand-indicator');
+      if (ind) ind.title = nuevo ? (userPrefs?.lang === 'en' ? 'Collapse' : 'Reducir') : (userPrefs?.lang === 'en' ? 'Expand' : 'Expandir');
+    }
+  } else if (tipo === 'friends_playstation') {
+    const nuevo = !estaLiveCardExpandida('friends_playstation');
+    window.friendsPsnCardExpanded = nuevo;
+    try { localStorage.setItem('mediary_friends_psn_card_expanded', nuevo ? 'true' : 'false'); } catch(e) {}
+    const card = document.querySelector('#home-friends-psn-container .home-playstation-card-compact');
     if (card) {
       card.classList.toggle('is-expanded', nuevo);
       card.classList.toggle('is-collapsed', !nuevo);
@@ -20435,7 +20805,8 @@ function ajustarMarqueeSpotify() {
   const containers = [
     document.getElementById('home-now-playing-container'),
     document.getElementById('home-psn-now-playing-container'),
-    document.getElementById('home-friends-last-track-container')
+    document.getElementById('home-friends-last-track-container'),
+    document.getElementById('home-friends-psn-container')
   ].filter(Boolean);
   containers.forEach(container => {
     const elements = container.querySelectorAll('.home-np-scrollable');
@@ -21032,8 +21403,8 @@ function dibujarTarjetaPlayStationCompacta(data) {
 
 function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const titleTxt = lastGame?.name || (l === 'en' ? 'Console in Rest Mode' : 'Consola en reposo');
-  const subTxt = lastGame ? (l === 'en' ? `Last played · ${lastGame.hours || 0} hrs` : `Último jugado · ${lastGame.hours || 0} hrs`) : (l === 'en' ? 'No active game session' : 'Sin sesión de juego activa');
+  const hLast = (typeof limpiarTextoHoras === 'function') ? (limpiarTextoHoras(lastGame?.hours) || (lastGame?.hours ? `${lastGame.hours} hrs` : '0 hrs')) : `${lastGame?.hours || 0} hrs`;
+  const subTxt = lastGame ? (l === 'en' ? `Last played · ${hLast}` : `Último jugado · ${hLast}`) : (l === 'en' ? 'No active game session' : 'Sin sesión de juego activa');
   const isDemo = localStorage.getItem('mediary_psn_username') === 'Gamer_Mediary';
   const isExp = estaLiveCardExpandida('playstation');
 
