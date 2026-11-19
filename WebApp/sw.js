@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mediary-pwa-v147';
+const CACHE_NAME = 'mediary-pwa-v148';
 const ASSETS = ['./index.html', './manifest.json', './manifest-dark.json', './icon.png', './icon-192.png', './icon-512.png', './icon.svg', './flatpickr.min.js', './flatpickr.es.js', './flatpickr.min.css', './flatpickr.dark.min.css'];
 
 self.addEventListener('install', e => {

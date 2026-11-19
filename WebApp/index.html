@@ -1599,7 +1599,7 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
   transition:transform 0.2s ease;
 }
 .home-fab-btn:hover{
-  transform:translateY(-2px) scale(1.06);
+  transform:translateY(-2px) scale(1.05);
 }
 .home-fab-btn:hover svg{
   transform:scale(1.08);
@@ -1608,67 +1608,67 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
   transform:scale(0.95);
 }
 
-/* AGREGADO RÁPIDO (ARRIBA, CUADRADO MÁS GRANDE, + DISTINTIVO) */
+/* AGREGADO RÁPIDO (ARRIBA, CUADRADO, MÁS GRANDE, + DISTINTIVO) */
 .home-fab-quick-add{
-  width:54px;
-  height:54px;
-  border-radius:15px;
+  width:60px;
+  height:60px;
+  border-radius:10px;
   background:var(--accent);
   color:var(--accent-contrast, #091428);
-  border:1px solid rgba(255,255,255,0.3);
-  box-shadow:0 6px 22px rgba(var(--accent-rgb, 56,189,248), 0.42), 0 2px 6px rgba(0,0,0,0.18);
+  border:1.5px solid rgba(255,255,255,0.35);
+  box-shadow:0 8px 26px rgba(var(--accent-rgb, 56,189,248), 0.46), 0 2px 6px rgba(0,0,0,0.2);
 }
 .home-fab-quick-add svg{
-  width:27px;
-  height:27px;
+  width:32px;
+  height:32px;
 }
 .home-fab-quick-add:hover{
-  box-shadow:0 10px 28px rgba(var(--accent-rgb, 56,189,248), 0.55), 0 2px 6px rgba(0,0,0,0.25);
-  filter:brightness(1.05);
+  box-shadow:0 12px 32px rgba(var(--accent-rgb, 56,189,248), 0.58), 0 3px 8px rgba(0,0,0,0.25);
+  filter:brightness(1.06);
 }
 
-/* MIS WATCHLISTS (ABAJO, CUADRADO COMPACTO) */
+/* MIS WATCHLISTS (ABAJO, CUADRADO) */
 .home-fab-wl{
-  width:46px;
-  height:46px;
-  border-radius:13px;
+  width:52px;
+  height:52px;
+  border-radius:10px;
   background:var(--card);
   color:var(--accent-warm, #f59e0b);
-  border:1.5px solid var(--accent-warm-border, rgba(245,158,11,0.4));
-  box-shadow:0 4px 16px rgba(0,0,0,0.26), 0 1px 3px rgba(0,0,0,0.12);
+  border:1.5px solid var(--accent-warm-border, rgba(245,158,11,0.45));
+  box-shadow:0 6px 20px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.12);
 }
 .home-fab-wl svg{
-  width:21px;
-  height:21px;
+  width:24px;
+  height:24px;
 }
 .home-fab-wl:hover{
   border-color:var(--accent-warm, #f59e0b);
-  box-shadow:0 8px 24px rgba(245,158,11,0.32);
+  box-shadow:0 10px 28px rgba(245,158,11,0.35);
 }
 
 @media (max-width: 768px){
   .home-floating-actions{
     right:16px;
-    bottom:calc(98px + env(safe-area-inset-bottom, 0px));
+    bottom:calc(96px + env(safe-area-inset-bottom, 0px));
     gap:10px;
   }
   .home-fab-quick-add{
-    width:50px;
-    height:50px;
-    border-radius:14px;
+    width:56px;
+    height:56px;
+    border-radius:9px;
   }
   .home-fab-quick-add svg{
-    width:25px;
-    height:25px;
+    width:30px;
+    height:30px;
   }
   .home-fab-wl{
-    width:43px;
-    height:43px;
-    border-radius:12px;
+    width:48px;
+    height:48px;
+    border-radius:9px;
   }
   .home-fab-wl svg{
-    width:20px;
-    height:20px;
+    width:22px;
+    height:22px;
   }
 }
 
@@ -3595,7 +3595,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
       <!-- BOTONES FLOTANTES DE INICIO: AGREGADO RÁPIDO (ARRIBA) Y MIS WATCHLISTS (ABAJO) -->
       <div class="home-floating-actions" id="home-floating-actions">
         <button type="button" class="home-fab-btn home-fab-quick-add" id="home-fab-quick-add" onclick="abrirModalAgregadoRapido()" title="Agregado Rápido" aria-label="Agregado Rápido">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
         </button>
         <button type="button" class="home-fab-btn home-fab-wl" id="home-fab-wl" onclick="abrirMenuWatchlistGlobal()" title="Mis Watchlists" aria-label="Mis Watchlists">
           <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg>
