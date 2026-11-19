@@ -1579,73 +1579,96 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:10px;
+  gap:12px;
   z-index:990;
   pointer-events:auto;
 }
 .home-fab-btn{
-  width:44px;
-  height:44px;
-  border-radius:50%;
   border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
   display:inline-flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
   padding:0;
-  box-shadow:0 4px 14px rgba(0,0,0,0.24);
-  transition:transform 0.2s cubic-bezier(0.2,0,0.2,1), box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  transition:transform 0.2s cubic-bezier(0.2,0,0.2,1), box-shadow 0.2s ease, border-color 0.2s ease, filter 0.2s ease;
   backdrop-filter:blur(16px);
   -webkit-backdrop-filter:blur(16px);
 }
 .home-fab-btn svg{
-  width:20px;
-  height:20px;
   display:block;
   transition:transform 0.2s ease;
 }
 .home-fab-btn:hover{
-  transform:translateY(-2px) scale(1.08);
-  box-shadow:0 8px 24px rgba(0,0,0,0.34);
+  transform:translateY(-2px) scale(1.06);
 }
 .home-fab-btn:hover svg{
-  transform:scale(1.1);
+  transform:scale(1.08);
 }
 .home-fab-btn:active{
-  transform:scale(0.94);
+  transform:scale(0.95);
 }
+
+/* AGREGADO RÁPIDO (ARRIBA, CUADRADO MÁS GRANDE, + DISTINTIVO) */
 .home-fab-quick-add{
-  color:var(--accent);
-  border-color:rgba(56,189,248,0.35);
+  width:54px;
+  height:54px;
+  border-radius:15px;
+  background:var(--accent);
+  color:var(--accent-contrast, #091428);
+  border:1px solid rgba(255,255,255,0.3);
+  box-shadow:0 6px 22px rgba(var(--accent-rgb, 56,189,248), 0.42), 0 2px 6px rgba(0,0,0,0.18);
+}
+.home-fab-quick-add svg{
+  width:27px;
+  height:27px;
 }
 .home-fab-quick-add:hover{
-  border-color:var(--accent);
-  box-shadow:0 8px 24px rgba(56,189,248,0.35);
+  box-shadow:0 10px 28px rgba(var(--accent-rgb, 56,189,248), 0.55), 0 2px 6px rgba(0,0,0,0.25);
+  filter:brightness(1.05);
 }
+
+/* MIS WATCHLISTS (ABAJO, CUADRADO COMPACTO) */
 .home-fab-wl{
+  width:46px;
+  height:46px;
+  border-radius:13px;
+  background:var(--card);
   color:var(--accent-warm, #f59e0b);
-  border-color:rgba(245,158,11,0.35);
+  border:1.5px solid var(--accent-warm-border, rgba(245,158,11,0.4));
+  box-shadow:0 4px 16px rgba(0,0,0,0.26), 0 1px 3px rgba(0,0,0,0.12);
+}
+.home-fab-wl svg{
+  width:21px;
+  height:21px;
 }
 .home-fab-wl:hover{
   border-color:var(--accent-warm, #f59e0b);
-  box-shadow:0 8px 24px rgba(245,158,11,0.3);
+  box-shadow:0 8px 24px rgba(245,158,11,0.32);
 }
 
 @media (max-width: 768px){
   .home-floating-actions{
-    right:18px;
-    bottom:calc(102px + env(safe-area-inset-bottom, 0px));
-    gap:9px;
+    right:16px;
+    bottom:calc(98px + env(safe-area-inset-bottom, 0px));
+    gap:10px;
   }
-  .home-fab-btn{
-    width:42px;
-    height:42px;
+  .home-fab-quick-add{
+    width:50px;
+    height:50px;
+    border-radius:14px;
   }
-  .home-fab-btn svg{
-    width:19px;
-    height:19px;
+  .home-fab-quick-add svg{
+    width:25px;
+    height:25px;
+  }
+  .home-fab-wl{
+    width:43px;
+    height:43px;
+    border-radius:12px;
+  }
+  .home-fab-wl svg{
+    width:20px;
+    height:20px;
   }
 }
 
@@ -3569,13 +3592,13 @@ html[data-app-theme="minimalist"] .nav-categories-row {
 
       <hr class="home-section-divider">
 
-      <!-- BOTONES FLOTANTES DE INICIO (ESQUINA INFERIOR DERECHA: WATCHLISTS Y AGREGADO RÁPIDO) -->
+      <!-- BOTONES FLOTANTES DE INICIO: AGREGADO RÁPIDO (ARRIBA) Y MIS WATCHLISTS (ABAJO) -->
       <div class="home-floating-actions" id="home-floating-actions">
-        <button type="button" class="home-fab-btn home-fab-wl" id="home-fab-wl" onclick="abrirMenuWatchlistGlobal()" title="Mis Watchlists" aria-label="Mis Watchlists">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg>
-        </button>
         <button type="button" class="home-fab-btn home-fab-quick-add" id="home-fab-quick-add" onclick="abrirModalAgregadoRapido()" title="Agregado Rápido" aria-label="Agregado Rápido">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg>
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        </button>
+        <button type="button" class="home-fab-btn home-fab-wl" id="home-fab-wl" onclick="abrirMenuWatchlistGlobal()" title="Mis Watchlists" aria-label="Mis Watchlists">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg>
         </button>
       </div>
 
