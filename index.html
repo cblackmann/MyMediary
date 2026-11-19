@@ -719,6 +719,27 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .psn-stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;transition:var(--tr);}
 .psn-stat-card:hover{border-color:rgba(0,112,209,0.4);transform:translateY(-1px);}
 
+/* FILAS DE ENTRADA Y BOTONES PARA CONEXIÓN DE APPS (RESPONSIVE MÓVIL Y DESKTOP) */
+.modal-box-app-connect{max-width:480px;max-height:90vh;overflow-y:auto;border-radius:4px;padding:22px;}
+.app-connect-input-row{display:flex !important;gap:8px !important;align-items:stretch !important;width:100% !important;box-sizing:border-box !important;}
+.app-connect-input-row .form-input,
+.app-connect-input-row input{flex:1 1 auto !important;min-width:0 !important;width:auto !important;height:42px !important;min-height:42px !important;box-sizing:border-box !important;font-size:0.84rem !important;padding:8px 12px !important;border-radius:4px !important;}
+.btn-connect-action{flex:0 0 auto !important;width:auto !important;min-width:86px !important;height:42px !important;padding:0 16px !important;font-size:0.84rem !important;font-weight:700 !important;border-radius:4px !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;cursor:pointer !important;white-space:nowrap !important;transition:var(--tr) !important;box-sizing:border-box !important;text-decoration:none !important;}
+.btn-connect-action:hover{transform:translateY(-1px) !important;filter:brightness(1.1) !important;}
+.btn-connect-action:active{transform:translateY(1px) !important;}
+.btn-connect-lastfm{background:rgba(213,16,7,0.16) !important;border:1px solid rgba(213,16,7,0.45) !important;color:#d51007 !important;}
+.btn-connect-lastfm:hover{background:#d51007 !important;color:#fff !important;}
+.btn-connect-psn{background:rgba(0,112,209,0.18) !important;border:1px solid rgba(0,112,209,0.45) !important;color:#38bdf8 !important;}
+.btn-connect-psn:hover{background:#0070d1 !important;color:#fff !important;}
+.btn-connect-steam{background:rgba(102,192,244,0.16) !important;border:1px solid rgba(102,192,244,0.45) !important;color:#38bdf8 !important;}
+.btn-connect-steam:hover{background:#1b2838 !important;color:#66c0f4 !important;}
+.btn-connect-demo{width:100% !important;min-height:40px !important;border-radius:4px !important;font-size:0.8rem !important;font-weight:600 !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:6px !important;cursor:pointer !important;transition:var(--tr) !important;box-sizing:border-box !important;padding:8px 12px !important;text-decoration:none !important;}
+.btn-connect-demo:hover{transform:translateY(-1px) !important;filter:brightness(1.08) !important;}
+.btn-connect-demo-lastfm{background:rgba(213,16,7,0.08) !important;border:1px solid rgba(213,16,7,0.28) !important;color:#d51007 !important;}
+.btn-connect-demo-psn{background:rgba(0,112,209,0.08) !important;border:1px solid rgba(0,112,209,0.28) !important;color:#38bdf8 !important;}
+.btn-connect-demo-steam{background:rgba(56,189,248,0.08) !important;border:1px solid rgba(56,189,248,0.28) !important;color:var(--accent) !important;}
+@media (max-width: 360px){.app-connect-input-row{flex-direction:column !important;}.app-connect-input-row .btn-connect-action{width:100% !important;}}
+
 /* CARRUSEL EN VIVO: SPOTIFY + PLAYSTATION */
 .home-live-carousel-wrapper{position:relative;margin-bottom:12px;display:flex;flex-direction:column;align-items:center;width:100%;max-width:560px;margin-left:auto !important;margin-right:auto !important;}
 .home-live-carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 2px 4px 2px;scroll-behavior:smooth;width:100%;}
@@ -3914,14 +3935,21 @@ html[data-ui-style="modern"] .home-live-expandable-card.is-expanded {
   border-radius: 4px !important;
 }
 
-/* Modales en móvil: esquinas cuadradas limpias */
+/* Modales en móvil: esquinas cuadradas limpias y ajuste seguro de scroll y padding */
 @media (max-width: 768px) {
   .modal-box,
   html[data-ui-style="modern"] .modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
     border-top-left-radius: 6px !important;
     border-top-right-radius: 6px !important;
     border-bottom-left-radius: 0 !important;
     border-bottom-right-radius: 0 !important;
+    padding: 16px 16px calc(24px + env(safe-area-inset-bottom, 16px)) !important;
+    max-height: calc(100dvh - 20px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
   }
 }
 
@@ -6038,9 +6066,9 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
         <p style="font-size:0.72rem; color:var(--muted); margin:0 0 6px 0; line-height:1.35;">
           Permite sincronizar el total de horas de toda tu biblioteca de juegos sin importar cuándo los jugaste. <a href="https://steamcommunity.com/dev/apikey" target="_blank" rel="noopener noreferrer" style="color:#66c0f4; text-decoration:underline;">Obtén tu clave gratuita aquí ↗</a>
         </p>
-        <div style="display:flex; gap:6px;">
-          <input type="text" id="cfg-steam-api-key-input" name="steam_api_key_input" class="form-input" placeholder="Pega tu Steam Web API Key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="font-size:0.78rem; flex:1; -webkit-text-security:disc; text-security:disc;">
-          <button type="button" class="btn-today-pill" onclick="guardarSteamApiKeyDesdeInput('cfg-steam-api-key-input')" style="height:auto; font-size:0.75rem; padding:0 12px; background:rgba(102,192,244,0.15); color:#66c0f4; border-color:rgba(102,192,244,0.35); font-weight:700;">
+        <div class="app-connect-input-row">
+          <input type="text" id="cfg-steam-api-key-input" name="steam_api_key_input" class="form-input" placeholder="Pega tu Steam Web API Key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="-webkit-text-security:disc; text-security:disc;">
+          <button type="button" class="btn-connect-action btn-connect-steam" onclick="guardarSteamApiKeyDesdeInput('cfg-steam-api-key-input')">
             Guardar
           </button>
         </div>
@@ -6109,9 +6137,9 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
         <p style="font-size:0.72rem; color:var(--muted); margin:0 0 6px 0; line-height:1.35;">
           Permite consultar en vivo qué juego tienes abierto en tu PS5/PS4 y tus horas jugadas exactas.
         </p>
-        <div style="display:flex; gap:6px;">
-          <input type="text" id="cfg-psn-npsso-input" name="psn_npsso_input" class="form-input" placeholder="Pega tu token NPSSO de 64 caracteres" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="font-size:0.78rem; flex:1; -webkit-text-security:disc; text-security:disc;">
-          <button type="button" class="btn-today-pill" onclick="guardarPsnNpssoDesdeInput('cfg-psn-npsso-input')" style="height:auto; font-size:0.75rem; padding:0 12px; background:rgba(0,112,209,0.15); color:#38bdf8; border-color:rgba(0,112,209,0.35); font-weight:700;">
+        <div class="app-connect-input-row">
+          <input type="text" id="cfg-psn-npsso-input" name="psn_npsso_input" class="form-input" placeholder="Pega tu token NPSSO de 64 caracteres" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="-webkit-text-security:disc; text-security:disc;">
+          <button type="button" class="btn-connect-action btn-connect-psn" onclick="guardarPsnNpssoDesdeInput('cfg-psn-npsso-input')">
             Guardar
           </button>
         </div>
@@ -6856,59 +6884,60 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 
 <!-- MODAL CONECTAR STEAM -->
 <div id="modal-conectar-steam" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalConectarSteam()">
-  <div class="modal-box" style="max-width:480px; max-height:90vh; overflow-y:auto; border-radius:4px; padding:22px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div style="width:32px; height:32px; border-radius:4px; background:rgba(102,192,244,0.14); border:1px solid rgba(102,192,244,0.3); display:grid; place-items:center; flex-shrink:0;">
+  <div class="modal-box modal-box-app-connect">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+        <div style="width:34px; height:34px; border-radius:4px; background:rgba(102,192,244,0.14); border:1px solid rgba(102,192,244,0.3); display:grid; place-items:center; flex-shrink:0;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#66c0f4">
             <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/>
           </svg>
         </div>
-        <div>
-          <h3 style="margin:0; font-size:1.12rem; color:var(--text); font-weight:800;">Conectar cuenta de Steam</h3>
-          <span style="font-size:0.75rem; color:var(--muted);">Sincroniza tus juegos y horas jugadas</span>
+        <div style="min-width:0; flex:1;">
+          <h3 style="margin:0; font-size:1.1rem; color:var(--text); font-weight:800; line-height:1.25;">Conectar cuenta de Steam</h3>
+          <span style="font-size:0.75rem; color:var(--muted); display:block; margin-top:1px;">Sincroniza tus juegos y horas jugadas</span>
         </div>
       </div>
-      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalConectarSteam()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
+      <button type="button" class="btn-close-form" style="position:static; flex-shrink:0;" onclick="cerrarModalConectarSteam()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
     </div>
 
-    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:16px; line-height:1.45;">
+    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:14px; line-height:1.45;">
       Elige la forma más cómoda para conectar tu cuenta de Steam en 1 clic:
     </p>
 
     <!-- Opción 1: 1 Clic con Steam OpenID Oficial -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:14px; margin-bottom:14px;">
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
       <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
         <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span> <span>Conexión rápida en 1 clic (Steam OpenID)</span>
       </div>
       <p style="font-size:0.76rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;">
         Inicia sesión directamente con Steam. Te redirigirá a la autenticación segura oficial de Steam.
       </p>
-      <button type="button" class="btn-steam-connect" onclick="iniciarFlujoSteamOpenID()" style="width:100%; padding:11px 14px; background:linear-gradient(135deg, #171a21 0%, #1b2838 100%); color:#66c0f4; border-color:rgba(102,192,244,0.45);">
+      <button type="button" class="btn-steam-connect" onclick="iniciarFlujoSteamOpenID()" style="width:100%; padding:11px 14px; background:linear-gradient(135deg, #171a21 0%, #1b2838 100%); color:#66c0f4; border-color:rgba(102,192,244,0.45); border-radius:4px;">
         <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#66c0f4" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/></svg>
         <span>Iniciar sesión oficial con Steam</span>
       </button>
     </div>
 
     <!-- Opción 2: Conectar ingresando enlace o usuario -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:14px; margin-bottom:14px;">
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
       <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
         <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span> <span>O ingresa tu usuario, enlace o Steam ID</span>
       </div>
       <p style="font-size:0.76rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;">
-        Pega tu enlace de Steam (ej. <em>steamcommunity.com/id/tu_usuario</em>), tu <em>Steam ID64</em> o tu nombre de usuario.
+        Pega tu enlace de Steam (ej. <em>steamcommunity.com/id/tu_usuario</em>), tu <em>Steam ID64</em> o tu nombre de usuario:
       </p>
-      <div style="display:flex; gap:8px;">
-        <input type="text" id="steam-input-profile" class="form-input" placeholder="steamcommunity.com/id/... o ID64 o Usuario" style="flex:1; font-size:0.82rem;" onkeydown="if(event.key==='Enter') conectarSteamPerfil()">
-        <button type="button" class="btn-today-pill" onclick="conectarSteamPerfil()" style="height:auto; padding:0 14px; font-weight:700; background:rgba(102,192,244,0.15); border-color:rgba(102,192,244,0.4); color:#38bdf8;">
+      <div class="app-connect-input-row">
+        <input type="text" id="steam-input-profile" class="form-input" placeholder="steamcommunity.com/id/... o ID64 o Usuario" onkeydown="if(event.key==='Enter') conectarSteamPerfil()">
+        <button type="button" class="btn-connect-action btn-connect-steam" onclick="conectarSteamPerfil()">
           Conectar
         </button>
       </div>
     </div>
 
     <!-- Opción 3: Perfil de demostración -->
-    <button type="button" class="btn-today-pill" onclick="conectarSteamDemo()" style="height:36px; width:100%; justify-content:center; font-size:0.78rem; background:rgba(56,189,248,0.06); border-color:rgba(56,189,248,0.25); color:var(--accent);">
-      <svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg> ¿Quieres probarlo al instante? Conectar perfil demo
+    <button type="button" class="btn-connect-demo btn-connect-demo-steam" onclick="conectarSteamDemo()">
+      <svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg>
+      <span>¿Quieres probarlo al instante? Conectar perfil demo</span>
     </button>
 
     <div class="modal-actions" style="margin-top:16px; justify-content:flex-end;">
@@ -6919,45 +6948,46 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 
 <!-- MODAL CONECTAR LAST.FM -->
 <div id="modal-conectar-lastfm" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalConectarLastFm()">
-  <div class="modal-box" style="max-width:480px; max-height:90vh; overflow-y:auto; border-radius:4px; padding:22px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div style="width:32px; height:32px; border-radius:4px; background:rgba(213,16,7,0.14); border:1px solid rgba(213,16,7,0.3); display:grid; place-items:center; flex-shrink:0;">
+  <div class="modal-box modal-box-app-connect">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+        <div style="width:34px; height:34px; border-radius:4px; background:rgba(213,16,7,0.14); border:1px solid rgba(213,16,7,0.3); display:grid; place-items:center; flex-shrink:0;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#d51007">
             <path d="M11.999 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 11.999 12 6.627 0 12.001-5.373 12.001-12 0-6.627-5.374-12-12.001-12zm-1.82 14.898c-.613 1.137-1.57 1.803-2.909 1.803-1.99 0-3.37-1.62-3.37-3.987 0-2.553 1.57-4.135 3.542-4.135 1.778 0 2.68 1.026 3.12 2.366l1.697-.754C11.536 7.95 10.03 6.54 7.442 6.54c-3.495 0-5.81 2.428-5.81 6.193 0 3.82 2.408 6.096 5.568 6.096 2.45 0 4.04-1.256 4.795-3.08l-1.816-.851zm8.303-.523c-1.005 0-1.842-.482-2.198-1.424l-3.266 1.487c.858 2.533 2.973 4.145 5.543 4.145 3.39 0 5.46-2.177 5.46-5.84 0-3.328-1.842-5.15-4.96-5.15-2.827 0-4.668 1.884-4.836 4.773l1.8.859c.147-1.78 1.256-2.889 3.036-2.889 1.884 0 2.91 1.047 2.91 2.805 0 1.55-1.047 2.24-2.489 2.24z"/>
           </svg>
         </div>
-        <div>
-          <h3 style="margin:0; font-size:1.12rem; color:var(--text); font-weight:800;">Conectar cuenta de Last.fm</h3>
-          <span style="font-size:0.75rem; color:var(--muted);">Sincroniza tus scrobbles, álbumes y estadísticas</span>
+        <div style="min-width:0; flex:1;">
+          <h3 style="margin:0; font-size:1.1rem; color:var(--text); font-weight:800; line-height:1.25;">Conectar cuenta de Last.fm</h3>
+          <span style="font-size:0.75rem; color:var(--muted); display:block; margin-top:1px;">Sincroniza tus scrobbles, álbumes y estadísticas</span>
         </div>
       </div>
-      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalConectarLastFm()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
+      <button type="button" class="btn-close-form" style="position:static; flex-shrink:0;" onclick="cerrarModalConectarLastFm()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
     </div>
 
-    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:16px; line-height:1.45;">
+    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:14px; line-height:1.45;">
       Ingresa tu nombre de usuario de Last.fm o pega el enlace a tu perfil. No necesitas contraseñas ni autorizaciones complejas:
     </p>
 
     <!-- Opción 1: Conectar por usuario o enlace -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:14px; margin-bottom:14px;">
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
       <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
         <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span> <span>Tu usuario o enlace de Last.fm</span>
       </div>
       <p style="font-size:0.76rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;">
-        Ejemplo: <em>last.fm/user/tu_usuario</em> o simplemente <em>tu_usuario</em>.
+        Ejemplo: <em>last.fm/user/tu_usuario</em> o simplemente <em>tu_usuario</em>:
       </p>
-      <div style="display:flex; gap:8px;">
-        <input type="text" id="lastfm-input-profile" class="form-input" placeholder="last.fm/user/... o Nombre de usuario" style="flex:1; font-size:0.82rem;" onkeydown="if(event.key==='Enter') conectarLastFmPerfil()">
-        <button type="button" class="btn-today-pill" onclick="conectarLastFmPerfil()" style="height:auto; padding:0 14px; font-weight:700; background:rgba(213,16,7,0.15); border-color:rgba(213,16,7,0.4); color:#d51007;">
+      <div class="app-connect-input-row">
+        <input type="text" id="lastfm-input-profile" class="form-input" placeholder="last.fm/user/... o Nombre de usuario" onkeydown="if(event.key==='Enter') conectarLastFmPerfil()">
+        <button type="button" class="btn-connect-action btn-connect-lastfm" onclick="conectarLastFmPerfil()">
           Conectar
         </button>
       </div>
     </div>
 
     <!-- Opción 2: Perfil demo -->
-    <button type="button" class="btn-today-pill" onclick="conectarLastFmDemo()" style="height:36px; width:100%; justify-content:center; font-size:0.78rem; background:rgba(213,16,7,0.06); border-color:rgba(213,16,7,0.25); color:#d51007;">
-      <svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg> ¿Quieres probarlo al instante? Conectar perfil demo
+    <button type="button" class="btn-connect-demo btn-connect-demo-lastfm" onclick="conectarLastFmDemo()">
+      <svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg>
+      <span>¿Quieres probarlo al instante? Conectar perfil demo</span>
     </button>
 
     <div class="modal-actions" style="margin-top:16px; justify-content:flex-end;">
@@ -6968,61 +6998,62 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 
 <!-- MODAL CONECTAR PLAYSTATION -->
 <div id="modal-conectar-psn" class="modal-overlay" style="display:none; z-index:2000;" onclick="if(event.target===this) cerrarModalConectarPsn()">
-  <div class="modal-box" style="max-width:480px; max-height:90vh; overflow-y:auto; border-radius:4px; padding:22px;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-      <div style="display:flex; align-items:center; gap:10px;">
+  <div class="modal-box modal-box-app-connect">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
         <div style="width:34px; height:34px; border-radius:4px; background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.3); display:grid; place-items:center; flex-shrink:0;">
           <svg width="22" height="18" viewBox="0 0 24 20" fill="none">
             <path fill="#0070d1" d="M11.332 0C8.835 0 8.01 1.637 8.01 3.518v12.27c1.782.88 3.567.88 5.349 0V2.138c0-1.464-.326-2.138-2.027-2.138zm2.027 15.788c-1.782.88-3.567.88-5.349 0v.018c-3.14 1.547-5.59 1.488-7.25.753-.526-.233-.76-.475-.76-.475s.256.402.772.696c2.19 1.25 5.568 1.155 8.908-.344l3.679-1.648zm4.721-3.69c-2.313 0-4.32.91-5.717 2.378l2.951 1.34c1.11-.84 2.275-1.298 3.488-1.298 1.763 0 2.656.76 2.656 1.834 0 1.25-1.285 1.76-2.935 2.155-2.222.532-4.996.96-7.143 2.05l3.292 1.472c1.75-.688 3.864-1.127 5.766-1.583 2.355-.564 4.542-1.564 4.542-4.376 0-2.585-2.484-3.972-6.9-3.972z"/>
           </svg>
         </div>
-        <div>
-          <h3 style="margin:0; font-size:1.12rem; color:var(--text); font-weight:800;">Conectar PlayStation Network</h3>
-          <span style="font-size:0.75rem; color:var(--muted);">Sincroniza tus trofeos, horas y presencia en tiempo real</span>
+        <div style="min-width:0; flex:1;">
+          <h3 style="margin:0; font-size:1.1rem; color:var(--text); font-weight:800; line-height:1.25;">Conectar PlayStation Network</h3>
+          <span style="font-size:0.75rem; color:var(--muted); display:block; margin-top:1px;">Sincroniza tus trofeos, horas y presencia en tiempo real</span>
         </div>
       </div>
-      <button type="button" class="btn-close-form" style="position:static;" onclick="cerrarModalConectarPsn()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
+      <button type="button" class="btn-close-form" style="position:static; flex-shrink:0;" onclick="cerrarModalConectarPsn()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
     </div>
 
-    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:16px; line-height:1.45;">
+    <p style="font-size:0.82rem; color:var(--muted); margin-bottom:14px; line-height:1.45;">
       Vincula tu cuenta de PlayStation para habilitar la tarjeta <strong>"Jugando ahora"</strong> en vivo y sincronizar tu colección de trofeos y horas jugadas:
     </p>
 
     <!-- Opción 1: Conectar por PSN Online ID -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:14px; margin-bottom:14px;">
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
       <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
         <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> <span>Tu PSN Online ID</span>
       </div>
       <p style="font-size:0.76rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;">
         Ingresa tu nombre de usuario público de PlayStation Network (ej. <em>Kratos_99</em>):
       </p>
-      <div style="display:flex; gap:8px;">
-        <input type="text" id="psn-input-online-id" class="form-input" placeholder="Nombre de usuario en PSN" style="flex:1; font-size:0.82rem;" onkeydown="if(event.key==='Enter') conectarPlayStationPerfil()">
-        <button type="button" class="btn-today-pill" onclick="conectarPlayStationPerfil()" style="height:auto; padding:0 14px; font-weight:700; background:rgba(0,112,209,0.18); border-color:rgba(0,112,209,0.4); color:#38bdf8;">
+      <div class="app-connect-input-row">
+        <input type="text" id="psn-input-online-id" class="form-input" placeholder="Nombre de usuario en PSN" onkeydown="if(event.key==='Enter') conectarPlayStationPerfil()">
+        <button type="button" class="btn-connect-action btn-connect-psn" onclick="conectarPlayStationPerfil()">
           Conectar
         </button>
       </div>
     </div>
 
     <!-- Opción 2: Token NPSSO (Opcional, para presencia en vivo PS5/PS4) -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:14px; margin-bottom:14px;">
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
       <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
         <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span> <span>Token NPSSO (Opcional · Presencia en vivo)</span>
       </div>
       <p style="font-size:0.75rem; color:var(--muted); margin:0 0 8px 0; line-height:1.4;">
         Para detectar en vivo qué juego tienes abierto en tu PS5/PS4 y tus horas exactas, puedes pegar tu código NPSSO de 64 caracteres de Sony:
       </p>
-      <div style="font-size:0.73rem; color:var(--muted); background:var(--card); padding:8px 10px; border-radius:4px; border:1px solid var(--border); margin-bottom:10px; line-height:1.45;">
+      <div style="font-size:0.73rem; color:var(--muted); background:var(--card); padding:8px 10px; border-radius:4px; border:1px solid var(--border); margin-bottom:10px; line-height:1.45; word-break:break-word;">
         1. Inicia sesión en tu cuenta en <a href="https://my.playstation.com" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:underline;">playstation.com ↗</a>.<br>
         2. Abre <a href="https://ca.account.sony.com/api/v1/ssocookie" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:underline;">ca.account.sony.com/api/v1/ssocookie ↗</a>.<br>
         3. Copia el valor de <strong>npsso</strong> y pégalo abajo:
       </div>
-      <input type="text" id="psn-input-npsso-modal" name="psn_modal_token_input" class="form-input" placeholder="Token NPSSO de 64 caracteres (opcional)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="font-size:0.8rem; margin-bottom:6px; -webkit-text-security:disc; text-security:disc;">
+      <input type="text" id="psn-input-npsso-modal" name="psn_modal_token_input" class="form-input" placeholder="Token NPSSO de 64 caracteres (opcional)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="font-size:0.8rem; width:100%; box-sizing:border-box; -webkit-text-security:disc; text-security:disc;">
     </div>
 
     <!-- Opción 3: Perfil demo instantáneo -->
-    <button type="button" class="btn-today-pill" onclick="conectarPlayStationDemo()" style="height:36px; width:100%; justify-content:center; font-size:0.78rem; background:rgba(0,112,209,0.06); border-color:rgba(0,112,209,0.25); color:#38bdf8;">
-      <svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg> ¿Quieres probarlo al instante? Conectar perfil Demo
+    <button type="button" class="btn-connect-demo btn-connect-demo-psn" onclick="conectarPlayStationDemo()">
+      <svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg>
+      <span>¿Quieres probarlo al instante? Conectar perfil Demo</span>
     </button>
 
     <div class="modal-actions" style="margin-top:16px; justify-content:flex-end;">
@@ -19204,6 +19235,13 @@ async function generarCodeChallengeSpotify(verifier) {
     .replace(/\//g, '_')
     .replace(/=+$/, '');
 }
+
+function abrirModalConectarSpotify() {
+  if (typeof iniciarFlujoSpotifyAuth === 'function') {
+    iniciarFlujoSpotifyAuth();
+  }
+}
+window.abrirModalConectarSpotify = abrirModalConectarSpotify;
 
 async function iniciarFlujoSpotifyAuth() {
   const clientIdInput = document.getElementById('spotify-input-client-id');
