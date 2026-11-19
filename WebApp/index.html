@@ -22501,10 +22501,14 @@ async function renderizarEscuchandoAhoraInicio(forzar = false) {
   const container = document.getElementById('home-now-playing-container');
   if (!container) return;
 
+  const wrapper = document.getElementById('home-live-carousel-wrapper');
+  if (wrapper) wrapper.style.display = 'flex';
+  if (typeof inicializarLiveCarouselScrollListener === 'function') inicializarLiveCarouselScrollListener();
+
   const token = await obtenerTokenSpotifyValido();
   if (!token) {
     detenerPollingSpotifyLive();
-    container.style.display = 'block';
+    container.style.display = 'flex';
     container.innerHTML = dibujarTarjetaSpotifyCompactaDesconectado();
     return;
   }
@@ -22755,7 +22759,10 @@ function conectarPlayStationDemo() {
   if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
     renderizarContenidoEstadisticasAvanzadas();
   }
-  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? ' Demo PlayStation profile connected!' : ' ¡Perfil demo de PlayStation conectado!');
+  if (typeof cambiarSlideLive === 'function') {
+    setTimeout(() => cambiarSlideLive(1), 120);
+  }
+  mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? '🎮 Demo PlayStation profile connected!' : '🎮 ¡Perfil demo de PlayStation conectado!');
 }
 
 function conectarPlayStationPerfil() {
@@ -22784,6 +22791,9 @@ function conectarPlayStationPerfil() {
   sincronizarCuentaPlayStation(raw, true);
   if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
     sincronizarPreferenciasYAppsHaciaNube(true);
+  }
+  if (typeof cambiarSlideLive === 'function') {
+    setTimeout(() => cambiarSlideLive(1), 120);
   }
 }
 
@@ -23029,7 +23039,8 @@ function alternarJuegoDemoPlayStation() {
 function cambiarSlideLive(idx) {
   const carousel = document.getElementById('home-live-carousel');
   if (!carousel) return;
-  carousel.scrollTo({ left: idx * carousel.clientWidth, behavior: 'smooth' });
+  const w = carousel.clientWidth || carousel.parentElement?.clientWidth || 360;
+  carousel.scrollTo({ left: idx * w, behavior: 'smooth' });
   actualizarPillsCarouselLive(idx);
 }
 
@@ -23045,7 +23056,7 @@ function inicializarLiveCarouselScrollListener() {
   if (!carousel || carousel._hasScrollListener) return;
   carousel._hasScrollListener = true;
   carousel.addEventListener('scroll', () => {
-    const w = carousel.clientWidth || 1;
+    const w = carousel.clientWidth || 360;
     const idx = Math.round(carousel.scrollLeft / w);
     actualizarPillsCarouselLive(idx);
   }, { passive: true });
@@ -23090,6 +23101,19 @@ function renderizarPlayStationNowPlayingInicio(forzar = false) {
     container.innerHTML = dibujarTarjetaPlayStationCompactaIdle(lastGame);
   }
 
+  // Si PlayStation está conectado y Spotify no lo está (o PlayStation está jugando en vivo),
+  // asegurar que el carrusel muestre la tarjeta de PlayStation
+  const spToken = localStorage.getItem('mediary_spotify_token');
+  const psnIsLive = nowPlaying && nowPlaying.isPlaying;
+  if (!spToken || psnIsLive) {
+    const carousel = document.getElementById('home-live-carousel');
+    if (carousel && carousel.scrollLeft === 0) {
+      setTimeout(() => {
+        if (typeof cambiarSlideLive === 'function') cambiarSlideLive(1);
+      }, 100);
+    }
+  }
+
   requestAnimationFrame(() => {
     setTimeout(ajustarMarqueeSpotify, 50);
   });
@@ -23109,8 +23133,8 @@ function dibujarTarjetaPlayStationCompacta(data) {
   const safeTituloParam = encodeURIComponent(titleName);
 
   const coverHtml = coverUrl
-    ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(titleName)}" loading="lazy">`
-    : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:linear-gradient(135deg,#003791,#001a44);color:#60a5fa;">${getHeroIcon('gamepad', '', 24)}</div>`;
+    ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(titleName)}" loading="lazy"><span class="home-psn-platform-badge">${platform}</span>`
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:linear-gradient(135deg,#003791,#001a44);color:#60a5fa;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg></div>`;
 
   const isDemo = localStorage.getItem('mediary_psn_username') === 'Gamer_Mediary';
   const isExp = estaLiveCardExpandida('playstation');
@@ -23120,7 +23144,6 @@ function dibujarTarjetaPlayStationCompacta(data) {
       <!-- i. A la izquierda: Portada del juego -->
       <div class="home-psn-cover-compact">
         ${coverHtml}
-        <span class="home-psn-platform-badge">${platform}</span>
       </div>
 
       <!-- ii. Centro: Vistas reducida y expandida -->
@@ -23146,7 +23169,7 @@ function dibujarTarjetaPlayStationCompacta(data) {
         <!-- VISTA EXPANDIDA: DETALLES COMPLETOS -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
           <div class="home-psn-platform-label">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
             <span>PlayStation Network</span>
             ${trophyProgress ? `<span style="font-size:0.66rem; background:rgba(0,112,209,0.18); color:#38bdf8; padding:1px 6px; border-radius:2px; font-weight:700; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('trophy', '', 11)} ${trophyProgress}</span>` : ''}
           </div>
@@ -23168,8 +23191,8 @@ function dibujarTarjetaPlayStationCompacta(data) {
                 ⇄ Alternar juego
               </button>
             ` : `
-              <button type="button" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Sync PlayStation status' : 'Sincronizar PlayStation'}" style="background:none; border:none; cursor:pointer; color:#38bdf8; font-size:0.75rem; padding:0; display:inline-flex; align-items:center;">
-                ${getHeroIcon('arrow-path', '', 13)}
+              <button type="button" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Sync PlayStation status' : 'Sincronizar PlayStation'}" style="background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.35); color:#38bdf8; font-size:0.68rem; font-weight:700; border-radius:3px; padding:1px 7px; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
+                ${getHeroIcon('arrow-path', '', 11)} <span>${l === 'en' ? 'Sync' : 'Sincronizar'}</span>
               </button>
             `}
           </div>
@@ -23198,15 +23221,26 @@ function dibujarTarjetaPlayStationCompacta(data) {
 
 function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const hLast = (typeof limpiarTextoHoras === 'function') ? (limpiarTextoHoras(lastGame?.hours) || (lastGame?.hours ? `${lastGame.hours} hrs` : '0 hrs')) : `${lastGame?.hours || 0} hrs`;
+  const psnUser = localStorage.getItem('mediary_psn_username') || '';
+  const titleTxt = lastGame?.name || lastGame?.titleName || lastGame?.title || (psnUser ? `${psnUser}` : (l === 'en' ? 'PlayStation Network' : 'PlayStation Network'));
+  const platform = lastGame?.platform || 'PS5';
+  const coverImg = lastGame?.image || lastGame?.icon || '';
+  const hours = parseFloat(lastGame?.hours) || 0;
+  const hLast = (typeof limpiarTextoHoras === 'function') ? (limpiarTextoHoras(lastGame?.hours) || (hours > 0 ? `${hours} hrs` : '0 hrs')) : `${hours} hrs`;
   const subTxt = lastGame ? (l === 'en' ? `Last played · ${hLast}` : `Último jugado · ${hLast}`) : (l === 'en' ? 'No active game session' : 'Sin sesión de juego activa');
-  const isDemo = localStorage.getItem('mediary_psn_username') === 'Gamer_Mediary';
+  const isDemo = psnUser === 'Gamer_Mediary';
   const isExp = estaLiveCardExpandida('playstation');
+  const safeTituloParam = encodeURIComponent(lastGame?.name || lastGame?.titleName || lastGame?.title || '');
+  const trophyProgress = lastGame?.trophies || lastGame?.trophyProgress || '';
+
+  const coverHtml = coverImg
+    ? `<img src="${escHtmlSpotify_(coverImg)}" alt="${escHtmlSpotify_(titleTxt)}" loading="lazy"><span class="home-psn-platform-badge">${platform}</span>`
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:linear-gradient(135deg,#003791,#001a44);color:#60a5fa;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg></div>`;
 
   return `
     <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem;">
-        ${lastGame?.image ? `<img src="${escHtmlSpotify_(lastGame.image)}" alt="Last game">` : `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>`}
+      <div class="home-psn-cover-compact">
+        ${coverHtml}
       </div>
 
       <div class="home-psn-center-compact">
@@ -23217,12 +23251,13 @@ function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
               <span class="home-np-scrollable">${escHtmlSpotify_(titleTxt)}</span>
             </div>
             <div style="font-size:0.73rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px; margin-top:1px;">
-              <span>PlayStation</span>
+              <span>${platform}</span>
               <span style="opacity:0.5;">·</span>
               <span style="color:var(--muted); display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
                 <span class="home-np-dot" style="background:#64748b; box-shadow:none; animation:none;"></span>
                 <span>${l === 'en' ? 'Rest Mode' : 'En reposo'}</span>
               </span>
+              ${hours > 0 ? `<span style="opacity:0.5;">·</span><span style="color:var(--muted); font-size:0.68rem; display:inline-flex; align-items:center; gap:2px;">${getHeroIcon('clock', '', 11)} ${hours}h</span>` : ''}
             </div>
           </div>
         </div>
@@ -23230,27 +23265,31 @@ function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
         <!-- VISTA EXPANDIDA -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
           <div class="home-psn-platform-label">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg><span>PlayStation Network</span>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
+            <span>PlayStation Network</span>
+            ${psnUser ? `<span style="font-size:0.68rem; color:#38bdf8; font-weight:700;">@${escHtmlSpotify_(psnUser)}</span>` : ''}
+            ${trophyProgress ? `<span style="font-size:0.66rem; background:rgba(0,112,209,0.18); color:#38bdf8; padding:1px 6px; border-radius:2px; font-weight:700; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('trophy', '', 11)} ${trophyProgress}</span>` : ''}
           </div>
-          <div class="home-psn-meta-compact home-np-text-wrap">
-            <span class="home-np-scrollable">${subTxt}</span>
+          <div class="home-psn-meta-compact home-np-text-wrap" title="${escHtmlSpotify_(subTxt)}">
+            <span class="home-np-scrollable">${escHtmlSpotify_(subTxt)}</span>
           </div>
-          <div class="home-psn-title-compact home-np-text-wrap">
+          <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleTxt)}">
             <span class="home-np-scrollable">${escHtmlSpotify_(titleTxt)}</span>
           </div>
 
           <div class="home-psn-status-row">
-            <div class="home-psn-live-pill idle" title="En reposo">
+            <div class="home-psn-live-pill idle" title="${l === 'en' ? 'Console in rest mode / offline' : 'Consola en reposo / desconectada'}">
               <span class="home-np-dot" style="background:#64748b;"></span>
               <span>${l === 'en' ? 'Rest Mode' : 'En reposo'}</span>
             </div>
+            ${hours > 0 ? `<span style="font-size:0.67rem; color:var(--muted); font-weight:600; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('clock', '', 11)} ${hours} hrs</span>` : ''}
             ${isDemo ? `
               <button type="button" onclick="event.stopPropagation(); alternarJuegoDemoPlayStation()" title="Cambiar a juego activo" style="background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.35); color:#38bdf8; font-size:0.68rem; font-weight:700; border-radius:3px; padding:1px 7px; cursor:pointer;">
                 Activar juego demo
               </button>
             ` : `
-              <button type="button" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Check active game' : 'Comprobar si estás jugando'}" style="background:none; border:none; cursor:pointer; color:#38bdf8; font-size:0.75rem; padding:0; display:inline-flex; align-items:center;">
-                Sincronizar
+              <button type="button" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Check active game' : 'Comprobar si estás jugando'}" style="background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.35); color:#38bdf8; font-size:0.68rem; font-weight:700; border-radius:3px; padding:1px 7px; cursor:pointer; display:inline-flex; align-items:center; gap:3px;">
+                ${getHeroIcon('arrow-path', '', 11)} <span>${l === 'en' ? 'Sync' : 'Sincronizar'}</span>
               </button>
             `}
           </div>
@@ -23263,9 +23302,15 @@ function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
             <path fill="#0070d1" d="M11.332 0C8.835 0 8.01 1.637 8.01 3.518v12.27c1.782.88 3.567.88 5.349 0V2.138c0-1.464-.326-2.138-2.027-2.138zm2.027 15.788c-1.782.88-3.567.88-5.349 0v.018c-3.14 1.547-5.59 1.488-7.25.753-.526-.233-.76-.475-.76-.475s.256.402.772.696c2.19 1.25 5.568 1.155 8.908-.344l3.679-1.648zm4.721-3.69c-2.313 0-4.32.91-5.717 2.378l2.951 1.34c1.11-.84 2.275-1.298 3.488-1.298 1.763 0 2.656.76 2.656 1.834 0 1.25-1.285 1.76-2.935 2.155-2.222.532-4.996.96-7.143 2.05l3.292 1.472c1.75-.688 3.864-1.127 5.766-1.583 2.355-.564 4.542-1.564 4.542-4.376 0-2.585-2.484-3.972-6.9-3.972z"/>
           </svg>
         </a>
-        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="Ver Juegos">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
+        ${(lastGame && (lastGame.name || lastGame.titleName)) ? `
+          <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarJuegoActualEnMediary(decodeURIComponent('${safeTituloParam}'), '${platform}')" title="${l === 'en' ? 'Log last played game in Mediary' : 'Registrar último juego en Mediary'}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        ` : `
+          <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="${l === 'en' ? 'Go to Games' : 'Ver Juegos'}">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        `}
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
