@@ -1746,34 +1746,33 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 [data-theme$="-light"] .carousel-indicator,[data-theme="nordic-light"] .carousel-indicator,[data-theme="creme-latte"] .carousel-indicator,[data-theme="parchment"] .carousel-indicator,[data-theme="sage-garden"] .carousel-indicator,[data-theme="lavender-light"] .carousel-indicator{color:var(--accent) !important;background:rgba(0,0,0,0.06) !important;border:1px solid rgba(0,0,0,0.16) !important;}
 
 .mobile-history-card.row-highlighted{outline:2px solid var(--accent) !important;box-shadow:0 0 16px rgba(56,189,248,0.45) !important;animation:highlightRow 2.5s ease-out !important;}
-/* 3 RACHAS: PELÍCULAS, MÚSICA, LECTURA */
-.home-streaks-grid{display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;width:100%;box-sizing:border-box;}
-@media (max-width: 680px){.home-streaks-grid{grid-template-columns:1fr;gap:8px;}}
-.home-streak-card{display:flex;flex-direction:column;justify-content:space-between;padding:10px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);box-sizing:border-box;min-height:96px;position:relative;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
-.home-streak-card:hover{border-color:#f59e0b;transform:translateY(-2px);box-shadow:0 6px 18px rgba(245,158,11,0.15);}
-.home-streak-card.active{border-color:rgba(245,158,11,0.45);background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,var(--bg) 100%);}
-.home-streak-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px;}
-.home-streak-card-name{display:flex;align-items:center;gap:6px;font-weight:700;font-size:0.84rem;color:var(--text);}
-.home-streak-badge{font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:8px;white-space:nowrap;}
-.badge-active{background:rgba(79,158,131,0.16);color:#4fa888;border:1px solid rgba(79,158,131,0.32);}
-.badge-pending{background:rgba(200,149,90,0.16);color:#c8955a;border:1px solid rgba(200,149,90,0.32);}
-.badge-inactive{background:rgba(148,163,184,0.12);color:var(--muted);border:1px solid var(--border);}
-.home-streak-card-body{display:flex;align-items:baseline;gap:6px;margin:6px 0 10px 0;}
-.home-streak-flame-icon{font-size:1.4rem;line-height:1;}
-.home-streak-card.active .home-streak-flame-icon{animation:pulseFlame 2.2s ease-in-out infinite;}
+/* RACHAS SIMPLIFICADAS: TIRA HORIZONTAL UNIFICADA (SIN FORMATO TARJETA) */
+.home-streaks-strip{display:grid;grid-template-columns:repeat(3, 1fr);width:100%;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-sizing:border-box;}
+[data-theme$="-light"] .home-streaks-strip,[data-theme="nordic-light"] .home-streaks-strip,[data-theme="creme-latte"] .home-streaks-strip,[data-theme="parchment"] .home-streaks-strip,[data-theme="sage-garden"] .home-streaks-strip{background:rgba(0,0,0,0.02);}
+.home-streak-col{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 6px;gap:3px;cursor:pointer;transition:all 0.2s ease;position:relative;box-sizing:border-box;text-align:center;user-select:none;}
+.home-streak-col:not(:last-child){border-right:1px solid var(--border);}
+.home-streak-col:hover{background:rgba(255,255,255,0.035);}
+[data-theme$="-light"] .home-streak-col:hover,[data-theme="nordic-light"] .home-streak-col:hover,[data-theme="creme-latte"] .home-streak-col:hover,[data-theme="parchment"] .home-streak-col:hover,[data-theme="sage-garden"] .home-streak-col:hover{background:rgba(0,0,0,0.035);}
+.home-streak-col-header{display:flex;align-items:center;justify-content:center;gap:5px;line-height:1;}
+.home-streak-cat-icon{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;flex-shrink:0;}
+.home-streak-cat-icon.icon-pelis{color:#f59e0b;background:rgba(245,158,11,0.12);}
+.home-streak-cat-icon.icon-musica{color:#a855f7;background:rgba(168,85,247,0.12);}
+.home-streak-cat-icon.icon-lectura{color:#10b981;background:rgba(16,185,129,0.12);}
+.home-streak-cat-name{font-size:0.76rem;font-weight:700;color:var(--text);letter-spacing:-0.2px;}
+.home-streak-col-stat{display:flex;align-items:baseline;justify-content:center;gap:4px;line-height:1;margin:1px 0;}
+.home-streak-flame{display:inline-flex;align-items:center;color:var(--muted);opacity:0.55;transition:all 0.2s ease;}
+.home-streak-flame.active{color:#f59e0b;opacity:1;animation:pulseFlame 2.2s ease-in-out infinite;}
 @keyframes pulseFlame{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
-.home-streak-number{font-size:1.55rem;font-weight:900;color:var(--text);line-height:1;letter-spacing:-0.5px;}
-.home-streak-card.active .home-streak-number{color:#c8955a;}
-.home-streak-unit{font-size:0.78rem;color:var(--muted);font-weight:600;}
-.home-streak-card-footer{margin-top:auto;min-height:28px;display:flex;align-items:center;}
-.home-streak-hint{font-size:0.75rem;color:var(--muted);line-height:1.25;}
-.home-streak-hint.hint-done{color:#4fa888;font-weight:600;}
-.btn-read-today-streak{background:linear-gradient(135deg,#c8955a,#ad783f);color:#ffffff;border:none;border-radius:18px;padding:6px 14px;font-size:0.8rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;box-shadow:0 2px 8px rgba(173,120,63,0.22);transition:all 0.2s ease;width:100%;box-sizing:border-box;}
-.btn-read-today-streak:hover{transform:scale(1.02);background:linear-gradient(135deg,#d29e64,#b78248);box-shadow:0 3px 12px rgba(173,120,63,0.35);}
-.btn-read-today-streak.done{background:linear-gradient(135deg,#4f9e83,#3c846c);color:#ffffff;box-shadow:0 2px 8px rgba(60,132,108,0.22);}
-.btn-read-today-streak.done:hover{background:linear-gradient(135deg,#59aa8e,#459077);box-shadow:0 3px 12px rgba(60,132,108,0.35);}
-[data-theme$="-light"] .home-streak-card.active,[data-theme="nordic-light"] .home-streak-card.active,[data-theme="creme-latte"] .home-streak-card.active,[data-theme="parchment"] .home-streak-card.active,[data-theme="sage-garden"] .home-streak-card.active{background:rgba(245,158,11,0.12) !important;border-color:#d97706 !important;}
-[data-theme$="-light"] .home-streak-card.active .home-streak-number,[data-theme="nordic-light"] .home-streak-card.active .home-streak-number,[data-theme="creme-latte"] .home-streak-card.active .home-streak-number,[data-theme="parchment"] .home-streak-card.active .home-streak-number,[data-theme="sage-garden"] .home-streak-card.active .home-streak-number{color:#b45309 !important;}
+.home-streak-val{font-size:1.18rem;font-weight:800;color:var(--text);line-height:1;letter-spacing:-0.5px;}
+.home-streak-unit{font-size:0.70rem;font-weight:600;color:var(--muted);}
+.home-streak-col-action{width:100%;display:flex;justify-content:center;margin-top:2px;}
+.btn-streak-pill{display:inline-flex;align-items:center;justify-content:center;gap:3px;height:22px;padding:0 9px;border-radius:9999px;font-size:0.69rem;font-weight:700;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);transition:all 0.18s cubic-bezier(0.4,0,0.2,1);white-space:nowrap;box-sizing:border-box;font-family:inherit;}
+.btn-streak-pill:hover{transform:scale(1.03);background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.22);}
+.btn-streak-pill.done{background:rgba(16,185,129,0.12);color:#34d399;border-color:rgba(16,185,129,0.32);}
+.btn-streak-pill.done:hover{background:rgba(16,185,129,0.2);border-color:rgba(16,185,129,0.5);color:#10b981;}
+[data-theme$="-light"] .btn-streak-pill{background:rgba(0,0,0,0.04);}
+[data-theme$="-light"] .btn-streak-pill:hover{background:rgba(0,0,0,0.08);}
+[data-theme$="-light"] .btn-streak-pill.done{background:rgba(16,185,129,0.12);color:#059669;border-color:rgba(16,185,129,0.35);}
 
 /* ESTILOS MODERNOS DEL SELECTOR DE PERSONAJE FAVORITO */
 .char-picker-tabs{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:4px;gap:4px;margin-bottom:16px;}
@@ -2417,67 +2416,23 @@ html[data-ui-style="modern"] .btn-terminar-card-carousel {
 }
 
 /* RACHAS COMPACTAS MINIMALISTAS */
-html[data-ui-style="modern"] .home-streaks-grid {
-  gap: 8px !important;
-}
-
-html[data-ui-style="modern"] .home-streak-card {
+html[data-ui-style="modern"] .home-streaks-strip {
   background: rgba(255, 255, 255, 0.02) !important;
   border: 1px solid rgba(255, 255, 255, 0.07) !important;
-  border-radius: 12px !important;
-  box-shadow: none !important;
-  padding: 8px 10px !important;
-  min-height: 98px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: space-between !important;
+  border-radius: 14px !important;
 }
-
-[data-theme$="-light"][data-ui-style="modern"] .home-streak-card {
+[data-theme$="-light"][data-ui-style="modern"] .home-streaks-strip {
   background: rgba(0, 0, 0, 0.02) !important;
   border-color: rgba(0, 0, 0, 0.07) !important;
 }
-
-html[data-ui-style="modern"] .home-streak-card.active {
-  border-color: rgba(234, 88, 12, 0.45) !important;
-  background: rgba(234, 88, 12, 0.04) !important;
+html[data-ui-style="modern"] .home-streak-col:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
 }
-
-html[data-ui-style="modern"] .home-streak-number {
-  font-size: 1.25rem !important;
-  font-weight: 800 !important;
+[data-theme$="-light"][data-ui-style="modern"] .home-streak-col:not(:last-child) {
+  border-right-color: rgba(0, 0, 0, 0.07) !important;
 }
-
-html[data-ui-style="modern"] .home-streak-card-name {
-  font-size: 0.76rem !important;
-  font-weight: 700 !important;
-}
-
-html[data-ui-style="modern"] .home-streak-card-footer {
-  margin-top: auto !important;
-  min-height: 34px !important;
-  display: flex !important;
-  align-items: center !important;
-  width: 100% !important;
-}
-
-html[data-ui-style="modern"] .btn-read-today-streak {
-  padding: 7px 12px !important;
-  font-size: 0.82rem !important;
-  font-weight: 800 !important;
-  border-radius: 8px !important;
-  min-height: 34px !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  box-shadow: 0 2px 8px rgba(173, 120, 63, 0.22) !important;
-}
-
-html[data-ui-style="modern"] .btn-read-today-streak.done {
-  box-shadow: 0 2px 8px rgba(60, 132, 108, 0.22) !important;
+html[data-ui-style="modern"] .btn-streak-pill {
+  font-family: inherit !important;
 }
 
 /* SUBCATEGORÍAS DE LECTURA ADAPTATIVAS EN MODERNO */
@@ -2982,6 +2937,7 @@ html[data-app-theme="minimalist"] .btn-action-manual,
 html[data-app-theme="minimalist"] .btn-hero-quick-add,
 html[data-app-theme="minimalist"] .btn-toggle-filter,
 html[data-app-theme="minimalist"] .btn-read-today-streak,
+html[data-app-theme="minimalist"] .btn-streak-pill,
 html[data-app-theme="minimalist"] .btn-terminar-badge,
 html[data-app-theme="minimalist"] .btn-terminar-card,
 html[data-app-theme="minimalist"] .btn-change-cover,
@@ -14731,75 +14687,60 @@ function renderizarRachasActualesInicio() {
   const rLectura = calcularRachaLectura();
 
   cont.innerHTML = `
-    <div class="home-streaks-grid">
+    <div class="home-streaks-strip">
       <!-- 1. Películas -->
-      <div class="home-streak-card ${rPeliculas.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Peliculas', 'Películas')" title="${l === 'en' ? 'View movies' : 'Ver películas'}">
-        <div class="home-streak-card-header">
-          <div class="home-streak-card-name">
-            <span class="emoji-dyn">${getHeroIcon("film")}</span>
-            <span>${l === 'en' ? 'Movies' : 'Películas'}</span>
-          </div>
-          <span class="home-streak-badge ${rPeliculas.esActivaHoy ? 'badge-active' : (rPeliculas.rachaActual > 0 ? 'badge-pending' : 'badge-inactive')}">
-            ${rPeliculas.esActivaHoy ? (l === 'en' ? 'Today' : 'Hoy') : (rPeliculas.rachaActual > 0 ? (l === 'en' ? 'Log today' : 'Registra hoy') : (l === 'en' ? '0 days' : 'Sin racha'))}
-          </span>
+      <div class="home-streak-col col-pelis ${rPeliculas.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Peliculas', 'Películas')" title="${l === 'en' ? 'View movies' : 'Ver películas'}">
+        <div class="home-streak-col-header">
+          <span class="home-streak-cat-icon icon-pelis">${getHeroIcon("film", "", 13)}</span>
+          <span class="home-streak-cat-name">${l === 'en' ? 'Movies' : 'Películas'}</span>
         </div>
-        <div class="home-streak-card-body">
-          <span class="home-streak-flame-icon emoji-dyn">${getHeroIcon("fire")}</span>
-          <span class="home-streak-number">${rPeliculas.rachaActual}</span>
+        <div class="home-streak-col-stat">
+          <span class="home-streak-flame ${rPeliculas.esActivaHoy ? 'active' : ''}">${getHeroIcon("fire", "", 15)}</span>
+          <span class="home-streak-val">${rPeliculas.rachaActual}</span>
           <span class="home-streak-unit">${rPeliculas.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
-        <div class="home-streak-card-footer">
-          <button type="button" class="btn-read-today-streak ${rPeliculas.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); ejecutarAgregadoRapido('Peliculas', 'Películas')" title="${rPeliculas.esActivaHoy ? (l === 'en' ? 'Movie logged today! Click to log another' : '¡Película vista hoy! Toca para registrar otra') : (l === 'en' ? 'Log a movie to continue streak' : 'Registra una película para continuar tu racha')}">
-            <span class="emoji-dyn">${rPeliculas.esActivaHoy ? getHeroIcon('check') : getHeroIcon('film')}</span>
-            <span>${rPeliculas.esActivaHoy ? (l === 'en' ? 'Movie logged' : 'Ya vi hoy') : (l === 'en' ? 'Log movie' : 'Ya vi hoy')}</span>
+        <div class="home-streak-col-action">
+          <button type="button" class="btn-streak-pill ${rPeliculas.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); ejecutarAgregadoRapido('Peliculas', 'Películas')" title="${rPeliculas.esActivaHoy ? (l === 'en' ? 'Movie logged today! Click to log another' : '¡Película vista hoy! Toca para registrar otra') : (l === 'en' ? 'Log movie' : 'Anotar película')}">
+            ${rPeliculas.esActivaHoy ? getHeroIcon('check', '', 11) : getHeroIcon('plus', '', 11)}
+            <span>${rPeliculas.esActivaHoy ? (l === 'en' ? 'Today' : 'Hoy') : (l === 'en' ? 'Log' : 'Anotar')}</span>
           </button>
         </div>
       </div>
 
       <!-- 2. Música -->
-      <div class="home-streak-card ${rMusica.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Musica', 'Discos')" title="${l === 'en' ? 'View albums' : 'Ver discos'}">
-        <div class="home-streak-card-header">
-          <div class="home-streak-card-name">
-            <span class="emoji-dyn">${getHeroIcon("disc")}</span>
-            <span>${l === 'en' ? 'Music' : 'Música'}</span>
-          </div>
-          <span class="home-streak-badge ${rMusica.esActivaHoy ? 'badge-active' : (rMusica.rachaActual > 0 ? 'badge-pending' : 'badge-inactive')}">
-            ${rMusica.esActivaHoy ? (l === 'en' ? 'Today' : 'Hoy') : (rMusica.rachaActual > 0 ? (l === 'en' ? 'Log today' : 'Registra hoy') : (l === 'en' ? '0 days' : 'Sin racha'))}
-          </span>
+      <div class="home-streak-col col-musica ${rMusica.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Musica', 'Discos')" title="${l === 'en' ? 'View albums' : 'Ver discos'}">
+        <div class="home-streak-col-header">
+          <span class="home-streak-cat-icon icon-musica">${getHeroIcon("disc", "", 13)}</span>
+          <span class="home-streak-cat-name">${l === 'en' ? 'Music' : 'Música'}</span>
         </div>
-        <div class="home-streak-card-body">
-          <span class="home-streak-flame-icon emoji-dyn">${getHeroIcon("fire")}</span>
-          <span class="home-streak-number">${rMusica.rachaActual}</span>
+        <div class="home-streak-col-stat">
+          <span class="home-streak-flame ${rMusica.esActivaHoy ? 'active' : ''}">${getHeroIcon("fire", "", 15)}</span>
+          <span class="home-streak-val">${rMusica.rachaActual}</span>
           <span class="home-streak-unit">${rMusica.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
-        <div class="home-streak-card-footer">
-          <button type="button" class="btn-read-today-streak ${rMusica.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); ejecutarAgregadoRapido('Musica', 'Discos')" title="${rMusica.esActivaHoy ? (l === 'en' ? 'Album logged today! Click to log another' : '¡Disco escuchado hoy! Toca para registrar otro') : (l === 'en' ? 'Log an album to continue streak' : 'Registra un disco para continuar tu racha')}">
-            <span class="emoji-dyn">${rMusica.esActivaHoy ? getHeroIcon('check') : getHeroIcon('disc')}</span>
-            <span>${rMusica.esActivaHoy ? (l === 'en' ? 'Album logged' : 'Ya escuché hoy') : (l === 'en' ? 'Log album' : 'Ya escuché hoy')}</span>
+        <div class="home-streak-col-action">
+          <button type="button" class="btn-streak-pill ${rMusica.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); ejecutarAgregadoRapido('Musica', 'Discos')" title="${rMusica.esActivaHoy ? (l === 'en' ? 'Album logged today! Click to log another' : '¡Disco escuchado hoy! Toca para registrar otro') : (l === 'en' ? 'Log album' : 'Anotar disco')}">
+            ${rMusica.esActivaHoy ? getHeroIcon('check', '', 11) : getHeroIcon('plus', '', 11)}
+            <span>${rMusica.esActivaHoy ? (l === 'en' ? 'Today' : 'Hoy') : (l === 'en' ? 'Log' : 'Anotar')}</span>
           </button>
         </div>
       </div>
 
       <!-- 3. Lectura -->
-      <div class="home-streak-card ${rLectura.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Lecturas', 'Libros')" title="${l === 'en' ? 'View books' : 'Ver libros'}">
-        <div class="home-streak-card-header">
-          <div class="home-streak-card-name">
-            <span class="emoji-dyn">${getHeroIcon("book-open")}</span>
-            <span>${l === 'en' ? 'Reading' : 'Lectura'}</span>
-          </div>
-          <span class="home-streak-badge ${rLectura.esActivaHoy ? 'badge-active' : (rLectura.rachaActual > 0 ? 'badge-pending' : 'badge-inactive')}">
-            ${rLectura.esActivaHoy ? (l === 'en' ? 'Today' : 'Hoy') : (rLectura.rachaActual > 0 ? (l === 'en' ? 'Pending' : 'Pendiente') : (l === 'en' ? '0 days' : 'Sin racha'))}
-          </span>
+      <div class="home-streak-col col-lectura ${rLectura.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Lecturas', 'Libros')" title="${l === 'en' ? 'View books' : 'Ver libros'}">
+        <div class="home-streak-col-header">
+          <span class="home-streak-cat-icon icon-lectura">${getHeroIcon("book-open", "", 13)}</span>
+          <span class="home-streak-cat-name">${l === 'en' ? 'Reading' : 'Lectura'}</span>
         </div>
-        <div class="home-streak-card-body">
-          <span class="home-streak-flame-icon emoji-dyn">${getHeroIcon("fire")}</span>
-          <span class="home-streak-number">${rLectura.rachaActual}</span>
+        <div class="home-streak-col-stat">
+          <span class="home-streak-flame ${rLectura.esActivaHoy ? 'active' : ''}">${getHeroIcon("fire", "", 15)}</span>
+          <span class="home-streak-val">${rLectura.rachaActual}</span>
           <span class="home-streak-unit">${rLectura.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
-        <div class="home-streak-card-footer">
-          <button type="button" class="btn-read-today-streak ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy()" title="${l === 'en' ? 'Click to toggle reading status today' : 'Toca para marcar o desmarcar lectura de hoy'}">
-            <span class="emoji-dyn">${rLectura.esActivaHoy ? getHeroIcon('check') : getHeroIcon('book-open')}</span>
-            <span>${rLectura.esActivaHoy ? (l === 'en' ? 'Read today' : 'Ya leí hoy') : (l === 'en' ? 'I read today' : 'Ya leí hoy')}</span>
+        <div class="home-streak-col-action">
+          <button type="button" class="btn-streak-pill ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy()" title="${rLectura.esActivaHoy ? (l === 'en' ? 'Read today! Click to toggle' : '¡Leído hoy! Toca para desmarcar') : (l === 'en' ? 'Mark reading today' : 'Marcar lectura de hoy')}">
+            ${rLectura.esActivaHoy ? getHeroIcon('check', '', 11) : getHeroIcon('plus', '', 11)}
+            <span>${rLectura.esActivaHoy ? (l === 'en' ? 'Today' : 'Hoy') : (l === 'en' ? 'Mark' : 'Marcar')}</span>
           </button>
         </div>
       </div>
