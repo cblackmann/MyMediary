@@ -720,10 +720,10 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .psn-stat-card:hover{border-color:rgba(0,112,209,0.4);transform:translateY(-1px);}
 
 /* CARRUSEL EN VIVO: SPOTIFY + PLAYSTATION */
-.home-live-carousel-wrapper{position:relative;margin-bottom:12px;display:flex;flex-direction:column;align-items:center;}
+.home-live-carousel-wrapper{position:relative;margin-bottom:12px;display:flex;flex-direction:column;align-items:center;width:100%;max-width:560px;margin-left:auto !important;margin-right:auto !important;}
 .home-live-carousel{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 2px 4px 2px;scroll-behavior:smooth;width:100%;}
 .home-live-carousel::-webkit-scrollbar{display:none;}
-.home-live-carousel-item{flex:0 0 100%;min-width:100%;scroll-snap-align:center;scroll-snap-stop:always;box-sizing:border-box;display:flex;justify-content:center;}
+.home-live-carousel-item{flex:0 0 100%;min-width:100%;scroll-snap-align:center;scroll-snap-stop:always;box-sizing:border-box;display:flex !important;justify-content:center !important;align-items:center !important;}
 .home-live-carousel-item .home-spotify-card-compact,
 .home-live-carousel-item .home-playstation-card-compact{margin-bottom:0;}
 .home-live-carousel-dots{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:4px;}
@@ -763,7 +763,7 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .home-live-expandable-card.is-collapsed .home-psn-center-compact{gap:0px !important;width:100% !important;align-items:center !important;justify-content:center !important;text-align:center !important;}
 .home-live-expandable-card.is-collapsed .live-card-expand-indicator{width:15px !important;height:15px !important;}
 .home-live-expandable-card.is-collapsed .live-card-expand-indicator svg{width:10px !important;height:10px !important;}
-.home-live-expandable-card.is-expanded{padding:9px 12px !important;min-height:86px !important;max-width:520px !important;width:100% !important;border-radius:14px !important;}
+.home-live-expandable-card.is-expanded{padding:9px 12px !important;min-height:86px !important;max-width:520px !important;width:100% !important;margin:0 auto !important;border-radius:14px !important;}
 .home-live-expandable-card.is-expanded .home-np-cover-compact,
 .home-live-expandable-card.is-expanded .home-psn-cover-compact{width:64px !important;height:64px !important;border-radius:8px !important;transition:width .28s cubic-bezier(.2,0,0,1),height .28s cubic-bezier(.2,0,0,1) !important;}
 .home-live-expandable-card.is-expanded .live-card-expanded-only{display:flex !important;flex-direction:column !important;gap:1.5px !important;max-height:160px !important;opacity:1 !important;overflow:visible !important;pointer-events:auto !important;transform:translateY(0);transition:max-height .32s cubic-bezier(.2,0,0,1),opacity .25s ease,transform .25s ease,margin .2s ease !important;}
@@ -4771,7 +4771,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
       <span class="btn-clean-glyph"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span>
     </button>
   </div>
-</header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg></span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/></svg></span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg></span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg></span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg></span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg></span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio">
+</header> <nav class="web-nav-wrapper"> <div class="nav-sections-row"> <div class="nav-sections-group"> <button type="button" class="nav-sec-btn active" id="tab-btn-inicio" onclick="irInicio()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg></span><span data-i18n="nav_inicio">Inicio</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-listas-ext" onclick="abrirVistaDashboardListas()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></span><span data-i18n="nav_dashboard_listas">Listas</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-amigos" onclick="abrirVistaAmigos()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/></svg></span><span data-i18n="nav_amigos">Amigos</span></button> <button type="button" class="nav-sec-btn" id="tab-btn-perfil" onclick="abrirVistaPerfil()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg></span><span data-i18n="nav_perfil">Perfil</span></button> </div> <button type="button" class="nav-sec-btn nav-sec-wl" id="tab-btn-listas" onclick="abrirMenuWatchlistGlobal()"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg></span><span data-i18n="nav_watchlists">Mis Watchlists</span></button> </div> <div class="nav-categories-row"> <span class="nav-cats-label" data-i18n="nav_cats_label">Categorías:</span> <button type="button" class="nav-cat-card" data-cat="Peliculas" onclick="cambiarCat('Peliculas')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span><span data-i18n="nav_peliculas">Películas</span></button> <button type="button" class="nav-cat-card" data-cat="Series" onclick="cambiarCat('Series')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg></span><span data-i18n="nav_series">Series</span></button> <button type="button" class="nav-cat-card" data-cat="Musica" onclick="cambiarCat('Musica')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span><span data-i18n="nav_musica">Música</span></button> <button type="button" class="nav-cat-card" data-cat="Juegos" onclick="cambiarCat('Juegos')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></span><span data-i18n="nav_juegos">Juegos</span></button> <button type="button" class="nav-cat-card" data-cat="Lecturas" onclick="cambiarCat('Lecturas')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span><span data-i18n="nav_lecturas">Lecturas</span></button> </div> </nav> <div class="container"> <!-- VISTA INICIO --> <div id="vista-inicio">
       <!-- 1. SALUDO INICIAL -->
       <div class="home-greeting-banner" id="home-greeting-banner">
         <h1 class="home-greeting-title">Hola, <strong id="home-greeting-nickname">Cinéfilo</strong>!</h1>
@@ -4797,7 +4797,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
               <span id="badge-sp-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
             </button>
             <button type="button" class="live-dot-btn" id="dot-live-psn" onclick="cambiarSlideLive(1)" title="PlayStation (Videojuegos)" aria-label="PlayStation">
-              <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg></span>
+              <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></span>
               <span id="badge-psn-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
             </button>
           </div>
@@ -4871,7 +4871,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
               <span id="badge-friends-sp-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
             </button>
             <button type="button" class="live-dot-btn" id="dot-friends-live-psn" onclick="cambiarSlideFriendsLive(1)" title="PlayStation (Videojuegos)" aria-label="PlayStation Amigos">
-              <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg></span>
+              <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></span>
               <span id="badge-friends-psn-live-pill" style="display:none; width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
             </button>
           </div>
@@ -4902,7 +4902,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
           <button type="button" class="subtab-btn active" data-dcat="series" onclick="toggleFiltroCategoriaDiscover('series')"><span data-i18n="dcat_series"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg> Series</span></button>
           <button type="button" class="subtab-btn active" data-dcat="docuseries" onclick="toggleFiltroCategoriaDiscover('docuseries')"><span data-i18n="dcat_docuseries"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg> Docuseries</span></button>
           <button type="button" class="subtab-btn active" data-dcat="musica" onclick="toggleFiltroCategoriaDiscover('musica')"><span data-i18n="dcat_musica"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> Música</span></button>
-          <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> Juegos</span></button>
+          <button type="button" class="subtab-btn active" data-dcat="juegos" onclick="toggleFiltroCategoriaDiscover('juegos')"><span data-i18n="dcat_juegos"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Juegos</span></button>
           <button type="button" class="subtab-btn active" data-dcat="libros" onclick="toggleFiltroCategoriaDiscover('libros')"><span data-i18n="dcat_libros"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg> Libros</span></button>
           <button type="button" class="subtab-btn active" data-dcat="comics" onclick="toggleFiltroCategoriaDiscover('comics')"><span data-i18n="dcat_comics"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> Cómics</span></button>
           <button type="button" class="subtab-btn active" data-dcat="mangas" onclick="toggleFiltroCategoriaDiscover('mangas')"><span data-i18n="dcat_mangas"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg> Mangas</span></button>
@@ -5371,7 +5371,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 </nav> <!-- MODAL DE AGREGADO RÁPIDO (+) --> <div id="modal-agregado-rapido" class="modal-overlay" style="display:none;">
 <div class="modal-box"> <h3 style="display:flex; align-items:center; gap:8px;" data-i18n="quick_reg_title"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> ¿Qué deseas registrar?</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;" data-i18n="quick_reg_sub">Selecciona la categoría para abrir su buscador:</p> <div class="quick-add-grid" id="modal-quick-add-grid"> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Películas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Película</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Documentales')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Documental</button>
 <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Series', 'Temporadas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg></span> Serie / Temp.</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Series', 'Series Documentales')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Docuserie</button>
-<button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Musica', 'Discos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"/></svg></span> Disco</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Musica', 'Artistas/Grupos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"/></svg></span> Artista</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Juegos', 'Videojuegos')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> Videojuego</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Libros')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span> Libro</button>
+<button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Musica', 'Discos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"/></svg></span> Disco</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Musica', 'Artistas/Grupos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"/></svg></span> Artista</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Juegos', 'Videojuegos')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Videojuego</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Libros')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span> Libro</button>
 <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Cómics')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span> Cómic</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Mangas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg></span> Manga</button> </div> <div class="modal-actions" style="margin-top:16px;"> <button type="button" class="btn-modal-cancel" onclick="cerrarModalAgregadoRapido()">Cancelar</button> </div> </div>
 </div> <!-- MODAL FELICITACIÓN WATCHLIST COMPLETADA --> <div id="modal-felicitaciones-watchlist" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <div style="font-size:2.8rem; margin-bottom:8px;"><svg style="width:36px;height:36px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></div> <h3 style="color:#fbbf24; font-size:1.3rem; margin-bottom:8px;" data-i18n="modal_uno_menos_title">¡Uno menos de tu lista!</h3> <p style="color:var(--text); font-size:0.95rem; line-height:1.45; margin-bottom:14px;" id="msg-felicitacion-watchlist"></p>
 <p style="color:var(--muted); font-size:0.82rem; margin-bottom:18px;" data-i18n="modal_uno_menos_desc">Se ha retirado automáticamente de tu lista de pendientes para mantenerla impecable.</p> <div class="modal-actions" style="justify-content:center;"> <button class="btn-modal-save" onclick="cerrarModalFelicitacionWatchlist()" data-i18n="modal_uno_menos_btn">¡Genial, gracias!</button> </div> </div> </div> <!-- MODAL RECOMENDADOR SHUFFLE --> <div id="modal-shuffle-recomendar" class="modal-overlay" style="display:none;">
@@ -5541,7 +5541,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
         <button type="button" class="subtab-btn active" id="char-filter-todos" onclick="filtrarCatalogoPersonajes('todos')"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg> Todos</button>
         <button type="button" class="subtab-btn" id="char-filter-anime" onclick="filtrarCatalogoPersonajes('anime')"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg> Anime & Manga</button>
         <button type="button" class="subtab-btn" id="char-filter-comics" onclick="filtrarCatalogoPersonajes('comics')"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> Cómics & Héroes</button>
-        <button type="button" class="subtab-btn" id="char-filter-juegos" onclick="filtrarCatalogoPersonajes('juegos')"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> Videojuegos</button>
+        <button type="button" class="subtab-btn" id="char-filter-juegos" onclick="filtrarCatalogoPersonajes('juegos')"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Videojuegos</button>
         <button type="button" class="subtab-btn" id="char-filter-cine" onclick="filtrarCatalogoPersonajes('cine')"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg> Cine & TV</button>
       </div>
 
@@ -6009,7 +6009,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
   <div id="cfg-steam-connected-box" style="display:none;">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:10px 12px; background:rgba(102,192,244,0.06); border:1px solid rgba(102,192,244,0.22); border-radius:3px;">
       <div id="cfg-steam-user-avatar" style="width:40px; height:40px; border-radius:50%; overflow:hidden; background:var(--card); border:2px solid #66c0f4; display:grid; place-items:center; flex-shrink:0;">
-        <svg style="width:20px;height:20px;" class="h-icon text-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
+        <svg style="width:20px;height:20px;" class="h-icon text-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
       <div style="min-width:0; flex:1;">
         <strong id="cfg-steam-user-name" style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario Steam</strong>
@@ -6080,7 +6080,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
   <div id="cfg-psn-connected-box" style="display:none;">
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:10px 12px; background:rgba(0,112,209,0.06); border:1px solid rgba(0,112,209,0.22); border-radius:3px;">
       <div id="cfg-psn-user-avatar" style="width:40px; height:40px; border-radius:50%; overflow:hidden; background:var(--card); border:2px solid #0070d1; display:grid; place-items:center; flex-shrink:0;">
-        <svg style="width:20px;height:20px;" class="h-icon text-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
+        <svg style="width:20px;height:20px;" class="h-icon text-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
       <div style="min-width:0; flex:1;">
         <strong id="cfg-psn-user-name" style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario PlayStation</strong>
@@ -6502,7 +6502,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
             <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg></span> <span data-i18n="cat_series">Series</span>
           </button>
           <button type="button" class="ruleta-cat-chip" id="btn-cat-ruleta-Juegos" onclick="cambiarCategoriaRuleta('Juegos')">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> <span data-i18n="cat_juegos">Juegos</span>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> <span data-i18n="cat_juegos">Juegos</span>
           </button>
         </div>
       </div>
@@ -6991,7 +6991,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
     <!-- Opción 1: Conectar por PSN Online ID -->
     <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:14px; margin-bottom:14px;">
       <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> <span>Tu PSN Online ID</span>
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> <span>Tu PSN Online ID</span>
       </div>
       <p style="font-size:0.76rem; color:var(--muted); margin:0 0 10px 0; line-height:1.4;">
         Ingresa tu nombre de usuario público de PlayStation Network (ej. <em>Kratos_99</em>):
@@ -7035,12 +7035,17 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 <div id="modal-album-completado-spotify" class="modal-overlay" style="display:none; z-index:2200;" onclick="if(event.target===this) descartarPromptDiscoDetectado()">
   <div class="modal-box" style="max-width:420px; max-height:90vh; overflow-y:auto; border-radius:4px; padding:20px; display:flex; flex-direction:column; gap:14px; background:var(--card); border:1px solid var(--border); box-shadow:0 16px 40px rgba(0,0,0,0.35);">
     
-    <!-- Encabezado minimalista -->
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(29,185,84,0.12); border:1px solid rgba(29,185,84,0.3); color:#10b981; padding:3px 10px; border-radius:4px; font-size:0.75rem; font-weight:700;">
-        <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"/></svg></span> <span>Disco completo detectado</span>
+    <!-- Encabezado con mensaje conmemorativo -->
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+      <div>
+        <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(29,185,84,0.12); border:1px solid rgba(29,185,84,0.3); color:#10b981; padding:2px 8px; border-radius:3px; font-size:0.72rem; font-weight:700; margin-bottom:5px;">
+          <span><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"/></svg></span>
+          <span>Spotify</span>
+        </div>
+        <h3 id="prompt-album-banner-title" style="margin:0; font-size:1.15rem; font-weight:800; color:var(--text); line-height:1.25;">¡Escuchaste un nuevo disco!</h3>
+        <p id="prompt-album-banner-sub" style="margin:3px 0 0 0; font-size:0.78rem; color:var(--muted); line-height:1.35;">¿Quieres calificarlo y agregarlo a tu Mediary?</p>
       </div>
-      <button type="button" class="btn-close-form" style="position:static; width:28px; height:28px; font-size:0.9rem;" onclick="descartarPromptDiscoDetectado()" title="Cerrar"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
+      <button type="button" class="btn-close-form" style="position:static; width:30px; height:30px; font-size:0.9rem; flex-shrink:0;" onclick="descartarPromptDiscoDetectado()" title="Cerrar"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
     </div>
 
     <!-- Mini ficha del Álbum -->
@@ -7053,15 +7058,14 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
       </div>
     </div>
 
-    <!-- Selector de Fecha amplio con flatpickr integrado -->
+    <!-- Selector de Fecha estándar y limpio con botón Hoy -->
     <div class="form-group" style="margin:0;">
-      <label style="font-size:0.78rem; font-weight:700; color:var(--muted); margin-bottom:5px; display:block; text-transform:uppercase; letter-spacing:0.5px;">
-        Fecha de escucha
+      <label id="lbl-prompt-disco-fecha" style="font-size:0.8rem; font-weight:700; color:var(--muted); margin-bottom:6px; display:block;">
+        Fecha de escucha:
       </label>
-      <div style="position:relative; display:flex; align-items:center; cursor:pointer;" onclick="if(window.fpDiscoDetectado) window.fpDiscoDetectado.open()">
-        <input type="text" id="input-disco-detectado-fecha" class="form-input date-input" readonly placeholder="dd/mm/aaaa"
-          style="height:46px; font-size:0.95rem; font-weight:600; padding:10px 14px 10px 42px; border-radius:4px; cursor:pointer; width:100%; background:var(--bg); color:var(--text); border:1px solid var(--border);">
-        <span style="position:absolute; left:14px; pointer-events:none; opacity:0.85;"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg></span>
+      <div class="date-input-group">
+        <input type="text" id="input-disco-detectado-fecha" class="form-input date-input" readonly placeholder="dd/mm/aaaa">
+        <button type="button" class="btn-today-pill btn-today-input" onclick="establecerFechaHoyDiscoDetectado()" title="Poner fecha de hoy" data-i18n="btn_today"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-right:3px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>Hoy</button>
       </div>
     </div>
 
@@ -7198,7 +7202,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
         <button type="button" class="stats-cat-tab" data-cat="Peliculas" onclick="cambiarCatStats('Peliculas')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span><span>Películas</span></button>
         <button type="button" class="stats-cat-tab" data-cat="Series" onclick="cambiarCatStats('Series')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg></span><span>Series</span></button>
         <button type="button" class="stats-cat-tab" data-cat="Musica" onclick="cambiarCatStats('Musica')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span><span>Música</span></button>
-        <button type="button" class="stats-cat-tab" data-cat="Juegos" onclick="cambiarCatStats('Juegos')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg></span><span>Juegos</span></button>
+        <button type="button" class="stats-cat-tab" data-cat="Juegos" onclick="cambiarCatStats('Juegos')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></span><span>Juegos</span></button>
         <button type="button" class="stats-cat-tab" data-cat="Lecturas" onclick="cambiarCatStats('Lecturas')"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span><span>Lecturas</span></button>
       </div>
     </div>
@@ -10546,7 +10550,7 @@ function dibujarTarjetaUltimoJuegoAmigos(it) {
 
           <!-- Plataforma y estudio -->
           <div class="home-psn-platform-label">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
             <span>${platform}</span>
             ${studio ? `<span style="opacity:0.65; font-size:0.68rem; font-weight:500;">· ${escHtmlFeed_(studio)}</span>` : ''}
           </div>
@@ -10565,7 +10569,7 @@ function dibujarTarjetaUltimoJuegoAmigos(it) {
               </span>
             ` : `
               <span class="home-psn-live-pill idle" style="font-size:0.68rem; color:#38bdf8; display:inline-flex; align-items:center; gap:4px; background:rgba(0,112,209,0.12); border:1px solid rgba(0,112,209,0.28); border-radius:2px; padding:2px 7px; flex-shrink:0;">
-                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
+                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
                 <span>${l === 'en' ? 'Friends latest game' : 'Último juego de amigos'}</span>
               </span>
             `}
@@ -10619,7 +10623,7 @@ function dibujarTarjetaUltimoJuegoAmigosIdle() {
   return `
     <div class="home-playstation-card-compact home-friend-game-card home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('friends_playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
       <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; opacity:0.85; cursor:pointer;" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
       <div class="home-psn-center-compact">
         <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
@@ -10634,7 +10638,7 @@ function dibujarTarjetaUltimoJuegoAmigosIdle() {
         </div>
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
           <div class="home-psn-platform-label">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
             <span>PlayStation</span>
           </div>
           <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="cambiarCat('Juegos', 'Consolas')">
@@ -10642,7 +10646,7 @@ function dibujarTarjetaUltimoJuegoAmigosIdle() {
           </div>
           <div style="margin-top:3px;">
             <button type="button" class="btn-spotify-sub-action" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" style="height:24px; padding:0 10px; font-size:0.72rem; border-radius:3px; background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.35); color:#38bdf8;">
-              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> <span>${btnTxt}</span>
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> <span>${btnTxt}</span>
             </button>
           </div>
         </div>
@@ -10669,10 +10673,7 @@ function dibujarTarjetaUltimoJuegoAmigosIdle() {
 function cambiarSlideFriendsLive(idx) {
   const carousel = document.getElementById('home-friends-live-carousel');
   if (!carousel) return;
-  const items = carousel.querySelectorAll('.home-live-carousel-item');
-  if (items[idx]) {
-    items[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-  }
+  carousel.scrollTo({ left: idx * carousel.clientWidth, behavior: 'smooth' });
   actualizarPillsCarouselFriendsLive(idx);
 }
 
@@ -10718,7 +10719,7 @@ function renderizarLiveCardsAmigosInicio() {
     return;
   }
 
-  wrapper.style.display = 'block';
+  wrapper.style.display = 'flex';
   inicializarFriendsLiveCarouselScrollListener();
 
   // 1. Spotify Amigos
@@ -13041,7 +13042,7 @@ const HEROICONS = {
   'film': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>',
   'tv': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg>',
   'musical-note': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>',
-  'gamepad': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>',
+  'gamepad': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>',
   'book-open': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>',
   'sparkles': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg>',
   'fire': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"/></svg>',
@@ -17178,7 +17179,7 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
   }
 
   if (rachaActual >= 2) {
-    container.style.display = 'block';
+    container.style.display = 'flex';
     const esRecord = rachaActual >= rachaMasAlta;
     const recordSubTxt = esRecord
       ? (l === 'en' ? 'New personal record in this subcategory!' : '¡Tu racha más alta registrada en esta subcategoría!')
@@ -17796,7 +17797,7 @@ function renderizarStatsGeneral_(ctx) {
         </div>
         <div class="stats-chip-cat" onclick="cambiarCatStats('Juegos')">
           <span style="width:8px; height:8px; border-radius:50%; background:#66c0f4; flex-shrink:0;"></span>
-          <span><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> Juegos: <strong>${formatearHorasStats_(horasJuegosTotal)}</strong> ${(tieneSteam || tienePsn) ? `<span style="font-size:0.68rem; color:#38bdf8; font-weight:700;">(${[tieneSteam?'Steam':'', tienePsn?'PSN':''].filter(Boolean).join(' + ')})</span>` : `(${pctJuegos}%)`}</span>
+          <span><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Juegos: <strong>${formatearHorasStats_(horasJuegosTotal)}</strong> ${(tieneSteam || tienePsn) ? `<span style="font-size:0.68rem; color:#38bdf8; font-weight:700;">(${[tieneSteam?'Steam':'', tienePsn?'PSN':''].filter(Boolean).join(' + ')})</span>` : `(${pctJuegos}%)`}</span>
         </div>
         <div class="stats-chip-cat" onclick="cambiarCatStats('Lecturas')">
           <span style="width:8px; height:8px; border-radius:50%; background:#cf7098; flex-shrink:0;"></span>
@@ -18535,7 +18536,7 @@ function renderizarStatsJuegos_(ctx) {
   html += `
     <div class="stats-kpi-grid">
       <div class="stats-kpi-card" style="border-left:3px solid ${(tieneSteam && tienePsn) ? '#a855f7' : (tienePsn ? '#0070d1' : '#66c0f4')};">
-        <div class="stats-kpi-label"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> <span>Horas Totales Gaming</span></div>
+        <div class="stats-kpi-label"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> <span>Horas Totales Gaming</span></div>
         <div class="stats-kpi-val" style="color:var(--text);">${formatearHorasStats_(horasGamingTotal)}</div>
         <div class="stats-kpi-sub">${[tieneSteam ? `${horasSteamTotal}h Steam` : '', tienePsn ? `${horasPsnTotal}h PSN` : '', `${hPeriodo}h Mediary`].filter(Boolean).join(' · ')}</div>
       </div>
@@ -19589,14 +19590,26 @@ function verificarYMostrarPromptDiscoCompletado() {
     fechaInp.value = fechaInicial;
   }
 
-  // Integrar selector de fecha oficial de la app (flatpickr)
+  // Actualizar banner conmemorativo y textos segun idioma
+  const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
+  const bannerTit = document.getElementById('prompt-album-banner-title');
+  const bannerSub = document.getElementById('prompt-album-banner-sub');
+  const lblFecha = document.getElementById('lbl-prompt-disco-fecha');
+  if (bannerTit) bannerTit.textContent = isEn ? 'You listened to a new album!' : '¡Escuchaste un nuevo disco!';
+  if (bannerSub) bannerSub.textContent = isEn ? 'Would you like to rate it and add it to your Mediary?' : '¿Quieres calificarlo y agregarlo a tu Mediary?';
+  if (lblFecha) lblFecha.textContent = isEn ? 'Listen date:' : 'Fecha de escucha:';
+
+  renderizarEstrellasPromptAlbum(5.0);
+  modal.style.display = 'flex';
+
+  // Integrar selector de fecha oficial de la app (flatpickr) con el modal ya visible
   if (typeof flatpickr !== 'undefined') {
     try {
       if (window.fpDiscoDetectado) {
         try { window.fpDiscoDetectado.destroy(); } catch (e) {}
       }
       window.fpDiscoDetectado = flatpickr('#input-disco-detectado-fecha', {
-        locale: (userPrefs && userPrefs.lang === 'en' ? 'default' : 'es'),
+        locale: (isEn ? 'default' : 'es'),
         dateFormat: 'd/m/Y',
         defaultDate: fechaInicial,
         allowInput: false,
@@ -19604,10 +19617,25 @@ function verificarYMostrarPromptDiscoCompletado() {
       });
     } catch (_) {}
   }
-
-  renderizarEstrellasPromptAlbum(5.0);
-  modal.style.display = 'flex';
 }
+
+function establecerFechaHoyDiscoDetectado() {
+  const hoy = (typeof obtenerFechaLocalFormateada === 'function') ? obtenerFechaLocalFormateada() : (function() {
+    const now = new Date();
+    const d = String(now.getDate()).padStart(2, '0');
+    const m = String(now.getMonth() + 1).padStart(2, '0');
+    const y = now.getFullYear();
+    return `${d}/${m}/${y}`;
+  })();
+  const inp = document.getElementById('input-disco-detectado-fecha');
+  if (inp) {
+    inp.value = hoy;
+    if (window.fpDiscoDetectado) {
+      try { window.fpDiscoDetectado.setDate(hoy, true, 'd/m/Y'); } catch (e) {}
+    }
+  }
+}
+window.establecerFechaHoyDiscoDetectado = establecerFechaHoyDiscoDetectado;
 
 function guardarDiscoDetectadoEnMediary() {
   const album = estadoPromptAlbum.album;
@@ -22061,18 +22089,18 @@ function registrarDiscoActualEnMediary(album, artista) {
 }
 
 function estaLiveCardExpandida(tipo) {
-  if (tipo === 'spotify') {
+  if (tipo === 'spotify' || tipo === 'playstation') {
     if (typeof window.spotifyCardExpanded !== 'undefined') return !!window.spotifyCardExpanded;
-    return localStorage.getItem('mediary_spotify_card_expanded') === 'true';
-  } else if (tipo === 'playstation') {
     if (typeof window.psnCardExpanded !== 'undefined') return !!window.psnCardExpanded;
-    return localStorage.getItem('mediary_psn_card_expanded') === 'true';
-  } else if (tipo === 'friends_spotify') {
+    const s = localStorage.getItem('mediary_spotify_card_expanded');
+    const p = localStorage.getItem('mediary_psn_card_expanded');
+    return (s === 'true' || p === 'true');
+  } else if (tipo === 'friends_spotify' || tipo === 'friends_playstation') {
     if (typeof window.friendsSpCardExpanded !== 'undefined') return !!window.friendsSpCardExpanded;
-    return localStorage.getItem('mediary_friends_sp_card_expanded') === 'true';
-  } else if (tipo === 'friends_playstation') {
     if (typeof window.friendsPsnCardExpanded !== 'undefined') return !!window.friendsPsnCardExpanded;
-    return localStorage.getItem('mediary_friends_psn_card_expanded') === 'true';
+    const s = localStorage.getItem('mediary_friends_sp_card_expanded');
+    const p = localStorage.getItem('mediary_friends_psn_card_expanded');
+    return (s === 'true' || p === 'true');
   }
   return false;
 }
@@ -22082,49 +22110,71 @@ function toggleLiveCardExpansion(tipo, ev) {
   if (ev) {
     if (ev.target.closest('button, a, input, select, .btn-spotify-ctrl, .btn-np-quick-add, .btn-psn-quick-add, .home-np-sp-logo-link, .home-psn-logo-link, .btn-spotify-sub-action')) return;
   }
-  if (tipo === 'spotify') {
+  if (tipo === 'spotify' || tipo === 'playstation') {
     const nuevo = !estaLiveCardExpandida('spotify');
     window.spotifyCardExpanded = nuevo;
-    try { localStorage.setItem('mediary_spotify_card_expanded', nuevo ? 'true' : 'false'); } catch(e) {}
-    const card = document.querySelector('#home-now-playing-container .home-spotify-card-compact');
-    if (card) {
-      card.classList.toggle('is-expanded', nuevo);
-      card.classList.toggle('is-collapsed', !nuevo);
-      const ind = card.querySelector('.live-card-expand-indicator');
-      if (ind) ind.title = nuevo ? (userPrefs?.lang === 'en' ? 'Collapse' : 'Reducir') : (userPrefs?.lang === 'en' ? 'Expand' : 'Expandir');
-    }
-  } else if (tipo === 'playstation') {
-    const nuevo = !estaLiveCardExpandida('playstation');
     window.psnCardExpanded = nuevo;
-    try { localStorage.setItem('mediary_psn_card_expanded', nuevo ? 'true' : 'false'); } catch(e) {}
-    const card = document.querySelector('#home-psn-now-playing-container .home-playstation-card-compact');
-    if (card) {
-      card.classList.toggle('is-expanded', nuevo);
-      card.classList.toggle('is-collapsed', !nuevo);
-      const ind = card.querySelector('.live-card-expand-indicator');
+    try {
+      localStorage.setItem('mediary_spotify_card_expanded', nuevo ? 'true' : 'false');
+      localStorage.setItem('mediary_psn_card_expanded', nuevo ? 'true' : 'false');
+    } catch(e) {}
+
+    const spCard = document.querySelector('#home-now-playing-container .home-spotify-card-compact');
+    if (spCard) {
+      spCard.classList.toggle('is-expanded', nuevo);
+      spCard.classList.toggle('is-collapsed', !nuevo);
+      const ind = spCard.querySelector('.live-card-expand-indicator');
       if (ind) ind.title = nuevo ? (userPrefs?.lang === 'en' ? 'Collapse' : 'Reducir') : (userPrefs?.lang === 'en' ? 'Expand' : 'Expandir');
     }
-  } else if (tipo === 'friends_spotify') {
+    const psnCard = document.querySelector('#home-psn-now-playing-container .home-playstation-card-compact');
+    if (psnCard) {
+      psnCard.classList.toggle('is-expanded', nuevo);
+      psnCard.classList.toggle('is-collapsed', !nuevo);
+      const ind = psnCard.querySelector('.live-card-expand-indicator');
+      if (ind) ind.title = nuevo ? (userPrefs?.lang === 'en' ? 'Collapse' : 'Reducir') : (userPrefs?.lang === 'en' ? 'Expand' : 'Expandir');
+    }
+
+    // Centrar la tarjeta activa en el carrusel
+    const carousel = document.getElementById('home-live-carousel');
+    if (carousel) {
+      const activeIdx = (tipo === 'playstation') ? 1 : 0;
+      setTimeout(() => {
+        carousel.scrollTo({ left: activeIdx * carousel.clientWidth, behavior: 'smooth' });
+        actualizarPillsCarouselLive(activeIdx);
+      }, 40);
+    }
+  } else if (tipo === 'friends_spotify' || tipo === 'friends_playstation') {
     const nuevo = !estaLiveCardExpandida('friends_spotify');
     window.friendsSpCardExpanded = nuevo;
-    try { localStorage.setItem('mediary_friends_sp_card_expanded', nuevo ? 'true' : 'false'); } catch(e) {}
-    const card = document.querySelector('#home-friends-last-track-container .home-spotify-card-compact');
-    if (card) {
-      card.classList.toggle('is-expanded', nuevo);
-      card.classList.toggle('is-collapsed', !nuevo);
-      const ind = card.querySelector('.live-card-expand-indicator');
+    window.friendsPsnCardExpanded = nuevo;
+    try {
+      localStorage.setItem('mediary_friends_sp_card_expanded', nuevo ? 'true' : 'false');
+      localStorage.setItem('mediary_friends_psn_card_expanded', nuevo ? 'true' : 'false');
+    } catch(e) {}
+
+    const spCard = document.querySelector('#home-friends-last-track-container .home-spotify-card-compact');
+    if (spCard) {
+      spCard.classList.toggle('is-expanded', nuevo);
+      spCard.classList.toggle('is-collapsed', !nuevo);
+      const ind = spCard.querySelector('.live-card-expand-indicator');
       if (ind) ind.title = nuevo ? (userPrefs?.lang === 'en' ? 'Collapse' : 'Reducir') : (userPrefs?.lang === 'en' ? 'Expand' : 'Expandir');
     }
-  } else if (tipo === 'friends_playstation') {
-    const nuevo = !estaLiveCardExpandida('friends_playstation');
-    window.friendsPsnCardExpanded = nuevo;
-    try { localStorage.setItem('mediary_friends_psn_card_expanded', nuevo ? 'true' : 'false'); } catch(e) {}
-    const card = document.querySelector('#home-friends-psn-container .home-playstation-card-compact');
-    if (card) {
-      card.classList.toggle('is-expanded', nuevo);
-      card.classList.toggle('is-collapsed', !nuevo);
-      const ind = card.querySelector('.live-card-expand-indicator');
+    const psnCard = document.querySelector('#home-friends-psn-container .home-playstation-card-compact');
+    if (psnCard) {
+      psnCard.classList.toggle('is-expanded', nuevo);
+      psnCard.classList.toggle('is-collapsed', !nuevo);
+      const ind = psnCard.querySelector('.live-card-expand-indicator');
       if (ind) ind.title = nuevo ? (userPrefs?.lang === 'en' ? 'Collapse' : 'Reducir') : (userPrefs?.lang === 'en' ? 'Expand' : 'Expandir');
+    }
+
+    // Centrar la tarjeta activa en el carrusel de amigos
+    const carousel = document.getElementById('home-friends-live-carousel');
+    if (carousel) {
+      const activeIdx = (tipo === 'friends_playstation') ? 1 : 0;
+      setTimeout(() => {
+        carousel.scrollTo({ left: activeIdx * carousel.clientWidth, behavior: 'smooth' });
+        actualizarPillsCarouselFriendsLive(activeIdx);
+      }, 40);
     }
   }
   setTimeout(() => {
@@ -22440,14 +22490,14 @@ function actualizarVistaSegunResultadoAct(resultado) {
   if (!container) return;
 
   const wrapper = document.getElementById('home-live-carousel-wrapper');
-  if (wrapper) wrapper.style.display = 'block';
+  if (wrapper) wrapper.style.display = 'flex';
   if (typeof inicializarLiveCarouselScrollListener === 'function') inicializarLiveCarouselScrollListener();
 
   const isPlaying = !!(resultado && resultado.conectado && resultado.reproduciendo);
   const badgeSp = document.getElementById('badge-sp-live-pill');
   if (badgeSp) badgeSp.style.display = isPlaying ? 'inline-block' : 'none';
 
-  container.style.display = 'block';
+  container.style.display = 'flex';
 
   if (resultado && resultado.conectado && resultado.reproduciendo && resultado.data) {
     container.innerHTML = dibujarTarjetaSpotifyCompacta(resultado.data);
@@ -22941,10 +22991,7 @@ function alternarJuegoDemoPlayStation() {
 function cambiarSlideLive(idx) {
   const carousel = document.getElementById('home-live-carousel');
   if (!carousel) return;
-  const items = carousel.querySelectorAll('.home-live-carousel-item');
-  if (items[idx]) {
-    items[idx].scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-  }
+  carousel.scrollTo({ left: idx * carousel.clientWidth, behavior: 'smooth' });
   actualizarPillsCarouselLive(idx);
 }
 
@@ -22971,7 +23018,8 @@ function renderizarPlayStationNowPlayingInicio(forzar = false) {
   const wrapper = document.getElementById('home-live-carousel-wrapper');
   if (!container) return;
 
-  if (wrapper) wrapper.style.display = 'block';
+  if (wrapper) wrapper.style.display = 'flex';
+  container.style.display = 'flex';
   inicializarLiveCarouselScrollListener();
 
   const isConn = localStorage.getItem('mediary_psn_connected') === 'true';
@@ -23060,7 +23108,7 @@ function dibujarTarjetaPlayStationCompacta(data) {
         <!-- VISTA EXPANDIDA: DETALLES COMPLETOS -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
           <div class="home-psn-platform-label">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
             <span>PlayStation Network</span>
             ${trophyProgress ? `<span style="font-size:0.66rem; background:rgba(0,112,209,0.18); color:#38bdf8; padding:1px 6px; border-radius:2px; font-weight:700; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('trophy', '', 11)} ${trophyProgress}</span>` : ''}
           </div>
@@ -23120,7 +23168,7 @@ function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
   return `
     <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
       <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem;">
-        ${lastGame?.image ? `<img src="${escHtmlSpotify_(lastGame.image)}" alt="Last game">` : `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>`}
+        ${lastGame?.image ? `<img src="${escHtmlSpotify_(lastGame.image)}" alt="Last game">` : `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>`}
       </div>
 
       <div class="home-psn-center-compact">
@@ -23144,7 +23192,7 @@ function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
         <!-- VISTA EXPANDIDA -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
           <div class="home-psn-platform-label">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg><span>PlayStation Network</span>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg><span>PlayStation Network</span>
           </div>
           <div class="home-psn-meta-compact home-np-text-wrap">
             <span class="home-np-scrollable">${subTxt}</span>
@@ -23196,7 +23244,7 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
   return `
     <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
       <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg>
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
 
       <div class="home-psn-center-compact">
@@ -23215,7 +23263,7 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
         <!-- VISTA EXPANDIDA -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
           <div class="home-psn-platform-label">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg><span>PlayStation Network</span>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg><span>PlayStation Network</span>
           </div>
           <div class="home-psn-meta-compact home-np-text-wrap">
             <span class="home-np-scrollable">${l === 'en' ? 'Not connected' : 'Sin cuenta vinculada'}</span>
@@ -25088,7 +25136,7 @@ function renderizarDiscoverVista() {
     series: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg> Trending & Acclaimed Series' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg> Series en Tendencia y Aclamadas',
     docuseries: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg> Acclaimed & Popular Docuseries' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg> Docuseries Aclamadas y Populares',
     musica: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> Trending Music & Modern Classics' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> Música en Tendencia y Álbumes Destacados',
-    juegos: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> Trending & Acclaimed Games' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg> Juegos en Tendencia y Aclamados',
+    juegos: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Trending & Acclaimed Games' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Juegos en Tendencia y Aclamados',
     libros: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg> Bestsellers & Featured Books' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg> Libros Más Leídos y Novedades',
     comics: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> Graphic Novels & Comics (Marvel & DC)' : '<svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> Cómics y Novelas Gráficas (Marvel & DC)',
     mangas: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg> Popular & Trending Manga' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg> Mangas Más Leídos y Populares'
