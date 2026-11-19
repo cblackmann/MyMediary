@@ -3,11 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>Mediary — Your Media, Your Diary</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
 <meta name="color-scheme" content="light dark">
 <script>
 (function() {
+  try {
+    if (window.screen && screen.orientation && typeof screen.orientation.unlock === 'function') {
+      screen.orientation.unlock().catch(() => {});
+    }
+  } catch(e) {}
   try {
     const raw = localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1');
     let family = 'slate';
@@ -607,7 +612,7 @@ textarea.comment-box:hover{border-color:rgba(56,189,248,.4)}textarea.comment-box
 .badge-racha-header{display:inline-flex;align-items:center;gap:4px;font-size:0.75rem;background:var(--accent-warm-subtle);color:var(--accent-warm);border:1px solid var(--accent-warm-border);border-radius:12px;padding:2px 8px;font-weight:700}
 .streak-mini-pill{font-size:0.78rem;font-weight:700;color:#f59e0b;background:rgba(245,158,11,0.14);padding:4px 10px;border-radius:12px;border:1px solid rgba(245,158,11,0.35);white-space:nowrap;display:inline-flex;align-items:center;gap:4px}
 .btn-today-terminar{border-color:#10b981;color:#34d399;background:rgba(16,185,129,0.12)}
-@media (max-width: 768px){
+@media (max-width: 768px) and (orientation: portrait), (max-width: 520px) {
 body{padding-bottom:calc(var(--b-nav) + 24px)}.web-nav-wrapper{display:none}.mobile-bottom-nav{display:flex}.container{padding:0 12px;margin:12px auto}.search-row{flex-direction:column;align-items:stretch}.btn-action-manual{justify-content:center}.cat-wide-body{grid-template-columns:1fr;gap:12px}.cat-subtotals-wrap{grid-column:span 1}.date-row{flex-direction:column;gap:8px;align-items:stretch}.btn-today-pill{width:100%;height:38px}.table-container{display:none}.mobile-history-list{display:flex}.modal-overlay{align-items:flex-end}.modal-box{width:100%;max-width:100%;border-bottom-left-radius:0;border-bottom-right-radius:0;padding:20px 20px calc(24px + env(safe-area-inset-bottom));animation:slideUpModal .25s cubic-bezier(.34,1.2,.64,1);position:relative;touch-action:pan-y;will-change:transform}
 .modal-swipe-handle{width:42px;height:5px;background:rgba(148,163,184,0.4);border-radius:4px;margin:-8px auto 14px auto;cursor:grab;touch-action:none;display:block;transition:background 0.15s ease, transform 0.15s ease}
 .modal-box.swiping-down .modal-swipe-handle{background:var(--accent);transform:scaleX(1.15)}.ficha-grid{flex-direction:column;align-items:center;text-align:center}.ficha-poster{width:135px;height:195px}.profile-grid-records{grid-template-columns:repeat(2,1fr);gap:8px}.profile-grid-fun{grid-template-columns:1fr;gap:8px}.profile-grid-highlights{grid-template-columns:repeat(2,1fr);gap:8px}
@@ -3529,7 +3534,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
    - Modales centrados y scrolls táctiles fluidos
    - Grids balanceados para pantallas panorámicas táctiles
    ======================================================== */
-@media screen and (min-width: 768px) and (orientation: landscape) {
+@media (orientation: landscape) and (min-width: 521px), screen and (min-width: 769px) and (orientation: landscape) {
   :root {
     --tablet-safe-left: max(20px, env(safe-area-inset-left, 0px));
     --tablet-safe-right: max(20px, env(safe-area-inset-right, 0px));
@@ -13238,7 +13243,248 @@ try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) esta
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
 try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); if (!perfilUsuario.portada && perfilUsuario.preferencias?.portada) perfilUsuario.portada = perfilUsuario.preferencias.portada; if (!perfilUsuario.personajeFavorito && perfilUsuario.favoritos?.personajeFavorito) perfilUsuario.personajeFavorito = perfilUsuario.favoritos.personajeFavorito; } } catch (e) {}
 aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); actualizarUISelectorAnio(); }
-function guardarPreferenciasLocales() { try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {} }
+let _timerSyncCloudPrefs = null;
+function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false) {
+  if (!estado || !estado.userEmail) return;
+
+  const ejecutar = () => {
+    try {
+      if (!perfilUsuario) perfilUsuario = {};
+      if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+
+      // 1. Empaquetar configuración visual completa (Themes, fonts, colores, tamaños, orden de categorías)
+      const configUI = {
+        themeFamily: userPrefs.themeFamily || 'slate',
+        themeMode: userPrefs.themeMode || 'dark',
+        theme: userPrefs.theme || ((userPrefs.themeFamily || 'slate') + '-' + (userPrefs.themeMode || 'dark')),
+        appTheme: userPrefs.appTheme || 'default',
+        uiStyle: userPrefs.uiStyle || 'modern',
+        font: userPrefs.font || "'Lexend', sans-serif",
+        fontSize: userPrefs.fontSize || '100%',
+        lang: userPrefs.lang || 'es',
+        showEmojis: userPrefs.showEmojis !== false,
+        categoriasOrden: Array.isArray(userPrefs.categoriasOrden) ? userPrefs.categoriasOrden : [],
+        categoriasOcultas: Array.isArray(userPrefs.categoriasOcultas) ? userPrefs.categoriasOcultas : [],
+        notificaciones: userPrefs.notificaciones || {},
+        customFontChosen: localStorage.getItem('mediary_user_custom_font') === 'true',
+        cardExpanded: {
+          spotify: localStorage.getItem('mediary_spotify_card_expanded') === 'true',
+          psn: localStorage.getItem('mediary_psn_card_expanded') === 'true',
+          friends_spotify: localStorage.getItem('mediary_friends_spotify_card_expanded') === 'true',
+          friends_psn: localStorage.getItem('mediary_friends_psn_card_expanded') === 'true'
+        },
+        updatedAt: Date.now()
+      };
+      perfilUsuario.preferencias.configuracion_ui = configUI;
+
+      // 2. Empaquetar cuentas vinculadas (Spotify, PSN, Steam, API keys)
+      const cuentasVinculadas = {
+        spotify: {
+          token: localStorage.getItem('mediary_spotify_token') || '',
+          refreshToken: localStorage.getItem('mediary_spotify_refresh_token') || '',
+          expiresAt: localStorage.getItem('mediary_spotify_expires_at') || '',
+          clientId: localStorage.getItem('mediary_spotify_client_id') || '',
+          user: localStorage.getItem('mediary_spotify_user') || '',
+          stats: localStorage.getItem('mediary_spotify_stats') || '',
+          accumulator: localStorage.getItem('mediary_spotify_accumulator') || '',
+          albumTracker: localStorage.getItem('mediary_spotify_album_tracker') || '',
+          selectedRange: localStorage.getItem('mediary_spotify_selected_range') || '',
+          preferredDeviceId: localStorage.getItem('mediary_spotify_preferred_device_id') || ''
+        },
+        playstation: {
+          connected: localStorage.getItem('mediary_psn_connected') === 'true',
+          username: localStorage.getItem('mediary_psn_username') || '',
+          npsso: localStorage.getItem('mediary_psn_npsso') || '',
+          user: localStorage.getItem('mediary_psn_user') || '',
+          stats: localStorage.getItem('mediary_psn_stats') || '',
+          nowPlaying: localStorage.getItem('mediary_psn_now_playing') || ''
+        },
+        steam: {
+          connected: localStorage.getItem('mediary_steam_connected') === 'true',
+          id: localStorage.getItem('mediary_steam_id') || '',
+          id64: localStorage.getItem('mediary_steam_id64') || '',
+          apiKey: localStorage.getItem('mediary_steam_api_key') || '',
+          user: localStorage.getItem('mediary_steam_user') || '',
+          stats: localStorage.getItem('mediary_steam_stats') || ''
+        },
+        apiKeys: {
+          comicvine: localStorage.getItem('mediary_comicvine_key') || window.COMICVINE_K || '',
+          marvel: localStorage.getItem('mediary_marvel_key') || window.MARVEL_K || '',
+          lastfm: localStorage.getItem('mediary_lastfm_api_key') || window.LASTFM_API_KEY || '',
+          igdbClientId: localStorage.getItem('mediary_igdb_client_id') || window.IGDB_CLIENT_ID || '',
+          igdbToken: localStorage.getItem('mediary_igdb_token') || window.IGDB_TOKEN || ''
+        },
+        updatedAt: Date.now()
+      };
+      perfilUsuario.preferencias.cuentas_vinculadas = cuentasVinculadas;
+
+      guardarPerfilLocal();
+      if (typeof google !== 'undefined' && google.script?.run) {
+        google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+      }
+    } catch(err) {
+      console.error('Error sincronizando preferencias hacia la nube:', err);
+    }
+  };
+
+  if (forzarInmediato) {
+    if (_timerSyncCloudPrefs) clearTimeout(_timerSyncCloudPrefs);
+    ejecutar();
+  } else {
+    if (_timerSyncCloudPrefs) clearTimeout(_timerSyncCloudPrefs);
+    _timerSyncCloudPrefs = setTimeout(ejecutar, 600);
+  }
+}
+window.sincronizarPreferenciasYAppsHaciaNube = sincronizarPreferenciasYAppsHaciaNube;
+
+function restaurarPreferenciasYAppsDesdeNube(prefs) {
+  if (!prefs || typeof prefs !== 'object') return false;
+  let cambio = false;
+
+  // 1. Restaurar configuración de UI
+  const configUI = prefs.configuracion_ui;
+  if (configUI && typeof configUI === 'object') {
+    if (configUI.themeFamily) userPrefs.themeFamily = configUI.themeFamily;
+    if (configUI.themeMode) userPrefs.themeMode = configUI.themeMode;
+    if (configUI.theme) userPrefs.theme = configUI.theme;
+    if (configUI.appTheme) userPrefs.appTheme = configUI.appTheme;
+    if (configUI.uiStyle) userPrefs.uiStyle = configUI.uiStyle;
+    if (configUI.font) {
+      userPrefs.font = configUI.font;
+      try { localStorage.setItem('mediary_user_custom_font', 'true'); } catch(e) {}
+    }
+    if (configUI.fontSize) userPrefs.fontSize = configUI.fontSize;
+    if (configUI.lang) userPrefs.lang = configUI.lang;
+    if (typeof configUI.showEmojis === 'boolean') userPrefs.showEmojis = configUI.showEmojis;
+    if (Array.isArray(configUI.categoriasOrden) && configUI.categoriasOrden.length) {
+      userPrefs.categoriasOrden = configUI.categoriasOrden;
+    }
+    if (Array.isArray(configUI.categoriasOcultas)) {
+      userPrefs.categoriasOcultas = configUI.categoriasOcultas;
+    }
+    if (configUI.notificaciones && typeof configUI.notificaciones === 'object') {
+      userPrefs.notificaciones = Object.assign(userPrefs.notificaciones || {}, configUI.notificaciones);
+    }
+
+    if (configUI.cardExpanded) {
+      if (typeof configUI.cardExpanded.spotify === 'boolean') {
+        localStorage.setItem('mediary_spotify_card_expanded', configUI.cardExpanded.spotify ? 'true' : 'false');
+      }
+      if (typeof configUI.cardExpanded.psn === 'boolean') {
+        localStorage.setItem('mediary_psn_card_expanded', configUI.cardExpanded.psn ? 'true' : 'false');
+      }
+      if (typeof configUI.cardExpanded.friends_spotify === 'boolean') {
+        localStorage.setItem('mediary_friends_spotify_card_expanded', configUI.cardExpanded.friends_spotify ? 'true' : 'false');
+      }
+      if (typeof configUI.cardExpanded.friends_psn === 'boolean') {
+        localStorage.setItem('mediary_friends_psn_card_expanded', configUI.cardExpanded.friends_psn ? 'true' : 'false');
+      }
+    }
+
+    try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {}
+    aplicarEstilosGlobales();
+    actualizarTextosInterfaz();
+    if (typeof actualizarTarjetasVisualesConfig === 'function') {
+      actualizarTarjetasVisualesConfig();
+    }
+    cambio = true;
+  }
+
+  // 2. Restaurar cuentas y apps vinculadas
+  const cuentas = prefs.cuentas_vinculadas;
+  if (cuentas && typeof cuentas === 'object') {
+    // Spotify
+    if (cuentas.spotify && typeof cuentas.spotify === 'object') {
+      const sp = cuentas.spotify;
+      if (sp.token) localStorage.setItem('mediary_spotify_token', sp.token);
+      if (sp.refreshToken) localStorage.setItem('mediary_spotify_refresh_token', sp.refreshToken);
+      if (sp.expiresAt) localStorage.setItem('mediary_spotify_expires_at', String(sp.expiresAt));
+      if (sp.clientId) localStorage.setItem('mediary_spotify_client_id', sp.clientId);
+      if (sp.user) localStorage.setItem('mediary_spotify_user', typeof sp.user === 'string' ? sp.user : JSON.stringify(sp.user));
+      if (sp.stats) localStorage.setItem('mediary_spotify_stats', typeof sp.stats === 'string' ? sp.stats : JSON.stringify(sp.stats));
+      if (sp.accumulator) localStorage.setItem('mediary_spotify_accumulator', typeof sp.accumulator === 'string' ? sp.accumulator : JSON.stringify(sp.accumulator));
+      if (sp.albumTracker) localStorage.setItem('mediary_spotify_album_tracker', typeof sp.albumTracker === 'string' ? sp.albumTracker : JSON.stringify(sp.albumTracker));
+      if (sp.selectedRange) localStorage.setItem('mediary_spotify_selected_range', sp.selectedRange);
+      if (sp.preferredDeviceId) localStorage.setItem('mediary_spotify_preferred_device_id', sp.preferredDeviceId);
+    }
+
+    // PlayStation
+    if (cuentas.playstation && typeof cuentas.playstation === 'object') {
+      const ps = cuentas.playstation;
+      if (ps.connected || ps.username) {
+        localStorage.setItem('mediary_psn_connected', 'true');
+        if (ps.username) localStorage.setItem('mediary_psn_username', ps.username);
+        if (ps.npsso) localStorage.setItem('mediary_psn_npsso', ps.npsso);
+        if (ps.user) localStorage.setItem('mediary_psn_user', typeof ps.user === 'string' ? ps.user : JSON.stringify(ps.user));
+        if (ps.stats) localStorage.setItem('mediary_psn_stats', typeof ps.stats === 'string' ? ps.stats : JSON.stringify(ps.stats));
+        if (ps.nowPlaying) localStorage.setItem('mediary_psn_now_playing', typeof ps.nowPlaying === 'string' ? ps.nowPlaying : JSON.stringify(ps.nowPlaying));
+      }
+    }
+
+    // Steam
+    if (cuentas.steam && typeof cuentas.steam === 'object') {
+      const st = cuentas.steam;
+      if (st.connected || st.id) {
+        localStorage.setItem('mediary_steam_connected', 'true');
+        if (st.id) localStorage.setItem('mediary_steam_id', st.id);
+        if (st.id64) localStorage.setItem('mediary_steam_id64', st.id64);
+        if (st.apiKey) localStorage.setItem('mediary_steam_api_key', st.apiKey);
+        if (st.user) localStorage.setItem('mediary_steam_user', typeof st.user === 'string' ? st.user : JSON.stringify(st.user));
+        if (st.stats) localStorage.setItem('mediary_steam_stats', typeof st.stats === 'string' ? st.stats : JSON.stringify(st.stats));
+      }
+    }
+
+    // API Keys
+    if (cuentas.apiKeys && typeof cuentas.apiKeys === 'object') {
+      const ak = cuentas.apiKeys;
+      if (ak.comicvine) {
+        window.COMICVINE_K = COMICVINE_K = ak.comicvine;
+        localStorage.setItem('mediary_comicvine_key', ak.comicvine);
+      }
+      if (ak.marvel) {
+        window.MARVEL_K = MARVEL_K = ak.marvel;
+        localStorage.setItem('mediary_marvel_key', ak.marvel);
+      }
+      if (ak.lastfm) {
+        window.LASTFM_API_KEY = LASTFM_API_KEY = ak.lastfm;
+        localStorage.setItem('mediary_lastfm_api_key', ak.lastfm);
+      }
+      if (ak.igdbClientId) {
+        window.IGDB_CLIENT_ID = IGDB_CLIENT_ID = ak.igdbClientId;
+        localStorage.setItem('mediary_igdb_client_id', ak.igdbClientId);
+      }
+      if (ak.igdbToken) {
+        window.IGDB_TOKEN = IGDB_TOKEN = ak.igdbToken;
+        localStorage.setItem('mediary_igdb_token', ak.igdbToken);
+      }
+    }
+
+    // Refrescar componentes vinculados
+    if (typeof actualizarUISpotify === 'function') actualizarUISpotify();
+    if (typeof actualizarUIPlayStation === 'function') actualizarUIPlayStation();
+    if (typeof actualizarUISteam === 'function') actualizarUISteam();
+    if (typeof renderizarLiveCarouselInicio === 'function') renderizarLiveCarouselInicio();
+    if (typeof renderizarLiveCardsAmigosInicio === 'function') renderizarLiveCardsAmigosInicio();
+    cambio = true;
+  }
+
+  // Si la nube aún no tenía cuentas o UI pero este dispositivo sí las tiene, sincronizar hacia arriba
+  if (!configUI || !cuentas) {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
+
+  return cambio;
+}
+window.restaurarPreferenciasYAppsDesdeNube = restaurarPreferenciasYAppsDesdeNube;
+
+function guardarPreferenciasLocales() {
+  try {
+    localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs));
+  } catch (e) {}
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube();
+  }
+}
 function guardarPerfilLocal() { try { localStorage.setItem('Mediary_perfil_v1', JSON.stringify(perfilUsuario)); if (estado.userEmail) localStorage.setItem('Mediary_active_user_v1', estado.userEmail); } catch (e) {} }
 function registrarCuentaEnDispositivo(email, nick, avatar) { if (!email) return; try { const lista = JSON.parse((localStorage.getItem('Mediary_saved_accounts_v1') || localStorage.getItem('MyMediary_saved_accounts_v1')) || '[]').filter(x => x.email !== email); lista.unshift({ email, nickname: nick || email.split('@')[0], avatar: avatar || '' });
 localStorage.setItem('Mediary_saved_accounts_v1', JSON.stringify(lista.slice(0, 5))); } catch (e) {}
@@ -13258,9 +13504,15 @@ if (res.preferencias?.likes_recibidos && typeof verificarNuevosLikesRecibidos ==
 }
 if (res.preferencias?.notificaciones) {
  userPrefs.notificaciones = Object.assign(obtenerPreferenciasNotificaciones(), res.preferencias.notificaciones);
- guardarPreferenciasLocales();
+ try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {}
  if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
 }
+
+// Restaurar configuración visual y cuentas vinculadas desde la nube
+if (res.preferencias) {
+  restaurarPreferenciasYAppsDesdeNube(res.preferencias);
+}
+
 guardarPerfilLocal(); registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar); renderizarCabeceraPerfil(); cerrarModalAuthSupabase(); cargarRegistros(); cargarWatchlist();
 if (estado.categoria === 'perfil') renderizarFavoritosPerfil(); if (mostrarSaludo) mostrarToastPersonalizado(userPrefs.lang === 'en' ? `Welcome, ${perfilUsuario.nickname}! (${estado.userEmail}) ` : `¡Bienvenido, ${perfilUsuario.nickname}! (${estado.userEmail}) `); }
 function sincronizarPerfilDesdeServidor() { google.script.run.withSuccessHandler(res => { if (res && res.exito) { aplicarSesionExitosa(res, false); } else if (res && res.sinSesion && !estado.userEmail) { abrirModalAuthSupabase(); } }).obtenerPerfilUsuario(estado.userEmail); }
@@ -17723,6 +17975,9 @@ function guardarYCerrarConfiguracion() {
       window.IGDB_TOKEN = IGDB_TOKEN = igdbTokInp.value.trim();
       localStorage.setItem('mediary_igdb_token', IGDB_TOKEN);
     }
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(true);
+    }
     const mCfg = document.getElementById('modal-configuracion');
     if (mCfg) mCfg.style.display = 'none'; 
     mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Settings saved!' : '¡Configuración guardada!'); 
@@ -17902,6 +18157,9 @@ async function procesarRetornoSpotifyAuth() {
     await actualizarDatosSpotify(false);
     mostrarToastPersonalizado(userPrefs.lang === 'en' ? ' Connected to Spotify successfully!' : ' ¡Conectado exitosamente con Spotify!');
     actualizarUISpotify();
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(true);
+    }
   } catch (err) {
     console.error('Error procesando retorno Spotify:', err);
     limpiarSpotifyParamsUrl();
@@ -18703,6 +18961,9 @@ function desconectarSpotify() {
   localStorage.removeItem('mediary_spotify_user');
   localStorage.removeItem('mediary_spotify_stats');
   actualizarUISpotify();
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
   mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Spotify disconnected' : 'Spotify desconectado');
 }
 
@@ -19567,6 +19828,9 @@ async function conectarSteamPerfil(inputVal) {
   cerrarModalConectarSteam();
 
   await sincronizarCuentaSteam(inputVal, true);
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
 }
 
 function conectarSteamDemo() {
@@ -19586,6 +19850,9 @@ function conectarSteamDemo() {
 
   cerrarModalConectarSteam();
   actualizarUISteam();
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
   mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? ' Demo Steam profile connected!' : ' ¡Perfil demo de Steam conectado!');
 }
 
@@ -19599,6 +19866,9 @@ function desconectarSteam() {
   const modalStats = document.getElementById('modal-estadisticas-avanzadas');
   if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
     renderizarContenidoEstadisticasAvanzadas();
+  }
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
   }
   mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Steam disconnected' : 'Steam desconectado');
 }
@@ -21256,6 +21526,9 @@ function conectarPlayStationPerfil() {
 
   cerrarModalConectarPsn();
   sincronizarCuentaPlayStation(raw, true);
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
 }
 
 function desconectarPlayStation() {
@@ -21271,6 +21544,9 @@ function desconectarPlayStation() {
   const modalStats = document.getElementById('modal-estadisticas-avanzadas');
   if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
     renderizarContenidoEstadisticasAvanzadas();
+  }
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
   }
   mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'PlayStation disconnected' : 'PlayStation desconectado');
 }
