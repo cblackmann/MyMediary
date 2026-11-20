@@ -816,7 +816,8 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .home-psn-right-col{display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:64px;flex-shrink:0;padding-left:4px;}
 .home-psn-logo-link{display:grid;place-items:center;width:24px;height:24px;transition:var(--tr);text-decoration:none;}
 .home-psn-logo-link:hover{transform:scale(1.18);}
-.btn-psn-quick-add{width:28px;height:28px;border-radius:4px;background:rgba(0,112,209,0.15);border:1px solid rgba(0,112,209,0.38);color:#38bdf8;display:grid;place-items:center;font-size:0.8rem;cursor:pointer;transition:var(--tr);padding:0;}
+.btn-psn-quick-add{width:28px;height:28px;border-radius:4px;background:rgba(0,112,209,0.15);border:1px solid rgba(0,112,209,0.38);color:#38bdf8;display:flex !important;align-items:center !important;justify-content:center !important;font-size:0.8rem;cursor:pointer;transition:var(--tr);padding:0 !important;margin:0 !important;line-height:0 !important;box-sizing:border-box !important;}
+.btn-psn-quick-add svg{display:block !important;margin:0 auto !important;width:14px !important;height:14px !important;flex-shrink:0 !important;}
 .btn-psn-quick-add:hover{background:#0070d1;color:#fff;transform:translateY(-1px);}
 .btn-psn-sync-compact{background:rgba(0,112,209,0.1);border:1px solid rgba(0,112,209,0.25);color:#38bdf8;font-size:0.67rem;font-weight:700;border-radius:3px;padding:1px 6px;cursor:pointer;display:inline-flex;align-items:center;gap:3px;transition:var(--tr);height:20px;line-height:1;}
 .btn-psn-sync-compact:hover{background:rgba(0,112,209,0.22);border-color:#0070d1;color:#fff;}
@@ -860,7 +861,8 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .home-np-right-col{display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:64px;flex-shrink:0;padding-left:4px;}
 .home-np-sp-logo-link{display:grid;place-items:center;width:24px;height:24px;transition:var(--tr);text-decoration:none;}
 .home-np-sp-logo-link:hover{transform:scale(1.18);}
-.btn-np-quick-add{width:28px;height:28px;border-radius:8px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.38);color:#10b981;display:grid;place-items:center;font-size:0.8rem;cursor:pointer;transition:var(--tr);padding:0;}
+.btn-np-quick-add{width:28px;height:28px;border-radius:8px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.38);color:#10b981;display:flex !important;align-items:center !important;justify-content:center !important;font-size:0.8rem;cursor:pointer;transition:var(--tr);padding:0 !important;margin:0 !important;line-height:0 !important;box-sizing:border-box !important;}
+.btn-np-quick-add svg{display:block !important;margin:0 auto !important;width:14px !important;height:14px !important;flex-shrink:0 !important;}
 .btn-np-quick-add:hover{background:#10b981;color:#0f172a;transform:translateY(-1px);}
 /* TARJETA DE ÚLTIMA CANCIÓN & JUEGO DE AMIGOS */
 .home-friend-music-card, .home-friend-game-card{position:relative;overflow:hidden;margin-bottom:14px;transition:var(--tr);}
@@ -12644,6 +12646,7 @@ function copiarMiIdUsuario() {
 }
 function abrirVistaAmigos(pushNav = true) {
   if (pushNav) registrarNavegacionApp('amigos');
+  guardarEstadoNavegacionActual('amigos', '');
   resetearBuscadoresYFormularios();
   estado.categoria = 'amigos';
   actualizarBarraNavegacionMovil('m-btn-amigos');
@@ -13428,7 +13431,7 @@ function dibujarTarjetaUltimaCancionAmigos(it) {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
         </a>
         <button type="button" class="btn-np-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
         </button>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
@@ -13486,7 +13489,7 @@ function dibujarTarjetaUltimaCancionAmigosIdle() {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
         </span>
         <button type="button" class="btn-np-quick-add" onclick="event.stopPropagation(); cambiarCat('Musica', 'Discos')" title="${l === 'en' ? 'Go to Music' : 'Ir a Música'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
         </button>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
@@ -13624,7 +13627,7 @@ function dibujarTarjetaUltimoJuegoAmigos(it) {
           </svg>
         </a>
         <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarJuegoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safePlatform}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
         </button>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
@@ -13681,7 +13684,7 @@ function dibujarTarjetaUltimoJuegoAmigosIdle() {
           </svg>
         </span>
         <button type="button" class="btn-psn-quick-add" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="${l === 'en' ? 'Go to Games' : 'Ir a Juegos'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
         </button>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
@@ -15298,6 +15301,7 @@ function filtrarRegistrosAmigoModal() {
           ? `<span class="badge-en-progreso" style="background:rgba(245,158,11,0.12); color:var(--star-active); font-weight:700; padding:2px 8px; border-radius:2px; font-size:0.75rem; border:1px solid rgba(245,158,11,0.3); white-space:nowrap;display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('clock', '', 12)} ${obtenerTextoEnProgreso(r.categoria, r.subcategoria) || (l === 'en' ? 'In progress' : 'En curso')}</span>`
           : (calif > 0 ? renderEstrellasVisuales(calif) : `<span style="color:var(--muted); font-size:0.78rem;">${l === 'en' ? 'No rating' : 'Sin calificar'}</span>`);
         const fecha = (r.fechaFin && r.fechaFin !== 'Sin fecha') ? `${r.fechaInicio} → ${r.fechaFin}` : (r.fechaInicio || '');
+        const fechaHtml = fecha ? `<div class="m-card-fecha" style="font-size:0.75rem; color:var(--muted);"><span class="emoji-dyn">${getHeroIcon('calendar', '', 12)} </span>${fecha}</div>` : '';
         const hRegLimpia = (typeof limpiarTextoHoras === 'function') ? limpiarTextoHoras(r.horas) : '';
         const horasHtml = hRegLimpia ? `<div class="m-card-horas" style="font-size:0.75rem; color:var(--accent); font-weight:600;"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${hRegLimpia}</div>` : '';
         const rwBadge = r.esRewatch ? `<span class="badge-rewatch" style="margin-left:6px;display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('arrow-path', '', 11)} ${l === 'en' ? 'Rewatch' : 'Revisita'}</span>` : '';
@@ -18686,6 +18690,7 @@ else if (c === 'amigos') document.getElementById('tab-btn-amigos')?.classList.ad
 function abrirVistaPerfil(pushNav = true) {
   try {
     if (pushNav) registrarNavegacionApp('perfil');
+    guardarEstadoNavegacionActual('perfil', '');
     resetearBuscadoresYFormularios();
     estado.categoria = 'perfil';
     actualizarBarraNavegacionMovil('m-btn-perfil');
@@ -25403,7 +25408,7 @@ function dibujarTarjetaSpotifyCompacta(data) {
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
         </a>
         <button type="button" class="btn-np-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeAlbumParam}'), decodeURIComponent('${safeArtistaParam}'))" title="${l === 'en' ? 'Log album in Mediary' : 'Registrar disco en Mediary'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
         </button>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
@@ -26760,6 +26765,59 @@ function extraerMesClave(fechaStr) {
 function obtenerNombreColumnaTitulo(c, s) { const l = userPrefs.lang || 'es'; return (CONFIG[c]?.emoji ? (CONFIG[c].emoji + ' ') : '') + (I18N[l]?.subs?.[s] || s); }
 let appNavHistory = ['inicio'];
 let isHandlingPopState = false;
+
+function guardarEstadoNavegacionActual(cat, sub) {
+  try {
+    const c = cat || (typeof estado !== 'undefined' && estado ? estado.categoria : 'inicio');
+    const s = (sub !== undefined && sub !== null && sub !== '') ? sub : ((typeof estado !== 'undefined' && estado) ? (estado.subcategoria || '') : '');
+    localStorage.setItem('mediary_ultima_pestana_activa', JSON.stringify({ cat: c, sub: s }));
+  } catch (e) {}
+}
+
+function restaurarPestanaGuardada() {
+  try {
+    const raw = localStorage.getItem('mediary_ultima_pestana_activa');
+    if (!raw) return false;
+    const { cat, sub } = JSON.parse(raw);
+    if (!cat || cat === 'inicio') return false;
+
+    if (cat === 'listas') {
+      if (typeof abrirVistaDashboardListas === 'function') {
+        abrirVistaDashboardListas(false);
+        return true;
+      }
+    } else if (cat === 'amigos') {
+      if (typeof abrirVistaAmigos === 'function') {
+        abrirVistaAmigos(false);
+        return true;
+      }
+    } else if (cat === 'perfil') {
+      if (typeof abrirVistaPerfil === 'function') {
+        abrirVistaPerfil(false);
+        return true;
+      }
+    } else if (cat === 'watchlists') {
+      if (typeof abrirMenuWatchlistGlobal === 'function') {
+        abrirMenuWatchlistGlobal(false);
+        return true;
+      }
+    } else if (cat === 'discover') {
+      if (typeof abrirVistaDiscover === 'function') {
+        abrirVistaDiscover(false);
+        return true;
+      }
+    } else if (typeof CONFIG !== 'undefined' && CONFIG && CONFIG[cat]) {
+      if (typeof cambiarCat === 'function') {
+        cambiarCat(cat, sub || null, false);
+        return true;
+      }
+    }
+  } catch (e) {
+    console.error('Error al restaurar pestaña guardada:', e);
+  }
+  return false;
+}
+
 function registrarNavegacionApp(destino) {
   if (isHandlingPopState) return;
   const actual = appNavHistory[appNavHistory.length - 1];
@@ -26778,7 +26836,9 @@ function ejecutarCambioVista(vista) {
   else cambiarCat(vista, null, false);
 }
 function inicializarManejoBotonAtras() {
-  try { history.replaceState({ appView: 'inicio', depth: 1 }, '', ''); } catch (e) {}
+  const initView = (typeof estado !== 'undefined' && estado && estado.categoria) ? estado.categoria : 'inicio';
+  appNavHistory = [initView];
+  try { history.replaceState({ appView: initView, depth: 1 }, '', ''); } catch (e) {}
   window.addEventListener('popstate', function(e) {
     const modalIds = [
       'modal-registros-amigo',
@@ -27110,6 +27170,7 @@ function inicializarPullToRefresh() {
 }
 const irInicio = (pushNav = true) => {
   if (pushNav) registrarNavegacionApp('inicio');
+  guardarEstadoNavegacionActual('inicio', '');
   actualizarBarraNavegacionMovil('m-btn-inicio');
   cambiarCat('inicio', null, false);
 };
@@ -27119,7 +27180,10 @@ function reposicionarIndicadorNavMovil(el, animar = true) {
   const ind = document.getElementById('mobile-nav-indicator');
   if (!nav || !ind) return;
   const targetBtn = el || nav.querySelector('.mobile-nav-btn.active');
-  if (!targetBtn) return;
+  if (!targetBtn) {
+    if (ind) ind.style.opacity = '0';
+    return;
+  }
   const navRect = nav.getBoundingClientRect();
   const btnRect = targetBtn.getBoundingClientRect();
   if (btnRect.width === 0) return;
@@ -27565,6 +27629,9 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
   if (pushNav) registrarNavegacionApp(cat);
   resetearBuscadoresYFormularios();
   estado.categoria = cat;
+  if (typeof actualizarBarraNavegacionMovil === 'function') {
+    actualizarBarraNavegacionMovil(cat === 'inicio' ? 'm-btn-inicio' : null);
+  }
   const vIni = document.getElementById('vista-inicio'),
         vCat = document.getElementById('vista-categoria'),
         vDisc = document.getElementById('vista-discover'),
@@ -27579,6 +27646,7 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
   if (vList) vList.style.display = 'none';
   if (cat === 'inicio') {
     estado.subcategoria = '';
+    guardarEstadoNavegacionActual('inicio', '');
     actualizarNavWebActiva();
     if (vIni) vIni.style.display = 'block';
     if (vCat) vCat.style.display = 'none';
@@ -27591,6 +27659,7 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
     if (vIni) vIni.style.display = 'none';
     if (vCat) vCat.style.display = 'block';
     estado.subcategoria = subDestino || CONFIG[cat].subs[0].id;
+    guardarEstadoNavegacionActual(cat, estado.subcategoria);
     if (esSubcategoriaWatchlist(estado.subcategoria)) {
       estado.ultimaWatchlist = { cat, sub: estado.subcategoria };
     }
@@ -27616,6 +27685,7 @@ function actualizarBotonesModoVistaDashboardUI() {}
 
 function abrirVistaDashboardListas(pushNav = true) {
   if (pushNav) registrarNavegacionApp('listas');
+  guardarEstadoNavegacionActual('listas', '');
   resetearBuscadoresYFormularios();
   estado.categoria = 'listas';
   estado.subcategoria = '';
@@ -27722,7 +27792,7 @@ function volverAHistorialDesdeWatchlist() {
 function renderizarSubtabs() { const box = document.getElementById('subtabs-bar'); const wlBox = document.getElementById('watchlist-dedicated-box'); if (box) box.innerHTML = ''; if (wlBox) wlBox.innerHTML = ''; const l = userPrefs.lang || 'es'; const c = estado.categoria; if (!CONFIG[c]) return;
 const enWl = esSubcategoriaWatchlist(estado.subcategoria); CONFIG[c].subs.filter(s => !s.esWatchlist).forEach(s => { const btn = document.createElement('button');
 btn.className = `subtab-btn ${!enWl && estado.subcategoria === s.id ? 'active' : ''}`; btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l]?.subs?.[s.id] || s.nombre}`;
-btn.onclick = () => { resetearBuscadoresYFormularios(); estado.subcategoria = s.id; actualizarNavWebActiva(); renderizarSubtabs(); actualizarVisibilidadCamposEspeciales(); configurarFormularioFechas(); filtrarYMostrarHistorial(); }; if (box) box.appendChild(btn); }); if (wlBox) {
+btn.onclick = () => { resetearBuscadoresYFormularios(); estado.subcategoria = s.id; guardarEstadoNavegacionActual(estado.categoria, s.id); actualizarNavWebActiva(); renderizarSubtabs(); actualizarVisibilidadCamposEspeciales(); configurarFormularioFechas(); filtrarYMostrarHistorial(); }; if (box) box.appendChild(btn); }); if (wlBox) {
 const targetWl = obtenerSubWatchlistDeCategoria(c, estado.subcategoria); const wlMeta = CONFIG[c].subs.find(x => x.id === targetWl) || CONFIG[c].subs.find(x => x.esWatchlist); const countThisWl = contarItemsWatchlistDe(c, targetWl); if (enWl) {
 const btnBack = document.createElement('button'); btnBack.type = 'button'; btnBack.className = 'btn-watchlist-special active-wl';
 btnBack.innerHTML = `<span>⬅ ${I18N[l]?.btn_volver_historial || 'Volver al Historial'}</span>`;
@@ -27811,6 +27881,7 @@ function ejecutarAgregadoRapido(cat, sub) { cerrarModalAgregadoRapido(); cambiar
 // --- ACCESO A WATCHLISTS DEDICADAS DESDE MÓVIL Y WEB ---
 function abrirMenuWatchlistGlobal(pushNav = true) {
   if (pushNav) registrarNavegacionApp('watchlists');
+  guardarEstadoNavegacionActual('watchlists', '');
   resetearBuscadoresYFormularios();
   estado.categoria = 'watchlists';
   estado.subcategoria = '';
@@ -30489,12 +30560,15 @@ function inicializarAppInmediata() {
     cargarWatchlist();
   }
 
-  // 3. Renderizar resumen de inicio con los datos de caché (on-going, carrusel en vivo, rachas, subcategorías)
-  if (typeof renderizarResumenInicio === 'function') {
-    renderizarResumenInicio();
-  }
-  if (typeof renderizarFeedAmigosResumidoInicio === 'function') {
-    renderizarFeedAmigosResumidoInicio();
+  // 3. Restaurar la última pestaña activa guardada o renderizar inicio por defecto
+  const restauroPestana = (typeof restaurarPestanaGuardada === 'function') && restaurarPestanaGuardada();
+  if (!restauroPestana) {
+    if (typeof renderizarResumenInicio === 'function') {
+      renderizarResumenInicio();
+    }
+    if (typeof renderizarFeedAmigosResumidoInicio === 'function') {
+      renderizarFeedAmigosResumidoInicio();
+    }
   }
 
   // 4. Posicionar la píldora de navegación móvil de inmediato SIN animación
