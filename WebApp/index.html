@@ -9056,6 +9056,17 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 </div>
 
 
+  <!-- Gestión y optimización de almacenamiento / caché de portadas -->
+  <div style="margin:14px 0; padding:12px 14px; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:3px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+    <div style="min-width:0; flex:1;">
+      <strong style="font-size:0.86rem; color:var(--text); display:block;">Caché y Almacenamiento de Portadas</strong>
+      <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:2px;" id="cfg-cache-size-hint">Optimizado con tamaño ligero y rotación automática.</span>
+    </div>
+    <button type="button" class="btn-psn-sub-action" style="background:rgba(239,68,68,0.08); color:var(--text); border:1px solid var(--border); white-space:nowrap; padding:6px 12px; height:auto; cursor:pointer;" onclick="limpiarCachePortadasApp()" title="Vaciar caché de imágenes">
+      <svg style="width:14px;height:14px;margin-right:4px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>Limpiar Portadas
+    </button>
+  </div>
+
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
 
@@ -10216,6 +10227,54 @@ window.IGDB_CLIENT_ID = IGDB_CLIENT_ID; window.IGDB_TOKEN = IGDB_TOKEN;
 window.SPOTIFY_CLIENT_ID = SPOTIFY_CLIENT_ID;
 window.LASTFM_API_KEY = LASTFM_API_KEY;
 
+function optimizarUrlPoster(url, tipo = 'thumb') {
+  if (!url || typeof url !== 'string') return '';
+  url = url.trim();
+  if (url.startsWith('data:image')) return url;
+
+  // 1. TMDB (Películas, Series, Documentales)
+  if (url.includes('image.tmdb.org/t/p/')) {
+    const tmdbTam = (tipo === 'modal') ? 'w342' : 'w185';
+    return url.replace(/\/t\/p\/(w500|original|w780|w1280)\//, `/t/p/${tmdbTam}/`);
+  }
+
+  // 2. RAWG (Videojuegos)
+  if (url.includes('media.rawg.io/media/') && !url.includes('/crop/')) {
+    return url.replace('media.rawg.io/media/', 'media.rawg.io/media/crop/600/400/');
+  }
+
+  // 3. Deezer (Música)
+  if (url.includes('e-cdns-images.dzcdn.net/images/cover/')) {
+    const dzTam = (tipo === 'modal') ? '500x500.jpg' : '250x250.jpg';
+    return url.replace(/\/(1000x1000|500x500)\.jpg/, `/${dzTam}`);
+  }
+
+  // 4. OpenLibrary (Libros)
+  if (url.includes('covers.openlibrary.org/b/id/') && url.endsWith('-L.jpg')) {
+    if (tipo !== 'modal') {
+      return url.replace('-L.jpg', '-M.jpg');
+    }
+  }
+
+  // 5. Apple / iTunes (Música)
+  if (url.includes('mzstatic.com/image/thumb/')) {
+    const itTam = (tipo === 'modal') ? '340x340bb.jpg' : '180x180bb.jpg';
+    return url.replace(/\/\d+x\d+bb\./, `/${itTam}`);
+  }
+
+  // 6. Google Books
+  if (url.includes('books.google.com/books')) {
+    let u = url.replace('http://', 'https://');
+    if (tipo === 'thumb' && u.includes('zoom=2')) {
+      u = u.replace('zoom=2', 'zoom=1');
+    }
+    return u;
+  }
+
+  return url;
+}
+window.optimizarUrlPoster = optimizarUrlPoster;
+
 var JSON_CACHE_ = new Map();
 var getJson_ = async u => {
   if (JSON_CACHE_.has(u)) return JSON_CACHE_.get(u);
@@ -10670,7 +10729,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
             const credits = await getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`).catch(() => null);
             const dirs = (credits?.crew || []).filter(x => x.job === 'Director').map(x => x.name);
             const cr = dirs.length ? dirs.slice(0, 2).join(', ') : null;
-            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : null;
+            const poster = m.poster_path ? `https://image.tmdb.org/t/p/w185${m.poster_path}` : null;
             const anio = m.release_date ? m.release_date.substring(0, 4) : null;
             return { creador: cr, poster, anio };
           }
@@ -10681,7 +10740,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
             const crs = (det?.created_by || []).map(x => x.name);
             const net = (det?.networks || []).map(x => x.name).join(', ');
             const cr = crs.length ? crs.slice(0, 2).join(', ') : (net || null);
-            const poster = s.poster_path ? `https://image.tmdb.org/t/p/w500${s.poster_path}` : null;
+            const poster = s.poster_path ? `https://image.tmdb.org/t/p/w185${s.poster_path}` : null;
             const anio = s.first_air_date ? s.first_air_date.substring(0, 4) : null;
             return { creador: cr, poster, anio };
           }
@@ -10692,7 +10751,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
             const devs = (det?.developers || []).map(x => x.name);
             const pubs = (det?.publishers || []).map(x => x.name);
             const cr = devs.length ? devs.slice(0, 2).join(', ') : (pubs.slice(0, 2).join(', ') || null);
-            const poster = g.background_image || null;
+            const poster = optimizarUrlPoster(g.background_image, "thumb") || null;
             const anio = g.released ? g.released.substring(0, 4) : null;
             return { creador: cr, poster, anio };
           }
@@ -10961,7 +11020,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         creador: 'Cine',
         anio: m.release_date ? m.release_date.substring(0, 4) : '2026',
         sinopsis: m.overview || '',
-        poster: `https://image.tmdb.org/t/p/w500${m.poster_path}`,
+        poster: `https://image.tmdb.org/t/p/w185${m.poster_path}`,
         motivo: motivo
       });
     };
@@ -10986,7 +11045,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         creador: 'Documental',
         anio: m.release_date ? m.release_date.substring(0, 4) : '2025',
         sinopsis: m.overview || '',
-        poster: `https://image.tmdb.org/t/p/w500${m.poster_path}`,
+        poster: `https://image.tmdb.org/t/p/w185${m.poster_path}`,
         motivo: motivo
       });
     };
@@ -11009,7 +11068,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         creador: 'Serie TV',
         anio: s.first_air_date ? s.first_air_date.substring(0, 4) : '2026',
         sinopsis: s.overview || '',
-        poster: `https://image.tmdb.org/t/p/w500${s.poster_path}`,
+        poster: `https://image.tmdb.org/t/p/w185${s.poster_path}`,
         motivo: motivo
       });
     };
@@ -11034,7 +11093,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         creador: 'Docuserie',
         anio: s.first_air_date ? s.first_air_date.substring(0, 4) : '2025',
         sinopsis: s.overview || '',
-        poster: `https://image.tmdb.org/t/p/w500${s.poster_path}`,
+        poster: `https://image.tmdb.org/t/p/w185${s.poster_path}`,
         motivo: 'Docuserie'
       });
     });
@@ -11142,7 +11201,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       tituloIngles: '',
       creador: (g.genres || []).map(x => x.name).slice(0, 2).join(', ') || 'Videojuego',
       anio: g.released ? g.released.substring(0, 4) : '2025',
-      poster: g.background_image || '',
+      poster: optimizarUrlPoster(g.background_image, "thumb") || '',
       motivo: (g.rating && g.rating >= 4.2) || (g.added && g.added > 8000) ? 'Popular / Aclamado' : 'Tendencia'
     }));
 
@@ -11287,7 +11346,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
 return { anioFinTemp: (s?.endDate || s?.premiereDate || '').substring(0, 4), totalTemporadas: seasons.length }; }
 } catch (e) {}
 return { anioFinTemp: '', totalTemporadas: 0 }; }, async buscarPortadaGenerica(t, cr, cat) { if (!t) return ''; const q = encodeURIComponent(t.trim()), qC = encodeURIComponent(`${t} ${cr || ''}`.trim()); try { if (cat === 'Peliculas') {
-const d = await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}`); if (d?.results?.[0]?.poster_path) return `https://image.tmdb.org/t/p/w500${d.results[0].poster_path}`; } else if (cat === 'Series') {
+const d = await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}`); if (d?.results?.[0]?.poster_path) return `https://image.tmdb.org/t/p/w185${d.results[0].poster_path}`; } else if (cat === 'Series') {
 const d = await getJson_(`https://api.tvmaze.com/search/shows?q=${q}`); if (d?.[0]?.show?.image) return d[0].show.image.original || d[0].show.image.medium || ''; } else if (cat === 'Musica') { const it = await getJson_(`https://itunes.apple.com/search?term=${qC}&entity=album&limit=1`);
 if (it?.results?.[0]?.artworkUrl100) return it.results[0].artworkUrl100.replace('100x100bb', '600x600bb'); const d = await getJson_(`https://api.deezer.com/search?q=${qC}&limit=1`); return d?.data?.[0]?.album?.cover_big || d?.data?.[0]?.artist?.picture_big || ''; } else if (cat === 'Juegos') {
 const d = await getJson_(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`); if (d?.results?.[0]?.background_image) return d.results[0].background_image;
@@ -11345,7 +11404,7 @@ return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) {
     if (tipoFicha === 'peliculas') {
       const m = (await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}&language=es-ES`))?.results?.[0];
       if (m) {
-        res.poster = m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '';
+        res.poster = m.poster_path ? `https://image.tmdb.org/t/p/w185${m.poster_path}` : '';
         const [det, creds] = await Promise.all([
           getJson_(`https://api.themoviedb.org/3/movie/${m.id}?api_key=${TMDB_K}&language=es-ES`),
           getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`)
@@ -11611,7 +11670,7 @@ return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) {
   return res; }, async buscarEnServidor(qRaw, cat, sub) { if (!qRaw || qRaw.trim().length < 2) return []; const qTrim = qRaw.trim(); const cacheKey = `${cat}_${sub || ''}_${qTrim.toLowerCase()}`; if (!SERVER_API._searchMemCache) SERVER_API._searchMemCache = new Map(); if (SERVER_API._searchMemCache.has(cacheKey)) return SERVER_API._searchMemCache.get(cacheKey); const q = encodeURIComponent(qTrim); const _exec = async () => { if (cat === 'Peliculas') {
 const list = ((await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}`))?.results || []).slice(0, 6); return await Promise.all(list.map(async m => { let dirs = [], durHoras = null; try { const [cr, det] = await Promise.all([Promise.race([getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`), new Promise(r => setTimeout(() => r(null), 850))]), Promise.race([getJson_(`https://api.themoviedb.org/3/movie/${m.id}?api_key=${TMDB_K}&language=es-ES`), new Promise(r => setTimeout(() => r(null), 850))])]); dirs = (cr?.crew || []).filter(x => x.job === "Director").map(x => x.name); if (det?.runtime) durHoras = (det.runtime / 60).toFixed(1); } catch(e){}
 const noEs = m.original_language !== 'es' && m.original_language !== 'en';
-return { idRef: m.id, tituloOriginal: m.original_title || m.title || '', tituloIngles: (noEs && m.title && m.title !== m.original_title) ? m.title : '', creador: dirs.length ? dirs.join(', ') : 'Director desconocido', anio: m.release_date?.substring(0, 4) || '', sinopsis: m.overview || 'Sin sinopsis disponible.', poster: m.poster_path ? `https://image.tmdb.org/t/p/w500${m.poster_path}` : '', duracionHoras: durHoras };
+return { idRef: m.id, tituloOriginal: m.original_title || m.title || '', tituloIngles: (noEs && m.title && m.title !== m.original_title) ? m.title : '', creador: dirs.length ? dirs.join(', ') : 'Director desconocido', anio: m.release_date?.substring(0, 4) || '', sinopsis: m.overview || 'Sin sinopsis disponible.', poster: m.poster_path ? `https://image.tmdb.org/t/p/w185${m.poster_path}` : '', duracionHoras: durHoras };
 })); }
 if (cat === 'Series') { const list = ((await getJson_(`https://api.tvmaze.com/search/shows?q=${q}`)) || []).slice(0, 6); return await Promise.all(list.map(async it => { const s = it.show;
 let crew = null, sList = null; try { [crew, sList] = await Promise.all([Promise.race([getJson_(`https://api.tvmaze.com/shows/${s.id}/crew`), new Promise(r => setTimeout(() => r(null), 850))]), Promise.race([getJson_(`https://api.tvmaze.com/shows/${s.id}/seasons`), new Promise(r => setTimeout(() => r(null), 850))])]); } catch(e){}
@@ -11673,7 +11732,7 @@ if (cat === 'Juegos') {
           creador: genres || 'Videojuego',
           anio: g.released?.substring(0, 4) || '',
           sinopsis: sin,
-          poster: g.background_image || ''
+          poster: optimizarUrlPoster(g.background_image, "thumb") || ''
         });
       }
     });
@@ -19601,7 +19660,7 @@ function renderizarObrasEnProgresoInicio() {
         <div class="home-en-progreso-card" id="home-prog-${r.id}">
           <div class="home-en-progreso-poster-wrap" onclick="abrirFichaTecnica('${r.id}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">
             <span class="home-en-progreso-card-badge-overlay"><span class="emoji-dyn">${info.emoji}</span> ${info.label}</span>
-            <img src="${posterSrc}" class="home-en-progreso-card-poster" alt="${r.titulo}">
+            <img src="${optimizarUrlPoster(posterSrc, 'thumb')}" class="home-en-progreso-card-poster" alt="${r.titulo}" loading="lazy" decoding="async">
           </div>
           <div class="home-en-progreso-card-title" onclick="abrirFichaTecnica('${r.id}')" title="${r.titulo}">${r.titulo}</div>
           <div class="home-en-progreso-card-sub" title="${creadorStr}">${creadorStr || '—'}</div>
@@ -22018,7 +22077,8 @@ function seleccionarThemeVisual(val) {
   }
 }
 
-function abrirModalConfiguracion() { 
+function abrirModalConfiguracion() {
+  if (typeof actualizarIndicadorUsoAlmacenamiento === 'function') setTimeout(actualizarIndicadorUsoAlmacenamiento, 50); 
   try {
     if (userPrefs) {
       migrarTemaLegadoSiEsNecesario();
@@ -27486,12 +27546,12 @@ function renderizarFichaTecnicaContenido(reg, info, l) {
 }
 
 function abrirFichaTecnica(id) { const reg = estado.registros.find(r => r.id === id) || estado.watchlist.find(w => w.id === id); if (!reg) return; document.getElementById('ficha-modal-title').textContent = reg.titulo;
-document.getElementById('ficha-modal-poster').src = reg.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'125\' height=\'180\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
+document.getElementById('ficha-modal-poster').src = optimizarUrlPoster(reg.poster, 'modal') || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'125\' height=\'180\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
 const l = userPrefs.lang || 'es';
 renderizarFichaTecnicaEsqueleto(reg, l);
 document.getElementById('modal-ficha-tecnica').style.display = 'flex';
 google.script.run
-.withSuccessHandler(info => { if (!info) return; if (info.poster) document.getElementById('ficha-modal-poster').src = info.poster; renderizarFichaTecnicaContenido(reg, info, l); })
+.withSuccessHandler(info => { if (!info) return; if (info.poster) document.getElementById('ficha-modal-poster').src = optimizarUrlPoster(info.poster, 'modal'); renderizarFichaTecnicaContenido(reg, info, l); })
 .obtenerDetalleTecnicoModal(reg.titulo, reg.creador, reg.categoria, reg.subcategoria); }
 const cerrarModalFicha = () => document.getElementById('modal-ficha-tecnica').style.display = 'none'; function resetearBuscadoresYFormularios() { ['input-search', 'input-buscar-artista-concierto'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 ['search-results', 'search-results-artistas'].forEach(id => { const el = document.getElementById(id); if (el) { el.innerHTML = ''; el.style.display = 'none'; } });
@@ -27736,13 +27796,13 @@ function sanitizarRegistroFechasFrontend(r) {
       fF = obtenerTextoEnProgreso(cat, sub) || 'Aún viendo';
     }
   }
-  return { ...r, fechaInicio: fI, fechaFin: fF };
+  return { ...r, fechaInicio: fI, fechaFin: fF, poster: optimizarUrlPoster(r.poster || '', 'thumb') };
 }
 function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_regs_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_regs_' + estado.userEmail.toLowerCase()); if (c) { estado.registros = JSON.parse(c).map(sanitizarRegistroFechasFrontend); if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { estado.registros = (d || []).map(sanitizarRegistroFechasFrontend); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_regs_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.registros)); } catch(e) {} }
 if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
 else { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 }).obtenerRegistros(estado.userEmail); }
-function cargarWatchlist() { if (!estado.watchlist?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_wl_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_wl_' + estado.userEmail.toLowerCase()); if (c) estado.watchlist = JSON.parse(c); } catch(e) {} } google.script.run.withSuccessHandler(w => { estado.watchlist = w || []; if (estado.userEmail) { try { localStorage.setItem('mediary_cache_wl_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.watchlist)); } catch(e) {} } if (CONFIG[estado.categoria]) renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); if (estado.categoria === 'watchlists') renderizarVistaWatchlistsDedicada(); const modalR = document.getElementById('modal-ruleta-amigo'); if (modalR && modalR.style.display === 'flex' && typeof actualizarVistaCandidatasRuleta === 'function') { actualizarVistaCandidatasRuleta(); } }).obtenerWatchlist(estado.userEmail); }
+function cargarWatchlist() { if (!estado.watchlist?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_wl_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_wl_' + estado.userEmail.toLowerCase()); if (c) estado.watchlist = JSON.parse(c); } catch(e) {} } google.script.run.withSuccessHandler(w => { estado.watchlist = (w || []).map(it => ({ ...it, poster: optimizarUrlPoster(it.poster || '', 'thumb') })); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_wl_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.watchlist)); } catch(e) {} } if (CONFIG[estado.categoria]) renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); if (estado.categoria === 'watchlists') renderizarVistaWatchlistsDedicada(); const modalR = document.getElementById('modal-ruleta-amigo'); if (modalR && modalR.style.display === 'flex' && typeof actualizarVistaCandidatasRuleta === 'function') { actualizarVistaCandidatasRuleta(); } }).obtenerWatchlist(estado.userEmail); }
 // --- AGREGADO RÁPIDO (+) EN MÓVIL ---
 function abrirModalAgregadoRapido() { if (typeof renderizarOpcionesAgregadoRapido === 'function') renderizarOpcionesAgregadoRapido(); document.getElementById('modal-agregado-rapido').style.display = 'flex'; }
 function cerrarModalAgregadoRapido() { document.getElementById('modal-agregado-rapido').style.display = 'none'; }
@@ -29473,10 +29533,10 @@ l.forEach(reg => {
   }
   const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd';
   const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`;
-  tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:2px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> ${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></td>`;
+  tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" loading="lazy" decoding="async" src="${optimizarUrlPoster(reg.poster, 'thumb')||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:2px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> ${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></td>`;
   tbFrag.appendChild(tr);
   const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`;
-  m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${reg.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">${getHeroIcon('calendar', '', 12)} </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">${getHeroIcon('calendar', '', 12)} </span>${fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:3px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>${getHeroIcon('check', '', 14)}</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span></button></div>` : ''}`;
+  m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" decoding="async" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${optimizarUrlPoster(reg.poster, 'thumb')||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">${getHeroIcon('calendar', '', 12)} </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">${getHeroIcon('calendar', '', 12)} </span>${fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:3px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>${getHeroIcon('check', '', 14)}</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span></button></div>` : ''}`;
   mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales();
 if (estado.ultimoRegistroGuardadoId) {
   desplazarHaciaRegistroGuardado(estado.ultimoRegistroGuardadoId);
@@ -30466,6 +30526,43 @@ if (document.readyState === 'loading') {
 } else {
   inicializarAppInmediata();
 }
+
+async function limpiarCachePortadasApp() {
+  try {
+    if ('caches' in window) {
+      await caches.delete('mediary-images-v1');
+    }
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ action: 'CLEAR_IMAGE_CACHE' });
+    }
+    await actualizarIndicadorUsoAlmacenamiento();
+    const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+    if (typeof mostrarToastPersonalizado === 'function') {
+      mostrarToastPersonalizado(l === 'en' ? '🧹 Cover image cache freed successfully!' : '🧹 ¡Caché de portadas liberada correctamente!');
+    }
+  } catch (err) {
+    console.error('Error al limpiar caché de portadas:', err);
+  }
+}
+window.limpiarCachePortadasApp = limpiarCachePortadasApp;
+
+async function actualizarIndicadorUsoAlmacenamiento() {
+  const el = document.getElementById('cfg-cache-size-hint');
+  if (!el) return;
+  try {
+    if (navigator.storage && navigator.storage.estimate) {
+      const estimate = await navigator.storage.estimate();
+      const mb = ((estimate.usage || 0) / (1024 * 1024)).toFixed(1);
+      el.textContent = `Uso actual en disco: ~${mb} MB (Pósters ligeros y tope automático activo).`;
+    } else {
+      el.textContent = 'Optimizado con tamaño ligero y rotación automática (máx 90 portadas).';
+    }
+  } catch (_) {
+    el.textContent = 'Optimizado con tamaño ligero y rotación automática (máx 90 portadas).';
+  }
+}
+window.actualizarIndicadorUsoAlmacenamiento = actualizarIndicadorUsoAlmacenamiento;
+
 </script>
 </body>
 </html>
