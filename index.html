@@ -5,7 +5,7 @@
 <title>Mediary — Your Media, Your Diary</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0f172a">
-<meta name="color-scheme" content="light dark">
+<meta name="color-scheme" content="only light dark" id="meta-color-scheme">
 <script>
 (function() {
   function intentarDesbloquearOrientacion() {
@@ -63,7 +63,10 @@
     document.documentElement.setAttribute('data-app-theme', appTheme);
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.setAttribute('data-ui-style', 'modern');
-    document.documentElement.style.colorScheme = (mode === 'light') ? 'light' : 'dark';
+    const earlyIsLight = (mode === 'light');
+    document.documentElement.style.setProperty('color-scheme', earlyIsLight ? 'only light' : 'dark', 'important');
+    const earlyMetaCs = document.getElementById('meta-color-scheme') || document.querySelector('meta[name="color-scheme"]');
+    if (earlyMetaCs) earlyMetaCs.setAttribute('content', earlyIsLight ? 'only light' : 'dark');
     if (font) document.documentElement.style.setProperty('--font-family', font);
     if (fontSize) document.documentElement.style.setProperty('--font-scale', fontSize);
     if (p && typeof p.showEmojis === "boolean") document.documentElement.setAttribute("data-show-emojis", p.showEmojis ? "true" : "false");
@@ -6070,6 +6073,132 @@ html[data-ui-style="modern"][data-theme="nordic-light"] textarea.comment-box {
 }
 
 
+
+/* OPT-OUT ESTRICTO DE AUTO-DARK THEME / FORCE DARK PARA MODO CLARO */
+:root[data-theme$="-light"],
+html[data-theme$="-light"] {
+  color-scheme: only light !important;
+}
+:root[data-theme$="-dark"],
+html[data-theme$="-dark"] {
+  color-scheme: dark !important;
+}
+
+
+/* ==============================================================
+   ARMONIZACIÓN ESTÉTICA: LISTAS/ESTADÍSTICAS, AMIGOS Y PERFIL (4PX SYSTEM)
+   ============================================================== */
+.stats-section-box,
+.stats-kpi-card,
+.stats-cat-tab,
+.stats-period-btn,
+.stats-cat-tabs-bar,
+.stats-period-group,
+.stats-ranking-row,
+.stats-chip-cat,
+.profile-hero-card,
+.profile-stat-box,
+.btn-change-cover,
+.fav-slot-card,
+.fav-slot-poster,
+.btn-friend-records,
+.amigo-wide-card,
+.stat-subcat-lecturas-card {
+  border-radius: 4px !important;
+}
+
+.stats-section-box {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+  padding: 14px 16px !important;
+  margin-bottom: 14px !important;
+}
+
+.stats-kpi-card {
+  background: var(--bg) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  padding: 12px 14px !important;
+}
+
+.stats-section-title {
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  margin-bottom: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+.stats-cat-tabs-bar {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 4px !important;
+  padding: 3px !important;
+  gap: 4px !important;
+}
+
+.stats-cat-tab {
+  border-radius: 3px !important;
+  padding: 6px 12px !important;
+}
+
+.stats-cat-tab.active {
+  background: var(--bg) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.stats-period-group {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 4px !important;
+  padding: 2px !important;
+}
+
+.stats-period-btn {
+  border-radius: 3px !important;
+}
+
+.stats-period-btn.active {
+  background: var(--bg) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) !important;
+}
+
+.profile-hero-card {
+  border-radius: 4px !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+.profile-stat-box {
+  background: var(--bg) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+}
+
+.fav-slot-card {
+  border-radius: 4px !important;
+  border: 1px solid var(--border) !important;
+  background: var(--card) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+.fav-slot-poster {
+  border-radius: 3px !important;
+}
+
+.btn-change-cover {
+  border-radius: 4px !important;
+}
+
 /* --- MODO OSCURO (SLATE-DARK / DEFAULT / SLATE) (CERO BLANCO PURO) --- */
 [data-theme="slate-dark"],
 [data-theme="default"],
@@ -7838,6 +7967,11 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
       </div>
     </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) -->
     <div id="vista-listas-extendida" style="display:none;">
+      <!-- BANNER DE ENCABEZADO COHERENTE CON INICIO -->
+      <div class="home-greeting-banner" id="listas-greeting-banner" style="gap:6px; margin:0 0 16px 0;">
+        <h1 class="home-greeting-title">Estadísticas & <strong>Listas</strong></h1>
+        <p class="home-greeting-subtitle" style="text-align:center; align-self:center;">Métricas de consumo y catálogo personal</p>
+      </div>
       <div class="listas-top-bar">
         <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:6px 14px; font-size:0.82rem; font-weight:700; border-radius:3px; margin:0;" title="Ver mis watchlists y pendientes">
           <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg></span>
@@ -7858,11 +7992,16 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
       <div class="dashboard-vertical-list" id="grid-stats"></div>
     </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) -->
     <div id="vista-amigos" style="display:none;">
+      <!-- BANNER DE ENCABEZADO COHERENTE CON INICIO -->
+      <div class="home-greeting-banner" id="amigos-greeting-banner" style="gap:6px; margin:0 0 16px 0;">
+        <h1 class="home-greeting-title">Comunidad & <strong>Amigos</strong></h1>
+        <p class="home-greeting-subtitle" style="text-align:center; align-self:center;">Actividad, registros y recomendaciones compartidas</p>
+      </div>
       <!-- ACCIONES SUPERIORES -->
-      <div style="display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
-        <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="border-color:rgba(168,85,247,0.45); color:#c084fc; background:rgba(168,85,247,0.12);"><span class="emoji-dyn"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button>
-        <button type="button" class="btn-action-manual" style="height:38px; padding:0 14px; font-size:0.82rem;" onclick="copiarMiIdUsuario()"><span class="emoji-dyn"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button>
-        <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg></span> <span data-i18n="btn_actualizar">Actualizar</span></button>
+      <div class="amigos-top-bar" style="display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+        <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="height:36px; padding:0 14px; font-size:0.82rem; font-weight:600; display:inline-flex; align-items:center; gap:6px;"><span class="emoji-dyn"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button>
+        <button type="button" class="btn-toggle-filter" onclick="copiarMiIdUsuario()" style="height:36px; padding:0 14px; font-size:0.82rem; font-weight:600; display:inline-flex; align-items:center; gap:6px;"><span class="emoji-dyn"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span> <span data-i18n="btn_copiar_mi_id">Copiar mi ID</span></button>
+        <button type="button" class="btn-toggle-filter" onclick="cargarAmigosYSolicitudes(true)" style="height:36px; padding:0 14px; font-size:0.82rem; font-weight:600; display:inline-flex; align-items:center; gap:6px;"><span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg></span> <span data-i18n="btn_actualizar">Actualizar</span></button>
       </div>
 
       <hr class="home-section-divider">
@@ -7920,6 +8059,11 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
     <!-- VISTA PERFIL (PESTAÑA APARTE) -->
     <div id="vista-perfil" style="display:none;">
+      <!-- BANNER DE ENCABEZADO COHERENTE CON INICIO -->
+      <div class="home-greeting-banner" id="perfil-greeting-banner" style="gap:6px; margin:0 0 16px 0;">
+        <h1 class="home-greeting-title">Perfil de <strong>Usuario</strong></h1>
+        <p class="home-greeting-subtitle" style="text-align:center; align-self:center;">Tu colección personal, estadísticas y personalización</p>
+      </div>
 
       <!-- 1. HERO CARD DEL PERFIL -->
       <div class="profile-hero-card cover-predeterminada" id="perfil-hero-card" style="padding:18px 22px; margin-bottom:14px; position:relative; overflow:hidden;">
@@ -17363,6 +17507,14 @@ function restaurarPreferenciasYAppsDesdeNube(prefs) {
   // 1. Restaurar configuración de UI
   const configUI = prefs.configuracion_ui;
   if (configUI && typeof configUI === 'object') {
+    const localUpdatedAt = Number(userPrefs.updatedAt) || 0;
+    const cloudUpdatedAt = Number(configUI.updatedAt) || 0;
+    const localEsMasNuevo = (localUpdatedAt > 0 && cloudUpdatedAt > 0 && localUpdatedAt >= cloudUpdatedAt);
+    if (localEsMasNuevo && userPrefs.themeMode) {
+      configUI.themeMode = userPrefs.themeMode;
+      configUI.themeFamily = userPrefs.themeFamily || configUI.themeFamily;
+      configUI.theme = userPrefs.theme || configUI.theme;
+    }
     const huboCambioVisual = (
       (configUI.themeFamily && configUI.themeFamily !== userPrefs.themeFamily) ||
       (configUI.themeMode && configUI.themeMode !== userPrefs.themeMode) ||
@@ -17564,6 +17716,7 @@ window.restaurarPreferenciasYAppsDesdeNube = restaurarPreferenciasYAppsDesdeNube
 
 function guardarPreferenciasLocales() {
   try {
+    userPrefs.updatedAt = Date.now();
     localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs));
   } catch (e) {}
   if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
@@ -18425,6 +18578,10 @@ function obtenerTemaEfectivo() {
 function actualizarMetaThemeColor() {
  try {
  const meta = document.querySelector('meta[name="theme-color"]');
+ const metaCs = document.getElementById('meta-color-scheme') || document.querySelector('meta[name="color-scheme"]');
+ const t = document.documentElement.getAttribute('data-theme') || '';
+ const esClaro = t.endsWith('-light');
+ if (metaCs) metaCs.setAttribute('content', esClaro ? 'only light' : 'dark');
  if (!meta) return;
  const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
  if (bg) {
@@ -18448,7 +18605,10 @@ function aplicarEstilosGlobales() {
  r.setAttribute('data-theme', temaEfectivo);
  r.setAttribute('data-ui-style', 'modern');
  r.setAttribute('data-show-emojis', userPrefs.showEmojis ? 'true' : 'false');
- r.style.colorScheme = temaEfectivo.endsWith('-light') ? 'light' : 'dark';
+ const esTemaClaro = temaEfectivo.endsWith('-light');
+ r.style.setProperty('color-scheme', esTemaClaro ? 'only light' : 'dark', 'important');
+ const metaCs = document.getElementById('meta-color-scheme') || document.querySelector('meta[name="color-scheme"]');
+ if (metaCs) metaCs.setAttribute('content', esTemaClaro ? 'only light' : 'dark');
  actualizarMetaThemeColor();
 
  const isMinimalist = (appTheme === 'minimalist');
@@ -26770,13 +26930,14 @@ function guardarEstadoNavegacionActual(cat, sub) {
   try {
     const c = cat || (typeof estado !== 'undefined' && estado ? estado.categoria : 'inicio');
     const s = (sub !== undefined && sub !== null && sub !== '') ? sub : ((typeof estado !== 'undefined' && estado) ? (estado.subcategoria || '') : '');
-    localStorage.setItem('mediary_ultima_pestana_activa', JSON.stringify({ cat: c, sub: s }));
+    sessionStorage.setItem('mediary_pestana_sesion_activa', JSON.stringify({ cat: c, sub: s }));
   } catch (e) {}
 }
 
 function restaurarPestanaGuardada() {
   try {
-    const raw = localStorage.getItem('mediary_ultima_pestana_activa');
+    try { localStorage.removeItem('mediary_ultima_pestana_activa'); } catch (e) {}
+    const raw = sessionStorage.getItem('mediary_pestana_sesion_activa');
     if (!raw) return false;
     const { cat, sub } = JSON.parse(raw);
     if (!cat || cat === 'inicio') return false;
