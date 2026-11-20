@@ -951,7 +951,13 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 /* ESTILOS DE PORTADAS DE PERFIL */
 .cover-espacio,
 .amigo-wide-card.cover-espacio,
-.profile-hero-card.cover-espacio {
+.amigo-wide-card.has-custom-cover.cover-espacio,
+.profile-hero-card.cover-espacio,
+.profile-hero-card.has-custom-cover.cover-espacio,
+[data-theme] .profile-hero-card.cover-espacio,
+[data-theme] .amigo-wide-card.cover-espacio,
+[data-theme] .profile-hero-card.has-custom-cover.cover-espacio,
+[data-theme] .amigo-wide-card.has-custom-cover.cover-espacio {
   background-color: #070913 !important;
   background-image: 
     radial-gradient(1.5px 1.5px at 20px 30px, #ffffff, rgba(0,0,0,0)),
@@ -970,7 +976,13 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 }
 .cover-arcade,
 .amigo-wide-card.cover-arcade,
-.profile-hero-card.cover-arcade {
+.amigo-wide-card.has-custom-cover.cover-arcade,
+.profile-hero-card.cover-arcade,
+.profile-hero-card.has-custom-cover.cover-arcade,
+[data-theme] .profile-hero-card.cover-arcade,
+[data-theme] .amigo-wide-card.cover-arcade,
+[data-theme] .profile-hero-card.has-custom-cover.cover-arcade,
+[data-theme] .amigo-wide-card.has-custom-cover.cover-arcade {
   background-color: #12061e !important;
   background-image:
     linear-gradient(rgba(244, 63, 94, 0.16) 1.5px, transparent 1.5px),
@@ -984,7 +996,13 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 }
 .cover-bosque,
 .amigo-wide-card.cover-bosque,
-.profile-hero-card.cover-bosque {
+.amigo-wide-card.has-custom-cover.cover-bosque,
+.profile-hero-card.cover-bosque,
+.profile-hero-card.has-custom-cover.cover-bosque,
+[data-theme] .profile-hero-card.cover-bosque,
+[data-theme] .amigo-wide-card.cover-bosque,
+[data-theme] .profile-hero-card.has-custom-cover.cover-bosque,
+[data-theme] .amigo-wide-card.has-custom-cover.cover-bosque {
   background-color: #051e13 !important;
   background-image:
     radial-gradient(circle at 75% 20%, rgba(52, 211, 153, 0.42) 0%, transparent 45%),
@@ -996,7 +1014,13 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 }
 .cover-castillo,
 .amigo-wide-card.cover-castillo,
-.profile-hero-card.cover-castillo {
+.amigo-wide-card.has-custom-cover.cover-castillo,
+.profile-hero-card.cover-castillo,
+.profile-hero-card.has-custom-cover.cover-castillo,
+[data-theme] .profile-hero-card.cover-castillo,
+[data-theme] .amigo-wide-card.cover-castillo,
+[data-theme] .profile-hero-card.has-custom-cover.cover-castillo,
+[data-theme] .amigo-wide-card.has-custom-cover.cover-castillo {
   background-color: #1a0f2e !important;
   background-image:
     radial-gradient(circle at 80% 18%, rgba(251, 191, 36, 0.4) 0%, transparent 45%),
@@ -1171,6 +1195,47 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
   border-color: var(--accent);
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+}
+.cover-option-card.active,
+.cover-option-card.selected,
+[data-theme] .cover-option-card.active,
+[data-theme] .cover-option-card.selected {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.45) !important;
+}
+.cover-selected-badge {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  background: rgba(16, 185, 129, 0.95) !important;
+  color: #ffffff !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  padding: 3px 8px !important;
+  border-radius: 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  z-index: 3 !important;
+}
+.cover-meta-wrap {
+  padding: 10px 12px;
+  background: var(--card);
+}
+.cover-name-txt {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+  display: block;
+}
+.cover-desc-txt {
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.35;
 }
 .cover-option-card.active {
   border-color: var(--accent);
@@ -4268,8 +4333,8 @@ img[alt="Avatar"],
 [data-theme="emerald-light"] .home-reading-tracker-card,
 [data-theme="emerald-light"] .home-friend-card,
 [data-theme="emerald-light"] .amigo-feed-card,
-[data-theme="emerald-light"] .amigo-wide-card,
-[data-theme="emerald-light"] .friend-card,
+[data-theme="emerald-light"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="emerald-light"] .friend-card:not(.has-custom-cover),
 [data-theme="emerald-light"] .highlight-card,
 [data-theme="emerald-light"] .modal-box,
 [data-theme="emerald-light"] .detail-card,
@@ -4281,7 +4346,7 @@ img[alt="Avatar"],
 [data-theme="emerald-light"] .stats-section-box,
 [data-theme="emerald-light"] .stats-ranking-row,
 [data-theme="emerald-light"] .theme-family-card,
-[data-theme="emerald-light"] .profile-hero-card,
+[data-theme="emerald-light"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="emerald-light"] .profile-fav-char-card,
 [data-theme="emerald-light"] .cover-option-card,
 [data-theme="emerald-light"] .fav-slot-card,
@@ -4298,8 +4363,8 @@ img[alt="Avatar"],
 [data-theme="sage-garden"] .home-reading-tracker-card,
 [data-theme="sage-garden"] .home-friend-card,
 [data-theme="sage-garden"] .amigo-feed-card,
-[data-theme="sage-garden"] .amigo-wide-card,
-[data-theme="sage-garden"] .friend-card,
+[data-theme="sage-garden"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="sage-garden"] .friend-card:not(.has-custom-cover),
 [data-theme="sage-garden"] .highlight-card,
 [data-theme="sage-garden"] .modal-box,
 [data-theme="sage-garden"] .detail-card,
@@ -4311,7 +4376,7 @@ img[alt="Avatar"],
 [data-theme="sage-garden"] .stats-section-box,
 [data-theme="sage-garden"] .stats-ranking-row,
 [data-theme="sage-garden"] .theme-family-card,
-[data-theme="sage-garden"] .profile-hero-card,
+[data-theme="sage-garden"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="sage-garden"] .profile-fav-char-card,
 [data-theme="sage-garden"] .cover-option-card,
 [data-theme="sage-garden"] .fav-slot-card,
@@ -4565,8 +4630,8 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 [data-theme="emerald-dark"] .home-reading-tracker-card,
 [data-theme="emerald-dark"] .home-friend-card,
 [data-theme="emerald-dark"] .amigo-feed-card,
-[data-theme="emerald-dark"] .amigo-wide-card,
-[data-theme="emerald-dark"] .friend-card,
+[data-theme="emerald-dark"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="emerald-dark"] .friend-card:not(.has-custom-cover),
 [data-theme="emerald-dark"] .highlight-card,
 [data-theme="emerald-dark"] .modal-box,
 [data-theme="emerald-dark"] .detail-card,
@@ -4578,7 +4643,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 [data-theme="emerald-dark"] .stats-section-box,
 [data-theme="emerald-dark"] .stats-ranking-row,
 [data-theme="emerald-dark"] .theme-family-card,
-[data-theme="emerald-dark"] .profile-hero-card,
+[data-theme="emerald-dark"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="emerald-dark"] .profile-fav-char-card,
 [data-theme="emerald-dark"] .cover-option-card,
 [data-theme="emerald-dark"] .fav-slot-card,
@@ -4600,8 +4665,8 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 [data-theme="oled"] .home-reading-tracker-card,
 [data-theme="oled"] .home-friend-card,
 [data-theme="oled"] .amigo-feed-card,
-[data-theme="oled"] .amigo-wide-card,
-[data-theme="oled"] .friend-card,
+[data-theme="oled"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="oled"] .friend-card:not(.has-custom-cover),
 [data-theme="oled"] .highlight-card,
 [data-theme="oled"] .modal-box,
 [data-theme="oled"] .detail-card,
@@ -4613,7 +4678,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 [data-theme="oled"] .stats-section-box,
 [data-theme="oled"] .stats-ranking-row,
 [data-theme="oled"] .theme-family-card,
-[data-theme="oled"] .profile-hero-card,
+[data-theme="oled"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="oled"] .profile-fav-char-card,
 [data-theme="oled"] .cover-option-card,
 [data-theme="oled"] .fav-slot-card,
@@ -4790,8 +4855,8 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 [data-theme="dracula-light"] .home-reading-tracker-card,
 [data-theme="dracula-light"] .home-friend-card,
 [data-theme="dracula-light"] .amigo-feed-card,
-[data-theme="dracula-light"] .amigo-wide-card,
-[data-theme="dracula-light"] .friend-card,
+[data-theme="dracula-light"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="dracula-light"] .friend-card:not(.has-custom-cover),
 [data-theme="dracula-light"] .highlight-card,
 [data-theme="dracula-light"] .modal-box,
 [data-theme="dracula-light"] .detail-card,
@@ -4803,7 +4868,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 [data-theme="dracula-light"] .stats-section-box,
 [data-theme="dracula-light"] .stats-ranking-row,
 [data-theme="dracula-light"] .theme-family-card,
-[data-theme="dracula-light"] .profile-hero-card,
+[data-theme="dracula-light"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="dracula-light"] .profile-fav-char-card,
 [data-theme="dracula-light"] .cover-option-card,
 [data-theme="dracula-light"] .fav-slot-card,
@@ -4820,8 +4885,8 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 [data-theme="lavender-light"] .home-reading-tracker-card,
 [data-theme="lavender-light"] .home-friend-card,
 [data-theme="lavender-light"] .amigo-feed-card,
-[data-theme="lavender-light"] .amigo-wide-card,
-[data-theme="lavender-light"] .friend-card,
+[data-theme="lavender-light"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="lavender-light"] .friend-card:not(.has-custom-cover),
 [data-theme="lavender-light"] .highlight-card,
 [data-theme="lavender-light"] .modal-box,
 [data-theme="lavender-light"] .detail-card,
@@ -4833,7 +4898,7 @@ html[data-ui-style="modern"][data-theme="sage-garden"] textarea.comment-box {
 [data-theme="lavender-light"] .stats-section-box,
 [data-theme="lavender-light"] .stats-ranking-row,
 [data-theme="lavender-light"] .theme-family-card,
-[data-theme="lavender-light"] .profile-hero-card,
+[data-theme="lavender-light"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="lavender-light"] .profile-fav-char-card,
 [data-theme="lavender-light"] .cover-option-card,
 [data-theme="lavender-light"] .fav-slot-card,
@@ -5192,8 +5257,8 @@ html[data-ui-style="modern"][data-theme="lavender-light"] textarea.comment-box {
 [data-theme="dracula-dark"] .home-reading-tracker-card,
 [data-theme="dracula-dark"] .home-friend-card,
 [data-theme="dracula-dark"] .amigo-feed-card,
-[data-theme="dracula-dark"] .amigo-wide-card,
-[data-theme="dracula-dark"] .friend-card,
+[data-theme="dracula-dark"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="dracula-dark"] .friend-card:not(.has-custom-cover),
 [data-theme="dracula-dark"] .highlight-card,
 [data-theme="dracula-dark"] .modal-box,
 [data-theme="dracula-dark"] .detail-card,
@@ -5205,7 +5270,7 @@ html[data-ui-style="modern"][data-theme="lavender-light"] textarea.comment-box {
 [data-theme="dracula-dark"] .stats-section-box,
 [data-theme="dracula-dark"] .stats-ranking-row,
 [data-theme="dracula-dark"] .theme-family-card,
-[data-theme="dracula-dark"] .profile-hero-card,
+[data-theme="dracula-dark"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="dracula-dark"] .profile-fav-char-card,
 [data-theme="dracula-dark"] .cover-option-card,
 [data-theme="dracula-dark"] .fav-slot-card,
@@ -5227,8 +5292,8 @@ html[data-ui-style="modern"][data-theme="lavender-light"] textarea.comment-box {
 [data-theme="dracula"] .home-reading-tracker-card,
 [data-theme="dracula"] .home-friend-card,
 [data-theme="dracula"] .amigo-feed-card,
-[data-theme="dracula"] .amigo-wide-card,
-[data-theme="dracula"] .friend-card,
+[data-theme="dracula"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="dracula"] .friend-card:not(.has-custom-cover),
 [data-theme="dracula"] .highlight-card,
 [data-theme="dracula"] .modal-box,
 [data-theme="dracula"] .detail-card,
@@ -5240,7 +5305,7 @@ html[data-ui-style="modern"][data-theme="lavender-light"] textarea.comment-box {
 [data-theme="dracula"] .stats-section-box,
 [data-theme="dracula"] .stats-ranking-row,
 [data-theme="dracula"] .theme-family-card,
-[data-theme="dracula"] .profile-hero-card,
+[data-theme="dracula"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="dracula"] .profile-fav-char-card,
 [data-theme="dracula"] .cover-option-card,
 [data-theme="dracula"] .fav-slot-card,
@@ -5606,8 +5671,8 @@ html[data-ui-style="modern"][data-theme="dracula"] textarea.comment-box {
 [data-theme="slate-light"] .home-reading-tracker-card,
 [data-theme="slate-light"] .home-friend-card,
 [data-theme="slate-light"] .amigo-feed-card,
-[data-theme="slate-light"] .amigo-wide-card,
-[data-theme="slate-light"] .friend-card,
+[data-theme="slate-light"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="slate-light"] .friend-card:not(.has-custom-cover),
 [data-theme="slate-light"] .highlight-card,
 [data-theme="slate-light"] .modal-box,
 [data-theme="slate-light"] .detail-card,
@@ -5619,7 +5684,7 @@ html[data-ui-style="modern"][data-theme="dracula"] textarea.comment-box {
 [data-theme="slate-light"] .stats-section-box,
 [data-theme="slate-light"] .stats-ranking-row,
 [data-theme="slate-light"] .theme-family-card,
-[data-theme="slate-light"] .profile-hero-card,
+[data-theme="slate-light"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="slate-light"] .profile-fav-char-card,
 [data-theme="slate-light"] .cover-option-card,
 [data-theme="slate-light"] .fav-slot-card,
@@ -5636,8 +5701,8 @@ html[data-ui-style="modern"][data-theme="dracula"] textarea.comment-box {
 [data-theme="nordic-light"] .home-reading-tracker-card,
 [data-theme="nordic-light"] .home-friend-card,
 [data-theme="nordic-light"] .amigo-feed-card,
-[data-theme="nordic-light"] .amigo-wide-card,
-[data-theme="nordic-light"] .friend-card,
+[data-theme="nordic-light"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="nordic-light"] .friend-card:not(.has-custom-cover),
 [data-theme="nordic-light"] .highlight-card,
 [data-theme="nordic-light"] .modal-box,
 [data-theme="nordic-light"] .detail-card,
@@ -5649,7 +5714,7 @@ html[data-ui-style="modern"][data-theme="dracula"] textarea.comment-box {
 [data-theme="nordic-light"] .stats-section-box,
 [data-theme="nordic-light"] .stats-ranking-row,
 [data-theme="nordic-light"] .theme-family-card,
-[data-theme="nordic-light"] .profile-hero-card,
+[data-theme="nordic-light"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="nordic-light"] .profile-fav-char-card,
 [data-theme="nordic-light"] .cover-option-card,
 [data-theme="nordic-light"] .fav-slot-card,
@@ -6019,8 +6084,8 @@ html[data-ui-style="modern"][data-theme="nordic-light"] textarea.comment-box {
 [data-theme="slate-dark"] .home-reading-tracker-card,
 [data-theme="slate-dark"] .home-friend-card,
 [data-theme="slate-dark"] .amigo-feed-card,
-[data-theme="slate-dark"] .amigo-wide-card,
-[data-theme="slate-dark"] .friend-card,
+[data-theme="slate-dark"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="slate-dark"] .friend-card:not(.has-custom-cover),
 [data-theme="slate-dark"] .highlight-card,
 [data-theme="slate-dark"] .modal-box,
 [data-theme="slate-dark"] .detail-card,
@@ -6032,7 +6097,7 @@ html[data-ui-style="modern"][data-theme="nordic-light"] textarea.comment-box {
 [data-theme="slate-dark"] .stats-section-box,
 [data-theme="slate-dark"] .stats-ranking-row,
 [data-theme="slate-dark"] .theme-family-card,
-[data-theme="slate-dark"] .profile-hero-card,
+[data-theme="slate-dark"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="slate-dark"] .profile-fav-char-card,
 [data-theme="slate-dark"] .cover-option-card,
 [data-theme="slate-dark"] .fav-slot-card,
@@ -6054,8 +6119,8 @@ html[data-ui-style="modern"][data-theme="nordic-light"] textarea.comment-box {
 [data-theme="default"] .home-reading-tracker-card,
 [data-theme="default"] .home-friend-card,
 [data-theme="default"] .amigo-feed-card,
-[data-theme="default"] .amigo-wide-card,
-[data-theme="default"] .friend-card,
+[data-theme="default"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="default"] .friend-card:not(.has-custom-cover),
 [data-theme="default"] .highlight-card,
 [data-theme="default"] .modal-box,
 [data-theme="default"] .detail-card,
@@ -6067,7 +6132,7 @@ html[data-ui-style="modern"][data-theme="nordic-light"] textarea.comment-box {
 [data-theme="default"] .stats-section-box,
 [data-theme="default"] .stats-ranking-row,
 [data-theme="default"] .theme-family-card,
-[data-theme="default"] .profile-hero-card,
+[data-theme="default"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="default"] .profile-fav-char-card,
 [data-theme="default"] .cover-option-card,
 [data-theme="default"] .fav-slot-card,
@@ -6089,8 +6154,8 @@ html[data-ui-style="modern"][data-theme="nordic-light"] textarea.comment-box {
 [data-theme="slate"] .home-reading-tracker-card,
 [data-theme="slate"] .home-friend-card,
 [data-theme="slate"] .amigo-feed-card,
-[data-theme="slate"] .amigo-wide-card,
-[data-theme="slate"] .friend-card,
+[data-theme="slate"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="slate"] .friend-card:not(.has-custom-cover),
 [data-theme="slate"] .highlight-card,
 [data-theme="slate"] .modal-box,
 [data-theme="slate"] .detail-card,
@@ -6102,7 +6167,7 @@ html[data-ui-style="modern"][data-theme="nordic-light"] textarea.comment-box {
 [data-theme="slate"] .stats-section-box,
 [data-theme="slate"] .stats-ranking-row,
 [data-theme="slate"] .theme-family-card,
-[data-theme="slate"] .profile-hero-card,
+[data-theme="slate"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="slate"] .profile-fav-char-card,
 [data-theme="slate"] .cover-option-card,
 [data-theme="slate"] .fav-slot-card,
@@ -6601,8 +6666,8 @@ html[data-ui-style="modern"][data-theme="slate"] textarea.comment-box {
 [data-theme="espresso-light"] .home-reading-tracker-card,
 [data-theme="espresso-light"] .home-friend-card,
 [data-theme="espresso-light"] .amigo-feed-card,
-[data-theme="espresso-light"] .amigo-wide-card,
-[data-theme="espresso-light"] .friend-card,
+[data-theme="espresso-light"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="espresso-light"] .friend-card:not(.has-custom-cover),
 [data-theme="espresso-light"] .highlight-card,
 [data-theme="espresso-light"] .modal-box,
 [data-theme="espresso-light"] .detail-card,
@@ -6614,7 +6679,7 @@ html[data-ui-style="modern"][data-theme="slate"] textarea.comment-box {
 [data-theme="espresso-light"] .stats-section-box,
 [data-theme="espresso-light"] .stats-ranking-row,
 [data-theme="espresso-light"] .theme-family-card,
-[data-theme="espresso-light"] .profile-hero-card,
+[data-theme="espresso-light"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="espresso-light"] .profile-fav-char-card,
 [data-theme="espresso-light"] .cover-option-card,
 [data-theme="espresso-light"] .fav-slot-card,
@@ -6631,8 +6696,8 @@ html[data-ui-style="modern"][data-theme="slate"] textarea.comment-box {
 [data-theme="parchment"] .home-reading-tracker-card,
 [data-theme="parchment"] .home-friend-card,
 [data-theme="parchment"] .amigo-feed-card,
-[data-theme="parchment"] .amigo-wide-card,
-[data-theme="parchment"] .friend-card,
+[data-theme="parchment"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="parchment"] .friend-card:not(.has-custom-cover),
 [data-theme="parchment"] .highlight-card,
 [data-theme="parchment"] .modal-box,
 [data-theme="parchment"] .detail-card,
@@ -6644,7 +6709,7 @@ html[data-ui-style="modern"][data-theme="slate"] textarea.comment-box {
 [data-theme="parchment"] .stats-section-box,
 [data-theme="parchment"] .stats-ranking-row,
 [data-theme="parchment"] .theme-family-card,
-[data-theme="parchment"] .profile-hero-card,
+[data-theme="parchment"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="parchment"] .profile-fav-char-card,
 [data-theme="parchment"] .cover-option-card,
 [data-theme="parchment"] .fav-slot-card,
@@ -6661,8 +6726,8 @@ html[data-ui-style="modern"][data-theme="slate"] textarea.comment-box {
 [data-theme="creme-latte"] .home-reading-tracker-card,
 [data-theme="creme-latte"] .home-friend-card,
 [data-theme="creme-latte"] .amigo-feed-card,
-[data-theme="creme-latte"] .amigo-wide-card,
-[data-theme="creme-latte"] .friend-card,
+[data-theme="creme-latte"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="creme-latte"] .friend-card:not(.has-custom-cover),
 [data-theme="creme-latte"] .highlight-card,
 [data-theme="creme-latte"] .modal-box,
 [data-theme="creme-latte"] .detail-card,
@@ -6674,7 +6739,7 @@ html[data-ui-style="modern"][data-theme="slate"] textarea.comment-box {
 [data-theme="creme-latte"] .stats-section-box,
 [data-theme="creme-latte"] .stats-ranking-row,
 [data-theme="creme-latte"] .theme-family-card,
-[data-theme="creme-latte"] .profile-hero-card,
+[data-theme="creme-latte"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="creme-latte"] .profile-fav-char-card,
 [data-theme="creme-latte"] .cover-option-card,
 [data-theme="creme-latte"] .fav-slot-card,
@@ -7171,8 +7236,8 @@ html[data-ui-style="modern"][data-theme="creme-latte"] textarea.comment-box {
 [data-theme="espresso-dark"] .home-reading-tracker-card,
 [data-theme="espresso-dark"] .home-friend-card,
 [data-theme="espresso-dark"] .amigo-feed-card,
-[data-theme="espresso-dark"] .amigo-wide-card,
-[data-theme="espresso-dark"] .friend-card,
+[data-theme="espresso-dark"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="espresso-dark"] .friend-card:not(.has-custom-cover),
 [data-theme="espresso-dark"] .highlight-card,
 [data-theme="espresso-dark"] .modal-box,
 [data-theme="espresso-dark"] .detail-card,
@@ -7184,7 +7249,7 @@ html[data-ui-style="modern"][data-theme="creme-latte"] textarea.comment-box {
 [data-theme="espresso-dark"] .stats-section-box,
 [data-theme="espresso-dark"] .stats-ranking-row,
 [data-theme="espresso-dark"] .theme-family-card,
-[data-theme="espresso-dark"] .profile-hero-card,
+[data-theme="espresso-dark"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="espresso-dark"] .profile-fav-char-card,
 [data-theme="espresso-dark"] .cover-option-card,
 [data-theme="espresso-dark"] .fav-slot-card,
@@ -7201,8 +7266,8 @@ html[data-ui-style="modern"][data-theme="creme-latte"] textarea.comment-box {
 [data-theme="espresso"] .home-reading-tracker-card,
 [data-theme="espresso"] .home-friend-card,
 [data-theme="espresso"] .amigo-feed-card,
-[data-theme="espresso"] .amigo-wide-card,
-[data-theme="espresso"] .friend-card,
+[data-theme="espresso"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme="espresso"] .friend-card:not(.has-custom-cover),
 [data-theme="espresso"] .highlight-card,
 [data-theme="espresso"] .modal-box,
 [data-theme="espresso"] .detail-card,
@@ -7214,7 +7279,7 @@ html[data-ui-style="modern"][data-theme="creme-latte"] textarea.comment-box {
 [data-theme="espresso"] .stats-section-box,
 [data-theme="espresso"] .stats-ranking-row,
 [data-theme="espresso"] .theme-family-card,
-[data-theme="espresso"] .profile-hero-card,
+[data-theme="espresso"] .profile-hero-card:not(.has-custom-cover),
 [data-theme="espresso"] .profile-fav-char-card,
 [data-theme="espresso"] .cover-option-card,
 [data-theme="espresso"] .fav-slot-card,
@@ -17515,7 +17580,7 @@ const PORTADAS_DISPONIBLES = [
  {
  id: 'predeterminada',
  nombre: 'Predeterminada',
- icono: '',
+ icono: '✨',
  descripcion: 'Diseño limpio y sobrio adaptado al tema visual activo de Mediary.',
  previewClass: 'cover-predeterminada',
  gradientePreview: 'linear-gradient(135deg, rgba(30,41,59,0.9), rgba(15,23,42,0.95))'
@@ -17523,7 +17588,7 @@ const PORTADAS_DISPONIBLES = [
  {
  id: 'espacio',
  nombre: '1. Espacio & Cosmos',
- icono: '',
+ icono: '🌌',
  descripcion: 'Universo estelar profundo con nebulosa cósmica violeta/azul y constelaciones.',
  previewClass: 'cover-espacio',
  gradientePreview: 'radial-gradient(ellipse at 30% 20%, rgba(168,85,247,0.45) 0%, transparent 60%), radial-gradient(ellipse at 80% 80%, rgba(56,189,248,0.4) 0%, transparent 55%), #050816'
@@ -17531,7 +17596,7 @@ const PORTADAS_DISPONIBLES = [
  {
  id: 'arcade',
  nombre: '2. Gaming / Arcade Retro',
- icono: '',
+ icono: '🕹️',
  descripcion: 'Estética synthwave 80s con rejilla neón magenta y cian retro-futurista.',
  previewClass: 'cover-arcade',
  gradientePreview: 'linear-gradient(180deg, #130924 0%, #2a0845 55%, #f43f5e 100%)'
@@ -17539,7 +17604,7 @@ const PORTADAS_DISPONIBLES = [
  {
  id: 'bosque',
  nombre: '3. Bosque con Río',
- icono: '',
+ icono: '🌲',
  descripcion: 'Naturaleza viva con follaje esmeralda profundo, destellos y agua cristalina.',
  previewClass: 'cover-bosque',
  gradientePreview: 'linear-gradient(145deg, #06231a 0%, #0d4432 50%, #115e59 100%)'
@@ -17547,7 +17612,7 @@ const PORTADAS_DISPONIBLES = [
  {
  id: 'castillo',
  nombre: '4. Castillo de Fantasía',
- icono: '',
+ icono: '🏰',
  descripcion: 'Reino místico crepuscular con torres doradas, aurora y magia medieval.',
  previewClass: 'cover-castillo',
  gradientePreview: 'linear-gradient(140deg, #1a0b2e 0%, #3b135c 45%, #6b21a8 80%, #d97706 100%)'
@@ -17589,10 +17654,10 @@ function renderizarOpcionesPortadas() {
  c.innerHTML = PORTADAS_DISPONIBLES.map(p => {
  const isAct = (p.id === actual);
  return `
- <div class="cover-option-card ${isAct ? 'selected' : ''}" onclick="seleccionarPortadaPerfil('${p.id}')">
+ <div class="cover-option-card ${isAct ? 'active selected' : ''}" onclick="seleccionarPortadaPerfil('${p.id}')">
  <div class="cover-preview-stage ${p.previewClass}" style="background:${p.gradientePreview};">
  <div style="font-size:1.85rem; text-shadow:0 2px 8px rgba(0,0,0,0.6);">${p.icono}</div>
- ${isAct ? `<div class="cover-selected-badge"> Activa</div>` : ''}
+ ${isAct ? `<div class="cover-selected-badge">✓ Activa</div>` : ''}
  </div>
  <div class="cover-meta-wrap">
  <strong class="cover-name-txt">${p.nombre}</strong>
