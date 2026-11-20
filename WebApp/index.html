@@ -19149,8 +19149,7 @@ function abrirVistaPerfil(pushNav = true) {
     renderizarCabeceraPerfil();
     renderizarFavoritosPerfil();
     if (typeof renderizarPersonajeFavorito === 'function') renderizarPersonajeFavorito();
-    if (typeof renderizarEstadisticasPerfil === 'function') renderizarEstadisticasPerfil();
-    calcularYMostrarEstadisticasPerfil();
+        calcularYMostrarEstadisticasPerfil();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (err) {
     console.error('Error al abrir vista perfil:', err);
@@ -20729,78 +20728,33 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
   }
 }
 
-function calcularYMostrarEstadisticasPerfil() { const regs = estado.registros; const mapaDias = {}, mapaSemanas = {}, mapaMeses = {}, creadores = {};
-const conteoCategorias = { Peliculas: 0, Series: 0, Musica: 0, Juegos: 0, Lecturas: 0 }; let totalCalifs = 0, numCalifs = 0, totalHorasJuegos = 0, totalHorasVistas = 0, rewatchesTotales = 0;
-const seriesConTemporadas = new Set();
-regs.forEach(r => {
-  if (r.categoria === 'Series' && ((r.subcategoria && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))) || /\[S\d+\]/i.test(r.titulo || ''))) {
-    const base = (r.tituloBase || (r.titulo || '').replace(/\s*\[S\d+\].*$/, '')).trim().toLowerCase();
-    if (base) seriesConTemporadas.add(base);
-  }
-});
-regs.forEach(r => { if (conteoCategorias[r.categoria] !== undefined) conteoCategorias[r.categoria]++; if (r.esRewatch) rewatchesTotales++; if (Number(r.calificacion) > 0) { totalCalifs += Number(r.calificacion); numCalifs++; }
-if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasJuegos += h; }
-if (r.categoria === 'Peliculas') {
-  totalHorasVistas += extraerHorasRegistro(r);
-} else if (r.categoria === 'Series') {
-  const isSeason = (r.subcategoria && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))) || /\[S\d+\]/i.test(r.titulo || '');
-  const base = (r.tituloBase || (r.titulo || '').replace(/\s*\[S\d+\].*$/, '')).trim().toLowerCase();
-  if (isSeason) {
-    totalHorasVistas += extraerHorasRegistro(r);
-  } else if (!seriesConTemporadas.has(base)) {
-    totalHorasVistas += extraerHorasRegistro(r);
+function calcularYMostrarEstadisticasPerfil() {
+  try {
+    const regs = estado.registros;
+    setTimeout(() => {
+      if (typeof resolverHorasVistasFaltantes === "function") resolverHorasVistasFaltantes(regs);
+    }, 150);
+    if (typeof renderizarEstadisticasPerfil === "function") {
+      renderizarEstadisticasPerfil();
+    }
+    if (typeof aplicarEstilosGlobales === "function") {
+      aplicarEstilosGlobales();
+    }
+  } catch(err) {
+    console.error("Error en calcularYMostrarEstadisticasPerfil:", err);
   }
 }
-const cr = (r.creador || '').trim(); if (cr && cr !== 'Desconocido' && cr !== 'Autor desconocido' && cr !== 'Director desconocido') { creadores[cr] = (creadores[cr] || 0) + 1; }
-const fechaBase = (r.fechaFin && r.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(r.fechaFin)) ? r.fechaFin : r.fechaInicio; const dObj = parsearFechaAObjeto(fechaBase); if (dObj) { const dStr = `${String(dObj.getDate()).padStart(2,'0')}/${String(dObj.getMonth()+1).padStart(2,'0')}/${dObj.getFullYear()}`;
-if (!mapaDias[dStr]) mapaDias[dStr] = { fecha: new Date(dObj), items: [] }; mapaDias[dStr].items.push(r); const mStr = `${dObj.getFullYear()}-${String(dObj.getMonth()+1).padStart(2,'0')}`;
-if (!mapaMeses[mStr]) mapaMeses[mStr] = { mIdx: dObj.getMonth(), items: [] }; mapaMeses[mStr].items.push(r); const primerDiaSemana = new Date(dObj); const diaSem = (dObj.getDay() + 6) % 7; primerDiaSemana.setDate(dObj.getDate() - diaSem);
-const semKey = `${primerDiaSemana.getFullYear()}-${String(primerDiaSemana.getMonth()+1).padStart(2,'0')}-${String(primerDiaSemana.getDate()).padStart(2,'0')}`; if (!mapaSemanas[semKey]) mapaSemanas[semKey] = { inicio: new Date(primerDiaSemana), items: [] }; mapaSemanas[semKey].items.push(r); }
-}); const l = userPrefs.lang || 'es'; let maxDiaVal = 0, bestDiaObj = null; for (const [k, obj] of Object.entries(mapaDias)) { if (obj.items.length > maxDiaVal) { maxDiaVal = obj.items.length; bestDiaObj = obj; }
-}
-let maxDiaTxt = '—', maxDiaSub = '0 registros'; if (bestDiaObj) { const diaNombre = I18N[l].dias[bestDiaObj.fecha.getDay()]; const dd = String(bestDiaObj.fecha.getDate()).padStart(2, '0'); const mm = String(bestDiaObj.fecha.getMonth() + 1).padStart(2, '0'); maxDiaTxt = `${diaNombre} ${dd}/${mm}`;
-maxDiaSub = formatearDesgloseItems(bestDiaObj.items); }
-let maxSemVal = 0, bestSemObj = null; for (const [k, obj] of Object.entries(mapaSemanas)) { if (obj.items.length > maxSemVal) { maxSemVal = obj.items.length; bestSemObj = obj; }
-}
-let maxSemTxt = '—', maxSemSub = '0 registros'; if (bestSemObj) { const finSem = new Date(bestSemObj.inicio); finSem.setDate(bestSemObj.inicio.getDate() + 6); const mIniNom = I18N[l].meses[bestSemObj.inicio.getMonth()]; const dIniStr = String(bestSemObj.inicio.getDate()).padStart(2, '0');
-const mFinNom = I18N[l].meses[finSem.getMonth()]; const dFinStr = String(finSem.getDate()).padStart(2, '0'); maxSemTxt = `${mIniNom} ${dIniStr} --> ${mFinNom} ${dFinStr}`; maxSemSub = formatearDesgloseItems(bestSemObj.items); }
-let maxMesVal = 0, bestMesObj = null; for (const [k, obj] of Object.entries(mapaMeses)) { if (obj.items.length > maxMesVal) { maxMesVal = obj.items.length; bestMesObj = obj; }
-}
-let maxMesTxt = '—', maxMesSub = '0 registros'; if (bestMesObj) { maxMesTxt = I18N[l].meses[bestMesObj.mIdx]; maxMesSub = formatearDesgloseItems(bestMesObj.items); }
-let favCreator = '—', favCreatorCount = 0; for (const [k, v] of Object.entries(creadores)) { if (v > favCreatorCount) { favCreatorCount = v; favCreator = k; }
-}
-const totalRegs = regs.length; document.getElementById('prof-total-val').textContent = totalRegs; document.getElementById('prof-best-day-val').textContent = maxDiaTxt;
-document.getElementById('prof-best-day-sub').textContent = maxDiaSub; document.getElementById('prof-best-week-val').textContent = maxSemTxt; document.getElementById('prof-best-week-sub').textContent = maxSemSub; document.getElementById('prof-best-month-val').textContent = maxMesTxt;
-document.getElementById('prof-best-month-sub').textContent = maxMesSub;
-const rachaGlobal = calcularRachaMasAltaGlobal(regs);
-const elStreakVal = document.getElementById('prof-best-streak-val');
-const elStreakSub = document.getElementById('prof-best-streak-sub');
-if (elStreakVal) elStreakVal.textContent = rachaGlobal.valTxt;
-if (elStreakSub) elStreakSub.textContent = rachaGlobal.subTxt;
-const avgCalif = numCalifs ? (totalCalifs / numCalifs).toFixed(1) : '0.0'; document.getElementById('prof-rating-val').innerHTML = `<span style="display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('star', '', 14)} ${avgCalif}</span>`;
-const horasJuegosFmt = (totalHorasJuegos % 1 === 0) ? totalHorasJuegos : totalHorasJuegos.toFixed(1);
-document.getElementById('prof-hours-val').textContent = `${horasJuegosFmt} hrs`;
-const horasVistasFmt = (totalHorasVistas % 1 === 0) ? totalHorasVistas : totalHorasVistas.toFixed(1);
-const elWatchedHours = document.getElementById('prof-watched-hours-val');
-if (elWatchedHours) elWatchedHours.textContent = `${horasVistasFmt} hrs`;
-document.getElementById('prof-fav-creator-val').textContent = favCreator; document.getElementById('prof-fav-creator-sub').textContent = `${favCreatorCount} registros`;
-const rewatchPct = totalRegs ? Math.round((rewatchesTotales / totalRegs) * 100) : 0; document.getElementById('prof-rewatch-rate-val').textContent = `${rewatchPct}%`; document.getElementById('prof-rewatch-rate-sub').textContent = `${rewatchesTotales} re-consumos`;
-const maxCatCount = Math.max(...Object.values(conteoCategorias), 1); const bWrap = document.getElementById('profile-bars-container'); bWrap.innerHTML = ''; Object.keys(conteoCategorias).forEach(cKey => { const cant = conteoCategorias[cKey]; const pct = Math.round((cant / maxCatCount) * 100);
-const nom = I18N[l].cats[cKey] || cKey; const emo = CONFIG[cKey]?.emoji || ''; const pctReal = totalRegs ? Math.round((cant / totalRegs) * 100) : 0; const row = document.createElement('div'); row.className = 'profile-bar-row'; row.innerHTML = ` <div class="profile-bar-name"><span class="emoji-dyn">${emo} </span>${nom}</div> <div class="profile-bar-track"><div class="profile-bar-fill" style="width:${pct}%;"></div></div> <div class="profile-bar-count">${cant} <span style="font-size:.7rem; color:var(--muted);">(${pctReal}%)</span></div> `;
-bWrap.appendChild(row); });
-setTimeout(() => resolverHorasVistasFaltantes(regs), 150);
-aplicarEstilosGlobales(); }
 
 // ========================================================
 // === PANEL Y CENTRO DE ESTADÍSTICAS AVANZADAS MEDIARY ===
 // ========================================================
+var estadoStatsPerfil = { categoria: 'General', periodo: 'year' };
 var estadoStatsModal = {
   periodo: 'year', // 'year' (predeterminado) | 'all'
   categoria: 'General' // 'General' | 'Peliculas' | 'Series' | 'Musica' | 'Juegos' | 'Lecturas'
 };
 
 
-if (typeof renderizarEstadisticasPerfil === 'function') renderizarEstadisticasPerfil();
 function escHtmlStats_(str) {
   if (str === null || str === undefined) return '';
   return String(str)
@@ -21187,7 +21141,8 @@ function obtenerMetricasMusicaSpotifyStats_(spotifyStats, spotifyAccumulator, no
 // ==========================================
 // ESTADÍSTICAS DETALLADAS INTEGRADAS EN PERFIL
 // ==========================================
-let estadoStatsPerfil = {
+// estadoStatsPerfil declared above
+var estadoStatsPerfil_dummy = {
   categoria: 'General',
   periodo: 'year'
 };
