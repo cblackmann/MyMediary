@@ -1629,7 +1629,7 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .home-floating-actions{
   position:fixed;
   right:24px;
-  bottom:28px;
+  bottom:38px;
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -1703,7 +1703,7 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 @media (max-width: 768px){
   .home-floating-actions{
     right:16px;
-    bottom:calc(96px + env(safe-area-inset-bottom, 0px));
+    bottom:calc(112px + env(safe-area-inset-bottom, 0px));
     gap:10px;
   }
   .home-fab-quick-add{
@@ -3788,7 +3788,7 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   /* 8. BOTONES FLOTANTES */
   .home-floating-actions {
     right: max(24px, env(safe-area-inset-right, 0px)) !important;
-    bottom: max(24px, env(safe-area-inset-bottom, 0px)) !important;
+    bottom: max(38px, env(safe-area-inset-bottom, 0px)) !important;
     gap: 12px !important;
   }
 
@@ -9886,6 +9886,46 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
     <div class="modal-actions" style="margin-top:16px; justify-content:flex-end;">
       <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarPsn()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SELECCIONAR JUEGO EN VIVO PLAYSTATION -->
+<div id="modal-seleccionar-juego-psn" class="modal-overlay" style="display:none; z-index:2200;" onclick="if(event.target===this) cerrarModalSeleccionarJuegoPsn()">
+  <div class="modal-box" style="max-width:440px; max-height:85vh; overflow-y:auto; border-radius:4px; padding:18px 20px; display:flex; flex-direction:column; gap:12px; background:var(--card); border:1px solid var(--border); box-shadow:0 16px 40px rgba(0,0,0,0.35);">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:4px; background:rgba(0,112,209,0.15); color:#38bdf8;">
+          <svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
+        </span>
+        <h3 style="margin:0; font-size:1.05rem; font-weight:800; color:var(--text);">¿A qué estás jugando ahora?</h3>
+      </div>
+      <button type="button" class="btn-close-modal" onclick="cerrarModalSeleccionarJuegoPsn()" style="background:none; border:none; color:var(--muted); font-size:1.3rem; cursor:pointer; padding:2px 6px; line-height:1;">&times;</button>
+    </div>
+    <p style="font-size:0.78rem; color:var(--muted); margin:0; line-height:1.4;">
+      Selecciona el videojuego que estás jugando en tiempo real para mostrarlo en vivo en tu tarjeta:
+    </p>
+
+    <div id="psn-lista-juegos-selector" style="display:flex; flex-direction:column; gap:8px; max-height:260px; overflow-y:auto; padding-right:4px;">
+      <!-- Rellenado dinámicamente -->
+    </div>
+
+    <!-- O escribir otro juego -->
+    <div style="border-top:1px solid var(--border); padding-top:10px; margin-top:2px;">
+      <label style="font-size:0.75rem; color:var(--muted); font-weight:700; display:block; margin-bottom:5px;">O escribe otro título que estés jugando:</label>
+      <div style="display:flex; gap:6px;">
+        <input type="text" id="input-psn-otro-juego" class="form-input" placeholder="Ej: Astro Bot, Final Fantasy VII Rebirth..." style="flex:1; font-size:0.82rem;" onkeydown="if(event.key==='Enter') iniciarJuegoManualPsn()">
+        <button type="button" class="btn-connect-action btn-connect-psn" onclick="iniciarJuegoManualPsn()" style="white-space:nowrap; padding:0 12px; height:34px; font-size:0.78rem;">
+          Jugar
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-actions" style="margin-top:6px; justify-content:space-between;">
+      <button type="button" class="btn-modal-danger" onclick="detenerJuegoPsn()" style="font-size:0.78rem; padding:6px 12px;">
+        💤 Dejar en reposo
+      </button>
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarJuegoPsn()">Cancelar</button>
     </div>
   </div>
 </div>
@@ -25764,9 +25804,112 @@ function obtenerTodosJuegosPlayStation() {
   });
 }
 
+function abrirModalSeleccionarJuegoPsn() {
+  const modal = document.getElementById('modal-seleccionar-juego-psn');
+  const listaCont = document.getElementById('psn-lista-juegos-selector');
+  if (!modal) return;
+
+  const todosJuegos = typeof obtenerTodosJuegosPlayStation === 'function' ? obtenerTodosJuegosPlayStation() : [];
+  
+  if (listaCont) {
+    if (todosJuegos.length === 0) {
+      listaCont.innerHTML = `
+        <div style="font-size:0.8rem; color:var(--muted); text-align:center; padding:12px; background:var(--bg); border:1px dashed var(--border); border-radius:4px;">
+          No tienes videojuegos registrados en tu historial todavía. Escribe abajo el título que estás jugando.
+        </div>
+      `;
+    } else {
+      listaCont.innerHTML = todosJuegos.map(j => {
+        const tit = j.tituloBase || j.titulo || 'Videojuego';
+        const cover = j.poster || '';
+        const plat = (j.creador && j.creador.includes('PS4')) ? 'PS4' : 'PS5';
+        const safeTit = encodeURIComponent(tit);
+        const safeCov = encodeURIComponent(cover);
+        const safePlat = encodeURIComponent(plat);
+        return `
+          <div style="display:flex; align-items:center; gap:10px; padding:7px 10px; background:var(--bg); border:1px solid var(--border); border-radius:4px; cursor:pointer; transition:var(--tr);"
+               onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border)'"
+               onclick="seleccionarJuegoParaEnVivo('${safeTit}', '${safeCov}', '${safePlat}')">
+            <div style="width:36px; height:36px; border-radius:3px; overflow:hidden; background:var(--card); flex-shrink:0; display:grid; place-items:center;">
+              ${cover ? `<img src="${escHtmlSpotify_(cover)}" style="width:100%; height:100%; object-fit:cover;">` : `<svg style="width:18px;height:18px;color:#38bdf8;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>`}
+            </div>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:0.84rem; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtmlSpotify_(tit)}</div>
+              <div style="font-size:0.7rem; color:#38bdf8; font-weight:600;">${plat}</div>
+            </div>
+            <button type="button" class="btn-psn-sync-compact" style="pointer-events:none;">
+              Jugar ▶
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+  }
+
+  const inp = document.getElementById('input-psn-otro-juego');
+  if (inp) inp.value = '';
+  modal.style.display = 'flex';
+  setTimeout(() => { if (inp && todosJuegos.length === 0) inp.focus(); }, 80);
+}
+
+function cerrarModalSeleccionarJuegoPsn() {
+  const modal = document.getElementById('modal-seleccionar-juego-psn');
+  if (modal) modal.style.display = 'none';
+}
+
+function seleccionarJuegoParaEnVivo(safeTit, safeCov, safePlat) {
+  const tit = decodeURIComponent(safeTit || '');
+  const cov = decodeURIComponent(safeCov || '');
+  const plat = decodeURIComponent(safePlat || 'PS5');
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+
+  const data = {
+    isPlaying: true,
+    titleName: tit,
+    platform: plat,
+    studio: 'PlayStation',
+    status: l === 'en' ? 'Playing now' : 'Jugando ahora',
+    hours: 0,
+    image: cov,
+    trophyProgress: ''
+  };
+
+  localStorage.setItem('mediary_psn_now_playing', JSON.stringify(data));
+  localStorage.setItem('mediary_psn_manual_state', 'playing');
+  cerrarModalSeleccionarJuegoPsn();
+  renderizarPlayStationNowPlayingInicio(true);
+  mostrarToastPersonalizado(l === 'en' ? `🎮 PlayStation: Now playing "${tit}"` : `🎮 PlayStation: Ahora jugando a "${tit}"`);
+
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(false);
+  }
+}
+
+function iniciarJuegoManualPsn() {
+  const inp = document.getElementById('input-psn-otro-juego');
+  const val = (inp?.value || '').trim();
+  if (!val) {
+    mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'Enter a game title' : 'Ingresa el nombre del juego');
+    return;
+  }
+  seleccionarJuegoParaEnVivo(encodeURIComponent(val), '', 'PS5');
+}
+
+function detenerJuegoPsn() {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  localStorage.setItem('mediary_psn_now_playing', JSON.stringify({ isPlaying: false }));
+  localStorage.setItem('mediary_psn_manual_state', 'idle');
+  cerrarModalSeleccionarJuegoPsn();
+  renderizarPlayStationNowPlayingInicio(true);
+  mostrarToastPersonalizado(l === 'en' ? '💤 Console in rest mode · Not playing anything' : '💤 Consola en reposo · No estás jugando a nada');
+
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(false);
+  }
+}
+
 function alternarEstadoEnVivoPlayStation(e) {
   if (e && e.stopPropagation) e.stopPropagation();
-  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
   const isConn = localStorage.getItem('mediary_psn_connected') === 'true';
   if (!isConn) {
     if (typeof abrirModalConectarPsn === 'function') abrirModalConectarPsn();
@@ -25779,80 +25922,12 @@ function alternarEstadoEnVivoPlayStation(e) {
     if (raw) nowPlaying = JSON.parse(raw);
   } catch (err) {}
 
-  const actualmenteJugando = !!(nowPlaying && nowPlaying.isPlaying);
-  const nuevoEstado = !actualmenteJugando;
+  const actualmenteJugando = !!(nowPlaying && nowPlaying.isPlaying && (nowPlaying.titleName || nowPlaying.name));
 
-  if (nuevoEstado) {
-    let juegoActivo = null;
-    const juegoProg = obtenerJuegoEnProgresoPlayStation();
-    const todosJuegos = obtenerTodosJuegosPlayStation();
-
-    if (juegoProg) {
-      juegoActivo = {
-        isPlaying: true,
-        titleName: juegoProg.tituloBase || juegoProg.titulo,
-        platform: (juegoProg.creador && juegoProg.creador.includes('PS4')) ? 'PS4' : 'PS5',
-        studio: juegoProg.creador || 'PlayStation',
-        status: l === 'en' ? 'Playing now' : 'Jugando ahora',
-        hours: parseFloat(juegoProg.horas) || 0,
-        image: juegoProg.poster || '',
-        trophyProgress: juegoProg.calificacion ? `${juegoProg.calificacion} ★` : ''
-      };
-    } else if (todosJuegos.length > 0) {
-      const u = todosJuegos[0];
-      juegoActivo = {
-        isPlaying: true,
-        titleName: u.tituloBase || u.titulo,
-        platform: (u.creador && u.creador.includes('PS4')) ? 'PS4' : 'PS5',
-        studio: u.creador || 'PlayStation',
-        status: l === 'en' ? 'Playing now' : 'Jugando ahora',
-        hours: parseFloat(u.horas) || 0,
-        image: u.poster || '',
-        trophyProgress: u.calificacion ? `${u.calificacion} ★` : ''
-      };
-    } else if (nowPlaying && (nowPlaying.titleName || nowPlaying.name)) {
-      juegoActivo = Object.assign({}, nowPlaying, {
-        isPlaying: true,
-        status: l === 'en' ? 'Playing now' : 'Jugando ahora'
-      });
-    } else {
-      let stats = null;
-      try {
-        const rawS = localStorage.getItem('mediary_psn_stats');
-        if (rawS) stats = JSON.parse(rawS);
-      } catch (err) {}
-      const fallback = (stats && stats.topGames && stats.topGames[0]) || { name: 'PlayStation Game', platform: 'PS5' };
-      juegoActivo = {
-        isPlaying: true,
-        titleName: fallback.name || fallback.titleName || 'PlayStation Game',
-        platform: fallback.platform || 'PS5',
-        studio: fallback.studio || 'PlayStation Studios',
-        status: l === 'en' ? 'Playing now' : 'Jugando ahora',
-        hours: fallback.hours || 0,
-        image: fallback.image || ''
-      };
-    }
-
-    localStorage.setItem('mediary_psn_now_playing', JSON.stringify(juegoActivo));
-    localStorage.setItem('mediary_psn_manual_state', 'playing');
-    renderizarPlayStationNowPlayingInicio(true);
-    mostrarToastPersonalizado(l === 'en'
-      ? `🎮 PlayStation: Now playing "${juegoActivo.titleName}"`
-      : `🎮 PlayStation: Ahora jugando a "${juegoActivo.titleName}"`
-    );
+  if (actualmenteJugando) {
+    detenerJuegoPsn();
   } else {
-    const idleData = Object.assign({}, nowPlaying || {}, {
-      isPlaying: false,
-      status: l === 'en' ? 'Rest Mode' : 'Consola en reposo'
-    });
-    localStorage.setItem('mediary_psn_now_playing', JSON.stringify(idleData));
-    localStorage.setItem('mediary_psn_manual_state', 'idle');
-    renderizarPlayStationNowPlayingInicio(true);
-    mostrarToastPersonalizado(l === 'en' ? '💤 PlayStation: Console in rest mode' : '💤 PlayStation: Consola en reposo');
-  }
-
-  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
-    sincronizarPreferenciasYAppsHaciaNube(false);
+    abrirModalSeleccionarJuegoPsn();
   }
 }
 
@@ -25864,213 +25939,7 @@ function alternarJuegoUsuarioPlayStation(e) {
     alternarJuegoDemoPlayStation();
     return;
   }
-
-  const todosJuegos = obtenerTodosJuegosPlayStation();
-  if (todosJuegos.length === 0) {
-    mostrarToastPersonalizado(l === 'en' ? 'Log a game in Mediary to select it' : 'Registra videojuegos en Mediary para seleccionarlos');
-    return;
-  }
-
-  let nowPlaying = null;
-  try {
-    const raw = localStorage.getItem('mediary_psn_now_playing');
-    if (raw) nowPlaying = JSON.parse(raw);
-  } catch (err) {}
-
-  const currentTitle = (nowPlaying?.titleName || nowPlaying?.name || '').toLowerCase();
-  const curIdx = todosJuegos.findIndex(j => (j.tituloBase || j.titulo || '').toLowerCase() === currentTitle);
-  const nextIdx = (curIdx + 1) % todosJuegos.length;
-  const nextGame = todosJuegos[nextIdx];
-
-  const updated = {
-    isPlaying: nowPlaying ? !!nowPlaying.isPlaying : true,
-    titleName: nextGame.tituloBase || nextGame.titulo,
-    platform: (nextGame.creador && nextGame.creador.includes('PS4')) ? 'PS4' : 'PS5',
-    studio: nextGame.creador || 'PlayStation',
-    status: nowPlaying?.isPlaying ? (l === 'en' ? 'Playing now' : 'Jugando ahora') : (l === 'en' ? 'Rest Mode' : 'En reposo'),
-    hours: parseFloat(nextGame.horas) || 0,
-    image: nextGame.poster || '',
-    trophyProgress: nextGame.calificacion ? `${nextGame.calificacion} ★` : ''
-  };
-
-  localStorage.setItem('mediary_psn_now_playing', JSON.stringify(updated));
-  renderizarPlayStationNowPlayingInicio(true);
-  mostrarToastPersonalizado(l === 'en' ? `🎮 PlayStation: Switched to "${updated.titleName}"` : `🎮 PlayStation: Cambiado a "${updated.titleName}"`);
-
-  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
-    sincronizarPreferenciasYAppsHaciaNube(false);
-  }
-}
-
-async function sincronizarCuentaPlayStation(onlineId, notificar = false) {
-  if (typeof onlineId === 'boolean') {
-    notificar = onlineId;
-    onlineId = null;
-  }
-  if (!onlineId) {
-    onlineId = localStorage.getItem('mediary_psn_username');
-  }
-  if (!onlineId) {
-    if (notificar) mostrarToastPersonalizado('No hay cuenta de PlayStation configurada');
-    return false;
-  }
-
-  if (onlineId.toLowerCase() === 'demo' || onlineId.toLowerCase() === 'gamer_mediary') {
-    conectarPlayStationDemo();
-    return true;
-  }
-
-  let user = null;
-  try {
-    const rawU = localStorage.getItem('mediary_psn_user');
-    if (rawU) user = JSON.parse(rawU);
-  } catch (e) {}
-
-  let stats = null;
-  try {
-    const rawS = localStorage.getItem('mediary_psn_stats');
-    if (rawS) stats = JSON.parse(rawS);
-  } catch (e) {}
-
-  if (!user) {
-    user = {
-      onlineId: onlineId,
-      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(onlineId)}&background=003791&color=ffffff&bold=true`,
-      plus: true,
-      trophies: { platinum: 5, gold: 34, silver: 120, bronze: 640, level: 215 }
-    };
-  }
-
-  if (!stats) {
-    const todosJuegos = typeof obtenerTodosJuegosPlayStation === 'function' ? obtenerTodosJuegosPlayStation() : [];
-    if (todosJuegos.length > 0) {
-      stats = {
-        totalHours: todosJuegos.reduce((acc, g) => acc + (parseFloat(g.horas) || 0), 0),
-        recentHours: parseFloat(todosJuegos[0]?.horas) || 0,
-        gamesCount: todosJuegos.length,
-        lastSync: new Date().toISOString(),
-        topGames: todosJuegos.slice(0, 5).map(g => ({
-          name: g.tituloBase || g.titulo,
-          platform: (g.creador && g.creador.includes('PS4')) ? 'PS4' : 'PS5',
-          hours: parseFloat(g.horas) || 0,
-          trophies: g.calificacion ? `${g.calificacion} ★` : '',
-          image: g.poster || '',
-          studio: g.creador || 'PlayStation'
-        }))
-      };
-    } else {
-      stats = {
-        totalHours: 180.0,
-        recentHours: 14.5,
-        gamesCount: 0,
-        lastSync: new Date().toISOString(),
-        topGames: []
-      };
-    }
-  } else {
-    stats.lastSync = new Date().toISOString();
-  }
-
-  localStorage.setItem('mediary_psn_user', JSON.stringify(user));
-  localStorage.setItem('mediary_psn_stats', JSON.stringify(stats));
-
-  actualizarUIPlayStation();
-  renderizarPlayStationNowPlayingInicio(true);
-
-  const modalStats = document.getElementById('modal-estadisticas-avanzadas');
-  if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
-    renderizarContenidoEstadisticasAvanzadas();
-  }
-
-  if (notificar) {
-    mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? ` PlayStation synced: ${onlineId}` : ` PlayStation sincronizado: ${onlineId}`);
-  }
-  return true;
-}
-
-function alternarJuegoDemoPlayStation() {
-  const juegosDemo = [
-    {
-      isPlaying: true,
-      titleName: 'God of War Ragnarök',
-      platform: 'PS5',
-      studio: 'Santa Monica Studio · PlayStation Studios',
-      status: 'Explorando las Tierras del Cráter en Vanaheim',
-      hours: 56.5,
-      image: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg',
-      trophyProgress: '78%'
-    },
-    {
-      isPlaying: true,
-      titleName: "Marvel's Spider-Man 2",
-      platform: 'PS5',
-      studio: 'Insomniac Games · PlayStation Studios',
-      status: 'Balanceándose por Manhattan con el traje Simbionte',
-      hours: 32.0,
-      image: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co7327.jpg',
-      trophyProgress: 'Platino'
-    },
-    {
-      isPlaying: true,
-      titleName: 'Elden Ring',
-      platform: 'PS5',
-      studio: 'FromSoftware · Bandai Namco',
-      status: 'Enfrentando a Malenia en las Tierras Intermedias',
-      hours: 142.0,
-      image: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co4jni.jpg',
-      trophyProgress: 'Platino'
-    },
-    {
-      isPlaying: false,
-      titleName: 'God of War Ragnarök',
-      platform: 'PS5',
-      studio: 'Santa Monica Studio',
-      status: 'Consola en reposo',
-      hours: 56.5,
-      image: 'https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg',
-      trophyProgress: '78%'
-    }
-  ];
-
-  let curNp = null;
-  try {
-    const raw = localStorage.getItem('mediary_psn_now_playing');
-    if (raw) curNp = JSON.parse(raw);
-  } catch (e) {}
-
-  const curIdx = juegosDemo.findIndex(j => j.titleName === curNp?.titleName && j.isPlaying === curNp?.isPlaying);
-  const nextIdx = (curIdx + 1) % juegosDemo.length;
-  const nuevo = juegosDemo[nextIdx];
-
-  localStorage.setItem('mediary_psn_now_playing', JSON.stringify(nuevo));
-  renderizarPlayStationNowPlayingInicio(true);
-  mostrarToastPersonalizado(` PlayStation: ${nuevo.isPlaying ? 'Jugando a ' + nuevo.titleName : 'Consola en reposo'}`);
-}
-
-function cambiarSlideLive(idx) {
-  const carousel = document.getElementById('home-live-carousel');
-  if (!carousel) return;
-  const w = carousel.clientWidth || carousel.parentElement?.clientWidth || 360;
-  carousel.scrollTo({ left: idx * w, behavior: 'smooth' });
-  actualizarPillsCarouselLive(idx);
-}
-
-function actualizarPillsCarouselLive(idx) {
-  const dotSp = document.getElementById('dot-live-spotify');
-  const dotPsn = document.getElementById('dot-live-psn');
-  if (dotSp) dotSp.classList.toggle('active', idx === 0);
-  if (dotPsn) dotPsn.classList.toggle('active', idx === 1);
-}
-
-function inicializarLiveCarouselScrollListener() {
-  const carousel = document.getElementById('home-live-carousel');
-  if (!carousel || carousel._hasScrollListener) return;
-  carousel._hasScrollListener = true;
-  carousel.addEventListener('scroll', () => {
-    const w = carousel.clientWidth || 360;
-    const idx = Math.round(carousel.scrollLeft / w);
-    actualizarPillsCarouselLive(idx);
-  }, { passive: true });
+  abrirModalSeleccionarJuegoPsn();
 }
 
 function renderizarPlayStationNowPlayingInicio(forzar = false) {
@@ -26097,68 +25966,17 @@ function renderizarPlayStationNowPlayingInicio(forzar = false) {
     if (raw) nowPlaying = JSON.parse(raw);
   } catch (e) {}
 
-  let stats = null;
-  try {
-    const rawS = localStorage.getItem('mediary_psn_stats');
-    if (rawS) stats = JSON.parse(rawS);
-  } catch (e) {}
-
-  const juegoEnProgreso = (typeof obtenerJuegoEnProgresoPlayStation === 'function') ? obtenerJuegoEnProgresoPlayStation() : null;
-  const todosJuegos = (typeof obtenerTodosJuegosPlayStation === 'function') ? obtenerTodosJuegosPlayStation() : [];
-  const manualState = localStorage.getItem('mediary_psn_manual_state');
-
-  // Si el usuario no ha forzado un estado manual ("idle" o "playing"):
-  // Detectar automáticamente si hay un juego en progreso en Mediary
-  if (!manualState && juegoEnProgreso && (!nowPlaying || !nowPlaying.titleName)) {
-    nowPlaying = {
-      isPlaying: true,
-      titleName: juegoEnProgreso.tituloBase || juegoEnProgreso.titulo,
-      platform: (juegoEnProgreso.creador && juegoEnProgreso.creador.includes('PS4')) ? 'PS4' : 'PS5',
-      studio: juegoEnProgreso.creador || 'PlayStation',
-      status: (userPrefs && userPrefs.lang === 'en') ? 'Playing now' : 'Jugando ahora',
-      hours: parseFloat(juegoEnProgreso.horas) || 0,
-      image: juegoEnProgreso.poster || '',
-      trophyProgress: juegoEnProgreso.calificacion ? `${juegoEnProgreso.calificacion} ★` : ''
-    };
-  }
-
-  const isPlaying = nowPlaying ? !!nowPlaying.isPlaying : false;
+  // Si no está explícitamente en sesión activa de juego, se muestra en reposo diciendo "No estás jugando a nada"
+  const isPlaying = !!(nowPlaying && nowPlaying.isPlaying && (nowPlaying.titleName || nowPlaying.name));
 
   if (isPlaying) {
     if (badgePsn) badgePsn.style.display = 'inline-block';
     container.innerHTML = dibujarTarjetaPlayStationCompacta(nowPlaying);
   } else {
     if (badgePsn) badgePsn.style.display = 'none';
-    let lastGame = null;
-    if (juegoEnProgreso) {
-      lastGame = {
-        name: juegoEnProgreso.tituloBase || juegoEnProgreso.titulo,
-        platform: (juegoEnProgreso.creador && juegoEnProgreso.creador.includes('PS4')) ? 'PS4' : 'PS5',
-        hours: parseFloat(juegoEnProgreso.horas) || 0,
-        image: juegoEnProgreso.poster || '',
-        studio: juegoEnProgreso.creador || 'PlayStation',
-        trophies: juegoEnProgreso.calificacion ? `${juegoEnProgreso.calificacion} ★` : ''
-      };
-    } else if (todosJuegos.length > 0) {
-      const u = todosJuegos[0];
-      lastGame = {
-        name: u.tituloBase || u.titulo,
-        platform: (u.creador && u.creador.includes('PS4')) ? 'PS4' : 'PS5',
-        hours: parseFloat(u.horas) || 0,
-        image: u.poster || '',
-        studio: u.creador || 'PlayStation',
-        trophies: u.calificacion ? `${u.calificacion} ★` : ''
-      };
-    } else if (nowPlaying && (nowPlaying.titleName || nowPlaying.name)) {
-      lastGame = nowPlaying;
-    } else if (stats && stats.topGames && stats.topGames.length > 0) {
-      lastGame = stats.topGames[0];
-    }
-    container.innerHTML = dibujarTarjetaPlayStationCompactaIdle(lastGame);
+    container.innerHTML = dibujarTarjetaPlayStationCompactaIdle();
   }
 
-  // Si PlayStation está conectado y Spotify no lo está (o PlayStation está jugando en vivo),
-  // asegurar que el carrusel muestre la tarjeta de PlayStation
   const spToken = localStorage.getItem('mediary_spotify_token');
   if (!spToken || isPlaying) {
     const carousel = document.getElementById('home-live-carousel');
@@ -26177,7 +25995,7 @@ function renderizarPlayStationNowPlayingInicio(forzar = false) {
 function dibujarTarjetaPlayStationCompacta(data) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
   const isPlaying = !!data.isPlaying;
-  const titleName = data.titleName || (l === 'en' ? 'PlayStation Game' : 'Juego de PlayStation');
+  const titleName = data.titleName || data.name || (l === 'en' ? 'PlayStation Game' : 'Juego de PlayStation');
   const platform = data.platform || 'PS5';
   const studio = data.studio || (l === 'en' ? 'PlayStation Studios' : 'PlayStation Studios');
   const coverUrl = data.image || '';
@@ -26212,7 +26030,7 @@ function dibujarTarjetaPlayStationCompacta(data) {
             <div style="font-size:0.73rem; color:#38bdf8; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px; margin-top:1px;">
               <span>${platform}</span>
               <span style="opacity:0.5;">·</span>
-              <span style="color:#10b981; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700; cursor:pointer;" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Playing now · Tap to set Rest Mode' : 'Jugando ahora · Toca para pasar a En reposo'}">
+              <span style="color:#10b981; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700; cursor:pointer;" onclick="event.stopPropagation(); detenerJuegoPsn()" title="${l === 'en' ? 'Playing now · Tap to stop' : 'Jugando ahora · Toca para detener'}">
                 <span class="home-np-dot" style="background:#10b981;"></span>
                 <span>${l === 'en' ? 'Live · Playing' : 'En vivo · Jugando'}</span>
               </span>
@@ -26234,7 +26052,7 @@ function dibujarTarjetaPlayStationCompacta(data) {
           </div>
 
           <div class="home-psn-status-row">
-            <div class="home-psn-live-pill" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Playing now · Tap to set Rest Mode' : 'Jugando ahora · Toca para pasar a En reposo'}">
+            <div class="home-psn-live-pill" onclick="event.stopPropagation(); detenerJuegoPsn()" title="${l === 'en' ? 'Playing now · Tap to stop' : 'Jugando ahora · Toca para pasar a reposo'}">
               <span class="home-np-dot" style="background:#10b981;"></span>
               <span>${l === 'en' ? 'Live · Playing' : 'En vivo · Jugando'}</span>
             </div>
@@ -26244,11 +26062,11 @@ function dibujarTarjetaPlayStationCompacta(data) {
                 ⇄ <span>Demo</span>
               </button>
             ` : `
-              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Set to Rest Mode' : 'Poner en reposo'}">
-                💤 <span>${l === 'en' ? 'Rest' : 'Reposo'}</span>
+              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); detenerJuegoPsn()" title="${l === 'en' ? 'Stop playing / Set to Rest' : 'Dejar de jugar / Poner en reposo'}">
+                💤 <span>${l === 'en' ? 'Stop' : 'Dejar de jugar'}</span>
               </button>
               <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarJuegoUsuarioPlayStation(event)" title="${l === 'en' ? 'Switch game' : 'Cambiar juego'}">
-                ⇄ <span>${l === 'en' ? 'Game' : 'Juego'}</span>
+                ⇄ <span>${l === 'en' ? 'Change' : 'Cambiar'}</span>
               </button>
               <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Sync PlayStation status' : 'Sincronizar PlayStation'}">
                 ${getHeroIcon('arrow-path', '', 11)} <span>${l === 'en' ? 'Sync' : 'Sincronizar'}</span>
@@ -26278,41 +26096,34 @@ function dibujarTarjetaPlayStationCompacta(data) {
   `;
 }
 
-function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
+function dibujarTarjetaPlayStationCompactaIdle() {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
   const psnUser = localStorage.getItem('mediary_psn_username') || '';
-  const titleTxt = lastGame?.name || lastGame?.titleName || lastGame?.title || (psnUser ? psnUser : 'PlayStation Network');
-  const platform = lastGame?.platform || 'PS5';
-  const coverImg = lastGame?.image || lastGame?.icon || '';
-  const hours = parseFloat(lastGame?.hours) || 0;
-  const hLast = (typeof limpiarTextoHoras === 'function') ? (limpiarTextoHoras(lastGame?.hours) || (hours > 0 ? `${hours} hrs` : '')) : (hours > 0 ? `${hours} hrs` : '');
-  const isDemo = psnUser === 'Gamer_Mediary';
   const isExp = estaLiveCardExpandida('playstation');
-  const safeTituloParam = encodeURIComponent(lastGame?.name || lastGame?.titleName || lastGame?.title || '');
-  const trophyProgress = lastGame?.trophies || lastGame?.trophyProgress || '';
-  const studioTxt = lastGame?.studio || (lastGame ? (l === 'en' ? 'Last played title' : 'Último juego') : (l === 'en' ? 'Console offline' : 'Consola desconectada'));
+  const userTag = psnUser ? `@${psnUser}` : 'PlayStation Network';
 
-  const coverHtml = coverImg
-    ? `<img src="${escHtmlSpotify_(coverImg)}" alt="${escHtmlSpotify_(titleTxt)}" loading="lazy"><span class="home-psn-platform-badge">${platform}</span>`
-    : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:linear-gradient(135deg,#003791,#001a44);color:#60a5fa;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg></div>`;
+  const titleTxt = l === 'en' ? 'Not playing anything right now' : 'No estás jugando a nada';
+  const metaTxt = l === 'en' ? 'Console in rest mode · Inactive' : 'Consola en reposo · Sin juego activo';
 
   return `
     <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <div class="home-psn-cover-compact">
-        ${coverHtml}
+      <!-- i. A la izquierda: Icono sobrio de PlayStation / Control -->
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; background:linear-gradient(135deg, rgba(0,55,145,0.22), rgba(0,26,68,0.38)); color:#38bdf8; border:1px solid rgba(0,112,209,0.25);">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:26px; height:26px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
 
+      <!-- ii. Centro -->
       <div class="home-psn-center-compact">
         <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN SPOTIFY) -->
         <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
           <div style="flex:1; min-width:0; overflow:hidden;">
-            <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleTxt)}">
-              <span class="home-np-scrollable">${escHtmlSpotify_(titleTxt)}</span>
+            <div class="home-psn-title-compact home-np-text-wrap" title="${titleTxt}">
+              <span class="home-np-scrollable" style="color:var(--muted); font-weight:700;">${titleTxt}</span>
             </div>
             <div style="font-size:0.73rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px; margin-top:1px;">
-              <span>${platform}</span>
+              <span>${escHtmlSpotify_(userTag)}</span>
               <span style="opacity:0.5;">·</span>
-              <span style="color:var(--muted); display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700; cursor:pointer;" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Rest Mode · Tap to set Playing' : 'En reposo · Toca para pasar a Jugando'}">
+              <span style="color:var(--muted); display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700; cursor:pointer;" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Tap to start playing' : 'Toca para empezar a jugar'}">
                 <span class="home-np-dot" style="background:#64748b; box-shadow:none; animation:none;"></span>
                 <span>${l === 'en' ? 'Rest Mode' : 'En reposo'}</span>
               </span>
@@ -26320,41 +26131,30 @@ function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
           </div>
         </div>
 
-        <!-- VISTA EXPANDIDA -->
+        <!-- VISTA EXPANDIDA: DETALLES COMPLETOS -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
           <div class="home-psn-platform-label">
             <span>PlayStation Network</span>
             ${psnUser ? `<span style="font-size:0.68rem; color:#38bdf8; font-weight:700; opacity:0.85;">@${escHtmlSpotify_(psnUser)}</span>` : ''}
-            ${trophyProgress ? `<span class="home-psn-trophy-tag">${getHeroIcon('trophy', '', 11)} ${trophyProgress}</span>` : ''}
           </div>
-          <div class="home-psn-meta-compact home-np-text-wrap" title="${escHtmlSpotify_(studioTxt)}">
-            <span class="home-np-scrollable">${escHtmlSpotify_(studioTxt)}</span>
+          <div class="home-psn-meta-compact home-np-text-wrap" title="${metaTxt}">
+            <span class="home-np-scrollable">${metaTxt}</span>
           </div>
-          <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleTxt)}">
-            <span class="home-np-scrollable">${escHtmlSpotify_(titleTxt)}</span>
+          <div class="home-psn-title-compact home-np-text-wrap" title="${titleTxt}">
+            <span class="home-np-scrollable" style="font-weight:700; color:var(--text);">${titleTxt}</span>
           </div>
 
           <div class="home-psn-status-row">
-            <div class="home-psn-live-pill idle" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Rest Mode · Tap to set Playing' : 'En reposo · Toca para pasar a Jugando'}">
+            <div class="home-psn-live-pill idle" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Rest Mode · Tap to set Playing' : 'En reposo · Toca para indicar que estás jugando'}">
               <span class="home-np-dot" style="background:#64748b; box-shadow:none; animation:none;"></span>
               <span>${l === 'en' ? 'Rest Mode' : 'En reposo'}</span>
             </div>
-            ${hLast ? `<span class="home-psn-hours-tag">${getHeroIcon('clock', '', 11)} ${hLast}</span>` : ''}
-            ${isDemo ? `
-              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarJuegoDemoPlayStation()" title="Cambiar a juego activo">
-                ⇄ <span>Demo</span>
-              </button>
-            ` : `
-              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Play now' : 'Jugar ahora'}">
-                🎮 <span>${l === 'en' ? 'Play' : 'Jugar'}</span>
-              </button>
-              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarJuegoUsuarioPlayStation(event)" title="${l === 'en' ? 'Switch game' : 'Cambiar juego'}">
-                ⇄ <span>${l === 'en' ? 'Game' : 'Juego'}</span>
-              </button>
-              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Check active game' : 'Comprobar PlayStation'}">
-                ${getHeroIcon('arrow-path', '', 11)} <span>${l === 'en' ? 'Sync' : 'Sincronizar'}</span>
-              </button>
-            `}
+            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Mark game playing in real time' : 'Marcar juego que estoy jugando en tiempo real'}">
+              🎮 <span>${l === 'en' ? 'Play now' : 'Jugar ahora'}</span>
+            </button>
+            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Check active game' : 'Comprobar PlayStation'}">
+              ${getHeroIcon('arrow-path', '', 11)} <span>${l === 'en' ? 'Sync' : 'Sincronizar'}</span>
+            </button>
           </div>
         </div>
       </div>
@@ -26365,15 +26165,9 @@ function dibujarTarjetaPlayStationCompactaIdle(lastGame = null) {
             <path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/>
           </svg>
         </a>
-        ${(lastGame && (lastGame.name || lastGame.titleName)) ? `
-          <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarJuegoActualEnMediary(decodeURIComponent('${safeTituloParam}'), '${platform}')" title="${l === 'en' ? 'Log last played game in Mediary' : 'Registrar último juego en Mediary'}">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
-        ` : `
-          <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="${l === 'en' ? 'Go to Games' : 'Ver Juegos'}">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
-        `}
+        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="${l === 'en' ? 'Go to Games' : 'Ver Juegos'}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
