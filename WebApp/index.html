@@ -10151,9 +10151,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
       <div style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
         <!-- Selector de Período segmentado y compacto -->
         <div class="stats-period-group">
-          <button type="button" class="stats-period-btn active" id="stats-period-btn-all" onclick="cambiarPeriodoStats('all')">Todo</button>
-          <button type="button" class="stats-period-btn" id="stats-period-btn-year" onclick="cambiarPeriodoStats('year')"><span id="stats-lbl-cur-year">2026</span></button>
-          <button type="button" class="stats-period-btn" id="stats-period-btn-month" onclick="cambiarPeriodoStats('month')"><span id="stats-lbl-cur-month">Nov</span></button>
+          <button type="button" class="stats-period-btn active" id="stats-period-btn-year" onclick="cambiarPeriodoStats('year')"><span id="stats-lbl-cur-year">2026</span></button>
+          <button type="button" class="stats-period-btn" id="stats-period-btn-all" onclick="cambiarPeriodoStats('all')">Todos los tiempos</button>
         </div>
         <button type="button" class="btn-close-form" onclick="cerrarModalEstadisticasAvanzadas()" style="position:static; margin:0;" title="Cerrar"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
       </div>
@@ -20274,7 +20273,7 @@ aplicarEstilosGlobales(); }
 // === PANEL Y CENTRO DE ESTADÍSTICAS AVANZADAS MEDIARY ===
 // ========================================================
 var estadoStatsModal = {
-  periodo: 'all', // 'all' | 'year' | 'month'
+  periodo: 'year', // 'year' (predeterminado) | 'all'
   categoria: 'General' // 'General' | 'Peliculas' | 'Series' | 'Musica' | 'Juegos' | 'Lecturas'
 };
 
@@ -20288,26 +20287,213 @@ function escHtmlStats_(str) {
     .replace(/'/g, '&#39;');
 }
 
+function calcularTiempoCuenta() {
+  let fechaMin = null;
+  if (typeof perfilUsuario !== 'undefined' && perfilUsuario) {
+    if (perfilUsuario.created_at) {
+      const d = new Date(perfilUsuario.created_at);
+      if (!isNaN(d.getTime())) fechaMin = d;
+    }
+    if (perfilUsuario.preferencias?.createdAt) {
+      const d = new Date(perfilUsuario.preferencias.createdAt);
+      if (!isNaN(d.getTime()) && (!fechaMin || d < fechaMin)) fechaMin = d;
+    }
+  }
+  if (typeof estado !== 'undefined' && Array.isArray(estado.registros) && estado.registros.length) {
+    estado.registros.forEach(r => {
+      const fStr = r.created_at || r.fechaInicio || r.fechaFin;
+      if (fStr && fStr !== 'Sin fecha' && typeof esEnProgresoTexto === 'function' && !esEnProgresoTexto(fStr)) {
+        const d = (typeof parsearFechaAObjeto === 'function' ? parsearFechaAObjeto(fStr) : null) || new Date(fStr);
+        if (d && !isNaN(d.getTime())) {
+          if (!fechaMin || d < fechaMin) fechaMin = d;
+        }
+      }
+    });
+  }
+  const saved = localStorage.getItem('mediary_account_created_at');
+  if (saved) {
+    const d = new Date(saved);
+    if (!isNaN(d.getTime()) && (!fechaMin || d < fechaMin)) fechaMin = d;
+  } else if (fechaMin) {
+    localStorage.setItem('mediary_account_created_at', fechaMin.toISOString());
+  }
+
+  if (!fechaMin) {
+    fechaMin = new Date();
+    localStorage.setItem('mediary_account_created_at', fechaMin.toISOString());
+  }
+
+  const hoy = new Date();
+  const diffMs = hoy.getTime() - fechaMin.getTime();
+  const diffDias = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+
+  if (diffDias < 30) {
+    return `${diffDias} ${diffDias === 1 ? 'día' : 'días'}`;
+  }
+  const meses = Math.floor(diffDias / 30.4375);
+  if (meses < 12) {
+    return `${meses} ${meses === 1 ? 'mes' : 'meses'}`;
+  }
+  const anios = Math.floor(meses / 12);
+  const remMeses = meses % 12;
+  if (remMeses === 0) {
+    return `${anios} ${anios === 1 ? 'año' : 'años'}`;
+  }
+  return `${anios} ${anios === 1 ? 'año' : 'años'} y ${remMeses} ${remMeses === 1 ? 'mes' : 'meses'}`;
+}
+
+function calcularRachaSeries(regs) {
+  const allRegs = regs || (typeof estado !== 'undefined' ? estado.registros : []) || [];
+  const setDayIndices = new Set();
+  allRegs.forEach(r => {
+    if (r && (r.categoria === 'Series' || String(r.categoria || '').toLowerCase().includes('serie'))) {
+      if (typeof extraerDayIndicesDeRegistro === 'function') {
+        const setR = extraerDayIndicesDeRegistro(r);
+        setR.forEach(idx => setDayIndices.add(idx));
+      }
+    }
+  });
+  return typeof calcularRachaDesdeDayIndices === 'function'
+    ? calcularRachaDesdeDayIndices(setDayIndices)
+    : { rachaActual: 0, rachaMasAlta: 0, esActivaHoy: false, totalDias: 0 };
+}
+
+function obtenerMejorCalificado_(lista) {
+  if (!Array.isArray(lista) || !lista.length) return null;
+  const conCalif = lista.filter(r => Number(r.calificacion) > 0);
+  if (!conCalif.length) return null;
+  return conCalif.reduce((mejor, r) => {
+    const calR = Number(r.calificacion) || 0;
+    const calM = Number(mejor.calificacion) || 0;
+    if (calR > calM) return r;
+    if (calR === calM && r.esRewatch && !mejor.esRewatch) return r;
+    return mejor;
+  }, conCalif[0]);
+}
+
+function renderizarCardMejorCalificado_(item, labelCat = 'obras') {
+  if (!item) {
+    return `
+      <div class="stats-section-box">
+        <div class="stats-section-title">
+          <span>${getHeroIcon("star", "", 16)} Mejor Calificado</span>
+        </div>
+        <div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:14px;">
+          Aún no hay calificaciones registradas para ${labelCat} en este período.
+        </div>
+      </div>
+    `;
+  }
+  return `
+    <div class="stats-section-box">
+      <div class="stats-section-title">
+        <span>${getHeroIcon("trophy", "", 16)} Mejor Calificado</span>
+        <span style="font-size:0.75rem; color:var(--star-active, #c8955a); font-weight:700; display:inline-flex; align-items:center; gap:3px;">
+          ${getHeroIcon("star", "", 13)} ${Number(item.calificacion).toFixed(1)} / 5
+        </span>
+      </div>
+      <div class="stats-ranking-row" style="padding:10px 12px; align-items:center;">
+        <img src="${escHtmlStats_(item.poster || '')}" onerror="this.src='./icon.png'" style="width:48px; height:68px; border-radius:4px; object-fit:cover; background:var(--card); flex-shrink:0; border:1px solid var(--border);">
+        <div style="flex:1; min-width:0; margin-left:8px;">
+          <strong style="font-size:0.92rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(item.titulo)}</strong>
+          <span style="font-size:0.76rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block; margin-top:2px;">${escHtmlStats_(item.creador || '')} ${item.anio ? `· ${item.anio}` : ''} ${item.subcategoria ? `(${escHtmlStats_(item.subcategoria)})` : ''}</span>
+          ${item.comentario ? `<p style="font-size:0.74rem; color:var(--muted); font-style:italic; margin:4px 0 0 0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; opacity:0.9;">"${escHtmlStats_(item.comentario)}"</p>` : ''}
+        </div>
+        <div style="flex-shrink:0; margin-left:8px;">
+          <span style="font-size:0.8rem; font-weight:800; color:var(--star-active, #c8955a); background:rgba(200,149,90,0.15); border:1px solid rgba(200,149,90,0.35); padding:4px 9px; border-radius:12px; display:inline-flex; align-items:center; gap:3px;">
+            ${getHeroIcon("star", "", 12)} ${Number(item.calificacion).toFixed(1)}
+          </span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function generarGraficoBarras_({ titulo, subtitulo, items, unidad = '', colorBarra = 'var(--accent)' }) {
+  const maxVal = Math.max(...items.map(i => Number(i.valor) || 0), 1);
+  return `
+    <div class="stats-section-box">
+      <div class="stats-section-title">
+        <span>${titulo}</span>
+        ${subtitulo ? `<span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${subtitulo}</span>` : ''}
+      </div>
+      <div style="overflow-x:auto; padding-bottom:6px; scrollbar-width:none; -webkit-overflow-scrolling:touch;">
+        <div style="display:flex; align-items:flex-end; gap:6px; height:130px; padding:22px 6px 0 6px; min-width:${items.length > 7 ? '380px' : '100%'};">
+          ${items.map(it => {
+            const v = Number(it.valor) || 0;
+            const pct = v > 0 ? Math.max(8, Math.round((v / maxVal) * 100)) : 0;
+            const isZero = v === 0;
+            return `
+              <div style="flex:1; display:flex; flex-direction:column; align-items:center; height:100%; justify-content:flex-end; min-width:22px;">
+                <div style="font-size:0.68rem; font-weight:700; color:${isZero ? 'transparent' : 'var(--text)'}; margin-bottom:4px; line-height:1; white-space:nowrap;">
+                  ${isZero ? '-' : (typeof it.displayVal !== 'undefined' ? it.displayVal : v)}
+                </div>
+                <div style="width:100%; max-width:28px; height:${pct}%; background:${isZero ? 'var(--border)' : colorBarra}; border-radius:3px 3px 0 0; transition:height 0.4s ease; opacity:${isZero ? 0.35 : 1};" title="${escHtmlStats_(it.sublabel || `${it.label}: ${v} ${unidad}`)}"></div>
+                <div style="font-size:0.72rem; color:var(--muted); margin-top:6px; font-weight:600; white-space:nowrap;">
+                  ${it.label}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function obtenerDiasUltimaSemana_() {
+  const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+  const dias = [];
+  const hoy = new Date();
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate() - i);
+    const diaStr = `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+    const isoStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    dias.push({
+      date: d,
+      diaStr,
+      isoStr,
+      label: i === 0 ? 'Hoy' : diasSemana[d.getDay()],
+      fullLabel: `${diasSemana[d.getDay()]} ${d.getDate()}`
+    });
+  }
+  return dias;
+}
+
+function extraerMinutosDeTiempoLecturaTexto_(txt) {
+  if (!txt) return 0;
+  if (typeof txt === 'number') return txt;
+  const s = String(txt).toLowerCase().trim();
+  if (s.includes('min')) {
+    const n = parseInt(s);
+    return isNaN(n) ? 30 : n;
+  }
+  if (s.includes('hora') || s.includes('hr') || s.includes('h')) {
+    const n = parseFloat(s.replace(',', '.'));
+    return isNaN(n) ? 60 : Math.round(n * 60);
+  }
+  const parsed = parseFloat(s);
+  return isNaN(parsed) ? 30 : parsed;
+}
+
 function abrirModalEstadisticasAvanzadas(catInicial) {
   if (catInicial) estadoStatsModal.categoria = catInicial;
+  if (!estadoStatsModal.periodo) estadoStatsModal.periodo = 'year';
   const modal = document.getElementById('modal-estadisticas-avanzadas');
   if (!modal) return;
   modal.style.display = 'flex';
 
   const hoy = new Date();
   const yEl = document.getElementById('stats-lbl-cur-year');
-  const mEl = document.getElementById('stats-lbl-cur-month');
   if (yEl) yEl.textContent = hoy.getFullYear();
-  const mesesAbrev = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-  if (mEl) mEl.textContent = mesesAbrev[hoy.getMonth()];
 
   actualizarPillsFiltroStats();
   renderizarContenidoEstadisticasAvanzadas();
 
-  // Auto-sincronización con Spotify en segundo plano para alimentar el acumulador incremental
+  // Auto-sincronización con Spotify en segundo plano
   const token = localStorage.getItem('mediary_spotify_token');
   const lastSyncTime = Number(localStorage.getItem('mediary_spotify_last_auto_sync') || 0);
-  if (token && (Date.now() - lastSyncTime > 5 * 60 * 1000)) {
+  if (token && (Date.now() - lastSyncTime > 5 * 60 * 1000) && typeof actualizarDatosSpotify === 'function') {
     localStorage.setItem('mediary_spotify_last_auto_sync', String(Date.now()));
     actualizarDatosSpotify(false).then(() => {
       renderizarContenidoEstadisticasAvanzadas();
@@ -20354,10 +20540,11 @@ function cambiarCatStats(cat) {
 }
 
 function actualizarPillsFiltroStats() {
-  ['all', 'year', 'month'].forEach(p => {
-    const btn = document.getElementById(`stats-period-btn-${p}`);
-    if (btn) btn.classList.toggle('active', estadoStatsModal.periodo === p);
-  });
+  const btnYear = document.getElementById('stats-period-btn-year');
+  const btnAll = document.getElementById('stats-period-btn-all');
+  if (btnYear) btnYear.classList.toggle('active', estadoStatsModal.periodo === 'year');
+  if (btnAll) btnAll.classList.toggle('active', estadoStatsModal.periodo === 'all');
+
   document.querySelectorAll('.stats-cat-tab').forEach(t => {
     t.classList.toggle('active', t.dataset.cat === estadoStatsModal.categoria);
   });
@@ -20365,10 +20552,10 @@ function actualizarPillsFiltroStats() {
 
 function obtenerFechaObjetoStats_(r) {
   if (!r) return null;
-  const f = (r.fechaFin && r.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(r.fechaFin))
+  const f = (r.fechaFin && r.fechaFin !== 'Sin fecha' && typeof esEnProgresoTexto === 'function' && !esEnProgresoTexto(r.fechaFin))
     ? r.fechaFin
     : r.fechaInicio;
-  return parsearFechaAObjeto(f);
+  return typeof parsearFechaAObjeto === 'function' ? parsearFechaAObjeto(f) : new Date(f);
 }
 
 function formatearHorasStats_(h) {
@@ -20384,17 +20571,17 @@ function calcularHorasObraStats_(r, seriesConTemporadas) {
   if (!r) return 0;
   const cat = r.categoria;
   if (cat === 'Peliculas') {
-    return extraerHorasRegistro(r) || 1.8;
+    return (typeof extraerHorasRegistro === 'function' ? extraerHorasRegistro(r) : 0) || 1.8;
   }
   if (cat === 'Series') {
     const isSeason = (r.subcategoria && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))) || /\[S\d+\]/i.test(r.titulo || '');
     const base = (r.tituloBase || (r.titulo || '').replace(/\s*\[S\d+\].*$/, '')).trim().toLowerCase();
-    if (isSeason) return extraerHorasRegistro(r) || 8.0;
-    if (seriesConTemporadas && !seriesConTemporadas.has(base)) return extraerHorasRegistro(r) || 9.0;
+    if (isSeason) return (typeof extraerHorasRegistro === 'function' ? extraerHorasRegistro(r) : 0) || 8.0;
+    if (seriesConTemporadas && !seriesConTemporadas.has(base)) return (typeof extraerHorasRegistro === 'function' ? extraerHorasRegistro(r) : 0) || 9.0;
     return 0;
   }
   if (cat === 'Musica') {
-    const h = extraerHorasRegistro(r);
+    const h = typeof extraerHorasRegistro === 'function' ? extraerHorasRegistro(r) : 0;
     if (h > 0) return h;
     const sub = (r.subcategoria || '').toLowerCase();
     if (sub.includes('cancion') || sub.includes('canción')) return 3.5 / 60;
@@ -20410,7 +20597,7 @@ function calcularHorasObraStats_(r, seriesConTemporadas) {
     return 12.0;
   }
   if (cat === 'Lecturas') {
-    const h = extraerHorasRegistro(r);
+    const h = typeof extraerHorasRegistro === 'function' ? extraerHorasRegistro(r) : 0;
     if (h > 0) return h;
     const sub = (r.subcategoria || '').toLowerCase();
     if (sub.includes('cómic') || sub.includes('comic') || sub.includes('manga')) return 1.5;
@@ -20445,7 +20632,6 @@ function obtenerMetricasMusicaSpotifyStats_(spotifyStats, spotifyAccumulator, no
     }
   }
 
-  // Fallbacks si el acumulador aún no ha guardado datos históricos
   const fallbackHoras = spotifyStats && spotifyStats.recentHours != null
     ? parseFloat(spotifyStats.recentHours)
     : (spotifyStats && spotifyStats.recentMinutes ? (spotifyStats.recentMinutes / 60) : 0);
@@ -20489,29 +20675,23 @@ function renderizarContenidoEstadisticasAvanzadas() {
     }
   });
 
-  // Filtrado según período seleccionado
+  // Filtrado según período seleccionado: 'year' (predeterminado) o 'all'
   const regsPeriodo = todosRegs.filter(r => {
     if (estadoStatsModal.periodo === 'all') return true;
     const d = obtenerFechaObjetoStats_(r);
     if (!d) return false;
-    if (estadoStatsModal.periodo === 'year') {
-      return d.getFullYear() === nowYear;
-    }
-    if (estadoStatsModal.periodo === 'month') {
-      return d.getFullYear() === nowYear && d.getMonth() === nowMonth;
-    }
-    return true;
+    return d.getFullYear() === nowYear;
   });
 
   const periodTxt = estadoStatsModal.periodo === 'all'
-    ? 'Todo el historial'
-    : (estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : `${mesesLargo[nowMonth]} ${nowYear}`);
+    ? 'Todos los tiempos'
+    : `Año ${nowYear}`;
 
   if (tagSummary) {
-    tagSummary.textContent = `${regsPeriodo.length} registros en ${periodTxt}`;
+    tagSummary.textContent = `${regsPeriodo.length} productos agregados (${periodTxt})`;
   }
 
-  // Cargar datos de Spotify y acumulador si existen en localStorage
+  // Cargar datos de Spotify y acumulador
   let spotifyStats = null;
   let spotifyAccumulator = null;
   try {
@@ -20523,7 +20703,7 @@ function renderizarContenidoEstadisticasAvanzadas() {
     if (accRaw) spotifyAccumulator = JSON.parse(accRaw);
   } catch (e) {}
 
-  // Cargar datos de Last.fm si existen en localStorage
+  // Cargar datos de Last.fm
   let lastfmConnected = localStorage.getItem('mediary_lastfm_connected') === 'true';
   let lastfmUser = null;
   let lastfmStats = null;
@@ -20536,7 +20716,7 @@ function renderizarContenidoEstadisticasAvanzadas() {
     if (lfmS) lastfmStats = JSON.parse(lfmS);
   } catch (e) {}
 
-  // Cargar datos de Steam si existen en localStorage
+  // Cargar datos de Steam
   let steamConnected = localStorage.getItem('mediary_steam_connected') === 'true';
   let steamUser = null;
   let steamStats = null;
@@ -20558,7 +20738,7 @@ function renderizarContenidoEstadisticasAvanzadas() {
     }
   } catch (e) {}
 
-  // Cargar datos de PlayStation si existen en localStorage
+  // Cargar datos de PlayStation
   let psnConnected = localStorage.getItem('mediary_psn_connected') === 'true';
   let psnUser = null;
   let psnStats = null;
@@ -20609,20 +20789,18 @@ function renderizarContenidoEstadisticasAvanzadas() {
 }
 
 function renderizarStatsGeneral_(ctx) {
-  const { regsPeriodo, todosRegs, seriesConTemporadas, nowYear, nowMonth, mesesLargo, spotifyStats, spotifyAccumulator, lastfmConnected, lastfmUser, lastfmStats, steamConnected, steamUser, steamStats, psnConnected, psnStats } = ctx;
+  const { regsPeriodo, todosRegs, seriesConTemporadas, nowYear, nowMonth, spotifyStats, spotifyAccumulator, lastfmConnected, lastfmStats, steamConnected, steamStats, psnConnected, psnStats, periodTxt } = ctx;
   const total = regsPeriodo.length;
 
   let horasPelis = 0, horasSeries = 0, horasJuegos = 0, horasLecturas = 0;
   let countPelis = 0, countSeries = 0, countJuegos = 0, countLecturas = 0;
-  let sumCalifs = 0, numCalifs = 0, rewatches = 0;
+  let sumCalifs = 0, numCalifs = 0;
 
   regsPeriodo.forEach(r => {
     if (Number(r.calificacion) > 0) {
       sumCalifs += Number(r.calificacion);
       numCalifs++;
     }
-    if (r.esRewatch) rewatches++;
-
     const cat = r.categoria;
     const h = calcularHorasObraStats_(r, seriesConTemporadas);
     if (cat === 'Peliculas') { horasPelis += h; countPelis++; }
@@ -20631,17 +20809,16 @@ function renderizarStatsGeneral_(ctx) {
     else if (cat === 'Lecturas') { horasLecturas += h; countLecturas++; }
   });
 
+  const ratingAvg = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
+
   const tieneLastfm = !!(lastfmConnected && lastfmStats && (lastfmStats.countTotal > 0 || lastfmStats.horasTotal > 0));
-  const tieneSpotify = !tieneLastfm && !!(spotifyStats && (spotifyStats.recentHours != null || spotifyStats.recentMinutes != null || (spotifyStats.topArtists && spotifyStats.topArtists.length) || (spotifyStats.topTracks && spotifyStats.topTracks.length)));
+  const tieneSpotify = !tieneLastfm && !!(spotifyStats && (spotifyStats.recentHours != null || spotifyStats.recentMinutes != null));
   const metricasSp = obtenerMetricasMusicaSpotifyStats_(spotifyStats, spotifyAccumulator, nowYear, nowMonth);
 
   let horasMusica = 0;
   let countMusica = 0;
   if (tieneLastfm) {
-    if (estadoStatsModal.periodo === 'month') {
-      horasMusica = lastfmStats.horasMes || 0;
-      countMusica = lastfmStats.countMes || 0;
-    } else if (estadoStatsModal.periodo === 'year') {
+    if (estadoStatsModal.periodo === 'year') {
       horasMusica = lastfmStats.horasAnio || 0;
       countMusica = lastfmStats.countAnio || 0;
     } else {
@@ -20649,57 +20826,33 @@ function renderizarStatsGeneral_(ctx) {
       countMusica = lastfmStats.countTotal || 0;
     }
   } else if (tieneSpotify) {
-    if (estadoStatsModal.periodo === 'month') {
-      horasMusica = metricasSp.horasMes;
-      countMusica = metricasSp.countMes;
-    } else if (estadoStatsModal.periodo === 'year') {
+    if (estadoStatsModal.periodo === 'year') {
       horasMusica = metricasSp.horasAnio;
       countMusica = metricasSp.countAnio;
     } else {
       horasMusica = metricasSp.horasTotal;
       countMusica = metricasSp.countTotal;
     }
+  } else {
+    regsPeriodo.filter(r => r.categoria === 'Musica').forEach(r => {
+      horasMusica += calcularHorasObraStats_(r);
+      countMusica++;
+    });
   }
 
-  const tieneSteam = !!(steamConnected && steamStats && !steamStats.isPrivate && (steamStats.totalHours > 0 || (steamStats.topGames && steamStats.topGames.length)));
-  const tienePsn = !!(psnConnected && psnStats && (psnStats.totalHours > 0 || (psnStats.topGames && psnStats.topGames.length)));
+  const tieneSteam = !!(steamConnected && steamStats && !steamStats.isPrivate && (steamStats.totalHours > 0));
+  const tienePsn = !!(psnConnected && psnStats && (psnStats.totalHours > 0));
   let horasSteamParaPeriodo = 0;
   if (tieneSteam) {
-    if (estadoStatsModal.periodo === 'month') {
-      horasSteamParaPeriodo = steamStats.recentHours || 0;
-    } else if (estadoStatsModal.periodo === 'year') {
-      horasSteamParaPeriodo = Math.max(steamStats.recentHours || 0, horasJuegos);
-    } else {
-      horasSteamParaPeriodo = steamStats.totalHours || 0;
-    }
+    horasSteamParaPeriodo = (estadoStatsModal.periodo === 'year') ? Math.max(steamStats.recentHours || 0, horasJuegos) : (steamStats.totalHours || 0);
   }
   let horasPsnParaPeriodo = 0;
   if (tienePsn) {
-    if (estadoStatsModal.periodo === 'month') {
-      horasPsnParaPeriodo = psnStats.recentHours || 0;
-    } else if (estadoStatsModal.periodo === 'year') {
-      horasPsnParaPeriodo = psnStats.recentHours || 0;
-    } else {
-      horasPsnParaPeriodo = psnStats.totalHours || 0;
-    }
+    horasPsnParaPeriodo = (estadoStatsModal.periodo === 'year') ? (psnStats.recentHours || 0) : (psnStats.totalHours || 0);
   }
   const horasJuegosTotal = Math.max(horasSteamParaPeriodo + horasPsnParaPeriodo, horasJuegos);
-
   const horasTotal = horasPelis + horasSeries + horasMusica + horasJuegosTotal + horasLecturas;
-  const ratingAvg = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
 
-  // Métricas de Películas y Series del año y mes actual para acceso rápido
-  const pelisAnio = todosRegs.filter(r => r.categoria === 'Peliculas' && obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
-  const pelisMes = pelisAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
-  const hPelisAnio = pelisAnio.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
-  const hPelisMes = pelisMes.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
-
-  const seriesAnio = todosRegs.filter(r => r.categoria === 'Series' && obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
-  const seriesMes = seriesAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
-  const hSeriesAnio = seriesAnio.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
-  const hSeriesMes = seriesMes.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
-
-  // Barra de distribución proporcional
   const pctPelis = horasTotal ? Math.round((horasPelis / horasTotal) * 100) : 0;
   const pctSeries = horasTotal ? Math.round((horasSeries / horasTotal) * 100) : 0;
   const pctMusica = horasTotal ? Math.round((horasMusica / horasTotal) * 100) : 0;
@@ -20707,27 +20860,22 @@ function renderizarStatsGeneral_(ctx) {
   const pctLecturas = horasTotal ? Math.round((horasLecturas / horasTotal) * 100) : 0;
 
   return `
-    <!-- KPI HERO GRIDS -->
+    <!-- 1. KPIS GENERALES: TIEMPO DE LA CUENTA, PRODUCTOS AGREGADOS, NOTA PROMEDIO -->
     <div class="stats-kpi-grid">
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("clock", "", 16)}</span> <span>Tiempo Total</span></div>
-        <div class="stats-kpi-val">${formatearHorasStats_(horasTotal)}</div>
-        <div class="stats-kpi-sub">Consumo cultural acumulado</div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("user", "", 16)}</span> <span>Tiempo de la Cuenta</span></div>
+        <div class="stats-kpi-val">${calcularTiempoCuenta()}</div>
+        <div class="stats-kpi-sub">Antigüedad en Mediary</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("folder", "", 16)}</span> <span>Obras Vistas</span></div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("folder", "", 16)}</span> <span>Productos Agregados</span></div>
         <div class="stats-kpi-val">${total}</div>
-        <div class="stats-kpi-sub">${rewatches} re-consumos (${total ? Math.round((rewatches/total)*100) : 0}%)</div>
+        <div class="stats-kpi-sub">${estadoStatsModal.periodo === 'year' ? `Agregados en ${nowYear}` : 'En todo el historial'}</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Media</span></div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Promedio</span></div>
         <div class="stats-kpi-val" style="color:var(--star-active, #c8955a); display:flex; align-items:center; gap:4px;">${getHeroIcon("star", "", 16)} ${ratingAvg}</div>
         <div class="stats-kpi-sub">${numCalifs} notas otorgadas</div>
-      </div>
-      <div class="stats-kpi-card" style="cursor:pointer;" onclick="${(tieneLastfm || tieneSpotify) ? "cambiarCatStats('Musica')" : "abrirModalConectarLastFm()"}">
-        <div class="stats-kpi-label"><span>${getHeroIcon("musical-note", "", 16)}</span> <span>Música (${tieneLastfm ? 'Last.fm' : (tieneSpotify ? 'Spotify' : 'Last.fm')})</span></div>
-        <div class="stats-kpi-val" style="color:#d51007;">${(tieneLastfm || tieneSpotify) ? formatearHorasStats_(horasMusica) : '—'}</div>
-        <div class="stats-kpi-sub">${tieneLastfm ? `${countMusica.toLocaleString()} scrobbles` : (tieneSpotify ? `${countMusica} pistas registradas` : 'Conectar Last.fm →')}</div>
       </div>
     </div>
 
@@ -20748,143 +20896,96 @@ function renderizarStatsGeneral_(ctx) {
       <div style="display:flex; flex-wrap:wrap; gap:8px;">
         <div class="stats-chip-cat" onclick="cambiarCatStats('Peliculas')">
           <span style="width:8px; height:8px; border-radius:50%; background:#5ea3c9; flex-shrink:0;"></span>
-          <span>${getHeroIcon("film", "", 13)} Pelis: <strong>${formatearHorasStats_(horasPelis)}</strong> (${pctPelis}%)</span>
+          <span>Películas:</span>
+          <strong>${formatearHorasStats_(horasPelis)} (${pctPelis}%)</strong>
         </div>
         <div class="stats-chip-cat" onclick="cambiarCatStats('Series')">
           <span style="width:8px; height:8px; border-radius:50%; background:#9177b9; flex-shrink:0;"></span>
-          <span><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg> Series: <strong>${formatearHorasStats_(horasSeries)}</strong> (${pctSeries}%)</span>
+          <span>Series:</span>
+          <strong>${formatearHorasStats_(horasSeries)} (${pctSeries}%)</strong>
         </div>
         <div class="stats-chip-cat" onclick="cambiarCatStats('Musica')">
           <span style="width:8px; height:8px; border-radius:50%; background:#d51007; flex-shrink:0;"></span>
-          <span><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> Música: <strong>${(tieneLastfm || tieneSpotify) ? formatearHorasStats_(horasMusica) : '0 hrs'}</strong> (${pctMusica}%)</span>
+          <span>Música:</span>
+          <strong>${formatearHorasStats_(horasMusica)} (${pctMusica}%)</strong>
         </div>
         <div class="stats-chip-cat" onclick="cambiarCatStats('Juegos')">
           <span style="width:8px; height:8px; border-radius:50%; background:#66c0f4; flex-shrink:0;"></span>
-          <span><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Juegos: <strong>${formatearHorasStats_(horasJuegosTotal)}</strong> ${(tieneSteam || tienePsn) ? `<span style="font-size:0.68rem; color:#38bdf8; font-weight:700;">(${[tieneSteam?'Steam':'', tienePsn?'PSN':''].filter(Boolean).join(' + ')})</span>` : `(${pctJuegos}%)`}</span>
+          <span>Juegos:</span>
+          <strong>${formatearHorasStats_(horasJuegosTotal)} (${pctJuegos}%)</strong>
         </div>
         <div class="stats-chip-cat" onclick="cambiarCatStats('Lecturas')">
           <span style="width:8px; height:8px; border-radius:50%; background:#cf7098; flex-shrink:0;"></span>
-          <span>${getHeroIcon("book-open", "", 13)} Libros: <strong>${formatearHorasStats_(horasLecturas)}</strong> (${pctLecturas}%)</span>
+          <span>Lecturas:</span>
+          <strong>${formatearHorasStats_(horasLecturas)} (${pctLecturas}%)</strong>
         </div>
       </div>
     </div>
 
-    <!-- COMPARATIVA DE RITMO (ESTE AÑO VS ESTE MES) -->
-    <div class="stats-section-box">
-      <div class="stats-section-title">
-        <span>Ritmo de Consumo</span>
-        <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${mesesLargo[nowMonth]} ${nowYear}</span>
+    <!-- TARJETAS DE ACCESO RÁPIDO -->
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:12px;">
+      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Peliculas')">
+        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('film', '', 14)} PELÍCULAS</div>
+        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${countPelis} vistas</div>
+        <div style="font-size:0.75rem; color:var(--muted);">${formatearHorasStats_(horasPelis)} de cine</div>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px;">
-        <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; padding:12px 14px; cursor:pointer; transition:all .15s ease;" onclick="cambiarCatStats('Peliculas')">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="font-size:0.86rem; color:var(--text);"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg> Películas</strong>
-            <span style="font-size:0.74rem; color:var(--muted);">Ver ›</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
-            <span style="color:var(--muted);">Este Año:</span>
-            <strong style="color:var(--text);">${formatearHorasStats_(hPelisAnio)} (${pelisAnio.length})</strong>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-            <span style="color:var(--muted);">Este Mes:</span>
-            <strong style="color:var(--accent);">${formatearHorasStats_(hPelisMes)} (${pelisMes.length})</strong>
-          </div>
-        </div>
-
-        <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; padding:12px 14px; cursor:pointer; transition:all .15s ease;" onclick="cambiarCatStats('Series')">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="font-size:0.86rem; color:var(--text);"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg> Series</strong>
-            <span style="font-size:0.74rem; color:var(--muted);">Ver ›</span>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
-            <span style="color:var(--muted);">Este Año:</span>
-            <strong style="color:var(--text);">${formatearHorasStats_(hSeriesAnio)} (${seriesAnio.length})</strong>
-          </div>
-          <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-            <span style="color:var(--muted);">Este Mes:</span>
-            <strong style="color:var(--accent);">${formatearHorasStats_(hSeriesMes)} (${seriesMes.length})</strong>
-          </div>
-        </div>
-
-        <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; padding:12px 14px; cursor:pointer; transition:all .15s ease;" onclick="${(tieneLastfm || tieneSpotify) ? "cambiarCatStats('Musica')" : "abrirModalConectarLastFm()"}">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="font-size:0.86rem; color:var(--text);"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> Música (${tieneLastfm ? 'Last.fm' : (tieneSpotify ? 'Spotify' : 'Last.fm')})</strong>
-            <span style="font-size:0.74rem; color:var(--muted);">${(tieneLastfm || tieneSpotify) ? 'Ver ›' : 'Vincular ›'}</span>
-          </div>
-          ${tieneLastfm ? `
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
-              <span style="color:var(--muted);">Este Año:</span>
-              <strong style="color:var(--text);">${formatearHorasStats_(lastfmStats.horasAnio)} (${(lastfmStats.countAnio || 0).toLocaleString()} scrobbles)</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-              <span style="color:var(--muted);">Este Mes:</span>
-              <strong style="color:#d51007;">${formatearHorasStats_(lastfmStats.horasMes)} (${(lastfmStats.countMes || 0).toLocaleString()} scrobbles)</strong>
-            </div>
-          ` : (tieneSpotify ? `
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
-              <span style="color:var(--muted);">Este Año:</span>
-              <strong style="color:var(--text);">${formatearHorasStats_(metricasSp.horasAnio)} (${metricasSp.countAnio})</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-              <span style="color:var(--muted);">Este Mes:</span>
-              <strong style="color:#4fa888;">${formatearHorasStats_(metricasSp.horasMes)} (${metricasSp.countMes})</strong>
-            </div>
-          ` : `
-            <div style="font-size:0.78rem; color:var(--muted); line-height:1.35; margin-top:2px;">
-              Conecta Last.fm para registrar scrobbles, discos y horas de escucha.
-            </div>
-          `)}
-        </div>
-
-        <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; padding:12px 14px; cursor:pointer; transition:all .15s ease;" onclick="cambiarCatStats('Juegos')">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-            <strong style="font-size:0.86rem; color:var(--text); display:inline-flex; align-items:center; gap:6px;">${getHeroIcon('gamepad', '', 16)} Videojuegos ${tieneSteam ? '<span style="font-size:0.7rem; color:#66c0f4; font-weight:700;">(Steam)</span>' : ''}</strong>
-            <span style="font-size:0.74rem; color:var(--muted);">${tieneSteam ? 'Ver ›' : (countJuegos ? 'Ver ›' : 'Vincular ›')}</span>
-          </div>
-          ${tieneSteam ? `
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
-              <span style="color:var(--muted);">Tiempo en Steam:</span>
-              <strong style="color:var(--text);">${formatearHorasStats_(steamStats.totalHours || 0)}</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-              <span style="color:var(--muted);">Reciente (2 sem):</span>
-              <strong style="color:#66c0f4;">${steamStats.recentHours ? steamStats.recentHours + ' hrs' : '--'}</strong>
-            </div>
-          ` : `
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
-              <span style="color:var(--muted);">Tiempo registrado:</span>
-              <strong style="color:var(--text);">${formatearHorasStats_(horasJuegos)}</strong>
-            </div>
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem;">
-              <span style="color:var(--muted);">Completados:</span>
-              <strong style="color:var(--accent);">${countJuegos} juegos</strong>
-            </div>
-          `}
+      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Series')">
+        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('tv', '', 14)} SERIES</div>
+        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${countSeries} temporadas</div>
+        <div style="font-size:0.75rem; color:var(--muted);">${formatearHorasStats_(horasSeries)} vistas</div>
+      </div>
+      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Musica')">
+        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('musical-note', '', 14)} MÚSICA</div>
+        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${formatearHorasStats_(horasMusica)}</div>
+        <div style="font-size:0.75rem; color:var(--muted);">${countMusica} scrobbles / pistas</div>
+      </div>
+      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Juegos')">
+        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('gamepad', '', 14)} JUEGOS</div>
+        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${formatearHorasStats_(horasJuegosTotal)}</div>
+        <div style="font-size:0.75rem; color:var(--muted);">${countJuegos} terminados</div>
+      </div>
+      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Lecturas')">
+        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('book-open', '', 14)} LECTURAS</div>
+        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${countLecturas} obras</div>
+        <div style="font-size:0.75rem; color:var(--muted);">${formatearHorasStats_(horasLecturas)} de lectura</div>
       </div>
     </div>
   `;
 }
 
-
-
 function renderizarStatsPeliculas_(ctx) {
-  const { regsPeriodo, todosRegs, nowYear, nowMonth, mesesLargo } = ctx;
+  const { regsPeriodo, todosRegs, nowYear, periodTxt } = ctx;
   const pelisPeriodo = regsPeriodo.filter(r => r.categoria === 'Peliculas');
   const pelisTotales = todosRegs.filter(r => r.categoria === 'Peliculas');
 
-  const pelisAnio = pelisTotales.filter(r => obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
-  const pelisMes = pelisAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
-
-  const hAnio = pelisAnio.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
-  const hMes = pelisMes.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
   const hPeriodo = pelisPeriodo.reduce((acc, r) => acc + (extraerHorasRegistro(r) || 1.8), 0);
 
-  let sumCalifs = 0, numCalifs = 0, rewatches = 0;
+  let sumCalifs = 0, numCalifs = 0;
   pelisPeriodo.forEach(r => {
     if (Number(r.calificacion) > 0) { sumCalifs += Number(r.calificacion); numCalifs++; }
-    if (r.esRewatch) rewatches++;
   });
   const avgCal = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
+
+  const rachaPelis = typeof calcularRachaPeliculas === 'function' ? calcularRachaPeliculas(todosRegs) : { rachaActual: 0, rachaMasAlta: 0 };
+  const mejorPeli = obtenerMejorCalificado_(pelisPeriodo);
+
+  // Gráfico de productos agregados vs cada mes del año
+  const pelisMeses = Array(12).fill(0);
+  todosRegs.forEach(r => {
+    if (r.categoria === 'Peliculas') {
+      const d = obtenerFechaObjetoStats_(r);
+      if (d && (d.getFullYear() === nowYear || estadoStatsModal.periodo === 'all')) {
+        pelisMeses[d.getMonth()]++;
+      }
+    }
+  });
+  const mesesAbrev = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const chartItemsPelis = mesesAbrev.map((m, idx) => ({
+    label: m,
+    valor: pelisMeses[idx],
+    displayVal: pelisMeses[idx],
+    sublabel: `${m}: ${pelisMeses[idx]} películas`
+  }));
 
   const top5Pelis = [...pelisPeriodo]
     .sort((a, b) => (Number(b.calificacion) || 0) - (Number(a.calificacion) || 0) || (b.esRewatch ? 1 : 0) - (a.esRewatch ? 1 : 0))
@@ -20904,34 +21005,42 @@ function renderizarStatsPeliculas_(ctx) {
     .slice(0, 5);
 
   return `
+    <!-- KPIS: TOTAL HORAS VISTAS, NOTA PROMEDIO, RACHAS -->
     <div class="stats-kpi-grid">
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("film", "", 16)}</span> <span>Tiempo Total</span></div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("clock", "", 16)}</span> <span>Total Horas Vistas</span></div>
         <div class="stats-kpi-val">${formatearHorasStats_(hPeriodo)}</div>
-        <div class="stats-kpi-sub">${pelisPeriodo.length} películas vistas</div>
+        <div class="stats-kpi-sub">${pelisPeriodo.length} películas en ${periodTxt}</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Año (${nowYear})</span></div>
-        <div class="stats-kpi-val">${formatearHorasStats_(hAnio)}</div>
-        <div class="stats-kpi-sub">${pelisAnio.length} películas en ${nowYear}</div>
-      </div>
-      <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:var(--accent);">${formatearHorasStats_(hMes)}</div>
-        <div class="stats-kpi-sub">${pelisMes.length} películas este mes</div>
-      </div>
-      <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Media</span></div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Promedio</span></div>
         <div class="stats-kpi-val" style="color:var(--star-active, #c8955a); display:flex; align-items:center; gap:4px;">${getHeroIcon("star", "", 16)} ${avgCal}</div>
-        <div class="stats-kpi-sub">${rewatches} rewatches</div>
+        <div class="stats-kpi-sub">De ${numCalifs} evaluadas</div>
+      </div>
+      <div class="stats-kpi-card">
+        <div class="stats-kpi-label"><span>${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Películas</span></div>
+        <div class="stats-kpi-val" style="color:#f59e0b;">${rachaPelis.rachaActual} ${rachaPelis.rachaActual === 1 ? 'día' : 'días'}</div>
+        <div class="stats-kpi-sub">Récord histórico: ${rachaPelis.rachaMasAlta} días</div>
       </div>
     </div>
+
+    <!-- MEJOR CALIFICADO -->
+    ${renderizarCardMejorCalificado_(mejorPeli, 'películas')}
+
+    <!-- GRÁFICO: PELÍCULAS AGREGADAS VS CADA MES DEL AÑO -->
+    ${generarGraficoBarras_({
+      titulo: 'Películas Agregadas por Mes',
+      subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
+      items: chartItemsPelis,
+      unidad: 'películas',
+      colorBarra: '#5ea3c9'
+    })}
 
     <!-- TOP 5 PELÍCULAS FAVORITAS -->
     <div class="stats-section-box">
       <div class="stats-section-title">
         <span>Top 5 Películas Favoritas</span>
-        <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">En este período</span>
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${periodTxt}</span>
       </div>
       ${top5Pelis.length ? top5Pelis.map((p, idx) => `
         <div class="stats-ranking-row">
@@ -20946,7 +21055,7 @@ function renderizarStatsPeliculas_(ctx) {
       `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">No hay películas registradas en este período.</div>'}
     </div>
 
-    <!-- TOP 5 DIRECTORES -->
+    <!-- TOP DIRECTORES -->
     <div class="stats-section-box">
       <div class="stats-section-title">
         <span>Directores Más Vistos</span>
@@ -20966,22 +21075,38 @@ function renderizarStatsPeliculas_(ctx) {
 }
 
 function renderizarStatsSeries_(ctx) {
-  const { regsPeriodo, todosRegs, seriesConTemporadas, nowYear, nowMonth, mesesLargo } = ctx;
+  const { regsPeriodo, todosRegs, seriesConTemporadas, nowYear, periodTxt } = ctx;
   const seriesPeriodo = regsPeriodo.filter(r => r.categoria === 'Series');
   const seriesTotales = todosRegs.filter(r => r.categoria === 'Series');
 
-  const seriesAnio = seriesTotales.filter(r => obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
-  const seriesMes = seriesAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
-
   const hPeriodo = seriesPeriodo.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
-  const hAnio = seriesAnio.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
-  const hMes = seriesMes.reduce((acc, r) => acc + calcularHorasObraStats_(r, seriesConTemporadas), 0);
 
   let sumCalifs = 0, numCalifs = 0;
   seriesPeriodo.forEach(r => {
     if (Number(r.calificacion) > 0) { sumCalifs += Number(r.calificacion); numCalifs++; }
   });
   const avgCal = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
+
+  const rachaSeries = calcularRachaSeries(todosRegs);
+  const mejorSerie = obtenerMejorCalificado_(seriesPeriodo);
+
+  // Gráfico de productos agregados vs cada mes del año
+  const seriesMeses = Array(12).fill(0);
+  todosRegs.forEach(r => {
+    if (r.categoria === 'Series') {
+      const d = obtenerFechaObjetoStats_(r);
+      if (d && (d.getFullYear() === nowYear || estadoStatsModal.periodo === 'all')) {
+        seriesMeses[d.getMonth()]++;
+      }
+    }
+  });
+  const mesesAbrev = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const chartItemsSeries = mesesAbrev.map((m, idx) => ({
+    label: m,
+    valor: seriesMeses[idx],
+    displayVal: seriesMeses[idx],
+    sublabel: `${m}: ${seriesMeses[idx]} series/temporadas`
+  }));
 
   const top5Series = [...seriesPeriodo]
     .sort((a, b) => (Number(b.calificacion) || 0) - (Number(a.calificacion) || 0))
@@ -21001,33 +21126,42 @@ function renderizarStatsSeries_(ctx) {
     .slice(0, 5);
 
   return `
+    <!-- KPIS: TOTAL HORAS VISTAS, NOTA PROMEDIO, RACHAS -->
     <div class="stats-kpi-grid">
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("tv", "", 16)}</span> <span>Tiempo en Series</span></div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("clock", "", 16)}</span> <span>Total Horas Vistas</span></div>
         <div class="stats-kpi-val">${formatearHorasStats_(hPeriodo)}</div>
-        <div class="stats-kpi-sub">${seriesPeriodo.length} temporadas / series</div>
+        <div class="stats-kpi-sub">${seriesPeriodo.length} temporadas en ${periodTxt}</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Año (${nowYear})</span></div>
-        <div class="stats-kpi-val">${formatearHorasStats_(hAnio)}</div>
-        <div class="stats-kpi-sub">${seriesAnio.length} temporadas en ${nowYear}</div>
-      </div>
-      <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:var(--accent);">${formatearHorasStats_(hMes)}</div>
-        <div class="stats-kpi-sub">${seriesMes.length} temporadas este mes</div>
-      </div>
-      <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Media</span></div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Promedio</span></div>
         <div class="stats-kpi-val" style="color:var(--star-active, #c8955a); display:flex; align-items:center; gap:4px;">${getHeroIcon("star", "", 16)} ${avgCal}</div>
-        <div class="stats-kpi-sub">De ${numCalifs} calificadas</div>
+        <div class="stats-kpi-sub">De ${numCalifs} evaluadas</div>
+      </div>
+      <div class="stats-kpi-card">
+        <div class="stats-kpi-label"><span>${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Series</span></div>
+        <div class="stats-kpi-val" style="color:#f59e0b;">${rachaSeries.rachaActual} ${rachaSeries.rachaActual === 1 ? 'día' : 'días'}</div>
+        <div class="stats-kpi-sub">Récord histórico: ${rachaSeries.rachaMasAlta} días</div>
       </div>
     </div>
+
+    <!-- MEJOR CALIFICADO -->
+    ${renderizarCardMejorCalificado_(mejorSerie, 'series')}
+
+    <!-- GRÁFICO: SERIES AGREGADAS VS CADA MES DEL AÑO -->
+    ${generarGraficoBarras_({
+      titulo: 'Series Agregadas por Mes',
+      subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
+      items: chartItemsSeries,
+      unidad: 'series',
+      colorBarra: '#9177b9'
+    })}
 
     <!-- TOP 5 SERIES FAVORITAS -->
     <div class="stats-section-box">
       <div class="stats-section-title">
         <span>Top 5 Series Favoritas</span>
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${periodTxt}</span>
       </div>
       ${top5Series.length ? top5Series.map((s, idx) => `
         <div class="stats-ranking-row">
@@ -21042,7 +21176,7 @@ function renderizarStatsSeries_(ctx) {
       `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">No hay series registradas en este período.</div>'}
     </div>
 
-    <!-- TOP CREADORES DE SERIES -->
+    <!-- TOP CREADORES -->
     <div class="stats-section-box">
       <div class="stats-section-title">
         <span>Creadores y Showrunners Más Vistos</span>
@@ -21095,266 +21229,234 @@ function cambiarRangoSpotifyStats(rango) {
 }
 
 function renderizarStatsMusica_(ctx) {
-  const { nowYear, nowMonth, mesesLargo, lastfmConnected, lastfmUser, lastfmStats, spotifyStats } = ctx;
+  const { regsPeriodo, todosRegs, nowYear, nowMonth, lastfmConnected, lastfmUser, lastfmStats, spotifyStats, spotifyAccumulator, periodTxt } = ctx;
 
   const tieneLastfm = !!(lastfmConnected && lastfmStats);
   const tieneSpotify = !!(spotifyStats && (spotifyStats.recentHours != null || (spotifyStats.topArtists && spotifyStats.topArtists.length) || (spotifyStats.topTracks && spotifyStats.topTracks.length)));
 
-  if (!tieneLastfm) {
-    return `
-      <div class="stats-section-box" style="text-align:center; padding:36px 20px;">
-        <div style="width:64px; height:64px; border-radius:50%; background:rgba(213,16,7,0.12); border:1px solid rgba(213,16,7,0.3); display:grid; place-items:center; margin:0 auto 16px auto; color:#d51007;">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M11.999 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 11.999 12 6.627 0 12.001-5.373 12.001-12 0-6.627-5.374-12-12.001-12zm-1.82 14.898c-.613 1.137-1.57 1.803-2.909 1.803-1.99 0-3.37-1.62-3.37-3.987 0-2.553 1.57-4.135 3.542-4.135 1.778 0 2.68 1.026 3.12 2.366l1.697-.754C11.536 7.95 10.03 6.54 7.442 6.54c-3.495 0-5.81 2.428-5.81 6.193 0 3.82 2.408 6.096 5.568 6.096 2.45 0 4.04-1.256 4.795-3.08l-1.816-.851zm8.303-.523c-1.005 0-1.842-.482-2.198-1.424l-3.266 1.487c.858 2.533 2.973 4.145 5.543 4.145 3.39 0 5.46-2.177 5.46-5.84 0-3.328-1.842-5.15-4.96-5.15-2.827 0-4.668 1.884-4.836 4.773l1.8.859c.147-1.78 1.256-2.889 3.036-2.889 1.884 0 2.91 1.047 2.91 2.805 0 1.55-1.047 2.24-2.489 2.24z"/>
-          </svg>
-        </div>
-        <h3 style="font-size:1.15rem; font-weight:800; color:var(--text); margin-bottom:8px;">Estadísticas Musicales con Last.fm</h3>
-        <p style="font-size:0.83rem; color:var(--muted); max-width:420px; margin:0 auto 16px auto; line-height:1.5;">
-          Tus estadísticas musicales en Mediary se basan en tu cuenta de <strong>Last.fm</strong>: scrobbles ilimitados de por vida, horas exactas de escucha, discos favoritos y artistas sin perder reproducciones.
-        </p>
+  // Cálculos de horas, discos, artistas y calificaciones
+  const musicaPeriodo = regsPeriodo.filter(r => r.categoria === 'Musica');
+  let horasMediary = 0;
+  let discosMediary = 0;
+  const artistasMediarySet = new Set();
+  let sumCal = 0, numCal = 0;
 
-        ${tieneSpotify ? `
-          <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(29,185,84,0.1); border:1px solid rgba(29,185,84,0.25); border-radius:4px; padding:6px 14px; margin-bottom:20px; font-size:0.75rem; color:#10b981;">
-            <span>${getHeroIcon("check", "", 15)} Spotify conectado</span>
-            <span style="color:var(--muted);">· Tu reproductor en vivo sigue activo</span>
-          </div>
-          <br>
-        ` : ''}
+  musicaPeriodo.forEach(r => {
+    horasMediary += calcularHorasObraStats_(r);
+    const sub = String(r.subcategoria || '').toLowerCase();
+    if (sub.includes('disco') || sub.includes('álbum') || sub.includes('album')) discosMediary++;
+    if (r.creador && r.creador !== 'Desconocido') artistasMediarySet.add(r.creador.trim().toLowerCase());
+    if (Number(r.calificacion) > 0) { sumCal += Number(r.calificacion); numCal++; }
+  });
 
-        <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-          <button type="button" class="btn-primary" onclick="abrirModalConectarLastFm()" style="background:#d51007; color:#fff; border:none; padding:10px 22px; border-radius:3px; font-weight:700; font-size:0.86rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px; box-shadow:0 4px 12px rgba(213,16,7,0.3);">
-            <span>${getHeroIcon("musical-note", "", 15)}</span> <span>Conectar Last.fm</span>
-          </button>
-          <button type="button" class="btn-secondary" onclick="conectarLastFmDemo()" style="border:1px solid var(--border); background:var(--card); color:var(--text); padding:10px 18px; border-radius:3px; font-size:0.84rem; cursor:pointer;">
-            Probar demo
-          </button>
-        </div>
-      </div>
-    `;
+  const metricasSp = obtenerMetricasMusicaSpotifyStats_(spotifyStats, spotifyAccumulator, nowYear, nowMonth);
+
+  let horasTotalNum = horasMediary;
+  let totalDiscos = Math.max(discosMediary, (lastfmUser?.album_count || lastfmStats?.albumCount || 0));
+  let totalArtistas = Math.max(artistasMediarySet.size, (lastfmUser?.artist_count || lastfmStats?.artistCount || (spotifyStats?.topArtists?.length || 0)));
+
+  if (tieneLastfm) {
+    if (estadoStatsModal.periodo === 'year') {
+      horasTotalNum = (lastfmStats.horasAnio || 0) + horasMediary;
+    } else {
+      horasTotalNum = (lastfmStats.horasTotal || 0) + horasMediary;
+    }
+  } else if (tieneSpotify) {
+    if (estadoStatsModal.periodo === 'year') {
+      horasTotalNum = metricasSp.horasAnio + horasMediary;
+    } else {
+      horasTotalNum = metricasSp.horasTotal + horasMediary;
+    }
   }
+
+  const avgCalMusica = numCal ? (sumCal / numCal).toFixed(1) : (tieneLastfm ? '4.8' : '0.0');
+  const rachaDiscos = typeof calcularRachaDiscos === 'function' ? calcularRachaDiscos(todosRegs) : { rachaActual: 0, rachaMasAlta: 0 };
+
+  // GRÁFICO 1: Horas escuchadas la última semana (detallado para cada día)
+  const diasSem = obtenerDiasUltimaSemana_();
+  const semMusicaItems = diasSem.map(d => {
+    let horas = 0;
+    if (lastfmStats && Array.isArray(lastfmStats.recentTracks)) {
+      lastfmStats.recentTracks.forEach(tr => {
+        if (tr.uts) {
+          const td = new Date(tr.uts * 1000);
+          if (td.getFullYear() === d.date.getFullYear() && td.getMonth() === d.date.getMonth() && td.getDate() === d.date.getDate()) {
+            horas += (tr.duration || 210) / 3600;
+          }
+        } else if (tr.date) {
+          const td = new Date(tr.date);
+          if (!isNaN(td.getTime()) && td.getFullYear() === d.date.getFullYear() && td.getMonth() === d.date.getMonth() && td.getDate() === d.date.getDate()) {
+            horas += (tr.duration || 210) / 3600;
+          }
+        }
+      });
+    }
+    if (spotifyAccumulator?.byDay) {
+      const iso = d.isoStr;
+      if (spotifyAccumulator.byDay[iso]) {
+        horas += (spotifyAccumulator.byDay[iso].ms || 0) / 3600000;
+      }
+    }
+    todosRegs.forEach(r => {
+      if (r.categoria === 'Musica') {
+        const dr = obtenerFechaObjetoStats_(r);
+        if (dr && dr.getFullYear() === d.date.getFullYear() && dr.getMonth() === d.date.getMonth() && dr.getDate() === d.date.getDate()) {
+          horas += calcularHorasObraStats_(r);
+        }
+      }
+    });
+
+    const roundedH = Math.round(horas * 10) / 10;
+    let disp = '-';
+    if (roundedH > 0) {
+      disp = roundedH < 1 ? `${Math.round(roundedH * 60)}m` : `${roundedH.toFixed(1)}h`;
+    }
+    return {
+      label: d.label,
+      valor: roundedH,
+      displayVal: disp,
+      sublabel: `${d.fullLabel}: ${disp === '-' ? '0 hrs' : disp}`
+    };
+  });
+
+  // GRÁFICO 2: Horas escuchadas cada mes
+  const mesesMusica = Array(12).fill(0);
+  if (spotifyAccumulator?.byMonth) {
+    for (let m = 0; m < 12; m++) {
+      const moStr = `${nowYear}-${String(m + 1).padStart(2, '0')}`;
+      if (spotifyAccumulator.byMonth[moStr]) {
+        mesesMusica[m] += (spotifyAccumulator.byMonth[moStr].ms || 0) / 3600000;
+      }
+    }
+  }
+  if (lastfmStats?.byMonth) {
+    for (let m = 0; m < 12; m++) {
+      const moStr = `${nowYear}-${String(m + 1).padStart(2, '0')}`;
+      if (lastfmStats.byMonth[moStr]) {
+        mesesMusica[m] += (lastfmStats.byMonth[moStr].hours || 0);
+      }
+    }
+  }
+  todosRegs.forEach(r => {
+    if (r.categoria === 'Musica') {
+      const d = obtenerFechaObjetoStats_(r);
+      if (d && (d.getFullYear() === nowYear || estadoStatsModal.periodo === 'all')) {
+        mesesMusica[d.getMonth()] += calcularHorasObraStats_(r);
+      }
+    }
+  });
+  if (mesesMusica[nowMonth] === 0 && lastfmStats?.horasMes) {
+    mesesMusica[nowMonth] = lastfmStats.horasMes;
+  }
+  const mesesAbrev = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const chartItemsMesesMusica = mesesAbrev.map((lbl, idx) => {
+    const h = Math.round(mesesMusica[idx] * 10) / 10;
+    let disp = '-';
+    if (h > 0) {
+      disp = h < 1 ? `${Math.round(h * 60)}m` : `${h.toFixed(1)}h`;
+    }
+    return {
+      label: lbl,
+      valor: h,
+      displayVal: disp,
+      sublabel: `${lbl}: ${disp === '-' ? '0 hrs' : disp}`
+    };
+  });
 
   const periodoActivo = localStorage.getItem('mediary_lastfm_selected_period') || (lastfmStats && lastfmStats.selectedPeriod) || 'overall';
-  const labelPeriodoMap = {
-    '7day': '7 Días',
-    '1month': '1 Mes',
-    '6month': '6 Meses',
-    '12month': '1 Año',
-    'overall': 'Histórico'
-  };
-  const labelPeriodo = labelPeriodoMap[periodoActivo] || 'Histórico';
-
-  const topArtistsList = (lastfmStats.topArtistsByPeriod && lastfmStats.topArtistsByPeriod[periodoActivo])
-    || lastfmStats.topArtists
-    || [];
-  const topAlbumsList = (lastfmStats.topAlbumsByPeriod && lastfmStats.topAlbumsByPeriod[periodoActivo])
-    || lastfmStats.topAlbums
-    || [];
-  const topTracksList = (lastfmStats.topTracksByPeriod && lastfmStats.topTracksByPeriod[periodoActivo])
-    || lastfmStats.topTracks
-    || [];
-  const recentTracksList = lastfmStats.recentTracks || [];
-
-  const top5Artistas = topArtistsList.slice(0, 5);
-  const top5Albumes = topAlbumsList.slice(0, 5);
-  const top5Canciones = topTracksList.slice(0, 5);
-
-  let fechaSync = '';
-  if (lastfmStats.lastSync) {
-    try {
-      const d = new Date(lastfmStats.lastSync);
-      fechaSync = d.toLocaleDateString() + ' ' + d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    } catch (e) {}
-  }
-
-  const userAvatar = lastfmUser?.avatar;
-  const userName = lastfmUser?.realname || lastfmUser?.name || 'Usuario Last.fm';
-  const userProfileUrl = lastfmUser?.url || `https://www.last.fm/user/${lastfmUser?.name || ''}`;
-  const totalScrobbles = lastfmStats.totalScrobbles || lastfmStats.countTotal || 0;
+  const topArtistsList = (lastfmStats?.topArtistsByPeriod && lastfmStats.topArtistsByPeriod[periodoActivo]) || lastfmStats?.topArtists || (spotifyStats?.topArtists || []);
+  const topAlbumsList = (lastfmStats?.topAlbumsByPeriod && lastfmStats.topAlbumsByPeriod[periodoActivo]) || lastfmStats?.topAlbums || [];
+  const topTracksList = (lastfmStats?.topTracksByPeriod && lastfmStats.topTracksByPeriod[periodoActivo]) || lastfmStats?.topTracks || (spotifyStats?.topTracks || []);
+  const recentTracksList = lastfmStats?.recentTracks || [];
 
   return `
-    <!-- BANNER DE USUARIO LAST.FM Y SINCRONIZACIÓN -->
-    <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
-      <div style="display:flex; align-items:center; gap:10px; min-width:0;">
-        ${userAvatar
-          ? `<img src="${escHtmlStats_(userAvatar)}" style="width:38px; height:38px; border-radius:50%; object-fit:cover; border:1.5px solid #d51007; flex-shrink:0;">`
-          : `<div style="width:38px; height:38px; border-radius:50%; background:rgba(213,16,7,0.14); border:1.5px solid rgba(213,16,7,0.3); display:grid; place-items:center; color:#d51007; font-size:1.1rem; flex-shrink:0;">${getHeroIcon('user', '', 20)}</div>`}
-        <div style="min-width:0;">
-          <div style="font-weight:700; font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:6px;">
-            <a href="${escHtmlStats_(userProfileUrl)}" target="_blank" rel="noopener noreferrer" style="color:var(--text); text-decoration:none;" title="Ver perfil en Last.fm">
-              ${escHtmlStats_(userName)}
-            </a>
-            <span style="font-size:0.7rem; font-weight:700; color:#fff; background:#d51007; padding:1px 7px; border-radius:2px;">${totalScrobbles.toLocaleString()} scrobbles</span>
-          </div>
-          <div style="font-size:0.72rem; color:var(--muted); margin-top:2px;">
-            ${fechaSync ? `Sincronizado: ${fechaSync}` : 'Datos de Last.fm activos'}
-          </div>
-        </div>
-      </div>
-      <div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-        <button type="button" class="btn-toggle-filter" onclick="sincronizarCuentaLastFm(null, true).then(() => renderizarContenidoEstadisticasAvanzadas())" title="Sincronizar scrobbles con Last.fm" style="font-size:0.75rem; padding:6px 12px; display:inline-flex; align-items:center; gap:5px;">
-          <span>${getHeroIcon("arrow-path", "", 15)}</span> <span>Sincronizar</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- KPIS LAST.FM (HISTORIAL Y HORAS ESTIMADAS) -->
+    <!-- KPIS MÚSICA: TOTAL HORAS, TOTAL DISCOS, TOTAL ARTISTAS, NOTA PROMEDIO, RACHAS -->
     <div class="stats-kpi-grid">
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Año (${nowYear})</span></div>
-        <div class="stats-kpi-val" style="color:#d51007;">${formatearHorasStats_(lastfmStats.horasAnio)}</div>
-        <div class="stats-kpi-sub">${(lastfmStats.countAnio || 0).toLocaleString()} scrobbles en ${nowYear}</div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("clock", "", 16)}</span> <span>Total Horas</span></div>
+        <div class="stats-kpi-val" style="color:#d51007;">${formatearHorasStats_(horasTotalNum)}</div>
+        <div class="stats-kpi-sub">Horas de música en ${periodTxt}</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:#d51007;">${formatearHorasStats_(lastfmStats.horasMes)}</div>
-        <div class="stats-kpi-sub">${(lastfmStats.countMes || 0).toLocaleString()} scrobbles este mes</div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("disc", "", 16)}</span> <span>Total Discos</span></div>
+        <div class="stats-kpi-val">${totalDiscos.toLocaleString()}</div>
+        <div class="stats-kpi-sub">Álbumes escuchados</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("clock", "", 16)}</span> <span>Histórico Total</span></div>
-        <div class="stats-kpi-val">${formatearHorasStats_(lastfmStats.horasTotal)}</div>
-        <div class="stats-kpi-sub">${totalScrobbles.toLocaleString()} scrobbles acumulados</div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("microphone", "", 16)}</span> <span>Total Artistas</span></div>
+        <div class="stats-kpi-val" style="color:var(--accent);">${totalArtistas.toLocaleString()}</div>
+        <div class="stats-kpi-sub">Artistas descubiertos</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("disc", "", 16)}</span> <span>Variedad Cultural</span></div>
-        <div class="stats-kpi-val" style="color:var(--accent);">${(lastfmUser?.artist_count || lastfmStats.artistCount || 0).toLocaleString()}</div>
-        <div class="stats-kpi-sub">${(lastfmUser?.album_count || lastfmStats.albumCount || 0).toLocaleString()} álbumes escuchados</div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Promedio</span></div>
+        <div class="stats-kpi-val" style="color:var(--star-active, #c8955a); display:flex; align-items:center; gap:4px;">${getHeroIcon("star", "", 16)} ${avgCalMusica}</div>
+        <div class="stats-kpi-sub">${numCal ? `${numCal} calificaciones` : 'En tu diario'}</div>
+      </div>
+      <div class="stats-kpi-card">
+        <div class="stats-kpi-label"><span>${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Música</span></div>
+        <div class="stats-kpi-val" style="color:#f59e0b;">${rachaDiscos.rachaActual} ${rachaDiscos.rachaActual === 1 ? 'día' : 'días'}</div>
+        <div class="stats-kpi-sub">Récord histórico: ${rachaDiscos.rachaMasAlta} días</div>
       </div>
     </div>
 
-    <!-- SELECTOR DE PERÍODO PARA TOPS EN LAST.FM -->
-    <div class="stats-section-box" style="padding:10px 14px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
-      <div style="font-size:0.84rem; font-weight:700; color:var(--text);">
-        <span>Rankings de Last.fm</span>
-        <span style="font-size:0.72rem; color:var(--muted); font-weight:400; margin-left:6px;">(${labelPeriodo})</span>
-      </div>
-      <div class="stats-period-group">
-        <button type="button" class="stats-period-btn ${periodoActivo === '7day' ? 'active' : ''}" onclick="cambiarPeriodoLastFmStats('7day')">7 Días</button>
-        <button type="button" class="stats-period-btn ${periodoActivo === '1month' ? 'active' : ''}" onclick="cambiarPeriodoLastFmStats('1month')">1 Mes</button>
-        <button type="button" class="stats-period-btn ${periodoActivo === '6month' ? 'active' : ''}" onclick="cambiarPeriodoLastFmStats('6month')">6 Meses</button>
-        <button type="button" class="stats-period-btn ${periodoActivo === '12month' ? 'active' : ''}" onclick="cambiarPeriodoLastFmStats('12month')">1 Año</button>
-        <button type="button" class="stats-period-btn ${periodoActivo === 'overall' ? 'active' : ''}" onclick="cambiarPeriodoLastFmStats('overall')">Histórico</button>
-      </div>
-    </div>
+    <!-- DOS GRÁFICOS: ÚLTIMA SEMANA Y CADA MES -->
+    ${generarGraficoBarras_({
+      titulo: 'Horas Escuchadas en la Última Semana',
+      subtitulo: 'Detalle para cada día (últimos 7 días)',
+      items: semMusicaItems,
+      unidad: 'hrs',
+      colorBarra: '#d51007'
+    })}
 
-    <!-- TOP 5 ÁLBUMES MÁS ESCUCHADOS (LAST.FM) -->
-    <div class="stats-section-box">
-      <div class="stats-section-title">
-        <span>${getHeroIcon("disc", "", 16)} Álbumes Más Escuchados</span>
-        <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">${labelPeriodo}</span>
-      </div>
-      ${top5Albumes.length ? top5Albumes.map((alb, idx) => `
-        <div class="stats-ranking-row" style="cursor:pointer;" onclick="${alb.url ? `window.open('${escHtmlStats_(alb.url)}', '_blank')` : ''}">
-          <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-          ${alb.image
-            ? `<img src="${escHtmlStats_(alb.image)}" alt="${escHtmlStats_(alb.name)}" style="width:40px; height:40px; border-radius:4px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
-            : `<div style="width:40px; height:40px; border-radius:4px; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.15rem; flex-shrink:0;">${getHeroIcon('disc', '', 20)}</div>`}
-          <div style="flex:1; min-width:0;">
-            <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(alb.name)}</strong>
-            <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(alb.artist || 'Artista')}</span>
-          </div>
-          <div style="text-align:right; flex-shrink:0;">
-            <span style="font-size:0.78rem; font-weight:700; color:#d51007; display:block;">${(alb.playcount || 0).toLocaleString()}</span>
-            <span style="font-size:0.68rem; color:var(--muted);">scrobbles</span>
-          </div>
-        </div>
-      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de álbumes en este período. Pulsa Sincronizar.</div>'}
-    </div>
+    ${generarGraficoBarras_({
+      titulo: 'Horas Escuchadas cada Mes',
+      subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
+      items: chartItemsMesesMusica,
+      unidad: 'hrs',
+      colorBarra: '#d51007'
+    })}
 
-    <!-- TOP 5 ARTISTAS FAVORITOS (LAST.FM) -->
-    <div class="stats-section-box">
-      <div class="stats-section-title">
-        <span>${getHeroIcon("microphone", "", 16)} Artistas Más Escuchados</span>
-        <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">${labelPeriodo}</span>
-      </div>
-      ${top5Artistas.length ? top5Artistas.map((a, idx) => `
-        <div class="stats-ranking-row" style="cursor:pointer;" onclick="${a.url ? `window.open('${escHtmlStats_(a.url)}', '_blank')` : ''}">
-          <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-          ${a.image
-            ? `<img src="${escHtmlStats_(a.image)}" alt="${escHtmlStats_(a.name)}" style="width:40px; height:40px; border-radius:50%; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
-            : `<div style="width:40px; height:40px; border-radius:50%; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.15rem; flex-shrink:0;">${getHeroIcon('microphone', '', 20)}</div>`}
-          <div style="flex:1; min-width:0;">
-            <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(a.name)}</strong>
-            <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">Artista en Last.fm</span>
-          </div>
-          <div style="text-align:right; flex-shrink:0;">
-            <span style="font-size:0.78rem; font-weight:700; color:#d51007; display:block;">${(a.playcount || 0).toLocaleString()}</span>
-            <span style="font-size:0.68rem; color:var(--muted);">scrobbles</span>
-          </div>
-        </div>
-      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de artistas en este período. Pulsa Sincronizar.</div>'}
-    </div>
-
-    <!-- TOP 5 CANCIONES FAVORITAS (LAST.FM) -->
-    <div class="stats-section-box">
-      <div class="stats-section-title">
-        <span>${getHeroIcon("musical-note", "", 16)} Canciones Más Escuchadas</span>
-        <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">${labelPeriodo}</span>
-      </div>
-      ${top5Canciones.length ? top5Canciones.map((t, idx) => {
-        const sec = t.duration || 0;
-        const mins = Math.floor(sec / 60);
-        const secs = String(sec % 60).padStart(2, '0');
-        const durTxt = sec > 0 ? `${mins}:${secs}` : '';
-        return `
-        <div class="stats-ranking-row" style="cursor:pointer;" onclick="${t.url ? `window.open('${escHtmlStats_(t.url)}', '_blank')` : ''}">
-          <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-          ${t.image
-            ? `<img src="${escHtmlStats_(t.image)}" alt="${escHtmlStats_(t.name)}" style="width:40px; height:40px; border-radius:4px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
-            : `<div style="width:40px; height:40px; border-radius:4px; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.15rem; flex-shrink:0;">${getHeroIcon('musical-note', '', 20)}</div>`}
-          <div style="flex:1; min-width:0;">
-            <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(t.name)}</strong>
-            <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(t.artist || 'Artista')} ${t.album ? `· ${escHtmlStats_(t.album)}` : ''}</span>
-          </div>
-          <div style="text-align:right; flex-shrink:0;">
-            <span style="font-size:0.78rem; font-weight:700; color:#d51007; display:block;">${(t.playcount || 0).toLocaleString()}</span>
-            <span style="font-size:0.68rem; color:var(--muted);">${durTxt || 'scrobbles'}</span>
-          </div>
-        </div>
-      `;
-      }).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Sin datos de canciones en este período. Pulsa Sincronizar.</div>'}
-    </div>
-
-    <!-- HISTORIAL DE SCROBBLES RECIENTES (LAST.FM) -->
-    ${recentTracksList.length ? `
+    <!-- BANNERS O TOPS DE LAST.FM / SPOTIFY -->
+    ${tieneLastfm ? `
       <div class="stats-section-box">
         <div class="stats-section-title">
-          <span>${getHeroIcon("musical-note", "", 16)} Scrobbles Recientes</span>
-          <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">Últimas escuchas</span>
+          <span>${getHeroIcon("disc", "", 16)} Álbumes Más Escuchados</span>
+          <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">Last.fm</span>
         </div>
-        <div style="display:flex; flex-direction:column; gap:6px;">
-          ${recentTracksList.slice(0, 8).map(r => `
-            <div class="stats-ranking-row" style="cursor:pointer;" onclick="${r.url ? `window.open('${escHtmlStats_(r.url)}', '_blank')` : ''}">
-              ${r.image
-                ? `<img src="${escHtmlStats_(r.image)}" alt="${escHtmlStats_(r.name)}" style="width:36px; height:36px; border-radius:4px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
-                : `<div style="width:36px; height:36px; border-radius:4px; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1rem; flex-shrink:0;">${getHeroIcon('musical-note', '', 18)}</div>`}
-              <div style="flex:1; min-width:0;">
-                <strong style="font-size:0.84rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(r.name)}</strong>
-                <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(r.artist)} ${r.album ? `· ${escHtmlStats_(r.album)}` : ''}</span>
-              </div>
-              <div style="text-align:right; flex-shrink:0;">
-                ${r.isNowPlaying
-                  ? `<span style="font-size:0.72rem; color:#10b981; font-weight:700; display:inline-flex; align-items:center; gap:4px;"><span style="width:6px; height:6px; border-radius:50%; background:#10b981; animation:pulse 1.4s infinite;"></span> Sonando</span>`
-                  : `<span style="font-size:0.69rem; color:var(--muted);">${escHtmlStats_(r.date || '')}</span>`}
-              </div>
+        ${topAlbumsList.slice(0, 5).map((alb, idx) => `
+          <div class="stats-ranking-row" style="cursor:pointer;" onclick="${alb.url ? `window.open('${escHtmlStats_(alb.url)}', '_blank')` : ''}">
+            <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
+            ${alb.image
+              ? `<img src="${escHtmlStats_(alb.image)}" alt="${escHtmlStats_(alb.name)}" style="width:40px; height:40px; border-radius:4px; object-fit:cover; border:1px solid var(--border); flex-shrink:0;">`
+              : `<div style="width:40px; height:40px; border-radius:4px; background:var(--card); border:1px solid var(--border); display:grid; place-items:center; font-size:1.15rem; flex-shrink:0;">${getHeroIcon('disc', '', 20)}</div>`}
+            <div style="flex:1; min-width:0;">
+              <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(alb.name)}</strong>
+              <span style="font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(alb.artist || 'Artista')}</span>
             </div>
-          `).join('')}
-        </div>
+            <div style="text-align:right; flex-shrink:0;">
+              <span style="font-size:0.78rem; font-weight:700; color:#d51007; display:block;">${(alb.playcount || 0).toLocaleString()}</span>
+              <span style="font-size:0.68rem; color:var(--muted);">scrobbles</span>
+            </div>
+          </div>
+        `).join('')}
       </div>
-    ` : ''}
+    ` : `
+      <div class="stats-section-box" style="text-align:center; padding:20px 14px;">
+        <span style="font-size:0.84rem; color:var(--muted); display:block; margin-bottom:10px;">Conecta tu cuenta de Last.fm o Spotify para sincronizar álbumes, artistas y reproducciones automáticamente.</span>
+        <button type="button" class="btn-primary" onclick="abrirModalConectarLastFm()" style="background:#d51007; color:#fff; border:none; padding:8px 18px; border-radius:3px; font-weight:700; font-size:0.82rem; cursor:pointer;">
+          <span>${getHeroIcon("musical-note", "", 14)} Conectar Last.fm</span>
+        </button>
+      </div>
+    `}
   `;
 }
 
 function renderizarStatsJuegos_(ctx) {
-  const { regsPeriodo, todosRegs, nowYear, nowMonth, mesesLargo, steamConnected, steamUser, steamStats, psnConnected, psnUser, psnStats } = ctx;
+  const { regsPeriodo, todosRegs, nowYear, steamConnected, steamStats, psnConnected, psnStats, periodTxt } = ctx;
   const juegosPeriodo = regsPeriodo.filter(r => r.categoria === 'Juegos');
   const juegosTotales = todosRegs.filter(r => r.categoria === 'Juegos');
 
-  const juegosAnio = juegosTotales.filter(r => obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
-  const juegosMes = juegosAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
-
   const hPeriodo = juegosPeriodo.reduce((acc, r) => acc + calcularHorasObraStats_(r), 0);
-  const hAnio = juegosAnio.reduce((acc, r) => acc + calcularHorasObraStats_(r), 0);
-  const hMes = juegosMes.reduce((acc, r) => acc + calcularHorasObraStats_(r), 0);
 
   let sumCalifs = 0, numCalifs = 0;
   juegosPeriodo.forEach(r => {
@@ -21362,341 +21464,104 @@ function renderizarStatsJuegos_(ctx) {
   });
   const avgCal = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
 
+  const horasSteamTotal = Number(steamStats?.totalHours) || 0;
+  const horasPsnTotal = Number(psnStats?.totalHours) || 0;
+  const horasGamingTotal = horasSteamTotal + horasPsnTotal + hPeriodo;
+
+  const totalJuegosSteam = Number(steamStats?.gamesCount) || (Array.isArray(steamStats?.topGames) ? steamStats.topGames.length : 0);
+  const totalJuegosPsn = Number(psnStats?.gamesCount) || (Array.isArray(psnStats?.topGames) ? psnStats.topGames.length : 0);
+  const totalRegistrado = juegosPeriodo.length + totalJuegosSteam + totalJuegosPsn;
+
+  // Gráfico de juegos registrados vs meses del año
+  const juegosMeses = Array(12).fill(0);
+  todosRegs.forEach(r => {
+    if (r.categoria === 'Juegos') {
+      const d = obtenerFechaObjetoStats_(r);
+      if (d && (d.getFullYear() === nowYear || estadoStatsModal.periodo === 'all')) {
+        juegosMeses[d.getMonth()]++;
+      }
+    }
+  });
+  const mesesAbrev = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const chartItemsJuegos = mesesAbrev.map((m, idx) => ({
+    label: m,
+    valor: juegosMeses[idx],
+    displayVal: juegosMeses[idx],
+    sublabel: `${m}: ${juegosMeses[idx]} juegos`
+  }));
+
   const top5Juegos = [...juegosPeriodo]
     .sort((a, b) => (Number(b.calificacion) || 0) - (Number(a.calificacion) || 0) || (parseFloat(b.horas) || 0) - (parseFloat(a.horas) || 0))
     .slice(0, 5);
 
-  const tieneSteam = !!steamConnected;
-  const tienePsn = !!psnConnected;
-
-  // Métricas Steam
-  const fechaSyncSteam = steamStats?.lastSync ? new Date(steamStats.lastSync).toLocaleDateString(undefined, { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : null;
-  const horasSteamTotal = Number(steamStats?.totalHours) || 0;
-  const horasSteamRecientes = Number(steamStats?.recentHours) || 0;
-  const totalJuegosSteam = Number(steamStats?.gamesCount) || (Array.isArray(steamStats?.topGames) ? steamStats.topGames.length : 0);
-  const esPrivadoSteam = !!(steamStats?.isPrivate && !steamStats?.topGames?.length && horasSteamTotal === 0);
-
-  // Métricas PlayStation
-  const fechaSyncPsn = psnStats?.lastSync ? new Date(psnStats.lastSync).toLocaleDateString(undefined, { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }) : null;
-  const horasPsnTotal = Number(psnStats?.totalHours) || 0;
-  const horasPsnRecientes = Number(psnStats?.recentHours) || 0;
-  const totalJuegosPsn = Number(psnStats?.gamesCount) || (Array.isArray(psnStats?.topGames) ? psnStats.topGames.length : 0);
   const trofeos = psnStats?.trophies || { level: 0, platinum: 0, gold: 0, silver: 0, bronze: 0, total: 0 };
 
-  const horasGamingTotal = horasSteamTotal + horasPsnTotal + hPeriodo;
-
-  let html = '';
-
-  // 1. Encabezados de Plataformas Conectadas o Banners de Conexión
-  if (!tieneSteam && !tienePsn) {
-    html += `
-      <!-- BANNERS CONECTAR STEAM Y PLAYSTATION -->
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px; margin-bottom:14px;">
-        <div class="stats-section-box" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; background:linear-gradient(135deg, rgba(23, 26, 33, 0.95), rgba(27, 40, 56, 0.9)); border:1px solid rgba(102, 192, 244, 0.35); border-radius:4px; margin:0;">
-          <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
-            <div style="width:40px; height:40px; border-radius:50%; background:#171a21; border:1.5px solid #66c0f4; display:grid; place-items:center; flex-shrink:0;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="#66c0f4"><path d="M12 2a10 10 0 0 0-10 9.94c0 4.8 3.4 8.81 7.97 9.77l1.7-2.45a3.87 3.87 0 0 1-1.39-1.99l-2.8-.82a4.93 4.93 0 0 1-.48-2.12c0-2.73 2.22-4.95 4.96-4.95 2.74 0 4.96 2.22 4.96 4.95 0 2.21-1.45 4.08-3.46 4.71l-1.65 2.4c4.89-.48 8.7-4.57 8.7-9.54A10 10 0 0 0 12 2z"/></svg>
-            </div>
-            <div style="min-width:0;">
-              <strong style="font-size:0.88rem; color:#fff; display:block; margin-bottom:2px;">Conectar Steam</strong>
-              <p style="font-size:0.72rem; color:#8f98a0; margin:0; line-height:1.3;">Sincroniza horas y catálogo de Steam.</p>
-            </div>
-          </div>
-          <button type="button" class="btn-toggle-filter" onclick="abrirModalConectarSteam()" style="font-size:0.75rem; padding:6px 12px; background:#66c0f4; color:#171a21; font-weight:700; border:none; border-radius:3px; display:inline-flex; align-items:center; gap:4px; cursor:pointer; flex-shrink:0;">
-            <span>Conectar</span>
-          </button>
-        </div>
-
-        <div class="stats-section-box" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; background:linear-gradient(135deg, rgba(0, 43, 91, 0.95), rgba(0, 18, 48, 0.9)); border:1px solid rgba(0, 112, 209, 0.4); border-radius:3px; margin:0;">
-          <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
-            <div style="width:40px; height:40px; border-radius:50%; background:#001a44; border:1.5px solid #0070d1; display:grid; place-items:center; flex-shrink:0;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="#38bdf8"><path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg>
-            </div>
-            <div style="min-width:0;">
-              <strong style="font-size:0.88rem; color:#fff; display:block; margin-bottom:2px;">Conectar PlayStation</strong>
-              <p style="font-size:0.72rem; color:#93c5fd; margin:0; line-height:1.3;">Sincroniza trofeos y horas de PS5/PS4.</p>
-            </div>
-          </div>
-          <button type="button" class="btn-toggle-filter" onclick="abrirModalConectarPsn()" style="font-size:0.75rem; padding:6px 12px; background:#0070d1; color:#fff; font-weight:700; border:none; border-radius:3px; display:inline-flex; align-items:center; gap:4px; cursor:pointer; flex-shrink:0;">
-            <span>Conectar</span>
-          </button>
-        </div>
-      </div>
-    `;
-  } else {
-    if (tieneSteam) {
-      html += `
-        <div class="stats-section-box" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; background:linear-gradient(135deg, rgba(23, 26, 33, 0.95), rgba(27, 40, 56, 0.9)); border:1px solid rgba(102, 192, 244, 0.35); border-radius:3px; margin-bottom:10px; flex-wrap:wrap;">
-          <div style="display:flex; align-items:center; gap:10px; min-width:0;">
-            <div style="width:38px; height:38px; border-radius:50%; background:#171a21; border:1.5px solid #66c0f4; display:grid; place-items:center; flex-shrink:0; overflow:hidden;">
-              ${steamUser?.avatar ? `<img src="${escHtmlStats_(steamUser.avatar)}" alt="Steam Avatar" style="width:100%; height:100%; object-fit:cover;">` : `<svg width="20" height="20" viewBox="0 0 24 24" fill="#66c0f4"><path d="M12 2a10 10 0 0 0-10 9.94c0 4.8 3.4 8.81 7.97 9.77l1.7-2.45a3.87 3.87 0 0 1-1.39-1.99l-2.8-.82a4.93 4.93 0 0 1-.48-2.12c0-2.73 2.22-4.95 4.96-4.95 2.74 0 4.96 2.22 4.96 4.95 0 2.21-1.45 4.08-3.46 4.71l-1.65 2.4c4.89-.48 8.7-4.57 8.7-9.54A10 10 0 0 0 12 2z"/></svg>`}
-            </div>
-            <div style="min-width:0;">
-              <div style="display:flex; align-items:center; gap:6px;">
-                <strong style="font-size:0.88rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtmlStats_(steamUser?.personaName || 'Jugador Steam')}</strong>
-                <span style="font-size:0.68rem; padding:2px 7px; border-radius:2px; background:rgba(102,192,244,0.18); color:#66c0f4; font-weight:700; letter-spacing:0.3px;">STEAM</span>
-              </div>
-              <div style="font-size:0.72rem; color:#8f98a0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                ${fechaSyncSteam ? `Actualizado: ${fechaSyncSteam}` : 'Biblioteca vinculada'} · ${totalJuegosSteam ? totalJuegosSteam + ' títulos en Steam' : (esPrivadoSteam ? 'Privacidad privada en Steam' : 'Biblioteca vinculada')}
-              </div>
-            </div>
-          </div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSteam(true)" title="Actualizar datos de Steam" style="font-size:0.75rem; padding:5px 12px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:rgba(102,192,244,0.12); border:1px solid rgba(102,192,244,0.3); color:#66c0f4;">
-              <span>${getHeroIcon("arrow-path", "", 15)}</span> <span>Sincronizar</span>
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    if (tienePsn) {
-      html += `
-        <div class="stats-section-box" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 14px; background:linear-gradient(135deg, rgba(0, 43, 91, 0.95), rgba(0, 18, 48, 0.9)); border:1px solid rgba(0, 112, 209, 0.4); border-radius:3px; margin-bottom:10px; flex-wrap:wrap;">
-          <div style="display:flex; align-items:center; gap:10px; min-width:0;">
-            <div style="width:38px; height:38px; border-radius:50%; background:#001a44; border:1.5px solid #0070d1; display:grid; place-items:center; flex-shrink:0; overflow:hidden;">
-              ${psnUser?.avatarUrl ? `<img src="${escHtmlStats_(psnUser.avatarUrl)}" alt="PSN Avatar" style="width:100%; height:100%; object-fit:cover;">` : `<svg width="22" height="22" viewBox="0 0 24 24" fill="#38bdf8"><path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg>`}
-            </div>
-            <div style="min-width:0;">
-              <div style="display:flex; align-items:center; gap:6px;">
-                <strong style="font-size:0.88rem; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtmlStats_(psnUser?.onlineId || 'PlayStation Network')}</strong>
-                <span style="font-size:0.68rem; padding:2px 7px; border-radius:2px; background:rgba(0,112,209,0.3); color:#60a5fa; font-weight:700; letter-spacing:0.3px;">PSN · Nv. ${trofeos.level || 1}</span>
-              </div>
-              <div style="font-size:0.72rem; color:#93c5fd; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-                ${fechaSyncPsn ? `Actualizado: ${fechaSyncPsn}` : 'Cuenta vinculada'} · ${totalJuegosPsn ? totalJuegosPsn + ' títulos' : 'Perfil PlayStation'} · <span style="display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('trophy', '', 12)} ${trofeos.total || 0} trofeos</span>
-              </div>
-            </div>
-          </div>
-          <div style="display:flex; align-items:center; gap:6px;">
-            <button type="button" class="btn-toggle-filter" onclick="sincronizarCuentaPlayStation(null, true)" title="Actualizar datos de PlayStation" style="font-size:0.75rem; padding:5px 12px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:rgba(0,112,209,0.25); border:1px solid rgba(0,112,209,0.5); color:#60a5fa;">
-              <span>${getHeroIcon("arrow-path", "", 15)}</span> <span>Sincronizar</span>
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    if (!tieneSteam) {
-      html += `
-        <div style="margin-bottom:10px; display:flex; justify-content:flex-end;">
-          <button type="button" onclick="abrirModalConectarSteam()" class="btn-today-pill" style="font-size:0.72rem; padding:4px 10px; background:rgba(102,192,244,0.1); border-color:rgba(102,192,244,0.3); color:#66c0f4;">
-            + Vincular Steam también
-          </button>
-        </div>
-      `;
-    } else if (!tienePsn) {
-      html += `
-        <div style="margin-bottom:10px; display:flex; justify-content:flex-end;">
-          <button type="button" onclick="abrirModalConectarPsn()" class="btn-today-pill" style="font-size:0.72rem; padding:4px 10px; background:rgba(0,112,209,0.12); border-color:rgba(0,112,209,0.35); color:#60a5fa;">
-            + Vincular PlayStation Network también
-          </button>
-        </div>
-      `;
-    }
-  }
-
-  // 2. KPI Grid Dual / Gaming Total
-  html += `
+  return `
+    <!-- KPIS JUEGOS: TOTAL REGISTRADO, HORAS JUGADAS, NOTA PROMEDIO -->
     <div class="stats-kpi-grid">
-      <div class="stats-kpi-card" style="border-left:3px solid ${(tieneSteam && tienePsn) ? '#a855f7' : (tienePsn ? '#0070d1' : '#66c0f4')};">
-        <div class="stats-kpi-label"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> <span>Horas Totales Gaming</span></div>
-        <div class="stats-kpi-val" style="color:var(--text);">${formatearHorasStats_(horasGamingTotal)}</div>
-        <div class="stats-kpi-sub">${[tieneSteam ? `${horasSteamTotal}h Steam` : '', tienePsn ? `${horasPsnTotal}h PSN` : '', `${hPeriodo}h Mediary`].filter(Boolean).join(' · ')}</div>
-      </div>
-      ${tienePsn ? `
-        <div class="stats-kpi-card" style="border-left:3px solid #0070d1;">
-          <div class="stats-kpi-label"><span>${getHeroIcon("trophy", "", 16)}</span> <span>Trofeos PlayStation</span></div>
-          <div class="stats-kpi-val" style="color:#60a5fa;">${trofeos.total || 0}</div>
-          <div class="stats-kpi-sub">Nv. ${trofeos.level || 1} · ${getHeroIcon('trophy', '', 13)} ${trofeos.platinum || 0} Platinos</div>
-        </div>
-      ` : `
-        <div class="stats-kpi-card">
-          <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Año (${nowYear})</span></div>
-          <div class="stats-kpi-val">${formatearHorasStats_(hAnio)}</div>
-          <div class="stats-kpi-sub">${juegosAnio.length} juegos en ${nowYear}</div>
-        </div>
-      `}
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:var(--accent);">${formatearHorasStats_(hMes + horasPsnRecientes + horasSteamRecientes)}</div>
-        <div class="stats-kpi-sub">${juegosMes.length} juegos completados</div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("folder", "", 16)}</span> <span>Total Registrado</span></div>
+        <div class="stats-kpi-val">${totalRegistrado}</div>
+        <div class="stats-kpi-sub">${juegosPeriodo.length} en diario ${totalJuegosPsn || totalJuegosSteam ? `(${totalJuegosPsn} PSN · ${totalJuegosSteam} Steam)` : ''}</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Media (Mediary)</span></div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("clock", "", 16)}</span> <span>Horas Jugadas</span></div>
+        <div class="stats-kpi-val" style="color:#66c0f4;">${formatearHorasStats_(horasGamingTotal)}</div>
+        <div class="stats-kpi-sub">${formatearHorasStats_(hPeriodo)} en Mediary</div>
+      </div>
+      <div class="stats-kpi-card">
+        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Promedio</span></div>
         <div class="stats-kpi-val" style="color:var(--star-active, #c8955a); display:flex; align-items:center; gap:4px;">${getHeroIcon("star", "", 16)} ${avgCal}</div>
-        <div class="stats-kpi-sub">De ${numCalifs} evaluados</div>
+        <div class="stats-kpi-sub">De ${numCalifs} calificados</div>
       </div>
     </div>
-  `;
 
-  // 3. Vitrina de Trofeos y Títulos de PlayStation (si está conectado)
-  if (tienePsn) {
-    html += `
-      <!-- VITRINA DE TROFEOS PLAYSTATION -->
-      <div class="stats-section-box" style="background:linear-gradient(135deg, rgba(0, 30, 70, 0.6), rgba(0, 15, 40, 0.8)); border:1px solid rgba(0, 112, 209, 0.35); border-radius:4px;">
-        <div class="stats-section-title" style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="display:inline-flex; align-items:center; gap:6px;">
-            <span>${getHeroIcon("trophy", "", 16)}</span> <span>Vitrina de Trofeos PlayStation</span>
-          </span>
-          <span style="font-size:0.75rem; background:rgba(0,112,209,0.25); color:#60a5fa; font-weight:700; padding:2px 8px; border-radius:2px;">
-            Nivel ${trofeos.level || 1}
-          </span>
+    <!-- GRÁFICO: JUEGOS REGISTRADOS VS MESES DEL AÑO -->
+    ${generarGraficoBarras_({
+      titulo: 'Juegos Registrados por Mes',
+      subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
+      items: chartItemsJuegos,
+      unidad: 'juegos',
+      colorBarra: '#66c0f4'
+    })}
+
+    <!-- INTEGRACIÓN PLAYSTATION (TROFEOS) -->
+    ${psnConnected && psnStats ? `
+      <div class="stats-section-box">
+        <div class="stats-section-title">
+          <span>${getHeroIcon("trophy", "", 16)} Trofeos de PlayStation</span>
+          <span style="font-size:0.75rem; background:rgba(0,112,209,0.25); color:#60a5fa; font-weight:700; padding:2px 8px; border-radius:2px;">Nivel ${trofeos.level || 1}</span>
         </div>
         <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; margin-top:8px; text-align:center;">
           <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(168,85,247,0.3); border-radius:4px; padding:10px 6px;">
-            <div style="margin-bottom:2px;">${getHeroIcon("trophy", "", 24)}</div>
+            <div>${getHeroIcon("trophy", "", 24)}</div>
             <strong style="font-size:1.05rem; color:#c084fc; display:block;">${trofeos.platinum || 0}</strong>
-            <span style="font-size:0.68rem; color:#a855f7; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Platino</span>
+            <span style="font-size:0.68rem; color:#a855f7; font-weight:700; text-transform:uppercase;">Platino</span>
           </div>
           <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(234,179,8,0.3); border-radius:4px; padding:10px 6px;">
-            <div style="margin-bottom:2px;">${getHeroIcon("trophy", "", 24)}</div>
+            <div>${getHeroIcon("trophy", "", 24)}</div>
             <strong style="font-size:1.05rem; color:#fde047; display:block;">${trofeos.gold || 0}</strong>
-            <span style="font-size:0.68rem; color:#eab308; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Oro</span>
+            <span style="font-size:0.68rem; color:#eab308; font-weight:700; text-transform:uppercase;">Oro</span>
           </div>
           <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(148,163,184,0.3); border-radius:4px; padding:10px 6px;">
-            <div style="margin-bottom:2px;">${getHeroIcon("trophy", "", 24)}</div>
+            <div>${getHeroIcon("trophy", "", 24)}</div>
             <strong style="font-size:1.05rem; color:#e2e8f0; display:block;">${trofeos.silver || 0}</strong>
-            <span style="font-size:0.68rem; color:#94a3b8; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Plata</span>
+            <span style="font-size:0.68rem; color:#94a3b8; font-weight:700; text-transform:uppercase;">Plata</span>
           </div>
           <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(217,119,6,0.3); border-radius:4px; padding:10px 6px;">
-            <div style="margin-bottom:2px;">${getHeroIcon("trophy", "", 24)}</div>
+            <div>${getHeroIcon("trophy", "", 24)}</div>
             <strong style="font-size:1.05rem; color:#fdba74; display:block;">${trofeos.bronze || 0}</strong>
-            <span style="font-size:0.68rem; color:#d97706; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Bronce</span>
+            <span style="font-size:0.68rem; color:#d97706; font-weight:700; text-transform:uppercase;">Bronce</span>
           </div>
         </div>
       </div>
+    ` : ''}
 
-      <!-- TÍTULOS MÁS JUGADOS EN PLAYSTATION -->
-      <div class="stats-section-box">
-        <div class="stats-section-title">
-          <span>${getHeroIcon("gamepad", "", 16)} Títulos más jugados en PlayStation</span>
-          <span style="font-size:0.74rem; color:#38bdf8; font-weight:600;">${horasPsnTotal} hrs en PSN</span>
-        </div>
-        ${Array.isArray(psnStats?.topGames) && psnStats.topGames.length ? psnStats.topGames.map((g, idx) => {
-          const yaRegistrado = todosRegs.some(r => r.categoria === 'Juegos' && (r.titulo || '').toLowerCase().trim() === (g.name || '').toLowerCase().trim());
-          return `
-            <div class="stats-ranking-row" style="align-items:center;">
-              <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-              <img src="${escHtmlStats_(g.icon || g.image || '')}" onerror="this.src='./icon.png'" alt="${escHtmlStats_(g.name)}" style="width:40px; height:52px; border-radius:4px; object-fit:cover; background:var(--card); flex-shrink:0; border:1px solid rgba(0,112,209,0.3);">
-              <div style="flex:1; min-width:0; margin-left:6px;">
-                <div style="display:flex; align-items:center; gap:5px;">
-                  <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${escHtmlStats_(g.name)}</strong>
-                  <span style="font-size:0.65rem; padding:1px 5px; border-radius:2px; background:#0070d1; color:#fff; font-weight:700; flex-shrink:0;">${g.platform || 'PS5'}</span>
-                </div>
-                <span style="font-size:0.74rem; color:#38bdf8; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${getHeroIcon('clock', '', 12)} ${g.hours || 0} hrs · ${getHeroIcon('trophy', '', 12)} ${g.trophies || 'Progreso'}</span>
-              </div>
-              <div style="flex-shrink:0; margin-left:8px;">
-                ${yaRegistrado
-                  ? `<span style="font-size:0.72rem; color:var(--muted); font-weight:600; padding:4px 8px; border-radius:2px; background:var(--bg); border:1px solid var(--border); display:inline-flex; align-items:center; gap:3px;"><span>${getHeroIcon("check", "", 14)}</span> <span>En diario</span></span>`
-                  : `<button type="button" class="btn-toggle-filter" onclick="registrarTopPsnByIndex(${idx})" style="font-size:0.72rem; padding:4px 10px; display:inline-flex; align-items:center; gap:4px; border-radius:3px; background:var(--card); border:1px solid rgba(0,112,209,0.3); color:#38bdf8;" title="Registrar este juego en Mediary"><span>${getHeroIcon('plus', '', 12)}</span> <span>Registrar</span></button>`
-                }
-              </div>
-            </div>
-          `;
-        }).join('') : `
-          <div style="padding:14px; text-align:center; color:var(--muted); font-size:0.8rem;">
-            No se encontraron títulos jugados recientemente en tu perfil de PlayStation.
-          </div>
-        `}
-      </div>
-    `;
-  }
-
-  // 4. Catálogo y Horas de Steam (si está conectado)
-  if (tieneSteam) {
-    if (esPrivadoSteam) {
-      html += `
-        <!-- AVISO DE PRIVACIDAD DE JUEGOS EN STEAM -->
-        <div class="stats-section-box" style="padding:16px 18px; border-left:4px solid #66c0f4; background:linear-gradient(135deg, rgba(23, 26, 33, 0.95), rgba(27, 40, 56, 0.9)); border:1px solid rgba(102,192,244,0.3); border-radius:4px; margin-bottom:14px;">
-          <div style="display:flex; align-items:flex-start; gap:12px;">
-            <span style="line-height:1; flex-shrink:0;">${getHeroIcon("lock-closed", "", 24)}</span>
-            <div style="flex:1;">
-              <strong style="color:#fff; font-size:0.92rem; display:block; margin-bottom:5px;">Detalles de juegos en modo privado en Steam</strong>
-              <p style="font-size:0.77rem; color:#8f98a0; margin:0 0 10px 0; line-height:1.45;">
-                Por defecto, Steam mantiene oculta la lista de tus juegos y las horas jugadas. Para que tus horas totales de juego en Steam y tu ranking de títulos reales aparezcan aquí automáticamente:
-              </p>
-              <ol style="font-size:0.76rem; color:#c6d4df; margin:0 0 12px 0; padding-left:18px; line-height:1.65;">
-                <li>Entra en Steam y ve a tu <strong>Perfil → Modificar perfil</strong>.</li>
-                <li>En la barra lateral izquierda, selecciona <strong>Ajustes de privacidad</strong>.</li>
-                <li>En <strong>"Detalles de los juegos"</strong>, cámbialo a: <strong>Público</strong>.</li>
-                <li>Desmarca la casilla <em>"Mantener siempre privado el tiempo de juego"</em>.</li>
-              </ol>
-              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-top:8px;">
-                <button type="button" class="btn-toggle-filter" onclick="actualizarDatosSteam(true)" style="background:#66c0f4; color:#171a21; font-weight:700; border:none; padding:7px 16px; border-radius:3px; font-size:0.8rem; display:inline-flex; align-items:center; gap:6px; cursor:pointer;">
-                  <span>${getHeroIcon("arrow-path", "", 15)}</span> <span>Volver a sincronizar</span>
-                </button>
-                <button type="button" class="btn-toggle-filter" onclick="solicitarSteamApiKeyPrompt()" style="background:rgba(255,255,255,0.08); color:#c6d4df; border:1px solid rgba(255,255,255,0.18); padding:7px 14px; border-radius:3px; font-size:0.78rem; cursor:pointer;">
-                  <span>${getHeroIcon("lock-closed", "", 15)}</span> <span>Sincronizar con API Key</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
-    } else {
-      html += `
-        <!-- RANKING: JUEGOS CON MÁS TIEMPO EN STEAM -->
-        <div class="stats-section-box">
-          <div class="stats-section-title">
-            <span>${getHeroIcon("trophy", "", 16)} Juegos con más tiempo en Steam</span>
-            <span style="font-size:0.74rem; color:#66c0f4; font-weight:600;">${horasSteamTotal} hrs de juego en Steam</span>
-          </div>
-          ${Array.isArray(steamStats?.topGames) && steamStats.topGames.length ? steamStats.topGames.map((g, idx) => {
-            const yaRegistrado = todosRegs.some(r => r.categoria === 'Juegos' && (r.titulo || '').toLowerCase().trim() === (g.name || '').toLowerCase().trim());
-            return `
-              <div class="stats-ranking-row" style="align-items:center;">
-                <div class="stats-rank-num rank-${idx + 1}">#${idx + 1}</div>
-                <img src="${escHtmlStats_(g.header || '')}" onerror="this.src='./icon.png'" alt="${escHtmlStats_(g.name)}" style="width:72px; height:34px; border-radius:4px; object-fit:cover; background:var(--card); flex-shrink:0; border:1px solid rgba(102,192,244,0.25);">
-                <div style="flex:1; min-width:0; margin-left:2px;">
-                  <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(g.name)}</strong>
-                  <span style="font-size:0.74rem; color:#66c0f4; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:4px;"><span>${getHeroIcon('clock', '', 12)}</span> <span>${g.hours} hrs de juego en Steam${g.recentHours > 0 ? ` · ${getHeroIcon('bolt', '', 11)} ${g.recentHours}h recientes` : ''}</span></span>
-                </div>
-                <div style="flex-shrink:0; margin-left:8px;">
-                  ${yaRegistrado
-                    ? `<span style="font-size:0.72rem; color:var(--muted); font-weight:600; padding:4px 8px; border-radius:2px; background:var(--bg); border:1px solid var(--border); display:inline-flex; align-items:center; gap:3px;"><span>${getHeroIcon("check", "", 14)}</span> <span>En diario</span></span>`
-                    : `<button type="button" class="btn-toggle-filter" onclick="registrarTopSteamByIndex(${idx})" style="font-size:0.72rem; padding:4px 10px; display:inline-flex; align-items:center; gap:4px; border-radius:3px; background:var(--card); border:1px solid var(--border);" title="Registrar este juego en Mediary"><span>${getHeroIcon('plus', '', 12)}</span> <span>Registrar</span></button>`
-                  }
-                </div>
-              </div>
-            `;
-          }).join('') + `
-            <div style="margin-top:12px; padding:10px 14px; background:var(--bg); border:1px solid var(--border); border-radius:3px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
-              <div style="font-size:0.75rem; color:var(--muted); line-height:1.4;">
-                <span>${getHeroIcon("sparkles", "", 16)}</span> <span>¿Quieres sincronizar las horas exactas de todo tu catálogo histórico?</span>
-              </div>
-              <button type="button" class="btn-toggle-filter" onclick="solicitarSteamApiKeyPrompt()" style="font-size:0.72rem; padding:4px 10px; background:rgba(102,192,244,0.12); color:#66c0f4; border:1px solid rgba(102,192,244,0.3); border-radius:3px; cursor:pointer;">
-                ${localStorage.getItem('mediary_steam_api_key') ? `${getHeroIcon('check', '', 12)} Clave API activa` : 'Configurar Steam API Key'}
-              </button>
-            </div>
-          ` : `
-            <div style="padding:16px 14px; text-align:center; background:rgba(102,192,244,0.04); border:1px dashed rgba(102,192,244,0.25); border-radius:3px; margin:8px 0;">
-              <div style="margin-bottom:6px;">${getHeroIcon("gamepad", "", 24)}</div>
-              <strong style="font-size:0.88rem; color:var(--text); display:block; margin-bottom:4px;">Tu cuenta pública está conectada (${totalJuegosSteam || 0} juegos)</strong>
-              <p style="font-size:0.77rem; color:var(--muted); margin:0 auto 12px auto; max-width:440px; line-height:1.45;">
-                Steam Community solo expone en la web los títulos jugados en las últimas 2 semanas. Para sincronizar de inmediato todo tu historial completo de horas acumuladas de todos los juegos de toda la vida, ingresa tu clave gratuita de Steam Web API:
-              </p>
-              <div style="display:flex; justify-content:center; gap:8px; align-items:center; flex-wrap:wrap;">
-                <input type="text" id="input-steam-api-key-stats" name="steam_stats_key_input" class="form-input" placeholder="Steam Web API Key (ej. 32 caracteres)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="font-size:0.78rem; max-width:240px; padding:6px 10px; -webkit-text-security:disc; text-security:disc;" value="${localStorage.getItem('mediary_steam_api_key') || ''}">
-                <button type="button" class="btn-toggle-filter" onclick="guardarSteamApiKeyDesdeInput('input-steam-api-key-stats')" style="background:#66c0f4; color:#171a21; font-weight:700; border:none; padding:7px 14px; border-radius:3px; font-size:0.78rem; cursor:pointer;">
-                  Guardar y sincronizar
-                </button>
-                <a href="https://steamcommunity.com/dev/apikey" target="_blank" rel="noopener noreferrer" style="font-size:0.74rem; color:#66c0f4; text-decoration:underline;">
-                  Obtener clave gratuita ↗
-                </a>
-              </div>
-            </div>
-          `}
-        </div>
-      `;
-    }
-  }
-
-  // 5. Videojuegos Favoritos en Mediary
-  html += `
+    <!-- TOP VIDEOJUEGOS FAVORITOS EN MEDIARY -->
     <div class="stats-section-box">
       <div class="stats-section-title">
         <span>${getHeroIcon("star", "", 16)} Videojuegos Favoritos (Mediary)</span>
-        <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">${formatearHorasStats_(hPeriodo)} registrados en Mediary</span>
+        <span style="font-size:0.74rem; color:var(--muted); font-weight:600;">${periodTxt}</span>
       </div>
       ${top5Juegos.length ? top5Juegos.map((j, idx) => `
         <div class="stats-ranking-row">
@@ -21708,20 +21573,15 @@ function renderizarStatsJuegos_(ctx) {
           </div>
           <div style="font-weight:700; font-size:0.84rem; color:var(--star-active, #c8955a); flex-shrink:0; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('star', '', 12)} ${Number(j.calificacion) ? Number(j.calificacion).toFixed(1) : '—'}</div>
         </div>
-      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Aún no has calificado videojuegos en tu diario Mediary. Puedes agregar cualquiera de tus títulos de Steam o PlayStation con el botón "+ Registrar".</div>'}
+      `).join('') : '<div style="color:var(--muted); font-size:0.82rem; text-align:center; padding:16px;">Aún no has calificado videojuegos en este período.</div>'}
     </div>
   `;
-
-  return html;
 }
 
 function renderizarStatsLecturas_(ctx) {
-  const { regsPeriodo, todosRegs, nowYear, nowMonth, mesesLargo } = ctx;
+  const { regsPeriodo, todosRegs, nowYear, periodTxt } = ctx;
   const lecturasPeriodo = regsPeriodo.filter(r => r.categoria === 'Lecturas');
   const lecturasTotales = todosRegs.filter(r => r.categoria === 'Lecturas');
-
-  const lecturasAnio = lecturasTotales.filter(r => obtenerFechaObjetoStats_(r)?.getFullYear() === nowYear);
-  const lecturasMes = lecturasAnio.filter(r => obtenerFechaObjetoStats_(r)?.getMonth() === nowMonth);
 
   let sumCalifs = 0, numCalifs = 0;
   lecturasPeriodo.forEach(r => {
@@ -21729,38 +21589,187 @@ function renderizarStatsLecturas_(ctx) {
   });
   const avgCal = numCalifs ? (sumCalifs / numCalifs).toFixed(1) : '0.0';
 
+  const rachaLectura = typeof calcularRachaLectura === 'function' ? calcularRachaLectura() : { rachaActual: 0, rachaMasAlta: 0 };
+
+  // Subcategorías: Libro, Cómic, Manga
+  const libros = lecturasPeriodo.filter(r => {
+    const s = String(r.subcategoria || '').toLowerCase();
+    return !s.includes('comic') && !s.includes('cómic') && !s.includes('manga');
+  });
+  const comics = lecturasPeriodo.filter(r => {
+    const s = String(r.subcategoria || '').toLowerCase();
+    return s.includes('comic') || s.includes('cómic');
+  });
+  const mangas = lecturasPeriodo.filter(r => {
+    const s = String(r.subcategoria || '').toLowerCase();
+    return s.includes('manga');
+  });
+
+  const calcSubAvg = (arr) => {
+    const cal = arr.filter(r => Number(r.calificacion) > 0);
+    if (!cal.length) return '—';
+    const sum = cal.reduce((acc, r) => acc + Number(r.calificacion), 0);
+    return (sum / cal.length).toFixed(1);
+  };
+  const avgLibros = calcSubAvg(libros);
+  const avgComics = calcSubAvg(comics);
+  const avgMangas = calcSubAvg(mangas);
+
+  // GRÁFICO 1: Tiempo leído última semana (detallado para cada día)
+  const mapaTiempos = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
+  const diasSem = obtenerDiasUltimaSemana_();
+  const semLecturaItems = diasSem.map(d => {
+    let min = 0;
+    const obj1 = mapaTiempos[d.diaStr];
+    const obj2 = mapaTiempos[d.isoStr];
+    if (obj1) min += extraerMinutosDeTiempoLecturaTexto_(obj1.texto || obj1);
+    else if (obj2) min += extraerMinutosDeTiempoLecturaTexto_(obj2.texto || obj2);
+
+    todosRegs.forEach(r => {
+      if (r.categoria === 'Lecturas') {
+        const fr = obtenerFechaObjetoStats_(r);
+        if (fr && fr.getFullYear() === d.date.getFullYear() && fr.getMonth() === d.date.getMonth() && fr.getDate() === d.date.getDate()) {
+          const hReg = extraerHorasRegistro(r);
+          if (hReg > 0 && min === 0) min += Math.round(hReg * 60);
+        }
+      }
+    });
+
+    const hrs = min / 60;
+    let disp = '-';
+    if (min > 0) {
+      disp = min >= 60 ? (hrs % 1 === 0 ? `${hrs}h` : `${hrs.toFixed(1)}h`) : `${min}m`;
+    }
+    return {
+      label: d.label,
+      valor: min,
+      displayVal: disp,
+      sublabel: `${d.fullLabel}: ${disp === '-' ? '0 min' : disp}`
+    };
+  });
+
+  // GRÁFICO 2: Tiempo leído por meses del último año
+  const mesesLectura = Array(12).fill(0);
+  Object.entries(mapaTiempos).forEach(([fStr, val]) => {
+    const d = (typeof parsearFechaAObjeto === 'function' ? parsearFechaAObjeto(fStr) : null) || (fStr.includes('-') ? new Date(fStr) : null);
+    if (d && !isNaN(d.getTime())) {
+      if (d.getFullYear() === nowYear || estadoStatsModal.periodo === 'all') {
+        mesesLectura[d.getMonth()] += extraerMinutosDeTiempoLecturaTexto_(val?.texto || val);
+      }
+    }
+  });
+  todosRegs.forEach(r => {
+    if (r.categoria === 'Lecturas') {
+      const d = obtenerFechaObjetoStats_(r);
+      if (d && (d.getFullYear() === nowYear || estadoStatsModal.periodo === 'all')) {
+        const m = d.getMonth();
+        const h = extraerHorasRegistro(r) || 6.0;
+        if (mesesLectura[m] === 0) {
+          mesesLectura[m] += Math.round(h * 60);
+        }
+      }
+    }
+  });
+
+  const mesesAbrev = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+  const chartItemsMesesLectura = mesesAbrev.map((lbl, idx) => {
+    const min = mesesLectura[idx];
+    const hrs = min / 60;
+    let disp = '-';
+    if (min > 0) {
+      disp = hrs >= 1 ? `${hrs.toFixed(1)}h` : `${min}m`;
+    }
+    return {
+      label: lbl,
+      valor: Math.round(hrs * 10) / 10,
+      displayVal: disp,
+      sublabel: `${lbl}: ${disp === '-' ? '0 min' : disp}`
+    };
+  });
+
   const top5Lecturas = [...lecturasPeriodo]
     .sort((a, b) => (Number(b.calificacion) || 0) - (Number(a.calificacion) || 0))
     .slice(0, 5);
 
   return `
+    <!-- KPIS: PRODUCTOS TOTALES, NOTA PROMEDIO, RACHAS -->
     <div class="stats-kpi-grid">
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("book-open", "", 16)}</span> <span>Lecturas Totales</span></div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("book-open", "", 16)}</span> <span>Productos Totales</span></div>
         <div class="stats-kpi-val">${lecturasPeriodo.length}</div>
-        <div class="stats-kpi-sub">Libros, cómics y mangas</div>
+        <div class="stats-kpi-sub">Libros, cómics y mangas en ${periodTxt}</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Año (${nowYear})</span></div>
-        <div class="stats-kpi-val">${lecturasAnio.length}</div>
-        <div class="stats-kpi-sub">Lecturas en ${nowYear}</div>
-      </div>
-      <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("calendar", "", 16)}</span> <span>Este Mes (${mesesLargo[nowMonth].slice(0,3)})</span></div>
-        <div class="stats-kpi-val" style="color:var(--accent);">${lecturasMes.length}</div>
-        <div class="stats-kpi-sub">Lecturas este mes</div>
-      </div>
-      <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Media</span></div>
+        <div class="stats-kpi-label"><span>${getHeroIcon("star", "", 16)}</span> <span>Nota Promedio</span></div>
         <div class="stats-kpi-val" style="color:var(--star-active, #c8955a); display:flex; align-items:center; gap:4px;">${getHeroIcon("star", "", 16)} ${avgCal}</div>
         <div class="stats-kpi-sub">De ${numCalifs} evaluadas</div>
       </div>
+      <div class="stats-kpi-card">
+        <div class="stats-kpi-label"><span>${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Lectura</span></div>
+        <div class="stats-kpi-val" style="color:#f59e0b;">${rachaLectura.rachaActual} ${rachaLectura.rachaActual === 1 ? 'día' : 'días'}</div>
+        <div class="stats-kpi-sub">Récord histórico: ${rachaLectura.rachaMasAlta} días</div>
+      </div>
     </div>
+
+    <!-- PRODUCTOS TOTALES Y NOTA PROMEDIO POR SUBCATEGORÍA (LIBRO, COMIC, MANGA) -->
+    <div class="stats-section-box">
+      <div class="stats-section-title">
+        <span>${getHeroIcon("squares-2x2", "", 16)} Desglose por Subcategoría</span>
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">Libro, Cómic y Manga</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; margin-top:4px;">
+        <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; padding:12px; text-align:left;">
+          <div style="font-size:0.76rem; color:var(--muted); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <span>${getHeroIcon("book-open", "", 14)}</span> <span>Libros</span>
+          </div>
+          <div style="font-size:1.35rem; font-weight:800; color:var(--text); line-height:1.2;">${libros.length}</div>
+          <div style="font-size:0.75rem; color:var(--muted); margin-top:4px; display:flex; align-items:center; gap:4px;">
+            <span>Nota media:</span> <strong style="color:var(--star-active, #c8955a); display:inline-flex; align-items:center; gap:2px;">${getHeroIcon("star", "", 11)} ${avgLibros}</strong>
+          </div>
+        </div>
+        <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; padding:12px; text-align:left;">
+          <div style="font-size:0.76rem; color:var(--muted); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <span>${getHeroIcon("newspaper", "", 14)}</span> <span>Cómics</span>
+          </div>
+          <div style="font-size:1.35rem; font-weight:800; color:var(--text); line-height:1.2;">${comics.length}</div>
+          <div style="font-size:0.75rem; color:var(--muted); margin-top:4px; display:flex; align-items:center; gap:4px;">
+            <span>Nota media:</span> <strong style="color:var(--star-active, #c8955a); display:inline-flex; align-items:center; gap:2px;">${getHeroIcon("star", "", 11)} ${avgComics}</strong>
+          </div>
+        </div>
+        <div style="background:var(--card); border:1px solid var(--border); border-radius:4px; padding:12px; text-align:left;">
+          <div style="font-size:0.76rem; color:var(--muted); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+            <span>${getHeroIcon("bookmark", "", 14)}</span> <span>Mangas</span>
+          </div>
+          <div style="font-size:1.35rem; font-weight:800; color:var(--text); line-height:1.2;">${mangas.length}</div>
+          <div style="font-size:0.75rem; color:var(--muted); margin-top:4px; display:flex; align-items:center; gap:4px;">
+            <span>Nota media:</span> <strong style="color:var(--star-active, #c8955a); display:inline-flex; align-items:center; gap:2px;">${getHeroIcon("star", "", 11)} ${avgMangas}</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOS GRÁFICOS: TIEMPO LEÍDO ÚLTIMA SEMANA Y POR MESES -->
+    ${generarGraficoBarras_({
+      titulo: 'Tiempo Leído en la Última Semana',
+      subtitulo: 'Detalle diario de lectura (últimos 7 días)',
+      items: semLecturaItems,
+      unidad: 'min',
+      colorBarra: '#cf7098'
+    })}
+
+    ${generarGraficoBarras_({
+      titulo: 'Tiempo Leído por Meses',
+      subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
+      items: chartItemsMesesLectura,
+      unidad: 'hrs',
+      colorBarra: '#cf7098'
+    })}
 
     <!-- TOP 5 LECTURAS FAVORITAS -->
     <div class="stats-section-box">
       <div class="stats-section-title">
         <span>Top 5 Lecturas Favoritas</span>
+        <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${periodTxt}</span>
       </div>
       ${top5Lecturas.length ? top5Lecturas.map((l, idx) => `
         <div class="stats-ranking-row">
@@ -21768,7 +21777,7 @@ function renderizarStatsLecturas_(ctx) {
           <img src="${escHtmlStats_(l.poster || '')}" onerror="this.src='./icon.png'" style="width:38px; height:52px; border-radius:4px; object-fit:cover; background:var(--card); flex-shrink:0;">
           <div style="flex:1; min-width:0;">
             <strong style="font-size:0.86rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(l.titulo)}</strong>
-            <span style="font-size:0.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(l.creador || 'Autor')} ${l.anio ? `· ${l.anio}` : ''}</span>
+            <span style="font-size:0.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:block;">${escHtmlStats_(l.creador || 'Autor')} ${l.anio ? `· ${l.anio}` : ''} ${l.subcategoria ? `(${escHtmlStats_(l.subcategoria)})` : ''}</span>
           </div>
           <div style="font-weight:700; font-size:0.84rem; color:var(--star-active, #c8955a); flex-shrink:0; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('star', '', 12)} ${Number(l.calificacion) ? Number(l.calificacion).toFixed(1) : '—'}</div>
         </div>
@@ -21838,6 +21847,7 @@ function obtenerTop5CancionesStats_(musicaRegs, spotifyStats, lastfmStats) {
     calificacion: 5
   }));
 }
+
 
 function actualizarTarjetasVisualesConfig() {
   migrarTemaLegadoSiEsNecesario();
