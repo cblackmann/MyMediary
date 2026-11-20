@@ -752,7 +752,7 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 .live-dot-btn:hover{color:var(--text);border-color:var(--border-hover, #64748b);transform:scale(1.08);}
 .live-dot-btn.active{background:var(--card);color:var(--accent);border-color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,0.18);transform:scale(1.06);}
 .live-dot-icon{display:inline-flex;align-items:center;justify-content:center;}
-.live-dot-icon svg{width:9.5px;height:9.5px;}
+.live-dot-icon svg, .live-dot-icon svg.h-icon{width:8px !important;height:8px !important;stroke-width:2.2 !important;}
 #badge-sp-live-pill, #badge-psn-live-pill, #badge-friends-sp-live-pill, #badge-friends-psn-live-pill{position:absolute !important;top:-1.5px !important;right:-1.5px !important;width:4px !important;height:4px !important;}
 
 /* TARJETAS REDUCTIBLES (ESTILO NOTIFICACIONES ANDROID) */
@@ -3447,9 +3447,9 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   stroke-width: 1.8;
 }
 .live-dot-icon svg.h-icon {
-  width: 15px;
-  height: 15px;
-  stroke-width: 2;
+  width: 8px !important;
+  height: 8px !important;
+  stroke-width: 2.2 !important;
 }
 .nav-cat-card svg.h-icon {
   width: 22px;
@@ -3533,9 +3533,9 @@ html[data-app-theme="minimalist"] .nav-categories-row {
   stroke-width: 1.8;
 }
 .live-dot-icon svg.h-icon {
-  width: 15px;
-  height: 15px;
-  stroke-width: 2;
+  width: 8px !important;
+  height: 8px !important;
+  stroke-width: 2.2 !important;
 }
 .nav-cat-card svg.h-icon {
   width: 22px;
@@ -25088,6 +25088,35 @@ function toggleLiveCardExpansion(tipo, ev) {
 }
 window.toggleLiveCardExpansion = toggleLiveCardExpansion;
 
+function cambiarSlideLive(idx) {
+  const carousel = document.getElementById('home-live-carousel');
+  if (!carousel) return;
+  const w = carousel.clientWidth || 1;
+  carousel.scrollTo({ left: idx * w, behavior: 'smooth' });
+  actualizarPillsCarouselLive(idx);
+}
+window.cambiarSlideLive = cambiarSlideLive;
+
+function actualizarPillsCarouselLive(idx) {
+  const dotSp = document.getElementById('dot-live-spotify');
+  const dotPsn = document.getElementById('dot-live-psn');
+  if (dotSp) dotSp.classList.toggle('active', idx === 0);
+  if (dotPsn) dotPsn.classList.toggle('active', idx === 1);
+}
+window.actualizarPillsCarouselLive = actualizarPillsCarouselLive;
+
+function inicializarLiveCarouselScrollListener() {
+  const carousel = document.getElementById('home-live-carousel');
+  if (!carousel || carousel._hasLiveScrollListener) return;
+  carousel._hasLiveScrollListener = true;
+  carousel.addEventListener('scroll', () => {
+    const w = carousel.clientWidth || 1;
+    const idx = Math.round(carousel.scrollLeft / w);
+    actualizarPillsCarouselLive(idx);
+  }, { passive: true });
+}
+window.inicializarLiveCarouselScrollListener = inicializarLiveCarouselScrollListener;
+
 function dibujarTarjetaSpotifyCompacta(data) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
   const item = data.item || {};
@@ -25997,95 +26026,66 @@ function dibujarTarjetaPlayStationCompacta(data) {
   const isPlaying = !!data.isPlaying;
   const titleName = data.titleName || data.name || (l === 'en' ? 'PlayStation Game' : 'Juego de PlayStation');
   const platform = data.platform || 'PS5';
-  const studio = data.studio || (l === 'en' ? 'PlayStation Studios' : 'PlayStation Studios');
   const coverUrl = data.image || '';
-  const hours = data.hours || 0;
-  const statusTxt = data.status || (isPlaying ? (l === 'en' ? 'Playing now' : 'Jugando ahora') : (l === 'en' ? 'Idle / Rest mode' : 'En reposo'));
-  const trophyProgress = data.trophyProgress || '';
-
-  const safeTituloParam = encodeURIComponent(titleName);
+  const isExp = estaLiveCardExpandida('playstation');
 
   const coverHtml = coverUrl
     ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(titleName)}" loading="lazy"><span class="home-psn-platform-badge">${platform}</span>`
-    : `<div style="width:100%;height:100%;display:grid;place-items:center;font-size:1.6rem;background:linear-gradient(135deg,#003791,#001a44);color:#60a5fa;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 11h4m-2-2v4M15 11h.01M18 13h.01M2 10.5C2 7.46 4.46 5 7.5 5h9c3.04 0 5.5 2.46 5.5 5.5 0 3.3-1.6 7.5-4 7.5-1.5 0-2.3-1.3-3.2-2.5a3 3 0 0 0-4.6 0c-.9 1.2-1.7 2.5-3.2 2.5-2.4 0-4-4.2-4-7.5Z"/></svg></div>`;
-
-  const isDemo = localStorage.getItem('mediary_psn_username') === 'Gamer_Mediary';
-  const isExp = estaLiveCardExpandida('playstation');
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(135deg,rgba(0,55,145,0.22),rgba(0,26,68,0.38));color:#38bdf8;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></div>`;
 
   return `
     <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <!-- i. A la izquierda: Portada del juego -->
+      <!-- i. Portada -->
       <div class="home-psn-cover-compact">
         ${coverHtml}
       </div>
 
-      <!-- ii. Centro: Vistas reducida y expandida -->
+      <!-- ii. Centro -->
       <div class="home-psn-center-compact">
-        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN SPOTIFY) -->
+        <!-- VISTA REDUCIDA (COLLAPSED) -->
         <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
           <div style="flex:1; min-width:0; overflow:hidden;">
             <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleName)}">
               <span class="home-np-scrollable">${escHtmlSpotify_(titleName)}</span>
             </div>
-            <div style="font-size:0.73rem; color:#38bdf8; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px; margin-top:1px;">
+            <div style="font-size:0.72rem; color:#38bdf8; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px;">
               <span>${platform}</span>
               <span style="opacity:0.5;">·</span>
-              <span style="color:#10b981; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700; cursor:pointer;" onclick="event.stopPropagation(); detenerJuegoPsn()" title="${l === 'en' ? 'Playing now · Tap to stop' : 'Jugando ahora · Toca para detener'}">
+              <span style="color:#10b981; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
                 <span class="home-np-dot" style="background:#10b981;"></span>
-                <span>${l === 'en' ? 'Live · Playing' : 'En vivo · Jugando'}</span>
+                <span>${l === 'en' ? 'Live' : 'En vivo'}</span>
               </span>
             </div>
           </div>
         </div>
 
-        <!-- VISTA EXPANDIDA: DETALLES COMPLETOS -->
-        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+        <!-- VISTA EXPANDIDA (EXPANDED - SIMPLE Y LIMPIA) -->
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:2px;">
           <div class="home-psn-platform-label">
             <span>PlayStation Network</span>
-            ${trophyProgress ? `<span class="home-psn-trophy-tag">${getHeroIcon('trophy', '', 11)} ${trophyProgress}</span>` : ''}
-          </div>
-          <div class="home-psn-meta-compact home-np-text-wrap" title="${escHtmlSpotify_(studio)}">
-            <span class="home-np-scrollable">${escHtmlSpotify_(studio)}</span>
           </div>
           <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleName)}">
             <span class="home-np-scrollable">${escHtmlSpotify_(titleName)}</span>
           </div>
-
-          <div class="home-psn-status-row">
+          <div class="home-psn-status-row" style="margin-top:2px;">
             <div class="home-psn-live-pill" onclick="event.stopPropagation(); detenerJuegoPsn()" title="${l === 'en' ? 'Playing now · Tap to stop' : 'Jugando ahora · Toca para pasar a reposo'}">
               <span class="home-np-dot" style="background:#10b981;"></span>
-              <span>${l === 'en' ? 'Live · Playing' : 'En vivo · Jugando'}</span>
+              <span>${l === 'en' ? 'Live' : 'En vivo'}</span>
             </div>
-            ${hours > 0 ? `<span class="home-psn-hours-tag">${getHeroIcon('clock', '', 11)} ${hours} hrs</span>` : ''}
-            ${isDemo ? `
-              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarJuegoDemoPlayStation()" title="Cambiar juego demo">
-                ⇄ <span>Demo</span>
-              </button>
-            ` : `
-              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); detenerJuegoPsn()" title="${l === 'en' ? 'Stop playing / Set to Rest' : 'Dejar de jugar / Poner en reposo'}">
-                💤 <span>${l === 'en' ? 'Stop' : 'Dejar de jugar'}</span>
-              </button>
-              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarJuegoUsuarioPlayStation(event)" title="${l === 'en' ? 'Switch game' : 'Cambiar juego'}">
-                ⇄ <span>${l === 'en' ? 'Change' : 'Cambiar'}</span>
-              </button>
-              <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Sync PlayStation status' : 'Sincronizar PlayStation'}">
-                ${getHeroIcon('arrow-path', '', 11)} <span>${l === 'en' ? 'Sync' : 'Sincronizar'}</span>
-              </button>
-            `}
+            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); detenerJuegoPsn()" title="${l === 'en' ? 'Stop playing / Set to Rest' : 'Dejar de jugar'}">
+              💤 <span>${l === 'en' ? 'Stop' : 'Dejar de jugar'}</span>
+            </button>
           </div>
         </div>
       </div>
 
-      <!-- iii. Borde derecho: Logo oficial de PlayStation y botón rápido para registrar -->
+      <!-- iii. Borde derecho: solo logo PSN y chevron -->
       <div class="home-psn-right-col">
         <a href="https://www.playstation.com" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${l === 'en' ? 'Open PlayStation' : 'Abrir PlayStation'}">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#0070d1">
             <path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/>
           </svg>
         </a>
-        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarJuegoActualEnMediary(decodeURIComponent('${safeTituloParam}'), '${platform}')" title="${l === 'en' ? 'Log game in Mediary' : 'Registrar juego en Mediary'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
@@ -26098,76 +26098,62 @@ function dibujarTarjetaPlayStationCompacta(data) {
 
 function dibujarTarjetaPlayStationCompactaIdle() {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const psnUser = localStorage.getItem('mediary_psn_username') || '';
   const isExp = estaLiveCardExpandida('playstation');
-  const userTag = psnUser ? `@${psnUser}` : 'PlayStation Network';
-
   const titleTxt = l === 'en' ? 'Not playing anything right now' : 'No estás jugando a nada';
-  const metaTxt = l === 'en' ? 'Console in rest mode · Inactive' : 'Consola en reposo · Sin juego activo';
 
   return `
     <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <!-- i. A la izquierda: Icono sobrio de PlayStation / Control -->
-      <div class="home-psn-cover-compact" style="display:grid; place-items:center; background:linear-gradient(135deg, rgba(0,55,145,0.22), rgba(0,26,68,0.38)); color:#38bdf8; border:1px solid rgba(0,112,209,0.25);">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:26px; height:26px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
+      <!-- i. Portada con mando sobrio -->
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; background:linear-gradient(135deg,rgba(0,55,145,0.22),rgba(0,26,68,0.38)); color:#38bdf8; border:1px solid rgba(0,112,209,0.25);">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px; height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
 
       <!-- ii. Centro -->
       <div class="home-psn-center-compact">
-        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN SPOTIFY) -->
+        <!-- VISTA REDUCIDA (COLLAPSED) -->
         <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
           <div style="flex:1; min-width:0; overflow:hidden;">
             <div class="home-psn-title-compact home-np-text-wrap" title="${titleTxt}">
               <span class="home-np-scrollable" style="color:var(--muted); font-weight:700;">${titleTxt}</span>
             </div>
-            <div style="font-size:0.73rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px; margin-top:1px;">
-              <span>${escHtmlSpotify_(userTag)}</span>
+            <div style="font-size:0.72rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px;">
+              <span>PlayStation</span>
               <span style="opacity:0.5;">·</span>
-              <span style="color:var(--muted); display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700; cursor:pointer;" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Tap to start playing' : 'Toca para empezar a jugar'}">
+              <span style="display:inline-flex; align-items:center; gap:3px; font-size:0.68rem;">
                 <span class="home-np-dot" style="background:#64748b; box-shadow:none; animation:none;"></span>
-                <span>${l === 'en' ? 'Rest Mode' : 'En reposo'}</span>
+                <span>${l === 'en' ? 'Rest mode' : 'En reposo'}</span>
               </span>
             </div>
           </div>
         </div>
 
-        <!-- VISTA EXPANDIDA: DETALLES COMPLETOS -->
-        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+        <!-- VISTA EXPANDIDA (EXPANDED - SIMPLE Y LIMPIA) -->
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:2px;">
           <div class="home-psn-platform-label">
             <span>PlayStation Network</span>
-            ${psnUser ? `<span style="font-size:0.68rem; color:#38bdf8; font-weight:700; opacity:0.85;">@${escHtmlSpotify_(psnUser)}</span>` : ''}
-          </div>
-          <div class="home-psn-meta-compact home-np-text-wrap" title="${metaTxt}">
-            <span class="home-np-scrollable">${metaTxt}</span>
           </div>
           <div class="home-psn-title-compact home-np-text-wrap" title="${titleTxt}">
-            <span class="home-np-scrollable" style="font-weight:700; color:var(--text);">${titleTxt}</span>
+            <span class="home-np-scrollable" style="color:var(--text); font-weight:700;">${titleTxt}</span>
           </div>
-
-          <div class="home-psn-status-row">
-            <div class="home-psn-live-pill idle" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Rest Mode · Tap to set Playing' : 'En reposo · Toca para indicar que estás jugando'}">
+          <div class="home-psn-status-row" style="margin-top:2px;">
+            <div class="home-psn-live-pill idle" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Rest Mode' : 'En reposo'}">
               <span class="home-np-dot" style="background:#64748b; box-shadow:none; animation:none;"></span>
-              <span>${l === 'en' ? 'Rest Mode' : 'En reposo'}</span>
+              <span>${l === 'en' ? 'Rest mode' : 'En reposo'}</span>
             </div>
-            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Mark game playing in real time' : 'Marcar juego que estoy jugando en tiempo real'}">
+            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); alternarEstadoEnVivoPlayStation(event)" title="${l === 'en' ? 'Play now' : 'Jugar ahora'}">
               🎮 <span>${l === 'en' ? 'Play now' : 'Jugar ahora'}</span>
-            </button>
-            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); sincronizarCuentaPlayStation(null, true)" title="${l === 'en' ? 'Check active game' : 'Comprobar PlayStation'}">
-              ${getHeroIcon('arrow-path', '', 11)} <span>${l === 'en' ? 'Sync' : 'Sincronizar'}</span>
             </button>
           </div>
         </div>
       </div>
 
+      <!-- iii. Borde derecho: solo logo PSN y chevron -->
       <div class="home-psn-right-col">
         <a href="https://www.playstation.com" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="PlayStation">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="#0070d1">
             <path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/>
           </svg>
         </a>
-        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="${l === 'en' ? 'Go to Games' : 'Ver Juegos'}">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
@@ -26183,38 +26169,34 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
   const isExp = estaLiveCardExpandida('playstation');
   return `
     <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <div class="home-psn-cover-compact" style="display:grid; place-items:center; font-size:1.6rem; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; background:linear-gradient(135deg,rgba(0,55,145,0.22),rgba(0,26,68,0.38)); color:#38bdf8; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px; height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
 
       <div class="home-psn-center-compact">
-        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN SPOTIFY) -->
+        <!-- VISTA REDUCIDA (COLLAPSED) -->
         <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
           <div style="flex:1; min-width:0; overflow:hidden;">
             <div class="home-psn-title-compact home-np-text-wrap" style="color:#38bdf8; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
               <span class="home-np-scrollable">${l === 'en' ? 'Connect PlayStation' : 'Conectar PlayStation'}</span>
             </div>
-            <div style="font-size:0.73rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
+            <div style="font-size:0.72rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
               <span>PlayStation Network</span>
             </div>
           </div>
         </div>
 
         <!-- VISTA EXPANDIDA -->
-        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
+        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:2px;">
           <div class="home-psn-platform-label">
             <span>PlayStation Network</span>
           </div>
-          <div class="home-psn-meta-compact home-np-text-wrap">
-            <span class="home-np-scrollable">${l === 'en' ? 'Not connected' : 'Sin cuenta vinculada'}</span>
-          </div>
           <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
-            <span class="home-np-scrollable" style="color:#38bdf8;">${l === 'en' ? 'Tap here to connect PSN account' : 'Toca aquí para conectar PlayStation'}</span>
+            <span class="home-np-scrollable" style="color:#38bdf8;">${l === 'en' ? 'Tap to connect PlayStation' : 'Toca para conectar PlayStation'}</span>
           </div>
-
-          <div class="home-psn-status-row">
-            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); abrirModalConectarPsn()" style="padding:1px 8px;">
-              + ${l === 'en' ? 'Connect PSN' : 'Vincular PSN'}
+          <div class="home-psn-status-row" style="margin-top:2px;">
+            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); abrirModalConectarPsn()">
+              + <span>${l === 'en' ? 'Connect' : 'Conectar'}</span>
             </button>
           </div>
         </div>
@@ -26226,9 +26208,6 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
             <path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/>
           </svg>
         </span>
-        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); cambiarCat('Juegos', 'Consolas')" title="Juegos">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="6 9 12 15 18 9"></polyline>
