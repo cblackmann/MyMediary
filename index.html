@@ -7984,6 +7984,133 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   fill: #1DB954 !important;
 }
 
+
+/* BOTON DISCRETO DE EDITAR PERFIL EN ESQUINA SUPERIOR DERECHA */
+.btn-profile-edit-discreet {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--tr);
+  z-index: 10;
+  padding: 0;
+  outline: none;
+}
+.btn-profile-edit-discreet:hover {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: scale(1.06);
+}
+[data-theme$="-light"] .btn-profile-edit-discreet,
+[data-theme="nordic-light"] .btn-profile-edit-discreet,
+[data-theme="creme-latte"] .btn-profile-edit-discreet,
+[data-theme="parchment"] .btn-profile-edit-discreet,
+[data-theme="sage-garden"] .btn-profile-edit-discreet {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: var(--text);
+}
+[data-theme$="-light"] .btn-profile-edit-discreet:hover,
+[data-theme="nordic-light"] .btn-profile-edit-discreet:hover,
+[data-theme="creme-latte"] .btn-profile-edit-discreet:hover,
+[data-theme="parchment"] .btn-profile-edit-discreet:hover,
+[data-theme="sage-garden"] .btn-profile-edit-discreet:hover {
+  background: #ffffff;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ESTILO COMPACTO Y REDUCIDO PARA FAVORITOS POR CATEGORÍA */
+#perfil-favoritos-grid.favs-grid,
+.favs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.fav-slot-card {
+  padding: 7px 10px !important;
+  gap: 9px !important;
+  border-radius: 4px !important;
+}
+.fav-slot-poster {
+  width: 36px !important;
+  height: 50px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  border-radius: 3px !important;
+  font-size: 1.1rem !important;
+}
+.fav-slot-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.fav-slot-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+.fav-slot-subcat {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fav-slot-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+.fav-slot-meta {
+  font-size: 0.68rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.btn-choose-fav {
+  font-size: 0.68rem !important;
+  padding: 2px 7px !important;
+  border-radius: 3px !important;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+.btn-toggle-fav-show {
+  font-size: 0.62rem !important;
+  padding: 1px 5px !important;
+  border-radius: 3px !important;
+}
+
+/* BOTONES DE CATEGORÍA DE ESTADÍSTICAS EN PERFIL */
+.home-indice-btn.perfil-stats-cat-btn.active {
+  background: var(--accent-subtle, rgba(56, 189, 248, 0.14)) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2) !important;
+}
+
 </style> </head> <body>
 <header class="app-header-integrated">
   <!-- 1. Esquina superior izquierda: Selector de año (más pequeño e integrado) -->
@@ -8253,74 +8380,35 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
     <!-- VISTA PERFIL (PESTAÑA APARTE) -->
     <div id="vista-perfil" style="display:none;">
-
       <!-- 1. HERO CARD DEL PERFIL -->
-      <div class="profile-hero-card cover-predeterminada" id="perfil-hero-card" style="padding:18px 22px; margin-bottom:14px; position:relative; overflow:hidden;">
-        <div class="profile-identity-wrap" style="align-items:center; gap:18px; position:relative; z-index:2; width:100%;">
-          <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar foto de perfil" style="cursor:pointer; flex-shrink:0;">
-            <span><svg style="width:26px;height:26px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg></span>
+      <div class="profile-hero-card" id="perfil-hero-card" style="position:relative;">
+        <button type="button" class="btn-profile-edit-discreet" onclick="abrirModalEditarPerfil()" title="Editar información de perfil" aria-label="Editar perfil">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+        </button>
+        <div class="profile-avatar-wrap">
+          <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar avatar">
+            <span class="emoji-dyn">👤</span>
+            <div class="profile-avatar-edit-badge" data-i18n="btn_edit">Editar</div>
           </div>
-          <div class="profile-info-col" style="flex:1; min-width:0;">
-            <div class="profile-nick-row" style="cursor:pointer; display:inline-flex; align-items:center; gap:6px;" onclick="abrirModalEditarPerfil()" title="Click para editar nombre y bio">
-              <span class="profile-nick-display" id="perfil-nick-render" data-i18n="profile_default_role">Cinéfilo & Lector</span>
-              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.7;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
-            </div>
-            <div class="profile-bio-txt" id="perfil-bio-render" data-i18n="profile_default_bio">Coleccionando historias en Mediary</div>
-            <div style="margin-top:8px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-              <span id="perfil-id-badge" onclick="copiarMiIdUsuario()" title="Click para copiar ID" style="cursor:pointer; font-size:0.8rem; font-weight:700; color:var(--accent); background:rgba(56,189,248,0.12); padding:4px 12px; border-radius:2px; border:1px solid rgba(56,189,248,0.35); display:inline-flex; align-items:center; gap:6px;">
-                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;margin-right:3px;"><path d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.364a4.125 4.125 0 0 0-6.338 0"/></svg><span id="perfil-id-txt">...</span>
-                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"/></svg>
-              </span>
-              <div style="font-size:0.8rem; color:var(--muted); display:inline-flex; align-items:center; gap:6px;" id="perfil-email-render">
-                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
-                <span id="perfil-email-txt">Sin cuenta vinculada</span>
-              </div>
-            </div>
+        </div>
+        <div class="profile-info-col" style="flex:1; min-width:0;">
+          <div class="profile-nick-row" style="cursor:pointer; display:inline-flex; align-items:center; gap:6px;" onclick="abrirModalEditarPerfil()" title="Click para editar nombre y bio">
+            <span class="profile-nick-display" id="perfil-nick-render" data-i18n="profile_default_role">Cinéfilo & Lector</span>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.7;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
           </div>
-          <div class="profile-hero-side-actions" style="position:relative; z-index:2; display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn-change-cover" onclick="abrirModalEstadisticasAvanzadas()" title="Ver estadísticas detalladas">
-              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg><span>Estadísticas</span>
-            </button>
-            <button type="button" class="btn-change-cover" onclick="abrirModalElegirPortada()" title="Personalizar portada del perfil">
-              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.39m3.42 3.42 6.84-6.84a2.25 2.25 0 1 0-3.182-3.182l-6.84 6.84m3.182 3.182-3.182-3.182"/></svg><span>Portada</span>
-            </button>
-            <button type="button" class="btn-change-cover" onclick="abrirModalEditarPerfil()" title="Editar información de perfil">
-              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg><span>Editar</span>
-            </button>
+          <div class="profile-bio-txt" id="perfil-bio-render" data-i18n="profile_default_bio">Coleccionando historias en Mediary</div>
+          <div style="margin-top:8px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <span id="perfil-id-badge" onclick="copiarMiIdUsuario()" title="Click para copiar ID" style="cursor:pointer; font-size:0.8rem; font-weight:700; color:var(--accent); background:rgba(56,189,248,0.12); padding:4px 12px; border-radius:2px; border:1px solid rgba(56,189,248,0.35); display:inline-flex; align-items:center; gap:6px;">
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;margin-right:3px;"><path d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.364a4.125 4.125 0 0 0-6.338 0"/></svg><span id="perfil-id-txt">...</span>
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"/></svg>
+            </span>
+            <div style="font-size:0.8rem; color:var(--muted); display:inline-flex; align-items:center; gap:6px;" id="perfil-email-render">
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
+              <span id="perfil-email-txt">Sin cuenta vinculada</span>
+            </div>
           </div>
         </div>
       </div>
-
-      <!-- SECCIÓN ESTADÍSTICAS DETALLADAS -->
-      <div class="home-clean-section" id="perfil-sec-estadisticas">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title">
-            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg></span>
-            <span>Estadísticas Detalladas</span>
-          </div>
-          <button type="button" class="btn-toggle-filter" onclick="abrirModalEstadisticasAvanzadas()" style="font-size:0.78rem; padding:4px 12px; display:inline-flex; align-items:center; gap:6px;">
-            <span>Abrir</span> <span>›</span>
-          </button>
-        </div>
-        <div class="cat-wide-card" onclick="abrirModalEstadisticasAvanzadas()" style="cursor:pointer; padding:14px 16px; margin-top:4px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
-            <div style="display:flex; align-items:center; gap:12px;">
-              <div style="width:38px; height:38px; border-radius:4px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; flex-shrink:0;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.281m5.94 2.28-2.28 5.941"/></svg></div>
-              <div>
-                <div style="font-weight:700; font-size:0.88rem; color:var(--text);">
-                  Hábitos y Métricas Culturales
-                </div>
-                <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">
-                  Desglose por período, ritmo de consumo, música en Spotify y rankings favoritos.
-                </div>
-              </div>
-            </div>
-            <span style="font-size:1.1rem; color:var(--muted); margin-right:4px;">›</span>
-          </div>
-        </div>
-      </div>
-
-      <hr class="home-section-divider">
 
       <!-- 2. PERSONAJE FAVORITO -->
       <div class="home-clean-section" id="perfil-sec-personaje">
@@ -8335,105 +8423,16 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
       <hr class="home-section-divider">
 
-      <!-- 3. MÉTRICAS GLOBALES -->
-      <div class="home-clean-section" id="perfil-sec-metricas">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title">
-            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span>
-            <span data-i18n="profile_metrics_title">Métricas Globales</span>
-          </div>
-        </div>
-        <div class="profile-grid-highlights">
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_total_entries">Total Registros</div>
-            <div class="profile-stat-val" id="prof-total-val">0</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_avg_rating">Calificación Promedio</div>
-            <div class="profile-stat-val" id="prof-rating-val"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg> 0.0</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_game_playtime">Horas en Juegos</div>
-            <div class="profile-stat-val" id="prof-hours-val">0 hrs</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_watched_hours">Horas Vistas</div>
-            <div class="profile-stat-val" id="prof-watched-hours-val">0 hrs</div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="home-section-divider">
-
-      <!-- 4. RÉCORDS DE RITMO -->
-      <div class="home-clean-section" id="perfil-sec-records">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title">
-            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 18.75h-9m9 0a3 3 0 0 1 3-3h1.5a1.5 1.5 0 0 0 1.5-1.5v-1.125c0-.828-.672-1.5-1.5-1.5H18m-1.5 7.125v1.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-1.5m0 0a3 3 0 0 1-3-3H4.5A1.5 1.5 0 0 1 3 13.125V12c0-.828.672-1.5 1.5-1.5H6m10.5 8.25H7.5m9-8.25V4.875A1.875 1.875 0 0 0 14.625 3H9.375A1.875 1.875 0 0 0 7.5 4.875V10.5a4.5 4.5 0 0 0 9 0Z"/></svg></span>
-            <span data-i18n="profile_records_title">Récords de Ritmo</span>
-          </div>
-        </div>
-        <div class="profile-grid-records">
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div>
-            <div class="profile-stat-val" id="prof-best-day-val">—</div>
-            <div class="profile-stat-sub" id="prof-best-day-sub">0 registros</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div>
-            <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.9rem; line-height:1.25;">—</div>
-            <div class="profile-stat-sub" id="prof-best-week-sub">0 registros</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
-            <div class="profile-stat-val" id="prof-best-month-val">—</div>
-            <div class="profile-stat-sub" id="prof-best-month-sub">0 registros</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_best_streak">Racha más alta</div>
-            <div class="profile-stat-val" id="prof-best-streak-val" style="color:#f59e0b;">—</div>
-            <div class="profile-stat-sub" id="prof-best-streak-sub">0 días seguidos</div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="home-section-divider">
-
-      <!-- 5. CURIOSIDADES Y HÁBITOS -->
-      <div class="home-clean-section" id="perfil-sec-curiosidades">
-        <div class="home-clean-section-header">
-          <div class="home-clean-title">
-            <span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span>
-            <span data-i18n="profile_curiosities_title">Curiosidades y Hábitos</span>
-          </div>
-        </div>
-        <div class="profile-grid-fun">
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_fav_creator">Creador/Director Favorito</div>
-            <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">—</div>
-            <div class="profile-stat-sub" id="prof-fav-creator-sub">0 registros</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_rewatch_rate">Tasa de Rewatch / Relectura</div>
-            <div class="profile-stat-val" id="prof-rewatch-rate-val">0%</div>
-            <div class="profile-stat-sub" id="prof-rewatch-rate-sub">0 re-consumos</div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="home-section-divider">
-
-      <!-- 6. MIS FAVORITOS POR CATEGORÍA -->
+      <!-- 3. MIS FAVORITOS POR CATEGORÍA -->
       <div class="home-clean-section" id="perfil-sec-favoritos">
         <div class="home-clean-section-header">
           <div class="home-clean-title">
-            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 18.75h-9m9 0a3 3 0 0 1 3-3h1.5a1.5 1.5 0 0 0 1.5-1.5v-1.125c0-.828-.672-1.5-1.5-1.5H18m-1.5 7.125v1.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-1.5m0 0a3 3 0 0 1-3-3H4.5A1.5 1.5 0 0 1 3 13.125V12c0-.828.672-1.5 1.5-1.5H6m10.5 8.25H7.5m9-8.25V4.875A1.875 1.875 0 0 0 14.625 3H9.375A1.875 1.875 0 0 0 7.5 4.875V10.5a4.5 4.5 0 0 0 9 0Z"/></svg></span>
-            <span data-i18n="profile_favs_title">Mis Favoritos por Categoría</span>
+            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></span>
+            <span data-i18n="profile_favs_title">Favoritos por Categoría</span>
           </div>
-        </div>
-        <div style="display:flex; justify-content:center; align-items:center; margin-bottom:12px;">
-          <button type="button" class="btn-toggle-filter" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()" style="font-size:0.8rem; padding:6px 16px; margin:0 auto; display:inline-flex; align-items:center; gap:6px;">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;margin-right:4px;"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg><span data-i18n="btn_cfg_favs_show">Configurar</span>
+          <button type="button" class="btn-toggle-filter" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()" style="font-size:0.75rem; padding:4px 10px; display:inline-flex; align-items:center; gap:5px;">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
+            <span data-i18n="btn_cfg_favs_show">Configurar</span>
           </button>
         </div>
         <div class="favs-grid" id="perfil-favoritos-grid"></div>
@@ -8441,21 +8440,27 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
       <hr class="home-section-divider">
 
-      <!-- 7. DISTRIBUCIÓN POR CATEGORÍA -->
-      <div class="home-clean-section" id="perfil-sec-distribucion">
-        <div class="home-clean-section-header">
+      <!-- 4. ESTADÍSTICAS DETALLADAS INTEGRADAS -->
+      <div class="home-clean-section" id="perfil-sec-estadisticas">
+        <div class="home-clean-section-header" style="flex-wrap:wrap; gap:8px;">
           <div class="home-clean-title">
             <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg></span>
-            <span data-i18n="profile_dist_title">Distribución por Categoría</span>
+            <span>Estadísticas</span>
+          </div>
+          <div class="stats-period-group">
+            <button type="button" class="stats-period-btn active" id="perfil-stats-period-year" onclick="cambiarPeriodoStatsPerfil('year')"><span id="perfil-stats-lbl-cur-year">2026</span></button>
+            <button type="button" class="stats-period-btn" id="perfil-stats-period-all" onclick="cambiarPeriodoStatsPerfil('all')">Todos los tiempos</button>
           </div>
         </div>
-        <div class="cat-wide-card" style="margin-top:4px; padding:16px;">
-          <div id="profile-bars-container"></div>
+
+        <!-- BOTONES DE CATEGORÍAS ESTILO ÍNDICE DE INICIO -->
+        <div class="home-indice-carousel" id="perfil-stats-cats-index" style="margin-bottom:12px; padding:4px 2px 8px;">
+          <!-- Generado por renderizarBotonesCategoriasStatsPerfil() -->
         </div>
+
+        <!-- CONTENIDO DINÁMICO DE ESTADÍSTICAS -->
+        <div id="perfil-stats-content-area"></div>
       </div>
-
-
-
     </div>
 
 <!-- VISTA DEDICADA DE WATCHLISTS -->
@@ -18186,55 +18191,64 @@ let debounceTimerChar = null;
 let obraSeleccionadaParaChar = null;
 
 function renderizarPersonajeFavorito() {
- const cont = document.getElementById('perfil-character-card-container');
- if (!cont) return;
- const char = perfilUsuario?.personajeFavorito || perfilUsuario?.favoritos?.personajeFavorito || null;
- const l = userPrefs?.lang || 'es';
+  const cont = document.getElementById('perfil-character-card-container');
+  if (!cont) return;
+  const char = perfilUsuario?.personajeFavorito || perfilUsuario?.favoritos?.personajeFavorito || null;
+  const l = userPrefs?.lang || 'es';
 
- if (!char || !char.nombre) {
- cont.innerHTML = `
- <div class="fav-char-empty-box" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Click to choose your favorite character' : 'Click para elegir tu personaje favorito'}">
- <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
- <div class="fav-char-empty-icon" style="font-size:1.6rem;"></div>
- <div style="min-width:0; flex:1;">
- <div style="font-weight:700; font-size:0.92rem; color:var(--text);">
- ${l === 'en' ? 'Choose your Favorite Character' : 'Elige tu Personaje Favorito'}
- </div>
- </div>
- </div>
- <button type="button" class="btn-choose-char-cta" onclick="event.stopPropagation(); abrirModalSeleccionarPersonaje()">
- <span>+</span> <span>${l === 'en' ? 'Choose' : 'Elegir'}</span>
- </button>
- </div>
- `;
- return;
- }
+  if (!char || !char.nombre) {
+    cont.innerHTML = `
+      <div class="fav-char-empty-box" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Click to choose your favorite character' : 'Click para elegir tu personaje favorito'}" style="padding:14px 16px; border-radius:4px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; background:var(--card); border:1px dashed var(--border);">
+        <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+          <div class="fav-char-empty-icon" style="width:40px; height:40px; border-radius:50%; background:var(--bg); border:1.5px dashed var(--border); display:grid; place-items:center; color:var(--muted); flex-shrink:0;">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M16.5 18.75h-9m9 0a3 3 0 0 1 3-3h1.5a1.5 1.5 0 0 0 1.5-1.5v-1.125c0-.828-.672-1.5-1.5-1.5H18m-1.5 7.125v1.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-1.5m0 0a3 3 0 0 1-3-3H4.5A1.5 1.5 0 0 1 3 13.125V12c0-.828.672-1.5 1.5-1.5H6m10.5 8.25H7.5m9-8.25V4.875A1.875 1.875 0 0 0 14.625 3H9.375A1.875 1.875 0 0 0 7.5 4.875V10.5a4.5 4.5 0 0 0 9 0Z"/></svg>
+          </div>
+          <div style="min-width:0; flex:1;">
+            <div style="font-weight:700; font-size:0.88rem; color:var(--text);">
+              ${l === 'en' ? 'Choose your Favorite Character' : 'Elige tu Personaje Favorito'}
+            </div>
+            <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">
+              ${l === 'en' ? 'Highlight your hero, protagonist or cultural icon' : 'Destaca a tu personaje o icono predilecto en tu perfil'}
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-choose-char-cta" onclick="event.stopPropagation(); abrirModalSeleccionarPersonaje()" style="font-size:0.78rem; padding:4px 12px; display:inline-flex; align-items:center; gap:4px;">
+          <span>+</span> <span>${l === 'en' ? 'Choose' : 'Elegir'}</span>
+        </button>
+      </div>
+    `;
+    return;
+  }
 
- const esImg = char.imagen && (char.imagen.startsWith('http') || char.imagen.startsWith('data:'));
- cont.innerHTML = `
- <div class="profile-fav-char-card">
- <div class="fav-char-main-row">
- <div class="fav-char-avatar-box">
- ${esImg ? `<img src="${char.imagen}" alt="${char.nombre}" onerror="this.onerror=null;this.parentElement.innerHTML='';">` : `<span>${char.imagen || ''}</span>`}
- </div>
- <div class="fav-char-text-block">
- <h4 class="fav-char-name-txt" title="${char.nombre}">${char.nombre}</h4>
- <div class="fav-char-work-txt" title="${char.obra || ''}">
- <span style="opacity:0.75;">${l === 'en' ? 'From:' : 'De:'}</span> <strong>${char.obra || 'Obra predilecta'}</strong>
- </div>
- ${char.cita ? `<div class="fav-char-quote-txt" title="${char.cita}">“${char.cita}”</div>` : ''}
- </div>
- <div class="fav-char-actions-wrap">
- <button type="button" class="btn-fav-char-pill" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Change character' : 'Cambiar personaje'}">
- <span></span> <span>${l === 'en' ? 'Change' : 'Cambiar'}</span>
- </button>
- <button type="button" class="btn-fav-char-remove-pill" onclick="abrirModalConfirmarQuitarPersonaje()" title="${l === 'en' ? 'Remove character' : 'Quitar personaje'}">
- 
- </button>
- </div>
- </div>
- </div>
- `;
+  const esImg = char.imagen && (char.imagen.startsWith('http') || char.imagen.startsWith('data:'));
+  cont.innerHTML = `
+    <div class="profile-fav-char-card" style="padding:12px 14px; border-radius:4px; margin-bottom:0;">
+      <div class="fav-char-main-row" style="display:flex; align-items:center; gap:12px;">
+        <div class="fav-char-avatar-box" style="width:48px; height:48px; min-width:48px; max-width:48px; border-radius:50%; overflow:hidden; border:2px solid #f59e0b; box-shadow:0 0 10px rgba(245,158,11,0.25); display:grid; place-items:center; flex-shrink:0;">
+          ${esImg ? `<img src="${char.imagen}" alt="${char.nombre}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='👤';">` : `<span style="font-size:1.4rem;">${char.imagen || '👤'}</span>`}
+        </div>
+        <div class="fav-char-text-block" style="flex:1; min-width:0;">
+          <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
+            <span class="fav-char-header-tag" style="margin:0; font-size:0.62rem; padding:1px 6px; letter-spacing:0.04em;">PERSONAJE FAVORITO</span>
+          </div>
+          <h4 class="fav-char-name-txt" style="font-size:0.95rem; font-weight:800; color:var(--text); line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0;" title="${char.nombre}">${char.nombre}</h4>
+          <div class="fav-char-work-txt" style="font-size:0.78rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;" title="${char.obra || ''}">
+            <span style="opacity:0.75;">${l === 'en' ? 'From:' : 'De:'}</span> <strong>${char.obra || 'Obra predilecta'}</strong>
+          </div>
+          ${char.cita ? `<div class="fav-char-quote-txt" style="font-size:0.75rem; color:#f59e0b; font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${char.cita}">“${char.cita}”</div>` : ''}
+        </div>
+        <div class="fav-char-actions-wrap" style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
+          <button type="button" class="btn-fav-char-pill" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Change character' : 'Cambiar personaje'}" style="height:30px; padding:0 8px; font-size:0.75rem; display:inline-flex; align-items:center; gap:4px;">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+            <span>${l === 'en' ? 'Change' : 'Cambiar'}</span>
+          </button>
+          <button type="button" class="btn-fav-char-remove-pill" onclick="abrirModalConfirmarQuitarPersonaje()" title="${l === 'en' ? 'Remove character' : 'Quitar personaje'}" style="width:30px; height:30px; padding:0; display:grid; place-items:center;">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M6 18 18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 const PERSONAJES_CATALOGO_CURADO = [
@@ -19134,6 +19148,8 @@ function abrirVistaPerfil(pushNav = true) {
     const vPer = document.getElementById('vista-perfil'); if (vPer) vPer.style.display = 'block';
     renderizarCabeceraPerfil();
     renderizarFavoritosPerfil();
+    if (typeof renderizarPersonajeFavorito === 'function') renderizarPersonajeFavorito();
+    if (typeof renderizarEstadisticasPerfil === 'function') renderizarEstadisticasPerfil();
     calcularYMostrarEstadisticasPerfil();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   } catch (err) {
@@ -20783,6 +20799,8 @@ var estadoStatsModal = {
   categoria: 'General' // 'General' | 'Peliculas' | 'Series' | 'Musica' | 'Juegos' | 'Lecturas'
 };
 
+
+if (typeof renderizarEstadisticasPerfil === 'function') renderizarEstadisticasPerfil();
 function escHtmlStats_(str) {
   if (str === null || str === undefined) return '';
   return String(str)
@@ -21043,6 +21061,9 @@ function cambiarCatStats(cat) {
   estadoStatsModal.categoria = cat;
   actualizarPillsFiltroStats();
   renderizarContenidoEstadisticasAvanzadas();
+  if (typeof seleccionarCategoriaStatsPerfil === 'function') {
+    seleccionarCategoriaStatsPerfil(cat);
+  }
 }
 
 function actualizarPillsFiltroStats() {
@@ -21160,6 +21181,302 @@ function obtenerMetricasMusicaSpotifyStats_(spotifyStats, spotifyAccumulator, no
     horasRecientes: fallbackHoras,
     countRecientes: fallbackCount
   };
+}
+
+
+// ==========================================
+// ESTADÍSTICAS DETALLADAS INTEGRADAS EN PERFIL
+// ==========================================
+let estadoStatsPerfil = {
+  categoria: 'General',
+  periodo: 'year'
+};
+
+function cambiarPeriodoStatsPerfil(periodo) {
+  estadoStatsPerfil.periodo = periodo;
+  if (typeof estadoStatsModal !== 'undefined' && estadoStatsModal) {
+    estadoStatsModal.periodo = periodo;
+  }
+  const btnYear = document.getElementById('perfil-stats-period-year');
+  const btnAll = document.getElementById('perfil-stats-period-all');
+  if (btnYear && btnAll) {
+    if (periodo === 'year') {
+      btnYear.classList.add('active');
+      btnAll.classList.remove('active');
+    } else {
+      btnAll.classList.add('active');
+      btnYear.classList.remove('active');
+    }
+  }
+  const modalBtnYear = document.getElementById('stats-period-btn-year');
+  const modalBtnAll = document.getElementById('stats-period-btn-all');
+  if (modalBtnYear && modalBtnAll) {
+    if (periodo === 'year') {
+      modalBtnYear.classList.add('active');
+      modalBtnAll.classList.remove('active');
+    } else {
+      modalBtnAll.classList.add('active');
+      modalBtnYear.classList.remove('active');
+    }
+  }
+  renderizarEstadisticasPerfil();
+}
+
+function seleccionarCategoriaStatsPerfil(cat) {
+  estadoStatsPerfil.categoria = cat;
+  if (typeof estadoStatsModal !== 'undefined' && estadoStatsModal) {
+    estadoStatsModal.categoria = cat;
+  }
+  document.querySelectorAll('.perfil-stats-cat-btn').forEach(btn => {
+    if (btn.getAttribute('data-cat') === cat) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+  renderizarEstadisticasPerfil();
+}
+
+function renderizarBotonesCategoriasStatsPerfil() {
+  const cont = document.getElementById('perfil-stats-cats-index');
+  if (!cont) return;
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
+  const cats = [
+    { cat: 'General', label: (l === 'en' ? 'Summary' : 'Resumen'), icon: getHeroIcon('chart-bar') },
+    { cat: 'Peliculas', label: (l === 'en' ? 'Movies' : 'Películas'), icon: getHeroIcon('film') },
+    { cat: 'Series', label: (l === 'en' ? 'Series' : 'Series'), icon: getHeroIcon('tv') },
+    { cat: 'Musica', label: (l === 'en' ? 'Music' : 'Música'), icon: getHeroIcon('musical-note') },
+    { cat: 'Juegos', label: (l === 'en' ? 'Games' : 'Juegos'), icon: getHeroIcon('gamepad') },
+    { cat: 'Lecturas', label: (l === 'en' ? 'Books' : 'Lecturas'), icon: getHeroIcon('book-open') }
+  ];
+
+  cont.innerHTML = cats.map(c => {
+    const act = (estadoStatsPerfil.categoria === c.cat) ? 'active' : '';
+    return `
+      <button type="button" class="home-indice-btn perfil-stats-cat-btn ${act}" data-cat="${c.cat}" onclick="seleccionarCategoriaStatsPerfil('${c.cat}')" title="${c.label}">
+        <span class="home-indice-icon">${c.icon}</span>
+        <span class="home-indice-label">${c.label}</span>
+      </button>
+    `;
+  }).join('');
+}
+
+function renderizarEstadisticasPerfil() {
+  const container = document.getElementById('perfil-stats-content-area');
+  if (!container) return;
+
+  const hoy = new Date();
+  const yEl = document.getElementById('perfil-stats-lbl-cur-year');
+  if (yEl) yEl.textContent = hoy.getFullYear();
+
+  renderizarBotonesCategoriasStatsPerfil();
+
+  const todosRegs = Array.isArray(estado.registros) ? estado.registros : [];
+  const nowYear = hoy.getFullYear();
+  const nowMonth = hoy.getMonth();
+  const mesesLargo = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+  const seriesConTemporadas = new Set();
+  todosRegs.forEach(r => {
+    if (r.categoria === 'Series' && ((r.subcategoria && (r.subcategoria === 'Temporadas' || r.subcategoria.includes('Temporada'))) || /\[S\d+\]/i.test(r.titulo || ''))) {
+      const base = (r.tituloBase || (r.titulo || '').replace(/\s*\[S\d+\].*$/, '')).trim().toLowerCase();
+      if (base) seriesConTemporadas.add(base);
+    }
+  });
+
+  const regsPeriodo = todosRegs.filter(r => {
+    if (estadoStatsPerfil.periodo === 'all') return true;
+    const d = obtenerFechaObjetoStats_(r);
+    if (!d) return false;
+    return d.getFullYear() === nowYear;
+  });
+
+  const periodTxt = estadoStatsPerfil.periodo === 'all'
+    ? 'Todos los tiempos'
+    : `Año ${nowYear}`;
+
+  let spotifyStats = null, spotifyAccumulator = null;
+  try { const s = localStorage.getItem('mediary_spotify_stats'); if (s) spotifyStats = JSON.parse(s); } catch(e){}
+  try { const a = localStorage.getItem('mediary_spotify_accumulator'); if (a) spotifyAccumulator = JSON.parse(a); } catch(e){}
+  let lastfmConnected = localStorage.getItem('mediary_lastfm_connected') === 'true', lastfmUser = null, lastfmStats = null;
+  try { const u = localStorage.getItem('mediary_lastfm_user'); if (u) lastfmUser = JSON.parse(u); } catch(e){}
+  try { const st = localStorage.getItem('mediary_lastfm_stats'); if (st) lastfmStats = JSON.parse(st); } catch(e){}
+  let steamConnected = localStorage.getItem('mediary_steam_connected') === 'true', steamUser = null, steamStats = null;
+  try { const su = localStorage.getItem('mediary_steam_user'); if (su) steamUser = JSON.parse(su); } catch(e){}
+  try {
+    const ss = localStorage.getItem('mediary_steam_stats');
+    if (ss) {
+      const parsed = JSON.parse(ss);
+      if (!(parsed && parsed.totalHours === 412.5 && Array.isArray(parsed.topGames) && parsed.topGames.some(g => g.name === 'Elden Ring'))) {
+        steamStats = parsed;
+      }
+    }
+  } catch(e){}
+  let psnConnected = localStorage.getItem('mediary_psn_connected') === 'true', psnUser = null, psnStats = null;
+  try { const pu = localStorage.getItem('mediary_psn_user'); if (pu) psnUser = JSON.parse(pu); } catch(e){}
+  try { const ps = localStorage.getItem('mediary_psn_stats'); if (ps) psnStats = JSON.parse(ps); } catch(e){}
+
+  const ctx = {
+    todosRegs,
+    regsPeriodo,
+    seriesConTemporadas,
+    nowYear,
+    nowMonth,
+    mesesLargo,
+    periodTxt,
+    spotifyStats,
+    spotifyAccumulator,
+    lastfmConnected,
+    lastfmUser,
+    lastfmStats,
+    steamConnected,
+    steamUser,
+    steamStats,
+    psnConnected,
+    psnUser,
+    psnStats
+  };
+
+  const cat = estadoStatsPerfil.categoria;
+  if (cat === 'General') {
+    const mapaDias = {}, mapaSemanas = {}, mapaMeses = {}, creadores = {};
+    let rewatchesTotales = 0;
+    regsPeriodo.forEach(r => {
+      if (r.esRewatch) rewatchesTotales++;
+      const cr = (r.creador || '').trim();
+      if (cr && cr !== 'Desconocido' && cr !== 'Autor desconocido' && cr !== 'Director desconocido') {
+        creadores[cr] = (creadores[cr] || 0) + 1;
+      }
+      const fechaBase = (r.fechaFin && r.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(r.fechaFin)) ? r.fechaFin : r.fechaInicio;
+      const dObj = parsearFechaAObjeto(fechaBase);
+      if (dObj) {
+        const dStr = `${String(dObj.getDate()).padStart(2,'0')}/${String(dObj.getMonth()+1).padStart(2,'0')}/${dObj.getFullYear()}`;
+        if (!mapaDias[dStr]) mapaDias[dStr] = { fecha: new Date(dObj), items: [] };
+        mapaDias[dStr].items.push(r);
+        const mStr = `${dObj.getFullYear()}-${String(dObj.getMonth()+1).padStart(2,'0')}`;
+        if (!mapaMeses[mStr]) mapaMeses[mStr] = { mIdx: dObj.getMonth(), items: [] };
+        mapaMeses[mStr].items.push(r);
+        const primerDiaSemana = new Date(dObj);
+        const diaSem = (dObj.getDay() + 6) % 7;
+        primerDiaSemana.setDate(dObj.getDate() - diaSem);
+        const semKey = `${primerDiaSemana.getFullYear()}-${String(primerDiaSemana.getMonth()+1).padStart(2,'0')}-${String(primerDiaSemana.getDate()).padStart(2,'0')}`;
+        if (!mapaSemanas[semKey]) mapaSemanas[semKey] = { inicio: new Date(primerDiaSemana), items: [] };
+        mapaSemanas[semKey].items.push(r);
+      }
+    });
+
+    const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
+    let maxDiaVal = 0, bestDiaObj = null;
+    for (const [k, obj] of Object.entries(mapaDias)) {
+      if (obj.items.length > maxDiaVal) { maxDiaVal = obj.items.length; bestDiaObj = obj; }
+    }
+    let maxDiaTxt = '—', maxDiaSub = '0 registros';
+    if (bestDiaObj) {
+      const diaNombre = (I18N[l] && I18N[l].dias) ? I18N[l].dias[bestDiaObj.fecha.getDay()] : '';
+      const dd = String(bestDiaObj.fecha.getDate()).padStart(2, '0');
+      const mm = String(bestDiaObj.fecha.getMonth() + 1).padStart(2, '0');
+      maxDiaTxt = `${diaNombre} ${dd}/${mm}`;
+      maxDiaSub = formatearDesgloseItems(bestDiaObj.items);
+    }
+
+    let maxSemVal = 0, bestSemObj = null;
+    for (const [k, obj] of Object.entries(mapaSemanas)) {
+      if (obj.items.length > maxSemVal) { maxSemVal = obj.items.length; bestSemObj = obj; }
+    }
+    let maxSemTxt = '—', maxSemSub = '0 registros';
+    if (bestSemObj) {
+      const finSem = new Date(bestSemObj.inicio);
+      finSem.setDate(bestSemObj.inicio.getDate() + 6);
+      const mIniNom = (I18N[l] && I18N[l].meses) ? I18N[l].meses[bestSemObj.inicio.getMonth()] : '';
+      const dIniStr = String(bestSemObj.inicio.getDate()).padStart(2, '0');
+      const mFinNom = (I18N[l] && I18N[l].meses) ? I18N[l].meses[finSem.getMonth()] : '';
+      const dFinStr = String(finSem.getDate()).padStart(2, '0');
+      maxSemTxt = `${mIniNom} ${dIniStr} --> ${mFinNom} ${dFinStr}`;
+      maxSemSub = formatearDesgloseItems(bestSemObj.items);
+    }
+
+    let maxMesVal = 0, bestMesObj = null;
+    for (const [k, obj] of Object.entries(mapaMeses)) {
+      if (obj.items.length > maxMesVal) { maxMesVal = obj.items.length; bestMesObj = obj; }
+    }
+    let maxMesTxt = '—', maxMesSub = '0 registros';
+    if (bestMesObj) {
+      maxMesTxt = (I18N[l] && I18N[l].meses) ? I18N[l].meses[bestMesObj.mIdx] : '';
+      maxMesSub = formatearDesgloseItems(bestMesObj.items);
+    }
+
+    let favCreator = '—', favCreatorCount = 0;
+    for (const [k, v] of Object.entries(creadores)) {
+      if (v > favCreatorCount) { favCreatorCount = v; favCreator = k; }
+    }
+
+    const rachaGlobal = calcularRachaMasAltaGlobal(regsPeriodo.length ? regsPeriodo : todosRegs);
+    const rewatchPct = regsPeriodo.length ? Math.round((rewatchesTotales / regsPeriodo.length) * 100) : 0;
+
+    const htmlGeneral = renderizarStatsGeneral_(ctx);
+
+    const recordsHtml = `
+      <div style="margin-top:16px;">
+        <div style="font-weight:700; font-size:0.88rem; color:var(--text); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+          <span class="emoji-dyn">${getHeroIcon('trophy', '', 16)}</span>
+          <span data-i18n="profile_records_title">Récords de Ritmo</span>
+        </div>
+        <div class="profile-grid-records">
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div>
+            <div class="profile-stat-val" id="prof-best-day-val">${maxDiaTxt}</div>
+            <div class="profile-stat-sub" id="prof-best-day-sub">${maxDiaSub}</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div>
+            <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.88rem; line-height:1.25;">${maxSemTxt}</div>
+            <div class="profile-stat-sub" id="prof-best-week-sub">${maxSemSub}</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
+            <div class="profile-stat-val" id="prof-best-month-val">${maxMesTxt}</div>
+            <div class="profile-stat-sub" id="prof-best-month-sub">${maxMesSub}</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_best_streak">Racha más alta</div>
+            <div class="profile-stat-val" id="prof-best-streak-val" style="color:#f59e0b;">${rachaGlobal.valTxt}</div>
+            <div class="profile-stat-sub" id="prof-best-streak-sub">${rachaGlobal.subTxt}</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <div style="font-weight:700; font-size:0.88rem; color:var(--text); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+          <span class="emoji-dyn">${getHeroIcon('sparkles', '', 16)}</span>
+          <span data-i18n="profile_curiosities_title">Curiosidades y Hábitos</span>
+        </div>
+        <div class="profile-grid-fun">
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_fav_creator">Creador/Director Favorito</div>
+            <div class="profile-stat-val" id="prof-fav-creator-val" style="font-size:.95rem;">${favCreator}</div>
+            <div class="profile-stat-sub" id="prof-fav-creator-sub">${favCreatorCount} registros</div>
+          </div>
+          <div class="profile-stat-box">
+            <div class="profile-stat-label" data-i18n="stat_rewatch_rate">Tasa de Rewatch / Relectura</div>
+            <div class="profile-stat-val" id="prof-rewatch-rate-val">${rewatchPct}%</div>
+            <div class="profile-stat-sub" id="prof-rewatch-rate-sub">${rewatchesTotales} re-consumos</div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    container.innerHTML = htmlGeneral + recordsHtml;
+  } else if (cat === 'Peliculas') {
+    container.innerHTML = renderizarStatsPeliculas_(ctx);
+  } else if (cat === 'Series') {
+    container.innerHTML = renderizarStatsSeries_(ctx);
+  } else if (cat === 'Musica') {
+    container.innerHTML = renderizarStatsMusica_(ctx);
+  } else if (cat === 'Juegos') {
+    container.innerHTML = renderizarStatsJuegos_(ctx);
+  } else if (cat === 'Lecturas') {
+    container.innerHTML = renderizarStatsLecturas_(ctx);
+  }
 }
 
 function renderizarContenidoEstadisticasAvanzadas() {
