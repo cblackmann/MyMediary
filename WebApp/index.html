@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" class="preload-no-transition">
 <head>
 <meta charset="UTF-8">
 <title>Mediary — Your Media, Your Diary</title>
@@ -66,6 +66,7 @@
     document.documentElement.style.colorScheme = (mode === 'light') ? 'light' : 'dark';
     if (font) document.documentElement.style.setProperty('--font-family', font);
     if (fontSize) document.documentElement.style.setProperty('--font-scale', fontSize);
+    if (p && typeof p.showEmojis === "boolean") document.documentElement.setAttribute("data-show-emojis", p.showEmojis ? "true" : "false");
     
     const bgMap = {
       'slate-dark': '#111518', 'slate-light': '#E3E7EA',
@@ -115,6 +116,7 @@ if (typeof flatpickr === 'undefined') {
 }
 </script>
 <style>
+.preload-no-transition,.preload-no-transition *,.preload-no-transition *::before,.preload-no-transition *::after{-webkit-transition:none !important;-moz-transition:none !important;-ms-transition:none !important;-o-transition:none !important;transition:none !important;}
 :root{--font-family:'Lexend',sans-serif;--font-scale:100%;--b-nav:84px;--tr:all .2s cubic-bezier(.4,0,.2,1);--color-scheme:dark;}
 
 /* ========================================================
@@ -17180,14 +17182,10 @@ try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) esta
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
 try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); if (!perfilUsuario.portada && perfilUsuario.preferencias?.portada) perfilUsuario.portada = perfilUsuario.preferencias.portada; if (!perfilUsuario.personajeFavorito && perfilUsuario.favoritos?.personajeFavorito) perfilUsuario.personajeFavorito = perfilUsuario.favoritos.personajeFavorito; } } catch (e) {}
 aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); actualizarUISelectorAnio();
-setTimeout(() => {
-  if (estado && estado.userEmail) {
-    const d = typeof obtenerListaDiasLectura === 'function' ? obtenerListaDiasLectura() : [];
-    if (d && d.length > 0) {
-      sincronizarPreferenciasYAppsHaciaNube(false);
-    }
-  }
-}, 1200);
+const gn = document.getElementById('home-greeting-nickname');
+if (gn && perfilUsuario && perfilUsuario.nickname) {
+  gn.textContent = perfilUsuario.nickname;
+}
 }
 let _timerSyncCloudPrefs = null;
 function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false) {
@@ -17302,6 +17300,17 @@ function restaurarPreferenciasYAppsDesdeNube(prefs) {
   // 1. Restaurar configuración de UI
   const configUI = prefs.configuracion_ui;
   if (configUI && typeof configUI === 'object') {
+    const huboCambioVisual = (
+      (configUI.themeFamily && configUI.themeFamily !== userPrefs.themeFamily) ||
+      (configUI.themeMode && configUI.themeMode !== userPrefs.themeMode) ||
+      (configUI.appTheme && configUI.appTheme !== userPrefs.appTheme) ||
+      (configUI.font && configUI.font !== userPrefs.font) ||
+      (configUI.fontSize && configUI.fontSize !== userPrefs.fontSize) ||
+      (configUI.lang && configUI.lang !== userPrefs.lang) ||
+      (typeof configUI.showEmojis === 'boolean' && configUI.showEmojis !== userPrefs.showEmojis) ||
+      (Array.isArray(configUI.categoriasOrden) && JSON.stringify(configUI.categoriasOrden) !== JSON.stringify(userPrefs.categoriasOrden)) ||
+      (Array.isArray(configUI.categoriasOcultas) && JSON.stringify(configUI.categoriasOcultas) !== JSON.stringify(userPrefs.categoriasOcultas))
+    );
     if (configUI.themeFamily) userPrefs.themeFamily = configUI.themeFamily;
     if (configUI.themeMode) userPrefs.themeMode = configUI.themeMode;
     if (configUI.theme) userPrefs.theme = configUI.theme;
@@ -17340,12 +17349,14 @@ function restaurarPreferenciasYAppsDesdeNube(prefs) {
     }
 
     try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {}
-    aplicarEstilosGlobales();
-    actualizarTextosInterfaz();
-    if (typeof actualizarTarjetasVisualesConfig === 'function') {
-      actualizarTarjetasVisualesConfig();
+    if (huboCambioVisual) {
+      aplicarEstilosGlobales();
+      actualizarTextosInterfaz();
+      if (typeof actualizarTarjetasVisualesConfig === 'function') {
+        actualizarTarjetasVisualesConfig();
+      }
+      cambio = true;
     }
-    cambio = true;
   }
 
   // 2. Restaurar cuentas y apps vinculadas
@@ -17478,9 +17489,10 @@ function restaurarPreferenciasYAppsDesdeNube(prefs) {
   }
   cambio = true;
 
-  // Si la nube aún no tenía cuentas o UI, o si el dispositivo local tenía más días de racha, sincronizar hacia arriba
-  if (!configUI || !cuentas || !rachasCloud || sincronizarHaciaArribaPorRacha) {
-    sincronizarPreferenciasYAppsHaciaNube(true);
+  // Si el dispositivo local tiene días de racha que no están en la nube, sincronizar suavemente
+  const tieneNuevosDiasLocales = localesDias.some(d => !cloudDias.includes(d));
+  if (tieneNuevosDiasLocales && typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(false);
   }
 
   return cambio;
@@ -26972,10 +26984,6 @@ document.addEventListener('selectionchange', function() {
 window.onload = () => {
   const pAuthInit = document.getElementById('auth-input-pass');
   if (pAuthInit) pAuthInit.value = '';
-  inicializarGestosSwipeDownModales();
-  cargarPreferenciasLocales();
-  inicializarSelectoresFechasAproximadas();
-  actualizarUISelectorAnio();
   if (typeof flatpickr !== 'undefined') {
     const opts = { locale: (userPrefs.lang === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true };
     try {
@@ -26983,9 +26991,11 @@ window.onload = () => {
       fpFin = flatpickr('#input-fecha-fin', opts);
     } catch (_) {}
   }
+  if (typeof reposicionarIndicadorNavMovil === 'function') {
+    reposicionarIndicadorNavMovil(null, false);
+  }
   precargarDiscoverEnSegundoPlano(1);
   iniciarLoopAutoActualizacionDiscover();
-  inicializarManejoBotonAtras();
   inicializarEventosBuscadores();
   if (typeof inicializarSistemaNotificaciones === 'function') {
     inicializarSistemaNotificaciones();
@@ -26997,7 +27007,7 @@ window.onload = () => {
     procesarRetornoSteamAuth();
   }
 
-  // Sincronización integrada de datos, productos y estadísticas al recargar/abrir la app
+  // Sincronización integrada de datos en segundo plano silencioso
   recargarYSincronizarApp(false);
 
   // Inicializar pull-to-refresh para recarga manual fluida en móviles
@@ -27011,8 +27021,6 @@ window.onload = () => {
       verificarYMostrarPromptDiscoCompletado();
     }
   }, 1200);
-
-  setTimeout(() => reposicionarIndicadorNavMovil(), 180);
 };
 
 function inicializarPullToRefresh() {
@@ -27046,7 +27054,7 @@ const irInicio = (pushNav = true) => {
   cambiarCat('inicio', null, false);
 };
 
-function reposicionarIndicadorNavMovil(el) {
+function reposicionarIndicadorNavMovil(el, animar = true) {
   const nav = document.getElementById('mobile-bottom-nav') || document.querySelector('.mobile-bottom-nav');
   const ind = document.getElementById('mobile-nav-indicator');
   if (!nav || !ind) return;
@@ -27056,9 +27064,19 @@ function reposicionarIndicadorNavMovil(el) {
   const btnRect = targetBtn.getBoundingClientRect();
   if (btnRect.width === 0) return;
   const left = btnRect.left - navRect.left;
-  ind.style.width = `${btnRect.width}px`;
-  ind.style.transform = `translateX(${left}px)`;
-  ind.style.opacity = '1';
+  if (!animar) {
+    const prevTrans = ind.style.transition;
+    ind.style.transition = 'none';
+    ind.style.width = `${btnRect.width}px`;
+    ind.style.transform = `translateX(${left}px)`;
+    ind.style.opacity = '1';
+    void ind.offsetWidth;
+    ind.style.transition = prevTrans || '';
+  } else {
+    ind.style.width = `${btnRect.width}px`;
+    ind.style.transform = `translateX(${left}px)`;
+    ind.style.opacity = '1';
+  }
 }
 
 function actualizarBarraNavegacionMovil(btnId) {
@@ -30395,6 +30413,58 @@ inicializarLongPressAvatares();
 inicializarEventosBuscadores();
 if (typeof actualizarUILastFm === 'function') {
   try { actualizarUILastFm(); } catch (_) {}
+}
+
+function inicializarAppInmediata() {
+  // 1. Cargar preferencias locales, tema, fuentes, textos y perfil sincrónicamente
+  cargarPreferenciasLocales();
+  const pAuthInit = document.getElementById('auth-input-pass');
+  if (pAuthInit) pAuthInit.value = '';
+
+  // 2. Cargar registros y watchlists desde la caché local sin esperar a la red
+  if (typeof cargarRegistros === 'function') {
+    cargarRegistros();
+  }
+  if (typeof cargarWatchlist === 'function') {
+    cargarWatchlist();
+  }
+
+  // 3. Renderizar resumen de inicio con los datos de caché (on-going, carrusel en vivo, rachas, subcategorías)
+  if (typeof renderizarResumenInicio === 'function') {
+    renderizarResumenInicio();
+  }
+  if (typeof renderizarFeedAmigosResumidoInicio === 'function') {
+    renderizarFeedAmigosResumidoInicio();
+  }
+
+  // 4. Posicionar la píldora de navegación móvil de inmediato SIN animación
+  if (typeof reposicionarIndicadorNavMovil === 'function') {
+    reposicionarIndicadorNavMovil(null, false);
+  }
+
+  // 5. Gestos e interacciones esenciales
+  if (typeof inicializarGestosSwipeDownModales === 'function') {
+    inicializarGestosSwipeDownModales();
+  }
+  if (typeof inicializarManejoBotonAtras === 'function') {
+    inicializarManejoBotonAtras();
+  }
+  if (typeof inicializarSelectoresFechasAproximadas === 'function') {
+    inicializarSelectoresFechasAproximadas();
+  }
+
+  // Quitar la supresión de transiciones de arranque tras el renderizado inicial instantáneo
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.documentElement.classList.remove('preload-no-transition');
+    });
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', inicializarAppInmediata);
+} else {
+  inicializarAppInmediata();
 }
 </script>
 </body>
