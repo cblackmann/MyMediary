@@ -6074,6 +6074,65 @@ html[data-ui-style="modern"][data-theme="nordic-light"] textarea.comment-box {
 
 
 
+
+/* ACCIONES VERTICALES DE TARJETAS DE REGISTRO (ELIMINAR ARRIBA, EDITAR ABAJO) */
+.m-card-actions-col {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 3;
+}
+.m-card-btn-action {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  line-height: 1;
+  background: none;
+  border: 1px solid transparent;
+  color: var(--muted);
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: var(--tr);
+}
+.m-card-btn-action svg {
+  width: 15px;
+  height: 15px;
+}
+.m-card-btn-action.btn-m-delete:hover {
+  background: rgba(239, 68, 68, 0.18);
+  color: var(--danger);
+  border-color: rgba(239, 68, 68, 0.4);
+}
+.m-card-btn-action.btn-m-edit {
+  color: var(--accent);
+}
+.m-card-btn-action.btn-m-edit:hover {
+  background: rgba(56, 189, 248, 0.18);
+  color: var(--accent);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+.mobile-history-card .m-card-info {
+  flex: 1;
+  min-width: 0;
+  padding-right: 36px !important;
+}
+.mobile-history-card .m-card-title {
+  font-weight: 700;
+  font-size: 0.94rem;
+  line-height: 1.25;
+  margin-bottom: 2px;
+  cursor: pointer;
+  word-break: break-word;
+}
+.mobile-history-card .badge-rewatch {
+  margin-left: 0 !important;
+}
+
 /* OPT-OUT ESTRICTO DE AUTO-DARK THEME / FORCE DARK PARA MODO CLARO */
 :root[data-theme$="-light"],
 html[data-theme$="-light"] {
@@ -7967,11 +8026,6 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
       </div>
     </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) -->
     <div id="vista-listas-extendida" style="display:none;">
-      <!-- BANNER DE ENCABEZADO COHERENTE CON INICIO -->
-      <div class="home-greeting-banner" id="listas-greeting-banner" style="gap:6px; margin:0 0 16px 0;">
-        <h1 class="home-greeting-title">Estadísticas & <strong>Listas</strong></h1>
-        <p class="home-greeting-subtitle" style="text-align:center; align-self:center;">Métricas de consumo y catálogo personal</p>
-      </div>
       <div class="listas-top-bar">
         <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:6px 14px; font-size:0.82rem; font-weight:700; border-radius:3px; margin:0;" title="Ver mis watchlists y pendientes">
           <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg></span>
@@ -7992,11 +8046,6 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
       <div class="dashboard-vertical-list" id="grid-stats"></div>
     </div> <div id="vista-discover" style="display:none;"></div> <!-- VISTA AMIGOS (PESTAÑA EXCLUSIVA) -->
     <div id="vista-amigos" style="display:none;">
-      <!-- BANNER DE ENCABEZADO COHERENTE CON INICIO -->
-      <div class="home-greeting-banner" id="amigos-greeting-banner" style="gap:6px; margin:0 0 16px 0;">
-        <h1 class="home-greeting-title">Comunidad & <strong>Amigos</strong></h1>
-        <p class="home-greeting-subtitle" style="text-align:center; align-self:center;">Actividad, registros y recomendaciones compartidas</p>
-      </div>
       <!-- ACCIONES SUPERIORES -->
       <div class="amigos-top-bar" style="display:flex; justify-content:center; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
         <button type="button" class="btn-toggle-filter" onclick="abrirModalPrivacidadAmigos()" style="height:36px; padding:0 14px; font-size:0.82rem; font-weight:600; display:inline-flex; align-items:center; gap:6px;"><span class="emoji-dyn"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span> <span data-i18n="btn_privacidad_amigos">Privacidad</span></button>
@@ -8059,11 +8108,6 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
     <!-- VISTA PERFIL (PESTAÑA APARTE) -->
     <div id="vista-perfil" style="display:none;">
-      <!-- BANNER DE ENCABEZADO COHERENTE CON INICIO -->
-      <div class="home-greeting-banner" id="perfil-greeting-banner" style="gap:6px; margin:0 0 16px 0;">
-        <h1 class="home-greeting-title">Perfil de <strong>Usuario</strong></h1>
-        <p class="home-greeting-subtitle" style="text-align:center; align-self:center;">Tu colección personal, estadísticas y personalización</p>
-      </div>
 
       <!-- 1. HERO CARD DEL PERFIL -->
       <div class="profile-hero-card cover-predeterminada" id="perfil-hero-card" style="padding:18px 22px; margin-bottom:14px; position:relative; overflow:hidden;">
@@ -29757,18 +29801,18 @@ l.forEach(reg => {
     const textoMesContador = enProg
       ? `${mesData.mesNombre} (${count})`
       : (mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`));
-    const emojiSeparador = enProg ? `${getHeroIcon('clock', '', 13)} ` : `${getHeroIcon('calendar', '', 13)} `;
+    const emojiSeparador = enProg ? `<span class="emoji-dyn">${getHeroIcon('clock', '', 13)} </span>` : '';
     const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
-    sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td"><span class="emoji-dyn">${emojiSeparador}</span>${textoMesContador}</td>`; tbFrag.appendChild(sepTr);
+    sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td">${emojiSeparador}${textoMesContador}</td>`; tbFrag.appendChild(sepTr);
     const sepCard = document.createElement('div'); sepCard.className = 'month-separator-card';
-    sepCard.innerHTML = `<span class="emoji-dyn">${emojiSeparador}</span>${textoMesContador}`; mBoxFrag.appendChild(sepCard);
+    sepCard.innerHTML = `${emojiSeparador}${textoMesContador}`; mBoxFrag.appendChild(sepCard);
   }
   const claseColorMes = mesParidad === 0 ? 'row-month-even' : 'row-month-odd';
   const tr = document.createElement('tr'); tr.className = claseColorMes; tr.id = `fila-${reg.id}`;
   tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fFDisplay}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')">${fI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="Ver ficha técnica completa" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" loading="lazy" decoding="async" src="${optimizarUrlPoster(reg.poster, 'thumb')||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:2px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> ${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="Editar registro completo" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button><button type="button" class="btn-delete" title="Eliminar registro" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></td>`;
   tbFrag.appendChild(tr);
   const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`;
-  m.innerHTML = ` <button type="button" class="m-card-btn-delete" title="Editar registro completo" style="right:44px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button><button type="button" class="m-card-btn-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" decoding="async" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${optimizarUrlPoster(reg.poster, 'thumb')||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}${badgeRwHtml}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `<span class="emoji-dyn">${getHeroIcon('calendar', '', 12)} </span>${fI} ➔ ${fFDisplay}` : `<span class="emoji-dyn">${getHeroIcon('calendar', '', 12)} </span>${fI}`}</div> ${isJ && reg.horas ? `<br><div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${reg.horas}</div>` : ''} </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:3px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>${getHeroIcon('check', '', 14)}</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span></button></div>` : ''}`;
+  m.innerHTML = ` <div class="m-card-actions-col"> <button type="button" class="m-card-btn-action btn-m-delete" title="Eliminar" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button> <button type="button" class="m-card-btn-action btn-m-edit" title="Editar registro completo" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button> </div> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" decoding="async" style="cursor:pointer;" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')" src="${optimizarUrlPoster(reg.poster, 'thumb')||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="Ver ficha técnica" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-date-row" style="display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-top:3px;"> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')">${r ? `${fI} ➔ ${fFDisplay}` : `${fI}`}</div> ${badgeRwHtml} ${isJ && reg.horas ? `<div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${reg.horas}</div>` : ''} </div> </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:3px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>${getHeroIcon('check', '', 14)}</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span></button></div>` : ''}`;
   mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales();
 if (estado.ultimoRegistroGuardadoId) {
   desplazarHaciaRegistroGuardado(estado.ultimoRegistroGuardadoId);
