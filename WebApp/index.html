@@ -8037,17 +8037,20 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 }
 
 /* TARJETA DE PERFIL NITIDA Y SOLIDA (SIN DESVANECIMIENTO) */
-#perfil-hero-card,
-.profile-hero-card {
+#perfil-hero-card:not(.has-custom-cover),
+.profile-hero-card:not(.has-custom-cover) {
   background: var(--card) !important;
   border: 1px solid var(--border) !important;
+}
+#perfil-hero-card,
+.profile-hero-card {
   border-radius: 4px !important;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
   opacity: 1 !important;
   position: relative !important;
   overflow: hidden !important;
 }
-#perfil-hero-card::before {
+#perfil-hero-card:not(.has-custom-cover)::before {
   display: none !important;
 }
 #perfil-hero-card .profile-identity-wrap,
@@ -8055,6 +8058,14 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 #perfil-hero-card .profile-info-col {
   position: relative !important;
   z-index: 2 !important;
+  opacity: 1 !important;
+}
+.has-custom-cover .btn-profile-edit-discreet {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+.has-custom-cover .btn-profile-edit-discreet:hover {
+  color: #ffffff !important;
+  background: rgba(255, 255, 255, 0.15) !important;
   opacity: 1 !important;
 }
 
@@ -8074,8 +8085,9 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   }
 }
 .fav-slot-card {
-  padding: 7px 10px !important;
-  gap: 9px !important;
+  position: relative !important;
+  padding: 7px 24px 7px 8px !important;
+  gap: 8px !important;
   border-radius: 4px !important;
 }
 .fav-slot-poster {
@@ -8096,7 +8108,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 .fav-slot-top-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 4px;
 }
 .fav-slot-subcat {
@@ -8106,6 +8118,9 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .fav-slot-title {
   font-size: 0.8rem;
@@ -8123,17 +8138,27 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.btn-choose-fav {
-  font-size: 0.68rem !important;
-  padding: 2px 7px !important;
-  border-radius: 3px !important;
-  align-self: flex-start;
-  margin-top: 2px;
+.fav-slot-edit-btn {
+  position: absolute !important;
+  top: 5px !important;
+  right: 5px !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--muted) !important;
+  padding: 3px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  opacity: 0.6 !important;
+  transition: all 0.2s ease !important;
+  z-index: 2 !important;
 }
-.btn-toggle-fav-show {
-  font-size: 0.62rem !important;
-  padding: 1px 5px !important;
-  border-radius: 3px !important;
+.fav-slot-edit-btn:hover {
+  color: var(--accent) !important;
+  background: var(--accent-subtle, rgba(56, 189, 248, 0.12)) !important;
+  opacity: 1 !important;
 }
 
 /* BOTONES DE CATEGORÍA DE ESTADÍSTICAS EN PERFIL */
@@ -8463,9 +8488,6 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
             <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></span>
             <span data-i18n="profile_favs_title">Favoritos por Categoría</span>
           </div>
-          <button type="button" class="btn-toggle-filter" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()" title="Configurar favoritos visibles" aria-label="Configurar favoritos visibles" style="margin-left:auto; width:28px; height:28px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:4px;">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
-          </button>
         </div>
         <div class="favs-grid" id="perfil-favoritos-grid"></div>
       </div>
@@ -18163,12 +18185,6 @@ function obtenerPortadaActual() {
 function aplicarPortadaEnHeroCard(targetElId = 'perfil-hero-card', idCover = null) {
   const el = document.getElementById(targetElId);
   if (!el) return;
-  if (targetElId === 'perfil-hero-card') {
-    PORTADAS_DISPONIBLES.forEach(p => el.classList.remove(`cover-${p.id}`));
-    el.classList.remove('has-custom-cover');
-    el.classList.add('cover-predeterminada');
-    return;
-  }
   const cover = idCover || obtenerPortadaActual();
   PORTADAS_DISPONIBLES.forEach(p => el.classList.remove(`cover-${p.id}`));
   el.classList.remove('has-custom-cover');
@@ -18834,23 +18850,44 @@ function obtenerTodasLasSubcategoriasFavoritos() { const lista = []; Object.keys
 if (!s.esWatchlist && s.id !== 'Temporadas' && s.id !== 'Conciertos') { lista.push({ cat: catKey, catNombre: CONFIG[catKey].nombre, sub: s.id, subNombre: s.nombre, emoji: s.emoji }); }
 }); }); return lista; }
 function toggleModoConfigurarVisiblesFavs() {
-  estado.modoConfigurarFavs = !estado.modoConfigurarFavs;
-  const btn = document.getElementById('btn-modo-mostrar-favs');
-  if (btn) {
-    btn.classList.toggle('active', estado.modoConfigurarFavs);
-    btn.innerHTML = estado.modoConfigurarFavs
-      ? `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="m4.5 12.75 6 6 9-13.5"/></svg>`
-      : `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>`;
-  }
   renderizarFavoritosPerfil();
 }
-function toggleMostrarFavoritoSub(keyFav) { if (!perfilUsuario.favoritosOcultos) perfilUsuario.favoritosOcultos = {}; if (perfilUsuario.favoritosOcultos[keyFav]) { delete perfilUsuario.favoritosOcultos[keyFav]; } else { perfilUsuario.favoritosOcultos[keyFav] = true; }
-guardarPerfilLocal(); renderizarFavoritosPerfil(); google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail); }
-function renderizarFavoritosPerfil() { const grid = document.getElementById('perfil-favoritos-grid');
-if (!grid) return; grid.innerHTML = ''; if (!perfilUsuario.favoritosOcultos) perfilUsuario.favoritosOcultos = {}; const subs = obtenerTodasLasSubcategoriasFavoritos(); const l = userPrefs.lang || 'es';
-const favFrag = document.createDocumentFragment(); subs.forEach(item => { const keyFav = `${item.cat}__${item.sub}`; const estaOculto = !!perfilUsuario.favoritosOcultos[keyFav]; if (estaOculto && !estado.modoConfigurarFavs) return; const fav = perfilUsuario.favoritos?.[keyFav] || null;
-const subLabel = I18N[l].subs[item.sub] || item.subNombre; const card = document.createElement('div'); card.className = 'fav-slot-card'; if (estaOculto) card.style.opacity = '0.5'; card.innerHTML = ` <div class="fav-slot-poster"> ${fav?.poster ? `<img src="${fav.poster}" alt="${fav.titulo}">` : `<span>${item.emoji}</span>`} </div> <div class="fav-slot-info"> <div class="fav-slot-top-row"> <div class="fav-slot-subcat"><span class="emoji-dyn">${item.emoji} </span>${subLabel}</div> <button type="button" class="btn-toggle-fav-show ${estaOculto ? 'hidden-fav' : ''}" onclick="toggleMostrarFavoritoSub('${keyFav}')" title="Activar o desactivar este favorito en tu perfil"> ${estaOculto ? 'Oculto' : 'Mostrar'} </button> </div> <div class="fav-slot-title" title="${fav ? fav.titulo : 'Sin seleccionar'}">${fav ? fav.titulo : 'Sin elegir aún'}</div> <div class="fav-slot-meta">${fav ? `${fav.creador || ''}${fav.calificacion ? ' · ' + Number(fav.calificacion).toFixed(1) : ''}` : 'Sin elegir'}</div> <button type="button" class="btn-choose-fav" onclick="abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')"> ${fav ? 'Cambiar' : 'Elegir'} </button> </div> `;
-favFrag.appendChild(card); }); grid.appendChild(favFrag); aplicarEstilosGlobales(); }
+function toggleMostrarFavoritoSub(keyFav) {
+  renderizarFavoritosPerfil();
+}
+function renderizarFavoritosPerfil() {
+  const grid = document.getElementById('perfil-favoritos-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  const subs = obtenerTodasLasSubcategoriasFavoritos();
+  const l = userPrefs.lang || 'es';
+  const favFrag = document.createDocumentFragment();
+  subs.forEach(item => {
+    const keyFav = `${item.cat}__${item.sub}`;
+    const fav = perfilUsuario.favoritos?.[keyFav] || null;
+    const subLabel = I18N[l].subs[item.sub] || item.subNombre;
+    const card = document.createElement('div');
+    card.className = 'fav-slot-card';
+    card.innerHTML = `
+      <button type="button" class="fav-slot-edit-btn" onclick="event.stopPropagation(); abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')" title="${fav ? 'Cambiar favorito' : 'Elegir favorito'}" aria-label="Editar favorito">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+      </button>
+      <div class="fav-slot-poster" onclick="abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')" style="cursor:pointer;">
+        ${fav?.poster ? `<img src="${fav.poster}" alt="${fav.titulo}">` : `<span>${item.emoji}</span>`}
+      </div>
+      <div class="fav-slot-info" onclick="abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')" style="cursor:pointer;">
+        <div class="fav-slot-top-row">
+          <div class="fav-slot-subcat"><span class="emoji-dyn" style="margin-right:6px;display:inline-flex;align-items:center;">${item.emoji}</span><span>${subLabel}</span></div>
+        </div>
+        <div class="fav-slot-title" title="${fav ? fav.titulo : 'Sin seleccionar'}">${fav ? fav.titulo : 'Sin elegir aún'}</div>
+        <div class="fav-slot-meta">${fav ? `${fav.creador || ''}${fav.calificacion ? ' · ' + Number(fav.calificacion).toFixed(1) : ''}` : 'Sin elegir'}</div>
+      </div>
+    `;
+    favFrag.appendChild(card);
+  });
+  grid.appendChild(favFrag);
+  aplicarEstilosGlobales();
+}
 function perteneceASub(x, cat, sub) { if (x.categoria !== cat) return false;
 if (cat === 'Peliculas') return sub === 'Películas' ? (x.subcategoria === 'Películas' || x.subcategoria === 'Nuevas' || x.subcategoria === 'Rewatches') : (sub === 'Documentales' ? x.subcategoria === 'Documentales' : x.subcategoria === sub);
 if (cat === 'Series') return sub === 'Temporadas' ? (x.subcategoria === 'Temporadas' || x.subcategoria.includes('Temporada')) : (sub === 'Series Completas' ? (x.subcategoria === 'Series Completas' || x.subcategoria.includes('Serie ')) : (sub === 'Series Documentales' ? x.subcategoria === 'Series Documentales' : x.subcategoria === sub));
@@ -19113,16 +19150,10 @@ function actualizarTextosInterfaz() {
       : `<span class="emoji-dyn">${getHeroIcon('pause', '', 14)}</span> <span>${l === 'en' ? 'Auto-update: OFF' : 'Auto-actualizar: OFF'}</span>`;
   }
 
-  // Profile email & configure favs button
+  // Profile email
   const pEmail = document.getElementById('perfil-email-txt');
   if (pEmail && (!perfilUsuario.emailGoogle || !perfilUsuario.logueadoGoogle)) {
     pEmail.textContent = l === 'en' ? 'No linked account' : 'Sin cuenta vinculada';
-  }
-  const btnModoFavs = document.getElementById('btn-modo-mostrar-favs');
-  if (btnModoFavs) {
-    btnModoFavs.innerHTML = estado.modoConfigurarFavs
-      ? `<span class="emoji-dyn">${getHeroIcon('check', '', 14)}</span> ${l === 'en' ? 'Done' : 'Listo'}`
-      : `<span class="emoji-dyn">${getHeroIcon('eye', '', 14)}</span> ${l === 'en' ? 'Configure which to show' : 'Configurar cuáles mostrar'}`;
   }
 
   // Tooltips / Titles of icon buttons
@@ -21346,102 +21377,9 @@ function renderizarEstadisticasPerfil() {
     psnStats
   };
 
-  // 1. RESUMEN GENERAL Y RÉCORDS DE RITMO (SIEMPRE VISIBLES EN SECCIÓN GENERAL)
+  // 1. RESUMEN GENERAL Y RÉCORDS DE RITMO (INTEGRADOS DENTRO DE LA SECCIÓN GENERAL)
   if (generalSec) {
-    const mapaDias = {}, mapaSemanas = {}, mapaMeses = {};
-    regsPeriodo.forEach(r => {
-      const fechaBase = (r.fechaFin && r.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(r.fechaFin)) ? r.fechaFin : r.fechaInicio;
-      const dObj = parsearFechaAObjeto(fechaBase);
-      if (dObj) {
-        const dStr = `${String(dObj.getDate()).padStart(2,'0')}/${String(dObj.getMonth()+1).padStart(2,'0')}/${dObj.getFullYear()}`;
-        if (!mapaDias[dStr]) mapaDias[dStr] = { fecha: new Date(dObj), items: [] };
-        mapaDias[dStr].items.push(r);
-        const mStr = `${dObj.getFullYear()}-${String(dObj.getMonth()+1).padStart(2,'0')}`;
-        if (!mapaMeses[mStr]) mapaMeses[mStr] = { mIdx: dObj.getMonth(), items: [] };
-        mapaMeses[mStr].items.push(r);
-        const primerDiaSemana = new Date(dObj);
-        const diaSem = (dObj.getDay() + 6) % 7;
-        primerDiaSemana.setDate(dObj.getDate() - diaSem);
-        const semKey = `${primerDiaSemana.getFullYear()}-${String(primerDiaSemana.getMonth()+1).padStart(2,'0')}-${String(primerDiaSemana.getDate()).padStart(2,'0')}`;
-        if (!mapaSemanas[semKey]) mapaSemanas[semKey] = { inicio: new Date(primerDiaSemana), items: [] };
-        mapaSemanas[semKey].items.push(r);
-      }
-    });
-
-    const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
-    let maxDiaVal = 0, bestDiaObj = null;
-    for (const [k, obj] of Object.entries(mapaDias)) {
-      if (obj.items.length > maxDiaVal) { maxDiaVal = obj.items.length; bestDiaObj = obj; }
-    }
-    let maxDiaTxt = '—', maxDiaSub = '0 registros';
-    if (bestDiaObj) {
-      const diaNombre = (I18N[l] && I18N[l].dias) ? I18N[l].dias[bestDiaObj.fecha.getDay()] : '';
-      const dd = String(bestDiaObj.fecha.getDate()).padStart(2, '0');
-      const mm = String(bestDiaObj.fecha.getMonth() + 1).padStart(2, '0');
-      maxDiaTxt = `${diaNombre} ${dd}/${mm}`;
-      maxDiaSub = formatearDesgloseItems(bestDiaObj.items);
-    }
-
-    let maxSemVal = 0, bestSemObj = null;
-    for (const [k, obj] of Object.entries(mapaSemanas)) {
-      if (obj.items.length > maxSemVal) { maxSemVal = obj.items.length; bestSemObj = obj; }
-    }
-    let maxSemTxt = '—', maxSemSub = '0 registros';
-    if (bestSemObj) {
-      const finSem = new Date(bestSemObj.inicio);
-      finSem.setDate(bestSemObj.inicio.getDate() + 6);
-      const mIniNom = (I18N[l] && I18N[l].meses) ? I18N[l].meses[bestSemObj.inicio.getMonth()] : '';
-      const dIniStr = String(bestSemObj.inicio.getDate()).padStart(2, '0');
-      const mFinNom = (I18N[l] && I18N[l].meses) ? I18N[l].meses[finSem.getMonth()] : '';
-      const dFinStr = String(finSem.getDate()).padStart(2, '0');
-      maxSemTxt = `${mIniNom} ${dIniStr} --> ${mFinNom} ${dFinStr}`;
-      maxSemSub = formatearDesgloseItems(bestSemObj.items);
-    }
-
-    let maxMesVal = 0, bestMesObj = null;
-    for (const [k, obj] of Object.entries(mapaMeses)) {
-      if (obj.items.length > maxMesVal) { maxMesVal = obj.items.length; bestMesObj = obj; }
-    }
-    let maxMesTxt = '—', maxMesSub = '0 registros';
-    if (bestMesObj) {
-      maxMesTxt = (I18N[l] && I18N[l].meses) ? I18N[l].meses[bestMesObj.mIdx] : '';
-      maxMesSub = formatearDesgloseItems(bestMesObj.items);
-    }
-
-    const rachaGlobal = calcularRachaMasAltaGlobal(regsPeriodo.length ? regsPeriodo : todosRegs);
-
-    const recordsHtml = `
-      <div style="margin-top:16px;">
-        <div style="font-weight:700; font-size:0.88rem; color:var(--text); margin-bottom:10px; display:flex; align-items:center; gap:6px;">
-          <span class="emoji-dyn">${getHeroIcon('trophy', '', 16)}</span>
-          <span data-i18n="profile_records_title">Récords de Ritmo</span>
-        </div>
-        <div class="profile-grid-records">
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div>
-            <div class="profile-stat-val" id="prof-best-day-val">${maxDiaTxt}</div>
-            <div class="profile-stat-sub" id="prof-best-day-sub">${maxDiaSub}</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div>
-            <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.88rem; line-height:1.25;">${maxSemTxt}</div>
-            <div class="profile-stat-sub" id="prof-best-week-sub">${maxSemSub}</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
-            <div class="profile-stat-val" id="prof-best-month-val">${maxMesTxt}</div>
-            <div class="profile-stat-sub" id="prof-best-month-sub">${maxMesSub}</div>
-          </div>
-          <div class="profile-stat-box">
-            <div class="profile-stat-label" data-i18n="stat_best_streak">Racha más alta</div>
-            <div class="profile-stat-val" id="prof-best-streak-val" style="color:#f59e0b;">${rachaGlobal.valTxt}</div>
-            <div class="profile-stat-sub" id="prof-best-streak-sub">${rachaGlobal.subTxt}</div>
-          </div>
-        </div>
-      </div>
-    `;
-
-    generalSec.innerHTML = renderizarStatsGeneral_(ctx) + recordsHtml;
+    generalSec.innerHTML = renderizarStatsGeneral_(ctx);
   }
 
   // 2. DETALLE DE CATEGORÍA SELECCIONADA EN EL CONTENEDOR INFERIOR
@@ -21669,6 +21607,70 @@ function renderizarStatsGeneral_(ctx) {
   const pctJuegos = horasTotal ? Math.round((horasJuegosTotal / horasTotal) * 100) : 0;
   const pctLecturas = horasTotal ? Math.round((horasLecturas / horasTotal) * 100) : 0;
 
+  const mapaDias = {}, mapaSemanas = {}, mapaMeses = {};
+  regsPeriodo.forEach(r => {
+    const fechaBase = (r.fechaFin && r.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(r.fechaFin)) ? r.fechaFin : r.fechaInicio;
+    const dObj = parsearFechaAObjeto(fechaBase);
+    if (dObj) {
+      const dStr = `${String(dObj.getDate()).padStart(2,'0')}/${String(dObj.getMonth()+1).padStart(2,'0')}/${dObj.getFullYear()}`;
+      if (!mapaDias[dStr]) mapaDias[dStr] = { fecha: new Date(dObj), items: [] };
+      mapaDias[dStr].items.push(r);
+      const mStr = `${dObj.getFullYear()}-${String(dObj.getMonth()+1).padStart(2,'0')}`;
+      if (!mapaMeses[mStr]) mapaMeses[mStr] = { mIdx: dObj.getMonth(), items: [] };
+      mapaMeses[mStr].items.push(r);
+      const primerDiaSemana = new Date(dObj);
+      const diaSem = (dObj.getDay() + 6) % 7;
+      primerDiaSemana.setDate(dObj.getDate() - diaSem);
+      const semKey = `${primerDiaSemana.getFullYear()}-${String(primerDiaSemana.getMonth()+1).padStart(2,'0')}-${String(primerDiaSemana.getDate()).padStart(2,'0')}`;
+      if (!mapaSemanas[semKey]) mapaSemanas[semKey] = { inicio: new Date(primerDiaSemana), items: [] };
+      mapaSemanas[semKey].items.push(r);
+    }
+  });
+
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
+  let maxDiaVal = 0, bestDiaObj = null;
+  for (const [k, obj] of Object.entries(mapaDias)) {
+    if (obj.items.length > maxDiaVal) { maxDiaVal = obj.items.length; bestDiaObj = obj; }
+  }
+  let maxDiaTxt = '—', maxDiaSub = '0 registros';
+  if (bestDiaObj) {
+    const diaNombre = (I18N[l] && I18N[l].dias) ? I18N[l].dias[bestDiaObj.fecha.getDay()] : '';
+    const dd = String(bestDiaObj.fecha.getDate()).padStart(2, '0');
+    const mm = String(bestDiaObj.fecha.getMonth() + 1).padStart(2, '0');
+    maxDiaTxt = `${diaNombre} ${dd}/${mm}`;
+    maxDiaSub = formatearDesgloseItems(bestDiaObj.items);
+  }
+
+  let maxSemVal = 0, bestSemObj = null;
+  for (const [k, obj] of Object.entries(mapaSemanas)) {
+    if (obj.items.length > maxSemVal) { maxSemVal = obj.items.length; bestSemObj = obj; }
+  }
+  let maxSemTxt = '—', maxSemSub = '0 registros';
+  if (bestSemObj) {
+    const finSem = new Date(bestSemObj.inicio);
+    finSem.setDate(bestSemObj.inicio.getDate() + 6);
+    const mIniNom = (I18N[l] && I18N[l].meses) ? I18N[l].meses[bestSemObj.inicio.getMonth()] : '';
+    const dIniStr = String(bestSemObj.inicio.getDate()).padStart(2, '0');
+    const mFinNom = (I18N[l] && I18N[l].meses) ? I18N[l].meses[finSem.getMonth()] : '';
+    const dFinStr = String(finSem.getDate()).padStart(2, '0');
+    maxSemTxt = `${mIniNom} ${dIniStr} --> ${mFinNom} ${dFinStr}`;
+    maxSemSub = formatearDesgloseItems(bestSemObj.items);
+  }
+
+  let maxMesVal = 0, bestMesObj = null;
+  for (const [k, obj] of Object.entries(mapaMeses)) {
+    if (obj.items.length > maxMesVal) { maxMesVal = obj.items.length; bestMesObj = obj; }
+  }
+  let maxMesTxt = '—', maxMesSub = '0 registros';
+  if (bestMesObj) {
+    maxMesTxt = (I18N[l] && I18N[l].meses) ? I18N[l].meses[bestMesObj.mIdx] : '';
+    maxMesSub = formatearDesgloseItems(bestMesObj.items);
+  }
+
+  const rachaGlobal = (typeof calcularRachaMasAltaGlobal === 'function')
+    ? calcularRachaMasAltaGlobal(regsPeriodo.length ? regsPeriodo : todosRegs)
+    : { valTxt: '0 días', subTxt: '0 registros' };
+
   return `
     <!-- 1. KPIS GENERALES: TIEMPO DE LA CUENTA, PRODUCTOS AGREGADOS, NOTA PROMEDIO -->
     <div class="stats-kpi-grid">
@@ -21732,32 +21734,27 @@ function renderizarStatsGeneral_(ctx) {
       </div>
     </div>
 
-    <!-- TARJETAS DE ACCESO RÁPIDO -->
-    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:10px; margin-top:12px;">
-      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Peliculas')">
-        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('film', '', 14)} PELÍCULAS</div>
-        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${countPelis} vistas</div>
-        <div style="font-size:0.75rem; color:var(--muted);">${formatearHorasStats_(horasPelis)} de cine</div>
+    <!-- RÉCORDS DE RITMO DIRECTAMENTE EN LA SECCIÓN GENERAL -->
+    <div class="profile-grid-records" style="margin-top:12px;">
+      <div class="profile-stat-box">
+        <div class="profile-stat-label" data-i18n="stat_best_day">Día récord</div>
+        <div class="profile-stat-val" id="prof-best-day-val">${maxDiaTxt}</div>
+        <div class="profile-stat-sub" id="prof-best-day-sub">${maxDiaSub}</div>
       </div>
-      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Series')">
-        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('tv', '', 14)} SERIES</div>
-        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${countSeries} temporadas</div>
-        <div style="font-size:0.75rem; color:var(--muted);">${formatearHorasStats_(horasSeries)} vistas</div>
+      <div class="profile-stat-box">
+        <div class="profile-stat-label" data-i18n="stat_best_week">Semana récord</div>
+        <div class="profile-stat-val" id="prof-best-week-val" style="font-size:0.88rem; line-height:1.25;">${maxSemTxt}</div>
+        <div class="profile-stat-sub" id="prof-best-week-sub">${maxSemSub}</div>
       </div>
-      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Musica')">
-        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('musical-note', '', 14)} MÚSICA</div>
-        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${formatearHorasStats_(horasMusica)}</div>
-        <div style="font-size:0.75rem; color:var(--muted);">${countMusica} scrobbles / pistas</div>
+      <div class="profile-stat-box">
+        <div class="profile-stat-label" data-i18n="stat_best_month">Mes récord</div>
+        <div class="profile-stat-val" id="prof-best-month-val">${maxMesTxt}</div>
+        <div class="profile-stat-sub" id="prof-best-month-sub">${maxMesSub}</div>
       </div>
-      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Juegos')">
-        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('gamepad', '', 14)} JUEGOS</div>
-        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${formatearHorasStats_(horasJuegosTotal)}</div>
-        <div style="font-size:0.75rem; color:var(--muted);">${countJuegos} terminados</div>
-      </div>
-      <div class="stats-section-box" style="margin:0; cursor:pointer;" onclick="cambiarCatStats('Lecturas')">
-        <div style="font-size:0.78rem; color:var(--muted); font-weight:700; display:flex; align-items:center; gap:6px;">${getHeroIcon('book-open', '', 14)} LECTURAS</div>
-        <div style="font-size:1.2rem; font-weight:800; color:var(--text); margin-top:4px;">${countLecturas} obras</div>
-        <div style="font-size:0.75rem; color:var(--muted);">${formatearHorasStats_(horasLecturas)} de lectura</div>
+      <div class="profile-stat-box">
+        <div class="profile-stat-label" data-i18n="stat_best_streak">Racha más alta</div>
+        <div class="profile-stat-val" id="prof-best-streak-val" style="color:#f59e0b;">${rachaGlobal.valTxt}</div>
+        <div class="profile-stat-sub" id="prof-best-streak-sub">${rachaGlobal.subTxt}</div>
       </div>
     </div>
   `;
