@@ -7988,8 +7988,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 /* BOTON DISCRETO DE EDITAR PERFIL EN ESQUINA SUPERIOR DERECHA */
 .btn-profile-edit-discreet {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 6px;
+  right: 0;
   width: 26px;
   height: 26px;
   background: transparent !important;
@@ -8092,14 +8092,55 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   box-shadow: none !important;
 }
 
+/* KPI GRID EN PERFIL (3 COLUMNAS UNIFORMES Y PROPORCIONADAS) */
+#vista-perfil .stats-kpi-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 8px 12px !important;
+  margin-bottom: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
 #vista-perfil .stats-kpi-card {
-  padding: 4px 6px 6px 0 !important;
+  padding: 4px 4px 6px 0 !important;
   border-radius: 0 !important;
   min-height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
 }
 #vista-perfil .stats-kpi-card:hover {
   border-color: transparent !important;
   transform: none !important;
+}
+#vista-perfil .stats-kpi-label {
+  font-size: 0.72rem !important;
+  color: var(--muted) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  margin-bottom: 3px !important;
+}
+#vista-perfil .stats-kpi-val {
+  font-size: 1.18rem !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  line-height: 1.2 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+#vista-perfil .stats-kpi-sub {
+  font-size: 0.68rem !important;
+  color: var(--muted) !important;
+  margin-top: 2px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 
 #vista-perfil .stats-section-box {
@@ -8108,22 +8149,80 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   margin-bottom: 12px !important;
 }
 
+/* RÉCORDS DE RITMO EN PERFIL (2 COLUMNAS EN MÓVIL, 4 EN PANTALLAS AMPLIAS) */
+#vista-perfil .profile-grid-records {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 12px 14px !important;
+  margin-top: 14px !important;
+  margin-bottom: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+@media (min-width: 640px) {
+  #vista-perfil .profile-grid-records {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px 16px !important;
+  }
+}
 #vista-perfil .profile-stat-box {
   padding: 4px 6px 6px 0 !important;
   border-radius: 0 !important;
   align-items: flex-start !important;
   text-align: left !important;
+  box-sizing: border-box !important;
 }
-#vista-perfil .profile-stat-label,
-#vista-perfil .profile-stat-val,
-#vista-perfil .profile-stat-sub {
+#vista-perfil .profile-stat-label {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--accent) !important;
   text-align: left !important;
+  margin-bottom: 3px !important;
+}
+#vista-perfil .profile-stat-val {
+  font-size: 0.96rem !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  text-align: left !important;
+  line-height: 1.25 !important;
+  word-break: break-word !important;
+}
+#vista-perfil .profile-stat-sub {
+  font-size: 0.7rem !important;
+  color: var(--muted) !important;
+  text-align: left !important;
+  margin-top: 3px !important;
+  line-height: 1.25 !important;
 }
 
+/* PERSONAJE FAVORITO ACCIONES */
 #vista-perfil .profile-fav-char-card,
 #vista-perfil .fav-char-empty-box {
   padding: 6px 0 !important;
   border-radius: 0 !important;
+}
+.btn-char-icon-discreet {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  border: none !important;
+  color: var(--muted) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  transition: var(--tr) !important;
+}
+.btn-char-icon-discreet:hover {
+  color: var(--accent) !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+}
+[data-theme$="-light"] .btn-char-icon-discreet:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
 }
 
 #vista-perfil .stats-ranking-row {
@@ -8132,11 +8231,51 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   border-bottom: 1px solid var(--border) !important;
 }
 
+/* CHIPS DE DISTRIBUCIÓN DE TIEMPO EN PERFIL (GRILLA 2 COLUMNAS ORDENADA) */
+#vista-perfil .stats-chips-container {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 8px 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+@media (min-width: 640px) {
+  #vista-perfil .stats-chips-container {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+  }
+}
 #vista-perfil .stats-chip-cat {
-  background: transparent !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 6px 8px !important;
+  font-size: 0.74rem !important;
+  background: rgba(255, 255, 255, 0.02) !important;
   border: 1px solid var(--border) !important;
   border-radius: 4px !important;
   box-shadow: none !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  cursor: pointer !important;
+  transition: border-color 0.15s ease !important;
+}
+[data-theme$="-light"] #vista-perfil .stats-chip-cat {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+#vista-perfil .stats-chip-cat:hover {
+  border-color: var(--accent) !important;
+}
+#vista-perfil .stats-chip-cat span:nth-child(2) {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  color: var(--muted) !important;
+}
+#vista-perfil .stats-chip-cat strong {
+  margin-left: auto !important;
+  white-space: nowrap !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
 }
 
 /* ==========================================================================
@@ -8147,17 +8286,17 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 .favs-grid {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
-  gap: 12px 8px !important;
+  gap: 14px 10px !important;
   margin-bottom: 14px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
-@media (min-width: 600px) {
+@media (min-width: 640px) {
   #perfil-favoritos-grid.favs-grid,
   #amigo-grid-favoritos.favs-grid,
   .favs-grid {
-    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
-    gap: 14px 10px !important;
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr)) !important;
+    gap: 16px 12px !important;
   }
 }
 
@@ -8165,8 +8304,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 .fav-slot-card {
   display: flex !important;
   flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
+  align-items: stretch !important;
+  text-align: left !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -8183,7 +8322,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   height: auto !important;
   min-width: 0 !important;
   max-width: 100% !important;
-  border-radius: 4px !important;
+  border-radius: 6px !important;
   object-fit: cover !important;
   overflow: hidden !important;
   position: relative !important;
@@ -8193,13 +8332,13 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   align-items: center !important;
   justify-content: center !important;
   font-size: 1.4rem !important;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12) !important;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
 }
 #vista-perfil .fav-slot-card:hover .fav-slot-poster,
 .fav-slot-card:hover .fav-slot-poster {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
   border-color: var(--accent) !important;
 }
 #vista-perfil .fav-slot-poster img,
@@ -8214,18 +8353,18 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   position: absolute !important;
   top: 4px !important;
   right: 4px !important;
-  background: rgba(15, 23, 42, 0.75) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  background: rgba(15, 23, 42, 0.78) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
   color: #fff !important;
   width: 22px !important;
   height: 22px !important;
-  border-radius: 3px !important;
+  border-radius: 4px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   cursor: pointer !important;
   z-index: 4 !important;
-  opacity: 0.85 !important;
+  opacity: 0.9 !important;
   padding: 0 !important;
   transition: all 0.15s ease !important;
 }
@@ -8236,40 +8375,65 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   color: #0f172a !important;
   transform: scale(1.08) !important;
 }
+.fav-slot-empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  opacity: 0.55;
+  color: var(--muted);
+  user-select: none;
+}
+.fav-empty-plus {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.fav-empty-lbl {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
 #vista-perfil .fav-slot-info,
 .fav-slot-info {
   width: 100% !important;
-  margin-top: 5px !important;
+  margin-top: 6px !important;
   display: flex !important;
   flex-direction: column !important;
-  align-items: center !important;
-  text-align: center !important;
+  align-items: flex-start !important;
+  text-align: left !important;
   min-width: 0 !important;
   padding: 0 !important;
+  box-sizing: border-box !important;
 }
 #vista-perfil .fav-slot-subcat,
 .fav-slot-subcat {
   font-size: 0.65rem !important;
   font-weight: 700 !important;
-  color: var(--muted) !important;
-  text-align: center !important;
+  color: var(--accent) !important;
+  text-align: left !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
+  width: 100% !important;
   max-width: 100% !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 3px !important;
-  margin-bottom: 1px !important;
+  height: 1.25em !important;
+  line-height: 1.25em !important;
+  margin-bottom: 2px !important;
+  display: block !important;
 }
 #vista-perfil .fav-slot-title,
 .fav-slot-title {
   font-size: 0.74rem !important;
   font-weight: 700 !important;
   color: var(--text) !important;
-  text-align: center !important;
+  text-align: left !important;
   line-height: 1.25 !important;
+  height: 2.5em !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
@@ -8279,10 +8443,13 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 }
 #vista-perfil .fav-slot-meta,
 .fav-slot-meta {
-  font-size: 0.66rem !important;
-  color: var(--star-active, #f59e0b) !important;
-  text-align: center !important;
+  font-size: 0.68rem !important;
+  color: var(--star-active, #c8955a) !important;
+  text-align: left !important;
   font-weight: 700 !important;
+  height: 1.2em !important;
+  line-height: 1.2em !important;
+  width: 100% !important;
   margin-top: 2px !important;
 }
 
@@ -15550,9 +15717,9 @@ function verPerfilDeAmigo(emailAmigo) {
               ${item.poster ? `<img src="${item.poster}" alt="${item.titulo}">` : `<span style="font-size:1.3rem;">${catEmo}</span>`}
             </div>
             <div class="fav-slot-info">
-              <div class="fav-slot-subcat"><span class="emoji-dyn">${catEmo}</span> <span>${subI18n}</span></div>
+              <div class="fav-slot-subcat" title="${subI18n}">${subI18n}</div>
               <div class="fav-slot-title" title="${item.titulo}">${item.titulo}</div>
-              ${item.calificacion ? `<div class="fav-slot-meta">★ ${Number(item.calificacion).toFixed(1)}</div>` : ''}
+              <div class="fav-slot-meta">${item.calificacion ? `★ ${Number(item.calificacion).toFixed(1)}` : '&nbsp;'}</div>
             </div>
           </div>
         `;
@@ -18410,21 +18577,21 @@ function renderizarPersonajeFavorito() {
 
   if (!char || !char.nombre) {
     cont.innerHTML = `
-      <div class="fav-char-empty-box" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Click to choose your favorite character' : 'Click para elegir tu personaje favorito'}" style="padding:12px 14px; border-radius:4px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; background:transparent; border:1px dashed var(--border);">
+      <div class="fav-char-empty-box" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Click to choose your favorite character' : 'Click para elegir tu personaje favorito'}" style="padding:10px 12px; border-radius:6px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; background:transparent; border:1px dashed var(--border);">
         <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
-          <div class="fav-char-empty-icon" style="width:40px; height:40px; border-radius:50%; background:var(--bg); border:1.5px dashed var(--border); display:grid; place-items:center; color:var(--muted); flex-shrink:0;">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M16.5 18.75h-9m9 0a3 3 0 0 1 3-3h1.5a1.5 1.5 0 0 0 1.5-1.5v-1.125c0-.828-.672-1.5-1.5-1.5H18m-1.5 7.125v1.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-1.5m0 0a3 3 0 0 1-3-3H4.5A1.5 1.5 0 0 1 3 13.125V12c0-.828.672-1.5 1.5-1.5H6m10.5 8.25H7.5m9-8.25V4.875A1.875 1.875 0 0 0 14.625 3H9.375A1.875 1.875 0 0 0 7.5 4.875V10.5a4.5 4.5 0 0 0 9 0Z"/></svg>
+          <div class="fav-char-empty-icon" style="width:36px; height:36px; border-radius:50%; background:var(--card); border:1px dashed var(--border); display:grid; place-items:center; color:var(--muted); flex-shrink:0;">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M16.5 18.75h-9m9 0a3 3 0 0 1 3-3h1.5a1.5 1.5 0 0 0 1.5-1.5v-1.125c0-.828-.672-1.5-1.5-1.5H18m-1.5 7.125v1.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-1.5m0 0a3 3 0 0 1-3-3H4.5A1.5 1.5 0 0 1 3 13.125V12c0-.828.672-1.5 1.5-1.5H6m10.5 8.25H7.5m9-8.25V4.875A1.875 1.875 0 0 0 14.625 3H9.375A1.875 1.875 0 0 0 7.5 4.875V10.5a4.5 4.5 0 0 0 9 0Z"/></svg>
           </div>
           <div style="min-width:0; flex:1;">
-            <div style="font-weight:700; font-size:0.88rem; color:var(--text);">
+            <div style="font-weight:700; font-size:0.85rem; color:var(--text);">
               ${l === 'en' ? 'Choose your Favorite Character' : 'Elige tu Personaje Favorito'}
             </div>
-            <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;">
-              ${l === 'en' ? 'Highlight your hero, protagonist or cultural icon' : 'Destaca a tu personaje o icono predilecto en tu perfil'}
+            <div style="font-size:0.72rem; color:var(--muted); margin-top:2px;">
+              ${l === 'en' ? 'Highlight your hero or cultural icon' : 'Destaca a tu personaje predilecto en tu perfil'}
             </div>
           </div>
         </div>
-        <button type="button" class="btn-choose-char-cta" onclick="event.stopPropagation(); abrirModalSeleccionarPersonaje()" style="font-size:0.78rem; padding:4px 12px; display:inline-flex; align-items:center; gap:4px;">
+        <button type="button" class="btn-choose-char-cta" onclick="event.stopPropagation(); abrirModalSeleccionarPersonaje()" style="font-size:0.75rem; padding:4px 10px; display:inline-flex; align-items:center; gap:4px; border-radius:4px; border:1px solid var(--border); background:var(--card); color:var(--text); cursor:pointer;">
           <span>+</span> <span>${l === 'en' ? 'Choose' : 'Elegir'}</span>
         </button>
       </div>
@@ -18434,29 +18601,25 @@ function renderizarPersonajeFavorito() {
 
   const esImg = char.imagen && (char.imagen.startsWith('http') || char.imagen.startsWith('data:'));
   cont.innerHTML = `
-    <div class="profile-fav-char-card" style="padding:6px 0; border-radius:0; margin-bottom:0;">
-      <div class="fav-char-main-row" style="display:flex; align-items:center; gap:12px;">
+    <div class="profile-fav-char-card" style="padding:6px 0; border-radius:0; margin-bottom:0; position:relative;">
+      <div class="fav-char-actions-wrap" style="position:absolute; top:2px; right:0; display:flex; align-items:center; gap:4px; z-index:3;">
+        <button type="button" class="btn-char-icon-discreet" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Change character' : 'Cambiar personaje'}" aria-label="Cambiar personaje">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+        </button>
+        <button type="button" class="btn-char-icon-discreet" onclick="abrirModalConfirmarQuitarPersonaje()" title="${l === 'en' ? 'Remove character' : 'Quitar personaje'}" aria-label="Quitar personaje">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M6 18 18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div class="fav-char-main-row" style="display:flex; align-items:center; gap:12px; padding-right:64px;">
         <div class="fav-char-avatar-box" style="width:48px; height:48px; min-width:48px; max-width:48px; border-radius:50%; overflow:hidden; border:2px solid #f59e0b; box-shadow:0 0 10px rgba(245,158,11,0.25); display:grid; place-items:center; flex-shrink:0;">
           ${esImg ? `<img src="${char.imagen}" alt="${char.nombre}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='👤';">` : `<span style="font-size:1.4rem;">${char.imagen || '👤'}</span>`}
         </div>
         <div class="fav-char-text-block" style="flex:1; min-width:0;">
-          <div style="display:flex; align-items:center; gap:6px; margin-bottom:2px;">
-            <span class="fav-char-header-tag" style="margin:0; font-size:0.62rem; padding:1px 6px; letter-spacing:0.04em;">PERSONAJE FAVORITO</span>
-          </div>
           <h4 class="fav-char-name-txt" style="font-size:0.95rem; font-weight:800; color:var(--text); line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0;" title="${char.nombre}">${char.nombre}</h4>
-          <div class="fav-char-work-txt" style="font-size:0.78rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;" title="${char.obra || ''}">
+          <div class="fav-char-work-txt" style="font-size:0.78rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${char.obra || ''}">
             <span style="opacity:0.75;">${l === 'en' ? 'From:' : 'De:'}</span> <strong>${char.obra || 'Obra predilecta'}</strong>
           </div>
-          ${char.cita ? `<div class="fav-char-quote-txt" style="font-size:0.75rem; color:#f59e0b; font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${char.cita}">“${char.cita}”</div>` : ''}
-        </div>
-        <div class="fav-char-actions-wrap" style="display:flex; align-items:center; gap:6px; flex-shrink:0;">
-          <button type="button" class="btn-fav-char-pill" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Change character' : 'Cambiar personaje'}" style="height:30px; padding:0 8px; font-size:0.75rem; display:inline-flex; align-items:center; gap:4px;">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
-            <span>${l === 'en' ? 'Change' : 'Cambiar'}</span>
-          </button>
-          <button type="button" class="btn-fav-char-remove-pill" onclick="abrirModalConfirmarQuitarPersonaje()" title="${l === 'en' ? 'Remove character' : 'Quitar personaje'}" style="width:30px; height:30px; padding:0; display:grid; place-items:center;">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M6 18 18 6M6 6l12 12"/></svg>
-          </button>
+          ${char.cita ? `<div class="fav-char-quote-txt" style="font-size:0.74rem; color:#f59e0b; font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${char.cita}">“${char.cita}”</div>` : ''}
         </div>
       </div>
     </div>
@@ -19107,15 +19270,22 @@ function renderizarFavoritosPerfil() {
 
     card.innerHTML = `
       <div class="fav-slot-poster" title="${fav ? fav.titulo : 'Elegir ' + subLabel}">
-        <button type="button" class="fav-slot-edit-btn" onclick="event.stopPropagation(); abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')" title="${fav ? 'Cambiar favorito' : 'Elegir favorito'}" aria-label="Editar favorito">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
-        </button>
-        ${fav?.poster ? `<img src="${fav.poster}" alt="${fav.titulo}">` : `<div style="display:flex;flex-direction:column;align-items:center;gap:3px;opacity:0.6;"><span style="font-size:1.3rem;">${item.emoji}</span><span style="font-size:0.6rem;font-weight:700;">+ Elegir</span></div>`}
+        ${fav ? `
+          <button type="button" class="fav-slot-edit-btn" onclick="event.stopPropagation(); abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')" title="Cambiar favorito" aria-label="Editar favorito">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+          </button>
+        ` : ''}
+        ${fav?.poster ? `<img src="${fav.poster}" alt="${fav.titulo}">` : `
+          <div class="fav-slot-empty-wrap">
+            <span style="font-size:1.15rem; line-height:1; margin-bottom:2px;">${item.emoji}</span>
+            <span class="fav-empty-lbl">+ Elegir</span>
+          </div>
+        `}
       </div>
       <div class="fav-slot-info">
-        <div class="fav-slot-subcat"><span>${item.emoji}</span> <span>${subLabel}</span></div>
-        <div class="fav-slot-title" title="${fav ? fav.titulo : 'Sin elegir aún'}">${fav ? fav.titulo : '<span style="opacity:0.45;font-style:italic;">Sin elegir</span>'}</div>
-        ${fav && fav.calificacion ? `<div class="fav-slot-meta">★ ${Number(fav.calificacion).toFixed(1)}</div>` : ''}
+        <div class="fav-slot-subcat" title="${subLabel}">${subLabel}</div>
+        <div class="fav-slot-title" title="${fav ? fav.titulo : 'Sin elegir aún'}">${fav ? fav.titulo : '<span style="opacity:0.35;">Sin elegir</span>'}</div>
+        <div class="fav-slot-meta">${(fav && fav.calificacion) ? `★ ${Number(fav.calificacion).toFixed(1)}` : '&nbsp;'}</div>
       </div>
     `;
     favFrag.appendChild(card);
@@ -22107,7 +22277,7 @@ function renderizarStatsGeneral_(ctx) {
         <div style="width:${pctLecturas}%; background:#cf7098;" title="Lecturas: ${pctLecturas}%"></div>
       </div>
 
-      <div style="display:flex; flex-wrap:wrap; gap:8px;">
+      <div class="stats-chips-container">
         <div class="stats-chip-cat" onclick="cambiarCatStats('Peliculas')">
           <span style="width:8px; height:8px; border-radius:50%; background:#5ea3c9; flex-shrink:0;"></span>
           <span>Películas:</span>
