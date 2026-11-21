@@ -981,16 +981,20 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
 .theme-mode-segmented-compact{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
 .theme-mode-segmented-compact .theme-mode-btn{justify-content:center;padding:8px 6px;gap:6px;font-size:0.8rem;border-radius:4px;}
 /* TARJETA UNIFICADA DE APLICACIONES Y CUENTAS VINCULADAS */
-.cfg-linked-logos-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;min-height:46px;}
-.cfg-app-logo-btn{position:relative;width:46px;height:46px;border-radius:4px;border:1.5px solid var(--border);background:var(--card);display:grid;place-items:center;cursor:pointer;transition:var(--tr);padding:0;flex-shrink:0;}
+.cfg-linked-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;}
+.cfg-linked-title{display:flex;align-items:center;gap:8px;min-width:0;flex:1;font-weight:700;font-size:0.9rem;line-height:1.25;color:var(--text);}
+.cfg-link-toggle-btn{display:inline-flex;align-items:center;justify-content:center;gap:4px;height:30px;padding:0 12px;border-radius:4px;border:1px solid var(--accent);background:var(--accent-subtle, rgba(56,189,248,0.12));color:var(--accent);font-size:0.75rem;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;width:auto !important;max-width:none;transition:var(--tr);}
+.cfg-link-toggle-btn:hover{background:var(--accent);color:var(--accent-contrast, #fff);}
+.cfg-linked-logos-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px;min-height:48px;}
+.cfg-app-logo-btn{position:relative;width:48px !important;height:48px;border-radius:8px;border:1.5px solid var(--border);background:var(--card);display:grid;place-items:center;cursor:pointer;transition:var(--tr);padding:0;flex-shrink:0;}
 .cfg-app-logo-btn:hover{transform:translateY(-2px);border-color:var(--accent);}
 .cfg-app-logo-btn.is-connected{border-color:var(--app-brand, var(--accent));background:var(--app-brand-bg, rgba(56,189,248,0.10));}
 .cfg-app-logo-btn.is-selected{box-shadow:0 0 0 2px var(--app-brand, var(--accent));}
-.cfg-app-linked-dot{position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#10b981;color:#fff;border:2px solid var(--bg);display:grid;place-items:center;font-size:8px;font-weight:900;line-height:1;}
+.cfg-app-linked-dot{position:absolute;top:-5px;right:-5px;width:15px;height:15px;border-radius:50%;background:#10b981;color:#fff;border:2px solid var(--bg);display:grid;place-items:center;font-size:8px;font-weight:900;line-height:1;}
 .cfg-link-options-panel{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:12px;}
 .cfg-link-cat-group{display:flex;flex-direction:column;gap:8px;}
 .cfg-link-cat-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);}
-.cfg-link-cat-logos{display:flex;align-items:center;flex-wrap:wrap;gap:10px;}
+.cfg-link-cat-logos{display:flex;align-items:center;flex-wrap:wrap;gap:12px;}
 .cfg-linked-app-manage{margin-top:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:4px;}
 .import-export-box{background:var(--bg);border:1px dashed var(--accent);border-radius:12px;padding:14px;margin-top:14px}
 /* VISOR Y RECORTADOR INTERACTIVO 1:1 DE AVATAR */
@@ -10077,12 +10081,9 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   </div>
 
 <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:14px; margin-top:14px;">
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:10px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg></span>
-      <span data-i18n="cfg_notif_title">Notificaciones</span>
-    </div>
-    <button type="button" class="btn-today-pill" style="height:26px; font-size:0.72rem; padding:0 10px;" onclick="probarNotificacionSistema()" data-i18n="cfg_notif_test">Probar</button>
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:10px; color:var(--text); display:flex; align-items:center; gap:8px;">
+    <span><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg></span>
+    <span data-i18n="cfg_notif_title">Notificaciones</span>
   </div>
 
   <div class="switch-wrap" style="margin-bottom:4px;">
@@ -10137,12 +10138,12 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
 <!-- APLICACIONES Y CUENTAS VINCULADAS -->
 <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:14px; margin-top:14px;" id="cfg-linked-apps-section">
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:10px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
-    <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+  <div class="cfg-linked-header">
+    <div class="cfg-linked-title">
       <svg style="width:18px;height:18px;flex-shrink:0;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"/></svg>
       <span data-i18n="cfg_linked_apps_title">Aplicaciones y Cuentas Vinculadas</span>
     </div>
-    <button type="button" class="btn-today-pill" id="btn-cfg-toggle-link-options" style="height:28px; font-size:0.74rem; padding:0 10px; flex-shrink:0;" onclick="toggleOpcionesVinculacionConfig()" data-i18n="cfg_linked_apps_btn">+ Vincular</button>
+    <button type="button" class="cfg-link-toggle-btn" id="btn-cfg-toggle-link-options" onclick="toggleOpcionesVinculacionConfig()" data-i18n="cfg_linked_apps_btn">+ Vincular</button>
   </div>
 
   <!-- Solo los logos de las cuentas vinculadas actualmente -->
@@ -10160,7 +10161,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
           <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/></svg>
         </button>
         <button type="button" class="cfg-app-logo-btn" id="cfg-opt-logo-lastfm" data-service="lastfm" style="--app-brand:#d51007;--app-brand-bg:rgba(213,16,7,0.12);" onclick="clickAppVinculacionConfig('lastfm')" title="Last.fm" aria-label="Last.fm">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="#d51007"><path d="M11.999 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 11.999 12 6.627 0 12.001-5.373 12.001-12 0-6.627-5.374-12-12.001-12zm-1.82 14.898c-.613 1.137-1.57 1.803-2.909 1.803-1.99 0-3.37-1.62-3.37-3.987 0-2.553 1.57-4.135 3.542-4.135 1.778 0 2.68 1.026 3.12 2.366l1.697-.754C11.536 7.95 10.03 6.54 7.442 6.54c-3.495 0-5.81 2.428-5.81 6.193 0 3.82 2.408 6.096 5.568 6.096 2.45 0 4.04-1.256 4.795-3.08l-1.816-.851zm8.303-.523c-1.005 0-1.842-.482-2.198-1.424l-3.266 1.487c.858 2.533 2.973 4.145 5.543 4.145 3.39 0 5.46-2.177 5.46-5.84 0-3.328-1.842-5.15-4.96-5.15-2.827 0-4.668 1.884-4.836 4.773l1.8.859c.147-1.78 1.256-2.889 3.036-2.889 1.884 0 2.91 1.047 2.91 2.805 0 1.55-1.047 2.24-2.489 2.24z"/></svg>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#d51007"><path d="M10.584 17.21l-.88-2.392s-1.43 1.594-3.573 1.594c-1.897 0-3.244-1.649-3.244-4.288 0-3.381 1.704-4.591 3.381-4.591 2.42 0 3.189 1.567 3.849 3.574l.88 2.749c.88 2.666 2.529 4.81 7.285 4.81 3.409 0 5.718-1.044 5.718-3.793 0-2.227-1.265-3.381-3.63-3.931l-1.758-.385c-1.21-.275-1.567-.77-1.567-1.595 0-.934.742-1.484 1.952-1.484 1.32 0 2.034.495 2.144 1.677l2.749-.33c-.22-2.474-1.924-3.492-4.729-3.492-2.474 0-4.893.935-4.893 3.932 0 1.87.907 3.051 3.189 3.601l1.87.44c1.402.33 1.869.907 1.869 1.704 0 1.017-.99 1.43-2.86 1.43-2.776 0-3.93-1.457-4.59-3.464l-.907-2.75c-1.155-3.573-2.997-4.893-6.653-4.893C2.144 5.333 0 7.89 0 12.233c0 4.18 2.144 6.434 5.993 6.434 3.106 0 4.591-1.457 4.591-1.457z"/></svg>
         </button>
       </div>
     </div>
@@ -10184,22 +10185,10 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
     <strong style="font-size:0.86rem; color:var(--text); display:block;">Instalar Mediary</strong>
     <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;">Acceso directo en tu pantalla de inicio</span>
   </div>
-  <button type="button" class="btn-today-pill" id="btn-install-pwa" onclick="instalarAppMediary()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;">
+  <button type="button" class="cfg-link-toggle-btn" id="btn-install-pwa" onclick="instalarAppMediary()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;">
     <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>Instalar App
   </button>
 </div>
-
-
-  <!-- Gestión y optimización de almacenamiento / caché de portadas -->
-  <div style="margin:14px 0; padding:12px 14px; background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:3px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
-    <div style="min-width:0; flex:1;">
-      <strong style="font-size:0.86rem; color:var(--text); display:block;">Caché y Almacenamiento de Portadas</strong>
-      <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:2px;" id="cfg-cache-size-hint">Optimizado con tamaño ligero y rotación automática.</span>
-    </div>
-    <button type="button" class="btn-psn-sub-action" style="background:rgba(239,68,68,0.08); color:var(--text); border:1px solid var(--border); white-space:nowrap; padding:6px 12px; height:auto; cursor:pointer;" onclick="limpiarCachePortadasApp()" title="Vaciar caché de imágenes">
-      <svg style="width:14px;height:14px;margin-right:4px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>Limpiar Portadas
-    </button>
-  </div>
 
 <div class="modal-actions"> <button type="button" class="btn-modal-cancel" onclick="restablecerConfiguracionPorDefecto()" data-i18n="btn_defaults">Predeterminados</button>
 <button type="button" class="btn-modal-save" onclick="guardarYCerrarConfiguracion()" data-i18n="btn_done">Listo</button> </div> </div> </div>
@@ -24749,7 +24738,7 @@ function obtenerEstadoAppsVinculadasConfig() {
       connected: lfmConn,
       userName: lfmName,
       avatar: (lfmUser && lfmUser.avatar) || '',
-      svg: '<svg width="22" height="22" viewBox="0 0 24 24" fill="#d51007"><path d="M11.999 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 11.999 12 6.627 0 12.001-5.373 12.001-12 0-6.627-5.374-12-12.001-12zm-1.82 14.898c-.613 1.137-1.57 1.803-2.909 1.803-1.99 0-3.37-1.62-3.37-3.987 0-2.553 1.57-4.135 3.542-4.135 1.778 0 2.68 1.026 3.12 2.366l1.697-.754C11.536 7.95 10.03 6.54 7.442 6.54c-3.495 0-5.81 2.428-5.81 6.193 0 3.82 2.408 6.096 5.568 6.096 2.45 0 4.04-1.256 4.795-3.08l-1.816-.851zm8.303-.523c-1.005 0-1.842-.482-2.198-1.424l-3.266 1.487c.858 2.533 2.973 4.145 5.543 4.145 3.39 0 5.46-2.177 5.46-5.84 0-3.328-1.842-5.15-4.96-5.15-2.827 0-4.668 1.884-4.836 4.773l1.8.859c.147-1.78 1.256-2.889 3.036-2.889 1.884 0 2.91 1.047 2.91 2.805 0 1.55-1.047 2.24-2.489 2.24z"/></svg>',
+      svg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="#d51007"><path d="M10.584 17.21l-.88-2.392s-1.43 1.594-3.573 1.594c-1.897 0-3.244-1.649-3.244-4.288 0-3.381 1.704-4.591 3.381-4.591 2.42 0 3.189 1.567 3.849 3.574l.88 2.749c.88 2.666 2.529 4.81 7.285 4.81 3.409 0 5.718-1.044 5.718-3.793 0-2.227-1.265-3.381-3.63-3.931l-1.758-.385c-1.21-.275-1.567-.77-1.567-1.595 0-.934.742-1.484 1.952-1.484 1.32 0 2.034.495 2.144 1.677l2.749-.33c-.22-2.474-1.924-3.492-4.729-3.492-2.474 0-4.893.935-4.893 3.932 0 1.87.907 3.051 3.189 3.601l1.87.44c1.402.33 1.869.907 1.869 1.704 0 1.017-.99 1.43-2.86 1.43-2.776 0-3.93-1.457-4.59-3.464l-.907-2.75c-1.155-3.573-2.997-4.893-6.653-4.893C2.144 5.333 0 7.89 0 12.233c0 4.18 2.144 6.434 5.993 6.434 3.106 0 4.591-1.457 4.591-1.457z"/></svg>',
       syncFn: 'sincronizarCuentaLastFm(null, true)',
       disconnectFn: 'desconectarLastFm()',
       connectFn: () => { if (typeof abrirModalConectarLastFm === 'function') abrirModalConectarLastFm(); }
