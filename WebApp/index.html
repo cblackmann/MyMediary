@@ -968,6 +968,10 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
 .amigo-wide-card:hover{border-color:var(--accent) !important;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.35);}
 
 /* ESTILOS DE PORTADAS DE PERFIL */
+#vista-perfil #perfil-hero-card.cover-espacio,
+#vista-perfil #perfil-hero-card.has-custom-cover.cover-espacio,
+#amigo-modal-hero-card.cover-espacio,
+#amigo-modal-hero-card.has-custom-cover.cover-espacio,
 .cover-espacio,
 .amigo-wide-card.cover-espacio,
 .amigo-wide-card.has-custom-cover.cover-espacio,
@@ -993,6 +997,10 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
   border: 1.5px solid rgba(168, 85, 247, 0.55) !important;
   box-shadow: 0 10px 32px rgba(17, 24, 54, 0.6) !important;
 }
+#vista-perfil #perfil-hero-card.cover-arcade,
+#vista-perfil #perfil-hero-card.has-custom-cover.cover-arcade,
+#amigo-modal-hero-card.cover-arcade,
+#amigo-modal-hero-card.has-custom-cover.cover-arcade,
 .cover-arcade,
 .amigo-wide-card.cover-arcade,
 .amigo-wide-card.has-custom-cover.cover-arcade,
@@ -1013,6 +1021,10 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
   border: 1.5px solid rgba(244, 63, 94, 0.6) !important;
   box-shadow: 0 10px 32px rgba(244, 63, 94, 0.3) !important;
 }
+#vista-perfil #perfil-hero-card.cover-bosque,
+#vista-perfil #perfil-hero-card.has-custom-cover.cover-bosque,
+#amigo-modal-hero-card.cover-bosque,
+#amigo-modal-hero-card.has-custom-cover.cover-bosque,
 .cover-bosque,
 .amigo-wide-card.cover-bosque,
 .amigo-wide-card.has-custom-cover.cover-bosque,
@@ -1031,6 +1043,10 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
   border: 1.5px solid rgba(16, 185, 129, 0.55) !important;
   box-shadow: 0 10px 32px rgba(5, 29, 19, 0.55) !important;
 }
+#vista-perfil #perfil-hero-card.cover-castillo,
+#vista-perfil #perfil-hero-card.has-custom-cover.cover-castillo,
+#amigo-modal-hero-card.cover-castillo,
+#amigo-modal-hero-card.has-custom-cover.cover-castillo,
 .cover-castillo,
 .amigo-wide-card.cover-castillo,
 .amigo-wide-card.has-custom-cover.cover-castillo,
@@ -8108,7 +8124,6 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 .profile-hero-card {
   position: relative !important;
   overflow: hidden !important;
-  background: var(--card) !important;
   border: 1.5px solid var(--border) !important;
   border-radius: 18px !important;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18) !important;
@@ -8123,6 +8138,10 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   box-sizing: border-box !important;
   transition: var(--tr) !important;
 }
+#vista-perfil #perfil-hero-card:not(.has-custom-cover),
+.profile-hero-card:not(.has-custom-cover) {
+  background: var(--card) !important;
+}
 @media (max-width: 600px) {
   #vista-perfil #perfil-hero-card,
   .profile-hero-card {
@@ -8135,7 +8154,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06) !important;
 }
 
-#vista-perfil .profile-identity-wrap {
+#vista-perfil .profile-identity-wrap,
+#modal-perfil-amigo .profile-identity-wrap {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -8146,7 +8166,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   position: relative !important;
   z-index: 2 !important;
 }
-#vista-perfil .profile-avatar-box {
+#vista-perfil .profile-avatar-box,
+#modal-perfil-amigo .profile-avatar-box {
   width: 88px !important;
   height: 88px !important;
   min-width: 88px !important;
@@ -8166,11 +8187,13 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   flex-shrink: 0 !important;
   transition: transform 0.2s ease !important;
 }
-#vista-perfil .profile-avatar-box:hover {
+#vista-perfil .profile-avatar-box:hover,
+#modal-perfil-amigo .profile-avatar-box:hover {
   transform: scale(1.05) !important;
 }
 @media (max-width: 600px) {
-  #vista-perfil .profile-avatar-box {
+  #vista-perfil .profile-avatar-box,
+  #modal-perfil-amigo .profile-avatar-box {
     width: 80px !important;
     height: 80px !important;
     min-width: 80px !important;
@@ -8179,7 +8202,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
     margin-bottom: 10px !important;
   }
 }
-#vista-perfil .profile-info-col {
+#vista-perfil .profile-info-col,
+#modal-perfil-amigo .profile-info-col {
   display: flex !important;
   flex-direction: column !important;
   align-items: center !important;
@@ -8188,7 +8212,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   padding: 0 !important;
   min-width: 0 !important;
 }
-#vista-perfil .profile-nick-row {
+#vista-perfil .profile-nick-row,
+#modal-perfil-amigo .profile-nick-row {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -8196,7 +8221,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   cursor: pointer !important;
   margin-bottom: 4px !important;
 }
-#vista-perfil .profile-nick-display {
+#vista-perfil .profile-nick-display,
+#modal-perfil-amigo .profile-nick-display {
   font-size: 1.35rem !important;
   font-weight: 800 !important;
   color: var(--text) !important;
@@ -8204,11 +8230,13 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   word-break: break-word !important;
 }
 @media (max-width: 600px) {
-  #vista-perfil .profile-nick-display {
+  #vista-perfil .profile-nick-display,
+  #modal-perfil-amigo .profile-nick-display {
     font-size: 1.25rem !important;
   }
 }
-#vista-perfil .profile-bio-txt {
+#vista-perfil .profile-bio-txt,
+#modal-perfil-amigo .profile-bio-txt {
   font-size: 0.88rem !important;
   color: var(--muted) !important;
   line-height: 1.45 !important;
@@ -8216,7 +8244,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   text-align: center !important;
   max-width: 480px !important;
 }
-#vista-perfil .profile-badges-row {
+#vista-perfil .profile-badges-row,
+#modal-perfil-amigo .profile-badges-row {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -8224,7 +8253,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   flex-wrap: wrap !important;
   width: 100% !important;
 }
-#vista-perfil #perfil-id-badge {
+#vista-perfil #perfil-id-badge,
+#modal-perfil-amigo #amigo-modal-id-badge {
   font-size: 0.78rem !important;
   font-weight: 700 !important;
   padding: 5px 12px !important;
@@ -8239,7 +8269,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   flex-shrink: 0 !important;
   transition: var(--tr) !important;
 }
-#vista-perfil #perfil-id-badge:hover {
+#vista-perfil #perfil-id-badge:hover,
+#modal-perfil-amigo #amigo-modal-id-badge:hover {
   background: rgba(56, 189, 248, 0.22) !important;
   transform: translateY(-1px) !important;
 }
@@ -8298,7 +8329,11 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 #vista-perfil .stats-section-box,
 #vista-perfil .profile-stat-box,
 #vista-perfil .profile-fav-char-card,
+#modal-perfil-amigo .profile-fav-char-card,
 #vista-perfil .fav-char-empty-box,
+#vista-perfil .profile-fav-song-card,
+#modal-perfil-amigo .profile-fav-song-card,
+#vista-perfil .fav-song-empty-box,
 #vista-perfil .fav-slot-card,
 #vista-perfil .stats-ranking-row {
   background: transparent !important;
@@ -8306,8 +8341,9 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   box-shadow: none !important;
 }
 
-/* BOTONES DE PERSONAJE FAVORITO: ESTÉTICA INTEGRADA DE LA APP */
-.btn-char-action-icon {
+/* BOTONES DE PERSONAJE Y CANCIÓN FAVORITA: ESTÉTICA INTEGRADA DE LA APP */
+.btn-char-action-icon,
+.btn-song-action-icon {
   background: var(--bg) !important;
   border: 1px solid var(--border) !important;
   color: var(--muted) !important;
@@ -8321,23 +8357,41 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   padding: 0 !important;
   transition: all 0.18s ease !important;
 }
-.btn-char-action-icon:hover {
+.btn-char-action-icon:hover,
+.btn-song-action-icon:hover {
   border-color: var(--accent) !important;
   color: var(--accent) !important;
   background: var(--accent-subtle, rgba(56, 189, 248, 0.12)) !important;
   transform: translateY(-1px) !important;
 }
-.btn-char-action-icon.btn-char-delete:hover {
+.btn-song-action-icon.btn-song-play-main:hover {
+  border-color: #10b981 !important;
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.14) !important;
+}
+.btn-song-action-icon.playing,
+.btn-play-song-badge.playing {
+  border-color: #10b981 !important;
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4) !important;
+}
+.btn-char-action-icon.btn-char-delete:hover,
+.btn-song-action-icon.btn-song-delete:hover {
   border-color: #ef4444 !important;
   color: #ef4444 !important;
   background: rgba(239, 68, 68, 0.12) !important;
 }
-[data-theme$="-light"] .btn-char-action-icon {
+[data-theme$="-light"] .btn-char-action-icon,
+[data-theme$="-light"] .btn-song-action-icon {
   background: var(--card) !important;
 }
 
-/* PERSONAJE FAVORITO: HORIZONTAL Y CON ESPACIO PARA RESPIRAR */
-#vista-perfil .fav-char-main-row {
+/* PERSONAJE Y CANCIÓN FAVORITA: HORIZONTAL Y CON ESPACIO PARA RESPIRAR */
+#vista-perfil .fav-char-main-row,
+#modal-perfil-amigo .fav-char-main-row,
+#vista-perfil .fav-song-main-row,
+#modal-perfil-amigo .fav-song-main-row {
   display: flex !important;
   flex-direction: row !important;
   flex-wrap: nowrap !important;
@@ -8348,7 +8402,12 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   width: 100% !important;
   box-sizing: border-box !important;
 }
-#vista-perfil .fav-char-avatar-box {
+#modal-perfil-amigo .fav-char-main-row,
+#modal-perfil-amigo .fav-song-main-row {
+  padding-right: 0 !important;
+}
+#vista-perfil .fav-char-avatar-box,
+#modal-perfil-amigo .fav-char-avatar-box {
   width: 54px !important;
   height: 54px !important;
   min-width: 54px !important;
@@ -8356,14 +8415,27 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   border-radius: 50% !important;
   flex-shrink: 0 !important;
 }
-#vista-perfil .fav-char-text-block {
+#vista-perfil .fav-song-cover-box,
+#modal-perfil-amigo .fav-song-cover-box {
+  width: 54px !important;
+  height: 54px !important;
+  min-width: 54px !important;
+  max-width: 54px !important;
+  border-radius: 8px !important;
+  flex-shrink: 0 !important;
+}
+#vista-perfil .fav-char-text-block,
+#modal-perfil-amigo .fav-char-text-block,
+#vista-perfil .fav-song-text-block,
+#modal-perfil-amigo .fav-song-text-block {
   flex: 1 !important;
   min-width: 0 !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 2px !important;
 }
-#vista-perfil .fav-char-actions-wrap {
+#vista-perfil .fav-char-actions-wrap,
+#vista-perfil .fav-song-actions-wrap {
   position: absolute !important;
   top: 4px !important;
   right: 0 !important;
@@ -9090,7 +9162,20 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
         </div>
       </div>
 
-      <!-- 2. PERSONAJE FAVORITO -->
+      <!-- 2. CANCIÓN FAVORITA -->
+      <div class="home-clean-section" id="perfil-sec-cancion">
+        <div class="home-clean-section-header">
+          <div class="home-clean-title">
+            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:#10b981;"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg></span>
+            <span data-i18n="profile_fav_song_title">Canción Favorita</span>
+          </div>
+        </div>
+        <div id="perfil-song-card-container"></div>
+      </div>
+
+      <hr class="home-section-divider">
+
+      <!-- 3. PERSONAJE FAVORITO -->
       <div class="home-clean-section" id="perfil-sec-personaje">
         <div class="home-clean-section-header">
           <div class="home-clean-title">
@@ -9598,7 +9683,107 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
     <p style="font-size:0.83rem; color:var(--muted); line-height:1.45; margin:0 0 18px;" data-i18n="char_del_desc">Tu personaje favorito se retirará de tu perfil. Podrás volver a elegirlo o asignar uno nuevo en cualquier momento.</p>
     <div style="display:flex; gap:10px; justify-content:center;">
       <button type="button" class="btn-modal-cancel" style="flex:1;" onclick="cerrarModalConfirmarQuitarPersonaje()" data-i18n="btn_keep">Conservar</button>
-      <button type="button" class="btn-modal-danger" style="flex:1;" onclick="ejecutarQuitarPersonajeFavorito()" data-i18n="btn_yes_remove">Sí, Quitar</button>
+</div>
+
+<!-- MODAL SELECCIONAR CANCIÓN FAVORITA -->
+<div id="modal-seleccionar-cancion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalSeleccionarCancionFavorita()">
+  <div class="modal-box" style="max-width:540px; width:92%; max-height:88vh; display:flex; flex-direction:column; padding:20px; border-radius:12px;">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+      <h3 style="font-size:1.1rem; font-weight:800; color:var(--text); margin:0; display:flex; align-items:center; gap:8px;">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:#10b981;"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg>
+        <span data-i18n="profile_fav_song_title">Canción Favorita</span>
+      </h3>
+      <button type="button" class="btn-close-form" onclick="cerrarModalSeleccionarCancionFavorita()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
+    </div>
+
+    <!-- Pestañas de Selección -->
+    <div class="char-picker-tabs" style="margin-bottom:14px;">
+      <button type="button" class="char-picker-tab-btn active" id="tab-song-online" onclick="cambiarTabSelectorCancion('online')">
+        <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg></span> <span>Buscar Música</span>
+      </button>
+      <button type="button" class="char-picker-tab-btn" id="tab-song-misobras" onclick="cambiarTabSelectorCancion('misobras')">
+        <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg></span> <span>De mis registros</span>
+      </button>
+      <button type="button" class="char-picker-tab-btn" id="tab-song-manual" onclick="cambiarTabSelectorCancion('manual')">
+        <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></span> <span>Personalizada</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: BÚSQUEDA ONLINE (ITUNES CON MUESTRA DE AUDIO) -->
+    <div id="tab-song-content-online" class="char-picker-pane active" style="overflow-y:auto; flex:1;">
+      <div style="display:flex; gap:8px; margin-bottom:12px;">
+        <input type="text" id="input-buscar-cancion-online" class="form-input" style="flex:1;" placeholder="Busca por canción o artista (ej: Bohemian Rhapsody, Starboy...)" onkeydown="if(event.key==='Enter'){event.preventDefault();ejecutarBuscarCancionOnline();}">
+        <button type="button" class="btn-save" style="width:auto; min-height:42px; padding:0 18px; margin:0; display:inline-flex; align-items:center; gap:6px; font-size:0.86rem;" onclick="ejecutarBuscarCancionOnline()">
+          <span><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg></span> <span>Buscar</span>
+        </button>
+      </div>
+
+      <div id="song-search-loading" style="display:none; text-align:center; padding:18px; color:#10b981; font-size:0.85rem;">
+        <svg style="width:16px;height:16px;animation:spin 1s linear infinite;display:inline-block;vertical-align:middle;margin-right:6px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-opacity="0.25"/><path d="M12 2a10 10 0 0 1 10 10" stroke="#10b981"/></svg>
+        Buscando canciones y muestras de audio...
+      </div>
+      <div id="song-search-results" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+
+    <!-- TAB 2: DE MIS REGISTROS -->
+    <div id="tab-song-content-misobras" class="char-picker-pane" style="display:none; overflow-y:auto; flex:1;">
+      <p style="font-size:0.8rem; color:var(--muted); margin-bottom:10px;">Selecciona una canción de tu historial de música registrado en Mediary:</p>
+      <div id="song-misobras-list" style="display:flex; flex-direction:column; gap:8px;"></div>
+    </div>
+
+    <!-- TAB 3: PERSONALIZADA -->
+    <div id="tab-song-content-manual" class="char-picker-pane" style="display:none; overflow-y:auto; flex:1;">
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-weight:700;">Título de la canción: *</label>
+        <input type="text" id="input-song-manual-titulo" class="form-input" placeholder="Ej: Bohemian Rhapsody, Starboy..." oninput="actualizarPreviewCancionManual()">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-weight:700;">Artista o Banda: *</label>
+        <input type="text" id="input-song-manual-artista" class="form-input" placeholder="Ej: Queen, The Weeknd, Radiohead..." oninput="actualizarPreviewCancionManual()">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-weight:700;">Álbum (opcional):</label>
+        <input type="text" id="input-song-manual-album" class="form-input" placeholder="Ej: A Night at the Opera" oninput="actualizarPreviewCancionManual()">
+      </div>
+      <div class="form-group" style="margin-bottom:10px;">
+        <label style="font-weight:700;">Portada (enlace de imagen):</label>
+        <input type="text" id="input-song-manual-poster" class="form-input" placeholder="https://ejemplo.com/portada.jpg" oninput="actualizarPreviewCancionManual()">
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label style="font-weight:700;">Enlace de muestra de audio (opcional, .mp3 / .m4a / preview stream):</label>
+        <div style="display:flex; gap:6px;">
+          <input type="text" id="input-song-manual-audio" class="form-input" placeholder="https://audio-samples.com/preview.mp3" style="flex:1;">
+          <button type="button" class="btn-save" style="margin:0; width:auto; padding:0 12px; font-size:0.75rem;" onclick="buscarMuestraParaCancionManual()" title="Buscar muestra automáticamente en iTunes">Auto-buscar</button>
+        </div>
+      </div>
+      <button type="button" class="btn-save" style="margin-top:10px;" onclick="guardarCancionManual()">
+        Guardar como Canción Favorita
+      </button>
+    </div>
+
+    <!-- Acciones Inferiores -->
+    <div class="modal-actions" style="margin-top:14px; justify-content:space-between; flex-shrink:0;">
+      <button type="button" class="btn-modal-danger" id="btn-quitar-cancion-fav" onclick="abrirModalConfirmarQuitarCancion()" style="display:none;">
+        <svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg> Quitar Canción
+      </button>
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarCancionFavorita()">
+        Cerrar
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE CONFIRMACIÓN: QUITAR CANCIÓN FAVORITA -->
+<div id="modal-confirmar-quitar-cancion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfirmarQuitarCancion()">
+  <div class="modal-box" style="max-width:400px; text-align:center; padding:24px 20px;">
+    <div style="width:52px; height:52px; border-radius:50%; background:rgba(239,68,68,0.14); border:1.5px solid rgba(239,68,68,0.35); color:#f87171; display:grid; place-items:center; margin:0 auto 12px;">
+      <svg style="width:26px;height:26px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+    </div>
+    <h3 style="margin:0 0 8px; font-size:1.15rem; color:var(--text);" data-i18n="song_del_title">¿Quitar Canción Favorita?</h3>
+    <p style="font-size:0.83rem; color:var(--muted); line-height:1.45; margin:0 0 18px;" data-i18n="song_del_desc">Tu canción favorita se retirará de tu perfil. Podrás volver a elegir una nueva en cualquier momento.</p>
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button type="button" class="btn-modal-cancel" style="flex:1;" onclick="cerrarModalConfirmarQuitarCancion()" data-i18n="btn_keep">Conservar</button>
+      <button type="button" class="btn-modal-danger" style="flex:1;" onclick="ejecutarQuitarCancionFavorita()" data-i18n="btn_yes_remove">Sí, Quitar</button>
     </div>
   </div>
 </div>
@@ -10350,21 +10535,33 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 <div id="modal-perfil-amigo" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalPerfilAmigo()">
   <div class="modal-box" style="max-width:620px; max-height:90vh; overflow-y:auto; padding:20px;">
     <!-- 1. HERO CARD DEL AMIGO -->
-    <div id="amigo-modal-hero-card" class="profile-hero-card cover-predeterminada" style="margin-bottom:14px; padding:16px 18px; border-radius:4px; position:relative; overflow:hidden;">
-      <div style="display:flex; justify-content:space-between; align-items:center; position:relative; z-index:2; width:100%;">
-        <div style="display:flex; gap:14px; align-items:center; min-width:0; flex:1;">
-          <div id="amigo-modal-avatar" style="width:58px; height:58px; border-radius:50%; border:2px solid var(--accent); overflow:hidden; background:var(--bg); display:grid; place-items:center; font-size:1.8rem; flex-shrink:0;"></div>
-          <div style="min-width:0; flex:1;">
-            <h3 id="amigo-modal-nick" class="profile-nick-display" style="font-size:1.25rem; font-weight:800; margin-bottom:2px; line-height:1.2; word-break:break-word;">Amigo</h3>
-            <div id="amigo-modal-bio" class="profile-bio-txt" style="font-size:0.82rem; margin-top:2px; line-height:1.35; word-break:break-word;" data-i18n="profile_default_bio">Coleccionando historias en Mediary</div>
-            <div id="amigo-modal-id-badge" style="font-size:0.72rem; color:var(--accent); font-weight:700; margin-top:6px; display:inline-flex; align-items:center; gap:4px; background:rgba(56,189,248,0.12); padding:2px 8px; border-radius:2px; border:1px solid rgba(56,189,248,0.3);"></div>
+    <div id="amigo-modal-hero-card" class="profile-hero-card cover-predeterminada">
+      <button type="button" class="btn-profile-edit-discreet" style="position:absolute; top:14px; right:14px; z-index:10;" onclick="cerrarModalPerfilAmigo()" title="Cerrar perfil" aria-label="Cerrar perfil">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M6 18 18 6M6 6l12 12"/></svg>
+      </button>
+      <div class="profile-identity-wrap">
+        <div class="profile-avatar-box" id="amigo-modal-avatar">
+          <span class="emoji-dyn">👤</span>
+        </div>
+        <div class="profile-info-col">
+          <div class="profile-nick-row" style="cursor:default;">
+            <span class="profile-nick-display" id="amigo-modal-nick">Amigo</span>
+          </div>
+          <div class="profile-bio-txt" id="amigo-modal-bio" data-i18n="profile_default_bio">Coleccionando historias en Mediary</div>
+          <div class="profile-badges-row">
+            <span id="amigo-modal-id-badge" onclick="copiarIdAmigoDesdeModal()" title="Click para copiar ID">
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.364a4.125 4.125 0 0 0-6.338 0"/></svg>
+              <span id="amigo-modal-id-txt">ID</span>
+            </span>
           </div>
         </div>
-        <button type="button" class="btn-close-form" style="position:static; margin-left:10px; flex-shrink:0;" onclick="cerrarModalPerfilAmigo()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
       </div>
     </div>
 
-    <!-- 2. PERSONAJE FAVORITO -->
+    <!-- 2. CANCIÓN FAVORITA DEL AMIGO -->
+    <div id="amigo-modal-song-container" style="display:none; margin-bottom:14px;"></div>
+
+    <!-- 3. PERSONAJE FAVORITO DEL AMIGO -->
     <div id="amigo-modal-character-container" style="display:none; margin-bottom:14px;"></div>
 
     <hr class="home-section-divider">
@@ -11583,7 +11780,7 @@ amigosRowsList.forEach((rows, idx) => {
     return { exito: false, error: e.toString() };
   }
 },
-async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const rawFavs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); const favs = {}; Object.keys(rawFavs).forEach(k => { if (k !== 'portada' && k !== 'personajeFavorito' && k.includes('__') && rawFavs[k] && typeof rawFavs[k] === 'object' && rawFavs[k].titulo) { favs[k] = rawFavs[k]; } }); const charFav = (p.favoritos?.personajeFavorito || p.preferencias?.personajeFavorito || null); const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada'); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: p.preferencias?.userId || email, favoritos: favs, portada: portAmigo, personajeFavorito: charFav }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
+async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=ilike.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=ilike.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const rawFavs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); const favs = {}; Object.keys(rawFavs).forEach(k => { if (k !== 'portada' && k !== 'personajeFavorito' && k !== 'cancionFavorita' && k.includes('__') && rawFavs[k] && typeof rawFavs[k] === 'object' && rawFavs[k].titulo) { favs[k] = rawFavs[k]; } }); const charFav = (p.favoritos?.personajeFavorito || p.preferencias?.personajeFavorito || null); const songFav = (p.favoritos?.cancionFavorita || p.preferencias?.cancionFavorita || null); const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada'); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: p.preferencias?.userId || email, favoritos: favs, portada: portAmigo, personajeFavorito: charFav, cancionFavorita: songFav }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
 const email = normEm_(userEmail); if (!email) return { exito: false, sinSesion: true, emailGoogle: '', logueadoGoogle: false, nickname: 'Invitado', avatar: '🦊', bio: 'Inicia sesión para guardar tus listas en Supabase', favoritos: {}, favoritosOcultos: {}, diasLectura: [], tiemposLectura: {} };
 const rows = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); if (rows && rows.length > 0) { const p = rows[0];
 const pPrefs = p.preferencias || {};
@@ -11615,6 +11812,15 @@ return await SERVER_API.obtenerPerfilUsuario(email); } catch (e) { return { exit
 const existentes = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); const actual = existentes && existentes[0] ? existentes[0] : {};
 const prefsObj = Object.assign({}, actual.preferencias || {}, datos.preferencias || {});
 if (datos.portada) prefsObj.portada = datos.portada;
+if (datos.cancionFavorita !== undefined) {
+  prefsObj.cancionFavorita = datos.cancionFavorita;
+  if (!datos.favoritos) datos.favoritos = Object.assign({}, actual.favoritos || {});
+  if (datos.cancionFavorita) {
+    datos.favoritos.cancionFavorita = datos.cancionFavorita;
+  } else {
+    delete datos.favoritos.cancionFavorita;
+  }
+}
 if (datos.diasLectura || datos.tiemposLectura) {
   if (!prefsObj.rachas) prefsObj.rachas = {};
   if (datos.diasLectura) prefsObj.rachas.diasLectura = datos.diasLectura;
@@ -16215,7 +16421,13 @@ function verPerfilDeAmigo(emailAmigo) {
     }
     document.getElementById('amigo-modal-nick').textContent = a.nickname;
     document.getElementById('amigo-modal-bio').textContent = a.bio || (l === 'en' ? 'Collecting stories in Mediary' : 'Coleccionando historias en Mediary');
-    document.getElementById('amigo-modal-id-badge').innerHTML = `${getHeroIcon('identification', '', 12)} ${a.userId || 'ID'}`;
+    const idTxtEl = document.getElementById('amigo-modal-id-txt');
+    if (idTxtEl) {
+      idTxtEl.textContent = a.userId || 'ID';
+    } else {
+      const idBadgeEl = document.getElementById('amigo-modal-id-badge');
+      if (idBadgeEl) idBadgeEl.innerHTML = `${getHeroIcon('identification', '', 14)} <span>${a.userId || 'ID'}</span>`;
+    }
     const amHero = document.getElementById('amigo-modal-hero-card');
     if (amHero) {
       PORTADAS_DISPONIBLES.forEach(p => amHero.classList.remove(`cover-${p.id}`));
@@ -16225,6 +16437,59 @@ function verPerfilDeAmigo(emailAmigo) {
         amHero.classList.add(`cover-${coverAmigo}`, 'has-custom-cover');
       } else {
         amHero.classList.add('cover-predeterminada');
+      }
+    }
+    // Canción favorita del amigo
+    const amSongBox = document.getElementById('amigo-modal-song-container');
+    if (amSongBox) {
+      if (a.cancionFavorita && a.cancionFavorita.titulo) {
+        const s = a.cancionFavorita;
+        amSongBox.innerHTML = `
+          <div class="home-clean-section-header" style="margin:4px 0 8px;">
+            <div class="home-clean-title">
+              <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:#10b981;"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg></span>
+              <span>${l === 'en' ? 'Favorite Song' : 'Canción Favorita'}</span>
+            </div>
+          </div>
+          <div class="profile-fav-song-card" style="margin-bottom:0;">
+            <div class="fav-song-main-row" style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:4px 0 8px 0;">
+              <div style="display:flex; align-items:center; gap:14px; min-width:0; flex:1;">
+                <div class="fav-song-cover-box" style="width:54px; height:54px; min-width:54px; max-width:54px; border-radius:8px; overflow:hidden; border:2px solid #10b981; box-shadow:0 0 12px rgba(16,185,129,0.25); position:relative; flex-shrink:0; background:var(--bg);">
+                  <img src="${escHtmlFeed_(s.poster || '')}" alt="${escHtmlFeed_(s.titulo)}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='🎵';">
+                  ${s.previewUrl ? `
+                    <button type="button" class="btn-play-song-badge" onclick="event.stopPropagation(); toggleReproducirMuestraCancion('${s.previewUrl}', this)" title="${l === 'en' ? 'Play audio preview' : 'Reproducir muestra'}" aria-label="Reproducir muestra" style="position:absolute; inset:0; margin:auto; width:28px; height:28px; border-radius:50%; background:rgba(0,0,0,0.65); border:1.5px solid #10b981; color:#fff; display:grid; place-items:center; cursor:pointer; backdrop-filter:blur(3px);">
+                      <svg class="icon-play-state" viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;margin-left:2px;"><path d="M8 5v14l11-7z"/></svg>
+                    </button>
+                  ` : ''}
+                </div>
+                <div class="fav-song-text-block" style="flex:1; min-width:0;">
+                  <h4 class="fav-song-title-txt" style="font-size:1rem; font-weight:800; color:var(--text); line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0;" title="${s.titulo}">${s.titulo}</h4>
+                  <div class="fav-song-artist-txt" style="font-size:0.8rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${s.artista || ''}">
+                    <span style="opacity:0.75;">${l === 'en' ? 'By:' : 'De:'}</span> <strong>${s.artista || ''}</strong>
+                    ${s.album ? ` · <span style="opacity:0.8;">${s.album}</span>` : ''}
+                  </div>
+                  ${s.previewUrl ? `
+                    <div style="font-size:0.72rem; color:#10b981; display:flex; align-items:center; gap:4px; margin-top:3px; font-weight:600;">
+                      <svg class="h-icon" viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                      <span>${l === 'en' ? 'Audio sample (30s)' : 'Muestra de audio (30s)'}</span>
+                    </div>
+                  ` : ''}
+                </div>
+              </div>
+              ${s.previewUrl ? `
+                <div class="fav-song-actions-wrap" style="flex-shrink:0;">
+                  <button type="button" class="btn-song-action-icon btn-song-play-main" onclick="toggleReproducirMuestraCancion('${s.previewUrl}', this)" title="${l === 'en' ? 'Play audio preview' : 'Reproducir muestra'}" aria-label="Reproducir muestra">
+                    <svg class="icon-play-state" viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px;color:#10b981;"><path d="M8 5v14l11-7z"/></svg>
+                  </button>
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+        amSongBox.style.display = 'block';
+      } else {
+        amSongBox.innerHTML = '';
+        amSongBox.style.display = 'none';
       }
     }
     const amCharBox = document.getElementById('amigo-modal-character-container');
@@ -16339,6 +16604,17 @@ window.verPerfilDeAmigo = verPerfilDeAmigo;
 function cerrarModalPerfilAmigo() {
   document.getElementById('modal-perfil-amigo').style.display = 'none';
   amigoSeleccionadoActual = null;
+  if (_audioMuestraCancionFav && !_audioMuestraCancionFav.paused) {
+    _audioMuestraCancionFav.pause();
+    _audioMuestraCancionFav = null;
+    actualizarTodosIconosPlay(false);
+  }
+}
+function copiarIdAmigoDesdeModal() {
+  if (!amigoSeleccionadoActual || !amigoSeleccionadoActual.userId) return;
+  copiarTextoAlPortapapeles(amigoSeleccionadoActual.userId);
+  const l = userPrefs.lang || 'es';
+  mostrarToastPersonalizado(l === 'en' ? 'Friend ID copied to clipboard!' : '¡ID de amigo copiado al portapapeles!');
 }
 function eliminarAmigoSeleccionado() {
   if (!amigoSeleccionadoActual || !estado.userEmail) return;
@@ -16668,9 +16944,8 @@ function filtrarRegistrosAmigoModal() {
         const fI_am = sanitizarFechaFrontend(r.fechaInicio), fF_am = sanitizarFechaFrontend(r.fechaFin);
         const infoI_am = desglosarFechaParaCuadro(fI_am);
         const infoF_am = desglosarFechaParaCuadro(fF_am);
-        const diffMes_am = enProg ? (infoI_am && infoI_am.mesIdx >= 0) : (infoI_am && infoF_am && (infoI_am.clave !== infoF_am.clave));
-        const cI_am = renderizarCuadroFecha(infoI_am, diffMes_am, infoF_am ? infoF_am.anio : '');
-        const cF_am = renderizarCuadroFecha(infoF_am, diffMes_am, infoI_am ? infoI_am.anio : '');
+        const cI_am = renderizarCuadroFecha(infoI_am, true, infoF_am ? infoF_am.anio : '');
+        const cF_am = renderizarCuadroFecha(infoF_am, true, infoI_am ? infoI_am.anio : '');
         const fechaHtml = subTieneR
           ? (enProg ? `<div class="m-card-dates" title="${fI_am}">${cI_am}<span class="m-date-arrow">➔</span><span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:6px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">🕒 En curso</span></div>` : `<div class="m-card-dates" title="${fI_am} ➔ ${fF_am}">${cI_am}<span class="m-date-arrow">➔</span>${cF_am}</div>`)
           : `<div class="m-card-dates" title="${fI_am}">${cI_am}</div>`;
@@ -17637,6 +17912,7 @@ const CONFIG = {
  "btn_edit": "Editar",
  "profile_title": "Perfil y Estadísticas",
  "profile_favs_title": "Mis Favoritos por Categoría",
+ "profile_fav_song_title": "Canción Favorita",
  "profile_fav_char_title": "Personaje Favorito",
  "btn_cfg_favs": "Configurar",
  "profile_metrics_title": "Métricas Globales",
@@ -18098,6 +18374,7 @@ const CONFIG = {
  "btn_edit": "Edit",
  "profile_title": "Profile & Statistics",
  "profile_favs_title": "My Favorites by Category",
+ "profile_fav_song_title": "Favorite Song",
  "profile_fav_char_title": "Favorite Character",
  "btn_cfg_favs": "Configure",
  "profile_metrics_title": "Global Metrics",
@@ -18624,7 +18901,7 @@ function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Me
 if (!userPrefs.notificaciones || typeof userPrefs.notificaciones !== 'object') { userPrefs.notificaciones = { habilitadas: true, racha21: true, likesAmigos: true, novedadesAmigos: true }; }
 try { const anioG = localStorage.getItem('mediary_anio_activo'); if (anioG) estado.anioActivo = anioG; } catch (e) {}
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
-try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); if (!perfilUsuario.portada && perfilUsuario.preferencias?.portada) perfilUsuario.portada = perfilUsuario.preferencias.portada; if (!perfilUsuario.personajeFavorito && perfilUsuario.favoritos?.personajeFavorito) perfilUsuario.personajeFavorito = perfilUsuario.favoritos.personajeFavorito; } } catch (e) {}
+try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); if (!perfilUsuario.portada && perfilUsuario.preferencias?.portada) perfilUsuario.portada = perfilUsuario.preferencias.portada; if (!perfilUsuario.personajeFavorito && perfilUsuario.favoritos?.personajeFavorito) perfilUsuario.personajeFavorito = perfilUsuario.favoritos.personajeFavorito; if (!perfilUsuario.cancionFavorita && (perfilUsuario.favoritos?.cancionFavorita || perfilUsuario.preferencias?.cancionFavorita)) perfilUsuario.cancionFavorita = perfilUsuario.favoritos?.cancionFavorita || perfilUsuario.preferencias?.cancionFavorita; } } catch (e) {}
 aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); actualizarUISelectorAnio();
 const gn = document.getElementById('home-greeting-nickname');
 if (gn && perfilUsuario && perfilUsuario.nickname) {
@@ -18967,7 +19244,7 @@ localStorage.setItem('Mediary_saved_accounts_v1', JSON.stringify(lista.slice(0, 
 }
 function aplicarSesionExitosa(res, mostrarSaludo = false) { estado.userEmail = (res.emailGoogle || estado.userEmail || '').trim().toLowerCase(); perfilUsuario.emailGoogle = estado.userEmail; perfilUsuario.logueadoGoogle = true;
 perfilUsuario.nickname = res.nickname || (estado.userEmail ? estado.userEmail.split('@')[0] : 'Cinéfilo & Lector'); perfilUsuario.bio = res.bio || 'Coleccionando historias en Mediary'; perfilUsuario.avatar = res.avatar || ''; perfilUsuario.favoritos = res.favoritos || {};
-perfilUsuario.favoritosOcultos = res.favoritosOcultos || {}; perfilUsuario.preferencias = res.preferencias || {}; if (res.created_at) { perfilUsuario.created_at = res.created_at; try { localStorage.setItem('mediary_user_created_' + estado.userEmail, res.created_at); } catch(e){} } if (res.preferencias?.portada || res.favoritos?.portada) perfilUsuario.portada = res.preferencias?.portada || res.favoritos?.portada; if (res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito) perfilUsuario.personajeFavorito = res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito; if (!perfilUsuario.preferencias.userId && estado.userEmail) { perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias); }
+perfilUsuario.favoritosOcultos = res.favoritosOcultos || {}; perfilUsuario.preferencias = res.preferencias || {}; if (res.created_at) { perfilUsuario.created_at = res.created_at; try { localStorage.setItem('mediary_user_created_' + estado.userEmail, res.created_at); } catch(e){} } if (res.preferencias?.portada || res.favoritos?.portada) perfilUsuario.portada = res.preferencias?.portada || res.favoritos?.portada; if (res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito) perfilUsuario.personajeFavorito = res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito; if (res.favoritos?.cancionFavorita || res.preferencias?.cancionFavorita) perfilUsuario.cancionFavorita = res.favoritos?.cancionFavorita || res.preferencias?.cancionFavorita; if (!perfilUsuario.preferencias.userId && estado.userEmail) { perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias); }
 if (res.preferencias?.likes_dados && Array.isArray(res.preferencias.likes_dados)) {
  try {
  const s = obtenerLikesResenasSet();
@@ -19034,6 +19311,7 @@ if (userEmailActivo) {
  if (cfgStatus) cfgStatus.textContent = 'Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.';
 }
 aplicarPortadaEnHeroCard('perfil-hero-card');
+renderizarCancionFavorita();
 renderizarPersonajeFavorito();
 if (typeof actualizarSaludoInicio === 'function') actualizarSaludoInicio();
 }
@@ -19145,6 +19423,467 @@ function seleccionarPortadaPerfil(idCover) {
  const pNom = PORTADAS_DISPONIBLES.find(x => x.id === idCover)?.nombre || idCover;
  mostrarToastPersonalizado(userPrefs.lang === 'en' ? ` Cover "${pNom}" applied` : ` Portada "${pNom}" aplicada`);
  google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+}
+
+// ==========================================
+// SLOT DESTACADO: CANCIÓN FAVORITA CON MUESTRA DE AUDIO
+// ==========================================
+let _audioMuestraCancionFav = null;
+let _audioCancionUrlActual = null;
+let _btnMuestraCancionActual = null;
+let debounceTimerSong = null;
+window.resultadosCancionesCache = [];
+
+function toggleReproducirMuestraCancion(url, btnEl) {
+  const l = userPrefs?.lang || 'es';
+  if (!url) {
+    mostrarToastPersonalizado(l === 'en' ? 'No audio preview available for this song.' : 'No hay muestra de audio disponible para esta canción.');
+    return;
+  }
+  if (_audioMuestraCancionFav) {
+    if (_audioCancionUrlActual === url) {
+      if (!_audioMuestraCancionFav.paused) {
+        _audioMuestraCancionFav.pause();
+        actualizarTodosIconosPlay(false);
+        return;
+      } else {
+        _audioMuestraCancionFav.play().catch(e => console.warn(e));
+        _btnMuestraCancionActual = btnEl;
+        actualizarTodosIconosPlay(true);
+        return;
+      }
+    } else {
+      _audioMuestraCancionFav.pause();
+      _audioMuestraCancionFav = null;
+      actualizarTodosIconosPlay(false);
+    }
+  }
+  _audioCancionUrlActual = url;
+  _btnMuestraCancionActual = btnEl;
+  _audioMuestraCancionFav = new Audio(url);
+  actualizarTodosIconosPlay(true);
+  _audioMuestraCancionFav.onended = () => {
+    actualizarTodosIconosPlay(false);
+  };
+  _audioMuestraCancionFav.onerror = () => {
+    actualizarTodosIconosPlay(false);
+    mostrarToastPersonalizado(l === 'en' ? 'Could not play audio preview.' : 'No se pudo reproducir la muestra de audio.');
+  };
+  _audioMuestraCancionFav.play().catch(e => {
+    console.warn(e);
+    actualizarTodosIconosPlay(false);
+  });
+}
+
+function actualizarIconoPlayAudio(btnEl, isPlaying) {
+  if (!btnEl) return;
+  const icon = btnEl.querySelector('.icon-play-state');
+  if (isPlaying) {
+    btnEl.classList.add('playing');
+    if (icon) {
+      icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
+      icon.style.marginLeft = '0px';
+    }
+  } else {
+    btnEl.classList.remove('playing');
+    if (icon) {
+      icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+      icon.style.marginLeft = '2px';
+    }
+  }
+}
+
+function actualizarTodosIconosPlay(isPlaying) {
+  document.querySelectorAll('.btn-play-song-badge, .btn-song-play-main, .btn-preview-listen').forEach(b => {
+    actualizarIconoPlayAudio(b, false);
+  });
+  if (isPlaying && _btnMuestraCancionActual) {
+    actualizarIconoPlayAudio(_btnMuestraCancionActual, true);
+    const parentCard = _btnMuestraCancionActual.closest('.profile-fav-song-card, .song-result-item');
+    if (parentCard) {
+      parentCard.querySelectorAll('.btn-play-song-badge, .btn-song-play-main, .btn-preview-listen').forEach(b => {
+        actualizarIconoPlayAudio(b, true);
+      });
+    }
+  }
+}
+
+function renderizarCancionFavorita() {
+  const cont = document.getElementById('perfil-song-card-container');
+  if (!cont) return;
+  const song = perfilUsuario?.cancionFavorita || perfilUsuario?.favoritos?.cancionFavorita || null;
+  const l = userPrefs?.lang || 'es';
+
+  if (!song || !song.titulo) {
+    cont.innerHTML = `
+      <div class="fav-song-empty-box" onclick="abrirModalSeleccionarCancionFavorita()" title="${l === 'en' ? 'Click to choose your favorite song' : 'Click para elegir tu canción favorita'}" style="padding:10px 12px; border-radius:6px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; background:transparent; border:1px dashed var(--border);">
+        <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+          <div class="fav-song-empty-icon" style="width:36px; height:36px; border-radius:50%; background:var(--card); border:1px dashed var(--border); display:grid; place-items:center; color:#10b981; flex-shrink:0;">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg>
+          </div>
+          <div style="min-width:0; flex:1;">
+            <div style="font-weight:700; font-size:0.85rem; color:var(--text);">
+              ${l === 'en' ? 'Choose your Favorite Song' : 'Elige tu Canción Favorita'}
+            </div>
+            <div style="font-size:0.72rem; color:var(--muted); margin-top:2px;">
+              ${l === 'en' ? 'Showcase your soundtrack with a 30s audio preview' : 'Destaca la canción de tu vida con muestra de audio'}
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-choose-char-cta" onclick="event.stopPropagation(); abrirModalSeleccionarCancionFavorita()" style="font-size:0.75rem; padding:4px 10px; display:inline-flex; align-items:center; gap:4px; border-radius:4px; border:1px solid var(--border); background:var(--card); color:var(--text); cursor:pointer;">
+          <span>+</span> <span>${l === 'en' ? 'Choose' : 'Elegir'}</span>
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  const esImg = song.poster && (song.poster.startsWith('http') || song.poster.startsWith('data:'));
+  cont.innerHTML = `
+    <div class="profile-fav-song-card" style="padding:6px 0; border-radius:0; margin-bottom:0; position:relative;">
+      <div class="fav-song-main-row" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+        <div style="display:flex; align-items:center; gap:14px; min-width:0; flex:1;">
+          <div class="fav-song-cover-box" style="width:54px; height:54px; min-width:54px; max-width:54px; border-radius:8px; overflow:hidden; border:2px solid #10b981; box-shadow:0 0 12px rgba(16,185,129,0.25); position:relative; flex-shrink:0; background:var(--bg);">
+            ${esImg ? `<img src="${song.poster}" alt="${song.titulo}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='🎵';">` : `<div style="width:100%; height:100%; display:grid; place-items:center; font-size:1.6rem;">🎵</div>`}
+            ${song.previewUrl ? `
+              <button type="button" class="btn-play-song-badge" onclick="event.stopPropagation(); toggleReproducirMuestraCancion('${song.previewUrl}', this)" title="${l === 'en' ? 'Play audio preview' : 'Reproducir muestra'}" aria-label="Reproducir muestra" style="position:absolute; inset:0; margin:auto; width:28px; height:28px; border-radius:50%; background:rgba(0,0,0,0.65); border:1.5px solid #10b981; color:#fff; display:grid; place-items:center; cursor:pointer; backdrop-filter:blur(3px);">
+                <svg class="icon-play-state" viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;margin-left:2px;"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            ` : ''}
+          </div>
+          <div class="fav-song-text-block" style="flex:1; min-width:0;">
+            <h4 class="fav-song-title-txt" style="font-size:1rem; font-weight:800; color:var(--text); line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0;" title="${song.titulo}">${song.titulo}</h4>
+            <div class="fav-song-artist-txt" style="font-size:0.8rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${song.artista || ''}">
+              <span style="opacity:0.75;">${l === 'en' ? 'By:' : 'De:'}</span> <strong>${song.artista || 'Artista'}</strong>
+              ${song.album ? ` · <span style="opacity:0.8;">${song.album}</span>` : ''}
+            </div>
+            ${song.previewUrl ? `
+              <div style="font-size:0.72rem; color:#10b981; display:flex; align-items:center; gap:4px; margin-top:3px; font-weight:600;">
+                <svg class="h-icon" viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px;"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                <span>${l === 'en' ? 'Audio sample (30s)' : 'Muestra de audio (30s)'}</span>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+        <div class="fav-song-actions-wrap" style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+          ${song.previewUrl ? `
+            <button type="button" class="btn-song-action-icon btn-song-play-main" onclick="toggleReproducirMuestraCancion('${song.previewUrl}', this)" title="${l === 'en' ? 'Play audio preview' : 'Reproducir muestra'}" aria-label="Reproducir muestra">
+              <svg class="icon-play-state" viewBox="0 0 24 24" fill="currentColor" style="width:15px;height:15px;color:#10b981;"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          ` : ''}
+          <button type="button" class="btn-song-action-icon" onclick="abrirModalSeleccionarCancionFavorita()" title="${l === 'en' ? 'Change song' : 'Cambiar canción'}" aria-label="Cambiar canción">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+          </button>
+          <button type="button" class="btn-song-action-icon btn-song-delete" onclick="abrirModalConfirmarQuitarCancion()" title="${l === 'en' ? 'Remove song' : 'Quitar canción'}" aria-label="Quitar canción">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function abrirModalSeleccionarCancionFavorita() {
+  const m = document.getElementById('modal-seleccionar-cancion');
+  if (!m) return;
+  cambiarTabSelectorCancion('online');
+  const btnQuitar = document.getElementById('btn-quitar-cancion-fav');
+  const tieneCancion = !!(perfilUsuario?.cancionFavorita && perfilUsuario.cancionFavorita.titulo);
+  if (btnQuitar) btnQuitar.style.display = tieneCancion ? 'inline-flex' : 'none';
+  const inp = document.getElementById('input-buscar-cancion-online');
+  if (inp && !inp.value.trim()) {
+    cargarCancionesSugeridasIniciales();
+  }
+  m.style.display = 'flex';
+}
+
+function cerrarModalSeleccionarCancionFavorita() {
+  const m = document.getElementById('modal-seleccionar-cancion');
+  if (m) m.style.display = 'none';
+}
+
+function cambiarTabSelectorCancion(tab) {
+  const tabs = ['online', 'misobras', 'manual'];
+  tabs.forEach(t => {
+    const btn = document.getElementById(`tab-song-${t}`);
+    const pane = document.getElementById(`tab-song-content-${t}`);
+    if (btn) btn.classList.toggle('active', t === tab);
+    if (pane) pane.style.display = (t === tab) ? 'block' : 'none';
+  });
+  if (tab === 'misobras') {
+    cargarCancionesDeMisRegistros();
+  }
+}
+
+async function cargarCancionesSugeridasIniciales() {
+  const resBox = document.getElementById('song-search-results');
+  if (!resBox) return;
+  const loading = document.getElementById('song-search-loading');
+  if (loading) loading.style.display = 'block';
+  resBox.innerHTML = '';
+  try {
+    const resp = await fetch('https://itunes.apple.com/search?term=Queen+Bohemian+Rhapsody&entity=song&limit=10');
+    const data = await resp.json();
+    if (loading) loading.style.display = 'none';
+    if (data.results && data.results.length) {
+      renderizarResultadosBusquedaCancion(data.results);
+    }
+  } catch (e) {
+    if (loading) loading.style.display = 'none';
+  }
+}
+
+async function ejecutarBuscarCancionOnline(query) {
+  const q = (query || document.getElementById('input-buscar-cancion-online')?.value || '').trim();
+  const resBox = document.getElementById('song-search-results');
+  const loading = document.getElementById('song-search-loading');
+  if (!resBox) return;
+  if (!q) {
+    cargarCancionesSugeridasIniciales();
+    return;
+  }
+  if (loading) loading.style.display = 'block';
+  resBox.innerHTML = '';
+  try {
+    const url = `https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=song&limit=15`;
+    const resp = await fetch(url);
+    const data = await resp.json();
+    if (loading) loading.style.display = 'none';
+    if (!data.results || !data.results.length) {
+      resBox.innerHTML = `<div style="padding:24px; text-align:center; color:var(--muted); font-size:0.85rem;">No se encontraron canciones para "${q}". Intenta con otro término o artista.</div>`;
+      return;
+    }
+    renderizarResultadosBusquedaCancion(data.results);
+  } catch (err) {
+    if (loading) loading.style.display = 'none';
+    resBox.innerHTML = `<div style="padding:24px; text-align:center; color:var(--muted); font-size:0.85rem;">Error al buscar canciones en línea: ${err.message || err}. Puedes ingresarla en la pestaña Personalizada.</div>`;
+  }
+}
+
+function renderizarResultadosBusquedaCancion(items) {
+  const resBox = document.getElementById('song-search-results');
+  if (!resBox) return;
+  const l = userPrefs?.lang || 'es';
+  window.resultadosCancionesCache = items;
+  resBox.innerHTML = items.map((it, idx) => {
+    const tit = it.trackName || 'Sin título';
+    const art = it.artistName || 'Artista desconocido';
+    const alb = it.collectionName || '';
+    const img = it.artworkUrl100 ? it.artworkUrl100.replace('100x100bb', '300x300bb') : '';
+    const prev = it.previewUrl || '';
+    return `
+      <div class="song-result-item" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 12px; border-radius:8px; border:1px solid var(--border); background:var(--card); transition:var(--tr);">
+        <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+          <div style="width:48px; height:48px; min-width:48px; border-radius:6px; overflow:hidden; position:relative; background:var(--bg); flex-shrink:0;">
+            ${img ? `<img src="${img}" alt="${tit}" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null;this.parentElement.innerHTML='🎵';">` : `<div style="width:100%;height:100%;display:grid;place-items:center;">🎵</div>`}
+            ${prev ? `
+              <button type="button" class="btn-preview-listen" onclick="event.stopPropagation(); toggleReproducirMuestraCancion('${prev}', this)" title="${l === 'en' ? 'Listen preview' : 'Escuchar muestra'}" style="position:absolute; inset:0; margin:auto; width:26px; height:26px; border-radius:50%; background:rgba(0,0,0,0.65); border:1px solid #10b981; color:#fff; display:grid; place-items:center; cursor:pointer;">
+                <svg class="icon-play-state" viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px;margin-left:2px;"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            ` : ''}
+          </div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-weight:700; font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${tit}</div>
+            <div style="font-size:0.75rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">
+              <span>${art}</span> ${alb ? `· <span style="opacity:0.8;">${alb}</span>` : ''}
+            </div>
+            ${prev ? `
+              <div style="font-size:0.68rem; color:#10b981; margin-top:2px; font-weight:600;">
+                ▶ ${l === 'en' ? '30s Preview available' : 'Muestra 30s disponible'}
+              </div>
+            ` : ''}
+          </div>
+        </div>
+        <button type="button" class="btn-save" style="margin:0; width:auto; padding:6px 14px; font-size:0.78rem; flex-shrink:0;" onclick="seleccionarCancionCatalogo(${idx})">
+          ${l === 'en' ? 'Choose' : 'Elegir'}
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+function seleccionarCancionCatalogo(idx) {
+  const it = window.resultadosCancionesCache ? window.resultadosCancionesCache[idx] : null;
+  if (!it) return;
+  const songObj = {
+    titulo: it.trackName || 'Sin título',
+    artista: it.artistName || 'Artista desconocido',
+    album: it.collectionName || '',
+    poster: it.artworkUrl100 ? it.artworkUrl100.replace('100x100bb', '500x500bb') : '',
+    previewUrl: it.previewUrl || '',
+    anio: it.releaseDate ? it.releaseDate.substring(0, 4) : ''
+  };
+  asignarCancionFavorita(songObj);
+}
+
+function cargarCancionesDeMisRegistros() {
+  const box = document.getElementById('song-misobras-list');
+  if (!box) return;
+  const l = userPrefs?.lang || 'es';
+  const regs = (estado.registros || []).filter(r => r.categoria === 'Musica');
+  if (!regs.length) {
+    box.innerHTML = `<div style="padding:20px; text-align:center; color:var(--muted); font-size:0.84rem;">${l === 'en' ? 'You have no registered songs in Mediary yet. Use online search above!' : 'No tienes registros en Música todavía. ¡Busca en línea arriba!'}</div>`;
+    return;
+  }
+  const vistos = new Set();
+  box.innerHTML = regs.map((r) => {
+    const k = (r.titulo || '').toLowerCase().trim();
+    if (vistos.has(k)) return '';
+    vistos.add(k);
+    return `
+      <div class="song-result-item" style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 12px; border-radius:8px; border:1px solid var(--border); background:var(--card); transition:var(--tr);">
+        <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+          <div style="width:48px; height:48px; min-width:48px; border-radius:6px; overflow:hidden; background:var(--bg); flex-shrink:0;">
+            ${r.poster ? `<img src="${r.poster}" alt="${r.titulo}" style="width:100%; height:100%; object-fit:cover;">` : `<div style="width:100%; height:100%; display:grid; place-items:center; font-size:1.4rem;">🎵</div>`}
+          </div>
+          <div style="flex:1; min-width:0;">
+            <div style="font-weight:700; font-size:0.88rem; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${r.titulo}</div>
+            <div style="font-size:0.75rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:2px;">
+              <span>${r.creador || ''}</span> ${r.subcategoria ? `· <span style="opacity:0.8;">${r.subcategoria}</span>` : ''}
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn-save" style="margin:0; width:auto; padding:6px 14px; font-size:0.78rem; flex-shrink:0;" onclick="seleccionarCancionDeRegistro('${r.id}')">
+          ${l === 'en' ? 'Choose' : 'Elegir'}
+        </button>
+      </div>
+    `;
+  }).filter(Boolean).join('');
+}
+
+async function seleccionarCancionDeRegistro(regId) {
+  const r = (estado.registros || []).find(x => x.id === regId);
+  if (!r) return;
+  const l = userPrefs?.lang || 'es';
+  let prevUrl = '';
+  let posterFinal = r.poster || '';
+  let albumFinal = r.subcategoria || '';
+  try {
+    const q = `${r.titulo} ${r.creador || ''}`.trim();
+    const resp = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=song&limit=3`);
+    const data = await resp.json();
+    if (data.results && data.results.length > 0) {
+      const match = data.results[0];
+      prevUrl = match.previewUrl || '';
+      if (!posterFinal && match.artworkUrl100) posterFinal = match.artworkUrl100.replace('100x100bb', '500x500bb');
+      if (!albumFinal) albumFinal = match.collectionName || '';
+    }
+  } catch (e) {
+    console.warn(e);
+  }
+  const songObj = {
+    titulo: r.titulo,
+    artista: r.creador || '',
+    album: albumFinal,
+    poster: posterFinal,
+    previewUrl: prevUrl,
+    anio: r.anio || ''
+  };
+  asignarCancionFavorita(songObj);
+}
+
+function actualizarPreviewCancionManual() {
+  // Can be expanded if needed
+}
+
+async function buscarMuestraParaCancionManual() {
+  const tit = document.getElementById('input-song-manual-titulo')?.value.trim();
+  const art = document.getElementById('input-song-manual-artista')?.value.trim();
+  const l = userPrefs?.lang || 'es';
+  if (!tit) {
+    mostrarToastPersonalizado(l === 'en' ? 'Enter a song title first.' : 'Escribe primero el título de la canción.');
+    return;
+  }
+  mostrarToastPersonalizado(l === 'en' ? 'Searching sample in iTunes...' : 'Buscando muestra en iTunes...');
+  try {
+    const q = `${tit} ${art}`.trim();
+    const resp = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(q)}&entity=song&limit=3`);
+    const data = await resp.json();
+    if (data.results && data.results.length > 0) {
+      const match = data.results[0];
+      if (match.previewUrl) {
+        document.getElementById('input-song-manual-audio').value = match.previewUrl;
+      }
+      if (!document.getElementById('input-song-manual-poster').value && match.artworkUrl100) {
+        document.getElementById('input-song-manual-poster').value = match.artworkUrl100.replace('100x100bb', '500x500bb');
+      }
+      mostrarToastPersonalizado(l === 'en' ? 'Sample found!' : '¡Muestra de audio encontrada!');
+    } else {
+      mostrarToastPersonalizado(l === 'en' ? 'No preview sample found in iTunes.' : 'No se encontró muestra en iTunes.');
+    }
+  } catch (e) {
+    mostrarToastPersonalizado(l === 'en' ? 'Error searching iTunes.' : 'Error al buscar en iTunes.');
+  }
+}
+
+function guardarCancionManual() {
+  const tit = document.getElementById('input-song-manual-titulo')?.value.trim();
+  const art = document.getElementById('input-song-manual-artista')?.value.trim();
+  const alb = document.getElementById('input-song-manual-album')?.value.trim();
+  const img = document.getElementById('input-song-manual-poster')?.value.trim();
+  const aud = document.getElementById('input-song-manual-audio')?.value.trim();
+  const l = userPrefs?.lang || 'es';
+  if (!tit || !art) {
+    mostrarToastPersonalizado(l === 'en' ? 'Title and artist are required.' : 'El título y artista son requeridos.');
+    return;
+  }
+  const songObj = {
+    titulo: tit,
+    artista: art,
+    album: alb || '',
+    poster: img || '',
+    previewUrl: aud || ''
+  };
+  asignarCancionFavorita(songObj);
+}
+
+function asignarCancionFavorita(songObj) {
+  if (!perfilUsuario) perfilUsuario = {};
+  perfilUsuario.cancionFavorita = songObj;
+  if (!perfilUsuario.favoritos) perfilUsuario.favoritos = {};
+  perfilUsuario.favoritos.cancionFavorita = songObj;
+  if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+  perfilUsuario.preferencias.cancionFavorita = songObj;
+  guardarPerfilLocal();
+  renderizarCancionFavorita();
+  cerrarModalSeleccionarCancionFavorita();
+  if (typeof google !== 'undefined' && google.script?.run && estado.userEmail) {
+    google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+  }
+  const l = userPrefs?.lang || 'es';
+  mostrarToastPersonalizado(l === 'en' ? `"${songObj.titulo}" set as favorite song 🎵` : `"${songObj.titulo}" guardada como tu canción favorita 🎵`);
+}
+
+function abrirModalConfirmarQuitarCancion() {
+  const m = document.getElementById('modal-confirmar-quitar-cancion');
+  if (m) m.style.display = 'flex';
+}
+
+function cerrarModalConfirmarQuitarCancion() {
+  const m = document.getElementById('modal-confirmar-quitar-cancion');
+  if (m) m.style.display = 'none';
+}
+
+function ejecutarQuitarCancionFavorita() {
+  if (perfilUsuario) {
+    perfilUsuario.cancionFavorita = null;
+    if (perfilUsuario.favoritos) delete perfilUsuario.favoritos.cancionFavorita;
+    if (perfilUsuario.preferencias) perfilUsuario.preferencias.cancionFavorita = null;
+    guardarPerfilLocal();
+    renderizarCancionFavorita();
+    if (typeof google !== 'undefined' && google.script?.run && estado.userEmail) {
+      google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+    }
+  }
+  cerrarModalConfirmarQuitarCancion();
+  cerrarModalSeleccionarCancionFavorita();
+  if (_audioMuestraCancionFav && !_audioMuestraCancionFav.paused) {
+    _audioMuestraCancionFav.pause();
+    _audioMuestraCancionFav = null;
+    actualizarTodosIconosPlay(false);
+  }
+  const l = userPrefs?.lang || 'es';
+  mostrarToastPersonalizado(l === 'en' ? 'Favorite song removed' : 'Canción favorita retirada');
 }
 
 // ==========================================
@@ -19683,7 +20422,7 @@ if (!email) return mostrarErrorAuth('Por favor escribe tu correo (ej. usuario@gm
 google.script.run.withSuccessHandler(res => { btn.textContent = txtOrig; btn.disabled = false; if (res && res.exito) { aplicarSesionExitosa(res, true); } else { mostrarErrorAuth(res?.error || 'Error al autenticar con Supabase.'); }
 }).withFailureHandler(err => { btn.textContent = txtOrig; btn.disabled = false; mostrarErrorAuth('Error de red: ' + (err?.message || err)); }).autenticarUsuarioSupabase({ modo: estado.modoAuthModal, email, password, nickname }); }
 function cerrarSesionUsuarioActual() { estado.userEmail = ''; estado.registros = []; estado.watchlist = [];
-perfilUsuario = { nickname: 'Invitado', bio: 'Inicia sesión para ver tus colecciones en Supabase ', avatar: '', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}, portada: 'predeterminada', personajeFavorito: null };
+perfilUsuario = { nickname: 'Invitado', bio: 'Inicia sesión para ver tus colecciones en Supabase ', avatar: '', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}, portada: 'predeterminada', personajeFavorito: null, cancionFavorita: null };
 try { localStorage.removeItem('Mediary_active_user_v1'); localStorage.removeItem('MyMediary_active_user_v1'); localStorage.removeItem('Mediary_perfil_v1'); localStorage.removeItem('MyMediary_perfil_v1'); } catch (e) {}
 renderizarCabeceraPerfil(); if (estado.categoria === 'inicio') renderizarStats(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
 else if (CONFIG[estado.categoria]) { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
@@ -20225,6 +20964,7 @@ function abrirVistaPerfil(pushNav = true) {
     const vPer = document.getElementById('vista-perfil'); if (vPer) vPer.style.display = 'block';
     renderizarCabeceraPerfil();
     renderizarFavoritosPerfil();
+    if (typeof renderizarCancionFavorita === 'function') renderizarCancionFavorita();
     if (typeof renderizarPersonajeFavorito === 'function') renderizarPersonajeFavorito();
         calcularYMostrarEstadisticasPerfil();
     window.scrollTo({ top: 0, behavior: 'smooth' });
