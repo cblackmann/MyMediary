@@ -35,7 +35,12 @@
     if (raw) {
       p = JSON.parse(raw);
       if (p.font) font = p.font;
-      if (p.fontSize) fontSize = ['50%', '62%', '75%', '88%', '100%'].includes(p.fontSize) ? p.fontSize : '100%';
+      const customSizeChosen = localStorage.getItem('mediary_user_custom_font_size') === 'true';
+      if (p.fontSize && ['50%', '62%', '75%', '88%', '100%'].includes(p.fontSize)) {
+        fontSize = (!customSizeChosen && p.fontSize === '100%') ? '75%' : p.fontSize;
+      } else {
+        fontSize = '75%';
+      }
       if (p.themeFamily) {
         family = p.themeFamily;
         mode = p.themeMode || 'system';
@@ -120,7 +125,7 @@ if (typeof flatpickr === 'undefined') {
 </script>
 <style>
 .preload-no-transition,.preload-no-transition *,.preload-no-transition *::before,.preload-no-transition *::after{-webkit-transition:none !important;-moz-transition:none !important;-ms-transition:none !important;-o-transition:none !important;transition:none !important;}
-:root{--font-family:'Lexend',sans-serif;--font-scale:100%;--b-nav:84px;--tr:all .2s cubic-bezier(.4,0,.2,1);--color-scheme:dark;}
+:root{--font-family:'Lexend',sans-serif;--font-scale:75%;--b-nav:84px;--tr:all .2s cubic-bezier(.4,0,.2,1);--color-scheme:dark;}
 
 /* ========================================================
    SISTEMA DE 5 ROLES FUNCIONALES DE COLOR
@@ -952,6 +957,41 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
 [data-theme$="-light"] .theme-pill-btn{background:rgba(0,0,0,0.06);color:var(--muted)}
 [data-theme$="-light"] .theme-pill-btn:hover{background:rgba(0,0,0,0.12);color:var(--text)}
 [data-theme$="-light"] .theme-pill-btn.active{color:#ffffff}
+/* SELECTORES DESPLEGABLES DE CONFIGURACIÓN (IDIOMA Y TIPOGRAFÍA) */
+.cfg-dropdown-wrap{position:relative;width:100%;}
+.cfg-dropdown-trigger{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:4px;color:var(--text);font-size:0.92rem;font-weight:600;cursor:pointer;transition:var(--tr);text-align:left;box-sizing:border-box;}
+.cfg-dropdown-trigger:hover,.cfg-dropdown-trigger.open{border-color:var(--accent);background:var(--card-hover);}
+.cfg-dropdown-trigger .cfg-dd-chevron{width:16px;height:16px;color:var(--muted);transition:transform 0.2s ease;flex-shrink:0;}
+.cfg-dropdown-trigger.open .cfg-dd-chevron{transform:rotate(180deg);color:var(--accent);}
+.cfg-dropdown-menu{position:absolute;top:calc(100% + 6px);left:0;right:0;background:var(--card);border:1px solid var(--border);border-radius:4px;box-shadow:0 12px 32px rgba(0,0,0,0.45);padding:5px;z-index:200;max-height:260px;overflow-y:auto;}
+.cfg-dropdown-item{width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border:none;background:transparent;color:var(--text);border-radius:3px;font-size:0.92rem;font-weight:500;cursor:pointer;text-align:left;transition:var(--tr);}
+.cfg-dropdown-item:hover{background:var(--accent-subtle, rgba(56,189,248,0.12));color:var(--accent);}
+.cfg-dropdown-item.active{background:var(--accent-subtle, rgba(56,189,248,0.16));color:var(--accent);font-weight:700;}
+.cfg-dropdown-item .cfg-dd-check{opacity:0;font-size:0.85rem;color:var(--accent);flex-shrink:0;}
+.cfg-dropdown-item.active .cfg-dd-check{opacity:1;}
+/* THEMES HORIZONTALES CON CÍRCULOS */
+.theme-circles-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.theme-circle-card{display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:center !important;gap:6px !important;padding:10px 4px !important;background:var(--bg);border:1.5px solid var(--border);border-radius:4px !important;cursor:pointer;transition:var(--tr);text-align:center !important;}
+.theme-circle-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.theme-circle-card.active{border-color:var(--accent);background:var(--accent-subtle, rgba(56,189,248,0.10));box-shadow:0 0 12px rgba(56,189,248,0.22);}
+.theme-circle-card .theme-dual-circle{width:42px;height:42px;min-width:42px;min-height:42px;transition:transform 0.2s ease, box-shadow 0.2s ease;}
+.theme-circle-card.active .theme-dual-circle{transform:scale(1.06);box-shadow:0 0 0 2.5px var(--accent);}
+.theme-circle-name{font-size:0.72rem;font-weight:600;color:var(--muted);line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.theme-circle-card.active .theme-circle-name{color:var(--accent);font-weight:700;}
+.theme-mode-segmented-compact{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.theme-mode-segmented-compact .theme-mode-btn{justify-content:center;padding:8px 6px;gap:6px;font-size:0.8rem;border-radius:4px;}
+/* TARJETA UNIFICADA DE APLICACIONES Y CUENTAS VINCULADAS */
+.cfg-linked-logos-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;min-height:46px;}
+.cfg-app-logo-btn{position:relative;width:46px;height:46px;border-radius:4px;border:1.5px solid var(--border);background:var(--card);display:grid;place-items:center;cursor:pointer;transition:var(--tr);padding:0;flex-shrink:0;}
+.cfg-app-logo-btn:hover{transform:translateY(-2px);border-color:var(--accent);}
+.cfg-app-logo-btn.is-connected{border-color:var(--app-brand, var(--accent));background:var(--app-brand-bg, rgba(56,189,248,0.10));}
+.cfg-app-logo-btn.is-selected{box-shadow:0 0 0 2px var(--app-brand, var(--accent));}
+.cfg-app-linked-dot{position:absolute;top:-4px;right:-4px;width:14px;height:14px;border-radius:50%;background:#10b981;color:#fff;border:2px solid var(--bg);display:grid;place-items:center;font-size:8px;font-weight:900;line-height:1;}
+.cfg-link-options-panel{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:12px;}
+.cfg-link-cat-group{display:flex;flex-direction:column;gap:8px;}
+.cfg-link-cat-label{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);}
+.cfg-link-cat-logos{display:flex;align-items:center;flex-wrap:wrap;gap:10px;}
+.cfg-linked-app-manage{margin-top:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:4px;}
 .import-export-box{background:var(--bg);border:1px dashed var(--accent);border-radius:12px;padding:14px;margin-top:14px}
 /* VISOR Y RECORTADOR INTERACTIVO 1:1 DE AVATAR */
 .cropper-modal-box{max-width:380px;width:92%;text-align:center;padding:18px 20px;}
@@ -9888,16 +9928,41 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 <!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
 <h3 id="titulo-modal-fav" data-i18n="fav_modal_title"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 18.75h-9m9 0a3 3 0 0 1 3-3h1.5a1.5 1.5 0 0 0 1.5-1.5v-1.125c0-.828-.672-1.5-1.5-1.5H18m-1.5 7.125v1.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-1.5m0 0a3 3 0 0 1-3-3H4.5A1.5 1.5 0 0 1 3 13.125V12c0-.828.672-1.5 1.5-1.5H6m10.5 8.25H7.5m9-8.25V4.875A1.875 1.875 0 0 0 14.625 3H9.375A1.875 1.875 0 0 0 7.5 4.875V10.5a4.5 4.5 0 0 0 9 0Z"/></svg> Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;" data-i18n="fav_modal_hint">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="text" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)">
 </div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;" data-i18n="fav_modal_remove">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()" data-i18n="btn_close">Cerrar</button>
-</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0; display:flex; align-items:center; gap:8px;"><svg style="width:20px;height:20px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></div> <div class="form-group"> <label data-i18n="cfg_lang_label">Idioma de la Interfaz:</label> <input type="hidden" id="cfg-lang" value="es"> <div class="cfg-visual-grid" id="cfg-lang-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px;"> <button type="button" class="cfg-option-card active" data-lang="es" onclick="seleccionarIdiomaVisual('es')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-weight:700; font-size:1rem; color:var(--accent); background:rgba(56,189,248,0.12); padding:6px 10px; border-radius:3px; line-height:1; flex-shrink:0;">ES</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">Español</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Predeterminado</span> </div> </button> <button type="button" class="cfg-option-card" data-lang="en" onclick="seleccionarIdiomaVisual('en')" style="flex-direction:row; align-items:center; gap:12px; padding:12px 14px;"> <span style="font-weight:700; font-size:1rem; color:var(--accent); background:rgba(56,189,248,0.12); padding:6px 10px; border-radius:3px; line-height:1; flex-shrink:0;">EN</span> <div style="flex:1; min-width:0; text-align:left;"> <strong class="lang-card-title" style="font-size:0.95rem; color:var(--text); display:block; line-height:1.2;">English</strong> <span class="lang-card-sub" style="font-size:0.75rem; color:var(--muted); display:block; margin-top:2px;">Interface in English</span> </div> </button> </div> </div> <div class="form-group"> <label data-i18n="cfg_font_label">Tipografía de la App (con muestra real):</label> <input type="hidden" id="cfg-font" value="'Lexend', sans-serif"> <div class="cfg-visual-grid" id="cfg-font-cards"> <button type="button" class="cfg-option-card active" data-val="'Lexend', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Lexend', sans-serif !important;">
-<strong style="font-size:0.95rem; color:var(--text); font-family:'Lexend', sans-serif !important;">Lexend (Predeterminada)</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Lexend', sans-serif !important;">Aa Bb Cc — Lectura fluida 123</span>
-</button> <button type="button" class="cfg-option-card" data-val="'Plus Jakarta Sans', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Plus Jakarta Sans', sans-serif !important;">
-<strong style="font-size:0.95rem; color:var(--text); font-family:'Plus Jakarta Sans', sans-serif !important;">Plus Jakarta Sans</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Plus Jakarta Sans', sans-serif !important;">Aa Bb Cc — El arte del cine 123</span>
-</button> <button type="button" class="cfg-option-card" data-val="'Inter', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Inter', sans-serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Inter', sans-serif !important;">Inter Moderna</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Inter', sans-serif !important;">Aa Bb Cc — Lectura limpia 123</span>
-</button> <button type="button" class="cfg-option-card" data-val="'Cinzel', serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Cinzel', serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Cinzel', serif !important; letter-spacing:0.04em;">Cinzel Clásica</strong> <span style="font-size:0.8rem; color:var(--muted); font-family:'Cinzel', serif !important;">AA BB CC — ESTÉTICA ÉPICA 123</span>
-</button> <button type="button" class="cfg-option-card" data-val="'Outfit', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Outfit', sans-serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Outfit', sans-serif !important;">Outfit Geométrica</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Outfit', sans-serif !important;">Aa Bb Cc — Trazo moderno 123</span>
-</button> <button type="button" class="cfg-option-card" data-val="'Space Grotesk', sans-serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Space Grotesk', sans-serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Space Grotesk', sans-serif !important;">Space Grotesk</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Space Grotesk', sans-serif !important;">Aa Bb Cc — Tipografía tech 123</span>
-</button> <button type="button" class="cfg-option-card" data-val="'Playfair Display', serif" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Playfair Display', serif !important;"> <strong style="font-size:0.95rem; color:var(--text); font-family:'Playfair Display', serif !important; letter-spacing:0.02em;">Playfair Display</strong> <span style="font-size:0.82rem; color:var(--muted); font-family:'Playfair Display', serif !important;">Aa Bb Cc — Elegancia editorial 123</span>
-</button> </div> </div> <div class="form-group"> <label data-i18n="cfg_size_label">Tamaño general de letra:</label> <input type="hidden" id="cfg-font-size" value="100%"> <div class="size-line-container" id="cfg-size-slider-box"> <div class="size-line-track-wrap" onclick="clickEnLineaTamano(event)"> <div class="size-line-track-bg"></div> <div class="size-line-track-fill" id="size-line-fill"></div>
+</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;" onclick="cerrarDropdownsConfig()"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0; display:flex; align-items:center; gap:8px;"><svg style="width:20px;height:20px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></div>
+<div class="form-group">
+  <label data-i18n="cfg_lang_label">Idioma</label>
+  <input type="hidden" id="cfg-lang" value="es">
+  <div class="cfg-dropdown-wrap" id="cfg-lang-dropdown-wrap" onclick="event.stopPropagation()">
+    <button type="button" class="cfg-dropdown-trigger" id="btn-cfg-lang-dropdown" onclick="toggleCfgDropdown('lang', event)" aria-haspopup="listbox" aria-expanded="false">
+      <span id="cfg-lang-selected-label">Español</span>
+      <svg class="cfg-dd-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div class="cfg-dropdown-menu" id="menu-cfg-lang" role="listbox" style="display:none;">
+      <button type="button" class="cfg-dropdown-item active" data-lang="es" onclick="seleccionarIdiomaVisual('es')"><span>Español</span><span class="cfg-dd-check">✓</span></button>
+      <button type="button" class="cfg-dropdown-item" data-lang="en" onclick="seleccionarIdiomaVisual('en')"><span>English</span><span class="cfg-dd-check">✓</span></button>
+    </div>
+  </div>
+</div>
+<div class="form-group">
+  <label data-i18n="cfg_font_label">Tipografía</label>
+  <input type="hidden" id="cfg-font" value="'Lexend', sans-serif">
+  <div class="cfg-dropdown-wrap" id="cfg-font-dropdown-wrap" onclick="event.stopPropagation()">
+    <button type="button" class="cfg-dropdown-trigger" id="btn-cfg-font-dropdown" onclick="toggleCfgDropdown('font', event)" aria-haspopup="listbox" aria-expanded="false">
+      <span id="cfg-font-selected-label" style="font-family:'Lexend', sans-serif !important;">Lexend</span>
+      <svg class="cfg-dd-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+    <div class="cfg-dropdown-menu" id="menu-cfg-font" role="listbox" style="display:none;">
+      <button type="button" class="cfg-dropdown-item active" data-val="'Lexend', sans-serif" data-label="Lexend" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Lexend', sans-serif !important;"><span style="font-family:'Lexend', sans-serif !important;">Lexend</span><span class="cfg-dd-check">✓</span></button>
+      <button type="button" class="cfg-dropdown-item" data-val="'Plus Jakarta Sans', sans-serif" data-label="Plus Jakarta Sans" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Plus Jakarta Sans', sans-serif !important;"><span style="font-family:'Plus Jakarta Sans', sans-serif !important;">Plus Jakarta Sans</span><span class="cfg-dd-check">✓</span></button>
+      <button type="button" class="cfg-dropdown-item" data-val="'Inter', sans-serif" data-label="Inter" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Inter', sans-serif !important;"><span style="font-family:'Inter', sans-serif !important;">Inter</span><span class="cfg-dd-check">✓</span></button>
+      <button type="button" class="cfg-dropdown-item" data-val="'Cinzel', serif" data-label="Cinzel" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Cinzel', serif !important;"><span style="font-family:'Cinzel', serif !important; letter-spacing:0.03em;">Cinzel</span><span class="cfg-dd-check">✓</span></button>
+      <button type="button" class="cfg-dropdown-item" data-val="'Outfit', sans-serif" data-label="Outfit" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Outfit', sans-serif !important;"><span style="font-family:'Outfit', sans-serif !important;">Outfit</span><span class="cfg-dd-check">✓</span></button>
+      <button type="button" class="cfg-dropdown-item" data-val="'Space Grotesk', sans-serif" data-label="Space Grotesk" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Space Grotesk', sans-serif !important;"><span style="font-family:'Space Grotesk', sans-serif !important;">Space Grotesk</span><span class="cfg-dd-check">✓</span></button>
+      <button type="button" class="cfg-dropdown-item" data-val="'Playfair Display', serif" data-label="Playfair Display" onclick="seleccionarFontVisual(this.dataset.val)" style="font-family:'Playfair Display', serif !important;"><span style="font-family:'Playfair Display', serif !important; letter-spacing:0.02em;">Playfair Display</span><span class="cfg-dd-check">✓</span></button>
+    </div>
+  </div>
+</div>
+<div class="form-group"> <label data-i18n="cfg_size_label">Tamaño general de letra:</label> <input type="hidden" id="cfg-font-size" value="75%"> <div class="size-line-container" id="cfg-size-slider-box"> <div class="size-line-track-wrap" onclick="clickEnLineaTamano(event)"> <div class="size-line-track-bg"></div> <div class="size-line-track-fill" id="size-line-fill"></div>
 <div class="size-line-node" data-val="50%" data-idx="0" onclick="event.stopPropagation(); seleccionarSizeVisual('50%')"></div>
 <div class="size-line-node" data-val="62%" data-idx="1" onclick="event.stopPropagation(); seleccionarSizeVisual('62%')"></div>
 <div class="size-line-node" data-val="75%" data-idx="2" onclick="event.stopPropagation(); seleccionarSizeVisual('75%')"></div>
@@ -9942,153 +10007,102 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
     </div>
   </div>
 
-  <!-- SELECCIÓN DE COLORES Y MODO DE APARIENCIA -->
+  <!-- SELECCIÓN DE THEMES Y MODO DE APARIENCIA -->
   <div class="form-group">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-      <label data-i18n="cfg_colors_label" style="font-weight:700; margin:0; font-size:0.92rem;">Colores:</label>
-    <span id="cfg-theme-system-detected" style="font-size:0.75rem; color:var(--accent); font-weight:600;"></span>
-  </div>
+    <label data-i18n="cfg_colors_label" style="font-weight:700; margin:0 0 8px 0; font-size:0.92rem; display:block;">Themes</label>
 
-  <!-- CONTROL DE MODO DE APARIENCIA -->
-  <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:10px; margin-bottom:12px;">
-    <div style="font-size:0.74rem; color:var(--muted); margin-bottom:8px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em;">
-      Modo de apariencia:
-    </div>
-    <div class="theme-mode-segmented-control" style="display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;">
-      <button type="button" class="theme-mode-btn" id="btn-mode-system" onclick="seleccionarThemeMode('system')" title="Usa automáticamente el tema claro u oscuro de tu teléfono o computadora">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;margin-bottom:2px;"><path d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg><strong style="font-size:0.82rem;">Del sistema</strong>
+    <div class="theme-mode-segmented-compact">
+      <button type="button" class="theme-mode-btn" id="btn-mode-system" onclick="seleccionarThemeMode('system')" title="Sistema">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg><span data-i18n="cfg_mode_system">Sistema</span>
       </button>
-      <button type="button" class="theme-mode-btn" id="btn-mode-light" onclick="seleccionarThemeMode('light')" title="Fija el modo diurno claro (tonos descansados sin blancos deslumbrantes)">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;margin-bottom:2px;"><path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg><strong style="font-size:0.82rem;">Modo Claro</strong>
+      <button type="button" class="theme-mode-btn" id="btn-mode-light" onclick="seleccionarThemeMode('light')" title="Claro">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg><span data-i18n="cfg_mode_light">Claro</span>
       </button>
-      <button type="button" class="theme-mode-btn" id="btn-mode-dark" onclick="seleccionarThemeMode('dark')" title="Fija el modo nocturno oscuro">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;margin-bottom:2px;"><path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg><strong style="font-size:0.82rem;">Modo Oscuro</strong>
+      <button type="button" class="theme-mode-btn" id="btn-mode-dark" onclick="seleccionarThemeMode('dark')" title="Oscuro">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg><span data-i18n="cfg_mode_dark">Oscuro</span>
       </button>
     </div>
-  </div>
 
-  <!-- LOS 4 TEMAS ORDENADOS (LIGHT + DARK) -->
-  <input type="hidden" id="cfg-theme" value="slate">
-  <div class="cfg-visual-grid" id="cfg-theme-cards" style="grid-template-columns:repeat(auto-fit, minmax(230px, 1fr)); gap:10px;">
-    <!-- 1. SLATE -->
-    <div class="cfg-option-card theme-card-row theme-family-card" data-family="slate" onclick="seleccionarThemeFamily('slate')" title="Pizarra Nórdica">
-      <svg class="theme-dual-circle" viewBox="0 0 40 40">
-        <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#191F24"/>
-        <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#6BA3C7"/>
-        <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#EDF0F2"/>
-        <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#1E4363"/>
-        <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-        <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
-      </svg>
-      <div style="flex:1; min-width:0;">
-        <strong class="theme-title" style="font-size:0.88rem; color:var(--text); display:block;">Pizarra Nórdica</strong>
-        <span class="theme-subtitle" style="font-size:0.73rem; color:var(--muted); display:block; margin-bottom:6px;">Azul Tinta + Acero Mate</span>
-        <div style="display:flex; gap:6px;">
-          <button type="button" class="theme-pill-btn pill-light" onclick="event.stopPropagation(); seleccionarThemePill('slate', 'light')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;margin-right:3px;"><path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>Claro</button>
-          <button type="button" class="theme-pill-btn pill-dark" onclick="event.stopPropagation(); seleccionarThemePill('slate', 'dark')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;margin-right:3px;"><path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>Oscuro</button>
-        </div>
-      </div>
-    </div>
+    <!-- LOS 4 THEMES EN FILA HORIZONTAL CON CÍRCULOS -->
+    <input type="hidden" id="cfg-theme" value="slate">
+    <div class="theme-circles-row" id="cfg-theme-cards">
+      <button type="button" class="theme-circle-card theme-family-card" data-family="slate" onclick="seleccionarThemeFamily('slate')" title="Pizarra" aria-label="Pizarra">
+        <svg class="theme-dual-circle" viewBox="0 0 40 40">
+          <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#191F24"/>
+          <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#6BA3C7"/>
+          <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#EDF0F2"/>
+          <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#1E4363"/>
+          <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+        </svg>
+        <span class="theme-circle-name" data-i18n="cfg_theme_slate">Pizarra</span>
+      </button>
 
-    <!-- 2. EMERALD -->
-    <div class="cfg-option-card theme-card-row theme-family-card" data-family="emerald" onclick="seleccionarThemeFamily('emerald')" title="Esmeralda & Salvia">
-      <svg class="theme-dual-circle" viewBox="0 0 40 40">
-        <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#111312"/>
-        <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#68B392"/>
-        <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#EAE6DC"/>
-        <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#1B4D3E"/>
-        <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-        <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
-      </svg>
-      <div style="flex:1; min-width:0;">
-        <strong class="theme-title" style="font-size:0.88rem; color:var(--text); display:block;">Esmeralda & Salvia</strong>
-        <span class="theme-subtitle" style="font-size:0.73rem; color:var(--muted); display:block; margin-bottom:6px;">Esmeralda + Salvia Jade</span>
-        <div style="display:flex; gap:6px;">
-          <button type="button" class="theme-pill-btn pill-light" onclick="event.stopPropagation(); seleccionarThemePill('emerald', 'light')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;margin-right:3px;"><path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>Claro</button>
-          <button type="button" class="theme-pill-btn pill-dark" onclick="event.stopPropagation(); seleccionarThemePill('emerald', 'dark')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;margin-right:3px;"><path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>Oscuro</button>
-        </div>
-      </div>
-    </div>
+      <button type="button" class="theme-circle-card theme-family-card" data-family="emerald" onclick="seleccionarThemeFamily('emerald')" title="Esmeralda" aria-label="Esmeralda">
+        <svg class="theme-dual-circle" viewBox="0 0 40 40">
+          <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#111312"/>
+          <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#68B392"/>
+          <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#EAE6DC"/>
+          <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#1B4D3E"/>
+          <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+        </svg>
+        <span class="theme-circle-name" data-i18n="cfg_theme_emerald">Esmeralda</span>
+      </button>
 
-    <!-- 3. ESPRESSO -->
-    <div class="cfg-option-card theme-card-row theme-family-card" data-family="espresso" onclick="seleccionarThemeFamily('espresso')" title="Café & Pergamino">
-      <svg class="theme-dual-circle" viewBox="0 0 40 40">
-        <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#1E1B18"/>
-        <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#D48C46"/>
-        <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#F6F2EA"/>
-        <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#B8532A"/>
-        <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-        <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
-      </svg>
-      <div style="flex:1; min-width:0;">
-        <strong class="theme-title" style="font-size:0.88rem; color:var(--text); display:block;">Café & Pergamino</strong>
-        <span class="theme-subtitle" style="font-size:0.73rem; color:var(--muted); display:block; margin-bottom:6px;">Terracota + Ámbar Miel</span>
-        <div style="display:flex; gap:6px;">
-          <button type="button" class="theme-pill-btn pill-light" onclick="event.stopPropagation(); seleccionarThemePill('espresso', 'light')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;margin-right:3px;"><path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>Claro</button>
-          <button type="button" class="theme-pill-btn pill-dark" onclick="event.stopPropagation(); seleccionarThemePill('espresso', 'dark')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;margin-right:3px;"><path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>Oscuro</button>
-        </div>
-      </div>
-    </div>
+      <button type="button" class="theme-circle-card theme-family-card" data-family="espresso" onclick="seleccionarThemeFamily('espresso')" title="Café" aria-label="Café">
+        <svg class="theme-dual-circle" viewBox="0 0 40 40">
+          <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#1E1B18"/>
+          <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#D48C46"/>
+          <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#F6F2EA"/>
+          <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#B8532A"/>
+          <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+        </svg>
+        <span class="theme-circle-name" data-i18n="cfg_theme_espresso">Café</span>
+      </button>
 
-    <!-- 4. DRACULA -->
-    <div class="cfg-option-card theme-card-row theme-family-card" data-family="dracula" onclick="seleccionarThemeFamily('dracula')" title="Drácula & Lavanda">
-      <svg class="theme-dual-circle" viewBox="0 0 40 40">
-        <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#141113"/>
-        <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#C982A3"/>
-        <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#EAE4E8"/>
-        <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#5E2B50"/>
-        <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
-        <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
-      </svg>
-      <div style="flex:1; min-width:0;">
-        <strong class="theme-title" style="font-size:0.88rem; color:var(--text); display:block;">Drácula & Lavanda</strong>
-        <span class="theme-subtitle" style="font-size:0.73rem; color:var(--muted); display:block; margin-bottom:6px;">Ciruela Oscuro + Malva Mate</span>
-        <div style="display:flex; gap:6px;">
-          <button type="button" class="theme-pill-btn pill-light" onclick="event.stopPropagation(); seleccionarThemePill('dracula', 'light')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;margin-right:3px;"><path d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"/></svg>Claro</button>
-          <button type="button" class="theme-pill-btn pill-dark" onclick="event.stopPropagation(); seleccionarThemePill('dracula', 'dark')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;margin-right:3px;"><path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>Oscuro</button>
-        </div>
-      </div>
+      <button type="button" class="theme-circle-card theme-family-card" data-family="dracula" onclick="seleccionarThemeFamily('dracula')" title="Drácula" aria-label="Drácula">
+        <svg class="theme-dual-circle" viewBox="0 0 40 40">
+          <path d="M20,1 A19,19 0 0,0 20,39 Z" fill="#141113"/>
+          <path d="M20,8 A12,12 0 0,0 20,32 Z" fill="#C982A3"/>
+          <path d="M20,1 A19,19 0 0,1 20,39 Z" fill="#EAE4E8"/>
+          <path d="M20,8 A12,12 0 0,1 20,32 Z" fill="#5E2B50"/>
+          <line x1="20" y1="1" x2="20" y2="39" stroke="rgba(0,0,0,0.3)" stroke-width="1.2"/>
+          <circle cx="20" cy="20" r="18.5" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+        </svg>
+        <span class="theme-circle-name" data-i18n="cfg_theme_dracula">Drácula</span>
+      </button>
     </div>
   </div>
-</div>
 
 <div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:14px; margin-top:14px;">
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:10px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
     <div style="display:flex; align-items:center; gap:8px;">
       <span><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0"/></svg></span>
-      <span>Preferencias de Notificaciones</span>
+      <span data-i18n="cfg_notif_title">Notificaciones</span>
     </div>
-    <button type="button" class="btn-today-pill" style="height:26px; font-size:0.72rem; padding:0 10px;" onclick="probarNotificacionSistema()">Probar</button>
+    <button type="button" class="btn-today-pill" style="height:26px; font-size:0.72rem; padding:0 10px;" onclick="probarNotificacionSistema()" data-i18n="cfg_notif_test">Probar</button>
   </div>
-  <p style="font-size:0.76rem; color:var(--muted); margin-bottom:12px;">Elige qué avisos deseas recibir en tu dispositivo o navegador:</p>
-  
-  <div class="switch-wrap" style="margin-bottom:10px;">
-    <div>
-      <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;"><svg style="width:16px;height:16px;" class="h-icon text-orange" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"/></svg> Recordatorio de rachas (21:00)</span>
-      <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar a las 21:00 si falta leer o escuchar un disco</span>
-    </div>
+
+  <div class="switch-wrap" style="margin-bottom:4px;">
+    <span class="switch-label" style="display:inline-flex; align-items:center; gap:7px; font-size:0.84rem; font-weight:600;"><svg style="width:16px;height:16px;" class="h-icon text-orange" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"/></svg><span data-i18n="cfg_notif_streak">Recordatorio de rachas (21:00)</span></span>
     <label class="switch-toggle">
       <input type="checkbox" id="cfg-notif-racha" checked onchange="actualizarPreferenciaNotificacion('racha21', this.checked)">
       <span class="switch-slider"></span>
     </label>
   </div>
 
-  <div class="switch-wrap" style="margin-bottom:10px;">
-    <div>
-      <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;"><svg style="width:16px;height:16px;" class="h-icon text-rose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg> Likes en mis reseñas</span>
-      <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar cuando un amigo le dé like a una reseña</span>
-    </div>
+  <div class="switch-wrap" style="margin-bottom:4px;">
+    <span class="switch-label" style="display:inline-flex; align-items:center; gap:7px; font-size:0.84rem; font-weight:600;"><svg style="width:16px;height:16px;" class="h-icon text-rose" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg><span data-i18n="cfg_notif_likes">Likes en mis reseñas</span></span>
     <label class="switch-toggle">
       <input type="checkbox" id="cfg-notif-likes" checked onchange="actualizarPreferenciaNotificacion('likesAmigos', this.checked)">
       <span class="switch-slider"></span>
     </label>
   </div>
 
-  <div class="switch-wrap" style="margin-bottom:10px;">
-    <div>
-      <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;"><svg style="width:16px;height:16px;" class="h-icon text-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/></svg> Nuevos registros de amigos</span>
-      <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar cuando un amigo agregue una obra al feed</span>
-    </div>
+  <div class="switch-wrap" style="margin-bottom:4px;">
+    <span class="switch-label" style="display:inline-flex; align-items:center; gap:7px; font-size:0.84rem; font-weight:600;"><svg style="width:16px;height:16px;" class="h-icon text-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/></svg><span data-i18n="cfg_notif_friends">Nuevos registros de amigos</span></span>
     <label class="switch-toggle">
       <input type="checkbox" id="cfg-notif-amigos" checked onchange="actualizarPreferenciaNotificacion('novedadesAmigos', this.checked)">
       <span class="switch-slider"></span>
@@ -10096,269 +10110,83 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   </div>
 
   <div class="switch-wrap">
-    <div>
-      <span class="switch-label" style="display:block; font-size:0.84rem; font-weight:600;"><svg style="width:16px;height:16px;" class="h-icon text-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/></svg> Nuevos amigos y solicitudes</span>
-      <span style="display:block; font-size:0.72rem; color:var(--muted);">Avisar al recibir una solicitud o cuando la acepten</span>
-    </div>
+    <span class="switch-label" style="display:inline-flex; align-items:center; gap:7px; font-size:0.84rem; font-weight:600;"><svg style="width:16px;height:16px;" class="h-icon text-purple" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/></svg><span data-i18n="cfg_notif_requests">Nuevos amigos y solicitudes</span></span>
     <label class="switch-toggle">
       <input type="checkbox" id="cfg-notif-solicitudes" checked onchange="actualizarPreferenciaNotificacion('amigosYSolicitudes', this.checked)">
       <span class="switch-slider"></span>
     </label>
   </div>
 </div>
-<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:14px; margin-top:14px;"> <div style="font-weight:700; font-size:0.9rem; margin-bottom:6px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;"> <div style="display:flex; align-items:center; gap:8px;"> <span><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span> <span data-i18n="cfg_account_title">Cuenta y Sincronización Supabase Cloud</span> </div> <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> Supabase Cloud Activo</span> </div> <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;" id="cfg-account-status" data-i18n="cfg_account_hint">Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.</p> <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;"> <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg> <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span> </button> <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:var(--accent-border); color:var(--accent); background:var(--accent-subtle); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets"> <span data-i18n="cfg_btn_migrar"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg> Migrar mis datos de Google Sheets a Supabase</span> </button> </div>
 
-<!-- INTEGRACIÓN CON LAST.FM (BASE DE ESTADÍSTICAS MUSICALES) -->
-<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:14px; margin-top:14px;" id="cfg-lastfm-section">
-  
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:8px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:14px; margin-top:14px;">
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:10px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
     <div style="display:flex; align-items:center; gap:8px;">
-      <div style="width:26px; height:26px; border-radius:4px; background:rgba(213,16,7,0.12); border:1px solid rgba(213,16,7,0.25); display:grid; place-items:center; flex-shrink:0;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="#d51007">
-          <path d="M11.999 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 11.999 12 6.627 0 12.001-5.373 12.001-12 0-6.627-5.374-12-12.001-12zm-1.82 14.898c-.613 1.137-1.57 1.803-2.909 1.803-1.99 0-3.37-1.62-3.37-3.987 0-2.553 1.57-4.135 3.542-4.135 1.778 0 2.68 1.026 3.12 2.366l1.697-.754C11.536 7.95 10.03 6.54 7.442 6.54c-3.495 0-5.81 2.428-5.81 6.193 0 3.82 2.408 6.096 5.568 6.096 2.45 0 4.04-1.256 4.795-3.08l-1.816-.851zm8.303-.523c-1.005 0-1.842-.482-2.198-1.424l-3.266 1.487c.858 2.533 2.973 4.145 5.543 4.145 3.39 0 5.46-2.177 5.46-5.84 0-3.328-1.842-5.15-4.96-5.15-2.827 0-4.668 1.884-4.836 4.773l1.8.859c.147-1.78 1.256-2.889 3.036-2.889 1.884 0 2.91 1.047 2.91 2.805 0 1.55-1.047 2.24-2.489 2.24z"/>
-        </svg>
-      </div>
-      <span data-i18n="cfg_lastfm_title">Cuenta y Sincronización Last.fm</span>
+      <span><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></span>
+      <span data-i18n="cfg_account_title">Cuenta y Sincronización</span>
     </div>
-    <span class="profile-google-pill" id="cfg-lastfm-badge" style="display:none; background:rgba(213,16,7,0.14); border:1px solid rgba(213,16,7,0.38); color:#d51007; font-weight:700; font-size:0.72rem;"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> Conectado</span>
+    <span class="profile-google-pill" id="cfg-supabase-badge" style="display:none;"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> Activo</span>
   </div>
-
-  <!-- Estado Desconectado -->
-  <div id="cfg-lastfm-disconnected-box">
-    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" id="cfg-lastfm-desc" data-i18n="cfg_lastfm_hint">
-      Conecta tu perfil de Last.fm para registrar scrobbles, artistas favoritos, álbumes y basar tus estadísticas musicales en datos reales de por vida.
-    </p>
-    <button type="button" class="btn-lastfm-connect" id="btn-lastfm-login" onclick="abrirModalConectarLastFm()" style="width:100%;">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#d51007" d="M11.999 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 11.999 12 6.627 0 12.001-5.373 12.001-12 0-6.627-5.374-12-12.001-12zm-1.82 14.898c-.613 1.137-1.57 1.803-2.909 1.803-1.99 0-3.37-1.62-3.37-3.987 0-2.553 1.57-4.135 3.542-4.135 1.778 0 2.68 1.026 3.12 2.366l1.697-.754C11.536 7.95 10.03 6.54 7.442 6.54c-3.495 0-5.81 2.428-5.81 6.193 0 3.82 2.408 6.096 5.568 6.096 2.45 0 4.04-1.256 4.795-3.08l-1.816-.851zm8.303-.523c-1.005 0-1.842-.482-2.198-1.424l-3.266 1.487c.858 2.533 2.973 4.145 5.543 4.145 3.39 0 5.46-2.177 5.46-5.84 0-3.328-1.842-5.15-4.96-5.15-2.827 0-4.668 1.884-4.836 4.773l1.8.859c.147-1.78 1.256-2.889 3.036-2.889 1.884 0 2.91 1.047 2.91 2.805 0 1.55-1.047 2.24-2.489 2.24z"/></svg>
-      <span id="txt-btn-lastfm" data-i18n="cfg_lastfm_btn_connect">Conectar con Last.fm</span>
-    </button>
-  </div>
-
-  <!-- Estado Conectado -->
-  <div id="cfg-lastfm-connected-box" style="display:none;">
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:10px 12px; background:rgba(213,16,7,0.06); border:1px solid rgba(213,16,7,0.22); border-radius:3px;">
-      <div id="cfg-lastfm-user-avatar" style="width:40px; height:40px; border-radius:50%; overflow:hidden; background:var(--card); border:2px solid #d51007; display:grid; place-items:center; flex-shrink:0;">
-        <svg style="width:20px;height:20px;" class="h-icon text-red" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
-      </div>
-      <div style="min-width:0; flex:1;">
-        <strong id="cfg-lastfm-user-name" style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario Last.fm</strong>
-        <span id="cfg-lastfm-user-sub" style="font-size:0.74rem; color:var(--muted); display:block; margin-top:2px;">Conectado</span>
-      </div>
-    </div>
-    
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <button type="button" class="btn-lastfm-sub-action" style="background:rgba(213,16,7,0.12); color:#d51007; border:1px solid rgba(213,16,7,0.35);" onclick="sincronizarCuentaLastFm(null, true)" title="Sincronizar datos de Last.fm">
-        <span><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> Sincronizar</span>
-      </button>
-      <button type="button" class="btn-lastfm-sub-action" style="background:rgba(239,68,68,0.08); color:#f87171; border:1px solid rgba(239,68,68,0.25);" onclick="desconectarLastFm()" title="Desconectar cuenta">
-        <span>Desconectar</span>
-      </button>
-    </div>
-  </div>
-
+  <button type="button" class="btn-google-login" id="btn-google-signin" onclick="abrirModalAuthSupabase()" style="width:100%; justify-content:center;">
+    <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+    <span id="txt-btn-google" data-i18n="cfg_btn_auth">Iniciar sesión / Cambiar cuenta</span>
+  </button>
+  <button type="button" class="btn-edit-profile" id="btn-migrar-sheets" style="border-color:var(--accent-border); color:var(--accent); background:var(--accent-subtle); width:100%; margin-top:8px; font-size:0.78rem;" onclick="ejecutarMigracionSheetsASupabase()" title="Copia todos tus registros desde Google Sheets">
+    <span data-i18n="cfg_btn_migrar"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg> Migrar mis datos de Google Sheets a Supabase</span>
+  </button>
 </div>
 
-<!-- INTEGRACIÓN CON SPOTIFY -->
-<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:14px; margin-top:14px;" id="cfg-spotify-section">
-  
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:8px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <div style="width:26px; height:26px; border-radius:4px; background:rgba(29,185,84,0.12); border:1px solid rgba(29,185,84,0.25); display:grid; place-items:center; flex-shrink:0;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="#1DB954">
-          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/>
-        </svg>
-      </div>
-      <span data-i18n="cfg_spotify_title">Cuenta y Sincronización Spotify</span>
+<!-- APLICACIONES Y CUENTAS VINCULADAS -->
+<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:14px; margin-top:14px;" id="cfg-linked-apps-section">
+  <div style="font-weight:700; font-size:0.9rem; margin-bottom:10px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
+    <div style="display:flex; align-items:center; gap:8px; min-width:0;">
+      <svg style="width:18px;height:18px;flex-shrink:0;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244"/></svg>
+      <span data-i18n="cfg_linked_apps_title">Aplicaciones y Cuentas Vinculadas</span>
     </div>
-    <span class="profile-google-pill" id="cfg-spotify-badge" style="display:none; background:rgba(29,185,84,0.14); border:1px solid rgba(29,185,84,0.38); color:#10b981; font-weight:700; font-size:0.72rem;"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> Conectado</span>
+    <button type="button" class="btn-today-pill" id="btn-cfg-toggle-link-options" style="height:28px; font-size:0.74rem; padding:0 10px; flex-shrink:0;" onclick="toggleOpcionesVinculacionConfig()" data-i18n="cfg_linked_apps_btn">+ Vincular</button>
   </div>
 
-  <!-- Estado Desconectado -->
-  <div id="cfg-spotify-disconnected-box">
-    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" id="cfg-spotify-desc" data-i18n="cfg_spotify_hint">
-      Conecta tu cuenta para sincronizar estadísticas musicales, artistas favoritos y calcular tus horas escuchadas.
-    </p>
-    <button type="button" class="btn-spotify-connect" id="btn-spotify-login" onclick="iniciarFlujoSpotifyAuth()" style="width:100%;">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/></svg>
-      <span id="txt-btn-spotify" data-i18n="cfg_spotify_btn_connect">Conectar con Spotify</span>
-    </button>
-  </div>
+  <!-- Solo los logos de las cuentas vinculadas actualmente -->
+  <div id="cfg-linked-apps-logos" class="cfg-linked-logos-row"></div>
 
-  <!-- Estado Conectado -->
-  <div id="cfg-spotify-connected-box" style="display:none;">
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:10px 12px; background:rgba(29,185,84,0.06); border:1px solid rgba(29,185,84,0.22); border-radius:3px;">
-      <div id="cfg-spotify-user-avatar" style="width:40px; height:40px; border-radius:50%; overflow:hidden; background:var(--card); border:2px solid #1db954; display:grid; place-items:center; flex-shrink:0;">
-        <svg style="width:20px;height:20px;" class="h-icon text-green" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
-      </div>
-      <div style="min-width:0; flex:1;">
-        <strong id="cfg-spotify-user-name" style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario Spotify</strong>
-        <span id="cfg-spotify-user-sub" style="font-size:0.74rem; color:var(--muted); display:block; margin-top:2px;">Conectado</span>
-      </div>
-    </div>
-    
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <button type="button" class="btn-spotify-sub-action" style="background:rgba(29,185,84,0.12); color:#10b981; border:1px solid rgba(29,185,84,0.35);" onclick="actualizarDatosSpotify(true)" title="Sincronizar datos de Spotify">
-        <span><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> Sincronizar</span>
-      </button>
-      <button type="button" class="btn-spotify-sub-action" style="background:rgba(239,68,68,0.08); color:#f87171; border:1px solid rgba(239,68,68,0.25);" onclick="desconectarSpotify()" title="Desconectar cuenta">
-        <span>Desconectar</span>
-      </button>
-    </div>
-  </div>
+  <!-- Panel compacto de gestión al tocar una cuenta vinculada -->
+  <div id="cfg-linked-app-manage" class="cfg-linked-app-manage" style="display:none;"></div>
 
-</div>
-
-<!-- INTEGRACIÓN CON STEAM -->
-<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:14px; margin-top:14px;" id="cfg-steam-section">
-  
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:8px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <div style="width:26px; height:26px; border-radius:4px; background:rgba(102,192,244,0.12); border:1px solid rgba(102,192,244,0.25); display:grid; place-items:center; flex-shrink:0;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="#66c0f4">
-          <path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/>
-        </svg>
-      </div>
-      <span data-i18n="cfg_steam_title">Cuenta y Sincronización Steam</span>
-    </div>
-    <span class="profile-google-pill" id="cfg-steam-badge" style="display:none; background:rgba(102,192,244,0.14); border:1px solid rgba(102,192,244,0.38); color:#38bdf8; font-weight:700; font-size:0.72rem;"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> Conectado</span>
-  </div>
-
-  <!-- Estado Desconectado -->
-  <div id="cfg-steam-disconnected-box">
-    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" id="cfg-steam-desc" data-i18n="cfg_steam_hint">
-      Conecta tu cuenta de Steam para vincular tu biblioteca de juegos, horas jugadas y logros.
-    </p>
-    <button type="button" class="btn-steam-connect" id="btn-steam-login" onclick="abrirModalConectarSteam()" style="width:100%;">
-      <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#66c0f4" d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/></svg>
-      <span id="txt-btn-steam" data-i18n="cfg_steam_btn_connect">Conectar con Steam</span>
-    </button>
-  </div>
-
-  <!-- Estado Conectado -->
-  <div id="cfg-steam-connected-box" style="display:none;">
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:10px 12px; background:rgba(102,192,244,0.06); border:1px solid rgba(102,192,244,0.22); border-radius:3px;">
-      <div id="cfg-steam-user-avatar" style="width:40px; height:40px; border-radius:50%; overflow:hidden; background:var(--card); border:2px solid #66c0f4; display:grid; place-items:center; flex-shrink:0;">
-        <svg style="width:20px;height:20px;" class="h-icon text-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
-      </div>
-      <div style="min-width:0; flex:1;">
-        <strong id="cfg-steam-user-name" style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario Steam</strong>
-        <span id="cfg-steam-user-sub" style="font-size:0.74rem; color:var(--muted); display:block; margin-top:2px;">Conectado</span>
-      </div>
-    </div>
-    
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <button type="button" class="btn-steam-sub-action" style="background:rgba(102,192,244,0.12); color:#38bdf8; border:1px solid rgba(102,192,244,0.35);" onclick="actualizarDatosSteam(true)" title="Sincronizar datos de Steam">
-        <span><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> Sincronizar</span>
-      </button>
-      <button type="button" class="btn-steam-sub-action" style="background:rgba(239,68,68,0.08); color:#f87171; border:1px solid rgba(239,68,68,0.25);" onclick="desconectarSteam()" title="Desconectar cuenta">
-        <span>Desconectar</span>
-      </button>
-    </div>
-
-    <!-- Clave API Opcional para catálogo completo de juegos históricos -->
-    <div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border);">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:0.75rem; color:var(--muted);">Clave Steam Web API (opcional):</span>
-        <button type="button" onclick="toggleSteamApiKeyInput()" id="btn-toggle-steam-key" style="background:none; border:none; color:#66c0f4; font-size:0.75rem; cursor:pointer; font-weight:600;">
-          + Configurar clave
+  <!-- Todas las opciones de vinculación ordenadas por categoría (solo logos) -->
+  <div id="cfg-link-options-panel" class="cfg-link-options-panel" style="display:none;">
+    <div class="cfg-link-cat-group">
+      <span class="cfg-link-cat-label" data-i18n="cfg_cat_music">Música</span>
+      <div class="cfg-link-cat-logos">
+        <button type="button" class="cfg-app-logo-btn" id="cfg-opt-logo-spotify" data-service="spotify" style="--app-brand:#1DB954;--app-brand-bg:rgba(29,185,84,0.12);" onclick="clickAppVinculacionConfig('spotify')" title="Spotify" aria-label="Spotify">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/></svg>
+        </button>
+        <button type="button" class="cfg-app-logo-btn" id="cfg-opt-logo-lastfm" data-service="lastfm" style="--app-brand:#d51007;--app-brand-bg:rgba(213,16,7,0.12);" onclick="clickAppVinculacionConfig('lastfm')" title="Last.fm" aria-label="Last.fm">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#d51007"><path d="M11.999 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 11.999 12 6.627 0 12.001-5.373 12.001-12 0-6.627-5.374-12-12.001-12zm-1.82 14.898c-.613 1.137-1.57 1.803-2.909 1.803-1.99 0-3.37-1.62-3.37-3.987 0-2.553 1.57-4.135 3.542-4.135 1.778 0 2.68 1.026 3.12 2.366l1.697-.754C11.536 7.95 10.03 6.54 7.442 6.54c-3.495 0-5.81 2.428-5.81 6.193 0 3.82 2.408 6.096 5.568 6.096 2.45 0 4.04-1.256 4.795-3.08l-1.816-.851zm8.303-.523c-1.005 0-1.842-.482-2.198-1.424l-3.266 1.487c.858 2.533 2.973 4.145 5.543 4.145 3.39 0 5.46-2.177 5.46-5.84 0-3.328-1.842-5.15-4.96-5.15-2.827 0-4.668 1.884-4.836 4.773l1.8.859c.147-1.78 1.256-2.889 3.036-2.889 1.884 0 2.91 1.047 2.91 2.805 0 1.55-1.047 2.24-2.489 2.24z"/></svg>
         </button>
       </div>
-      <div id="cfg-steam-apikey-wrap" style="display:none; margin-top:8px;">
-        <p style="font-size:0.72rem; color:var(--muted); margin:0 0 6px 0; line-height:1.35;">
-          Permite sincronizar el total de horas de toda tu biblioteca de juegos sin importar cuándo los jugaste. <a href="https://steamcommunity.com/dev/apikey" target="_blank" rel="noopener noreferrer" style="color:#66c0f4; text-decoration:underline;">Obtén tu clave gratuita aquí ↗</a>
-        </p>
-        <div class="app-connect-input-row">
-          <input type="text" id="cfg-steam-api-key-input" name="steam_api_key_input" class="form-input" placeholder="Pega tu Steam Web API Key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="-webkit-text-security:disc; text-security:disc;">
-          <button type="button" class="btn-connect-action btn-connect-steam" onclick="guardarSteamApiKeyDesdeInput('cfg-steam-api-key-input')">
-            Guardar
-          </button>
-        </div>
-      </div>
     </div>
-  </div>
-
-</div>
-
-<!-- INTEGRACIÓN CON PLAYSTATION NETWORK -->
-<div class="form-group" style="background:var(--bg); border:1px solid var(--border); border-radius:3px; padding:14px; margin-top:14px;" id="cfg-playstation-section">
-  
-  <div style="font-weight:700; font-size:0.9rem; margin-bottom:8px; color:var(--text); display:flex; align-items:center; justify-content:space-between; gap:8px;">
-    <div style="display:flex; align-items:center; gap:8px;">
-      <div style="width:26px; height:26px; border-radius:4px; background:rgba(0,112,209,0.12); border:1px solid rgba(0,112,209,0.25); display:grid; place-items:center; flex-shrink:0;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="#0070d1">
-          <path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/>
-        </svg>
-      </div>
-      <span data-i18n="cfg_psn_title">Cuenta y Sincronización PlayStation</span>
-    </div>
-    <span class="profile-google-pill" id="cfg-psn-badge" style="display:none; background:rgba(0,112,209,0.14); border:1px solid rgba(0,112,209,0.38); color:#38bdf8; font-weight:700; font-size:0.72rem;"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> Conectado</span>
-  </div>
-
-  <!-- Estado Desconectado -->
-  <div id="cfg-psn-disconnected-box">
-    <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" id="cfg-psn-desc" data-i18n="cfg_psn_hint">
-      Conecta tu perfil de PlayStation Network para sincronizar tus trofeos, horas jugadas en PS5/PS4 y ver lo que estás jugando en tiempo real.
-    </p>
-    <button type="button" class="btn-psn-connect" id="btn-psn-login" onclick="abrirModalConectarPsn()" style="width:100%;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="#0070d1"><path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg>
-      <span id="txt-btn-psn" data-i18n="cfg_psn_btn_connect">Conectar con PlayStation</span>
-    </button>
-  </div>
-
-  <!-- Estado Conectado -->
-  <div id="cfg-psn-connected-box" style="display:none;">
-    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px; padding:10px 12px; background:rgba(0,112,209,0.06); border:1px solid rgba(0,112,209,0.22); border-radius:3px;">
-      <div id="cfg-psn-user-avatar" style="width:40px; height:40px; border-radius:50%; overflow:hidden; background:var(--card); border:2px solid #0070d1; display:grid; place-items:center; flex-shrink:0;">
-        <svg style="width:20px;height:20px;" class="h-icon text-sky" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
-      </div>
-      <div style="min-width:0; flex:1;">
-        <strong id="cfg-psn-user-name" style="font-size:0.88rem; color:var(--text); display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Usuario PlayStation</strong>
-        <span id="cfg-psn-user-sub" style="font-size:0.74rem; color:var(--muted); display:block; margin-top:2px;">Conectado</span>
-      </div>
-    </div>
-    
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-      <button type="button" class="btn-psn-sub-action" style="background:rgba(0,112,209,0.12); color:#38bdf8; border:1px solid rgba(0,112,209,0.35);" onclick="sincronizarCuentaPlayStation(null, true)" title="Sincronizar PlayStation">
-        <span><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> Sincronizar</span>
-      </button>
-      <button type="button" class="btn-psn-sub-action" style="background:rgba(239,68,68,0.08); color:#f87171; border:1px solid rgba(239,68,68,0.25);" onclick="desconectarPlayStation()" title="Desconectar cuenta">
-        <span>Desconectar</span>
-      </button>
-    </div>
-
-    <!-- Token NPSSO Opcional para presencia en vivo y horas exactas -->
-    <div style="margin-top:10px; padding-top:10px; border-top:1px solid var(--border);">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:0.75rem; color:var(--muted);">Token NPSSO (presencia en vivo):</span>
-        <button type="button" onclick="togglePsnNpssoInput()" id="btn-toggle-psn-npsso" style="background:none; border:none; color:#38bdf8; font-size:0.75rem; cursor:pointer; font-weight:600;">
-          + Configurar token
+    <div class="cfg-link-cat-group">
+      <span class="cfg-link-cat-label" data-i18n="cfg_cat_games">Juegos</span>
+      <div class="cfg-link-cat-logos">
+        <button type="button" class="cfg-app-logo-btn" id="cfg-opt-logo-steam" data-service="steam" style="--app-brand:#66c0f4;--app-brand-bg:rgba(102,192,244,0.12);" onclick="clickAppVinculacionConfig('steam')" title="Steam" aria-label="Steam">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#66c0f4"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/></svg>
+        </button>
+        <button type="button" class="cfg-app-logo-btn" id="cfg-opt-logo-playstation" data-service="playstation" style="--app-brand:#0070d1;--app-brand-bg:rgba(0,112,209,0.14);" onclick="clickAppVinculacionConfig('playstation')" title="PlayStation" aria-label="PlayStation">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="#0070d1"><path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg>
         </button>
       </div>
-      <div id="cfg-psn-npsso-wrap" style="display:none; margin-top:8px;">
-        <p style="font-size:0.72rem; color:var(--muted); margin:0 0 6px 0; line-height:1.35;">
-          Permite consultar en vivo qué juego tienes abierto en tu PS5/PS4 y tus horas jugadas exactas.
-        </p>
-        <div class="app-connect-input-row">
-          <input type="text" id="cfg-psn-npsso-input" name="psn_npsso_input" class="form-input" placeholder="Pega tu token NPSSO de 64 caracteres" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" style="-webkit-text-security:disc; text-security:disc;">
-          <button type="button" class="btn-connect-action btn-connect-psn" onclick="guardarPsnNpssoDesdeInput('cfg-psn-npsso-input')">
-            Guardar
-          </button>
-        </div>
-      </div>
     </div>
   </div>
+</div>
 
-  <!-- Opción de Instalar App PWA (solo visible en navegador si no está instalada) -->
-  <div id="cfg-install-pwa-wrap" style="display:none; margin:14px 0; padding:12px 14px; background:rgba(56,189,248,0.06); border:1px dashed rgba(56,189,248,0.3); border-radius:3px; align-items:center; justify-content:space-between; gap:10px;">
-    <div style="min-width:0;">
-      <strong style="font-size:0.86rem; color:var(--text); display:block;">Instalar Mediary</strong>
-      <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;">Acceso directo en tu pantalla de inicio</span>
-    </div>
-    <button type="button" class="btn-today-pill" id="btn-install-pwa" onclick="instalarAppMediary()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;">
-      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>Instalar App
-    </button>
+<!-- Opción de Instalar App PWA (solo visible en navegador si no está instalada) -->
+<div id="cfg-install-pwa-wrap" style="display:none; margin:14px 0; padding:12px 14px; background:rgba(56,189,248,0.06); border:1px dashed rgba(56,189,248,0.3); border-radius:3px; align-items:center; justify-content:space-between; gap:10px;">
+  <div style="min-width:0;">
+    <strong style="font-size:0.86rem; color:var(--text); display:block;">Instalar Mediary</strong>
+    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;">Acceso directo en tu pantalla de inicio</span>
   </div>
-
+  <button type="button" class="btn-today-pill" id="btn-install-pwa" onclick="instalarAppMediary()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;">
+    <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg>Instalar App
+  </button>
 </div>
 
 
@@ -13810,7 +13638,7 @@ function quitarFotoPersonalizada() {
     b.classList.toggle('selected', b.textContent === '🦊');
   });
 }
-function cerrarModalConfiguracion() { guardarPreferenciasLocales(); document.getElementById('modal-configuracion').style.display = 'none'; }
+function cerrarModalConfiguracion() { if (typeof cerrarDropdownsConfig === 'function') cerrarDropdownsConfig(); guardarPreferenciasLocales(); document.getElementById('modal-configuracion').style.display = 'none'; }
 function toggleSubOpcionesPrivacidad() { const chkRegs = document.getElementById('priv-opt-regs'); const subBox = document.getElementById('sub-opciones-priv-regs'); if (subBox && chkRegs) subBox.style.opacity = chkRegs.checked ? '1' : '0.4'; }
 function abrirModalPrivacidadAmigos() { const priv = perfilUsuario.preferencias?.privacidad || {}; document.getElementById('priv-opt-stats').checked = priv.ocultarEstadisticas !== true; document.getElementById('priv-opt-wl').checked = priv.ocultarWatchlist !== true; document.getElementById('priv-opt-favs').checked = priv.ocultarFavoritos !== true; document.getElementById('priv-opt-regs').checked = priv.ocultarRegistros !== true; document.getElementById('priv-opt-calif').checked = priv.ocultarCalificaciones !== true; document.getElementById('priv-opt-comentarios').checked = priv.ocultarComentarios !== true; toggleSubOpcionesPrivacidad(); document.getElementById('modal-privacidad-amigos').style.display = 'flex'; }
 function cerrarModalPrivacidadAmigos() { document.getElementById('modal-privacidad-amigos').style.display = 'none'; }
@@ -18046,17 +17874,34 @@ const CONFIG = {
  "profile_dist_title": "Distribución por Categoría",
  "cfg_title": "Configuración y Estilo",
  "cfg_title_short": "Configuración",
- "cfg_lang_label": "Idioma de la Interfaz:",
+ "cfg_lang_label": "Idioma",
  "cfg_uistyle_label": "Estilo de Diseño:",
  "cfg_uistyle_modern": "Moderno & Minimalista",
  "cfg_uistyle_modern_desc": "Espacios, tipografía y diseño compacto",
  "cfg_uistyle_classic": "Clásico",
  "cfg_uistyle_classic_desc": "Diseño original con tarjetas",
- "cfg_font_label": "Tipografía de la App:",
+ "cfg_font_label": "Tipografía",
  "cfg_size_label": "Tamaño general de letra:",
- "cfg_theme_label": "Tema de color (4 temas con versión Claro y Oscuro):",
+ "cfg_theme_label": "Themes",
  "cfg_app_theme_label": "Theme de la App:",
- "cfg_colors_label": "Colores:",
+ "cfg_colors_label": "Themes",
+ "cfg_mode_system": "Sistema",
+ "cfg_mode_light": "Claro",
+ "cfg_mode_dark": "Oscuro",
+ "cfg_theme_slate": "Pizarra",
+ "cfg_theme_emerald": "Esmeralda",
+ "cfg_theme_espresso": "Café",
+ "cfg_theme_dracula": "Drácula",
+ "cfg_notif_title": "Notificaciones",
+ "cfg_notif_test": "Probar",
+ "cfg_notif_streak": "Recordatorio de rachas (21:00)",
+ "cfg_notif_likes": "Likes en mis reseñas",
+ "cfg_notif_friends": "Nuevos registros de amigos",
+ "cfg_notif_requests": "Nuevos amigos y solicitudes",
+ "cfg_linked_apps_title": "Aplicaciones y Cuentas Vinculadas",
+ "cfg_linked_apps_btn": "+ Vincular",
+ "cfg_cat_music": "Música",
+ "cfg_cat_games": "Juegos",
  "app_theme_default_title": "Predeterminado",
  "app_theme_default_desc": "Estilo original de Mediary, rico en detalles y expresividad.",
  "app_theme_minimalist_title": "Minimalista",
@@ -18088,7 +17933,7 @@ const CONFIG = {
  "serie_comp_title": "¡Completaste toda la serie!",
  "serie_comp_rating_lbl": "Calificación de la serie completa:",
  "serie_comp_comment_lbl": "Comentario / Reseña final de la serie:",
- "cfg_account_title": "Cuenta y Sincronización Supabase Cloud",
+ "cfg_account_title": "Cuenta y Sincronización",
  "cfg_account_hint": "Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.",
  "cfg_btn_auth": "Iniciar sesión / Cambiar cuenta",
  "cfg_btn_migrar": "Migrar mis datos de Google Sheets a Supabase",
@@ -18508,17 +18353,34 @@ const CONFIG = {
  "profile_dist_title": "Distribution by Category",
  "cfg_title": "Settings & Theme",
  "cfg_title_short": "Settings",
- "cfg_lang_label": "Interface Language:",
+ "cfg_lang_label": "Language",
  "cfg_uistyle_label": "Design Style:",
  "cfg_uistyle_modern": "Modern & Minimalist",
  "cfg_uistyle_modern_desc": "Compact layout based on whitespace and typography",
  "cfg_uistyle_classic": "Classic",
  "cfg_uistyle_classic_desc": "Original layout with traditional cards",
- "cfg_font_label": "App Typography:",
+ "cfg_font_label": "Typography",
  "cfg_size_label": "Font Scale:",
- "cfg_theme_label": "Color Theme (4 themes with Light & Dark versions):",
+ "cfg_theme_label": "Themes",
  "cfg_app_theme_label": "App Theme:",
- "cfg_colors_label": "Colors:",
+ "cfg_colors_label": "Themes",
+ "cfg_mode_system": "System",
+ "cfg_mode_light": "Light",
+ "cfg_mode_dark": "Dark",
+ "cfg_theme_slate": "Slate",
+ "cfg_theme_emerald": "Emerald",
+ "cfg_theme_espresso": "Espresso",
+ "cfg_theme_dracula": "Dracula",
+ "cfg_notif_title": "Notifications",
+ "cfg_notif_test": "Test",
+ "cfg_notif_streak": "Streak reminder (21:00)",
+ "cfg_notif_likes": "Likes on my reviews",
+ "cfg_notif_friends": "Friends' new entries",
+ "cfg_notif_requests": "New friends & requests",
+ "cfg_linked_apps_title": "Linked Apps & Accounts",
+ "cfg_linked_apps_btn": "+ Link",
+ "cfg_cat_music": "Music",
+ "cfg_cat_games": "Games",
  "app_theme_default_title": "Default",
  "app_theme_default_desc": "Original Mediary style, rich in detail and visual expression.",
  "app_theme_minimalist_title": "Minimalist",
@@ -18550,7 +18412,7 @@ const CONFIG = {
  "serie_comp_title": "Full Series Completed!",
  "serie_comp_rating_lbl": "Overall Series Rating:",
  "serie_comp_comment_lbl": "Final Series Review:",
- "cfg_account_title": "Supabase Cloud Account & Sync",
+ "cfg_account_title": "Account & Sync",
  "cfg_account_hint": "Sign in with your account to back up and sync your library in the cloud.",
  "cfg_btn_auth": "Sign in / Switch account",
  "cfg_btn_migrar": "Migrate my data from Google Sheets to Supabase",
@@ -18871,7 +18733,7 @@ const CONFIG = {
  "btn_la_termine": "I finished it!",
  "lbl_en_progreso_inicio": "Started:"
  }
-}; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", appTheme: "default", uiStyle: "modern", lang: "es", categoriasOrden: ['Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'], categoriasOcultas: []
+}; let userPrefs = { font: "'Lexend', sans-serif", fontSize: "75%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", appTheme: "default", uiStyle: "modern", lang: "es", categoriasOrden: ['Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'], categoriasOcultas: []
 }; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary', avatar: '🦊', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
 }; const AVATARES_PRESET = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐯', '🐨', '🐸', '🦉', '🐻', '🐵', '🐰']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
 const WATCHLIST_ESTRUCTURA = [
@@ -19117,7 +18979,7 @@ function obtenerRegistrosFiltradosPorAnio() {
  return estado.registros.filter(r => extraerAnioDeRegistro(r) === estado.anioActivo);
 }
 
-function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {} userPrefs.uiStyle = 'modern'; if (!userPrefs.appTheme || userPrefs.appTheme === 'minimalist') userPrefs.appTheme = 'default'; if (userPrefs.fontSize && !['50%', '62%', '75%', '88%', '100%'].includes(userPrefs.fontSize)) userPrefs.fontSize = '100%';
+function cargarPreferenciasLocales() { try { const p = (localStorage.getItem('Mediary_prefs_v1') || localStorage.getItem('MyMediary_prefs_v1')); if (p) { const parsed = JSON.parse(p); const customFontChosen = localStorage.getItem('mediary_user_custom_font'); if (!customFontChosen && (!parsed.font || parsed.font.includes('Plus Jakarta Sans'))) { parsed.font = "'Lexend', sans-serif"; } const customSizeChosen = localStorage.getItem('mediary_user_custom_font_size') === 'true'; if (!customSizeChosen && parsed.fontSize === '100%') { parsed.fontSize = '75%'; } userPrefs = Object.assign(userPrefs, parsed); } } catch (e) {} userPrefs.uiStyle = 'modern'; if (!userPrefs.appTheme || userPrefs.appTheme === 'minimalist') userPrefs.appTheme = 'default'; if (!userPrefs.fontSize || !['50%', '62%', '75%', '88%', '100%'].includes(userPrefs.fontSize)) userPrefs.fontSize = '75%';
 if (!userPrefs.notificaciones || typeof userPrefs.notificaciones !== 'object') { userPrefs.notificaciones = { habilitadas: true, racha21: true, likesAmigos: true, novedadesAmigos: true }; }
 resolverAnioActivoInicial();
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
@@ -19145,13 +19007,14 @@ function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false) {
         appTheme: userPrefs.appTheme || 'default',
         uiStyle: userPrefs.uiStyle || 'modern',
         font: userPrefs.font || "'Lexend', sans-serif",
-        fontSize: userPrefs.fontSize || '100%',
+        fontSize: userPrefs.fontSize || '75%',
         lang: userPrefs.lang || 'es',
         showEmojis: userPrefs.showEmojis !== false,
         categoriasOrden: Array.isArray(userPrefs.categoriasOrden) ? userPrefs.categoriasOrden : [],
         categoriasOcultas: Array.isArray(userPrefs.categoriasOcultas) ? userPrefs.categoriasOcultas : [],
         notificaciones: userPrefs.notificaciones || {},
         customFontChosen: localStorage.getItem('mediary_user_custom_font') === 'true',
+        customFontSizeChosen: localStorage.getItem('mediary_user_custom_font_size') === 'true',
         cardExpanded: {
           spotify: localStorage.getItem('mediary_spotify_card_expanded') === 'true',
           psn: localStorage.getItem('mediary_psn_card_expanded') === 'true',
@@ -19270,7 +19133,14 @@ function restaurarPreferenciasYAppsDesdeNube(prefs) {
       userPrefs.font = configUI.font;
       try { localStorage.setItem('mediary_user_custom_font', 'true'); } catch(e) {}
     }
-    if (configUI.fontSize) userPrefs.fontSize = configUI.fontSize;
+    if (configUI.fontSize && ['50%', '62%', '75%', '88%', '100%'].includes(configUI.fontSize)) {
+      if (configUI.customFontSizeChosen) {
+        userPrefs.fontSize = configUI.fontSize;
+        try { localStorage.setItem('mediary_user_custom_font_size', 'true'); } catch(e) {}
+      } else if (configUI.fontSize !== '100%') {
+        userPrefs.fontSize = configUI.fontSize;
+      }
+    }
     if (configUI.lang) userPrefs.lang = configUI.lang;
     if (typeof configUI.showEmojis === 'boolean') userPrefs.showEmojis = configUI.showEmojis;
     if (Array.isArray(configUI.categoriasOrden) && configUI.categoriasOrden.length) {
@@ -19515,20 +19385,18 @@ if (tabBtnPerfilIcon) {
  }
 }
 const idTxtEl = document.getElementById('perfil-id-txt'); if (idTxtEl) { const miId = generarOObtenerIdUsuario(estado.userEmail || perfilUsuario.emailGoogle, perfilUsuario.nickname, perfilUsuario.preferencias); idTxtEl.textContent = miId; } const nickEl = document.getElementById('perfil-nick-render'); if (nickEl) nickEl.textContent = perfilUsuario.nickname || 'Cinéfilo & Lector'; const bioEl = document.getElementById('perfil-bio-render'); if (bioEl) bioEl.textContent = perfilUsuario.bio || 'Coleccionando historias en Mediary';
-const emailTxt = document.getElementById('perfil-email-txt'); const emailEl = document.getElementById('perfil-email-render'); const txtBtnG = document.getElementById('txt-btn-google'); const cfgBadge = document.getElementById('cfg-supabase-badge'); const cfgStatus = document.getElementById('cfg-account-status');
+const emailTxt = document.getElementById('perfil-email-txt'); const emailEl = document.getElementById('perfil-email-render'); const txtBtnG = document.getElementById('txt-btn-google'); const cfgBadge = document.getElementById('cfg-supabase-badge');
 const userEmailActivo = estado.userEmail || perfilUsuario.emailGoogle;
 if (userEmailActivo) {
  if (emailTxt) emailTxt.textContent = userEmailActivo;
  else if (emailEl) emailEl.textContent = userEmailActivo;
- if (txtBtnG) txtBtnG.textContent = `Cambiar cuenta (${userEmailActivo.split('@')[0]})`;
+ if (txtBtnG) txtBtnG.textContent = `${userPrefs && userPrefs.lang === 'en' ? 'Switch account' : 'Cambiar cuenta'} (${userEmailActivo.split('@')[0]})`;
  if (cfgBadge) cfgBadge.style.display = 'inline-flex';
- if (cfgStatus) cfgStatus.innerHTML = `Conectado como <strong>${userEmailActivo}</strong>. Tus listas y datos están sincronizados en Supabase Cloud.`;
 } else {
  if (emailTxt) emailTxt.textContent = 'Sin cuenta vinculada';
  else if (emailEl) emailEl.textContent = 'Sin cuenta vinculada';
- if (txtBtnG) txtBtnG.textContent = 'Iniciar sesión / Crear cuenta';
+ if (txtBtnG) txtBtnG.textContent = userPrefs && userPrefs.lang === 'en' ? 'Sign in / Create account' : 'Iniciar sesión / Crear cuenta';
  if (cfgBadge) cfgBadge.style.display = 'none';
- if (cfgStatus) cfgStatus.textContent = 'Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.';
 }
 aplicarPortadaEnHeroCard('perfil-hero-card');
 renderizarCancionFavorita();
@@ -24796,37 +24664,252 @@ function obtenerTop5CancionesStats_(musicaRegs, spotifyStats, lastfmStats) {
 }
 
 
+const CFG_FONT_LABELS = {
+  "'Lexend', sans-serif": 'Lexend',
+  "'Plus Jakarta Sans', sans-serif": 'Plus Jakarta Sans',
+  "'Inter', sans-serif": 'Inter',
+  "'Cinzel', serif": 'Cinzel',
+  "'Outfit', sans-serif": 'Outfit',
+  "'Space Grotesk', sans-serif": 'Space Grotesk',
+  "'Playfair Display', serif": 'Playfair Display'
+};
+
+let _cfgAppGestionActiva = null;
+
+function cerrarDropdownsConfig() {
+  ['lang', 'font'].forEach(tipo => {
+    const menu = document.getElementById(`menu-cfg-${tipo}`);
+    const btn = document.getElementById(`btn-cfg-${tipo}-dropdown`);
+    if (menu) menu.style.display = 'none';
+    if (btn) {
+      btn.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+function toggleCfgDropdown(tipo, e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById(`menu-cfg-${tipo}`);
+  const btn = document.getElementById(`btn-cfg-${tipo}-dropdown`);
+  if (!menu || !btn) return;
+  const estaAbierto = menu.style.display !== 'none';
+  cerrarDropdownsConfig();
+  if (!estaAbierto) {
+    menu.style.display = 'block';
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+}
+
+function obtenerEstadoAppsVinculadasConfig() {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) ? userPrefs.lang : 'es';
+
+  const spToken = localStorage.getItem('mediary_spotify_token');
+  let spUser = null;
+  try { const r = localStorage.getItem('mediary_spotify_user'); if (r) spUser = JSON.parse(r); } catch (e) {}
+  const spConn = !!(spToken || spUser);
+
+  const lfmConn = localStorage.getItem('mediary_lastfm_connected') === 'true';
+  let lfmUser = null;
+  try { const r = localStorage.getItem('mediary_lastfm_user'); if (r) lfmUser = JSON.parse(r); } catch (e) {}
+  const lfmName = (lfmUser && (lfmUser.realname || lfmUser.name)) || localStorage.getItem('mediary_lastfm_username') || 'Last.fm';
+
+  const steamConn = localStorage.getItem('mediary_steam_connected') === 'true';
+  let steamUser = null;
+  try { const r = localStorage.getItem('mediary_steam_user'); if (r) steamUser = JSON.parse(r); } catch (e) {}
+  const steamName = (steamUser && steamUser.personaName) || localStorage.getItem('mediary_steam_id') || 'Steam';
+
+  const psnConn = localStorage.getItem('mediary_psn_connected') === 'true';
+  let psnUser = null;
+  try { const r = localStorage.getItem('mediary_psn_user'); if (r) psnUser = JSON.parse(r); } catch (e) {}
+  const psnName = localStorage.getItem('mediary_psn_username') || (psnUser && psnUser.onlineId) || 'PlayStation';
+
+  return [
+    {
+      id: 'spotify',
+      name: 'Spotify',
+      category: 'musica',
+      color: '#1DB954',
+      bg: 'rgba(29,185,84,0.12)',
+      connected: spConn,
+      userName: (spUser && spUser.display_name) || 'Spotify',
+      avatar: (spUser && spUser.avatar) || '',
+      svg: '<svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.218.358-.684.472-1.042.254-2.858-1.746-6.455-2.14-10.693-1.173-.41.094-.82-.162-.914-.572-.094-.41.162-.82.572-.914 4.636-1.059 8.607-.611 11.823 1.354.358.218.472.684.254 1.051zm1.468-3.262c-.274.446-.86.588-1.306.314-3.272-2.011-8.261-2.594-12.133-1.418-.501.152-1.033-.133-1.185-.634-.152-.501.133-1.033.634-1.185 4.417-1.34 9.913-.687 13.676 1.617.446.274.588.86.314 1.306zm.126-3.41c-3.924-2.33-10.395-2.545-14.154-1.403-.601.183-1.242-.164-1.425-.765-.183-.601.164-1.242.765-1.425 4.316-1.31 11.455-1.062 15.967 1.617.541.321.717 1.026.396 1.567-.321.541-1.026.717-1.549.409z"/></svg>',
+      syncFn: 'actualizarDatosSpotify(true)',
+      disconnectFn: 'desconectarSpotify()',
+      connectFn: () => { if (typeof iniciarFlujoSpotifyAuth === 'function') iniciarFlujoSpotifyAuth(); }
+    },
+    {
+      id: 'lastfm',
+      name: 'Last.fm',
+      category: 'musica',
+      color: '#d51007',
+      bg: 'rgba(213,16,7,0.12)',
+      connected: lfmConn,
+      userName: lfmName,
+      avatar: (lfmUser && lfmUser.avatar) || '',
+      svg: '<svg width="22" height="22" viewBox="0 0 24 24" fill="#d51007"><path d="M11.999 0C5.373 0 0 5.373 0 12c0 6.627 5.373 12 11.999 12 6.627 0 12.001-5.373 12.001-12 0-6.627-5.374-12-12.001-12zm-1.82 14.898c-.613 1.137-1.57 1.803-2.909 1.803-1.99 0-3.37-1.62-3.37-3.987 0-2.553 1.57-4.135 3.542-4.135 1.778 0 2.68 1.026 3.12 2.366l1.697-.754C11.536 7.95 10.03 6.54 7.442 6.54c-3.495 0-5.81 2.428-5.81 6.193 0 3.82 2.408 6.096 5.568 6.096 2.45 0 4.04-1.256 4.795-3.08l-1.816-.851zm8.303-.523c-1.005 0-1.842-.482-2.198-1.424l-3.266 1.487c.858 2.533 2.973 4.145 5.543 4.145 3.39 0 5.46-2.177 5.46-5.84 0-3.328-1.842-5.15-4.96-5.15-2.827 0-4.668 1.884-4.836 4.773l1.8.859c.147-1.78 1.256-2.889 3.036-2.889 1.884 0 2.91 1.047 2.91 2.805 0 1.55-1.047 2.24-2.489 2.24z"/></svg>',
+      syncFn: 'sincronizarCuentaLastFm(null, true)',
+      disconnectFn: 'desconectarLastFm()',
+      connectFn: () => { if (typeof abrirModalConectarLastFm === 'function') abrirModalConectarLastFm(); }
+    },
+    {
+      id: 'steam',
+      name: 'Steam',
+      category: 'juegos',
+      color: '#66c0f4',
+      bg: 'rgba(102,192,244,0.12)',
+      connected: steamConn,
+      userName: steamName,
+      avatar: (steamUser && steamUser.avatar) || '',
+      svg: '<svg width="22" height="22" viewBox="0 0 24 24" fill="#66c0f4"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0zM7.558 16.323c-.325.795-1.109 1.344-2.021 1.344-.127 0-.251-.013-.374-.035l2.455 1.015c.677-.384 1.187-1.026 1.393-1.802-.458-.137-.96-.341-1.453-.522zm8.384-9.619c-1.246 0-2.26 1.014-2.26 2.26s1.014 2.26 2.26 2.26 2.26-1.014 2.26-2.26-1.014-2.26-2.26-2.26zm0 3.616c-.748 0-1.356-.607-1.356-1.356s.608-1.356 1.356-1.356c.748 0 1.355.607 1.355 1.356s-.607 1.356-1.355 1.356z"/></svg>',
+      syncFn: 'actualizarDatosSteam(true)',
+      disconnectFn: 'desconectarSteam()',
+      connectFn: () => { if (typeof abrirModalConectarSteam === 'function') abrirModalConectarSteam(); },
+      extraLabel: l === 'en' ? 'Steam Web API Key' : 'Clave Steam Web API'
+    },
+    {
+      id: 'playstation',
+      name: 'PlayStation',
+      category: 'juegos',
+      color: '#0070d1',
+      bg: 'rgba(0,112,209,0.14)',
+      connected: psnConn,
+      userName: psnName,
+      avatar: (psnUser && psnUser.avatar) || '',
+      svg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="#0070d1"><path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg>',
+      syncFn: 'sincronizarCuentaPlayStation(null, true)',
+      disconnectFn: 'desconectarPlayStation()',
+      connectFn: () => { if (typeof abrirModalConectarPsn === 'function') abrirModalConectarPsn(); },
+      extraLabel: 'Token NPSSO'
+    }
+  ];
+}
+
+function renderizarAppsVinculadasConfig() {
+  const logosRow = document.getElementById('cfg-linked-apps-logos');
+  const manageBox = document.getElementById('cfg-linked-app-manage');
+  if (!logosRow) return;
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) ? userPrefs.lang : 'es';
+  const apps = obtenerEstadoAppsVinculadasConfig();
+  const conectadas = apps.filter(a => a.connected);
+
+  if (conectadas.length === 0) {
+    logosRow.innerHTML = `<span style="font-size:0.78rem; color:var(--muted);">${l === 'en' ? 'No linked accounts' : 'Sin cuentas vinculadas'}</span>`;
+  } else {
+    logosRow.innerHTML = conectadas.map(app => {
+      const selCls = _cfgAppGestionActiva === app.id ? ' is-selected' : '';
+      const safeTitle = `${app.name}${app.userName && app.userName !== app.name ? ' · ' + app.userName : ''}`.replace(/"/g, '&quot;');
+      return `<button type="button" class="cfg-app-logo-btn is-connected${selCls}" style="--app-brand:${app.color};--app-brand-bg:${app.bg};" onclick="abrirGestionAppVinculadaConfig('${app.id}')" title="${safeTitle}" aria-label="${safeTitle}">${app.svg}<span class="cfg-app-linked-dot">✓</span></button>`;
+    }).join('');
+  }
+
+  apps.forEach(app => {
+    const optBtn = document.getElementById(`cfg-opt-logo-${app.id}`);
+    if (!optBtn) return;
+    optBtn.classList.toggle('is-connected', app.connected);
+    const existingDot = optBtn.querySelector('.cfg-app-linked-dot');
+    if (app.connected && !existingDot) {
+      const dot = document.createElement('span');
+      dot.className = 'cfg-app-linked-dot';
+      dot.textContent = '✓';
+      optBtn.appendChild(dot);
+    } else if (!app.connected && existingDot) {
+      existingDot.remove();
+    }
+  });
+
+  if (manageBox) {
+    const appSel = _cfgAppGestionActiva ? apps.find(a => a.id === _cfgAppGestionActiva && a.connected) : null;
+    if (!appSel) {
+      _cfgAppGestionActiva = null;
+      manageBox.style.display = 'none';
+      manageBox.innerHTML = '';
+    } else {
+      const safeUser = String(appSel.userName || appSel.name).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      let extraHtml = '';
+      if (appSel.id === 'steam') {
+        const hasKey = !!localStorage.getItem('mediary_steam_api_key');
+        extraHtml = `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:0.74rem;color:var(--muted);">Steam Web API Key</span><button type="button" onclick="toggleSteamApiKeyInput()" id="btn-toggle-steam-key" style="background:none;border:none;color:#66c0f4;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasKey ? (l === 'en' ? 'Active' : 'Activa') : (l === 'en' ? '+ Configure' : '+ Configurar')}</button></div><div id="cfg-steam-apikey-wrap" style="display:none;margin-top:8px;"><div class="app-connect-input-row"><input type="text" id="cfg-steam-api-key-input" name="steam_api_key_input" class="form-input" placeholder="Steam Web API Key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="-webkit-text-security:disc;text-security:disc;" value="${(localStorage.getItem('mediary_steam_api_key') || '').replace(/"/g, '&quot;')}"><button type="button" class="btn-connect-action btn-connect-steam" onclick="guardarSteamApiKeyDesdeInput('cfg-steam-api-key-input')">${l === 'en' ? 'Save' : 'Guardar'}</button></div></div></div>`;
+      } else if (appSel.id === 'playstation') {
+        const hasTok = !!localStorage.getItem('mediary_psn_npsso');
+        extraHtml = `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:0.74rem;color:var(--muted);">Token NPSSO</span><button type="button" onclick="togglePsnNpssoInput()" id="btn-toggle-psn-npsso" style="background:none;border:none;color:#38bdf8;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasTok ? (l === 'en' ? 'Active' : 'Activo') : (l === 'en' ? '+ Configure' : '+ Configurar')}</button></div><div id="cfg-psn-npsso-wrap" style="display:none;margin-top:8px;"><div class="app-connect-input-row"><input type="text" id="cfg-psn-npsso-input" name="psn_npsso_input" class="form-input" placeholder="Token NPSSO" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" style="-webkit-text-security:disc;text-security:disc;" value="${(localStorage.getItem('mediary_psn_npsso') || '').replace(/"/g, '&quot;')}"><button type="button" class="btn-connect-action btn-connect-psn" onclick="guardarPsnNpssoDesdeInput('cfg-psn-npsso-input')">${l === 'en' ? 'Save' : 'Guardar'}</button></div></div></div>`;
+      }
+      manageBox.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;"><div style="display:flex;align-items:center;gap:10px;min-width:0;">${appSel.svg}<div style="min-width:0;"><strong style="font-size:0.86rem;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${safeUser}</strong></div></div><button type="button" onclick="abrirGestionAppVinculadaConfig(null)" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1;padding:4px;" aria-label="Cerrar">✕</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><button type="button" class="btn-spotify-sub-action" style="background:${appSel.bg};color:${appSel.color};border:1px solid ${appSel.color};" onclick="${appSel.syncFn}">${l === 'en' ? 'Sync' : 'Sincronizar'}</button><button type="button" class="btn-spotify-sub-action" style="background:rgba(239,68,68,0.08);color:#f87171;border:1px solid rgba(239,68,68,0.25);" onclick="${appSel.disconnectFn}">${l === 'en' ? 'Disconnect' : 'Desconectar'}</button></div>${extraHtml}`;
+      manageBox.style.display = 'block';
+    }
+  }
+}
+
+function toggleOpcionesVinculacionConfig() {
+  const panel = document.getElementById('cfg-link-options-panel');
+  const btn = document.getElementById('btn-cfg-toggle-link-options');
+  if (!panel) return;
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) ? userPrefs.lang : 'es';
+  const abrir = panel.style.display === 'none';
+  panel.style.display = abrir ? 'flex' : 'none';
+  if (btn) {
+    btn.textContent = abrir ? (l === 'en' ? 'Close' : 'Cerrar') : (l === 'en' ? '+ Link' : '+ Vincular');
+  }
+}
+
+function abrirGestionAppVinculadaConfig(serviceId, forzarAbrir = false) {
+  if (!serviceId) {
+    _cfgAppGestionActiva = null;
+  } else if (!forzarAbrir && _cfgAppGestionActiva === serviceId) {
+    _cfgAppGestionActiva = null;
+  } else {
+    _cfgAppGestionActiva = serviceId;
+  }
+  renderizarAppsVinculadasConfig();
+}
+
+function clickAppVinculacionConfig(serviceId) {
+  const apps = obtenerEstadoAppsVinculadasConfig();
+  const app = apps.find(a => a.id === serviceId);
+  if (!app) return;
+  if (app.connected) {
+    abrirGestionAppVinculadaConfig(serviceId, true);
+  } else {
+    app.connectFn();
+  }
+}
+
 function actualizarTarjetasVisualesConfig() {
   migrarTemaLegadoSiEsNecesario();
-  const l = userPrefs.lang || 'es';
 
-  // Themes de la App (Predeterminado, Minimalista, Juguetón)
+  // Themes de la App (oculto)
   const curAppTheme = userPrefs.appTheme || 'default';
   document.querySelectorAll('#cfg-app-theme-cards .app-theme-card').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.apptheme === curAppTheme);
   });
 
-  // Idioma
+  // Selector desplegable de Idioma
   const curLang = userPrefs.lang || 'es';
-  document.querySelectorAll('#cfg-lang-cards .cfg-option-card').forEach(btn => {
+  const langLabelEl = document.getElementById('cfg-lang-selected-label');
+  if (langLabelEl) langLabelEl.textContent = curLang === 'en' ? 'English' : 'Español';
+  document.querySelectorAll('#menu-cfg-lang .cfg-dropdown-item').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === curLang);
   });
-  const esCardSub = document.querySelector('#cfg-lang-cards [data-lang="es"] .lang-card-sub');
-  if (esCardSub) esCardSub.textContent = curLang === 'en' ? 'Default' : 'Predeterminado';
-  const enCardSub = document.querySelector('#cfg-lang-cards [data-lang="en"] .lang-card-sub');
-  if (enCardSub) enCardSub.textContent = curLang === 'en' ? 'Interface in English' : 'Interfaz en inglés';
 
-  // Tipografías
-  document.querySelectorAll('#cfg-font-cards .cfg-option-card').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.val === userPrefs.font);
+  // Selector desplegable de Tipografía
+  const curFont = userPrefs.font || "'Lexend', sans-serif";
+  const fontLabelEl = document.getElementById('cfg-font-selected-label');
+  if (fontLabelEl) {
+    fontLabelEl.textContent = CFG_FONT_LABELS[curFont] || 'Lexend';
+    fontLabelEl.style.fontFamily = curFont;
+  }
+  document.querySelectorAll('#menu-cfg-font .cfg-dropdown-item').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.val === curFont);
   });
 
-  // Tamaños
+  // Tamaños (predeterminado al medio: 75%)
   const sizeOrder = ['50%', '62%', '75%', '88%', '100%'];
-  let curFontSize = userPrefs.fontSize || '100%';
+  let curFontSize = userPrefs.fontSize || '75%';
   if (!sizeOrder.includes(curFontSize)) {
-    curFontSize = '100%';
-    userPrefs.fontSize = '100%';
+    curFontSize = '75%';
+    userPrefs.fontSize = '75%';
   }
   const curIdx = Math.max(0, sizeOrder.indexOf(curFontSize));
   const fillEl = document.getElementById('size-line-fill');
@@ -24840,7 +24923,7 @@ function actualizarTarjetasVisualesConfig() {
     lbl.classList.toggle('active', lbl.dataset.val === curFontSize);
   });
 
-  // Modo de apariencia (segmented control: system, light, dark)
+  // Modo de apariencia (Sistema / Claro / Oscuro)
   const mode = userPrefs.themeMode || 'system';
   const btnSys = document.getElementById('btn-mode-system');
   const btnLight = document.getElementById('btn-mode-light');
@@ -24849,36 +24932,14 @@ function actualizarTarjetasVisualesConfig() {
   if (btnLight) btnLight.classList.toggle('active', mode === 'light');
   if (btnDark) btnDark.classList.toggle('active', mode === 'dark');
 
-  // Indicador de modo detectado en tiempo real
-  const sysLabel = document.getElementById('cfg-theme-system-detected');
-  if (sysLabel) {
-    const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (mode === 'system') {
-      sysLabel.textContent = l === 'en'
-        ? `(Auto: ${isDark ? 'Dark' : 'Light'} detected)`
-        : `(Auto: ${isDark ? 'Oscuro' : 'Claro'} detectado)`;
-    } else {
-      sysLabel.textContent = mode === 'light'
-        ? (l === 'en' ? '(Forced Light)' : '(Claro fijo)')
-        : (l === 'en' ? '(Forced Dark)' : '(Oscuro fijo)');
-    }
-  }
-
-  // Tarjetas de los 4 temas
-  const effectiveTheme = obtenerTemaEfectivo();
-  const effectiveMode = effectiveTheme.endsWith('-light') ? 'light' : 'dark';
+  // Los 4 themes en círculos horizontales
   const curFamily = userPrefs.themeFamily || 'slate';
-
   document.querySelectorAll('#cfg-theme-cards .theme-family-card').forEach(card => {
-    const fam = card.dataset.family;
-    const isFamActive = fam === curFamily;
-    card.classList.toggle('active', isFamActive);
-
-    const pillLight = card.querySelector('.pill-light');
-    const pillDark = card.querySelector('.pill-dark');
-    if (pillLight) pillLight.classList.toggle('active', isFamActive && effectiveMode === 'light');
-    if (pillDark) pillDark.classList.toggle('active', isFamActive && effectiveMode === 'dark');
+    card.classList.toggle('active', card.dataset.family === curFamily);
   });
+
+  // Tarjeta de aplicaciones y cuentas vinculadas
+  renderizarAppsVinculadasConfig();
 }
 
 function clickEnLineaTamano(e) {
@@ -24894,6 +24955,7 @@ function seleccionarIdiomaVisual(lang) {
   const hidden = document.getElementById('cfg-lang');
   if (hidden) hidden.value = lang;
   userPrefs.lang = lang;
+  cerrarDropdownsConfig();
   guardarPreferenciasLocales();
   actualizarTarjetasVisualesConfig();
   cambiarIdiomaEnVivo();
@@ -24901,8 +24963,23 @@ function seleccionarIdiomaVisual(lang) {
 function seleccionarUiStyleVisual(style) {
   userPrefs.uiStyle = 'modern'; if (!userPrefs.appTheme) userPrefs.appTheme = 'default';
 }
-function seleccionarFontVisual(val) { document.getElementById('cfg-font').value = val; try { localStorage.setItem('mediary_user_custom_font', 'true'); } catch (e) {} aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
-function seleccionarSizeVisual(val) { document.getElementById('cfg-font-size').value = val; aplicarConfiguracionEnVivo(); actualizarTarjetasVisualesConfig(); }
+function seleccionarFontVisual(val) {
+  const hidden = document.getElementById('cfg-font');
+  if (hidden) hidden.value = val;
+  try { localStorage.setItem('mediary_user_custom_font', 'true'); } catch (e) {}
+  cerrarDropdownsConfig();
+  aplicarConfiguracionEnVivo();
+  actualizarTarjetasVisualesConfig();
+  guardarPreferenciasLocales();
+}
+function seleccionarSizeVisual(val) {
+  const hidden = document.getElementById('cfg-font-size');
+  if (hidden) hidden.value = val;
+  try { localStorage.setItem('mediary_user_custom_font_size', 'true'); } catch (e) {}
+  aplicarConfiguracionEnVivo();
+  actualizarTarjetasVisualesConfig();
+  guardarPreferenciasLocales();
+}
 
 function seleccionarAppThemeVisual(themeKey) {
   if (themeKey === 'playful') {
@@ -24956,14 +25033,19 @@ function seleccionarThemeVisual(val) {
 function abrirModalConfiguracion() {
   if (typeof actualizarIndicadorUsoAlmacenamiento === 'function') setTimeout(actualizarIndicadorUsoAlmacenamiento, 50); 
   try {
+    cerrarDropdownsConfig();
+    _cfgAppGestionActiva = null;
+    const linkPanel = document.getElementById('cfg-link-options-panel');
+    if (linkPanel) linkPanel.style.display = 'none';
+    const linkBtn = document.getElementById('btn-cfg-toggle-link-options');
+    if (linkBtn) linkBtn.textContent = (userPrefs && userPrefs.lang === 'en') ? '+ Link' : '+ Vincular';
     if (userPrefs) {
       migrarTemaLegadoSiEsNecesario();
       if (document.getElementById('cfg-lang')) document.getElementById('cfg-lang').value = userPrefs.lang || 'es';
       if (document.getElementById('cfg-font')) document.getElementById('cfg-font').value = userPrefs.font || "'Lexend', sans-serif";
-      if (document.getElementById('cfg-font-size')) document.getElementById('cfg-font-size').value = userPrefs.fontSize || '100%';
+      if (document.getElementById('cfg-font-size')) document.getElementById('cfg-font-size').value = userPrefs.fontSize || '75%';
       if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = userPrefs.themeFamily || 'slate';
       if (document.getElementById('cfg-app-theme')) document.getElementById('cfg-app-theme').value = userPrefs.appTheme || 'default';
-      
     }
     const cvInp = document.getElementById('cfg-comicvine-key');
     if (cvInp) cvInp.value = window.COMICVINE_K || COMICVINE_K || '';
@@ -24979,6 +25061,7 @@ function abrirModalConfiguracion() {
     if (typeof actualizarUISteam === 'function') actualizarUISteam();
     if (typeof actualizarUILastFm === 'function') actualizarUILastFm();
     if (typeof actualizarUIPlayStation === 'function') actualizarUIPlayStation();
+    renderizarAppsVinculadasConfig();
     const pwaWrap = document.getElementById('cfg-install-pwa-wrap');
     if (pwaWrap) {
       pwaWrap.style.display = (typeof estaAppYaInstalada === 'function' && estaAppYaInstalada()) ? 'none' : (deferredPwaPrompt ? 'flex' : 'none');
@@ -25018,6 +25101,7 @@ function cambiarIdiomaEnVivo() {
   actualizarTextosInterfaz();
   inicializarSelectoresFechasAproximadas();
   actualizarUISelectorAnio();
+  renderizarAppsVinculadasConfig();
   if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); }
   else if (estado.categoria === 'discover') renderizarDiscoverVista();
   else if (estado.categoria === 'amigos') cargarAmigosYSolicitudes(false);
@@ -25031,6 +25115,7 @@ function cambiarIdiomaEnVivo() {
 }
 function guardarYCerrarConfiguracion() { 
   try {
+    cerrarDropdownsConfig();
     aplicarConfiguracionEnVivo(); 
     if (document.getElementById('cfg-lang')) {
       userPrefs.lang = document.getElementById('cfg-lang').value;
@@ -25067,7 +25152,15 @@ function guardarYCerrarConfiguracion() {
     console.error('Error al guardar configuracion:', err);
   }
 }
-function restablecerConfiguracionPorDefecto() { try { localStorage.removeItem('mediary_user_custom_font'); } catch (e) {} userPrefs = { font: "'Lexend', sans-serif", fontSize: "100%", theme: "default", appTheme: "default", uiStyle: "modern",  lang: "es" }; abrirModalConfiguracion(); aplicarEstilosGlobales(); actualizarTextosInterfaz(); }
+function restablecerConfiguracionPorDefecto() {
+  try { localStorage.removeItem('mediary_user_custom_font'); } catch (e) {}
+  try { localStorage.removeItem('mediary_user_custom_font_size'); } catch (e) {}
+  userPrefs = Object.assign(userPrefs || {}, { font: "'Lexend', sans-serif", fontSize: "75%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", appTheme: "default", uiStyle: "modern", lang: "es" });
+  guardarPreferenciasLocales();
+  abrirModalConfiguracion();
+  aplicarEstilosGlobales();
+  actualizarTextosInterfaz();
+}
 
 // --- INTEGRACIÓN SPOTIFY (WEB API PKCE OAUTH & ESTADÍSTICAS) ---
 var estadoSpotify = {
@@ -26092,6 +26185,7 @@ function actualizarUISpotify() {
     if (disBox) disBox.style.display = 'block';
     if (connBox) connBox.style.display = 'none';
   }
+  if (typeof renderizarAppsVinculadasConfig === 'function') renderizarAppsVinculadasConfig();
 }
 
 function desconectarSpotify() {
@@ -27070,6 +27164,7 @@ function actualizarUISteam() {
     if (disBox) disBox.style.display = 'block';
     if (connBox) connBox.style.display = 'none';
   }
+  if (typeof renderizarAppsVinculadasConfig === 'function') renderizarAppsVinculadasConfig();
 }
 
 function toggleSteamApiKeyInput() {
@@ -27335,6 +27430,7 @@ function actualizarUILastFm() {
     if (disBox) disBox.style.display = 'block';
     if (connBox) connBox.style.display = 'none';
   }
+  if (typeof renderizarAppsVinculadasConfig === 'function') renderizarAppsVinculadasConfig();
 }
 
 async function sincronizarCuentaLastFm(username, notificar = false) {
@@ -28814,6 +28910,7 @@ function actualizarUIPlayStation() {
     if (disBox) disBox.style.display = 'block';
     if (connBox) connBox.style.display = 'none';
   }
+  if (typeof renderizarAppsVinculadasConfig === 'function') renderizarAppsVinculadasConfig();
 }
 
 function togglePsnNpssoInput() {
