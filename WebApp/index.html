@@ -27469,16 +27469,20 @@ function limpiarSteamParamsUrl() {
 }
 
 async function fetchSteamProxyContent_(targetUrl) {
-  const enc = encodeURIComponent(targetUrl);
+  if (!targetUrl) return null;
+  const sep = targetUrl.includes('?') ? '&' : '?';
+  const urlConBuster = `${targetUrl}${sep}_cb=${Date.now()}`;
+  const enc = encodeURIComponent(urlConBuster);
+  const nowTs = Date.now();
   const proxies = [
-    { url: `https://api.codetabs.com/v1/proxy?quest=${enc}`, type: 'raw' },
-    { url: `https://api.allorigins.win/get?url=${enc}&_ts=${Date.now()}`, type: 'allorigins' },
-    { url: `https://corsproxy.io/?url=${enc}`, type: 'raw' }
+    { url: `https://api.allorigins.win/get?url=${enc}&_ts=${nowTs}`, type: 'allorigins' },
+    { url: `https://api.codetabs.com/v1/proxy?quest=${enc}&_ts=${nowTs}`, type: 'raw' },
+    { url: `https://corsproxy.io/?url=${enc}&_ts=${nowTs}`, type: 'raw' }
   ];
 
   for (const p of proxies) {
     try {
-      const res = await fetch(p.url, { signal: AbortSignal.timeout(7000) });
+      const res = await fetch(p.url, { signal: AbortSignal.timeout(6500), cache: 'no-store' });
       if (!res.ok) continue;
       if (p.type === 'allorigins') {
         const json = await res.json().catch(() => null);
@@ -27557,7 +27561,6 @@ function extraerSteamNowPlayingDesdeXml_(profileXmlRaw) {
     const doc = parser.parseFromString(profileXmlRaw, 'text/xml');
     if (doc.querySelector('parsererror')) return null;
 
-    const onlineState = (doc.querySelector('onlineState')?.textContent || '').trim().toLowerCase();
     const inGameNode = doc.querySelector('inGameInfo');
     if (inGameNode) {
       const gameName = (inGameNode.querySelector('gameName')?.textContent || '').trim();
@@ -27577,7 +27580,8 @@ function extraerSteamNowPlayingDesdeXml_(profileXmlRaw) {
       }
     }
 
-    if (onlineState === 'online' || onlineState === 'offline') {
+    // Si es un XML de Steam válido pero no tiene inGameInfo activo, está en reposo (no jugando)
+    if (doc.querySelector('profile') || doc.querySelector('steamID') || doc.querySelector('steamID64') || doc.querySelector('onlineState')) {
       return { isPlaying: false };
     }
   } catch(e) {}
@@ -27629,7 +27633,7 @@ function extraerSteamNowPlayingDesdeHtml_(profileHtmlRaw, gamesCatalog = []) {
       };
     }
 
-    if (/class="profile_in_game\s+(?:offline|online)"/i.test(profileHtmlRaw)) {
+    if (/class="profile_in_game\s+(?:offline|online)"/i.test(profileHtmlRaw) || profileHtmlRaw.includes('actual_persona_name') || profileHtmlRaw.includes('profile_header') || profileHtmlRaw.includes('responsive_page_template_content')) {
       return { isPlaying: false };
     }
   } catch(e) {}
@@ -27987,16 +27991,21 @@ async function obtenerDatosSteamPublico_(steamIdOrCustom, knownSteamId64 = null)
     }
   }
 
-  // 6b. Extraer actividad en vivo actual de Steam (XML > HTML > Miniprofile)
+  // 6b. Extraer actividad en vivo actual de Steam (Miniprofile en tiempo real > XML > HTML)
   let nowPlaying = null;
+  const npMini = miniFinal?.inGame ? miniFinal.inGame : (miniFinal?.hasPresenceInfo ? { isPlaying: false } : null);
   const npXml = extraerSteamNowPlayingDesdeXml_(profileXmlRaw);
   const npHtml = extraerSteamNowPlayingDesdeHtml_(profileHtmlRaw, allGames);
-  const npMini = miniFinal?.inGame ? miniFinal.inGame : (miniFinal?.hasPresenceInfo ? { isPlaying: false } : null);
 
-  if (npXml && npXml.isPlaying) nowPlaying = npXml;
-  else if (npHtml && npHtml.isPlaying) nowPlaying = npHtml;
-  else if (npMini && npMini.isPlaying) nowPlaying = npMini;
-  else if (npXml || npHtml || npMini) nowPlaying = { isPlaying: false };
+  if (npMini && typeof npMini.isPlaying === 'boolean') {
+    nowPlaying = npMini;
+  } else if (npXml && npXml.isPlaying) {
+    nowPlaying = npXml;
+  } else if (npHtml && npHtml.isPlaying) {
+    nowPlaying = npHtml;
+  } else if (npXml || npHtml || npMini) {
+    nowPlaying = { isPlaying: false };
+  }
 
   // 7. Calcular horas totales y recientes
   allGames.forEach(g => {
@@ -28093,6 +28102,9 @@ function guardarEstadoEnVivoSteam_(rawNowPlaying, opciones = {}) {
     if (cambio && !opciones.silenciarNube && typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
       sincronizarPreferenciasYAppsHaciaNube(false);
     }
+    if (cambio && typeof iniciarPollingSteamLive === 'function') {
+      iniciarPollingSteamLive();
+    }
     return cambio;
   } else {
     // Si fue activado manualmente por el usuario desde el modal, no borrarlo en un poll automático sin juego en Steam
@@ -28111,6 +28123,13 @@ function guardarEstadoEnVivoSteam_(rawNowPlaying, opciones = {}) {
     if (estabaJugando && !opciones.silenciarNube && typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
       sincronizarPreferenciasYAppsHaciaNube(false);
     }
+    // IMPORTANTE: Al dejar de jugar, actualizar de inmediato la tarjeta de juego para volver a estado idle
+    if (estabaJugando && typeof renderizarPlayStationNowPlayingInicio === 'function') {
+      renderizarPlayStationNowPlayingInicio(false);
+    }
+    if (estabaJugando && typeof iniciarPollingSteamLive === 'function') {
+      iniciarPollingSteamLive();
+    }
     return estabaJugando;
   }
 }
@@ -28120,8 +28139,17 @@ async function consultarActividadEnVivoSteam_(forzar = false) {
   const steamId = (localStorage.getItem('mediary_steam_id') || '').trim();
   if (!steamId || steamId === '76561198000000000') return null;
 
+  let prevSt = null;
+  try {
+    const pRaw = localStorage.getItem('mediary_steam_now_playing');
+    if (pRaw) prevSt = JSON.parse(pRaw);
+  } catch (e) {}
+  const jugandoActualmente = !!(prevSt && prevSt.isPlaying);
+
   const ahora = Date.now();
-  if (!forzar && (ahora - _steamUltimaConsultaLive < 45000)) return null;
+  // Cuando se está jugando activamente, permitir consultar cada 12s para detectar de inmediato cuando se cierra el juego
+  const intervaloMinimo = jugandoActualmente ? 12000 : 35000;
+  if (!forzar && (ahora - _steamUltimaConsultaLive < intervaloMinimo)) return null;
   if (_steamLiveFetchEnCurso) return null;
 
   _steamLiveFetchEnCurso = true;
@@ -28162,25 +28190,27 @@ async function consultarActividadEnVivoSteam_(forzar = false) {
       } catch (e) {}
     }
 
-    // 2. Fallback sin API key: Miniprofile JSON y/o perfil XML público
-    if (!liveResult) {
+    // 2. Fallback sin API key: Miniprofile JSON en tiempo real
+    if (liveResult === null) {
       if (steamId64) {
         const mini = await obtenerSteamMiniprofile_(steamId64);
         if (mini?.inGame?.isPlaying) {
           liveResult = mini.inGame;
         } else if (mini?.hasPresenceInfo) {
+          // Si el miniprofile respondió correctamente y no hay juego activo, SABEMOS que no está jugando
           liveResult = { isPlaying: false };
         }
       }
-      if (!liveResult || !liveResult.isPlaying) {
+
+      // 3. Fallback de XML ÚNICAMENTE si el miniprofile falló completamente (liveResult sigue siendo null).
+      // Si el miniprofile ya constató que no está jugando, NUNCA sobrescribir con XML potencialmente cacheado
+      if (liveResult === null) {
         const xmlUrl = isId64
           ? `https://steamcommunity.com/profiles/${steamId}/?xml=1`
           : `https://steamcommunity.com/id/${steamId}/?xml=1`;
         const xmlRaw = await fetchSteamProxyContent_(xmlUrl);
         const npXml = extraerSteamNowPlayingDesdeXml_(xmlRaw);
-        if (npXml && npXml.isPlaying) {
-          liveResult = npXml;
-        } else if (!liveResult && npXml) {
+        if (npXml) {
           liveResult = npXml;
         }
       }
@@ -28190,6 +28220,17 @@ async function consultarActividadEnVivoSteam_(forzar = false) {
       const cambio = guardarEstadoEnVivoSteam_(liveResult, { manual: false });
       if ((cambio || forzar) && typeof renderizarPlayStationNowPlayingInicio === 'function') {
         renderizarPlayStationNowPlayingInicio(false);
+      }
+    } else {
+      // Si fallaron las consultas remotas y antes estaba jugando, verificar si la sesión ya expiró
+      if (jugandoActualmente && !prevSt.manual) {
+        const upAt = Number(prevSt.updatedAt) || 0;
+        if (Date.now() - upAt > 15 * 60 * 1000) {
+          guardarEstadoEnVivoSteam_({ isPlaying: false }, { manual: false });
+          if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
+            renderizarPlayStationNowPlayingInicio(false);
+          }
+        }
       }
     }
     return liveResult;
@@ -28201,22 +28242,40 @@ async function consultarActividadEnVivoSteam_(forzar = false) {
   }
 }
 
+let _steamIntervalCadencia = 0;
 function iniciarPollingSteamLive() {
-  if (window.steamNowPlayingInterval) return;
   if (localStorage.getItem('mediary_steam_connected') !== 'true') return;
   const steamId = (localStorage.getItem('mediary_steam_id') || '').trim();
   if (!steamId || steamId === '76561198000000000') return;
+
+  let prev = null;
+  try {
+    const raw = localStorage.getItem('mediary_steam_now_playing');
+    if (raw) prev = JSON.parse(raw);
+  } catch(e) {}
+  const jugando = !!(prev && prev.isPlaying);
+  // 15 segundos si está jugando para detectar de inmediato cuando cierra el juego; 35s si está en reposo
+  const nuevoIntervaloMs = jugando ? 15000 : 35000;
+
+  if (window.steamNowPlayingInterval) {
+    if (_steamIntervalCadencia === nuevoIntervaloMs) return;
+    clearInterval(window.steamNowPlayingInterval);
+    window.steamNowPlayingInterval = null;
+  }
+
+  _steamIntervalCadencia = nuevoIntervaloMs;
   window.steamNowPlayingInterval = setInterval(() => {
     if (typeof estado !== 'undefined' && estado.categoria === 'inicio' && !document.hidden) {
       consultarActividadEnVivoSteam_(false);
     }
-  }, 45000);
+  }, nuevoIntervaloMs);
 }
 
 function detenerPollingSteamLive() {
   if (window.steamNowPlayingInterval) {
     clearInterval(window.steamNowPlayingInterval);
     window.steamNowPlayingInterval = null;
+    _steamIntervalCadencia = 0;
   }
 }
 
@@ -30234,6 +30293,19 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
+window.addEventListener('focus', () => {
+  if (typeof estado !== 'undefined' && estado.categoria === 'inicio' && !document.hidden) {
+    let stRaw = null;
+    try { stRaw = JSON.parse(localStorage.getItem('mediary_steam_now_playing') || 'null'); } catch(e) {}
+    if (stRaw && stRaw.isPlaying && (Date.now() - _steamUltimaConsultaLive > 6000)) {
+      _steamUltimaConsultaLive = 0;
+      if (typeof consultarActividadEnVivoSteam_ === 'function') {
+        consultarActividadEnVivoSteam_(true);
+      }
+    }
+  }
+});
+
 // ==========================================
 // --- PLAYSTATION NETWORK (PSN) INTEGRATION ---
 // ==========================================
@@ -30788,7 +30860,27 @@ function obtenerEstadoJuegoActivoInicio() {
   }
 
   const psnPlaying = !!(psnNP && psnNP.isPlaying && (psnNP.titleName || psnNP.name));
-  const steamPlaying = !!(steamNP && steamNP.isPlaying && (steamNP.titleName || steamNP.name));
+  let steamPlaying = !!(steamNP && steamNP.isPlaying && (steamNP.titleName || steamNP.name));
+
+  // Salvaguarda de expiración si la sesión de Steam quedó obsoleta sin confirmación
+  if (steamPlaying && !steamNP.manual) {
+    const upAt = Number(steamNP.updatedAt) || 0;
+    if (upAt > 0 && (Date.now() - upAt > 25 * 60 * 1000)) {
+      steamPlaying = false;
+      try {
+        steamNP.isPlaying = false;
+        localStorage.setItem('mediary_steam_now_playing', JSON.stringify(steamNP));
+      } catch (e) {}
+    }
+  }
+
+  // Si está jugando en Steam y pasaron más de 12s desde la última consulta, refrescar en segundo plano
+  if (steamPlaying && !steamNP.manual && (Date.now() - _steamUltimaConsultaLive > 12000)) {
+    if (typeof consultarActividadEnVivoSteam_ === 'function') {
+      setTimeout(() => consultarActividadEnVivoSteam_(false), 80);
+    }
+  }
+
   const lastPlat = (localStorage.getItem('mediary_last_active_game_platform') || '').toLowerCase();
 
   const psnData = psnPlaying ? Object.assign({ source: 'playstation', platform: psnNP.platform || 'PS5' }, psnNP, { source: 'playstation' }) : null;
