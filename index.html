@@ -14930,11 +14930,30 @@ function inicializarFriendsLiveCarouselScrollListener() {
   }, { passive: true });
 }
 
+function esItemCancionMusica(it) {
+  if (!it) return false;
+  if (it.id && String(it.id).startsWith('sp_')) return true;
+  const cat = String(it.categoria || '').trim().toLowerCase();
+  const sub = String(it.subcategoria || '').trim().toLowerCase();
+  if (cat === 'musica') {
+    if (sub.includes('canc') || sub.includes('single') || sub.includes('song') || sub.includes('track') || sub.includes('pista') || sub.includes('tema')) {
+      return true;
+    }
+    if (sub.includes('disco') || sub.includes('album') || sub.includes('álbum') || sub.includes('ep') || sub.includes('vinil') || sub.includes('lp') || sub.includes('artista') || sub.includes('concierto') || sub.includes('festival')) {
+      return false;
+    }
+    return false;
+  }
+  return false;
+}
+window.esItemCancionMusica = esItemCancionMusica;
+
 function obtenerUltimasCancionesAmigos(limite = 10) {
   const feed = estado.amigosFeedCache || [];
   if (!feed.length) return [];
 
-  const itemsMusica = feed.filter(it => it && (it.categoria === 'Musica' || it.subcategoria === 'Canciones' || it.subcategoria === 'Discos' || it.subcategoria === 'Singles'));
+  // Los discos agregados no deben salir en la parte de música escuchada recientemente, solo canciones
+  const itemsMusica = feed.filter(it => it && esItemCancionMusica(it));
   if (!itemsMusica.length) return [];
 
   const copia = [...itemsMusica].sort((a, b) => {
@@ -15134,9 +15153,30 @@ function renderizarFeedAmigosResumidoInicio() {
     return;
   }
 
-  let itemsSemana = feed.filter(it => esFechaDeUltimaSemana(it));
+  // Las canciones escuchadas NO deben salir en las tarjetas de agregados, pero SÍ los discos
+  const feedAgregados = feed.filter(it => !esItemCancionMusica(it));
+
+  if (!feedAgregados.length) {
+    contenedor.innerHTML = `
+      <div style="background:rgba(15,23,42,0.4);border:1px dashed var(--border);border-radius:3px;padding:20px;text-align:center;color:var(--muted);font-size:0.85rem;">
+        <span style="display:block;margin-bottom:6px;">${getHeroIcon('users', '', 28)}</span>
+        ${l === 'en' ? 'No friend updates logged yet.' : 'Aún no hay actividad de tus amigos en esta semana.'}
+        <div style="margin-top:10px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
+          <button type="button" class="btn-today-pill" style="height:32px;padding:0 12px;font-size:0.78rem;" onclick="abrirVistaAmigos()">
+            ${getHeroIcon('users', '', 14)} ${l === 'en' ? 'Manage Friends' : 'Buscar Amigos'}
+          </button>
+          <button type="button" class="btn-today-pill" style="height:32px;padding:0 12px;font-size:0.78rem;" onclick="copiarMiIdUsuario()">
+            ${getHeroIcon('clipboard-document', '', 14)} ${l === 'en' ? 'Copy My ID' : 'Copiar mi ID'}
+          </button>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  let itemsSemana = feedAgregados.filter(it => esFechaDeUltimaSemana(it));
   if (!itemsSemana.length) {
-    itemsSemana = feed.slice(0, 8);
+    itemsSemana = feedAgregados.slice(0, 8);
   } else {
     itemsSemana = itemsSemana.slice(0, 15);
   }
@@ -15850,7 +15890,7 @@ function verificarNuevasActividadesAmigos(feed) {
   }
 
   let huboNuevos = false;
-  const recientes = feed.slice(0, 10);
+  const recientes = feed.filter(it => !esItemCancionMusica(it)).slice(0, 10);
   for (const it of recientes) {
     if (!it || !it.id) continue;
     const idStr = String(it.id);
