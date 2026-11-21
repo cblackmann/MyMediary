@@ -679,6 +679,18 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 [data-theme$="-light"] .btn-like-resena{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.12);color:var(--muted);}
 [data-theme$="-light"] .btn-like-resena:hover{background:rgba(244,63,94,0.08);border-color:rgba(244,63,94,0.4);color:#e11d48;}
 [data-theme$="-light"] .btn-like-resena.liked{background:rgba(244,63,94,0.12);border-color:rgba(244,63,94,0.45);color:#e11d48;}
+/* CARRUSEL DE ÚLTIMAS CANCIONES ESCUCHADAS POR AMIGOS */
+.home-friend-songs-scroll{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 14px;scrollbar-width:thin;scrollbar-color:var(--border) transparent;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;}
+.home-friend-songs-scroll::-webkit-scrollbar{height:6px;}
+.home-friend-songs-scroll::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.home-friend-song-card{flex:0 0 340px;min-width:340px;max-width:340px;box-sizing:border-box;scroll-snap-align:start;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:var(--tr);position:relative;overflow:hidden;cursor:pointer;}
+.home-friend-song-card:hover{border-color:rgba(29,185,84,0.45);transform:translateY(-2px);box-shadow:0 4px 14px rgba(29,185,84,0.12);}
+.home-friend-song-card::before{content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:#1DB954;opacity:0.95;}
+@media (max-width: 600px){
+  .home-friend-song-card{flex:0 0 295px;min-width:295px;max-width:295px;padding:9px 12px;gap:10px;}
+}
+[data-theme$="-light"] .home-friend-song-card{background:var(--card);border-color:rgba(0,0,0,0.08);box-shadow:0 2px 8px rgba(0,0,0,0.04);}
+html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !important;}
 /* ESTILOS INTEGRACIÓN SPOTIFY */
 .btn-spotify-connect{background:var(--card);color:var(--text);border:1px solid rgba(29,185,84,0.38);font-weight:700;font-size:0.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr);box-shadow:0 2px 8px rgba(0,0,0,0.15);text-decoration:none;}
 .btn-spotify-connect:hover{background:#1DB954;color:#000;border-color:#1DB954;transform:translateY(-1px);box-shadow:0 4px 14px rgba(29,185,84,0.35);}
@@ -8914,25 +8926,23 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
             <span data-i18n="btn_view_all_community">Ver toda la comunidad <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-left:4px;"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></span>
           </button>
         </div>
-        <!-- CARRUSEL EN VIVO DE AMIGOS: SPOTIFY + PLAYSTATION -->
-        <div id="home-friends-live-carousel-wrapper" class="home-live-carousel-wrapper" style="display:none; margin-bottom:14px;">
-          <div id="home-friends-live-carousel" class="home-live-carousel">
-            <div id="home-friends-last-track-container" class="home-live-carousel-item"></div>
-            <div id="home-friends-psn-container" class="home-live-carousel-item"></div>
-          </div>
-          <div id="home-friends-live-carousel-dots" class="home-live-carousel-dots">
-            <button type="button" class="live-dot-btn active" id="dot-friends-live-spotify" onclick="cambiarSlideFriendsLive(0)" title="Spotify (Música)" aria-label="Spotify Amigos">
-              <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span>
-              <span id="badge-friends-sp-live-pill" style="display:none; width:4px; height:4px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
-            </button>
-            <button type="button" class="live-dot-btn" id="dot-friends-live-psn" onclick="cambiarSlideFriendsLive(1)" title="PlayStation (Videojuegos)" aria-label="PlayStation Amigos">
-              <span class="live-dot-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></span>
-              <span id="badge-friends-psn-live-pill" style="display:none; width:4px; height:4px; border-radius:50%; background:#10b981; animation:pulseDot 1.6s infinite;"></span>
-            </button>
-          </div>
+        <!-- 1. Tarjetas de Últimos añadidos -->
+        <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+          <span style="font-size:0.8rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;" data-i18n="friends_latest_added_label">Últimos añadidos</span>
         </div>
         <div id="lista-comunidad-resumen-inicio">
           <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;" data-i18n="friends_loading_recent">Cargando actividad reciente de amigos...</div>
+        </div>
+
+        <!-- 2. Tarjetas de Últimas canciones escuchadas por amigos (DEBAJO de últimos añadidos) -->
+        <div id="seccion-amigos-ultimas-canciones" style="margin-top:16px;">
+          <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:#10b981;"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span>
+            <span style="font-size:0.8rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;" data-i18n="friends_latest_songs_title">Últimas canciones escuchadas</span>
+          </div>
+          <div id="lista-amigos-ultimas-canciones">
+            <div style="color:var(--muted); font-size:0.82rem; padding:12px 0; text-align:center;" data-i18n="friends_loading_songs">Cargando canciones de amigos...</div>
+          </div>
         </div>
       </div>
 
@@ -13136,7 +13146,7 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
       const priv = p.preferencias?.privacidad || {};
       if (priv.ocultarRegistros) return [];
       const data = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*&order=created_at.desc&limit=15', 'GET').catch(() => []) || [];
-      return data.map(r => ({
+      const itemsAmigo = data.map(r => ({
         id: r.id,
         userEmail: aEmail,
         amigoNickname: p.nickname || aEmail.split('@')[0],
@@ -13158,6 +13168,45 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
         createdAt: r.created_at || '',
         likes: (p.preferencias?.likes_recibidos && p.preferencias.likes_recibidos[r.id]) ? p.preferencias.likes_recibidos[r.id] : []
       }));
+
+      // Integrar temas recientes de Spotify del amigo si están vinculados
+      const spData = p.preferencias?.cuentasVinculadas?.spotify || p.preferencias?.spotify;
+      if (spData && !priv.ocultarRegistros) {
+        let statsObj = null;
+        try {
+          statsObj = typeof spData.stats === 'string' ? JSON.parse(spData.stats) : spData.stats;
+        } catch(e) {}
+        const topTrks = statsObj?.topTracks || statsObj?.topTracksByRange?.short_term || [];
+        if (topTrks && topTrks.length > 0) {
+          topTrks.slice(0, 5).forEach((trk, tIdx) => {
+            const yaEsta = itemsAmigo.some(x => x.categoria === 'Musica' && (x.titulo || '').toLowerCase() === (trk.name || '').toLowerCase());
+            if (!yaEsta && trk.name) {
+              itemsAmigo.push({
+                id: `sp_${aEmail}_${trk.id || tIdx}`,
+                userEmail: aEmail,
+                amigoNickname: p.nickname || aEmail.split('@')[0],
+                amigoAvatar: p.avatar || '🦊',
+                amigoUserId: p.preferencias?.userId || aEmail,
+                titulo: trk.name,
+                subtitulo: trk.album || '',
+                creador: trk.artist || '',
+                anio: '',
+                categoria: 'Musica',
+                subcategoria: 'Canciones',
+                poster: trk.image || '',
+                calificacion: 0,
+                comentario: '',
+                horas: '',
+                esRewatch: false,
+                fechaInicio: '',
+                fechaFin: tIdx === 0 ? 'En progreso' : '',
+                createdAt: new Date(Date.now() - ((tIdx + 1) * 3600000)).toISOString()
+              });
+            }
+          });
+        }
+      }
+      return itemsAmigo;
     });
 
     const allResults = await Promise.all(feedPromises);
@@ -14826,58 +14875,161 @@ function inicializarFriendsLiveCarouselScrollListener() {
   }, { passive: true });
 }
 
-function renderizarLiveCardsAmigosInicio() {
-  const wrapper = document.getElementById('home-friends-live-carousel-wrapper');
-  const containerSp = document.getElementById('home-friends-last-track-container');
-  const containerPsn = document.getElementById('home-friends-psn-container');
-  if (!wrapper || !containerSp || !containerPsn) return;
+function obtenerUltimasCancionesAmigos(limite = 8) {
+  const feed = estado.amigosFeedCache || [];
+  if (!feed.length) return [];
+
+  const itemsMusica = feed.filter(it => it.categoria === 'Musica');
+  if (!itemsMusica.length) return [];
+
+  const vistos = new Set();
+  const canciones = [];
+
+  for (const it of itemsMusica) {
+    const clave = `${it.userEmail || ''}_${(it.titulo || '').toLowerCase().trim()}_${(it.creador || '').toLowerCase().trim()}`;
+    if (!vistos.has(clave)) {
+      vistos.add(clave);
+      canciones.push(it);
+      if (canciones.length >= limite) break;
+    }
+  }
+
+  return canciones;
+}
+
+function renderizarUltimasCancionesAmigosInicio() {
+  const contenedor = document.getElementById('lista-amigos-ultimas-canciones');
+  const seccion = document.getElementById('seccion-amigos-ultimas-canciones');
+  if (!contenedor) return;
+
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
 
   if (!estado.userEmail) {
-    wrapper.style.display = 'none';
-    containerSp.innerHTML = '';
-    containerPsn.innerHTML = '';
+    if (seccion) seccion.style.display = 'none';
+    contenedor.innerHTML = '';
     return;
   }
 
-  const itemSp = obtenerUltimaCancionAmigos();
-  const itemPsn = obtenerUltimoJuegoAmigos();
-  const feed = estado.amigosFeedCache || [];
+  const canciones = obtenerUltimasCancionesAmigos(8);
 
-  if (!itemSp && !itemPsn && !feed.length) {
-    wrapper.style.display = 'none';
-    containerSp.innerHTML = '';
-    containerPsn.innerHTML = '';
+  if (!canciones.length) {
+    const feed = estado.amigosFeedCache || [];
+    if (!feed.length) {
+      if (seccion) seccion.style.display = 'none';
+      contenedor.innerHTML = '';
+      return;
+    }
+    if (seccion) seccion.style.display = 'block';
+    contenedor.innerHTML = `
+      <div style="background:var(--card); border:1px dashed var(--border); border-radius:10px; padding:18px 14px; text-align:center; color:var(--muted); font-size:0.83rem;">
+        <span style="display:inline-block; margin-bottom:4px; color:#10b981;">${getHeroIcon('musical-note', '', 20)}</span>
+        <div>${l === 'en' ? 'No songs listened to by your friends recently.' : 'Tus amigos aún no han escuchado canciones recientemente.'}</div>
+      </div>
+    `;
     return;
   }
 
-  wrapper.style.display = 'flex';
-  inicializarFriendsLiveCarouselScrollListener();
+  if (seccion) seccion.style.display = 'block';
 
-  // 1. Spotify Amigos
-  const badgeSp = document.getElementById('badge-friends-sp-live-pill');
-  if (itemSp) {
-    const isPlaying = esEnProgresoTexto(itemSp.fechaFin);
-    if (badgeSp) badgeSp.style.display = isPlaying ? 'inline-block' : 'none';
-    containerSp.innerHTML = dibujarTarjetaUltimaCancionAmigos(itemSp);
-  } else {
-    if (badgeSp) badgeSp.style.display = 'none';
-    containerSp.innerHTML = dibujarTarjetaUltimaCancionAmigosIdle();
-  }
+  let html = `<div class="home-friend-songs-scroll">`;
+  canciones.forEach(it => {
+    const enProg = esEnProgresoTexto(it.fechaFin);
+    const timeStr = formatearTiempoRelativoFeed(it.createdAt || it.fechaFin || it.fechaInicio, l);
+    const artist = it.creador || (l === 'en' ? 'Artist' : 'Artista');
+    const album = it.subtitulo || it.subcategoria || (l === 'en' ? 'Music' : 'Música');
+    const title = it.titulo || (l === 'en' ? 'Untitled' : 'Sin título');
+    const nick = it.amigoNickname || (it.userEmail ? it.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
+    const califNum = Number(it.calificacion) || 0;
 
-  // 2. PlayStation Amigos
-  const badgePsn = document.getElementById('badge-friends-psn-live-pill');
-  if (itemPsn) {
-    const isPlaying = esEnProgresoTexto(itemPsn.fechaFin);
-    if (badgePsn) badgePsn.style.display = isPlaying ? 'inline-block' : 'none';
-    containerPsn.innerHTML = dibujarTarjetaUltimoJuegoAmigos(itemPsn);
-  } else {
-    if (badgePsn) badgePsn.style.display = 'none';
-    containerPsn.innerHTML = dibujarTarjetaUltimoJuegoAmigosIdle();
-  }
+    const coverHtml = it.poster
+      ? `<img src="${escHtmlFeed_(it.poster)}" alt="${escHtmlFeed_(title)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="cover-music-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.3rem;background:var(--bg);color:#10b981;">${getHeroIcon('musical-note', '', 22)}</div>`
+      : `<div class="cover-music-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.3rem;background:var(--bg);color:#10b981;">${getHeroIcon('musical-note', '', 22)}</div>`;
+
+    const avatarHtml = (it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:')))
+      ? `<img src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
+      : `<span>${escHtmlFeed_(it.amigoAvatar || '🦊')}</span>`;
+
+    const safeTitle = encodeURIComponent(title);
+    const safeArtist = encodeURIComponent(artist);
+    const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent((title + ' ' + (it.creador || '')).trim())}`;
+    const modalAccion = `abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(nick)}', 'Musica')`;
+    const perfilAccion = `verPerfilDeAmigo('${escHtmlFeed_(it.userEmail)}')`;
+
+    html += `
+      <div class="home-friend-song-card" onclick="${modalAccion}" title="${escHtmlFeed_(title)} · ${escHtmlFeed_(artist)}">
+        <!-- Portada con mini-avatar superpuesto del amigo -->
+        <div class="home-friend-song-cover-box" style="width:58px; height:58px; min-width:58px; max-width:58px; border-radius:8px; overflow:hidden; position:relative; background:var(--card); border:1px solid var(--border); box-shadow:0 2px 6px rgba(0,0,0,0.15); flex-shrink:0;">
+          ${coverHtml}
+          <div class="home-np-friend-avatar-badge" style="position:absolute; bottom:2px; right:2px; width:20px; height:20px; border-radius:50%; border:1.5px solid var(--card); overflow:hidden; display:grid; place-items:center; background:var(--bg); box-shadow:0 1px 4px rgba(0,0,0,0.3); font-size:0.75rem; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
+            ${avatarHtml}
+          </div>
+        </div>
+
+        <!-- Info central -->
+        <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; overflow:hidden;">
+          <!-- Fila de usuario y estado -->
+          <div style="display:flex; align-items:center; gap:5px; font-size:0.71rem; line-height:1.2; overflow:hidden;">
+            <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:110px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
+              ${escHtmlFeed_(nick)}
+            </strong>
+            <span style="color:${enProg ? '#10b981' : 'var(--muted)'}; display:inline-flex; align-items:center; gap:3px; font-size:0.67rem; font-weight:700; white-space:nowrap;">
+              <span class="home-np-dot" style="width:5px; height:5px; border-radius:50%; ${enProg ? 'background:#10b981; animation:pulseDot 1.6s infinite;' : 'background:var(--accent); animation:none;'}"></span>
+              <span>${enProg ? (l === 'en' ? 'Listening' : 'Escuchando') : (l === 'en' ? 'Listened' : 'Escuchó')}</span>
+            </span>
+            ${timeStr ? `<span style="color:var(--muted); font-size:0.65rem; margin-left:auto; flex-shrink:0; white-space:nowrap;">${timeStr}</span>` : ''}
+          </div>
+
+          <!-- Título canción -->
+          <div class="home-np-text-wrap" style="width:100%; overflow:hidden;">
+            <div class="home-np-scrollable" style="font-size:0.88rem; font-weight:800; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.25;" title="${escHtmlFeed_(title)}">
+              ${escHtmlFeed_(title)}
+            </div>
+          </div>
+
+          <!-- Artista y Álbum -->
+          <div style="font-size:0.74rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; line-height:1.2;" title="${escHtmlFeed_(artist)}${album ? ' · ' + escHtmlFeed_(album) : ''}">
+            <span style="color:var(--text); opacity:0.85;">${escHtmlFeed_(artist)}</span>${album ? ` <span style="opacity:0.5;">·</span> <span>${escHtmlFeed_(album)}</span>` : ''}
+          </div>
+
+          <!-- Rating o comentario si tiene -->
+          ${califNum > 0 || it.comentario ? `
+            <div style="display:flex; align-items:center; gap:5px; margin-top:2px; overflow:hidden;">
+              ${califNum > 0 ? `
+                <div style="display:inline-flex; align-items:center; background:var(--bg); border:1px solid var(--border); padding:1px 5px; border-radius:3px; font-size:0.64rem; line-height:1; flex-shrink:0;">
+                  ${renderEstrellasVisuales(califNum)}
+                </div>
+              ` : ''}
+              ${it.comentario ? `
+                <span style="font-size:0.68rem; color:var(--muted); font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escHtmlFeed_(it.comentario)}">
+                  "${escHtmlFeed_(it.comentario)}"
+                </span>
+              ` : ''}
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Columna derecha: Spotify + botón rápido -->
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; gap:6px; flex-shrink:0;">
+          <a href="${spotifySearchUrl}" target="_blank" rel="noopener noreferrer" style="display:grid; place-items:center; width:22px; height:22px; transition:var(--tr);" onclick="event.stopPropagation()" title="${l === 'en' ? 'Listen on Spotify' : 'Escuchar en Spotify'}">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+          </a>
+          <button type="button" class="btn-np-quick-add" style="width:24px; height:24px; border-radius:4px; padding:0; display:grid; place-items:center;" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  });
+  html += `</div>`;
+  contenedor.innerHTML = html;
 
   requestAnimationFrame(() => {
-    setTimeout(ajustarMarqueeSpotify, 50);
+    setTimeout(ajustarMarqueeSpotify, 60);
   });
+}
+
+function renderizarLiveCardsAmigosInicio() {
+  renderizarUltimasCancionesAmigosInicio();
 }
 window.renderizarLiveCardsAmigosInicio = renderizarLiveCardsAmigosInicio;
 window.renderizarUltimaCancionAmigosInicio = renderizarLiveCardsAmigosInicio;
@@ -15044,6 +15196,7 @@ function renderizarFeedAmigosResumidoInicio() {
   });
   html += `</div>`;
   contenedor.innerHTML = html;
+  renderizarUltimasCancionesAmigosInicio();
 }
 
 function agregarFeedItemDirectoDesdeHome(btnEl, payloadEnc) {
@@ -17666,6 +17819,10 @@ const CONFIG = {
  "home_now_playing_playing": "En reproducción",
  "home_now_playing_paused": "En pausa",
  "friends_loading_recent": "Cargando actividad reciente de amigos...",
+ "friends_latest_added_label": "Últimos añadidos",
+ "friends_latest_songs_title": "Últimas canciones escuchadas",
+ "friends_no_songs_yet": "Tus amigos aún no han escuchado canciones recientemente.",
+ "friends_loading_songs": "Cargando canciones de amigos...",
  "friends_no_added_yet": "No tienes amigos agregados aún. ¡Comparte tu ID para conectarse!",
  "banner_coop_title": "Mezclar Watchlists con un Amigo",
  "banner_coop_badge": "Ruleta Co-op",
@@ -18123,6 +18280,10 @@ const CONFIG = {
  "home_now_playing_playing": "Now playing",
  "home_now_playing_paused": "Paused",
  "friends_loading_recent": "Loading recent activity from friends... ",
+ "friends_latest_added_label": "Latest Added",
+ "friends_latest_songs_title": "Latest Songs Listened To",
+ "friends_no_songs_yet": "No songs listened to by your friends yet.",
+ "friends_loading_songs": "Loading songs from friends...",
  "friends_no_added_yet": "You have no friends added yet. Share your ID to connect!",
  "banner_coop_title": "Mix Watchlists with a Friend",
  "banner_coop_badge": "Co-op Roulette",
@@ -27267,7 +27428,8 @@ function ajustarMarqueeSpotify() {
     document.getElementById('home-now-playing-container'),
     document.getElementById('home-psn-now-playing-container'),
     document.getElementById('home-friends-last-track-container'),
-    document.getElementById('home-friends-psn-container')
+    document.getElementById('home-friends-psn-container'),
+    document.getElementById('lista-amigos-ultimas-canciones')
   ].filter(Boolean);
   containers.forEach(container => {
     const elements = container.querySelectorAll('.home-np-scrollable');
