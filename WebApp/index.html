@@ -633,7 +633,7 @@ textarea.comment-box:hover{border-color:rgba(56,189,248,.4)}textarea.comment-box
 body{padding-bottom:calc(var(--b-nav) + 24px)}.web-nav-wrapper{display:none}.mobile-bottom-nav{display:flex}.container{padding:0 12px;margin:12px auto}.search-row{flex-direction:row;align-items:center;gap:8px}.search-box{flex:1;min-width:0}.btn-action-manual{justify-content:center;height:38px;padding:0 10px;font-size:0.78rem;flex-shrink:0}.cat-wide-body{grid-template-columns:1fr;gap:12px}.cat-subtotals-wrap{grid-column:span 1}.date-row{flex-direction:column;gap:8px;align-items:stretch}.btn-today-pill{width:100%;height:38px}.table-container{display:none}.mobile-history-list{display:flex}.modal-overlay{align-items:flex-end}.modal-box{width:100%;max-width:100%;border-bottom-left-radius:0;border-bottom-right-radius:0;padding:20px 20px calc(24px + env(safe-area-inset-bottom));animation:slideUpModal .25s cubic-bezier(.34,1.2,.64,1);position:relative;touch-action:pan-y;will-change:transform}
 .modal-swipe-handle{width:42px;height:5px;background:rgba(148,163,184,0.4);border-radius:4px;margin:-8px auto 14px auto;cursor:grab;touch-action:none;display:block;transition:background 0.15s ease, transform 0.15s ease}
 .modal-box.swiping-down .modal-swipe-handle{background:var(--accent);transform:scaleX(1.15)}.ficha-grid{flex-direction:column;align-items:center;text-align:center}.ficha-poster{width:135px;height:195px}.profile-grid-records{grid-template-columns:repeat(2,1fr);gap:8px}.profile-grid-fun{grid-template-columns:1fr;gap:8px}.profile-grid-highlights{grid-template-columns:repeat(2,1fr);gap:8px}
-header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) + 20px) 16px 8px !important;background:transparent !important;border:none !important;display:grid !important;grid-template-columns:1fr auto 1fr !important;align-items:center !important}.header-brand{gap:10px}.logo{font-size:2.25rem !important;gap:0 !important;justify-content:center !important}.header-brand-text{font-size:2.25rem !important}.header-logo-icon{display:none !important}.year-display{font-size:1.45rem}.btn-year-picker-compact{padding:5px 12px !important;gap:6px !important}.btn-year-picker-compact .year-display-txt{font-size:1.38rem !important}.btn-year-picker-compact .year-picker-arrow{font-size:0.88rem !important}.header-actions{gap:14px !important}.btn-header-clean-icon{font-size:1.4rem !important;padding:4px 6px !important}.btn-header-clean-icon .btn-clean-glyph{font-size:1.4rem !important}.profile-hero-card{flex-direction:column;align-items:center;text-align:center;padding:18px 14px;gap:14px}.profile-identity-wrap{flex-direction:column;align-items:center;text-align:center;min-width:100%;gap:12px}.profile-avatar-box{width:90px;height:90px;margin:0 auto}.profile-nick-row{justify-content:center}.profile-info-col{display:flex;flex-direction:column;align-items:center}.profile-google-box{align-items:stretch;width:100%;gap:8px}.profile-google-box button{width:100%;justify-content:center}
+header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) + 20px) 16px 8px !important;background:transparent !important;border:none !important;display:grid !important;grid-template-columns:1fr auto 1fr !important;align-items:center !important}.header-brand{gap:10px}.logo{font-size:2.25rem !important;gap:0 !important;justify-content:center !important}.header-brand-text{font-size:2.25rem !important}.header-logo-icon{display:none !important}.year-display{font-size:1.45rem}.btn-year-picker-compact{padding:5px 12px !important;gap:6px !important}.btn-year-picker-compact .year-display-txt{font-size:1.38rem !important}.btn-year-picker-compact .year-picker-arrow{font-size:0.88rem !important}.header-actions{gap:14px !important}.btn-header-clean-icon{font-size:1.4rem !important;padding:4px 6px !important}.btn-header-clean-icon .btn-clean-glyph{font-size:1.4rem !important}.profile-google-box{align-items:stretch;width:100%;gap:8px}.profile-google-box button{width:100%;justify-content:center}
 @keyframes slideUpModal{from{transform:translateY(100%)}to{transform:translateY(0)}}
 }
 /* NUEVA PANTALLA DE INICIO REORGANIZADA */
@@ -1450,18 +1450,21 @@ header,header.app-header-integrated{padding:calc(env(safe-area-inset-top, 0px) +
 }
 @media (max-width: 520px) {
   .fav-char-main-row {
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 10px;
   }
   .fav-char-text-block {
-    flex: 1 1 calc(100% - 72px);
+    flex: 1;
+    min-width: 0;
   }
   .fav-char-actions-wrap {
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: 4px;
-    padding-top: 8px;
-    border-top: 1px solid var(--border);
+    position: absolute;
+    top: 2px;
+    right: 0;
+    width: auto;
+    border: none;
+    margin: 0;
+    padding: 0;
   }
 }
 .fav-char-empty-box {
@@ -8064,6 +8067,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
 /* ==========================================================================
    FORMATO TOTALMENTE SIN TARJETAS EN PESTAÑA PERFIL (ABIERTO, LIMPIO Y ELEGANTE)
+   OPTIMIZADO TANTO PARA WEB COMO PARA MÓVIL
    ========================================================================== */
 #vista-perfil #perfil-hero-card:not(.has-custom-cover),
 .profile-hero-card:not(.has-custom-cover) {
@@ -8092,55 +8096,204 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   box-shadow: none !important;
 }
 
-/* KPI GRID EN PERFIL (3 COLUMNAS UNIFORMES Y PROPORCIONADAS) */
+/* HERO DEL PERFIL EN MÓVIL Y WEB: SIEMPRE HORIZONTAL Y BIEN ALINEADO */
+#vista-perfil #perfil-hero-card,
+#vista-perfil .profile-hero-card {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  padding: 8px 0 16px 0 !important;
+  gap: 14px !important;
+  position: relative !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+#vista-perfil .profile-identity-wrap {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  gap: 14px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+#vista-perfil .profile-avatar-box {
+  width: 58px !important;
+  height: 58px !important;
+  min-width: 58px !important;
+  max-width: 58px !important;
+  margin: 0 !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+}
+#vista-perfil .profile-info-col {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  flex: 1 !important;
+  min-width: 0 !important;
+  padding-right: 32px !important;
+  box-sizing: border-box !important;
+}
+#vista-perfil .profile-nick-row {
+  justify-content: flex-start !important;
+  width: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+#vista-perfil .profile-nick-display {
+  font-size: 1.08rem !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+}
+#vista-perfil .profile-bio-txt {
+  font-size: 0.78rem !important;
+  color: var(--muted) !important;
+  line-height: 1.35 !important;
+  margin-top: 3px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  text-align: left !important;
+  width: 100% !important;
+}
+#vista-perfil .btn-profile-edit-discreet {
+  position: absolute !important;
+  top: 6px !important;
+  right: 0 !important;
+  width: 28px !important;
+  height: 28px !important;
+  z-index: 5 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+#vista-perfil #perfil-id-badge {
+  font-size: 0.74rem !important;
+  padding: 3px 8px !important;
+  flex-shrink: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+#vista-perfil #perfil-email-render {
+  font-size: 0.74rem !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+#vista-perfil #perfil-email-txt {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  max-width: 170px !important;
+  display: inline-block !important;
+}
+
+/* PERSONAJE FAVORITO: HORIZONTAL Y SIN DESBORDES */
+#vista-perfil .fav-char-main-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding-right: 64px !important;
+  position: relative !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+#vista-perfil .fav-char-avatar-box {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  max-width: 48px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+}
+#vista-perfil .fav-char-text-block {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+#vista-perfil .fav-char-actions-wrap {
+  position: absolute !important;
+  top: 2px !important;
+  right: 0 !important;
+  width: auto !important;
+  border: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  z-index: 3 !important;
+}
+
+/* KPI GRID EN PERFIL (3 COLUMNAS LIMPIAS Y RESPONSIVAS) */
 #vista-perfil .stats-kpi-grid {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
-  gap: 8px 12px !important;
+  gap: 8px 10px !important;
   margin-bottom: 16px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
 #vista-perfil .stats-kpi-card {
-  padding: 4px 4px 6px 0 !important;
+  padding: 0 !important;
   border-radius: 0 !important;
   min-height: auto !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: flex-start !important;
   box-sizing: border-box !important;
+  min-width: 0 !important;
 }
 #vista-perfil .stats-kpi-card:hover {
   border-color: transparent !important;
   transform: none !important;
 }
 #vista-perfil .stats-kpi-label {
-  font-size: 0.72rem !important;
+  font-size: 0.68rem !important;
   color: var(--muted) !important;
   display: flex !important;
   align-items: center !important;
-  gap: 5px !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  margin-bottom: 3px !important;
+  gap: 4px !important;
+  line-height: 1.2 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  margin-bottom: 2px !important;
+  min-height: 2.3em !important;
+}
+#vista-perfil .stats-kpi-label svg {
+  width: 13px !important;
+  height: 13px !important;
+  flex-shrink: 0 !important;
 }
 #vista-perfil .stats-kpi-val {
-  font-size: 1.18rem !important;
+  font-size: 1.15rem !important;
   font-weight: 800 !important;
   color: var(--text) !important;
   line-height: 1.2 !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+  word-break: break-word !important;
+  margin-bottom: 2px !important;
 }
 #vista-perfil .stats-kpi-sub {
-  font-size: 0.68rem !important;
+  font-size: 0.65rem !important;
   color: var(--muted) !important;
-  margin-top: 2px !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
+  line-height: 1.25 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
 }
 
 #vista-perfil .stats-section-box {
@@ -8149,93 +8302,54 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   margin-bottom: 12px !important;
 }
 
-/* RÉCORDS DE RITMO EN PERFIL (2 COLUMNAS EN MÓVIL, 4 EN PANTALLAS AMPLIAS) */
-#vista-perfil .profile-grid-records {
+/* ÍNDICE DE BOTONES DE CATEGORÍA DE ESTADÍSTICAS (5 COLUMNAS EN UNA SOLA FILA) */
+#perfil-stats-cats-index {
   display: grid !important;
-  grid-template-columns: repeat(2, 1fr) !important;
-  gap: 12px 14px !important;
-  margin-top: 14px !important;
-  margin-bottom: 16px !important;
+  grid-template-columns: repeat(5, 1fr) !important;
+  gap: 6px !important;
+  margin: 16px 0 14px !important;
+  padding: 0 !important;
   width: 100% !important;
+  overflow: visible !important;
   box-sizing: border-box !important;
 }
-@media (min-width: 640px) {
-  #vista-perfil .profile-grid-records {
-    grid-template-columns: repeat(4, 1fr) !important;
-    gap: 12px 16px !important;
-  }
-}
-#vista-perfil .profile-stat-box {
-  padding: 4px 6px 6px 0 !important;
-  border-radius: 0 !important;
-  align-items: flex-start !important;
-  text-align: left !important;
-  box-sizing: border-box !important;
-}
-#vista-perfil .profile-stat-label {
-  font-size: 0.72rem !important;
-  font-weight: 700 !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.05em !important;
-  color: var(--accent) !important;
-  text-align: left !important;
-  margin-bottom: 3px !important;
-}
-#vista-perfil .profile-stat-val {
-  font-size: 0.96rem !important;
-  font-weight: 800 !important;
-  color: var(--text) !important;
-  text-align: left !important;
-  line-height: 1.25 !important;
-  word-break: break-word !important;
-}
-#vista-perfil .profile-stat-sub {
-  font-size: 0.7rem !important;
-  color: var(--muted) !important;
-  text-align: left !important;
-  margin-top: 3px !important;
-  line-height: 1.25 !important;
-}
-
-/* PERSONAJE FAVORITO ACCIONES */
-#vista-perfil .profile-fav-char-card,
-#vista-perfil .fav-char-empty-box {
-  padding: 6px 0 !important;
-  border-radius: 0 !important;
-}
-.btn-char-icon-discreet {
-  width: 28px !important;
-  height: 28px !important;
+#perfil-stats-cats-index .home-indice-btn {
+  flex: auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 56px !important;
+  padding: 6px 2px !important;
   border-radius: 4px !important;
-  background: transparent !important;
-  border: none !important;
-  color: var(--muted) !important;
-  display: inline-flex !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
   align-items: center !important;
   justify-content: center !important;
-  cursor: pointer !important;
-  padding: 0 !important;
-  transition: var(--tr) !important;
+  gap: 4px !important;
 }
-.btn-char-icon-discreet:hover {
-  color: var(--accent) !important;
-  background: rgba(255, 255, 255, 0.06) !important;
+#perfil-stats-cats-index .home-indice-icon svg {
+  width: 18px !important;
+  height: 18px !important;
 }
-[data-theme$="-light"] .btn-char-icon-discreet:hover {
-  background: rgba(0, 0, 0, 0.05) !important;
+#perfil-stats-cats-index .home-indice-label,
+#perfil-stats-cats-index .home-indice-name {
+  font-size: 0.64rem !important;
+  font-weight: 700 !important;
+  line-height: 1.1 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+  display: block !important;
 }
 
-#vista-perfil .stats-ranking-row {
-  padding: 8px 0 !important;
-  border-radius: 0 !important;
-  border-bottom: 1px solid var(--border) !important;
-}
-
-/* CHIPS DE DISTRIBUCIÓN DE TIEMPO EN PERFIL (GRILLA 2 COLUMNAS ORDENADA) */
+/* CHIPS DE DISTRIBUCIÓN DE TIEMPO EN PERFIL (GRILLA 2 COLUMNAS Y ÚLTIMO FULL) */
 #vista-perfil .stats-chips-container {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr) !important;
-  gap: 8px 10px !important;
+  gap: 8px 8px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
@@ -8249,13 +8363,14 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   align-items: center !important;
   gap: 6px !important;
   padding: 6px 8px !important;
-  font-size: 0.74rem !important;
+  font-size: 0.72rem !important;
   background: rgba(255, 255, 255, 0.02) !important;
   border: 1px solid var(--border) !important;
   border-radius: 4px !important;
   box-shadow: none !important;
   box-sizing: border-box !important;
   min-width: 0 !important;
+  width: 100% !important;
   cursor: pointer !important;
   transition: border-color 0.15s ease !important;
 }
@@ -8264,6 +8379,9 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 }
 #vista-perfil .stats-chip-cat:hover {
   border-color: var(--accent) !important;
+}
+#vista-perfil .stats-chip-cat:last-child:nth-child(odd) {
+  grid-column: span 2 !important;
 }
 #vista-perfil .stats-chip-cat span:nth-child(2) {
   white-space: nowrap !important;
@@ -8278,6 +8396,62 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   color: var(--text) !important;
 }
 
+/* RÉCORDS DE RITMO EN PERFIL */
+#vista-perfil .profile-grid-records {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px 12px !important;
+  margin-top: 14px !important;
+  margin-bottom: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+@media (min-width: 640px) {
+  #vista-perfil .profile-grid-records {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 12px 16px !important;
+  }
+}
+#vista-perfil .profile-stat-box {
+  padding: 0 !important;
+  border-radius: 0 !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+}
+#vista-perfil .profile-stat-label {
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--accent) !important;
+  text-align: left !important;
+  margin-bottom: 3px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+#vista-perfil .profile-stat-val {
+  font-size: 0.92rem !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  text-align: left !important;
+  line-height: 1.25 !important;
+  word-break: break-word !important;
+  min-height: 2.4em !important;
+}
+#vista-perfil .profile-stat-sub {
+  font-size: 0.68rem !important;
+  color: var(--muted) !important;
+  text-align: left !important;
+  margin-top: 2px !important;
+  line-height: 1.25 !important;
+}
+
 /* ==========================================================================
    ESTILO EN CUADRÍCULA (GRID) PARA FAVORITOS POR CATEGORÍA
    ========================================================================== */
@@ -8286,7 +8460,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 .favs-grid {
   display: grid !important;
   grid-template-columns: repeat(3, 1fr) !important;
-  gap: 14px 10px !important;
+  gap: 12px 8px !important;
   margin-bottom: 14px !important;
   width: 100% !important;
   box-sizing: border-box !important;
@@ -8314,6 +8488,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   cursor: pointer !important;
   width: 100% !important;
   box-sizing: border-box !important;
+  min-width: 0 !important;
 }
 #vista-perfil .fav-slot-poster,
 .fav-slot-poster {
@@ -8399,7 +8574,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 #vista-perfil .fav-slot-info,
 .fav-slot-info {
   width: 100% !important;
-  margin-top: 6px !important;
+  margin-top: 5px !important;
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
@@ -8410,7 +8585,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 }
 #vista-perfil .fav-slot-subcat,
 .fav-slot-subcat {
-  font-size: 0.65rem !important;
+  font-size: 0.62rem !important;
   font-weight: 700 !important;
   color: var(--accent) !important;
   text-align: left !important;
@@ -8428,7 +8603,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 }
 #vista-perfil .fav-slot-title,
 .fav-slot-title {
-  font-size: 0.74rem !important;
+  font-size: 0.72rem !important;
   font-weight: 700 !important;
   color: var(--text) !important;
   text-align: left !important;
@@ -8443,7 +8618,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 }
 #vista-perfil .fav-slot-meta,
 .fav-slot-meta {
-  font-size: 0.68rem !important;
+  font-size: 0.66rem !important;
   color: var(--star-active, #c8955a) !important;
   text-align: left !important;
   font-weight: 700 !important;
@@ -8746,14 +8921,14 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
               <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.7;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
             </div>
             <div class="profile-bio-txt" id="perfil-bio-render" data-i18n="profile_default_bio">Coleccionando historias en Mediary</div>
-            <div style="margin-top:8px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-              <span id="perfil-id-badge" onclick="copiarMiIdUsuario()" title="Click para copiar ID" style="cursor:pointer; font-size:0.8rem; font-weight:700; color:var(--accent); background:rgba(56,189,248,0.12); padding:4px 12px; border-radius:2px; border:1px solid rgba(56,189,248,0.35); display:inline-flex; align-items:center; gap:6px;">
-                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;margin-right:3px;"><path d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.364a4.125 4.125 0 0 0-6.338 0"/></svg><span id="perfil-id-txt">...</span>
-                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"/></svg>
+            <div style="margin-top:6px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; max-width:100%;">
+              <span id="perfil-id-badge" onclick="copiarMiIdUsuario()" title="Click para copiar ID" style="cursor:pointer; font-size:0.75rem; font-weight:700; color:var(--accent); background:rgba(56,189,248,0.12); padding:3px 8px; border-radius:3px; border:1px solid rgba(56,189,248,0.35); display:inline-flex; align-items:center; gap:5px; flex-shrink:0;">
+                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.364a4.125 4.125 0 0 0-6.338 0"/></svg><span id="perfil-id-txt">...</span>
+                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"/></svg>
               </span>
-              <div style="font-size:0.8rem; color:var(--muted); display:inline-flex; align-items:center; gap:6px;" id="perfil-email-render">
-                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
-                <span id="perfil-email-txt">Sin cuenta vinculada</span>
+              <div style="font-size:0.75rem; color:var(--muted); display:inline-flex; align-items:center; gap:5px; max-width:100%; overflow:hidden;" id="perfil-email-render">
+                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><path d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
+                <span id="perfil-email-txt" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:160px; display:inline-block;">Sin cuenta vinculada</span>
               </div>
             </div>
           </div>
@@ -18443,8 +18618,8 @@ if (userEmailActivo) {
  if (cfgBadge) cfgBadge.style.display = 'inline-flex';
  if (cfgStatus) cfgStatus.innerHTML = `Conectado como <strong>${userEmailActivo}</strong>. Tus listas y datos están sincronizados en Supabase Cloud.`;
 } else {
- if (emailTxt) emailTxt.textContent = 'Sin cuenta vinculada (almacenamiento local)';
- else if (emailEl) emailEl.textContent = 'Sin cuenta vinculada (almacenamiento local)';
+ if (emailTxt) emailTxt.textContent = 'Sin cuenta vinculada';
+ else if (emailEl) emailEl.textContent = 'Sin cuenta vinculada';
  if (txtBtnG) txtBtnG.textContent = 'Iniciar sesión / Crear cuenta';
  if (cfgBadge) cfgBadge.style.display = 'none';
  if (cfgStatus) cfgStatus.textContent = 'Inicia sesión con tu cuenta para respaldar y sincronizar tus listas en la nube.';
@@ -21864,7 +22039,7 @@ function renderizarBotonesCategoriasStatsPerfil() {
     return `
       <button type="button" class="home-indice-btn perfil-stats-cat-btn ${act}" data-cat="${c.cat}" onclick="seleccionarCategoriaStatsPerfil('${c.cat}')" title="${c.label}">
         <span class="home-indice-icon">${c.icon}</span>
-        <span class="home-indice-label">${c.label}</span>
+        <span class="home-indice-name home-indice-label">${c.label}</span>
       </button>
     `;
   }).join('');
