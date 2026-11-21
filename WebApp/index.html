@@ -8066,8 +8066,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 }
 
 /* ==========================================================================
-   FORMATO TOTALMENTE SIN TARJETAS EN PESTAÑA PERFIL (ABIERTO, LIMPIO Y ELEGANTE)
-   OPTIMIZADO TANTO PARA WEB COMO PARA MÓVIL CON ESPACIO PARA RESPIRAR
+   FORMATO DE PERFIL: TARJETA HERO GRANDE, CENTRADA Y ARREGLADA;
+   FAVORITOS Y STATS ABIERTOS Y LIMPIOS CON ESPACIO PARA RESPIRAR
    ========================================================================== */
 #vista-perfil {
   padding-bottom: 48px !important;
@@ -8091,19 +8091,195 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   }
 }
 
-#vista-perfil #perfil-hero-card:not(.has-custom-cover),
-.profile-hero-card:not(.has-custom-cover) {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  border-radius: 0 !important;
-  padding: 16px 0 24px 0 !important;
+/* TARJETA HERO DEL PERFIL: COMO ANTES, GRANDE, CENTRADA Y ARREGLADA */
+#vista-perfil #perfil-hero-card,
+.profile-hero-card {
+  position: relative !important;
+  overflow: hidden !important;
+  background: var(--card) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18) !important;
+  padding: 32px 24px 26px 24px !important;
+  margin-bottom: 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  transition: var(--tr) !important;
 }
-#vista-perfil #perfil-hero-card.has-custom-cover,
-.profile-hero-card.has-custom-cover {
-  border-radius: 6px !important;
-  box-shadow: none !important;
-  border: none !important;
+@media (max-width: 600px) {
+  #vista-perfil #perfil-hero-card,
+  .profile-hero-card {
+    padding: 26px 18px 22px 18px !important;
+    border-radius: 16px !important;
+  }
+}
+[data-theme$="-light"] #vista-perfil #perfil-hero-card,
+[data-theme$="-light"] .profile-hero-card {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06) !important;
+}
+
+#vista-perfil .profile-identity-wrap {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  gap: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+#vista-perfil .profile-avatar-box {
+  width: 88px !important;
+  height: 88px !important;
+  min-width: 88px !important;
+  max-width: 88px !important;
+  margin: 0 auto 12px auto !important;
+  border-radius: 50% !important;
+  border: 3px solid var(--accent) !important;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.28) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: var(--bg) !important;
+  cursor: pointer !important;
+  display: grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+  font-size: 2.3rem !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.2s ease !important;
+}
+#vista-perfil .profile-avatar-box:hover {
+  transform: scale(1.05) !important;
+}
+@media (max-width: 600px) {
+  #vista-perfil .profile-avatar-box {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    max-width: 80px !important;
+    font-size: 2.1rem !important;
+    margin-bottom: 10px !important;
+  }
+}
+#vista-perfil .profile-info-col {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+}
+#vista-perfil .profile-nick-row {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  margin-bottom: 4px !important;
+}
+#vista-perfil .profile-nick-display {
+  font-size: 1.35rem !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  line-height: 1.25 !important;
+  word-break: break-word !important;
+}
+@media (max-width: 600px) {
+  #vista-perfil .profile-nick-display {
+    font-size: 1.25rem !important;
+  }
+}
+#vista-perfil .profile-bio-txt {
+  font-size: 0.88rem !important;
+  color: var(--muted) !important;
+  line-height: 1.45 !important;
+  margin: 4px auto 14px auto !important;
+  text-align: center !important;
+  max-width: 480px !important;
+}
+#vista-perfil .profile-badges-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+}
+#vista-perfil #perfil-id-badge {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  background: rgba(56, 189, 248, 0.12) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  color: var(--accent) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  transition: var(--tr) !important;
+}
+#vista-perfil #perfil-id-badge:hover {
+  background: rgba(56, 189, 248, 0.22) !important;
+  transform: translateY(-1px) !important;
+}
+#vista-perfil #perfil-email-render {
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  max-width: 100% !important;
+}
+[data-theme$="-light"] #vista-perfil #perfil-email-render {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+#vista-perfil #perfil-email-txt {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  max-width: 220px !important;
+  display: inline-block !important;
+}
+#vista-perfil .btn-profile-edit-discreet {
+  position: absolute !important;
+  top: 14px !important;
+  right: 14px !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 8px !important;
+  background: rgba(15, 23, 42, 0.55) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 5 !important;
+  transition: all 0.18s ease !important;
+}
+[data-theme$="-light"] #vista-perfil .btn-profile-edit-discreet {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+#vista-perfil .btn-profile-edit-discreet:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  transform: scale(1.06) !important;
 }
 
 #vista-perfil .stats-kpi-card,
@@ -8118,111 +8294,34 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   box-shadow: none !important;
 }
 
-/* HERO DEL PERFIL EN MÓVIL Y WEB: HORIZONTAL, ELEGANTE Y CON AIRE */
-#vista-perfil #perfil-hero-card,
-#vista-perfil .profile-hero-card {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-start !important;
-  text-align: left !important;
-  padding: 16px 0 24px 0 !important;
-  gap: 18px !important;
-  position: relative !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-#vista-perfil .profile-identity-wrap {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-start !important;
-  text-align: left !important;
-  gap: 18px !important;
-  width: 100% !important;
-  min-width: 0 !important;
-}
-#vista-perfil .profile-avatar-box {
-  width: 64px !important;
-  height: 64px !important;
-  min-width: 64px !important;
-  max-width: 64px !important;
-  margin: 0 !important;
-  border-radius: 50% !important;
-  flex-shrink: 0 !important;
-}
-#vista-perfil .profile-info-col {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  text-align: left !important;
-  flex: 1 !important;
-  min-width: 0 !important;
-  padding-right: 36px !important;
-  box-sizing: border-box !important;
-}
-#vista-perfil .profile-nick-row {
-  justify-content: flex-start !important;
-  width: 100% !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 8px !important;
-}
-#vista-perfil .profile-nick-display {
-  font-size: 1.15rem !important;
-  font-weight: 800 !important;
-  color: var(--text) !important;
-  white-space: nowrap !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  max-width: 100% !important;
-}
-#vista-perfil .profile-bio-txt {
-  font-size: 0.82rem !important;
+/* BOTONES DE PERSONAJE FAVORITO: ESTÉTICA INTEGRADA DE LA APP */
+.btn-char-action-icon {
+  background: var(--bg) !important;
+  border: 1px solid var(--border) !important;
   color: var(--muted) !important;
-  line-height: 1.45 !important;
-  margin-top: 5px !important;
-  display: -webkit-box !important;
-  -webkit-line-clamp: 2 !important;
-  -webkit-box-orient: vertical !important;
-  overflow: hidden !important;
-  text-align: left !important;
-  width: 100% !important;
-}
-#vista-perfil .btn-profile-edit-discreet {
-  position: absolute !important;
-  top: 10px !important;
-  right: 0 !important;
   width: 32px !important;
   height: 32px !important;
-  z-index: 5 !important;
-  display: flex !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  transition: all 0.18s ease !important;
 }
-#vista-perfil #perfil-id-badge {
-  font-size: 0.76rem !important;
-  padding: 4px 10px !important;
-  flex-shrink: 0 !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 5px !important;
-  border-radius: 4px !important;
+.btn-char-action-icon:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: var(--accent-subtle, rgba(56, 189, 248, 0.12)) !important;
+  transform: translateY(-1px) !important;
 }
-#vista-perfil #perfil-email-render {
-  font-size: 0.76rem !important;
-  max-width: 100% !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 5px !important;
+.btn-char-action-icon.btn-char-delete:hover {
+  border-color: #ef4444 !important;
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.12) !important;
 }
-#vista-perfil #perfil-email-txt {
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  max-width: 180px !important;
-  display: inline-block !important;
+[data-theme$="-light"] .btn-char-action-icon {
+  background: var(--card) !important;
 }
 
 /* PERSONAJE FAVORITO: HORIZONTAL Y CON ESPACIO PARA RESPIRAR */
@@ -8952,36 +9051,34 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
     <!-- VISTA PERFIL (PESTAÑA APARTE) -->
     <div id="vista-perfil" style="display:none;">
       <!-- 1. HERO CARD DEL PERFIL -->
-      <div class="profile-hero-card cover-predeterminada" id="perfil-hero-card" style="padding:12px 0 16px 0; margin-bottom:14px; position:relative;">
+      <div class="profile-hero-card cover-predeterminada" id="perfil-hero-card">
         <button type="button" class="btn-profile-edit-discreet" onclick="abrirModalEditarPerfil()" title="Editar información de perfil" aria-label="Editar perfil">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
         </button>
-        <div class="profile-identity-wrap" style="align-items:center; gap:16px; position:relative; z-index:2; width:100%; display:flex;">
-          <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar avatar" style="cursor:pointer; flex-shrink:0;">
+        <div class="profile-identity-wrap">
+          <div class="profile-avatar-box" id="perfil-avatar-render" onclick="abrirModalEditarPerfil()" title="Click para cambiar avatar">
             <span class="emoji-dyn">👤</span>
             <div class="profile-avatar-edit-badge" data-i18n="btn_edit">Editar</div>
           </div>
-          <div class="profile-info-col" style="flex:1; min-width:0;">
-            <div class="profile-nick-row" style="cursor:pointer; display:inline-flex; align-items:center; gap:6px;" onclick="abrirModalEditarPerfil()" title="Click para editar nombre y bio">
+          <div class="profile-info-col">
+            <div class="profile-nick-row" onclick="abrirModalEditarPerfil()" title="Click para editar nombre y bio">
               <span class="profile-nick-display" id="perfil-nick-render" data-i18n="profile_default_role">Cinéfilo & Lector</span>
-              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;opacity:0.7;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;opacity:0.75;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
             </div>
             <div class="profile-bio-txt" id="perfil-bio-render" data-i18n="profile_default_bio">Coleccionando historias en Mediary</div>
-            <div style="margin-top:6px; display:flex; align-items:center; gap:8px; flex-wrap:wrap; max-width:100%;">
-              <span id="perfil-id-badge" onclick="copiarMiIdUsuario()" title="Click para copiar ID" style="cursor:pointer; font-size:0.75rem; font-weight:700; color:var(--accent); background:rgba(56,189,248,0.12); padding:3px 8px; border-radius:3px; border:1px solid rgba(56,189,248,0.35); display:inline-flex; align-items:center; gap:5px; flex-shrink:0;">
+            <div class="profile-badges-row">
+              <span id="perfil-id-badge" onclick="copiarMiIdUsuario()" title="Click para copiar ID">
                 <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15A2.25 2.25 0 0 0 2.25 6.75v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.364a4.125 4.125 0 0 0-6.338 0"/></svg><span id="perfil-id-txt">...</span>
                 <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184"/></svg>
               </span>
-              <div style="font-size:0.75rem; color:var(--muted); display:inline-flex; align-items:center; gap:5px; max-width:100%; overflow:hidden;" id="perfil-email-render">
+              <div id="perfil-email-render">
                 <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;flex-shrink:0;"><path d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/></svg>
-                <span id="perfil-email-txt" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:160px; display:inline-block;">Sin cuenta vinculada</span>
+                <span id="perfil-email-txt">Sin cuenta vinculada</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <hr class="home-section-divider">
 
       <!-- 2. PERSONAJE FAVORITO -->
       <div class="home-clean-section" id="perfil-sec-personaje">
@@ -9027,6 +9124,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
         <!-- RESUMEN GENERAL Y RÉCORDS DE RITMO SIEMPRE VISIBLES -->
         <div id="perfil-stats-general-section"></div>
+
+        <hr class="home-section-divider">
 
         <!-- ÍNDICE DE CATEGORÍAS PARA VER DETALLES -->
         <div class="home-indice-carousel" id="perfil-stats-cats-index" style="margin:16px 0 12px; padding:4px 2px 8px;">
@@ -18825,24 +18924,26 @@ function renderizarPersonajeFavorito() {
   const esImg = char.imagen && (char.imagen.startsWith('http') || char.imagen.startsWith('data:'));
   cont.innerHTML = `
     <div class="profile-fav-char-card" style="padding:6px 0; border-radius:0; margin-bottom:0; position:relative;">
-      <div class="fav-char-actions-wrap" style="position:absolute; top:2px; right:0; display:flex; align-items:center; gap:4px; z-index:3;">
-        <button type="button" class="btn-char-icon-discreet" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Change character' : 'Cambiar personaje'}" aria-label="Cambiar personaje">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
-        </button>
-        <button type="button" class="btn-char-icon-discreet" onclick="abrirModalConfirmarQuitarPersonaje()" title="${l === 'en' ? 'Remove character' : 'Quitar personaje'}" aria-label="Quitar personaje">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M6 18 18 6M6 6l12 12"/></svg>
-        </button>
-      </div>
-      <div class="fav-char-main-row" style="display:flex; align-items:center; gap:12px; padding-right:64px;">
-        <div class="fav-char-avatar-box" style="width:48px; height:48px; min-width:48px; max-width:48px; border-radius:50%; overflow:hidden; border:2px solid #f59e0b; box-shadow:0 0 10px rgba(245,158,11,0.25); display:grid; place-items:center; flex-shrink:0;">
-          ${esImg ? `<img src="${char.imagen}" alt="${char.nombre}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='👤';">` : `<span style="font-size:1.4rem;">${char.imagen || '👤'}</span>`}
-        </div>
-        <div class="fav-char-text-block" style="flex:1; min-width:0;">
-          <h4 class="fav-char-name-txt" style="font-size:0.95rem; font-weight:800; color:var(--text); line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0;" title="${char.nombre}">${char.nombre}</h4>
-          <div class="fav-char-work-txt" style="font-size:0.78rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${char.obra || ''}">
-            <span style="opacity:0.75;">${l === 'en' ? 'From:' : 'De:'}</span> <strong>${char.obra || 'Obra predilecta'}</strong>
+      <div class="fav-char-main-row" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+        <div style="display:flex; align-items:center; gap:14px; min-width:0; flex:1;">
+          <div class="fav-char-avatar-box" style="width:54px; height:54px; min-width:54px; max-width:54px; border-radius:50%; overflow:hidden; border:2px solid #f59e0b; box-shadow:0 0 12px rgba(245,158,11,0.25); display:grid; place-items:center; flex-shrink:0;">
+            ${esImg ? `<img src="${char.imagen}" alt="${char.nombre}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='👤';">` : `<span style="font-size:1.6rem;">${char.imagen || '👤'}</span>`}
           </div>
-          ${char.cita ? `<div class="fav-char-quote-txt" style="font-size:0.74rem; color:#f59e0b; font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${char.cita}">“${char.cita}”</div>` : ''}
+          <div class="fav-char-text-block" style="flex:1; min-width:0;">
+            <h4 class="fav-char-name-txt" style="font-size:1rem; font-weight:800; color:var(--text); line-height:1.25; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:0;" title="${char.nombre}">${char.nombre}</h4>
+            <div class="fav-char-work-txt" style="font-size:0.8rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${char.obra || ''}">
+              <span style="opacity:0.75;">${l === 'en' ? 'From:' : 'De:'}</span> <strong>${char.obra || 'Obra predilecta'}</strong>
+            </div>
+            ${char.cita ? `<div class="fav-char-quote-txt" style="font-size:0.76rem; color:#f59e0b; font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px;" title="${char.cita}">“${char.cita}”</div>` : ''}
+          </div>
+        </div>
+        <div class="fav-char-actions-wrap" style="display:flex; align-items:center; gap:8px; flex-shrink:0;">
+          <button type="button" class="btn-char-action-icon" onclick="abrirModalSeleccionarPersonaje()" title="${l === 'en' ? 'Change character' : 'Cambiar personaje'}" aria-label="Cambiar personaje">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+          </button>
+          <button type="button" class="btn-char-action-icon btn-char-delete" onclick="abrirModalConfirmarQuitarPersonaje()" title="${l === 'en' ? 'Remove character' : 'Quitar personaje'}" aria-label="Quitar personaje">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+          </button>
         </div>
       </div>
     </div>
