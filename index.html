@@ -11722,7 +11722,33 @@ return await SERVER_API.obtenerPerfilUsuario(email); } catch (e) { return { exit
 }, async iniciarSesionConGoogle(emailManual, passwordOpcional) { const em = normEm_(emailManual); if (!em) return { exito: false, necesitaInputGoogle: true }; return await SERVER_API.autenticarUsuarioSupabase({ modo: 'google', email: em, password: passwordOpcional || '' });
 }, async guardarPerfilUsuario(datos, userEmail) { try { const email = normEm_(userEmail || datos?.emailGoogle); if (!email) return { exito: false, error: 'Inicia sesión primero para guardar tu perfil.' };
 const existentes = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); const actual = existentes && existentes[0] ? existentes[0] : {};
-const prefsObj = Object.assign({}, actual.preferencias || {}, datos.preferencias || {});
+const actualPrefs = actual.preferencias || {};
+const inPrefs = datos.preferencias || {};
+const prefsObj = Object.assign({}, actualPrefs, inPrefs);
+if (actualPrefs.configuracion_ui && inPrefs.configuracion_ui) {
+  const prevTs = Number(actualPrefs.configuracion_ui.updatedAt) || 0;
+  const nextTs = Number(inPrefs.configuracion_ui.updatedAt) || 0;
+  if (prevTs > nextTs && nextTs > 0) {
+    prefsObj.configuracion_ui = actualPrefs.configuracion_ui;
+  }
+}
+const actualCuentas = actualPrefs.cuentas_vinculadas || actualPrefs.cuentasVinculadas;
+const inCuentas = inPrefs.cuentas_vinculadas || inPrefs.cuentasVinculadas;
+if (actualCuentas && inCuentas) {
+  const prevCTs = Number(actualCuentas.updatedAt) || 0;
+  const nextCTs = Number(inCuentas.updatedAt) || 0;
+  if (prevCTs > nextCTs && nextCTs > 0) {
+    prefsObj.cuentas_vinculadas = actualCuentas;
+    prefsObj.cuentasVinculadas = actualCuentas;
+  }
+}
+if (actualPrefs.actividad && inPrefs.actividad) {
+  const prevATs = Number(actualPrefs.actividad.updatedAt) || 0;
+  const nextATs = Number(inPrefs.actividad.updatedAt) || 0;
+  if (prevATs > nextATs && nextATs > 0) {
+    prefsObj.actividad = actualPrefs.actividad;
+  }
+}
 if (datos.portada) prefsObj.portada = datos.portada;
 if (datos.cancionFavorita !== undefined) {
   prefsObj.cancionFavorita = datos.cancionFavorita;
@@ -11733,11 +11759,14 @@ if (datos.cancionFavorita !== undefined) {
     delete datos.favoritos.cancionFavorita;
   }
 }
-if (datos.diasLectura || datos.tiemposLectura) {
-  if (!prefsObj.rachas) prefsObj.rachas = {};
-  if (datos.diasLectura) prefsObj.rachas.diasLectura = datos.diasLectura;
-  if (datos.tiemposLectura) prefsObj.rachas.tiemposLectura = datos.tiemposLectura;
-  prefsObj.rachas.updatedAt = Date.now();
+const prevDias = Array.isArray(actualPrefs.rachas?.diasLectura) ? actualPrefs.rachas.diasLectura : (Array.isArray(actualPrefs.diasLectura) ? actualPrefs.diasLectura : []);
+const inDias = Array.isArray(datos.diasLectura) ? datos.diasLectura : (Array.isArray(inPrefs.rachas?.diasLectura) ? inPrefs.rachas.diasLectura : []);
+const prevTiempos = (actualPrefs.rachas?.tiemposLectura && typeof actualPrefs.rachas.tiemposLectura === 'object') ? actualPrefs.rachas.tiemposLectura : ((actualPrefs.tiemposLectura && typeof actualPrefs.tiemposLectura === 'object') ? actualPrefs.tiemposLectura : {});
+const inTiempos = (datos.tiemposLectura && typeof datos.tiemposLectura === 'object') ? datos.tiemposLectura : ((inPrefs.rachas?.tiemposLectura && typeof inPrefs.rachas.tiemposLectura === 'object') ? inPrefs.rachas.tiemposLectura : {});
+if (datos.diasLectura || datos.tiemposLectura || inPrefs.rachas) {
+  const mergedDias = Array.from(new Set([...prevDias, ...inDias])).filter(Boolean).sort();
+  const mergedTiempos = Object.assign({}, prevTiempos, inTiempos);
+  prefsObj.rachas = { diasLectura: mergedDias, tiemposLectura: mergedTiempos, updatedAt: Date.now() };
 }
 const payload = { user_email: email,
 nickname: datos.nickname !== undefined ? String(datos.nickname) : (actual.nickname || email.split('@')[0]), bio: datos.bio !== undefined ? String(datos.bio) : (actual.bio || 'Coleccionando historias en Mediary'),
@@ -19003,96 +19032,200 @@ if (gn && perfilUsuario && perfilUsuario.nickname) {
 }
 }
 let _timerSyncCloudPrefs = null;
-function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false) {
+let _tieneSyncPendienteNube = false;
+
+function limpiarDatosCuentaEnDispositivo_() {
+  const keys = [
+    'mediary_spotify_token',
+    'mediary_spotify_refresh_token',
+    'mediary_spotify_expires_at',
+    'mediary_spotify_user',
+    'mediary_spotify_stats',
+    'mediary_spotify_accumulator',
+    'mediary_spotify_album_tracker',
+    'mediary_spotify_selected_range',
+    'mediary_spotify_preferred_device_id',
+    'mediary_spotify_now_playing',
+    'mediary_spotify_last_auto_sync',
+    'mediary_lastfm_connected',
+    'mediary_lastfm_username',
+    'mediary_lastfm_user',
+    'mediary_lastfm_stats',
+    'mediary_lastfm_selected_period',
+    'mediary_lastfm_last_auto_sync',
+    'mediary_psn_connected',
+    'mediary_psn_username',
+    'mediary_psn_npsso',
+    'mediary_psn_user',
+    'mediary_psn_stats',
+    'mediary_psn_now_playing',
+    'mediary_psn_manual_state',
+    'mediary_psn_last_auto_sync',
+    'mediary_steam_connected',
+    'mediary_steam_id',
+    'mediary_steam_id64',
+    'mediary_steam_api_key',
+    'mediary_steam_user',
+    'mediary_steam_stats',
+    'mediary_steam_now_playing',
+    'mediary_last_active_game_platform',
+    'mediary_cuentas_sync_updated_at',
+    'mediary_liked_reviews',
+    'mediary_dias_lectura_default',
+    'mediary_tiempos_lectura_default'
+  ];
+  keys.forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
+
+  if (typeof detenerPollingSpotifyLive === 'function') detenerPollingSpotifyLive();
+  if (typeof detenerPollingSteamLive === 'function') detenerPollingSteamLive();
+  if (typeof _spotifyNowPlayingCache !== 'undefined') _spotifyNowPlayingCache = null;
+  if (typeof _spotifyUltimaConsultaLive !== 'undefined') _spotifyUltimaConsultaLive = 0;
+  if (typeof _steamUltimaConsultaLive !== 'undefined') _steamUltimaConsultaLive = 0;
+  window.spotifyCardExpanded = undefined;
+  window.psnCardExpanded = undefined;
+  window.friendsSpCardExpanded = undefined;
+  window.friendsPsnCardExpanded = undefined;
+}
+window.limpiarDatosCuentaEnDispositivo_ = limpiarDatosCuentaEnDispositivo_;
+
+function empaquetarPreferenciasYAppsEnPerfil_(opciones = {}) {
+  if (!perfilUsuario) perfilUsuario = {};
+  if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+
+  const ahora = Date.now();
+  const uiUpdatedAt = Number(userPrefs.updatedAt) || ahora;
+
+  const friendsSpExp = localStorage.getItem('mediary_friends_sp_card_expanded') === 'true' ||
+    localStorage.getItem('mediary_friends_spotify_card_expanded') === 'true';
+
+  // 1. Empaquetar configuración visual completa (Themes, fonts, idioma, tamaños, notificaciones, vista)
+  const configUI = {
+    themeFamily: userPrefs.themeFamily || 'slate',
+    themeMode: userPrefs.themeMode || 'dark',
+    theme: userPrefs.theme || ((userPrefs.themeFamily || 'slate') + '-' + (userPrefs.themeMode || 'dark')),
+    appTheme: userPrefs.appTheme || 'default',
+    uiStyle: userPrefs.uiStyle || 'modern',
+    font: userPrefs.font || "'Lexend', sans-serif",
+    fontSize: userPrefs.fontSize || '75%',
+    lang: userPrefs.lang || 'es',
+    showEmojis: userPrefs.showEmojis !== false,
+    categoriasOrden: Array.isArray(userPrefs.categoriasOrden) ? userPrefs.categoriasOrden : [],
+    categoriasOcultas: Array.isArray(userPrefs.categoriasOcultas) ? userPrefs.categoriasOcultas : [],
+    notificaciones: userPrefs.notificaciones || {},
+    customFontChosen: localStorage.getItem('mediary_user_custom_font') === 'true',
+    customFontSizeChosen: localStorage.getItem('mediary_user_custom_font_size') === 'true',
+    dashboardViewMode: localStorage.getItem('mediary_dashboard_view_mode') || '',
+    anioActivo: localStorage.getItem('mediary_anio_activo') || '',
+    cardExpanded: {
+      spotify: localStorage.getItem('mediary_spotify_card_expanded') === 'true',
+      psn: localStorage.getItem('mediary_psn_card_expanded') === 'true',
+      friends_spotify: friendsSpExp,
+      friends_psn: localStorage.getItem('mediary_friends_psn_card_expanded') === 'true'
+    },
+    updatedAt: uiUpdatedAt
+  };
+  perfilUsuario.preferencias.configuracion_ui = configUI;
+  perfilUsuario.preferencias.notificaciones = Object.assign({}, userPrefs.notificaciones || {});
+
+  // 2. Empaquetar todas las cuentas y apps vinculadas (Spotify, Last.fm, PlayStation, Steam, API keys)
+  let cuentasTs = Number(localStorage.getItem('mediary_cuentas_sync_updated_at')) || 0;
+  if (!opciones.soloUI || !cuentasTs) {
+    cuentasTs = ahora;
+    try { localStorage.setItem('mediary_cuentas_sync_updated_at', String(cuentasTs)); } catch (e) {}
+  }
+
+  const spToken = localStorage.getItem('mediary_spotify_token') || '';
+  const spRefresh = localStorage.getItem('mediary_spotify_refresh_token') || '';
+  const cuentasVinculadas = {
+    spotify: {
+      connected: !!(spToken || spRefresh),
+      token: spToken,
+      refreshToken: spRefresh,
+      expiresAt: localStorage.getItem('mediary_spotify_expires_at') || '',
+      clientId: localStorage.getItem('mediary_spotify_client_id') || '',
+      user: localStorage.getItem('mediary_spotify_user') || '',
+      stats: localStorage.getItem('mediary_spotify_stats') || '',
+      accumulator: localStorage.getItem('mediary_spotify_accumulator') || '',
+      albumTracker: localStorage.getItem('mediary_spotify_album_tracker') || '',
+      selectedRange: localStorage.getItem('mediary_spotify_selected_range') || '',
+      preferredDeviceId: localStorage.getItem('mediary_spotify_preferred_device_id') || '',
+      nowPlaying: localStorage.getItem('mediary_spotify_now_playing') || ''
+    },
+    lastfm: {
+      connected: localStorage.getItem('mediary_lastfm_connected') === 'true',
+      username: localStorage.getItem('mediary_lastfm_username') || '',
+      user: localStorage.getItem('mediary_lastfm_user') || '',
+      stats: localStorage.getItem('mediary_lastfm_stats') || '',
+      selectedPeriod: localStorage.getItem('mediary_lastfm_selected_period') || 'overall'
+    },
+    playstation: {
+      connected: localStorage.getItem('mediary_psn_connected') === 'true',
+      username: localStorage.getItem('mediary_psn_username') || '',
+      npsso: localStorage.getItem('mediary_psn_npsso') || '',
+      user: localStorage.getItem('mediary_psn_user') || '',
+      stats: localStorage.getItem('mediary_psn_stats') || '',
+      nowPlaying: localStorage.getItem('mediary_psn_now_playing') || '',
+      manualState: localStorage.getItem('mediary_psn_manual_state') || ''
+    },
+    steam: {
+      connected: localStorage.getItem('mediary_steam_connected') === 'true',
+      id: localStorage.getItem('mediary_steam_id') || '',
+      id64: localStorage.getItem('mediary_steam_id64') || '',
+      apiKey: localStorage.getItem('mediary_steam_api_key') || '',
+      user: localStorage.getItem('mediary_steam_user') || '',
+      stats: localStorage.getItem('mediary_steam_stats') || '',
+      nowPlaying: localStorage.getItem('mediary_steam_now_playing') || ''
+    },
+    lastActiveGamePlatform: localStorage.getItem('mediary_last_active_game_platform') || '',
+    apiKeys: {
+      comicvine: localStorage.getItem('mediary_comicvine_key') || window.COMICVINE_K || '',
+      marvel: localStorage.getItem('mediary_marvel_key') || window.MARVEL_K || '',
+      lastfm: localStorage.getItem('mediary_lastfm_api_key') || window.LASTFM_API_KEY || '',
+      igdbClientId: localStorage.getItem('mediary_igdb_client_id') || window.IGDB_CLIENT_ID || '',
+      igdbToken: localStorage.getItem('mediary_igdb_token') || window.IGDB_TOKEN || ''
+    },
+    updatedAt: cuentasTs
+  };
+  perfilUsuario.preferencias.cuentas_vinculadas = cuentasVinculadas;
+  perfilUsuario.preferencias.cuentasVinculadas = cuentasVinculadas;
+
+  // 3. Empaquetar actividad en vivo unificada (juegos + música)
+  perfilUsuario.preferencias.actividad = {
+    playstationNowPlaying: cuentasVinculadas.playstation.nowPlaying,
+    steamNowPlaying: cuentasVinculadas.steam.nowPlaying,
+    lastActiveGamePlatform: cuentasVinculadas.lastActiveGamePlatform,
+    spotifyNowPlaying: cuentasVinculadas.spotify.nowPlaying,
+    updatedAt: cuentasTs
+  };
+
+  // 4. Empaquetar rachas (incluyendo racha manual de lectura y mapa de tiempos registrados)
+  const listaDiasLectura = typeof obtenerListaDiasLectura === 'function' ? obtenerListaDiasLectura() : [];
+  const mapaTiemposLectura = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
+  const rachasData = {
+    diasLectura: Array.isArray(listaDiasLectura) ? listaDiasLectura : [],
+    tiemposLectura: (typeof mapaTiemposLectura === 'object' && mapaTiemposLectura !== null) ? mapaTiemposLectura : {},
+    updatedAt: ahora
+  };
+  perfilUsuario.preferencias.rachas = rachasData;
+  perfilUsuario.diasLectura = rachasData.diasLectura;
+  perfilUsuario.tiemposLectura = rachasData.tiemposLectura;
+}
+
+function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false, opciones = {}) {
   if (!estado || !estado.userEmail) return;
 
+  try {
+    empaquetarPreferenciasYAppsEnPerfil_(opciones);
+    guardarPerfilLocal();
+  } catch (err) {
+    console.error('Error empaquetando preferencias locales:', err);
+  }
+
   const ejecutar = () => {
+    _tieneSyncPendienteNube = false;
+    _timerSyncCloudPrefs = null;
     try {
-      if (!perfilUsuario) perfilUsuario = {};
-      if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
-
-      // 1. Empaquetar configuración visual completa (Themes, fonts, colores, tamaños, orden de categorías)
-      const configUI = {
-        themeFamily: userPrefs.themeFamily || 'slate',
-        themeMode: userPrefs.themeMode || 'dark',
-        theme: userPrefs.theme || ((userPrefs.themeFamily || 'slate') + '-' + (userPrefs.themeMode || 'dark')),
-        appTheme: userPrefs.appTheme || 'default',
-        uiStyle: userPrefs.uiStyle || 'modern',
-        font: userPrefs.font || "'Lexend', sans-serif",
-        fontSize: userPrefs.fontSize || '75%',
-        lang: userPrefs.lang || 'es',
-        showEmojis: userPrefs.showEmojis !== false,
-        categoriasOrden: Array.isArray(userPrefs.categoriasOrden) ? userPrefs.categoriasOrden : [],
-        categoriasOcultas: Array.isArray(userPrefs.categoriasOcultas) ? userPrefs.categoriasOcultas : [],
-        notificaciones: userPrefs.notificaciones || {},
-        customFontChosen: localStorage.getItem('mediary_user_custom_font') === 'true',
-        customFontSizeChosen: localStorage.getItem('mediary_user_custom_font_size') === 'true',
-        cardExpanded: {
-          spotify: localStorage.getItem('mediary_spotify_card_expanded') === 'true',
-          psn: localStorage.getItem('mediary_psn_card_expanded') === 'true',
-          friends_spotify: localStorage.getItem('mediary_friends_spotify_card_expanded') === 'true',
-          friends_psn: localStorage.getItem('mediary_friends_psn_card_expanded') === 'true'
-        },
-        updatedAt: Date.now()
-      };
-      perfilUsuario.preferencias.configuracion_ui = configUI;
-
-      // 2. Empaquetar cuentas vinculadas (Spotify, PSN, Steam, API keys)
-      const cuentasVinculadas = {
-        spotify: {
-          token: localStorage.getItem('mediary_spotify_token') || '',
-          refreshToken: localStorage.getItem('mediary_spotify_refresh_token') || '',
-          expiresAt: localStorage.getItem('mediary_spotify_expires_at') || '',
-          clientId: localStorage.getItem('mediary_spotify_client_id') || '',
-          user: localStorage.getItem('mediary_spotify_user') || '',
-          stats: localStorage.getItem('mediary_spotify_stats') || '',
-          accumulator: localStorage.getItem('mediary_spotify_accumulator') || '',
-          albumTracker: localStorage.getItem('mediary_spotify_album_tracker') || '',
-          selectedRange: localStorage.getItem('mediary_spotify_selected_range') || '',
-          preferredDeviceId: localStorage.getItem('mediary_spotify_preferred_device_id') || ''
-        },
-        playstation: {
-          connected: localStorage.getItem('mediary_psn_connected') === 'true',
-          username: localStorage.getItem('mediary_psn_username') || '',
-          npsso: localStorage.getItem('mediary_psn_npsso') || '',
-          user: localStorage.getItem('mediary_psn_user') || '',
-          stats: localStorage.getItem('mediary_psn_stats') || '',
-          nowPlaying: localStorage.getItem('mediary_psn_now_playing') || ''
-        },
-        steam: {
-          connected: localStorage.getItem('mediary_steam_connected') === 'true',
-          id: localStorage.getItem('mediary_steam_id') || '',
-          id64: localStorage.getItem('mediary_steam_id64') || '',
-          apiKey: localStorage.getItem('mediary_steam_api_key') || '',
-          user: localStorage.getItem('mediary_steam_user') || '',
-          stats: localStorage.getItem('mediary_steam_stats') || '',
-          nowPlaying: localStorage.getItem('mediary_steam_now_playing') || ''
-        },
-        lastActiveGamePlatform: localStorage.getItem('mediary_last_active_game_platform') || '',
-        apiKeys: {
-          comicvine: localStorage.getItem('mediary_comicvine_key') || window.COMICVINE_K || '',
-          marvel: localStorage.getItem('mediary_marvel_key') || window.MARVEL_K || '',
-          lastfm: localStorage.getItem('mediary_lastfm_api_key') || window.LASTFM_API_KEY || '',
-          igdbClientId: localStorage.getItem('mediary_igdb_client_id') || window.IGDB_CLIENT_ID || '',
-          igdbToken: localStorage.getItem('mediary_igdb_token') || window.IGDB_TOKEN || ''
-        },
-        updatedAt: Date.now()
-      };
-      perfilUsuario.preferencias.cuentas_vinculadas = cuentasVinculadas;
-      perfilUsuario.preferencias.cuentasVinculadas = cuentasVinculadas;
-
-      // 3. Empaquetar rachas (incluyendo racha manual de lectura y mapa de tiempos registrados)
-      const listaDiasLectura = typeof obtenerListaDiasLectura === 'function' ? obtenerListaDiasLectura() : [];
-      const mapaTiemposLectura = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
-      const rachasData = {
-        diasLectura: Array.isArray(listaDiasLectura) ? listaDiasLectura : [],
-        tiemposLectura: (typeof mapaTiemposLectura === 'object' && mapaTiemposLectura !== null) ? mapaTiemposLectura : {},
-        updatedAt: Date.now()
-      };
-      perfilUsuario.preferencias.rachas = rachasData;
-      perfilUsuario.diasLectura = rachasData.diasLectura;
-      perfilUsuario.tiemposLectura = rachasData.tiemposLectura;
-
+      empaquetarPreferenciasYAppsEnPerfil_(opciones);
       guardarPerfilLocal();
       if (typeof google !== 'undefined' && google.script?.run) {
         google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
@@ -19106,186 +19239,302 @@ function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false) {
     if (_timerSyncCloudPrefs) clearTimeout(_timerSyncCloudPrefs);
     ejecutar();
   } else {
+    _tieneSyncPendienteNube = true;
     if (_timerSyncCloudPrefs) clearTimeout(_timerSyncCloudPrefs);
-    _timerSyncCloudPrefs = setTimeout(ejecutar, 600);
+    _timerSyncCloudPrefs = setTimeout(ejecutar, 350);
   }
 }
 window.sincronizarPreferenciasYAppsHaciaNube = sincronizarPreferenciasYAppsHaciaNube;
 
-function restaurarPreferenciasYAppsDesdeNube(prefs) {
-  if (!prefs || typeof prefs !== 'object') return false;
-  let cambio = false;
+function flushSyncPreferenciasNube_() {
+  if (_tieneSyncPendienteNube && estado && estado.userEmail) {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
+}
+if (typeof window !== 'undefined' && window.addEventListener) {
+  window.addEventListener('pagehide', flushSyncPreferenciasNube_);
+}
+if (typeof document !== 'undefined' && document.addEventListener) {
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) flushSyncPreferenciasNube_();
+  });
+}
 
-  // 1. Restaurar configuración de UI
+function restaurarPreferenciasYAppsDesdeNube(prefs, opciones = {}) {
+  if (!prefs || typeof prefs !== 'object') return false;
+  const esInicioSesionNuevo = !!(opciones && opciones.esInicioSesionNuevo);
+  let cambio = false;
+  let idiomaCambio = false;
+  let subirPendientesLocales = false;
+
+  // 1. Restaurar configuración de UI (Theme, Font, Tamaño, Idioma, Notificaciones, Tarjetas)
   const configUI = prefs.configuracion_ui;
   if (configUI && typeof configUI === 'object') {
     const localUpdatedAt = Number(userPrefs.updatedAt) || 0;
     const cloudUpdatedAt = Number(configUI.updatedAt) || 0;
-    const localEsMasNuevo = (localUpdatedAt > 0 && cloudUpdatedAt > 0 && localUpdatedAt >= cloudUpdatedAt);
-    if (localEsMasNuevo && userPrefs.themeMode) {
-      configUI.themeMode = userPrefs.themeMode;
-      configUI.themeFamily = userPrefs.themeFamily || configUI.themeFamily;
-      configUI.theme = userPrefs.theme || configUI.theme;
-    }
-    const huboCambioVisual = (
-      (configUI.themeFamily && configUI.themeFamily !== userPrefs.themeFamily) ||
-      (configUI.themeMode && configUI.themeMode !== userPrefs.themeMode) ||
-      (configUI.appTheme && configUI.appTheme !== userPrefs.appTheme) ||
-      (configUI.font && configUI.font !== userPrefs.font) ||
-      (configUI.fontSize && configUI.fontSize !== userPrefs.fontSize) ||
-      (configUI.lang && configUI.lang !== userPrefs.lang) ||
-      (typeof configUI.showEmojis === 'boolean' && configUI.showEmojis !== userPrefs.showEmojis) ||
-      (Array.isArray(configUI.categoriasOrden) && JSON.stringify(configUI.categoriasOrden) !== JSON.stringify(userPrefs.categoriasOrden)) ||
-      (Array.isArray(configUI.categoriasOcultas) && JSON.stringify(configUI.categoriasOcultas) !== JSON.stringify(userPrefs.categoriasOcultas))
-    );
-    if (configUI.themeFamily) userPrefs.themeFamily = configUI.themeFamily;
-    if (configUI.themeMode) userPrefs.themeMode = configUI.themeMode;
-    if (configUI.theme) userPrefs.theme = configUI.theme;
-    if (configUI.appTheme) userPrefs.appTheme = configUI.appTheme;
-    if (configUI.uiStyle) userPrefs.uiStyle = configUI.uiStyle;
-    if (configUI.font) {
-      userPrefs.font = configUI.font;
-      try { localStorage.setItem('mediary_user_custom_font', 'true'); } catch(e) {}
-    }
-    if (configUI.fontSize && ['50%', '62%', '75%', '88%', '100%'].includes(configUI.fontSize)) {
-      if (configUI.customFontSizeChosen) {
-        userPrefs.fontSize = configUI.fontSize;
-        try { localStorage.setItem('mediary_user_custom_font_size', 'true'); } catch(e) {}
-      } else if (configUI.fontSize !== '100%') {
-        userPrefs.fontSize = configUI.fontSize;
-      }
-    }
-    if (configUI.lang) userPrefs.lang = configUI.lang;
-    if (typeof configUI.showEmojis === 'boolean') userPrefs.showEmojis = configUI.showEmojis;
-    if (Array.isArray(configUI.categoriasOrden) && configUI.categoriasOrden.length) {
-      userPrefs.categoriasOrden = configUI.categoriasOrden;
-    }
-    if (Array.isArray(configUI.categoriasOcultas)) {
-      userPrefs.categoriasOcultas = configUI.categoriasOcultas;
-    }
-    if (configUI.notificaciones && typeof configUI.notificaciones === 'object') {
-      userPrefs.notificaciones = Object.assign(userPrefs.notificaciones || {}, configUI.notificaciones);
-    }
+    const aplicarCloudUI = esInicioSesionNuevo || localUpdatedAt === 0 || cloudUpdatedAt >= localUpdatedAt;
 
-    if (configUI.cardExpanded) {
-      if (typeof configUI.cardExpanded.spotify === 'boolean') {
-        localStorage.setItem('mediary_spotify_card_expanded', configUI.cardExpanded.spotify ? 'true' : 'false');
-      }
-      if (typeof configUI.cardExpanded.psn === 'boolean') {
-        localStorage.setItem('mediary_psn_card_expanded', configUI.cardExpanded.psn ? 'true' : 'false');
-      }
-      if (typeof configUI.cardExpanded.friends_spotify === 'boolean') {
-        localStorage.setItem('mediary_friends_spotify_card_expanded', configUI.cardExpanded.friends_spotify ? 'true' : 'false');
-      }
-      if (typeof configUI.cardExpanded.friends_psn === 'boolean') {
-        localStorage.setItem('mediary_friends_psn_card_expanded', configUI.cardExpanded.friends_psn ? 'true' : 'false');
-      }
-    }
+    if (aplicarCloudUI) {
+      const langAnterior = userPrefs.lang || 'es';
+      const huboCambioVisual = esInicioSesionNuevo || (
+        (configUI.themeFamily && configUI.themeFamily !== userPrefs.themeFamily) ||
+        (configUI.themeMode && configUI.themeMode !== userPrefs.themeMode) ||
+        (configUI.theme && configUI.theme !== userPrefs.theme) ||
+        (configUI.appTheme && configUI.appTheme !== userPrefs.appTheme) ||
+        (configUI.font && configUI.font !== userPrefs.font) ||
+        (configUI.fontSize && configUI.fontSize !== userPrefs.fontSize) ||
+        (configUI.lang && configUI.lang !== userPrefs.lang) ||
+        (typeof configUI.showEmojis === 'boolean' && configUI.showEmojis !== userPrefs.showEmojis) ||
+        (Array.isArray(configUI.categoriasOrden) && JSON.stringify(configUI.categoriasOrden) !== JSON.stringify(userPrefs.categoriasOrden)) ||
+        (Array.isArray(configUI.categoriasOcultas) && JSON.stringify(configUI.categoriasOcultas) !== JSON.stringify(userPrefs.categoriasOcultas))
+      );
 
-    try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {}
-    if (huboCambioVisual) {
-      aplicarEstilosGlobales();
-      actualizarTextosInterfaz();
-      if (typeof actualizarTarjetasVisualesConfig === 'function') {
-        actualizarTarjetasVisualesConfig();
+      if (configUI.themeFamily) userPrefs.themeFamily = configUI.themeFamily;
+      if (configUI.themeMode) userPrefs.themeMode = configUI.themeMode;
+      if (configUI.theme) {
+        userPrefs.theme = configUI.theme;
+      } else if (configUI.themeFamily && configUI.themeMode) {
+        userPrefs.theme = configUI.themeFamily + '-' + configUI.themeMode;
       }
-      cambio = true;
+      if (configUI.appTheme) userPrefs.appTheme = configUI.appTheme;
+      if (configUI.uiStyle) userPrefs.uiStyle = configUI.uiStyle;
+      if (configUI.font) {
+        userPrefs.font = configUI.font;
+        try {
+          if (configUI.customFontChosen === false) localStorage.removeItem('mediary_user_custom_font');
+          else localStorage.setItem('mediary_user_custom_font', 'true');
+        } catch(e) {}
+      }
+      if (configUI.fontSize && ['50%', '62%', '75%', '88%', '100%'].includes(configUI.fontSize)) {
+        userPrefs.fontSize = configUI.fontSize;
+        try {
+          if (configUI.customFontSizeChosen) localStorage.setItem('mediary_user_custom_font_size', 'true');
+          else if (esInicioSesionNuevo) localStorage.removeItem('mediary_user_custom_font_size');
+        } catch(e) {}
+      }
+      if (configUI.lang) {
+        userPrefs.lang = configUI.lang;
+        if (configUI.lang !== langAnterior) idiomaCambio = true;
+      }
+      if (typeof configUI.showEmojis === 'boolean') userPrefs.showEmojis = configUI.showEmojis;
+      if (Array.isArray(configUI.categoriasOrden) && configUI.categoriasOrden.length) {
+        userPrefs.categoriasOrden = configUI.categoriasOrden;
+      }
+      if (Array.isArray(configUI.categoriasOcultas)) {
+        userPrefs.categoriasOcultas = configUI.categoriasOcultas;
+      }
+      if (configUI.notificaciones && typeof configUI.notificaciones === 'object') {
+        userPrefs.notificaciones = Object.assign(userPrefs.notificaciones || {}, configUI.notificaciones);
+      }
+      if (configUI.dashboardViewMode) {
+        try { localStorage.setItem('mediary_dashboard_view_mode', configUI.dashboardViewMode); } catch (e) {}
+      }
+      if (configUI.anioActivo) {
+        try { localStorage.setItem('mediary_anio_activo', String(configUI.anioActivo)); } catch (e) {}
+      }
+
+      if (configUI.cardExpanded && typeof configUI.cardExpanded === 'object') {
+        if (typeof configUI.cardExpanded.spotify === 'boolean') {
+          localStorage.setItem('mediary_spotify_card_expanded', configUI.cardExpanded.spotify ? 'true' : 'false');
+          window.spotifyCardExpanded = configUI.cardExpanded.spotify;
+        }
+        if (typeof configUI.cardExpanded.psn === 'boolean') {
+          localStorage.setItem('mediary_psn_card_expanded', configUI.cardExpanded.psn ? 'true' : 'false');
+          window.psnCardExpanded = configUI.cardExpanded.psn;
+        }
+        if (typeof configUI.cardExpanded.friends_spotify === 'boolean') {
+          localStorage.setItem('mediary_friends_sp_card_expanded', configUI.cardExpanded.friends_spotify ? 'true' : 'false');
+          localStorage.setItem('mediary_friends_spotify_card_expanded', configUI.cardExpanded.friends_spotify ? 'true' : 'false');
+          window.friendsSpCardExpanded = configUI.cardExpanded.friends_spotify;
+        }
+        if (typeof configUI.cardExpanded.friends_psn === 'boolean') {
+          localStorage.setItem('mediary_friends_psn_card_expanded', configUI.cardExpanded.friends_psn ? 'true' : 'false');
+          window.friendsPsnCardExpanded = configUI.cardExpanded.friends_psn;
+        }
+      }
+
+      userPrefs.updatedAt = cloudUpdatedAt || Date.now();
+      try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {}
+
+      // Sincronizar inputs ocultos del modal de configuración
+      const elLang = document.getElementById('cfg-lang');
+      const elFont = document.getElementById('cfg-font');
+      const elSize = document.getElementById('cfg-font-size');
+      const elTheme = document.getElementById('cfg-theme');
+      const elAppTheme = document.getElementById('cfg-app-theme');
+      if (elLang) elLang.value = userPrefs.lang || 'es';
+      if (elFont) elFont.value = userPrefs.font || "'Lexend', sans-serif";
+      if (elSize) elSize.value = userPrefs.fontSize || '75%';
+      if (elTheme) elTheme.value = userPrefs.themeFamily || 'slate';
+      if (elAppTheme) elAppTheme.value = userPrefs.appTheme || 'default';
+
+      if (huboCambioVisual) {
+        if (typeof aplicarEstilosGlobales === 'function') aplicarEstilosGlobales();
+        if (typeof actualizarTextosInterfaz === 'function') actualizarTextosInterfaz();
+        if (typeof inicializarSelectoresFechasAproximadas === 'function') inicializarSelectoresFechasAproximadas();
+        if (typeof actualizarUISelectorAnio === 'function') actualizarUISelectorAnio();
+        if (typeof actualizarTarjetasVisualesConfig === 'function') actualizarTarjetasVisualesConfig();
+        if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
+        cambio = true;
+      }
+    } else if (localUpdatedAt > cloudUpdatedAt) {
+      subirPendientesLocales = true;
     }
+  } else if (!esInicioSesionNuevo) {
+    // Cuenta antigua sin configuracion_ui aún en la nube -> subir preferencias actuales
+    subirPendientesLocales = true;
   }
 
-  // 2. Restaurar cuentas y apps vinculadas
-  const cuentas = prefs.cuentas_vinculadas;
+  // 2. Restaurar cuentas vinculadas y actividad en vivo (Spotify, Last.fm, PlayStation, Steam)
+  const cuentas = prefs.cuentas_vinculadas || prefs.cuentasVinculadas;
   if (cuentas && typeof cuentas === 'object') {
-    // Spotify
-    if (cuentas.spotify && typeof cuentas.spotify === 'object') {
-      const sp = cuentas.spotify;
-      if (sp.token) localStorage.setItem('mediary_spotify_token', sp.token);
-      if (sp.refreshToken) localStorage.setItem('mediary_spotify_refresh_token', sp.refreshToken);
-      if (sp.expiresAt) localStorage.setItem('mediary_spotify_expires_at', String(sp.expiresAt));
-      if (sp.clientId) localStorage.setItem('mediary_spotify_client_id', sp.clientId);
-      if (sp.user) localStorage.setItem('mediary_spotify_user', typeof sp.user === 'string' ? sp.user : JSON.stringify(sp.user));
-      if (sp.stats) localStorage.setItem('mediary_spotify_stats', typeof sp.stats === 'string' ? sp.stats : JSON.stringify(sp.stats));
-      if (sp.accumulator) localStorage.setItem('mediary_spotify_accumulator', typeof sp.accumulator === 'string' ? sp.accumulator : JSON.stringify(sp.accumulator));
-      if (sp.albumTracker) localStorage.setItem('mediary_spotify_album_tracker', typeof sp.albumTracker === 'string' ? sp.albumTracker : JSON.stringify(sp.albumTracker));
-      if (sp.selectedRange) localStorage.setItem('mediary_spotify_selected_range', sp.selectedRange);
-      if (sp.preferredDeviceId) localStorage.setItem('mediary_spotify_preferred_device_id', sp.preferredDeviceId);
-    }
+    const localCuentasAt = Number(localStorage.getItem('mediary_cuentas_sync_updated_at')) || 0;
+    const cloudCuentasAt = Number(cuentas.updatedAt) || 0;
+    const aplicarCloudCuentas = esInicioSesionNuevo || localCuentasAt === 0 || cloudCuentasAt >= localCuentasAt;
 
-    // PlayStation
-    if (cuentas.playstation && typeof cuentas.playstation === 'object') {
-      const ps = cuentas.playstation;
-      if (ps.connected || ps.username) {
-        localStorage.setItem('mediary_psn_connected', 'true');
-        if (ps.username) localStorage.setItem('mediary_psn_username', ps.username);
-        if (ps.npsso) localStorage.setItem('mediary_psn_npsso', ps.npsso);
-        if (ps.user) localStorage.setItem('mediary_psn_user', typeof ps.user === 'string' ? ps.user : JSON.stringify(ps.user));
-        if (ps.stats) localStorage.setItem('mediary_psn_stats', typeof ps.stats === 'string' ? ps.stats : JSON.stringify(ps.stats));
-        if (ps.nowPlaying) localStorage.setItem('mediary_psn_now_playing', typeof ps.nowPlaying === 'string' ? ps.nowPlaying : JSON.stringify(ps.nowPlaying));
-      }
-    }
+    if (aplicarCloudCuentas) {
+      const setOrRemove = (key, val) => {
+        if (val !== undefined && val !== null && val !== '') {
+          localStorage.setItem(key, typeof val === 'string' ? val : JSON.stringify(val));
+        } else {
+          localStorage.removeItem(key);
+        }
+      };
 
-    // Steam
-    if (cuentas.steam && typeof cuentas.steam === 'object') {
-      const st = cuentas.steam;
-      if (st.connected || st.id) {
-        localStorage.setItem('mediary_steam_connected', 'true');
-        if (st.id) localStorage.setItem('mediary_steam_id', st.id);
-        if (st.id64) localStorage.setItem('mediary_steam_id64', st.id64);
-        if (st.apiKey) localStorage.setItem('mediary_steam_api_key', st.apiKey);
-        if (st.user) localStorage.setItem('mediary_steam_user', typeof st.user === 'string' ? st.user : JSON.stringify(st.user));
-        if (st.stats) localStorage.setItem('mediary_steam_stats', typeof st.stats === 'string' ? st.stats : JSON.stringify(st.stats));
-        if (st.nowPlaying) localStorage.setItem('mediary_steam_now_playing', typeof st.nowPlaying === 'string' ? st.nowPlaying : JSON.stringify(st.nowPlaying));
+      // Spotify
+      if (cuentas.spotify && typeof cuentas.spotify === 'object') {
+        const sp = cuentas.spotify;
+        if (sp.token || sp.refreshToken) {
+          setOrRemove('mediary_spotify_token', sp.token);
+          setOrRemove('mediary_spotify_refresh_token', sp.refreshToken);
+          setOrRemove('mediary_spotify_expires_at', sp.expiresAt ? String(sp.expiresAt) : '');
+          if (sp.clientId) localStorage.setItem('mediary_spotify_client_id', sp.clientId);
+          setOrRemove('mediary_spotify_user', sp.user);
+          setOrRemove('mediary_spotify_stats', sp.stats);
+          setOrRemove('mediary_spotify_accumulator', sp.accumulator);
+          setOrRemove('mediary_spotify_album_tracker', sp.albumTracker);
+          if (sp.selectedRange) localStorage.setItem('mediary_spotify_selected_range', sp.selectedRange);
+          if (sp.preferredDeviceId) localStorage.setItem('mediary_spotify_preferred_device_id', sp.preferredDeviceId);
+          setOrRemove('mediary_spotify_now_playing', sp.nowPlaying || prefs.actividad?.spotifyNowPlaying);
+        } else {
+          ['mediary_spotify_token', 'mediary_spotify_refresh_token', 'mediary_spotify_expires_at', 'mediary_spotify_user', 'mediary_spotify_stats', 'mediary_spotify_now_playing'].forEach(k => localStorage.removeItem(k));
+          if (typeof detenerPollingSpotifyLive === 'function') detenerPollingSpotifyLive();
+        }
       }
-    }
-    if (cuentas.lastActiveGamePlatform) {
-      localStorage.setItem('mediary_last_active_game_platform', String(cuentas.lastActiveGamePlatform));
-    }
 
-    // API Keys
-    if (cuentas.apiKeys && typeof cuentas.apiKeys === 'object') {
-      const ak = cuentas.apiKeys;
-      if (ak.comicvine) {
-        window.COMICVINE_K = COMICVINE_K = ak.comicvine;
-        localStorage.setItem('mediary_comicvine_key', ak.comicvine);
+      // Last.fm
+      if (cuentas.lastfm && typeof cuentas.lastfm === 'object') {
+        const lfm = cuentas.lastfm;
+        if (lfm.connected || lfm.username) {
+          localStorage.setItem('mediary_lastfm_connected', 'true');
+          setOrRemove('mediary_lastfm_username', lfm.username);
+          setOrRemove('mediary_lastfm_user', lfm.user);
+          setOrRemove('mediary_lastfm_stats', lfm.stats);
+          if (lfm.selectedPeriod) localStorage.setItem('mediary_lastfm_selected_period', lfm.selectedPeriod);
+        } else {
+          ['mediary_lastfm_connected', 'mediary_lastfm_username', 'mediary_lastfm_user', 'mediary_lastfm_stats', 'mediary_lastfm_selected_period'].forEach(k => localStorage.removeItem(k));
+        }
       }
-      if (ak.marvel) {
-        window.MARVEL_K = MARVEL_K = ak.marvel;
-        localStorage.setItem('mediary_marvel_key', ak.marvel);
-      }
-      if (ak.lastfm) {
-        window.LASTFM_API_KEY = LASTFM_API_KEY = ak.lastfm;
-        localStorage.setItem('mediary_lastfm_api_key', ak.lastfm);
-      }
-      if (ak.igdbClientId) {
-        window.IGDB_CLIENT_ID = IGDB_CLIENT_ID = ak.igdbClientId;
-        localStorage.setItem('mediary_igdb_client_id', ak.igdbClientId);
-      }
-      if (ak.igdbToken) {
-        window.IGDB_TOKEN = IGDB_TOKEN = ak.igdbToken;
-        localStorage.setItem('mediary_igdb_token', ak.igdbToken);
-      }
-    }
 
-    // Refrescar componentes vinculados
-    if (typeof actualizarUISpotify === 'function') actualizarUISpotify();
-    if (typeof actualizarUIPlayStation === 'function') actualizarUIPlayStation();
-    if (typeof actualizarUISteam === 'function') actualizarUISteam();
-    if (typeof renderizarLiveCarouselInicio === 'function') renderizarLiveCarouselInicio();
-    if (typeof renderizarLiveCardsAmigosInicio === 'function') renderizarLiveCardsAmigosInicio();
-    cambio = true;
+      // PlayStation
+      if (cuentas.playstation && typeof cuentas.playstation === 'object') {
+        const ps = cuentas.playstation;
+        if (ps.connected || ps.username) {
+          localStorage.setItem('mediary_psn_connected', 'true');
+          setOrRemove('mediary_psn_username', ps.username);
+          setOrRemove('mediary_psn_npsso', ps.npsso);
+          setOrRemove('mediary_psn_user', ps.user);
+          setOrRemove('mediary_psn_stats', ps.stats);
+          setOrRemove('mediary_psn_now_playing', ps.nowPlaying || prefs.actividad?.playstationNowPlaying);
+          setOrRemove('mediary_psn_manual_state', ps.manualState);
+        } else {
+          ['mediary_psn_connected', 'mediary_psn_username', 'mediary_psn_npsso', 'mediary_psn_user', 'mediary_psn_stats', 'mediary_psn_now_playing', 'mediary_psn_manual_state'].forEach(k => localStorage.removeItem(k));
+        }
+      }
+
+      // Steam
+      if (cuentas.steam && typeof cuentas.steam === 'object') {
+        const st = cuentas.steam;
+        if (st.connected || st.id) {
+          localStorage.setItem('mediary_steam_connected', 'true');
+          setOrRemove('mediary_steam_id', st.id);
+          setOrRemove('mediary_steam_id64', st.id64);
+          setOrRemove('mediary_steam_api_key', st.apiKey);
+          setOrRemove('mediary_steam_user', st.user);
+          setOrRemove('mediary_steam_stats', st.stats);
+          setOrRemove('mediary_steam_now_playing', st.nowPlaying || prefs.actividad?.steamNowPlaying);
+        } else {
+          ['mediary_steam_connected', 'mediary_steam_id', 'mediary_steam_id64', 'mediary_steam_api_key', 'mediary_steam_user', 'mediary_steam_stats', 'mediary_steam_now_playing'].forEach(k => localStorage.removeItem(k));
+          if (typeof detenerPollingSteamLive === 'function') detenerPollingSteamLive();
+        }
+      }
+
+      const lastGamePlat = cuentas.lastActiveGamePlatform || prefs.actividad?.lastActiveGamePlatform || '';
+      setOrRemove('mediary_last_active_game_platform', lastGamePlat);
+
+      // API Keys
+      if (cuentas.apiKeys && typeof cuentas.apiKeys === 'object') {
+        const ak = cuentas.apiKeys;
+        if (ak.comicvine) {
+          window.COMICVINE_K = COMICVINE_K = ak.comicvine;
+          localStorage.setItem('mediary_comicvine_key', ak.comicvine);
+        }
+        if (ak.marvel) {
+          window.MARVEL_K = MARVEL_K = ak.marvel;
+          localStorage.setItem('mediary_marvel_key', ak.marvel);
+        }
+        if (ak.lastfm) {
+          window.LASTFM_API_KEY = LASTFM_API_KEY = ak.lastfm;
+          localStorage.setItem('mediary_lastfm_api_key', ak.lastfm);
+        }
+        if (ak.igdbClientId) {
+          window.IGDB_CLIENT_ID = IGDB_CLIENT_ID = ak.igdbClientId;
+          localStorage.setItem('mediary_igdb_client_id', ak.igdbClientId);
+        }
+        if (ak.igdbToken) {
+          window.IGDB_TOKEN = IGDB_TOKEN = ak.igdbToken;
+          localStorage.setItem('mediary_igdb_token', ak.igdbToken);
+        }
+      }
+
+      if (cloudCuentasAt > 0) {
+        try { localStorage.setItem('mediary_cuentas_sync_updated_at', String(cloudCuentasAt)); } catch (e) {}
+      }
+
+      // Invalidar cachés en vivo para que las tarjetas se refresquen con las cuentas restauradas
+      if (typeof _spotifyNowPlayingCache !== 'undefined') _spotifyNowPlayingCache = null;
+      if (typeof _spotifyUltimaConsultaLive !== 'undefined') _spotifyUltimaConsultaLive = 0;
+      if (typeof _steamUltimaConsultaLive !== 'undefined') _steamUltimaConsultaLive = 0;
+
+      // Refrescar componentes vinculados y tarjetas de actividad en Inicio
+      if (typeof actualizarUISpotify === 'function') actualizarUISpotify();
+      if (typeof actualizarUILastFm === 'function') actualizarUILastFm();
+      if (typeof actualizarUIPlayStation === 'function') actualizarUIPlayStation();
+      if (typeof actualizarUISteam === 'function') actualizarUISteam();
+      if (typeof renderizarAppsVinculadasConfig === 'function') renderizarAppsVinculadasConfig();
+      if (typeof renderizarEscuchandoAhoraInicio === 'function') renderizarEscuchandoAhoraInicio(true);
+      if (typeof renderizarPlayStationNowPlayingInicio === 'function') renderizarPlayStationNowPlayingInicio(true);
+      if (typeof renderizarFeedAmigosResumidoInicio === 'function') renderizarFeedAmigosResumidoInicio();
+      const modalStats = document.getElementById('modal-estadisticas-avanzadas');
+      if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
+        renderizarContenidoEstadisticasAvanzadas();
+      }
+      cambio = true;
+    } else if (localCuentasAt > cloudCuentasAt) {
+      subirPendientesLocales = true;
+    }
+  } else if (!esInicioSesionNuevo) {
+    subirPendientesLocales = true;
   }
 
   // 3. Restaurar rachas (días de lectura y mapa de tiempos de sesión)
   const rachasCloud = prefs.rachas;
-  let sincronizarHaciaArribaPorRacha = false;
-
   const cloudDias = (rachasCloud && Array.isArray(rachasCloud.diasLectura)) ? rachasCloud.diasLectura : [];
   const cloudTiempos = (rachasCloud && typeof rachasCloud.tiemposLectura === 'object' && rachasCloud.tiemposLectura !== null) ? rachasCloud.tiemposLectura : {};
 
-  const localesDias = typeof obtenerListaDiasLectura === 'function' ? obtenerListaDiasLectura() : [];
-  const localesTiempos = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
+  const localesDias = (!esInicioSesionNuevo && typeof obtenerListaDiasLectura === 'function') ? obtenerListaDiasLectura() : [];
+  const localesTiempos = (!esInicioSesionNuevo && typeof obtenerMapaTiemposLectura === 'function') ? obtenerMapaTiemposLectura() : {};
 
-  // Combinar sin duplicados manteniendo los datos de todos los dispositivos
   const diasCombinados = Array.from(new Set([...localesDias, ...cloudDias])).filter(Boolean).sort();
   const tiemposCombinados = Object.assign({}, localesTiempos, cloudTiempos);
 
@@ -19308,28 +19557,35 @@ function restaurarPreferenciasYAppsDesdeNube(prefs) {
     perfilUsuario.preferencias.rachas.tiemposLectura = tiemposCombinados;
   }
 
-  // Si el dispositivo local tiene más días o tiempos que la nube, o la nube aún no tenía rachas, subir a la nube de inmediato
-  if (diasCombinados.length > cloudDias.length || Object.keys(tiemposCombinados).length > Object.keys(cloudTiempos).length || !rachasCloud) {
-    sincronizarHaciaArribaPorRacha = true;
-  }
-
-  if (typeof renderizarRachasActualesInicio === 'function') {
-    renderizarRachasActualesInicio();
-  }
-  if (typeof actualizarBotonLecturaHoyInicio === 'function') {
-    actualizarBotonLecturaHoyInicio();
-  }
-  if (typeof actualizarBotonLecturaHoyLibros === 'function') {
-    actualizarBotonLecturaHoyLibros();
-  }
+  if (typeof renderizarRachasActualesInicio === 'function') renderizarRachasActualesInicio();
+  if (typeof actualizarBotonLecturaHoyInicio === 'function') actualizarBotonLecturaHoyInicio();
+  if (typeof actualizarBotonLecturaHoyLibros === 'function') actualizarBotonLecturaHoyLibros();
   if (typeof renderizarBannerRachaSubcategoria === 'function' && estado.categoria === 'Lecturas') {
     renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria);
   }
   cambio = true;
 
-  // Si el dispositivo local tiene días de racha que no están en la nube, sincronizar suavemente
-  const tieneNuevosDiasLocales = localesDias.some(d => !cloudDias.includes(d));
-  if (tieneNuevosDiasLocales && typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+  if (idiomaCambio) {
+    if (estado.categoria === 'inicio') {
+      if (typeof renderizarResumenInicio === 'function') renderizarResumenInicio();
+    } else if (estado.categoria === 'discover' && typeof renderizarDiscoverVista === 'function') {
+      renderizarDiscoverVista();
+    } else if (estado.categoria === 'perfil') {
+      if (typeof renderizarCabeceraPerfil === 'function') renderizarCabeceraPerfil();
+      if (typeof renderizarFavoritosPerfil === 'function') renderizarFavoritosPerfil();
+      if (typeof calcularYMostrarEstadisticasPerfil === 'function') calcularYMostrarEstadisticasPerfil();
+    } else if (typeof CONFIG !== 'undefined' && CONFIG[estado.categoria]) {
+      if (typeof renderizarSubtabs === 'function') renderizarSubtabs();
+      if (typeof esSubcategoriaWatchlist === 'function' && esSubcategoriaWatchlist(estado.subcategoria)) {
+        if (typeof renderizarWatchlist === 'function') renderizarWatchlist();
+      } else if (typeof filtrarYMostrarHistorial === 'function') {
+        filtrarYMostrarHistorial();
+      }
+    }
+  }
+
+  const tieneNuevosDiasLocales = !esInicioSesionNuevo && localesDias.some(d => !cloudDias.includes(d));
+  if ((subirPendientesLocales || tieneNuevosDiasLocales) && typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
     sincronizarPreferenciasYAppsHaciaNube(false);
   }
 
@@ -19337,45 +19593,82 @@ function restaurarPreferenciasYAppsDesdeNube(prefs) {
 }
 window.restaurarPreferenciasYAppsDesdeNube = restaurarPreferenciasYAppsDesdeNube;
 
-function guardarPreferenciasLocales() {
+function guardarPreferenciasLocales(inmediato = false) {
   try {
     userPrefs.updatedAt = Date.now();
     localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs));
   } catch (e) {}
   if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
-    sincronizarPreferenciasYAppsHaciaNube();
+    sincronizarPreferenciasYAppsHaciaNube(!!inmediato, { soloUI: true });
   }
 }
 function guardarPerfilLocal() { try { localStorage.setItem('Mediary_perfil_v1', JSON.stringify(perfilUsuario)); if (estado.userEmail) localStorage.setItem('Mediary_active_user_v1', estado.userEmail); } catch (e) {} }
 function registrarCuentaEnDispositivo(email, nick, avatar) { if (!email) return; try { const lista = JSON.parse((localStorage.getItem('Mediary_saved_accounts_v1') || localStorage.getItem('MyMediary_saved_accounts_v1')) || '[]').filter(x => x.email !== email); lista.unshift({ email, nickname: nick || email.split('@')[0], avatar: avatar || '' });
 localStorage.setItem('Mediary_saved_accounts_v1', JSON.stringify(lista.slice(0, 5))); } catch (e) {}
 }
-function aplicarSesionExitosa(res, mostrarSaludo = false) { estado.userEmail = (res.emailGoogle || estado.userEmail || '').trim().toLowerCase(); perfilUsuario.emailGoogle = estado.userEmail; perfilUsuario.logueadoGoogle = true;
-perfilUsuario.nickname = res.nickname || (estado.userEmail ? estado.userEmail.split('@')[0] : 'Cinéfilo & Lector'); perfilUsuario.bio = res.bio || 'Coleccionando historias en Mediary'; perfilUsuario.avatar = res.avatar || ''; perfilUsuario.favoritos = res.favoritos || {};
-perfilUsuario.favoritosOcultos = res.favoritosOcultos || {}; perfilUsuario.preferencias = res.preferencias || {}; if (res.created_at) { perfilUsuario.created_at = res.created_at; try { localStorage.setItem('mediary_user_created_' + estado.userEmail, res.created_at); } catch(e){} } if (res.preferencias?.portada || res.favoritos?.portada) perfilUsuario.portada = res.preferencias?.portada || res.favoritos?.portada; if (res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito) perfilUsuario.personajeFavorito = res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito; if (res.favoritos?.cancionFavorita || res.preferencias?.cancionFavorita) perfilUsuario.cancionFavorita = res.favoritos?.cancionFavorita || res.preferencias?.cancionFavorita; if (!perfilUsuario.preferencias.userId && estado.userEmail) { perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias); }
-if (res.preferencias?.likes_dados && Array.isArray(res.preferencias.likes_dados)) {
- try {
- const s = obtenerLikesResenasSet();
- res.preferencias.likes_dados.forEach(id => s.add(id));
- localStorage.setItem('mediary_liked_reviews', JSON.stringify(Array.from(s)));
- } catch (e) {}
-}
-if (res.preferencias?.likes_recibidos && typeof verificarNuevosLikesRecibidos === 'function') {
- verificarNuevosLikesRecibidos(res.preferencias.likes_recibidos);
-}
-if (res.preferencias?.notificaciones) {
- userPrefs.notificaciones = Object.assign(obtenerPreferenciasNotificaciones(), res.preferencias.notificaciones);
- try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {}
- if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
-}
+function aplicarSesionExitosa(res, mostrarSaludo = false) {
+  const prevEmail = (estado.userEmail || '').trim().toLowerCase();
+  const newEmail = (res.emailGoogle || estado.userEmail || '').trim().toLowerCase();
+  const cambioDeCuenta = !!(prevEmail && newEmail && prevEmail !== newEmail);
+  const esInicioSesionNuevo = !!mostrarSaludo || cambioDeCuenta || (!prevEmail && !!newEmail);
 
-// Restaurar configuración visual y cuentas vinculadas desde la nube
-if (res.preferencias) {
-  restaurarPreferenciasYAppsDesdeNube(res.preferencias);
-}
+  if (cambioDeCuenta) {
+    limpiarDatosCuentaEnDispositivo_();
+  }
 
-guardarPerfilLocal(); registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar); renderizarCabeceraPerfil(); cerrarModalAuthSupabase(); cargarRegistros(); cargarWatchlist();
-if (estado.categoria === 'perfil') renderizarFavoritosPerfil(); if (mostrarSaludo) mostrarToastPersonalizado(userPrefs.lang === 'en' ? `Welcome, ${perfilUsuario.nickname}! (${estado.userEmail}) ` : `¡Bienvenido, ${perfilUsuario.nickname}! (${estado.userEmail}) `); }
+  estado.userEmail = newEmail;
+  perfilUsuario.emailGoogle = estado.userEmail;
+  perfilUsuario.logueadoGoogle = true;
+  perfilUsuario.nickname = res.nickname || (estado.userEmail ? estado.userEmail.split('@')[0] : 'Cinéfilo & Lector');
+  perfilUsuario.bio = res.bio || 'Coleccionando historias en Mediary';
+  perfilUsuario.avatar = res.avatar || '';
+  perfilUsuario.favoritos = res.favoritos || {};
+  perfilUsuario.favoritosOcultos = res.favoritosOcultos || {};
+  perfilUsuario.preferencias = res.preferencias || {};
+  if (res.created_at) {
+    perfilUsuario.created_at = res.created_at;
+    try { localStorage.setItem('mediary_user_created_' + estado.userEmail, res.created_at); } catch(e){}
+  }
+  if (res.preferencias?.portada || res.favoritos?.portada) perfilUsuario.portada = res.preferencias?.portada || res.favoritos?.portada;
+  if (res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito) perfilUsuario.personajeFavorito = res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito;
+  if (res.favoritos?.cancionFavorita || res.preferencias?.cancionFavorita) perfilUsuario.cancionFavorita = res.favoritos?.cancionFavorita || res.preferencias?.cancionFavorita;
+  if (!perfilUsuario.preferencias.userId && estado.userEmail) {
+    perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias);
+  }
+  if (res.preferencias?.likes_dados && Array.isArray(res.preferencias.likes_dados)) {
+    try {
+      const s = obtenerLikesResenasSet();
+      res.preferencias.likes_dados.forEach(id => s.add(id));
+      localStorage.setItem('mediary_liked_reviews', JSON.stringify(Array.from(s)));
+    } catch (e) {}
+  }
+  if (res.preferencias?.likes_recibidos && typeof verificarNuevosLikesRecibidos === 'function') {
+    verificarNuevosLikesRecibidos(res.preferencias.likes_recibidos);
+  }
+  if (res.preferencias?.notificaciones) {
+    userPrefs.notificaciones = Object.assign(obtenerPreferenciasNotificaciones(), res.preferencias.notificaciones);
+    try { localStorage.setItem('Mediary_prefs_v1', JSON.stringify(userPrefs)); } catch (e) {}
+    if (typeof sincronizarSwitchesNotificaciones === 'function') sincronizarSwitchesNotificaciones();
+  }
+
+  // Restaurar configuración visual (theme, font, idioma), cuentas vinculadas y actividad desde la nube
+  if (res.preferencias) {
+    restaurarPreferenciasYAppsDesdeNube(res.preferencias, { esInicioSesionNuevo });
+  }
+
+  guardarPerfilLocal();
+  registrarCuentaEnDispositivo(estado.userEmail, perfilUsuario.nickname, perfilUsuario.avatar);
+  renderizarCabeceraPerfil();
+  cerrarModalAuthSupabase();
+  cargarRegistros();
+  cargarWatchlist();
+  if (esInicioSesionNuevo && estado.categoria === 'inicio') {
+    if (typeof renderizarResumenInicio === 'function') renderizarResumenInicio();
+    if (typeof renderizarFeedAmigosResumidoInicio === 'function') renderizarFeedAmigosResumidoInicio();
+  }
+  if (estado.categoria === 'perfil') renderizarFavoritosPerfil();
+  if (mostrarSaludo) mostrarToastPersonalizado(userPrefs.lang === 'en' ? `Welcome, ${perfilUsuario.nickname}! (${estado.userEmail}) ` : `¡Bienvenido, ${perfilUsuario.nickname}! (${estado.userEmail}) `);
+}
 function sincronizarPerfilDesdeServidor() { google.script.run.withSuccessHandler(res => { if (res && res.exito) { aplicarSesionExitosa(res, false); } else if (res && res.sinSesion && !estado.userEmail) { abrirModalAuthSupabase(); } }).obtenerPerfilUsuario(estado.userEmail); }
 function renderizarCabeceraPerfil() { const avBox = document.getElementById('perfil-avatar-render'); const btnHeader = document.getElementById('btn-profile');
 const esImg = perfilUsuario.avatar && (perfilUsuario.avatar.startsWith('http') || perfilUsuario.avatar.startsWith('data:image')); if (avBox) {
@@ -20543,6 +20836,14 @@ google.script.run.withSuccessHandler(res => { btn.textContent = txtOrig; btn.dis
 function cerrarSesionUsuarioActual() { estado.userEmail = ''; estado.registros = []; estado.watchlist = [];
 perfilUsuario = { nickname: 'Invitado', bio: 'Inicia sesión para ver tus colecciones en Supabase ', avatar: '', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}, portada: 'predeterminada', personajeFavorito: null, cancionFavorita: null };
 try { localStorage.removeItem('Mediary_active_user_v1'); localStorage.removeItem('MyMediary_active_user_v1'); localStorage.removeItem('Mediary_perfil_v1'); localStorage.removeItem('MyMediary_perfil_v1'); } catch (e) {}
+if (typeof limpiarDatosCuentaEnDispositivo_ === 'function') limpiarDatosCuentaEnDispositivo_();
+if (typeof actualizarUISpotify === 'function') actualizarUISpotify();
+if (typeof actualizarUILastFm === 'function') actualizarUILastFm();
+if (typeof actualizarUIPlayStation === 'function') actualizarUIPlayStation();
+if (typeof actualizarUISteam === 'function') actualizarUISteam();
+if (typeof renderizarAppsVinculadasConfig === 'function') renderizarAppsVinculadasConfig();
+if (typeof renderizarEscuchandoAhoraInicio === 'function') renderizarEscuchandoAhoraInicio(false);
+if (typeof renderizarPlayStationNowPlayingInicio === 'function') renderizarPlayStationNowPlayingInicio(false);
 renderizarCabeceraPerfil(); if (estado.categoria === 'inicio') renderizarStats(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
 else if (CONFIG[estado.categoria]) { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 document.getElementById('auth-input-email').value = ''; document.getElementById('auth-input-pass').value = ''; document.getElementById('btn-auth-logout').style.display = 'none'; mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Signed out. You can log in with another account.' : 'Sesión cerrada. Puedes ingresar con otra cuenta.'); }
@@ -24044,12 +24345,18 @@ async function cambiarPeriodoLastFmStats(periodo) {
   }
 
   renderizarContenidoEstadisticasAvanzadas();
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(false);
+  }
 }
 
 function cambiarRangoSpotifyStats(rango) {
   if (!['short_term', 'medium_term', 'long_term'].includes(rango)) return;
   localStorage.setItem('mediary_spotify_selected_range', rango);
   renderizarContenidoEstadisticasAvanzadas();
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(false);
+  }
 }
 
 function renderizarStatsMusica_(ctx) {
@@ -25404,6 +25711,9 @@ async function obtenerTokenSpotifyValido(forzarRefresh = false) {
         if (data.refresh_token) localStorage.setItem('mediary_spotify_refresh_token', data.refresh_token);
         const expSec = Number(data.expires_in) || 3600;
         localStorage.setItem('mediary_spotify_expires_at', String(Date.now() + (expSec * 1000)));
+        if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+          sincronizarPreferenciasYAppsHaciaNube(false);
+        }
       } else {
         const errData = await res.json().catch(() => ({}));
         console.warn('Error renovando token Spotify (HTTP ' + res.status + '):', errData);
@@ -26212,7 +26522,12 @@ function desconectarSpotify() {
   localStorage.removeItem('mediary_spotify_expires_at');
   localStorage.removeItem('mediary_spotify_user');
   localStorage.removeItem('mediary_spotify_stats');
+  localStorage.removeItem('mediary_spotify_now_playing');
+  if (typeof detenerPollingSpotifyLive === 'function') detenerPollingSpotifyLive();
   actualizarUISpotify();
+  if (typeof renderizarEscuchandoAhoraInicio === 'function') {
+    renderizarEscuchandoAhoraInicio(false);
+  }
   if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
     sincronizarPreferenciasYAppsHaciaNube(true);
   }
@@ -27069,6 +27384,9 @@ function guardarEstadoEnVivoSteam_(rawNowPlaying, opciones = {}) {
     if (!mismoJuegoActivo || esManual) {
       localStorage.setItem('mediary_last_active_game_platform', 'steam');
     }
+    if (cambio && !opciones.silenciarNube && typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(false);
+    }
     return cambio;
   } else {
     // Si fue activado manualmente por el usuario desde el modal, no borrarlo en un poll automático sin juego en Steam
@@ -27084,6 +27402,9 @@ function guardarEstadoEnVivoSteam_(rawNowPlaying, opciones = {}) {
       updatedAt: estabaJugando ? Date.now() : (Number(prev?.updatedAt) || Date.now())
     };
     localStorage.setItem('mediary_steam_now_playing', JSON.stringify(nuevoObj));
+    if (estabaJugando && !opciones.silenciarNube && typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(false);
+    }
     return estabaJugando;
   }
 }
@@ -27372,6 +27693,9 @@ async function sincronizarCuentaSteam(idManual = null, notificar = false) {
     renderizarPlayStationNowPlayingInicio(false);
   }
   iniciarPollingSteamLive();
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(false);
+  }
 
   const modalStats = document.getElementById('modal-estadisticas-avanzadas');
   if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
@@ -27624,10 +27948,16 @@ function guardarSteamApiKeyDesdeInput(inputId) {
   if (val) {
     localStorage.setItem('mediary_steam_api_key', val);
     mostrarToastPersonalizado(' Clave de Steam guardada. Sincronizando biblioteca completa...');
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(true);
+    }
     actualizarDatosSteam(true);
   } else {
     localStorage.removeItem('mediary_steam_api_key');
     mostrarToastPersonalizado('Clave de Steam eliminada');
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(true);
+    }
     actualizarDatosSteam(true);
   }
 }
@@ -27691,6 +28021,9 @@ async function conectarLastFmPerfil(inputVal) {
 
   const ok = await sincronizarCuentaLastFm(cleanUsername, true);
   if (ok) {
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(true);
+    }
     const modalStats = document.getElementById('modal-estadisticas-avanzadas');
     if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
       renderizarContenidoEstadisticasAvanzadas();
@@ -27784,6 +28117,9 @@ function conectarLastFmDemo() {
 
   cerrarModalConectarLastFm();
   actualizarUILastFm();
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
   const modalStats = document.getElementById('modal-estadisticas-avanzadas');
   if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
     renderizarContenidoEstadisticasAvanzadas();
@@ -27798,6 +28134,9 @@ function desconectarLastFm() {
   localStorage.removeItem('mediary_lastfm_stats');
   localStorage.removeItem('mediary_lastfm_selected_period');
   actualizarUILastFm();
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
   const modalStats = document.getElementById('modal-estadisticas-avanzadas');
   if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
     renderizarContenidoEstadisticasAvanzadas();
@@ -28059,6 +28398,9 @@ async function sincronizarCuentaLastFm(username, notificar = false) {
     localStorage.setItem('mediary_lastfm_stats', JSON.stringify(stats));
 
     actualizarUILastFm();
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(false);
+    }
     if (notificar) mostrarToastPersonalizado(userPrefs?.lang === 'en' ? 'Last.fm stats synchronized! ' : '¡Estadísticas de Last.fm sincronizadas! ');
     return true;
   } catch (err) {
@@ -28528,6 +28870,9 @@ async function transferirPlaybackSpotify(deviceId, nameEncoded) {
     window.spotifyActiveDeviceId = deviceId;
     window.spotifyActiveDeviceName = devName;
     localStorage.setItem('mediary_spotify_preferred_device_id', deviceId);
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(false);
+    }
 
     cerrarSelectorDispositivosSpotify();
     mostrarToastPersonalizado(isEn ? `Playing on ${devName} ` : `Reproduciendo en ${devName} `);
@@ -28571,7 +28916,7 @@ function estaLiveCardExpandida(tipo) {
   } else if (tipo === 'friends_spotify' || tipo === 'friends_playstation') {
     if (typeof window.friendsSpCardExpanded !== 'undefined') return !!window.friendsSpCardExpanded;
     if (typeof window.friendsPsnCardExpanded !== 'undefined') return !!window.friendsPsnCardExpanded;
-    const s = localStorage.getItem('mediary_friends_sp_card_expanded');
+    const s = localStorage.getItem('mediary_friends_sp_card_expanded') || localStorage.getItem('mediary_friends_spotify_card_expanded');
     const p = localStorage.getItem('mediary_friends_psn_card_expanded');
     return (s === 'true' || p === 'true');
   }
@@ -28591,6 +28936,9 @@ function toggleLiveCardExpansion(tipo, ev) {
       localStorage.setItem('mediary_spotify_card_expanded', nuevo ? 'true' : 'false');
       localStorage.setItem('mediary_psn_card_expanded', nuevo ? 'true' : 'false');
     } catch(e) {}
+    if (typeof guardarPreferenciasLocales === 'function') {
+      guardarPreferenciasLocales(false);
+    }
 
     const spCard = document.querySelector('#home-now-playing-container .home-spotify-card-compact');
     if (spCard) {
@@ -28622,8 +28970,12 @@ function toggleLiveCardExpansion(tipo, ev) {
     window.friendsPsnCardExpanded = nuevo;
     try {
       localStorage.setItem('mediary_friends_sp_card_expanded', nuevo ? 'true' : 'false');
+      localStorage.setItem('mediary_friends_spotify_card_expanded', nuevo ? 'true' : 'false');
       localStorage.setItem('mediary_friends_psn_card_expanded', nuevo ? 'true' : 'false');
     } catch(e) {}
+    if (typeof guardarPreferenciasLocales === 'function') {
+      guardarPreferenciasLocales(false);
+    }
 
     const spCard = document.querySelector('#home-friends-last-track-container .home-spotify-card-compact');
     if (spCard) {
@@ -29007,9 +29359,43 @@ function actualizarVistaSegunResultadoAct(resultado) {
 
   if (resultado && resultado.conectado && resultado.reproduciendo && resultado.data) {
     container.innerHTML = dibujarTarjetaSpotifyCompacta(resultado.data);
+    try {
+      const snap = {
+        isPlaying: true,
+        trackId: resultado.data.id || resultado.data.uri || '',
+        name: resultado.data.name || '',
+        artist: resultado.data.artist || '',
+        album: resultado.data.album || '',
+        image: resultado.data.image || '',
+        url: resultado.data.url || '',
+        updatedAt: Date.now()
+      };
+      const prevRaw = localStorage.getItem('mediary_spotify_now_playing');
+      let prev = null;
+      if (prevRaw) prev = JSON.parse(prevRaw);
+      const cambioTrack = !prev || !prev.isPlaying || prev.name !== snap.name || prev.artist !== snap.artist;
+      if (cambioTrack && snap.name) {
+        localStorage.setItem('mediary_spotify_now_playing', JSON.stringify(snap));
+        if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+          sincronizarPreferenciasYAppsHaciaNube(false);
+        }
+      }
+    } catch (e) {}
   } else if (resultado && resultado.conectado) {
     const isForbidden = resultado.error === 'forbidden_scopes';
     container.innerHTML = dibujarTarjetaSpotifyCompactaIdle(isForbidden);
+    try {
+      const prevRaw = localStorage.getItem('mediary_spotify_now_playing');
+      if (prevRaw) {
+        const prev = JSON.parse(prevRaw);
+        if (prev && prev.isPlaying) {
+          localStorage.setItem('mediary_spotify_now_playing', JSON.stringify({ isPlaying: false, updatedAt: Date.now() }));
+          if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+            sincronizarPreferenciasYAppsHaciaNube(false);
+          }
+        }
+      }
+    } catch (e) {}
     if (window.spotifyTickerInterval) {
       clearInterval(window.spotifyTickerInterval);
       window.spotifyTickerInterval = null;
@@ -29224,6 +29610,9 @@ function conectarPlayStationDemo() {
   cerrarModalConectarPsn();
   actualizarUIPlayStation();
   renderizarPlayStationNowPlayingInicio(false);
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
   const modalStats = document.getElementById('modal-estadisticas-avanzadas');
   if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
     renderizarContenidoEstadisticasAvanzadas();
@@ -29257,7 +29646,11 @@ function conectarPlayStationPerfil() {
   }
 
   cerrarModalConectarPsn();
-  sincronizarCuentaPlayStation(raw, true);
+  actualizarUIPlayStation();
+  renderizarPlayStationNowPlayingInicio(false);
+  if (typeof sincronizarCuentaPlayStation === 'function') {
+    sincronizarCuentaPlayStation(raw, true);
+  }
   if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
     sincronizarPreferenciasYAppsHaciaNube(true);
   }
@@ -29364,10 +29757,15 @@ function guardarPsnNpssoDesdeInput(inputId) {
   if (val) {
     localStorage.setItem('mediary_psn_npsso', val);
     mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'NPSSO Token saved!' : 'Token NPSSO guardado');
-    sincronizarCuentaPlayStation(null, true);
+    if (typeof sincronizarCuentaPlayStation === 'function') {
+      sincronizarCuentaPlayStation(null, true);
+    }
   } else {
     localStorage.removeItem('mediary_psn_npsso');
     mostrarToastPersonalizado(userPrefs && userPrefs.lang === 'en' ? 'NPSSO Token cleared' : 'Token NPSSO eliminado');
+  }
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
   }
   const wrap = document.getElementById('cfg-psn-npsso-wrap');
   if (wrap) wrap.style.display = 'none';
