@@ -8325,6 +8325,67 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   transform: scale(1.06) !important;
 }
 
+/* ESTILOS DE ALTO CONTRASTE Y ELEGANCIA CUANDO HAY PORTADA ACTIVA */
+#vista-perfil #perfil-hero-card.has-custom-cover,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover,
+.profile-hero-card.has-custom-cover {
+  border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .profile-nick-display,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .profile-nick-display,
+.profile-hero-card.has-custom-cover .profile-nick-display {
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .profile-nick-row svg,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .profile-nick-row svg {
+  color: #ffffff !important;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.8)) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .profile-bio-txt,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .profile-bio-txt,
+.profile-hero-card.has-custom-cover .profile-bio-txt {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover #perfil-id-badge,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover #amigo-modal-id-badge,
+.profile-hero-card.has-custom-cover #perfil-id-badge,
+.profile-hero-card.has-custom-cover #amigo-modal-id-badge {
+  background: rgba(15, 23, 42, 0.78) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover #perfil-id-badge svg,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover #amigo-modal-id-badge svg {
+  color: var(--accent) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover #perfil-email-render,
+.profile-hero-card.has-custom-cover #perfil-email-render {
+  background: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .btn-profile-edit-discreet,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .btn-profile-edit-discreet,
+[data-theme$="-light"] #vista-perfil #perfil-hero-card.has-custom-cover .btn-profile-edit-discreet {
+  background: rgba(15, 23, 42, 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .profile-avatar-box,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .profile-avatar-box {
+  border: 3.5px solid #ffffff !important;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6), 0 0 14px rgba(255, 255, 255, 0.3) !important;
+}
+
 #vista-perfil .stats-kpi-card,
 #vista-perfil .stats-section-box,
 #vista-perfil .profile-stat-box,
@@ -9166,7 +9227,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
       <div class="home-clean-section" id="perfil-sec-cancion">
         <div class="home-clean-section-header">
           <div class="home-clean-title">
-            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:#10b981;"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg></span>
+            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:#10b981;"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span>
             <span data-i18n="profile_fav_song_title">Canción Favorita</span>
           </div>
         </div>
@@ -9683,6 +9744,9 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
     <p style="font-size:0.83rem; color:var(--muted); line-height:1.45; margin:0 0 18px;" data-i18n="char_del_desc">Tu personaje favorito se retirará de tu perfil. Podrás volver a elegirlo o asignar uno nuevo en cualquier momento.</p>
     <div style="display:flex; gap:10px; justify-content:center;">
       <button type="button" class="btn-modal-cancel" style="flex:1;" onclick="cerrarModalConfirmarQuitarPersonaje()" data-i18n="btn_keep">Conservar</button>
+      <button type="button" class="btn-modal-danger" style="flex:1;" onclick="ejecutarQuitarPersonajeFavorito()" data-i18n="btn_remove">Quitar</button>
+    </div>
+  </div>
 </div>
 
 <!-- MODAL SELECCIONAR CANCIÓN FAVORITA -->
@@ -9690,7 +9754,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   <div class="modal-box" style="max-width:540px; width:92%; max-height:88vh; display:flex; flex-direction:column; padding:20px; border-radius:12px;">
     <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
       <h3 style="font-size:1.1rem; font-weight:800; color:var(--text); margin:0; display:flex; align-items:center; gap:8px;">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:#10b981;"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg>
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:#10b981;"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
         <span data-i18n="profile_fav_song_title">Canción Favorita</span>
       </h3>
       <button type="button" class="btn-close-form" onclick="cerrarModalSeleccionarCancionFavorita()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
@@ -9702,7 +9766,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
         <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"/></svg></span> <span>Buscar Música</span>
       </button>
       <button type="button" class="char-picker-tab-btn" id="tab-song-misobras" onclick="cambiarTabSelectorCancion('misobras')">
-        <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9l10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg></span> <span>De mis registros</span>
+        <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span> <span>De mis registros</span>
       </button>
       <button type="button" class="char-picker-tab-btn" id="tab-song-manual" onclick="cambiarTabSelectorCancion('manual')">
         <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></span> <span>Personalizada</span>
@@ -11705,9 +11769,9 @@ const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).pa
 const mostrarIngles = (lang && lang !== 'en' && lang !== 'es') && tEng && tEng.toLowerCase() !== tOrig.toLowerCase(); return { titulo: tOrig, tituloOriginal: tOrig, tituloIngles: mostrarIngles ? tEng : '' }; };
 const traducirRolMusical_ = (r) => { if (!r) return ''; const s = String(r).toLowerCase().trim(); if (s.includes('lead vocals') || s.includes('lead vocal')) return 'Vocalista principal'; if (s.includes('backing vocals') || s.includes('background vocal')) return 'Coros'; if (s.includes('vocal') || s.includes('singer')) return 'Vocalista'; if (s.includes('lead guitar')) return 'Guitarrista líder'; if (s.includes('rhythm guitar')) return 'Guitarrista rítmico'; if (s.includes('acoustic guitar')) return 'Guitarra acústica'; if (s.includes('bass guitar') || s.includes('bass') || s.includes('bajo')) return 'Bajista'; if (s.includes('guitar') || s.includes('guitarra')) return 'Guitarrista'; if (s.includes('drum') || s.includes('percussion') || s.includes('bater')) return 'Baterista'; if (s.includes('keyboard') || s.includes('piano') || s.includes('organ') || s.includes('synthesizer') || s.includes('teclado')) return 'Tecladista'; if (s.includes('saxophone') || s.includes('sax')) return 'Saxofonista'; if (s.includes('trumpet') || s.includes('trompeta')) return 'Trompetista'; if (s.includes('violin')) return 'Violinista'; if (s.includes('producer') || s.includes('productor')) return 'Productor'; if (s.includes('composer') || s.includes('songwriter') || s.includes('compositor')) return 'Compositor'; return r.charAt(0).toUpperCase() + r.slice(1); };
 const SERVER_API = { async obtenerDatosAmigosUsuario(userEmail) { try { const email = normEm_(userEmail); if (!email) return { exito: false, error: 'Sin sesión' }; const myP = await SERVER_API.obtenerPerfilUsuario(email); const prefs = myP.preferencias || {}; const amigosEmails = prefs.amigos || []; const solicitudesEmails = prefs.solicitudes_recibidas || []; const [amigosRowsList, solicitudesRowsList, amigosRegsList] = await Promise.all([
-  Promise.all(amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=ilike.' + encodeURIComponent(normEm_(aEmail)) + '&select=*', 'GET').catch(() => []))),
-  Promise.all(solicitudesEmails.map(sEmail => sbFetch_('perfiles?user_email=ilike.' + encodeURIComponent(normEm_(sEmail)) + '&select=*', 'GET').catch(() => []))),
-  Promise.all(amigosEmails.map(aEmail => sbFetch_('registros?user_email=ilike.' + encodeURIComponent(normEm_(aEmail)) + '&select=categoria,subcategoria,calificacion', 'GET').catch(() => [])))
+  Promise.all(amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(normEm_(aEmail)) + '&select=*', 'GET').catch(() => []))),
+  Promise.all(solicitudesEmails.map(sEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(normEm_(sEmail)) + '&select=*', 'GET').catch(() => []))),
+  Promise.all(amigosEmails.map(aEmail => sbFetch_('registros?user_email=eq.' + encodeURIComponent(normEm_(aEmail)) + '&select=categoria,subcategoria,calificacion', 'GET').catch(() => [])))
 ]);
 const amigosData = [];
 amigosRowsList.forEach((rows, idx) => {
@@ -11780,7 +11844,7 @@ amigosRowsList.forEach((rows, idx) => {
     return { exito: false, error: e.toString() };
   }
 },
-async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=ilike.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=ilike.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const rawFavs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); const favs = {}; Object.keys(rawFavs).forEach(k => { if (k !== 'portada' && k !== 'personajeFavorito' && k !== 'cancionFavorita' && k.includes('__') && rawFavs[k] && typeof rawFavs[k] === 'object' && rawFavs[k].titulo) { favs[k] = rawFavs[k]; } }); const charFav = (p.favoritos?.personajeFavorito || p.preferencias?.personajeFavorito || null); const songFav = (p.favoritos?.cancionFavorita || p.preferencias?.cancionFavorita || null); const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada'); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: p.preferencias?.userId || email, favoritos: favs, portada: portAmigo, personajeFavorito: charFav, cancionFavorita: songFav }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
+async obtenerPerfilAmigoCompleto(emailAmigo) { try { const email = normEm_(emailAmigo); if (!email) return { exito: false, error: 'Email inválido' }; const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET'); if (!rows || !rows.length) return { exito: false, error: 'Perfil no encontrado' }; const p = rows[0]; const regs = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(email) + '&select=*', 'GET') || []; let totalHoras = 0, totalHorasVistas = 0, sumCalif = 0, nCalif = 0; regs.forEach(r => { if (Number(r.calificacion) > 0) { sumCalif += Number(r.calificacion); nCalif++; } if (r.categoria === 'Juegos' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHoras += h; } if (r.categoria === 'Peliculas' && r.horas) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } else if (r.categoria === 'Series' && r.horas && (String(r.subcategoria||'').includes('Temporada') || /\[S\d+\]/i.test(r.titulo))) { const h = parseFloat(String(r.horas).replace('hrs','').trim()); if (!isNaN(h)) totalHorasVistas += h; } }); const priv = p.preferencias?.privacidad || {}; const desglose = { Peliculas: { total: 0, subs: {} }, Series: { total: 0, subs: {} }, Musica: { total: 0, subs: {} }, Juegos: { total: 0, subs: {} }, Lecturas: { total: 0, subs: {} } }; regs.forEach(r => { const c = r.categoria; if (desglose[c]) { desglose[c].total++; const s = r.subcategoria || 'General'; desglose[c].subs[s] = (desglose[c].subs[s] || 0) + 1; } }); const rawFavs = priv.ocultarFavoritos ? {} : (p.favoritos || {}); const favs = {}; Object.keys(rawFavs).forEach(k => { if (k !== 'portada' && k !== 'personajeFavorito' && k !== 'cancionFavorita' && k.includes('__') && rawFavs[k] && typeof rawFavs[k] === 'object' && rawFavs[k].titulo) { favs[k] = rawFavs[k]; } }); const charFav = (p.favoritos?.personajeFavorito || p.preferencias?.personajeFavorito || null); const songFav = (p.favoritos?.cancionFavorita || p.preferencias?.cancionFavorita || null); const portAmigo = (p.preferencias?.portada || p.favoritos?.portada || 'predeterminada'); return { exito: true, amigo: { email: p.user_email, nickname: p.nickname || email.split('@')[0], bio: p.bio || '', avatar: p.avatar || '🦊', userId: p.preferencias?.userId || email, favoritos: favs, portada: portAmigo, personajeFavorito: charFav, cancionFavorita: songFav }, privacidad: priv, desglose: priv.ocultarEstadisticas ? null : desglose, metricas: priv.ocultarEstadisticas ? null : { total: regs.length, promedio: (priv.ocultarCalificaciones || !nCalif) ? 0 : (sumCalif / nCalif), horasJuegos: totalHoras, horasVistas: (totalHorasVistas % 1 === 0) ? totalHorasVistas : parseFloat(totalHorasVistas.toFixed(1)) } }; } catch (e) { return { exito: false, error: e.toString() }; } }, async obtenerPerfilUsuario(userEmail) { try {
 const email = normEm_(userEmail); if (!email) return { exito: false, sinSesion: true, emailGoogle: '', logueadoGoogle: false, nickname: 'Invitado', avatar: '🦊', bio: 'Inicia sesión para guardar tus listas en Supabase', favoritos: {}, favoritosOcultos: {}, diasLectura: [], tiemposLectura: {} };
 const rows = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); if (rows && rows.length > 0) { const p = rows[0];
 const pPrefs = p.preferencias || {};
@@ -13338,7 +13402,7 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
     if (!amigosEmails.length) return { exito: true, feed: [] };
 
     const pRowsList = await Promise.all(
-      amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=ilike.' + encodeURIComponent(normEm_(aEmail)) + '&select=*', 'GET').catch(() => []))
+      amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(normEm_(aEmail)) + '&select=*', 'GET').catch(() => []))
     );
 
     const amigosMap = {};
@@ -13362,8 +13426,8 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
       const cleanEmail = normEm_(aEmail);
       // Consultar registros generales y registros de Música para que no queden tapados
       const [dataGeneral, dataMusica] = await Promise.all([
-        sbFetch_('registros?user_email=ilike.' + encodeURIComponent(cleanEmail) + '&select=*&order=created_at.desc&limit=15', 'GET').catch(() => []) || [],
-        sbFetch_('registros?user_email=ilike.' + encodeURIComponent(cleanEmail) + '&categoria=ilike.Musica&select=*&order=created_at.desc&limit=15', 'GET').catch(() => []) || []
+        sbFetch_('registros?user_email=eq.' + encodeURIComponent(cleanEmail) + '&select=*&order=created_at.desc&limit=15', 'GET').catch(() => []) || [],
+        sbFetch_('registros?user_email=eq.' + encodeURIComponent(cleanEmail) + '&categoria=eq.Musica&select=*&order=created_at.desc&limit=15', 'GET').catch(() => []) || []
       ]);
 
       const seenRegIds = new Set();
@@ -16447,7 +16511,7 @@ function verPerfilDeAmigo(emailAmigo) {
         amSongBox.innerHTML = `
           <div class="home-clean-section-header" style="margin:4px 0 8px;">
             <div class="home-clean-title">
-              <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:#10b981;"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg></span>
+              <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;color:#10b981;"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span>
               <span>${l === 'en' ? 'Favorite Song' : 'Canción Favorita'}</span>
             </div>
           </div>
@@ -19518,8 +19582,8 @@ function renderizarCancionFavorita() {
     cont.innerHTML = `
       <div class="fav-song-empty-box" onclick="abrirModalSeleccionarCancionFavorita()" title="${l === 'en' ? 'Click to choose your favorite song' : 'Click para elegir tu canción favorita'}" style="padding:10px 12px; border-radius:6px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer; background:transparent; border:1px dashed var(--border);">
         <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
-          <div class="fav-song-empty-icon" style="width:36px; height:36px; border-radius:50%; background:var(--card); border:1px dashed var(--border); display:grid; place-items:center; color:#10b981; flex-shrink:0;">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="m9 9 10.5-3m0 6.553v3.75a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66a.75.75 0 0 0 .542-.72v-4.662m0-3.78V3.75a1.5 1.5 0 0 0-1.096-1.443l-6.75-1.928A1.5 1.5 0 0 0 9 1.821V16.35m0 0a2.25 2.25 0 0 1-1.632 2.163l-1.32.377a1.803 1.803 0 1 1-.99-3.467l2.31-.66A.75.75 0 0 0 9 14.043v-4.5Z"/></svg>
+          <div class="fav-song-empty-icon" style="width:38px; height:38px; border-radius:50%; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.35); display:grid; place-items:center; color:#10b981; flex-shrink:0;">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
           </div>
           <div style="min-width:0; flex:1;">
             <div style="font-weight:700; font-size:0.85rem; color:var(--text);">
@@ -19885,6 +19949,17 @@ function ejecutarQuitarCancionFavorita() {
   const l = userPrefs?.lang || 'es';
   mostrarToastPersonalizado(l === 'en' ? 'Favorite song removed' : 'Canción favorita retirada');
 }
+window.abrirModalSeleccionarCancionFavorita = abrirModalSeleccionarCancionFavorita;
+window.cerrarModalSeleccionarCancionFavorita = cerrarModalSeleccionarCancionFavorita;
+window.cambiarTabSelectorCancion = cambiarTabSelectorCancion;
+window.ejecutarBuscarCancionOnline = ejecutarBuscarCancionOnline;
+window.seleccionarCancionFavoritaObjeto = seleccionarCancionFavoritaObjeto;
+window.toggleReproducirMuestraCancion = toggleReproducirMuestraCancion;
+window.abrirModalConfirmarQuitarCancion = abrirModalConfirmarQuitarCancion;
+window.cerrarModalConfirmarQuitarCancion = cerrarModalConfirmarQuitarCancion;
+window.ejecutarQuitarCancionFavorita = ejecutarQuitarCancionFavorita;
+window.guardarCancionManual = guardarCancionManual;
+window.buscarMuestraParaCancionManual = buscarMuestraParaCancionManual;
 
 // ==========================================
 // SLOT DESTACADO: PERSONAJE FAVORITO
