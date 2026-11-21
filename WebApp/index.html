@@ -13124,12 +13124,15 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
     const email = normEm_(userEmail);
     if (!email) return { exito: false, feed: [] };
     const myP = await SERVER_API.obtenerPerfilUsuario(email);
-    const prefs = myP.preferencias || {};
+    let prefs = myP.preferencias || {};
+    if (typeof prefs === 'string') {
+      try { prefs = JSON.parse(prefs); } catch(e) { prefs = {}; }
+    }
     const amigosEmails = prefs.amigos || [];
     if (!amigosEmails.length) return { exito: true, feed: [] };
 
     const pRowsList = await Promise.all(
-      amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*', 'GET').catch(() => []))
+      amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=ilike.' + encodeURIComponent(normEm_(aEmail)) + '&select=*', 'GET').catch(() => []))
     );
 
     const amigosMap = {};
@@ -13143,15 +13146,35 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
     const feedPromises = amigosEmails.map(async aEmail => {
       const p = amigosMap[aEmail];
       if (!p) return [];
-      const priv = p.preferencias?.privacidad || {};
+      let pPrefs = p.preferencias || {};
+      if (typeof pPrefs === 'string') {
+        try { pPrefs = JSON.parse(pPrefs); } catch(e) { pPrefs = {}; }
+      }
+      const priv = pPrefs.privacidad || {};
       if (priv.ocultarRegistros) return [];
-      const data = await sbFetch_('registros?user_email=eq.' + encodeURIComponent(aEmail) + '&select=*&order=created_at.desc&limit=15', 'GET').catch(() => []) || [];
-      const itemsAmigo = data.map(r => ({
+
+      const cleanEmail = normEm_(aEmail);
+      // Consultar registros generales y registros de Música para que no queden tapados
+      const [dataGeneral, dataMusica] = await Promise.all([
+        sbFetch_('registros?user_email=ilike.' + encodeURIComponent(cleanEmail) + '&select=*&order=created_at.desc&limit=15', 'GET').catch(() => []) || [],
+        sbFetch_('registros?user_email=ilike.' + encodeURIComponent(cleanEmail) + '&categoria=ilike.Musica&select=*&order=created_at.desc&limit=15', 'GET').catch(() => []) || []
+      ]);
+
+      const seenRegIds = new Set();
+      const combinedData = [];
+      [...(dataGeneral || []), ...(dataMusica || [])].forEach(r => {
+        if (r && r.id && !seenRegIds.has(r.id)) {
+          seenRegIds.add(r.id);
+          combinedData.push(r);
+        }
+      });
+
+      const itemsAmigo = combinedData.map(r => ({
         id: r.id,
         userEmail: aEmail,
         amigoNickname: p.nickname || aEmail.split('@')[0],
         amigoAvatar: p.avatar || '🦊',
-        amigoUserId: p.preferencias?.userId || aEmail,
+        amigoUserId: pPrefs.userId || aEmail,
         titulo: r.titulo,
         subtitulo: r.subtitulo || '',
         creador: r.creador || '',
@@ -13166,27 +13189,31 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
         fechaInicio: sanitizarFechaFrontend(r.fecha_inicio || r.fechaInicio),
         fechaFin: sanitizarFechaFrontend(r.fecha_fin || r.fechaFin),
         createdAt: r.created_at || '',
-        likes: (p.preferencias?.likes_recibidos && p.preferencias.likes_recibidos[r.id]) ? p.preferencias.likes_recibidos[r.id] : []
+        likes: (pPrefs.likes_recibidos && pPrefs.likes_recibidos[r.id]) ? pPrefs.likes_recibidos[r.id] : []
       }));
 
       // Integrar temas recientes de Spotify del amigo si están vinculados
-      const spData = p.preferencias?.cuentasVinculadas?.spotify || p.preferencias?.spotify;
+      const spData = pPrefs.cuentasVinculadas?.spotify || pPrefs.cuentas_vinculadas?.spotify || pPrefs.spotify;
       if (spData && !priv.ocultarRegistros) {
         let statsObj = null;
         try {
           statsObj = typeof spData.stats === 'string' ? JSON.parse(spData.stats) : spData.stats;
         } catch(e) {}
+
+        const recTrks = statsObj?.recentTracks || [];
         const topTrks = statsObj?.topTracks || statsObj?.topTracksByRange?.short_term || [];
-        if (topTrks && topTrks.length > 0) {
-          topTrks.slice(0, 5).forEach((trk, tIdx) => {
-            const yaEsta = itemsAmigo.some(x => x.categoria === 'Musica' && (x.titulo || '').toLowerCase() === (trk.name || '').toLowerCase());
+
+        if (recTrks && recTrks.length > 0) {
+          recTrks.slice(0, 10).forEach((trk, tIdx) => {
+            const yaEsta = itemsAmigo.some(x => x.categoria === 'Musica' && (x.titulo || '').toLowerCase().trim() === (trk.name || '').toLowerCase().trim());
             if (!yaEsta && trk.name) {
+              const playedIso = trk.played_at ? new Date(trk.played_at).toISOString() : new Date(Date.now() - ((tIdx + 1) * 1800000)).toISOString();
               itemsAmigo.push({
-                id: `sp_${aEmail}_${trk.id || tIdx}`,
+                id: `sp_rec_${cleanEmail}_${trk.id || tIdx}`,
                 userEmail: aEmail,
                 amigoNickname: p.nickname || aEmail.split('@')[0],
                 amigoAvatar: p.avatar || '🦊',
-                amigoUserId: p.preferencias?.userId || aEmail,
+                amigoUserId: pPrefs.userId || aEmail,
                 titulo: trk.name,
                 subtitulo: trk.album || '',
                 creador: trk.artist || '',
@@ -13198,9 +13225,37 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
                 comentario: '',
                 horas: '',
                 esRewatch: false,
-                fechaInicio: '',
-                fechaFin: tIdx === 0 ? 'En progreso' : '',
-                createdAt: new Date(Date.now() - ((tIdx + 1) * 3600000)).toISOString()
+                fechaInicio: playedIso,
+                fechaFin: playedIso,
+                createdAt: playedIso
+              });
+            }
+          });
+        } else if (topTrks && topTrks.length > 0) {
+          topTrks.slice(0, 6).forEach((trk, tIdx) => {
+            const yaEsta = itemsAmigo.some(x => x.categoria === 'Musica' && (x.titulo || '').toLowerCase().trim() === (trk.name || '').toLowerCase().trim());
+            if (!yaEsta && trk.name) {
+              const fallbackDate = new Date(Date.now() - ((tIdx + 1) * 3600000)).toISOString();
+              itemsAmigo.push({
+                id: `sp_top_${cleanEmail}_${trk.id || tIdx}`,
+                userEmail: aEmail,
+                amigoNickname: p.nickname || aEmail.split('@')[0],
+                amigoAvatar: p.avatar || '🦊',
+                amigoUserId: pPrefs.userId || aEmail,
+                titulo: trk.name,
+                subtitulo: trk.album || '',
+                creador: trk.artist || '',
+                anio: '',
+                categoria: 'Musica',
+                subcategoria: 'Canciones',
+                poster: trk.image || '',
+                calificacion: 0,
+                comentario: '',
+                horas: '',
+                esRewatch: false,
+                fechaInicio: fallbackDate,
+                fechaFin: fallbackDate,
+                createdAt: fallbackDate
               });
             }
           });
@@ -13217,7 +13272,7 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
       return (tB || 0) - (tA || 0);
     });
 
-    return { exito: true, feed: feed.slice(0, limite) };
+    return { exito: true, feed: feed.slice(0, Math.max(limite || 30, 80)) };
   } catch (e) {
     return { exito: false, error: e.toString(), feed: [] };
   }
@@ -14875,18 +14930,26 @@ function inicializarFriendsLiveCarouselScrollListener() {
   }, { passive: true });
 }
 
-function obtenerUltimasCancionesAmigos(limite = 8) {
+function obtenerUltimasCancionesAmigos(limite = 10) {
   const feed = estado.amigosFeedCache || [];
   if (!feed.length) return [];
 
-  const itemsMusica = feed.filter(it => it.categoria === 'Musica');
+  const itemsMusica = feed.filter(it => it && (it.categoria === 'Musica' || it.subcategoria === 'Canciones' || it.subcategoria === 'Discos' || it.subcategoria === 'Singles'));
   if (!itemsMusica.length) return [];
+
+  const copia = [...itemsMusica].sort((a, b) => {
+    const tA = a.createdAt ? new Date(a.createdAt).getTime() : timestampDeFecha(a.fechaFin || a.fechaInicio);
+    const tB = b.createdAt ? new Date(b.createdAt).getTime() : timestampDeFecha(b.fechaFin || b.fechaInicio);
+    return (tB || 0) - (tA || 0);
+  });
 
   const vistos = new Set();
   const canciones = [];
 
-  for (const it of itemsMusica) {
-    const clave = `${it.userEmail || ''}_${(it.titulo || '').toLowerCase().trim()}_${(it.creador || '').toLowerCase().trim()}`;
+  for (const it of copia) {
+    const tit = (it.titulo || '').toLowerCase().trim();
+    const art = (it.creador || '').toLowerCase().trim();
+    const clave = `${it.userEmail || ''}_${tit}_${art}`;
     if (!vistos.has(clave)) {
       vistos.add(clave);
       canciones.push(it);
@@ -14910,7 +14973,7 @@ function renderizarUltimasCancionesAmigosInicio() {
     return;
   }
 
-  const canciones = obtenerUltimasCancionesAmigos(8);
+  const canciones = obtenerUltimasCancionesAmigos(10);
 
   if (!canciones.length) {
     const feed = estado.amigosFeedCache || [];
@@ -14933,7 +14996,6 @@ function renderizarUltimasCancionesAmigosInicio() {
 
   let html = `<div class="home-friend-songs-scroll">`;
   canciones.forEach(it => {
-    const enProg = esEnProgresoTexto(it.fechaFin);
     const timeStr = formatearTiempoRelativoFeed(it.createdAt || it.fechaFin || it.fechaInicio, l);
     const artist = it.creador || (l === 'en' ? 'Artist' : 'Artista');
     const album = it.subtitulo || it.subcategoria || (l === 'en' ? 'Music' : 'Música');
@@ -14967,16 +15029,14 @@ function renderizarUltimasCancionesAmigosInicio() {
 
         <!-- Info central -->
         <div style="flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; overflow:hidden;">
-          <!-- Fila de usuario y estado -->
-          <div style="display:flex; align-items:center; gap:5px; font-size:0.71rem; line-height:1.2; overflow:hidden;">
-            <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:110px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
+          <!-- Fila de usuario y tiempo escuchado -->
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:6px; font-size:0.71rem; line-height:1.2; overflow:hidden;">
+            <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:115px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
               ${escHtmlFeed_(nick)}
             </strong>
-            <span style="color:${enProg ? '#10b981' : 'var(--muted)'}; display:inline-flex; align-items:center; gap:3px; font-size:0.67rem; font-weight:700; white-space:nowrap;">
-              <span class="home-np-dot" style="width:5px; height:5px; border-radius:50%; ${enProg ? 'background:#10b981; animation:pulseDot 1.6s infinite;' : 'background:var(--accent); animation:none;'}"></span>
-              <span>${enProg ? (l === 'en' ? 'Listening' : 'Escuchando') : (l === 'en' ? 'Listened' : 'Escuchó')}</span>
+            <span style="color:var(--muted); font-size:0.67rem; display:inline-flex; align-items:center; gap:3px; flex-shrink:0; white-space:nowrap;">
+              ${getHeroIcon('clock', '', 11)} <span>${timeStr || (l === 'en' ? 'Recently' : 'Reciente')}</span>
             </span>
-            ${timeStr ? `<span style="color:var(--muted); font-size:0.65rem; margin-left:auto; flex-shrink:0; white-space:nowrap;">${timeStr}</span>` : ''}
           </div>
 
           <!-- Título canción -->
@@ -18605,6 +18665,7 @@ function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false) {
         updatedAt: Date.now()
       };
       perfilUsuario.preferencias.cuentas_vinculadas = cuentasVinculadas;
+      perfilUsuario.preferencias.cuentasVinculadas = cuentasVinculadas;
 
       // 3. Empaquetar rachas (incluyendo racha manual de lectura y mapa de tiempos registrados)
       const listaDiasLectura = typeof obtenerListaDiasLectura === 'function' ? obtenerListaDiasLectura() : [];
@@ -24796,6 +24857,22 @@ async function actualizarDatosSpotify(notificar = false) {
       stats.recentMinutes = Math.round(totalMs / 60000);
       stats.recentHours = (totalMs / 3600000).toFixed(1);
 
+      // Guardar canciones recientemente escuchadas con played_at real
+      stats.recentTracks = items.map(it => {
+        const t = it.track;
+        if (!t) return null;
+        return {
+          id: t.id,
+          name: t.name,
+          artist: t.artists?.map(x => x.name).join(', ') || '',
+          album: t.album?.name || '',
+          image: t.album?.images?.[0]?.url || '',
+          url: t.external_urls?.spotify || '',
+          duration_ms: t.duration_ms,
+          played_at: it.played_at
+        };
+      }).filter(Boolean);
+
       const acc = procesarReproduccionesRecientesSpotify_(items);
       stats.accumulator = {
         totalMs: acc.totalMs,
@@ -24811,6 +24888,10 @@ async function actualizarDatosSpotify(notificar = false) {
 
     stats.lastUpdated = new Date().toISOString();
     localStorage.setItem('mediary_spotify_stats', JSON.stringify(stats));
+
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(true);
+    }
 
     actualizarUISpotify();
     renderizarContenidoModalSpotifyStats();
@@ -24919,6 +25000,10 @@ function cargarDatosDemoSpotify() {
     recentlyPlayedCount: 50,
     recentMinutes: 185,
     recentHours: '3.1',
+    recentTracks: tracksShort.map((t, idx) => ({
+      ...t,
+      played_at: new Date(Date.now() - (idx + 1) * 3600000).toISOString()
+    })),
     accumulator: demoAccumulator,
     lastUpdated: new Date().toISOString()
   };
