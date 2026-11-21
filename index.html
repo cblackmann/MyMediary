@@ -8169,6 +8169,55 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2) !important;
 }
 
+/* ELIMINAR FORMATO DE TARJETA EXCESIVO EN ESTADÍSTICAS Y SECCIONES DEL PERFIL */
+#perfil-tab .stats-kpi-card,
+.stats-kpi-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 4px 8px 6px 0 !important;
+  min-height: auto !important;
+}
+#perfil-tab .stats-kpi-card:hover,
+.stats-kpi-card:hover {
+  border-color: transparent !important;
+  transform: none !important;
+}
+#perfil-tab .stats-section-box,
+.stats-section-box {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 6px 0 14px 0 !important;
+  margin-bottom: 12px !important;
+}
+#perfil-tab .profile-stat-box,
+.profile-stat-box {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 4px 6px 6px 0 !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+}
+#perfil-tab .profile-stat-label,
+.profile-stat-label,
+#perfil-tab .profile-stat-val,
+.profile-stat-val,
+#perfil-tab .profile-stat-sub,
+.profile-stat-sub {
+  text-align: left !important;
+}
+#perfil-tab .stats-ranking-row {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+}
+
 </style> </head> <body>
 <header class="app-header-integrated">
   <!-- 1. Esquina superior izquierda: Selector de año (más pequeño e integrado) -->
@@ -8488,6 +8537,9 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
             <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></span>
             <span data-i18n="profile_favs_title">Favoritos por Categoría</span>
           </div>
+          <button type="button" class="btn-profile-edit-discreet" id="btn-modo-mostrar-favs" onclick="toggleModoConfigurarVisiblesFavs()" title="Configurar cuáles mostrar" aria-label="Configurar favoritos visibles" style="margin-left:auto; width:28px; height:28px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-radius:4px; background:transparent; border:none; color:var(--muted); cursor:pointer;">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
+          </button>
         </div>
         <div class="favs-grid" id="perfil-favoritos-grid"></div>
       </div>
@@ -10936,11 +10988,11 @@ const rows = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}
 const pPrefs = p.preferencias || {};
 const dLect = pPrefs.rachas?.diasLectura || pPrefs.diasLectura || [];
 const tLect = pPrefs.rachas?.tiemposLectura || pPrefs.tiemposLectura || {};
-return { exito: true, emailGoogle: p.user_email, logueadoGoogle: true, nickname: p.nickname || email.split('@')[0], avatar: p.avatar || '🦊', bio: p.bio || 'Coleccionando historias en Mediary', favoritos: p.favoritos || {}, favoritosOcultos: p.favoritos_ocultos || {}, preferencias: pPrefs, diasLectura: dLect, tiemposLectura: tLect };
+return { exito: true, emailGoogle: p.user_email, logueadoGoogle: true, nickname: p.nickname || email.split('@')[0], avatar: p.avatar || '🦊', bio: p.bio || 'Coleccionando historias en Mediary', favoritos: p.favoritos || {}, favoritosOcultos: p.favoritos_ocultos || {}, preferencias: pPrefs, diasLectura: dLect, tiemposLectura: tLect, created_at: p.created_at || pPrefs.createdAt || '' };
 }
-const nuevo = { user_email: email, nickname: email.includes('@') ? email.split('@')[0] : email, bio: 'Coleccionando historias en Mediary', avatar: '🦊', favoritos: {}, favoritos_ocultos: {}, preferencias: { authMethod: 'google' }, updated_at: new Date().toISOString() };
+const nuevo = { user_email: email, nickname: email.includes('@') ? email.split('@')[0] : email, bio: 'Coleccionando historias en Mediary', avatar: '🦊', favoritos: {}, favoritos_ocultos: {}, preferencias: { authMethod: 'google' }, created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
 await sbFetch_('perfiles?on_conflict=user_email', 'POST', nuevo, 'resolution=merge-duplicates,return=representation');
-return { exito: true, emailGoogle: email, logueadoGoogle: true, nickname: nuevo.nickname, avatar: nuevo.avatar, bio: nuevo.bio, favoritos: {}, favoritosOcultos: {}, preferencias: nuevo.preferencias, diasLectura: [], tiemposLectura: {} };
+return { exito: true, emailGoogle: email, logueadoGoogle: true, nickname: nuevo.nickname, avatar: nuevo.avatar, bio: nuevo.bio, favoritos: {}, favoritosOcultos: {}, preferencias: nuevo.preferencias, diasLectura: [], tiemposLectura: {}, created_at: nuevo.created_at };
 } catch (e) { return { exito: false, error: e.toString(), emailGoogle: userEmail || '', logueadoGoogle: false }; }
 }, async autenticarUsuarioSupabase(datos) { try { const modo = datos?.modo || 'login'; const email = normEm_(datos?.email); const pass = String(datos?.password || ''); if (!email) return { exito: false, error: 'Ingresa tu correo o nombre de usuario.' };
 const passHash = pass ? await hashP_(pass) : ''; const existentes = await sbFetch_(`perfiles?user_email=eq.${encodeURIComponent(email)}&select=*`, 'GET'); const actual = existentes && existentes[0] ? existentes[0] : null; if (modo === 'registro') {
@@ -18061,7 +18113,7 @@ localStorage.setItem('Mediary_saved_accounts_v1', JSON.stringify(lista.slice(0, 
 }
 function aplicarSesionExitosa(res, mostrarSaludo = false) { estado.userEmail = (res.emailGoogle || estado.userEmail || '').trim().toLowerCase(); perfilUsuario.emailGoogle = estado.userEmail; perfilUsuario.logueadoGoogle = true;
 perfilUsuario.nickname = res.nickname || (estado.userEmail ? estado.userEmail.split('@')[0] : 'Cinéfilo & Lector'); perfilUsuario.bio = res.bio || 'Coleccionando historias en Mediary'; perfilUsuario.avatar = res.avatar || ''; perfilUsuario.favoritos = res.favoritos || {};
-perfilUsuario.favoritosOcultos = res.favoritosOcultos || {}; perfilUsuario.preferencias = res.preferencias || {}; if (res.preferencias?.portada || res.favoritos?.portada) perfilUsuario.portada = res.preferencias?.portada || res.favoritos?.portada; if (res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito) perfilUsuario.personajeFavorito = res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito; if (!perfilUsuario.preferencias.userId && estado.userEmail) { perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias); }
+perfilUsuario.favoritosOcultos = res.favoritosOcultos || {}; perfilUsuario.preferencias = res.preferencias || {}; if (res.created_at) { perfilUsuario.created_at = res.created_at; try { localStorage.setItem('mediary_user_created_' + estado.userEmail, res.created_at); } catch(e){} } if (res.preferencias?.portada || res.favoritos?.portada) perfilUsuario.portada = res.preferencias?.portada || res.favoritos?.portada; if (res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito) perfilUsuario.personajeFavorito = res.favoritos?.personajeFavorito || res.preferencias?.personajeFavorito; if (!perfilUsuario.preferencias.userId && estado.userEmail) { perfilUsuario.preferencias.userId = generarOObtenerIdUsuario(estado.userEmail, perfilUsuario.nickname, perfilUsuario.preferencias); }
 if (res.preferencias?.likes_dados && Array.isArray(res.preferencias.likes_dados)) {
  try {
  const s = obtenerLikesResenasSet();
@@ -18850,32 +18902,70 @@ function obtenerTodasLasSubcategoriasFavoritos() { const lista = []; Object.keys
 if (!s.esWatchlist && s.id !== 'Temporadas' && s.id !== 'Conciertos') { lista.push({ cat: catKey, catNombre: CONFIG[catKey].nombre, sub: s.id, subNombre: s.nombre, emoji: s.emoji }); }
 }); }); return lista; }
 function toggleModoConfigurarVisiblesFavs() {
+  estado.modoConfigurarFavs = !estado.modoConfigurarFavs;
+  const btn = document.getElementById('btn-modo-mostrar-favs');
+  if (btn) {
+    btn.classList.toggle('active', !!estado.modoConfigurarFavs);
+    btn.style.color = estado.modoConfigurarFavs ? 'var(--accent)' : 'var(--muted)';
+    btn.title = estado.modoConfigurarFavs ? 'Listo (guardar)' : 'Configurar cuáles mostrar';
+    btn.innerHTML = estado.modoConfigurarFavs
+      ? `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="m4.5 12.75 6 6 9-13.5"/></svg>`
+      : `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>`;
+  }
   renderizarFavoritosPerfil();
 }
 function toggleMostrarFavoritoSub(keyFav) {
+  if (!perfilUsuario.favoritosOcultos) perfilUsuario.favoritosOcultos = {};
+  if (perfilUsuario.favoritosOcultos[keyFav]) {
+    delete perfilUsuario.favoritosOcultos[keyFav];
+  } else {
+    perfilUsuario.favoritosOcultos[keyFav] = true;
+  }
+  guardarPerfilLocal();
   renderizarFavoritosPerfil();
+  if (typeof google !== 'undefined' && google.script && google.script.run && estado.userEmail) {
+    google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+  }
 }
 function renderizarFavoritosPerfil() {
   const grid = document.getElementById('perfil-favoritos-grid');
   if (!grid) return;
   grid.innerHTML = '';
+  if (!perfilUsuario.favoritosOcultos) perfilUsuario.favoritosOcultos = {};
   const subs = obtenerTodasLasSubcategoriasFavoritos();
   const l = userPrefs.lang || 'es';
   const favFrag = document.createDocumentFragment();
   subs.forEach(item => {
     const keyFav = `${item.cat}__${item.sub}`;
+    const estaOculto = !!perfilUsuario.favoritosOcultos[keyFav];
+    if (estaOculto && !estado.modoConfigurarFavs) return;
+
     const fav = perfilUsuario.favoritos?.[keyFav] || null;
-    const subLabel = I18N[l].subs[item.sub] || item.subNombre;
+    const subLabel = I18N[l]?.subs?.[item.sub] || item.subNombre;
     const card = document.createElement('div');
     card.className = 'fav-slot-card';
+    if (estaOculto) {
+      card.style.opacity = '0.45';
+      card.style.filter = 'grayscale(0.6)';
+    }
+
+    const actionBtnHtml = estado.modoConfigurarFavs
+      ? `<button type="button" class="fav-slot-edit-btn" onclick="event.stopPropagation(); toggleMostrarFavoritoSub('${keyFav}')" title="${estaOculto ? 'Mostrar en perfil' : 'Ocultar en perfil'}" aria-label="Cambiar visibilidad" style="${estaOculto ? 'opacity:0.85; color:var(--muted);' : 'opacity:0.95; color:var(--accent);'}">
+          ${estaOculto 
+            ? `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"/></svg>`
+            : `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>`
+          }
+        </button>`
+      : `<button type="button" class="fav-slot-edit-btn" onclick="event.stopPropagation(); abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')" title="${fav ? 'Cambiar favorito' : 'Elegir favorito'}" aria-label="Editar favorito">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
+        </button>`;
+
     card.innerHTML = `
-      <button type="button" class="fav-slot-edit-btn" onclick="event.stopPropagation(); abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')" title="${fav ? 'Cambiar favorito' : 'Elegir favorito'}" aria-label="Editar favorito">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg>
-      </button>
-      <div class="fav-slot-poster" onclick="abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')" style="cursor:pointer;">
+      ${actionBtnHtml}
+      <div class="fav-slot-poster" onclick="${estado.modoConfigurarFavs ? `toggleMostrarFavoritoSub('${keyFav}')` : `abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')`}" style="cursor:pointer;">
         ${fav?.poster ? `<img src="${fav.poster}" alt="${fav.titulo}">` : `<span>${item.emoji}</span>`}
       </div>
-      <div class="fav-slot-info" onclick="abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')" style="cursor:pointer;">
+      <div class="fav-slot-info" onclick="${estado.modoConfigurarFavs ? `toggleMostrarFavoritoSub('${keyFav}')` : `abrirSelectorFavoritoSub('${item.cat}', '${item.sub}')`}" style="cursor:pointer;">
         <div class="fav-slot-top-row">
           <div class="fav-slot-subcat"><span class="emoji-dyn" style="margin-right:6px;display:inline-flex;align-items:center;">${item.emoji}</span><span>${subLabel}</span></div>
         </div>
@@ -19150,10 +19240,16 @@ function actualizarTextosInterfaz() {
       : `<span class="emoji-dyn">${getHeroIcon('pause', '', 14)}</span> <span>${l === 'en' ? 'Auto-update: OFF' : 'Auto-actualizar: OFF'}</span>`;
   }
 
-  // Profile email
+  // Profile email & configure favs button title
   const pEmail = document.getElementById('perfil-email-txt');
   if (pEmail && (!perfilUsuario.emailGoogle || !perfilUsuario.logueadoGoogle)) {
     pEmail.textContent = l === 'en' ? 'No linked account' : 'Sin cuenta vinculada';
+  }
+  const btnModoFavs = document.getElementById('btn-modo-mostrar-favs');
+  if (btnModoFavs) {
+    btnModoFavs.title = estado.modoConfigurarFavs
+      ? (l === 'en' ? 'Done' : 'Listo (guardar)')
+      : (l === 'en' ? 'Configure which to show' : 'Configurar cuáles mostrar');
   }
 
   // Tooltips / Titles of icon buttons
@@ -20846,45 +20942,49 @@ function escHtmlStats_(str) {
 }
 
 function calcularTiempoCuenta() {
-  let fechaMin = null;
+  let fechaCreacion = null;
   if (typeof perfilUsuario !== 'undefined' && perfilUsuario) {
     if (perfilUsuario.created_at) {
       const d = new Date(perfilUsuario.created_at);
-      if (!isNaN(d.getTime())) fechaMin = d;
+      if (!isNaN(d.getTime())) fechaCreacion = d;
     }
-    if (perfilUsuario.preferencias?.createdAt) {
+    if (!fechaCreacion && perfilUsuario.preferencias?.createdAt) {
       const d = new Date(perfilUsuario.preferencias.createdAt);
-      if (!isNaN(d.getTime()) && (!fechaMin || d < fechaMin)) fechaMin = d;
+      if (!isNaN(d.getTime())) fechaCreacion = d;
     }
-  }
-  if (typeof estado !== 'undefined' && Array.isArray(estado.registros) && estado.registros.length) {
-    estado.registros.forEach(r => {
-      const fStr = r.created_at || r.fechaInicio || r.fechaFin;
-      if (fStr && fStr !== 'Sin fecha' && typeof esEnProgresoTexto === 'function' && !esEnProgresoTexto(fStr)) {
-        const d = (typeof parsearFechaAObjeto === 'function' ? parsearFechaAObjeto(fStr) : null) || new Date(fStr);
-        if (d && !isNaN(d.getTime())) {
-          if (!fechaMin || d < fechaMin) fechaMin = d;
-        }
-      }
-    });
-  }
-  const saved = localStorage.getItem('mediary_account_created_at');
-  if (saved) {
-    const d = new Date(saved);
-    if (!isNaN(d.getTime()) && (!fechaMin || d < fechaMin)) fechaMin = d;
-  } else if (fechaMin) {
-    localStorage.setItem('mediary_account_created_at', fechaMin.toISOString());
   }
 
-  if (!fechaMin) {
-    fechaMin = new Date();
-    localStorage.setItem('mediary_account_created_at', fechaMin.toISOString());
+  const userKey = (typeof estado !== 'undefined' && estado?.userEmail) ? ('mediary_user_created_' + estado.userEmail) : null;
+  if (!fechaCreacion && userKey) {
+    const saved = localStorage.getItem(userKey);
+    if (saved) {
+      const d = new Date(saved);
+      if (!isNaN(d.getTime())) fechaCreacion = d;
+    }
+  }
+
+  if (!fechaCreacion) {
+    fechaCreacion = new Date();
+    if (userKey) {
+      try { localStorage.setItem(userKey, fechaCreacion.toISOString()); } catch(e){}
+    }
+    if (typeof perfilUsuario !== 'undefined' && perfilUsuario) {
+      if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+      perfilUsuario.preferencias.createdAt = fechaCreacion.toISOString();
+      if (typeof guardarPerfilLocal === 'function') guardarPerfilLocal();
+      if (typeof google !== 'undefined' && google.script && google.script.run && estado?.userEmail) {
+        google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+      }
+    }
   }
 
   const hoy = new Date();
-  const diffMs = hoy.getTime() - fechaMin.getTime();
-  const diffDias = Math.max(1, Math.floor(diffMs / (1000 * 60 * 60 * 24)));
+  const diffMs = Math.max(0, hoy.getTime() - fechaCreacion.getTime());
+  const diffDias = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
+  if (diffDias === 0) {
+    return 'Hoy';
+  }
   if (diffDias < 30) {
     return `${diffDias} ${diffDias === 1 ? 'día' : 'días'}`;
   }
@@ -20918,13 +21018,20 @@ function calcularRachaSeries(regs) {
 
 function obtenerMejorCalificado_(lista) {
   if (!Array.isArray(lista) || !lista.length) return null;
-  const conCalif = lista.filter(r => Number(r.calificacion) > 0);
+  const esRewatch = (r) => {
+    if (!r) return false;
+    if (r.esRewatch === true || r.es_rewatch === true || r.rewatch === true) return true;
+    const sub = String(r.subcategoria || '').toLowerCase();
+    if (sub.includes('rewatch') || sub.includes('relectura') || sub.includes('rejugad')) return true;
+    return false;
+  };
+  // Exclusivamente FIRST TIME WATCH (sin rewatches)
+  const conCalif = lista.filter(r => Number(r.calificacion) > 0 && !esRewatch(r));
   if (!conCalif.length) return null;
   return conCalif.reduce((mejor, r) => {
     const calR = Number(r.calificacion) || 0;
     const calM = Number(mejor.calificacion) || 0;
     if (calR > calM) return r;
-    if (calR === calM && r.esRewatch && !mejor.esRewatch) return r;
     return mejor;
   }, conCalif[0]);
 }
