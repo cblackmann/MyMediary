@@ -9258,40 +9258,655 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 .cat-wide-card.cat-wide-lecturas:hover { border-color: var(--cat-border-lecturas) !important; }
 .cat-wide-card.cat-wide-lecturas .cat-wide-title .emoji-dyn { color: var(--cat-color-lecturas); }
 
+/* ============================================================
+   ESTILOS CALENDARIO Y PRÓXIMOS ESTRENOS
+   ============================================================ */
+#btn-header-calendario.active {
+  color: var(--accent) !important;
+  opacity: 1 !important;
+}
+#btn-header-calendario.active .btn-clean-glyph {
+  transform: scale(1.1);
+}
+
+.calendario-container {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto 30px auto;
+  box-sizing: border-box;
+}
+
+.calendario-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.calendario-title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.calendario-header-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text);
+}
+
+.calendario-subtitle {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.calendario-header-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.calendario-view-toggle {
+  display: inline-flex;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.btn-cal-tab {
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-cal-tab:hover {
+  color: var(--text);
+}
+
+.btn-cal-tab.active {
+  background: var(--accent);
+  color: #000;
+  font-weight: 700;
+}
+
+.btn-cal-tab .pill-count {
+  font-size: 0.72rem;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  font-weight: 700;
+}
+.btn-cal-tab:not(.active) .pill-count {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent);
+}
+
+.btn-agregar-estreno {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-agregar-estreno:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* Nav del mes */
+.calendario-nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 14px;
+  margin-bottom: 12px;
+  gap: 8px;
+}
+
+.cal-nav-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text);
+  border-radius: 6px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.15rem;
+  transition: all 0.18s ease;
+}
+
+.cal-nav-btn:hover {
+  background: var(--card-hover);
+  border-color: var(--border);
+  color: var(--accent);
+}
+
+.cal-nav-selectors {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cal-select-mes, .cal-select-anio {
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+.cal-select-mes:focus, .cal-select-anio:focus {
+  border-color: var(--accent);
+}
+
+.btn-cal-hoy {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-cal-hoy:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+/* Leyenda de categorías */
+.cal-legend-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 6px 10px;
+  margin-bottom: 12px;
+  font-size: 0.76rem;
+  color: var(--muted);
+  justify-content: center;
+}
+
+.cal-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.cal-legend-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Grilla del calendario */
+.cal-grid-wrapper {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 18px;
+}
+
+.cal-weekdays-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 6px;
+  text-align: center;
+}
+
+.cal-weekday-cell {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  padding: 4px 0;
+  letter-spacing: 0.5px;
+}
+
+.cal-days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.cal-day-cell {
+  background: var(--bg);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  min-height: 60px;
+  padding: 5px 4px 4px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  position: relative;
+  user-select: none;
+}
+
+.cal-day-cell:hover {
+  border-color: var(--border);
+  background: var(--card-hover);
+  transform: translateY(-1px);
+}
+
+.cal-day-cell.cal-dia-otro-mes {
+  opacity: 0.3;
+}
+
+.cal-day-cell.cal-dia-hoy {
+  border-color: var(--accent);
+}
+
+.cal-day-cell.cal-dia-hoy .cal-day-num {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.cal-day-cell.cal-dia-seleccionado {
+  background: rgba(56, 189, 248, 0.12) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.cal-day-cell-top {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 3px;
+}
+
+.cal-day-num {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.cal-estreno-star {
+  font-size: 0.7rem;
+  line-height: 1;
+  color: #fbbf24;
+}
+
+.cal-dots-container {
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+  padding: 2px 0;
+  min-height: 12px;
+}
+
+.cal-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.cal-dot:hover {
+  transform: scale(1.4);
+}
+
+.cal-dot-more {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--muted);
+  line-height: 1;
+}
+
+/* Detalle del Día Inspector */
+.cal-day-detail-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.cal-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.cal-detail-date-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cal-detail-pills {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.cal-detail-pill {
+  font-size: 0.75rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.cal-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cal-work-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: all 0.15s ease;
+}
+
+.cal-work-card:hover {
+  border-color: var(--muted);
+}
+
+.cal-work-poster {
+  width: 42px;
+  height: 58px;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--card);
+  flex-shrink: 0;
+}
+
+.cal-work-poster-placeholder {
+  width: 42px;
+  height: 58px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.cal-work-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.cal-work-title {
+  margin: 0 0 3px 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cal-work-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.cal-cat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 7px;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.cal-work-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.cal-btn-action {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.15s ease;
+}
+
+.cal-btn-action:hover {
+  background: var(--card-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.cal-btn-action-primary {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.cal-btn-action-primary:hover {
+  opacity: 0.88;
+  background: var(--accent);
+  color: #000;
+}
+
+.cal-btn-action-danger {
+  color: #ef4444;
+}
+.cal-btn-action-danger:hover {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+.cal-empty-state {
+  text-align: center;
+  padding: 24px 10px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* Subvista Estrenos Lista */
+.cal-estrenos-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.cal-estrenos-filters {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cal-estreno-filter-btn {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.cal-estreno-filter-btn:hover {
+  color: var(--text);
+}
+
+.cal-estreno-filter-btn.active {
+  background: var(--accent);
+  color: #000;
+  border-color: var(--accent);
+  font-weight: 700;
+}
+
+.cal-countdown-pill {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.cal-countdown-today {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+}
+.cal-countdown-soon {
+  background: rgba(251, 191, 36, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.4);
+}
+.cal-countdown-future {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--accent);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+.cal-countdown-past {
+  background: rgba(148, 163, 184, 0.15);
+  color: var(--muted);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+/* Selector de año integrado en listas-top-bar */
+.listas-top-bar .btn-year-picker-compact {
+  height: 34px;
+  padding: 0 10px !important;
+  font-size: 0.88rem !important;
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  color: var(--text) !important;
+  font-weight: 700 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+.listas-top-bar .btn-year-picker-compact:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+.listas-top-bar .btn-year-picker-compact .year-display-txt {
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 600px) {
+  .cal-day-cell {
+    min-height: 48px;
+    padding: 3px 2px;
+  }
+  .cal-dot {
+    width: 5px;
+    height: 5px;
+  }
+  .cal-day-num {
+    font-size: 0.74rem;
+  }
+  .cal-nav-bar {
+    padding: 6px 10px;
+  }
+  .cal-select-mes, .cal-select-anio {
+    font-size: 0.8rem;
+    padding: 4px 6px;
+  }
+  .listas-top-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
 </style> </head> <body>
 <header class="app-header-integrated">
-  <!-- 1. Esquina superior izquierda: Selector de año (más pequeño e integrado) -->
+  <!-- 1. Esquina superior izquierda: Ícono de Calendario -->
   <div class="header-corner-left">
-    <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;">
-      <button type="button" id="btn-selector-anio" class="btn-year-picker btn-year-picker-compact" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año">
-        <span id="label-anio-activo" class="year-display-txt">2026</span>
-        <span class="year-picker-arrow" id="arrow-selector-anio">▾</span>
-      </button>
-      <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()">
-        <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div>
-        <div id="lista-anios-selector">
-          <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')">
-            <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg>2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span>
-          </button>
-          <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')">
-            <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>2025</span>
-          </button>
-          <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')">
-            <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>2024</span>
-          </button>
-          <button type="button" class="year-dropdown-item" data-year="2023" onclick="cambiarAnioVisualizacion('2023')">
-            <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>2023</span>
-          </button>
-          <button type="button" class="year-dropdown-item" data-year="2022" onclick="cambiarAnioVisualizacion('2022')">
-            <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>2022</span>
-          </button>
-        </div>
-        <div class="year-dropdown-divider"></div>
-        <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')">
-          <span data-i18n="year_all_time"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"/></svg>Todos los Tiempos</span>
-        </button>
-      </div>
-    </div>
+    <button type="button" class="btn-header-clean-icon" id="btn-header-calendario" onclick="abrirVistaCalendario()" title="Calendario y Estrenos" aria-label="Calendario">
+      <span class="btn-clean-glyph">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/>
+        </svg>
+      </span>
+    </button>
   </div>
 
   <!-- 2. Centro: Título Mediary más grande y centrado -->
@@ -9471,20 +10086,55 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
     </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) -->
     <div id="vista-listas-extendida" style="display:none;">
       <div class="listas-top-bar">
-        <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:6px 14px; font-size:0.82rem; font-weight:700; border-radius:3px; margin:0;" title="Ver mis watchlists y pendientes">
-          <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg></span>
-          <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span>
-        </button>
-        <button type="button" class="btn-listas-reorder" id="btn-toggle-reordenar-listas" onclick="toggleModoReordenarListas()" title="Organizar y reordenar categorías" aria-label="Organizar y reordenar categorías">
-          <svg id="icon-reordenar-listas-idle" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="6" x2="20" y2="6"></line>
-            <line x1="4" y1="12" x2="20" y2="12"></line>
-            <line x1="4" y1="18" x2="20" y2="18"></line>
-          </svg>
-          <svg id="icon-reordenar-listas-active" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-        </button>
+        <!-- Esquina superior izquierda de listas: Selector de año -->
+        <div class="year-picker-container" style="position:relative;display:inline-flex;align-items:center;">
+          <button type="button" id="btn-selector-anio" class="btn-year-picker btn-year-picker-compact" onclick="toggleMenuAniosApp(event)" title="Filtrar registros por año">
+            <span id="label-anio-activo" class="year-display-txt">2026</span>
+            <span class="year-picker-arrow" id="arrow-selector-anio">▾</span>
+          </button>
+          <div id="menu-desplegable-anios" class="year-dropdown-menu" style="display:none;" onclick="event.stopPropagation()">
+            <div class="year-dropdown-header" data-i18n="year_picker_header">Mostrar registros de:</div>
+            <div id="lista-anios-selector">
+              <button type="button" class="year-dropdown-item active" data-year="2026" onclick="cambiarAnioVisualizacion('2026')">
+                <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg>2026</span> <span class="year-badge-active" data-i18n="year_current_badge">Actual</span>
+              </button>
+              <button type="button" class="year-dropdown-item" data-year="2025" onclick="cambiarAnioVisualizacion('2025')">
+                <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>2025</span>
+              </button>
+              <button type="button" class="year-dropdown-item" data-year="2024" onclick="cambiarAnioVisualizacion('2024')">
+                <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>2024</span>
+              </button>
+              <button type="button" class="year-dropdown-item" data-year="2023" onclick="cambiarAnioVisualizacion('2023')">
+                <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>2023</span>
+              </button>
+              <button type="button" class="year-dropdown-item" data-year="2022" onclick="cambiarAnioVisualizacion('2022')">
+                <span><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>2022</span>
+              </button>
+            </div>
+            <div class="year-dropdown-divider"></div>
+            <button type="button" class="year-dropdown-item" data-year="todos" onclick="cambiarAnioVisualizacion('todos')">
+              <span data-i18n="year_all_time"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;vertical-align:-0.15em;margin-right:4px;"><path d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418"/></svg>Todos los Tiempos</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Acciones derechas de listas -->
+        <div style="display:inline-flex; align-items:center; gap:8px;">
+          <button type="button" class="btn-watchlist-special" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:6px 14px; font-size:0.82rem; font-weight:700; border-radius:3px; margin:0;" title="Ver mis watchlists y pendientes">
+            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg></span>
+            <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span>
+          </button>
+          <button type="button" class="btn-listas-reorder" id="btn-toggle-reordenar-listas" onclick="toggleModoReordenarListas()" title="Organizar y reordenar categorías" aria-label="Organizar y reordenar categorías">
+            <svg id="icon-reordenar-listas-idle" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="6" x2="20" y2="6"></line>
+              <line x1="4" y1="12" x2="20" y2="12"></line>
+              <line x1="4" y1="18" x2="20" y2="18"></line>
+            </svg>
+            <svg id="icon-reordenar-listas-active" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </button>
+        </div>
       </div>
       <div id="contenedor-modo-reordenar-listas" style="display:none; margin-bottom:16px;"></div>
       <div class="dashboard-vertical-list" id="grid-stats"></div>
@@ -9694,6 +10344,142 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   <div class="watchlist-grid" id="grid-watchlist-dedicada"></div>
 </div>
 
+<!-- VISTA CALENDARIO Y PRÓXIMOS ESTRENOS -->
+<div id="vista-calendario" style="display:none;">
+  <div class="calendario-container">
+    <!-- 1. Cabecera de Calendario -->
+    <div class="calendario-header-bar">
+      <div class="calendario-title-wrap">
+        <h2 class="calendario-header-title">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;color:var(--accent);">
+            <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/>
+          </svg>
+          <span data-i18n="cal_title">Calendario</span>
+        </h2>
+        <p class="calendario-subtitle" data-i18n="cal_subtitle">Registros diarios por categoría y próximos estrenos programados</p>
+      </div>
+
+      <div class="calendario-header-actions">
+        <!-- Selector de modo subvista -->
+        <div class="calendario-view-toggle">
+          <button type="button" class="btn-cal-tab active" id="btn-tab-cal-grid" onclick="cambiarModoSubvistaCalendario('grid')">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span data-i18n="cal_tab_grid">Calendario</span>
+          </button>
+          <button type="button" class="btn-cal-tab" id="btn-tab-cal-estrenos" onclick="cambiarModoSubvistaCalendario('estrenos')">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+            </svg>
+            <span data-i18n="cal_tab_estrenos">Próximos Estrenos</span>
+            <span class="pill-count" id="cal-badge-estrenos-count">0</span>
+          </button>
+        </div>
+
+        <!-- Botón agregar estreno -->
+        <button type="button" class="btn-agregar-estreno" onclick="abrirModalAgregarEstreno()" title="Añadir próximo estreno">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span data-i18n="cal_btn_add_estreno">+ Próximo Estreno</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. SUBVISTA: CALENDARIO GRID -->
+    <div id="cal-subvista-grid">
+      <!-- Barra de navegación del mes -->
+      <div class="calendario-nav-bar">
+        <button type="button" class="cal-nav-btn" onclick="cambiarMesCalendario(-1)" title="Mes anterior" aria-label="Mes anterior">‹</button>
+        <div class="cal-nav-selectors">
+          <select id="cal-select-mes" class="cal-select-mes" onchange="onSelectMesCalendario(this.value)">
+            <option value="0">Enero</option>
+            <option value="1">Febrero</option>
+            <option value="2">Marzo</option>
+            <option value="3">Abril</option>
+            <option value="4">Mayo</option>
+            <option value="5">Junio</option>
+            <option value="6">Julio</option>
+            <option value="7">Agosto</option>
+            <option value="8">Septiembre</option>
+            <option value="9">Octubre</option>
+            <option value="10">Noviembre</option>
+            <option value="11">Diciembre</option>
+          </select>
+          <select id="cal-select-anio" class="cal-select-anio" onchange="onSelectAnioCalendario(this.value)">
+            <!-- Poblado dinámicamente -->
+          </select>
+          <button type="button" class="btn-cal-hoy" onclick="irAHoyCalendario()" data-i18n="cal_btn_today">Hoy</button>
+        </div>
+        <button type="button" class="cal-nav-btn" onclick="cambiarMesCalendario(1)" title="Mes siguiente" aria-label="Mes siguiente">›</button>
+      </div>
+
+      <!-- Leyenda sutil de categorías -->
+      <div class="cal-legend-bar">
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--cat-color-peliculas);"></span> <span>Películas</span></div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--cat-color-series);"></span> <span>Series</span></div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--cat-color-musica);"></span> <span>Música</span></div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--cat-color-juegos);"></span> <span>Juegos</span></div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--cat-color-libros);"></span> <span>Libros</span></div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--cat-color-comics);"></span> <span>Cómics</span></div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--cat-color-mangas);"></span> <span>Mangas</span></div>
+        <div class="cal-legend-item"><span class="cal-legend-dot" style="background:var(--cat-color-lecturas);"></span> <span>Lecturas</span></div>
+        <div class="cal-legend-item"><span style="color:#fbbf24;font-size:0.8rem;line-height:1;">✦</span> <span>Estrenos</span></div>
+      </div>
+
+      <!-- Grilla interactiva del calendario -->
+      <div class="cal-grid-wrapper">
+        <div class="cal-weekdays-grid">
+          <div class="cal-weekday-cell">Lun</div>
+          <div class="cal-weekday-cell">Mar</div>
+          <div class="cal-weekday-cell">Mié</div>
+          <div class="cal-weekday-cell">Jue</div>
+          <div class="cal-weekday-cell">Vie</div>
+          <div class="cal-weekday-cell">Sáb</div>
+          <div class="cal-weekday-cell">Dom</div>
+        </div>
+        <div class="cal-days-grid" id="cal-days-grid-cells">
+          <!-- Celdas renderizadas dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Inspector del día seleccionado -->
+      <div class="cal-day-detail-box" id="cal-day-detail-box">
+        <div class="cal-detail-header">
+          <h3 class="cal-detail-date-title" id="cal-detail-title">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);">
+              <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5"/>
+            </svg>
+            <span id="cal-detail-date-label">Selecciona un día</span>
+          </h3>
+          <div class="cal-detail-pills" id="cal-detail-pills-wrap"></div>
+        </div>
+        <div id="cal-detail-content-area"></div>
+      </div>
+    </div>
+
+    <!-- 3. SUBVISTA: LISTA DE PRÓXIMOS ESTRENOS -->
+    <div id="cal-subvista-estrenos" style="display:none;">
+      <div class="cal-estrenos-header-bar">
+        <div class="cal-estrenos-filters" id="cal-estrenos-category-filters">
+          <!-- Filtros de categoría -->
+        </div>
+        <div style="display:inline-flex; align-items:center; gap:8px;">
+          <input type="search" id="cal-input-search-estrenos" class="form-input" placeholder="Buscar estreno..." oninput="filtrarEstrenosLista(this.value)" style="height:34px; padding:0 10px; font-size:0.82rem; min-width:180px;">
+        </div>
+      </div>
+      <div id="cal-estrenos-cards-container">
+        <!-- Renderizado dinámicamente -->
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- VISTA CATEGORÍA / WATCHLIST --> <div id="vista-categoria" style="display:none;">
 <div class="cat-top-bar" id="cat-top-bar-row">
   <div class="subtabs" id="subtabs-bar"></div>
@@ -9820,7 +10606,74 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   <button type="button" class="mobile-nav-btn" id="m-btn-perfil" onclick="abrirVistaPerfil()">
     <span class="icon emoji-dyn" id="m-btn-perfil-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg></span> <span data-i18n="nav_perfil">Perfil</span>
   </button>
-</nav> <!-- MODAL DE AGREGADO RÁPIDO (+) --> <div id="modal-agregado-rapido" class="modal-overlay" style="display:none;">
+</nav>
+
+<!-- MODAL AGREGAR PRÓXIMO ESTRENO -->
+<div id="modal-agregar-estreno" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalAgregarEstreno()">
+  <div class="modal-box" style="max-width:480px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h3 style="margin:0; font-size:1.15rem; display:flex; align-items:center; gap:8px;">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--accent);">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+        <span data-i18n="modal_estreno_title">Añadir Próximo Estreno</span>
+      </h3>
+      <button type="button" class="btn-close-form" onclick="cerrarModalAgregarEstreno()" style="position:static;">
+        <svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <form id="form-agregar-estreno" onsubmit="event.preventDefault(); guardarEstrenoDesdeModal();">
+      <div class="form-group">
+        <label for="estreno-input-titulo">Título de la obra: *</label>
+        <input type="text" id="estreno-input-titulo" class="form-input" placeholder="Ej: Spider-Man: Beyond the Spider-Verse" required autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <div style="flex:1; min-width:140px;">
+            <label for="estreno-select-cat">Categoría: *</label>
+            <select id="estreno-select-cat" class="form-input" required>
+              <option value="Peliculas">Películas</option>
+              <option value="Series">Series</option>
+              <option value="Musica">Música</option>
+              <option value="Juegos">Juegos</option>
+              <option value="Libros">Libros</option>
+              <option value="Comics">Cómics</option>
+              <option value="Mangas">Mangas</option>
+            </select>
+          </div>
+          <div style="flex:1; min-width:140px;">
+            <label for="estreno-input-fecha">Fecha de Estreno: *</label>
+            <input type="date" id="estreno-input-fecha" class="form-input" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="estreno-input-creador">Director / Creador / Artista / Autor:</label>
+        <input type="text" id="estreno-input-creador" class="form-input" placeholder="Ej: Christopher Nolan / Taylor Swift / Brandon Sanderson" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label for="estreno-input-poster">URL de Portada / Poster (opcional):</label>
+        <input type="url" id="estreno-input-poster" class="form-input" placeholder="https://..." autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label for="estreno-input-notas">Notas o Expectativas (opcional):</label>
+        <textarea id="estreno-input-notas" class="comment-box" style="min-height:65px;" placeholder="¿Por qué lo esperas? ¿En qué cine / plataforma se estrena?"></textarea>
+      </div>
+
+      <div class="modal-actions" style="margin-top:16px; justify-content:flex-end; gap:10px;">
+        <button type="button" class="btn-modal-cancel" onclick="cerrarModalAgregarEstreno()">Cancelar</button>
+        <button type="submit" class="btn-modal-save" id="btn-save-estreno">Guardar Estreno</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL DE AGREGADO RÁPIDO (+) --> <div id="modal-agregado-rapido" class="modal-overlay" style="display:none;">
 <div class="modal-box"> <h3 style="display:flex; align-items:center; gap:8px;" data-i18n="quick_reg_title"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> ¿Qué deseas registrar?</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;" data-i18n="quick_reg_sub">Selecciona la categoría para abrir su buscador:</p> <div class="quick-add-grid" id="modal-quick-add-grid"> <button type="button" class="btn-quick-sub btn-quick-peliculas" onclick="ejecutarAgregadoRapido('Peliculas', 'Películas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Película</button> <button type="button" class="btn-quick-sub btn-quick-peliculas" onclick="ejecutarAgregadoRapido('Peliculas', 'Documentales')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Documental</button>
 <button type="button" class="btn-quick-sub btn-quick-series" onclick="ejecutarAgregadoRapido('Series', 'Temporadas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg></span> Serie / Temp.</button> <button type="button" class="btn-quick-sub btn-quick-series" onclick="ejecutarAgregadoRapido('Series', 'Series Documentales')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Docuserie</button>
 <button type="button" class="btn-quick-sub btn-quick-musica" onclick="ejecutarAgregadoRapido('Musica', 'Discos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"/></svg></span> Disco</button> <button type="button" class="btn-quick-sub btn-quick-musica" onclick="ejecutarAgregadoRapido('Musica', 'Artistas/Grupos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"/></svg></span> Artista</button> <button type="button" class="btn-quick-sub btn-quick-juegos" onclick="ejecutarAgregadoRapido('Juegos', 'Videojuegos')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Videojuego</button> <button type="button" class="btn-quick-sub btn-quick-libros" onclick="ejecutarAgregadoRapido('Lecturas', 'Libros')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span> Libro</button>
@@ -14561,6 +15414,7 @@ function abrirVistaAmigos(pushNav = true) {
   document.getElementById('vista-perfil').style.display = 'none';
   const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
   const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
+  const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
   const vAm = document.getElementById('vista-amigos');
   if (vAm) vAm.style.display = 'block';
   estado.amigosFeedFiltro = 'todas';
@@ -19955,7 +20809,7 @@ function obtenerListaAniosFechaAproximada(anioActual = obtenerAnioActualSistema(
  return anios;
 }
 
-let estado = { userEmail: '', anioActivo: String(obtenerAnioActualSistema()), modoAuthModal: 'login', categoria: 'inicio', subcategoria: 'Películas', wlCategoria: 'Peliculas', wlSubcategoria: 'Películas', ultimaWatchlist: { cat: 'Peliculas', sub: 'Watchlist' }, registros: [], watchlist: [], modoVistaDashboard: localStorage.getItem('mediary_dashboard_view_mode') || 'lista', discoverData: null, discoverSeed: 1, discoverCatsActivas: [...TODAS_CATS_DISCOVER], discoverLimites: {},
+let estado = { userEmail: '', anioActivo: String(obtenerAnioActualSistema()), modoAuthModal: 'login', categoria: 'inicio', subcategoria: 'Películas', wlCategoria: 'Peliculas', wlSubcategoria: 'Películas', ultimaWatchlist: { cat: 'Peliculas', sub: 'Watchlist' }, registros: [], watchlist: [], proximosEstrenos: [], modoVistaDashboard: localStorage.getItem('mediary_dashboard_view_mode') || 'lista', discoverData: null, discoverSeed: 1, discoverCatsActivas: [...TODAS_CATS_DISCOVER], discoverLimites: {},
 discoverAutoRefresh: true, modoConfigurarFavs: false, seleccionado: null, calificacion: 0, tipoEventoConcierto: 'Concierto', artistasConciertoSeleccionados: [], ocultarRewatches: false, ultimoTerminoBuscado: '', artistaPendienteSugerido: null, subFavEnEdicion: null, registrosImportarPendientes: [], amigosFeedCache: [], amigosFeedFiltro: 'todas', amigos: [], amigosLiveCache: { music: [], games: [] }, amigosLiveIndex: { music: 0, game: 0 }
 }; window.estado = estado; let cropState = { img: null, scale: 1, minScale: 1, offsetX: 0, offsetY: 0, dragging: false, startX: 0, startY: 0, confirmedDataUrl: null, listenersReady: false };
 let fpInicio = null, fpFin = null; let timerDebounce = null, timerDebounceArtista = null, timerDebounceFav = null; let timerAutoDiscover = null; let carruselIntervalos = []; let serieCompletaPendiente = null, calificacionSerieCompleta = 0, idParaEliminar = null, regParaEliminar = null;
@@ -20146,7 +21000,7 @@ if (!userPrefs.notificaciones || typeof userPrefs.notificaciones !== 'object') {
 resolverAnioActivoInicial();
 try { const u = (localStorage.getItem('Mediary_active_user_v1') || localStorage.getItem('MyMediary_active_user_v1')); if (u) estado.userEmail = u.trim().toLowerCase(); } catch (e) {}
 try { const pf = (localStorage.getItem('Mediary_perfil_v1') || localStorage.getItem('MyMediary_perfil_v1')); if (pf) { perfilUsuario = Object.assign(perfilUsuario, JSON.parse(pf)); if (!estado.userEmail && perfilUsuario.emailGoogle) estado.userEmail = perfilUsuario.emailGoogle.trim().toLowerCase(); if (!perfilUsuario.portada && perfilUsuario.preferencias?.portada) perfilUsuario.portada = perfilUsuario.preferencias.portada; if (!perfilUsuario.personajeFavorito && perfilUsuario.favoritos?.personajeFavorito) perfilUsuario.personajeFavorito = perfilUsuario.favoritos.personajeFavorito; if (!perfilUsuario.cancionFavorita && (perfilUsuario.favoritos?.cancionFavorita || perfilUsuario.preferencias?.cancionFavorita)) perfilUsuario.cancionFavorita = perfilUsuario.favoritos?.cancionFavorita || perfilUsuario.preferencias?.cancionFavorita; } } catch (e) {}
-aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); actualizarUISelectorAnio();
+aplicarEstilosGlobales(); actualizarTextosInterfaz(); renderizarCabeceraPerfil(); actualizarUISelectorAnio(); if (typeof cargarProximosEstrenos === 'function') cargarProximosEstrenos();
 const gn = document.getElementById('home-greeting-nickname');
 if (gn && perfilUsuario && perfilUsuario.nickname) {
   gn.textContent = perfilUsuario.nickname;
@@ -22519,7 +23373,8 @@ function manejarEnterComentario(e) { if (e.key === 'Enter' && !e.shiftKey) { e.p
 function asegurarPuntoFinal(str) { if (!str) return ''; const s = str.trim(); if (!s) return ''; if (!/[.!?:;]$/.test(s)) return `${s}.`; return s; }
 function actualizarNavWebActiva() { const c = estado.categoria, s = estado.subcategoria, enWl = !!CONFIG[c] && esSubcategoriaWatchlist(s); document.querySelectorAll('.nav-sec-btn').forEach(b => b.classList.remove('active'));
 document.querySelectorAll('.nav-cat-card').forEach(b => b.classList.toggle('active', b.dataset.cat === c)); if (c === 'inicio') document.getElementById('tab-btn-inicio')?.classList.add('active'); else if (c === 'listas') document.getElementById('tab-btn-listas-ext')?.classList.add('active'); else if (c === 'discover') document.getElementById('tab-btn-discover')?.classList.add('active');
-else if (c === 'amigos') document.getElementById('tab-btn-amigos')?.classList.add('active'); else if (c === 'perfil') document.getElementById('tab-btn-perfil')?.classList.add('active'); else if (c === 'watchlists' || enWl) document.getElementById('tab-btn-listas')?.classList.add('active'); }
+else if (c === 'amigos') document.getElementById('tab-btn-amigos')?.classList.add('active'); else if (c === 'perfil') document.getElementById('tab-btn-perfil')?.classList.add('active'); else if (c === 'watchlists' || enWl) document.getElementById('tab-btn-listas')?.classList.add('active');
+document.getElementById('btn-header-calendario')?.classList.toggle('active', c === 'calendario'); }
 function abrirVistaPerfil(pushNav = true) {
   try {
     if (pushNav) registrarNavegacionApp('perfil');
@@ -22534,6 +23389,7 @@ function abrirVistaPerfil(pushNav = true) {
     const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
     const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
     const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
+    const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
     const vPer = document.getElementById('vista-perfil'); if (vPer) vPer.style.display = 'block';
     renderizarCabeceraPerfil();
     renderizarFavoritosPerfil();
@@ -32229,6 +33085,11 @@ function restaurarPestanaGuardada() {
         abrirVistaDashboardListas(false);
         return true;
       }
+    } else if (cat === 'calendario') {
+      if (typeof abrirVistaCalendario === 'function') {
+        abrirVistaCalendario(false);
+        return true;
+      }
     } else if (cat === 'amigos') {
       if (typeof abrirVistaAmigos === 'function') {
         abrirVistaAmigos(false);
@@ -32272,6 +33133,7 @@ function registrarNavegacionApp(destino) {
 function ejecutarCambioVista(vista) {
   if (vista === 'inicio') irInicio(false);
   else if (vista === 'listas') abrirVistaDashboardListas(false);
+  else if (vista === 'calendario') abrirVistaCalendario(false);
   else if (vista === 'discover') abrirVistaDiscover(false);
   else if (vista === 'amigos') abrirVistaAmigos(false);
   else if (vista === 'perfil') abrirVistaPerfil(false);
@@ -32284,6 +33146,7 @@ function inicializarManejoBotonAtras() {
   try { history.replaceState({ appView: initView, depth: 1 }, '', ''); } catch (e) {}
   window.addEventListener('popstate', function(e) {
     const modalIds = [
+      'modal-agregar-estreno',
       'modal-registros-amigo',
       'modal-perfil-amigo',
       'modal-privacidad-amigos',
@@ -32305,7 +33168,8 @@ function inicializarManejoBotonAtras() {
     for (const mId of modalIds) {
       const el = document.getElementById(mId);
       if (el && el.style.display !== 'none' && el.style.display !== '') {
-        if (mId === 'modal-registros-amigo') cerrarModalRegistrosAmigo();
+        if (mId === 'modal-agregar-estreno') cerrarModalAgregarEstreno();
+        else if (mId === 'modal-registros-amigo') cerrarModalRegistrosAmigo();
         else if (mId === 'modal-perfil-amigo') cerrarModalPerfilAmigo();
         else if (mId === 'modal-privacidad-amigos') cerrarModalPrivacidadAmigos();
         else if (mId === 'modal-configuracion') cerrarModalConfiguracion();
@@ -32902,6 +33766,8 @@ function recalcularYActualizarVistasTrasSync() {
         if (typeof renderizarStats === 'function') renderizarStats();
       } else if (estado.categoria === 'discover') {
         if (typeof renderizarDiscoverVista === 'function') renderizarDiscoverVista();
+      } else if (estado.categoria === 'calendario') {
+        if (typeof renderizarVistaCalendarioCompleta === 'function') renderizarVistaCalendarioCompleta();
       } else if (estado.categoria && estado.categoria !== 'inicio') {
         if (typeof esSubcategoriaWatchlist === 'function' && esSubcategoriaWatchlist(estado.subcategoria)) {
           if (typeof renderizarWatchlist === 'function') renderizarWatchlist();
@@ -33203,12 +34069,14 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
         vPerf = document.getElementById('vista-perfil'),
         vAm = document.getElementById('vista-amigos'),
         vWl = document.getElementById('vista-watchlists'),
-        vList = document.getElementById('vista-listas-extendida');
+        vList = document.getElementById('vista-listas-extendida'),
+        vCal = document.getElementById('vista-calendario');
   if (vDisc) vDisc.style.display = 'none';
   if (vPerf) vPerf.style.display = 'none';
   if (vAm) vAm.style.display = 'none';
   if (vWl) vWl.style.display = 'none';
   if (vList) vList.style.display = 'none';
+  if (vCal) vCal.style.display = 'none';
   if (cat === 'inicio') {
     estado.subcategoria = '';
     guardarEstadoNavegacionActual('inicio', '');
@@ -33262,6 +34130,7 @@ function abrirVistaDashboardListas(pushNav = true) {
   const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none';
   const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
   const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
+  const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
   const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'block';
   if (modoReordenarListasActivo && typeof toggleModoReordenarListas === 'function') {
     toggleModoReordenarListas();
@@ -33435,8 +34304,8 @@ function sanitizarRegistroFechasFrontend(r) {
   }
   return { ...r, fechaInicio: fI, fechaFin: fF, poster: optimizarUrlPoster(r.poster || '', 'thumb') };
 }
-function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_regs_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_regs_' + estado.userEmail.toLowerCase()); if (c) { estado.registros = JSON.parse(c).map(sanitizarRegistroFechasFrontend); if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { estado.registros = (d || []).map(sanitizarRegistroFechasFrontend); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_regs_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.registros)); } catch(e) {} }
-if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
+function cargarRegistros() { if (!estado.registros?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_regs_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_regs_' + estado.userEmail.toLowerCase()); if (c) { estado.registros = JSON.parse(c).map(sanitizarRegistroFechasFrontend); if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); else if (estado.categoria === 'calendario' && typeof renderizarVistaCalendarioCompleta === 'function') renderizarVistaCalendarioCompleta(); } } catch(e) {} } google.script.run.withSuccessHandler(d => { estado.registros = (d || []).map(sanitizarRegistroFechasFrontend); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_regs_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.registros)); } catch(e) {} }
+if (estado.categoria === 'inicio') { renderizarResumenInicio(); renderizarFeedAmigosResumidoInicio(); renderizarDiscoverVista(); } else if (estado.categoria === 'listas') renderizarStats(); else if (estado.categoria === 'discover') renderizarDiscoverVista(); else if (estado.categoria === 'calendario' && typeof renderizarVistaCalendarioCompleta === 'function') renderizarVistaCalendarioCompleta(); else if (estado.categoria === 'perfil') { renderizarFavoritosPerfil(); calcularYMostrarEstadisticasPerfil(); }
 else { if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); else filtrarYMostrarHistorial(); }
 }).obtenerRegistros(estado.userEmail); }
 function cargarWatchlist() { if (!estado.watchlist?.length && estado.userEmail) { try { const c = localStorage.getItem('mediary_cache_wl_' + estado.userEmail.toLowerCase()) || localStorage.getItem('mymediary_cache_wl_' + estado.userEmail.toLowerCase()); if (c) estado.watchlist = JSON.parse(c); } catch(e) {} } google.script.run.withSuccessHandler(w => { estado.watchlist = (w || []).map(it => ({ ...it, poster: optimizarUrlPoster(it.poster || '', 'thumb') })); if (estado.userEmail) { try { localStorage.setItem('mediary_cache_wl_' + estado.userEmail.toLowerCase(), JSON.stringify(estado.watchlist)); } catch(e) {} } if (CONFIG[estado.categoria]) renderizarSubtabs(); if (esSubcategoriaWatchlist(estado.subcategoria)) renderizarWatchlist(); if (estado.categoria === 'watchlists') renderizarVistaWatchlistsDedicada(); const modalR = document.getElementById('modal-ruleta-amigo'); if (modalR && modalR.style.display === 'flex' && typeof actualizarVistaCandidatasRuleta === 'function') { actualizarVistaCandidatasRuleta(); } }).obtenerWatchlist(estado.userEmail); }
@@ -33463,6 +34332,7 @@ function abrirMenuWatchlistGlobal(pushNav = true) {
   const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none';
   const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
   const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
+  const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
   const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'block';
   renderizarVistaWatchlistsDedicada();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -36315,6 +37185,893 @@ async function actualizarIndicadorUsoAlmacenamiento() {
   }
 }
 window.actualizarIndicadorUsoAlmacenamiento = actualizarIndicadorUsoAlmacenamiento;
+
+/* ============================================================
+   LÓGICA DEL CALENDARIO Y PRÓXIMOS ESTRENOS
+   ============================================================ */
+
+let calAnioActivo = new Date().getFullYear();
+let calMesActivo = new Date().getMonth(); // 0 - 11
+let calDiaSeleccionadoKey = null; // 'YYYY-MM-DD'
+let calModoSubvista = 'grid'; // 'grid' | 'estrenos'
+let calFiltroEstrenosCat = 'todas';
+let calBusquedaEstrenos = '';
+
+function escapeHtmlCal(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function normalizarFechaAKeyYYYYMMDD(val) {
+  if (!val) return null;
+  if (val instanceof Date && !isNaN(val.getTime())) {
+    const y = val.getFullYear();
+    const m = String(val.getMonth() + 1).padStart(2, '0');
+    const d = String(val.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+  const s = String(val).trim();
+  const mDmy = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+  if (mDmy) {
+    const d = mDmy[1].padStart(2, '0');
+    const m = mDmy[2].padStart(2, '0');
+    const y = mDmy[3];
+    return `${y}-${m}-${d}`;
+  }
+  const mYmd = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (mYmd) {
+    const y = mYmd[1];
+    const m = mYmd[2].padStart(2, '0');
+    const d = mYmd[3].padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+  const parsed = new Date(s);
+  if (!isNaN(parsed.getTime())) {
+    const y = parsed.getFullYear();
+    const m = String(parsed.getMonth() + 1).padStart(2, '0');
+    const d = String(parsed.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+  return null;
+}
+
+function obtenerFechaHoyKey() {
+  const now = new Date();
+  const y = now.getFullYear();
+  const m = String(now.getMonth() + 1).padStart(2, '0');
+  const d = String(now.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+function obtenerFechaKeyDeRegistro(r) {
+  if (!r) return null;
+  let fStr = (r.fechaFin && r.fechaFin !== 'Sin fecha' && typeof esEnProgresoTexto === 'function' && !esEnProgresoTexto(r.fechaFin))
+    ? r.fechaFin
+    : '';
+  if (!fStr && r.fechaInicio && r.fechaInicio !== 'Sin fecha') {
+    fStr = r.fechaInicio;
+  }
+  if (!fStr && r.fecha && r.fecha !== 'Sin fecha') {
+    fStr = r.fecha;
+  }
+  if (fStr) {
+    const key = normalizarFechaAKeyYYYYMMDD(fStr);
+    if (key) return key;
+  }
+  if (r.created_at) {
+    const key = normalizarFechaAKeyYYYYMMDD(r.created_at);
+    if (key) return key;
+  }
+  return null;
+}
+
+function agruparRegistrosPorDia() {
+  const mapa = {};
+  const regs = Array.isArray(estado.registros) ? estado.registros : [];
+  for (const r of regs) {
+    const key = obtenerFechaKeyDeRegistro(r);
+    if (!key) continue;
+    if (!mapa[key]) mapa[key] = [];
+    mapa[key].push(r);
+  }
+  return mapa;
+}
+
+function agruparEstrenosPorDia() {
+  const mapa = {};
+  const estrenos = Array.isArray(estado.proximosEstrenos) ? estado.proximosEstrenos : [];
+  for (const e of estrenos) {
+    const key = normalizarFechaAKeyYYYYMMDD(e.fechaEstreno);
+    if (!key) continue;
+    if (!mapa[key]) mapa[key] = [];
+    mapa[key].push(e);
+  }
+  return mapa;
+}
+
+function cargarProximosEstrenos() {
+  try {
+    let raw = null;
+    if (estado.userEmail) {
+      raw = localStorage.getItem('mediary_proximos_estrenos_' + estado.userEmail.toLowerCase());
+    }
+    if (!raw) {
+      raw = localStorage.getItem('mediary_proximos_estrenos');
+    }
+    if (raw) {
+      estado.proximosEstrenos = JSON.parse(raw);
+      if (!Array.isArray(estado.proximosEstrenos)) estado.proximosEstrenos = [];
+    } else {
+      estado.proximosEstrenos = [];
+    }
+  } catch (err) {
+    console.error('Error al cargar próximos estrenos:', err);
+    estado.proximosEstrenos = [];
+  }
+  actualizarContadorEstrenosUI();
+}
+window.cargarProximosEstrenos = cargarProximosEstrenos;
+
+function guardarProximosEstrenosStorage() {
+  try {
+    const json = JSON.stringify(estado.proximosEstrenos || []);
+    localStorage.setItem('mediary_proximos_estrenos', json);
+    if (estado.userEmail) {
+      localStorage.setItem('mediary_proximos_estrenos_' + estado.userEmail.toLowerCase(), json);
+    }
+  } catch (err) {
+    console.error('Error al guardar próximos estrenos en storage:', err);
+  }
+  actualizarContadorEstrenosUI();
+}
+window.guardarProximosEstrenosStorage = guardarProximosEstrenosStorage;
+
+function actualizarContadorEstrenosUI() {
+  const total = (estado.proximosEstrenos || []).length;
+  const b1 = document.getElementById('cal-badge-estrenos-count');
+  if (b1) b1.textContent = total;
+  const b2 = document.getElementById('cal-count-estrenos-badge');
+  if (b2) b2.textContent = total;
+}
+window.actualizarContadorEstrenosUI = actualizarContadorEstrenosUI;
+
+function abrirVistaCalendario(pushNav = true) {
+  try {
+    if (pushNav) registrarNavegacionApp('calendario');
+    guardarEstadoNavegacionActual('calendario', '');
+    resetearBuscadoresYFormularios();
+    estado.categoria = 'calendario';
+    estado.subcategoria = '';
+    actualizarNavWebActiva();
+
+    const vIni = document.getElementById('vista-inicio'); if (vIni) vIni.style.display = 'none';
+    const vCat = document.getElementById('vista-categoria'); if (vCat) vCat.style.display = 'none';
+    const vDis = document.getElementById('vista-discover'); if (vDis) vDis.style.display = 'none';
+    const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
+    const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none';
+    const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
+    const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
+
+    const vCal = document.getElementById('vista-calendario');
+    if (vCal) vCal.style.display = 'block';
+
+    if (!calDiaSeleccionadoKey) {
+      calDiaSeleccionadoKey = obtenerFechaHoyKey();
+    }
+    const hoy = new Date();
+    if (calAnioActivo === undefined || calAnioActivo === null) calAnioActivo = hoy.getFullYear();
+    if (calMesActivo === undefined || calMesActivo === null) calMesActivo = hoy.getMonth();
+
+    poblarSelectoresMesYAnio();
+    renderizarVistaCalendarioCompleta();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } catch (err) {
+    console.error('Error al abrir vista calendario:', err);
+  }
+}
+window.abrirVistaCalendario = abrirVistaCalendario;
+
+function cambiarModoSubvistaCalendario(modo) {
+  calModoSubvista = modo || 'grid';
+  const btnGrid = document.getElementById('btn-tab-cal-grid');
+  const btnEstrenos = document.getElementById('btn-tab-cal-estrenos');
+  const subGrid = document.getElementById('cal-subvista-grid');
+  const subEstrenos = document.getElementById('cal-subvista-estrenos');
+
+  if (btnGrid) btnGrid.classList.toggle('active', calModoSubvista === 'grid');
+  if (btnEstrenos) btnEstrenos.classList.toggle('active', calModoSubvista === 'estrenos');
+  if (subGrid) subGrid.style.display = calModoSubvista === 'grid' ? 'block' : 'none';
+  if (subEstrenos) subEstrenos.style.display = calModoSubvista === 'estrenos' ? 'block' : 'none';
+
+  renderizarVistaCalendarioCompleta();
+}
+window.cambiarModoSubvistaCalendario = cambiarModoSubvistaCalendario;
+
+function poblarSelectoresMesYAnio() {
+  const selMes = document.getElementById('cal-select-mes');
+  const selAnio = document.getElementById('cal-select-anio');
+  if (selMes) selMes.value = String(calMesActivo);
+
+  if (selAnio) {
+    const anioActual = new Date().getFullYear();
+    const aniosSet = new Set([anioActual - 2, anioActual - 1, anioActual, anioActual + 1, anioActual + 2, anioActual + 3]);
+    if (calAnioActivo) aniosSet.add(Number(calAnioActivo));
+
+    if (Array.isArray(estado.registros)) {
+      estado.registros.forEach(r => {
+        const k = obtenerFechaKeyDeRegistro(r);
+        if (k) {
+          const y = parseInt(k.slice(0, 4), 10);
+          if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
+        }
+      });
+    }
+    if (Array.isArray(estado.proximosEstrenos)) {
+      estado.proximosEstrenos.forEach(e => {
+        const k = normalizarFechaAKeyYYYYMMDD(e.fechaEstreno);
+        if (k) {
+          const y = parseInt(k.slice(0, 4), 10);
+          if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
+        }
+      });
+    }
+
+    const aniosArr = Array.from(aniosSet).sort((a, b) => b - a);
+    selAnio.innerHTML = aniosArr.map(y => `<option value="${y}" ${Number(calAnioActivo) === y ? 'selected' : ''}>${y}</option>`).join('');
+    selAnio.value = String(calAnioActivo);
+  }
+}
+window.poblarSelectoresMesYAnio = poblarSelectoresMesYAnio;
+
+function onSelectMesCalendario(val) {
+  calMesActivo = parseInt(val, 10);
+  renderizarGridMesCalendario();
+}
+window.onSelectMesCalendario = onSelectMesCalendario;
+
+function onSelectAnioCalendario(val) {
+  calAnioActivo = parseInt(val, 10);
+  renderizarGridMesCalendario();
+}
+window.onSelectAnioCalendario = onSelectAnioCalendario;
+
+function cambiarMesCalendario(delta) {
+  calMesActivo += delta;
+  if (calMesActivo < 0) {
+    calMesActivo = 11;
+    calAnioActivo -= 1;
+  } else if (calMesActivo > 11) {
+    calMesActivo = 0;
+    calAnioActivo += 1;
+  }
+  poblarSelectoresMesYAnio();
+  renderizarGridMesCalendario();
+}
+window.cambiarMesCalendario = cambiarMesCalendario;
+
+function irAHoyCalendario() {
+  const hoy = new Date();
+  calAnioActivo = hoy.getFullYear();
+  calMesActivo = hoy.getMonth();
+  calDiaSeleccionadoKey = obtenerFechaHoyKey();
+  poblarSelectoresMesYAnio();
+  renderizarGridMesCalendario();
+  renderizarDetalleDiaSeleccionado();
+}
+window.irAHoyCalendario = irAHoyCalendario;
+
+function renderizarVistaCalendarioCompleta() {
+  actualizarContadorEstrenosUI();
+  if (calModoSubvista === 'estrenos') {
+    renderizarListaEstrenos();
+  } else {
+    renderizarGridMesCalendario();
+    renderizarDetalleDiaSeleccionado();
+  }
+}
+window.renderizarVistaCalendarioCompleta = renderizarVistaCalendarioCompleta;
+
+function renderizarGridMesCalendario() {
+  const gridEl = document.getElementById('cal-days-grid-cells');
+  if (!gridEl) return;
+
+  const y = Number(calAnioActivo);
+  const m = Number(calMesActivo);
+  const hoyKey = obtenerFechaHoyKey();
+
+  const diasEnMes = new Date(y, m + 1, 0).getDate();
+  const primerDiaSemana = (new Date(y, m, 1).getDay() + 6) % 7; // Lun=0 ... Dom=6
+
+  const mapaRegs = agruparRegistrosPorDia();
+  const mapaEsts = agruparEstrenosPorDia();
+
+  let html = '';
+
+  // Días previos de relleno (mes anterior)
+  const diasMesAnterior = new Date(y, m, 0).getDate();
+  const mesPrevIndex = m === 0 ? 11 : m - 1;
+  const anioPrev = m === 0 ? y - 1 : y;
+
+  for (let i = primerDiaSemana - 1; i >= 0; i--) {
+    const diaNum = diasMesAnterior - i;
+    const diaKey = `${anioPrev}-${String(mesPrevIndex + 1).padStart(2, '0')}-${String(diaNum).padStart(2, '0')}`;
+    const itemsDia = mapaRegs[diaKey] || [];
+    const estrenosDia = mapaEsts[diaKey] || [];
+    const esHoy = diaKey === hoyKey;
+    const esSel = diaKey === calDiaSeleccionadoKey;
+    const tieneEstrenos = estrenosDia.length > 0;
+
+    const dotsHtml = itemsDia.slice(0, 4).map(it => {
+      const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(it.categoria, it.subcategoria) : null;
+      const color = metaCol ? metaCol.colorVar : 'var(--accent)';
+      const nom = metaCol ? metaCol.nombre : it.categoria;
+      return `<span class="cal-dot" style="background:${color};" title="${escapeHtmlCal(it.titulo)} (${nom})"></span>`;
+    }).join('') + (itemsDia.length > 4 ? `<span class="cal-dot-more">+${itemsDia.length - 4}</span>` : '');
+
+    html += `
+      <div class="cal-day-cell cal-dia-otro-mes ${esHoy ? 'cal-dia-hoy' : ''} ${esSel ? 'cal-dia-seleccionado' : ''}" onclick="seleccionarDiaCalendario('${diaKey}')">
+        <div class="cal-day-cell-top">
+          <span class="cal-day-num">${diaNum}</span>
+          ${tieneEstrenos ? '<span class="cal-estreno-star" title="Tiene estreno">✦</span>' : ''}
+        </div>
+        <div class="cal-dots-container">
+          ${dotsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  // Días del mes activo
+  for (let d = 1; d <= diasEnMes; d++) {
+    const diaKey = `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const itemsDia = mapaRegs[diaKey] || [];
+    const estrenosDia = mapaEsts[diaKey] || [];
+    const esHoy = diaKey === hoyKey;
+    const esSel = diaKey === calDiaSeleccionadoKey;
+    const tieneEstrenos = estrenosDia.length > 0;
+
+    const dotsHtml = itemsDia.slice(0, 4).map(it => {
+      const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(it.categoria, it.subcategoria) : null;
+      const color = metaCol ? metaCol.colorVar : 'var(--accent)';
+      const nom = metaCol ? metaCol.nombre : it.categoria;
+      return `<span class="cal-dot" style="background:${color};" title="${escapeHtmlCal(it.titulo)} (${nom})"></span>`;
+    }).join('') + (itemsDia.length > 4 ? `<span class="cal-dot-more">+${itemsDia.length - 4}</span>` : '');
+
+    html += `
+      <div class="cal-day-cell ${esHoy ? 'cal-dia-hoy' : ''} ${esSel ? 'cal-dia-seleccionado' : ''}" onclick="seleccionarDiaCalendario('${diaKey}')">
+        <div class="cal-day-cell-top">
+          <span class="cal-day-num">${d}</span>
+          ${tieneEstrenos ? '<span class="cal-estreno-star" title="Tiene estreno">✦</span>' : ''}
+        </div>
+        <div class="cal-dots-container">
+          ${dotsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  // Días posteriores de relleno (mes siguiente) para completar múltiplos de 7
+  const celdasUsadas = primerDiaSemana + diasEnMes;
+  const celdasRestantes = (7 - (celdasUsadas % 7)) % 7;
+  const mesPostIndex = m === 11 ? 0 : m + 1;
+  const anioPost = m === 11 ? y + 1 : y;
+
+  for (let d = 1; d <= celdasRestantes; d++) {
+    const diaKey = `${anioPost}-${String(mesPostIndex + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const itemsDia = mapaRegs[diaKey] || [];
+    const estrenosDia = mapaEsts[diaKey] || [];
+    const esHoy = diaKey === hoyKey;
+    const esSel = diaKey === calDiaSeleccionadoKey;
+    const tieneEstrenos = estrenosDia.length > 0;
+
+    const dotsHtml = itemsDia.slice(0, 4).map(it => {
+      const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(it.categoria, it.subcategoria) : null;
+      const color = metaCol ? metaCol.colorVar : 'var(--accent)';
+      const nom = metaCol ? metaCol.nombre : it.categoria;
+      return `<span class="cal-dot" style="background:${color};" title="${escapeHtmlCal(it.titulo)} (${nom})"></span>`;
+    }).join('') + (itemsDia.length > 4 ? `<span class="cal-dot-more">+${itemsDia.length - 4}</span>` : '');
+
+    html += `
+      <div class="cal-day-cell cal-dia-otro-mes ${esHoy ? 'cal-dia-hoy' : ''} ${esSel ? 'cal-dia-seleccionado' : ''}" onclick="seleccionarDiaCalendario('${diaKey}')">
+        <div class="cal-day-cell-top">
+          <span class="cal-day-num">${d}</span>
+          ${tieneEstrenos ? '<span class="cal-estreno-star" title="Tiene estreno">✦</span>' : ''}
+        </div>
+        <div class="cal-dots-container">
+          ${dotsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  gridEl.innerHTML = html;
+}
+window.renderizarGridMesCalendario = renderizarGridMesCalendario;
+
+function seleccionarDiaCalendario(diaKey) {
+  calDiaSeleccionadoKey = diaKey;
+  renderizarGridMesCalendario();
+  renderizarDetalleDiaSeleccionado();
+}
+window.seleccionarDiaCalendario = seleccionarDiaCalendario;
+
+function renderizarDetalleDiaSeleccionado() {
+  const diaKey = calDiaSeleccionadoKey || obtenerFechaHoyKey();
+  const labelEl = document.getElementById('cal-detail-date-label');
+  const pillsWrap = document.getElementById('cal-detail-pills-wrap');
+  const contentArea = document.getElementById('cal-detail-content-area');
+  if (!contentArea) return;
+
+  const [yStr, mStr, dStr] = diaKey.split('-');
+  const y = parseInt(yStr, 10);
+  const m = parseInt(mStr, 10);
+  const d = parseInt(dStr, 10);
+  const fechaObj = new Date(y, m - 1, d);
+
+  const diasSemana = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+  const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+  const nombreDia = diasSemana[fechaObj.getDay()] || '';
+  const nombreMes = meses[m - 1] || '';
+  const esHoy = diaKey === obtenerFechaHoyKey();
+
+  if (labelEl) {
+    labelEl.textContent = `${nombreDia}, ${d} de ${nombreMes} de ${y}${esHoy ? ' (Hoy)' : ''}`;
+  }
+
+  const mapaRegs = agruparRegistrosPorDia();
+  const mapaEsts = agruparEstrenosPorDia();
+  const regs = mapaRegs[diaKey] || [];
+  const ests = mapaEsts[diaKey] || [];
+
+  if (pillsWrap) {
+    let pillsHtml = '';
+    if (regs.length > 0) {
+      pillsHtml += `<span class="cal-detail-pill" style="background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3);">${regs.length} ${regs.length === 1 ? 'registro' : 'registros'}</span>`;
+    }
+    if (ests.length > 0) {
+      pillsHtml += `<span class="cal-detail-pill" style="background:rgba(251,191,36,0.18); color:#fbbf24; border:1px solid rgba(251,191,36,0.35);">✦ ${ests.length} ${ests.length === 1 ? 'estreno' : 'estrenos'}</span>`;
+    }
+    pillsWrap.innerHTML = pillsHtml;
+  }
+
+  if (regs.length === 0 && ests.length === 0) {
+    contentArea.innerHTML = `
+      <div class="cal-empty-state">
+        <p style="margin:0 0 10px 0;">No hay registros ni estrenos guardados para este día.</p>
+        <button type="button" class="btn-agregar-estreno" onclick="abrirModalAgregarEstrenoConFecha('${diaKey}')">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>+ Agendar Estreno para este día</span>
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  let html = '';
+
+  // 1. Estrenos agendados en este día
+  if (ests.length > 0) {
+    html += `
+      <div style="margin-bottom:14px;">
+        <div style="font-size:0.82rem; font-weight:700; color:#fbbf24; margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+          <span>✦</span> <span>Próximos Estrenos programados (${ests.length})</span>
+        </div>
+        <div class="cal-cards-list">
+    `;
+    ests.forEach(e => {
+      const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(e.categoria, '') : null;
+      const nomCat = metaCol ? metaCol.nombre : e.categoria;
+      const bgCat = metaCol ? metaCol.bgVar : 'rgba(56,189,248,0.15)';
+      const colCat = metaCol ? metaCol.colorVar : 'var(--accent)';
+      const borCat = metaCol ? metaCol.borderVar : 'transparent';
+      const countdown = calcularBadgeCountdownEstreno(e.fechaEstreno);
+
+      html += `
+        <div class="cal-work-card">
+          ${e.poster ? `<img class="cal-work-poster" src="${escapeHtmlCal(e.poster)}" alt="${escapeHtmlCal(e.titulo)}" onerror="this.style.display='none'">` : `<div class="cal-work-poster-placeholder">✦</div>`}
+          <div class="cal-work-info">
+            <div class="cal-work-title" title="${escapeHtmlCal(e.titulo)}">${escapeHtmlCal(e.titulo)}</div>
+            <div class="cal-work-meta">
+              <span class="cal-cat-badge" style="background:${bgCat}; color:${colCat}; border:1px solid ${borCat};">${nomCat}</span>
+              <span class="cal-countdown-pill ${countdown.clase}">${countdown.texto}</span>
+              ${e.creador ? `<span>${escapeHtmlCal(e.creador)}</span>` : ''}
+            </div>
+            ${e.notas ? `<div style="font-size:0.75rem; color:var(--muted); margin-top:4px; font-style:italic;">${escapeHtmlCal(e.notas)}</div>` : ''}
+          </div>
+          <div class="cal-work-actions">
+            <button type="button" class="cal-btn-action cal-btn-action-primary" onclick="registrarEstrenoEnMediary('${e.id}')" title="Registrar en Mediary">
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+              <span>Registrar</span>
+            </button>
+            <button type="button" class="cal-btn-action cal-btn-action-danger" onclick="eliminarProximoEstreno('${e.id}')" title="Eliminar estreno">
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+            </button>
+          </div>
+        </div>
+      `;
+    });
+    html += `
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Registros guardados en este día
+  if (regs.length > 0) {
+    html += `
+      <div style="margin-bottom:10px;">
+        <div style="font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:8px; display:flex; align-items:center; gap:6px;">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--accent);"><path d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+          <span>Registros guardados (${regs.length})</span>
+        </div>
+        <div class="cal-cards-list">
+    `;
+    regs.forEach(r => {
+      const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(r.categoria, r.subcategoria) : null;
+      const nomCat = metaCol ? metaCol.nombre : (r.subcategoria || r.categoria);
+      const bgCat = metaCol ? metaCol.bgVar : 'rgba(56,189,248,0.15)';
+      const colCat = metaCol ? metaCol.colorVar : 'var(--accent)';
+      const borCat = metaCol ? metaCol.borderVar : 'transparent';
+      const posterSrc = r.poster || '';
+
+      html += `
+        <div class="cal-work-card">
+          ${posterSrc ? `<img class="cal-work-poster" src="${escapeHtmlCal(posterSrc)}" alt="${escapeHtmlCal(r.titulo)}" onerror="this.style.display='none'">` : `<div class="cal-work-poster-placeholder">🎬</div>`}
+          <div class="cal-work-info">
+            <div class="cal-work-title" title="${escapeHtmlCal(r.titulo)}">${escapeHtmlCal(r.titulo)}</div>
+            <div class="cal-work-meta">
+              <span class="cal-cat-badge" style="background:${bgCat}; color:${colCat}; border:1px solid ${borCat};">${nomCat}</span>
+              ${r.calificacion && Number(r.calificacion) > 0 ? `<span style="color:#fbbf24; font-weight:700;">★ ${r.calificacion}</span>` : ''}
+              ${r.creador ? `<span>${escapeHtmlCal(r.creador)}</span>` : ''}
+            </div>
+          </div>
+          <div class="cal-work-actions">
+            <button type="button" class="cal-btn-action" onclick="abrirFichaTecnica('${r.id}')" title="Ver ficha técnica">
+              <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>
+              <span>Ver</span>
+            </button>
+          </div>
+        </div>
+      `;
+    });
+    html += `
+        </div>
+      </div>
+    `;
+  }
+
+  contentArea.innerHTML = html;
+}
+window.renderizarDetalleDiaSeleccionado = renderizarDetalleDiaSeleccionado;
+
+function renderizarListaEstrenos() {
+  const filterBox = document.getElementById('cal-estrenos-category-filters');
+  const cardsBox = document.getElementById('cal-estrenos-cards-container');
+  if (!cardsBox) return;
+
+  const cats = [
+    { id: 'todas', label: 'Todas' },
+    { id: 'Peliculas', label: 'Películas' },
+    { id: 'Series', label: 'Series' },
+    { id: 'Musica', label: 'Música' },
+    { id: 'Juegos', label: 'Juegos' },
+    { id: 'Libros', label: 'Libros' },
+    { id: 'Comics', label: 'Cómics' },
+    { id: 'Mangas', label: 'Mangas' }
+  ];
+
+  if (filterBox) {
+    filterBox.innerHTML = cats.map(c => `
+      <button type="button" class="cal-estreno-filter-btn ${calFiltroEstrenosCat === c.id ? 'active' : ''}" onclick="filtrarEstrenosCategoria('${c.id}')">${c.label}</button>
+    `).join('');
+  }
+
+  let lista = Array.isArray(estado.proximosEstrenos) ? [...estado.proximosEstrenos] : [];
+
+  if (calFiltroEstrenosCat !== 'todas') {
+    lista = lista.filter(e => {
+      const cat = String(e.categoria || '').toLowerCase();
+      const target = calFiltroEstrenosCat.toLowerCase();
+      if (target === 'lecturas') return cat.includes('lectura') || cat.includes('libro') || cat.includes('comic') || cat.includes('manga');
+      return cat.includes(target) || target.includes(cat);
+    });
+  }
+
+  if (calBusquedaEstrenos) {
+    const q = calBusquedaEstrenos.toLowerCase().trim();
+    lista = lista.filter(e =>
+      (e.titulo && e.titulo.toLowerCase().includes(q)) ||
+      (e.creador && e.creador.toLowerCase().includes(q)) ||
+      (e.notas && e.notas.toLowerCase().includes(q))
+    );
+  }
+
+  lista.sort((a, b) => {
+    const ka = normalizarFechaAKeyYYYYMMDD(a.fechaEstreno) || '9999-99-99';
+    const kb = normalizarFechaAKeyYYYYMMDD(b.fechaEstreno) || '9999-99-99';
+    return ka.localeCompare(kb);
+  });
+
+  if (lista.length === 0) {
+    cardsBox.innerHTML = `
+      <div class="cal-empty-state" style="padding:40px 16px;">
+        <p style="margin:0 0 12px 0; font-size:0.92rem;">No hay próximos estrenos en esta categoría o búsqueda.</p>
+        <button type="button" class="btn-agregar-estreno" onclick="abrirModalAgregarEstreno()">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>+ Añadir Próximo Estreno</span>
+        </button>
+      </div>
+    `;
+    return;
+  }
+
+  cardsBox.innerHTML = `
+    <div class="cal-cards-list">
+      ${lista.map(e => {
+        const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(e.categoria, '') : null;
+        const nomCat = metaCol ? metaCol.nombre : e.categoria;
+        const bgCat = metaCol ? metaCol.bgVar : 'rgba(56,189,248,0.15)';
+        const colCat = metaCol ? metaCol.colorVar : 'var(--accent)';
+        const borCat = metaCol ? metaCol.borderVar : 'transparent';
+        const countdown = calcularBadgeCountdownEstreno(e.fechaEstreno);
+        const fechaHumana = formatearFechaEstrenoHumana(e.fechaEstreno);
+
+        return `
+          <div class="cal-work-card">
+            ${e.poster ? `<img class="cal-work-poster" src="${escapeHtmlCal(e.poster)}" alt="${escapeHtmlCal(e.titulo)}" onerror="this.style.display='none'">` : `<div class="cal-work-poster-placeholder">✦</div>`}
+            <div class="cal-work-info">
+              <div class="cal-work-title" title="${escapeHtmlCal(e.titulo)}">${escapeHtmlCal(e.titulo)}</div>
+              <div class="cal-work-meta">
+                <span class="cal-cat-badge" style="background:${bgCat}; color:${colCat}; border:1px solid ${borCat};">${nomCat}</span>
+                <span class="cal-countdown-pill ${countdown.clase}">${countdown.texto}</span>
+                <span style="display:inline-flex; align-items:center; gap:4px;">
+                  <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;opacity:0.75;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5"/></svg>
+                  ${fechaHumana}
+                </span>
+                ${e.creador ? `<span>${escapeHtmlCal(e.creador)}</span>` : ''}
+              </div>
+              ${e.notas ? `<div style="font-size:0.75rem; color:var(--muted); margin-top:4px; font-style:italic;">${escapeHtmlCal(e.notas)}</div>` : ''}
+            </div>
+            <div class="cal-work-actions">
+              <button type="button" class="cal-btn-action cal-btn-action-primary" onclick="registrarEstrenoEnMediary('${e.id}')" title="Registrar en Mediary">
+                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+                <span>Registrar</span>
+              </button>
+              <button type="button" class="cal-btn-action cal-btn-action-danger" onclick="eliminarProximoEstreno('${e.id}')" title="Eliminar estreno">
+                <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"/></svg>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+}
+window.renderizarListaEstrenos = renderizarListaEstrenos;
+
+function filtrarEstrenosCategoria(cat) {
+  calFiltroEstrenosCat = cat;
+  renderizarListaEstrenos();
+}
+window.filtrarEstrenosCategoria = filtrarEstrenosCategoria;
+
+function filtrarEstrenosLista(query) {
+  calBusquedaEstrenos = query || '';
+  renderizarListaEstrenos();
+}
+window.filtrarEstrenosLista = filtrarEstrenosLista;
+
+function calcularBadgeCountdownEstreno(fechaStr) {
+  if (!fechaStr) return { texto: 'Fecha por definir', clase: 'cal-countdown-future' };
+  const keyHoy = obtenerFechaHoyKey();
+  const keyEstreno = normalizarFechaAKeyYYYYMMDD(fechaStr);
+  if (!keyEstreno) return { texto: fechaStr, clase: 'cal-countdown-future' };
+
+  const [y1, m1, d1] = keyHoy.split('-').map(Number);
+  const [y2, m2, d2] = keyEstreno.split('-').map(Number);
+  const tHoy = new Date(y1, m1 - 1, d1).getTime();
+  const tEstreno = new Date(y2, m2 - 1, d2).getTime();
+  const diffDays = Math.round((tEstreno - tHoy) / (1000 * 60 * 60 * 24));
+
+  if (diffDays < 0) {
+    const abs = Math.abs(diffDays);
+    return {
+      texto: abs === 1 ? 'Estrenado ayer' : `Estrenado hace ${abs} días`,
+      clase: 'cal-countdown-past'
+    };
+  } else if (diffDays === 0) {
+    return {
+      texto: '¡Se estrena hoy!',
+      clase: 'cal-countdown-today'
+    };
+  } else if (diffDays === 1) {
+    return {
+      texto: '¡Se estrena mañana!',
+      clase: 'cal-countdown-soon'
+    };
+  } else if (diffDays <= 7) {
+    return {
+      texto: `En ${diffDays} días`,
+      clase: 'cal-countdown-soon'
+    };
+  } else if (diffDays <= 30) {
+    return {
+      texto: `En ${diffDays} días`,
+      clase: 'cal-countdown-future'
+    };
+  } else {
+    const mesesAprox = Math.round(diffDays / 30.4);
+    return {
+      texto: mesesAprox === 1 ? 'En 1 mes' : `En ~${mesesAprox} meses (${diffDays} días)`,
+      clase: 'cal-countdown-future'
+    };
+  }
+}
+
+function formatearFechaEstrenoHumana(fechaStr) {
+  const key = normalizarFechaAKeyYYYYMMDD(fechaStr);
+  if (!key) return fechaStr || 'Sin fecha';
+  const [y, m, d] = key.split('-').map(Number);
+  const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  return `${d} ${meses[m - 1]} ${y}`;
+}
+
+function abrirModalAgregarEstreno(fechaPrefill = null) {
+  const form = document.getElementById('form-agregar-estreno');
+  if (form) form.reset();
+  const inpFecha = document.getElementById('estreno-input-fecha');
+  if (inpFecha) {
+    inpFecha.value = fechaPrefill || obtenerFechaHoyKey();
+  }
+  const modal = document.getElementById('modal-agregar-estreno');
+  if (modal) modal.style.display = 'flex';
+  const inpTit = document.getElementById('estreno-input-titulo');
+  if (inpTit) setTimeout(() => inpTit.focus(), 80);
+}
+window.abrirModalAgregarEstreno = abrirModalAgregarEstreno;
+
+function abrirModalAgregarEstrenoConFecha(diaKey) {
+  abrirModalAgregarEstreno(diaKey);
+}
+window.abrirModalAgregarEstrenoConFecha = abrirModalAgregarEstrenoConFecha;
+
+function cerrarModalAgregarEstreno() {
+  const modal = document.getElementById('modal-agregar-estreno');
+  if (modal) modal.style.display = 'none';
+}
+window.cerrarModalAgregarEstreno = cerrarModalAgregarEstreno;
+
+function guardarEstrenoDesdeModal() {
+  const titEl = document.getElementById('estreno-input-titulo');
+  const catEl = document.getElementById('estreno-select-cat');
+  const fecEl = document.getElementById('estreno-input-fecha');
+  const creEl = document.getElementById('estreno-input-creador');
+  const posEl = document.getElementById('estreno-input-poster');
+  const notEl = document.getElementById('estreno-input-notas');
+
+  const titulo = titEl ? titEl.value.trim() : '';
+  const categoria = catEl ? catEl.value : 'Peliculas';
+  const fechaEstreno = fecEl ? fecEl.value.trim() : '';
+  const creador = creEl ? creEl.value.trim() : '';
+  const poster = posEl ? posEl.value.trim() : '';
+  const notas = notEl ? notEl.value.trim() : '';
+
+  if (!titulo) {
+    alert('Por favor ingresa el título de la obra.');
+    return;
+  }
+  if (!fechaEstreno) {
+    alert('Por favor selecciona la fecha de estreno.');
+    return;
+  }
+
+  const nuevo = {
+    id: 'estreno_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+    titulo,
+    categoria,
+    fechaEstreno,
+    creador,
+    poster,
+    notas,
+    creadoEl: new Date().toISOString()
+  };
+
+  if (!Array.isArray(estado.proximosEstrenos)) estado.proximosEstrenos = [];
+  estado.proximosEstrenos.push(nuevo);
+  guardarProximosEstrenosStorage();
+  cerrarModalAgregarEstreno();
+
+  const keyAgregada = normalizarFechaAKeyYYYYMMDD(fechaEstreno);
+  if (keyAgregada) {
+    const [y, m] = keyAgregada.split('-').map(Number);
+    calAnioActivo = y;
+    calMesActivo = m - 1;
+    calDiaSeleccionadoKey = keyAgregada;
+    poblarSelectoresMesYAnio();
+  }
+
+  renderizarVistaCalendarioCompleta();
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  if (typeof mostrarToastPersonalizado === 'function') {
+    mostrarToastPersonalizado(l === 'en' ? `Release "${titulo}" scheduled!` : `¡Estreno "${titulo}" agendado con éxito!`);
+  }
+}
+window.guardarEstrenoDesdeModal = guardarEstrenoDesdeModal;
+
+function eliminarProximoEstreno(id) {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  const confirmMsg = l === 'en' ? 'Remove this upcoming release from your calendar?' : '¿Deseas eliminar este estreno de tu calendario?';
+  if (!confirm(confirmMsg)) return;
+
+  estado.proximosEstrenos = (estado.proximosEstrenos || []).filter(e => e.id !== id);
+  guardarProximosEstrenosStorage();
+  renderizarVistaCalendarioCompleta();
+  if (typeof mostrarToastPersonalizado === 'function') {
+    mostrarToastPersonalizado(l === 'en' ? 'Release removed' : 'Estreno eliminado');
+  }
+}
+window.eliminarProximoEstreno = eliminarProximoEstreno;
+
+function registrarEstrenoEnMediary(id) {
+  const estreno = (estado.proximosEstrenos || []).find(e => e.id === id);
+  if (!estreno) return;
+
+  let destCat = 'Peliculas';
+  let destSub = 'Películas';
+
+  const c = String(estreno.categoria || '').toLowerCase();
+  if (c.includes('peli') || c.includes('movie')) {
+    destCat = 'Peliculas';
+    destSub = 'Películas';
+  } else if (c.includes('serie') || c.includes('show')) {
+    destCat = 'Series';
+    destSub = 'Temporadas';
+  } else if (c.includes('music') || c.includes('musica')) {
+    destCat = 'Musica';
+    destSub = 'Discos';
+  } else if (c.includes('juego') || c.includes('game')) {
+    destCat = 'Juegos';
+    destSub = 'Juegos';
+  } else if (c.includes('comic')) {
+    destCat = 'Lecturas';
+    destSub = 'Cómics';
+  } else if (c.includes('manga')) {
+    destCat = 'Lecturas';
+    destSub = 'Mangas';
+  } else if (c.includes('libro') || c.includes('lectura')) {
+    destCat = 'Lecturas';
+    destSub = 'Libros';
+  }
+
+  cambiarCat(destCat, destSub);
+
+  setTimeout(() => {
+    if (typeof seleccionarItem === 'function') {
+      seleccionarItem({
+        tituloOriginal: estreno.titulo,
+        tituloIngles: '',
+        creador: estreno.creador || 'Desconocido',
+        anio: estreno.fechaEstreno ? estreno.fechaEstreno.slice(0, 4) : '',
+        sinopsis: estreno.notas || '',
+        poster: estreno.poster || ''
+      });
+      if (typeof establecerFechaHoy === 'function') {
+        establecerFechaHoy();
+      }
+    }
+  }, 160);
+
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  if (typeof mostrarToastPersonalizado === 'function') {
+    mostrarToastPersonalizado(l === 'en' ? `Opening registration for "${estreno.titulo}"...` : `Abriendo registro para "${estreno.titulo}"...`);
+  }
+}
+window.registrarEstrenoEnMediary = registrarEstrenoEnMediary;
 
 </script>
 </body>
