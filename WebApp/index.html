@@ -2067,24 +2067,43 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
 [data-theme$="-light"] .home-streak-col:hover,[data-theme="nordic-light"] .home-streak-col:hover,[data-theme="creme-latte"] .home-streak-col:hover,[data-theme="parchment"] .home-streak-col:hover,[data-theme="sage-garden"] .home-streak-col:hover{background:rgba(0,0,0,0.035);}
 .home-streak-col-header{display:flex;align-items:center;justify-content:center;gap:5px;line-height:1;}
 .home-streak-cat-icon{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;flex-shrink:0;}
-.home-streak-cat-icon.icon-pelis{color:#f59e0b;background:rgba(245,158,11,0.12);}
-.home-streak-cat-icon.icon-musica{color:#a855f7;background:rgba(168,85,247,0.12);}
-.home-streak-cat-icon.icon-lectura{color:#10b981;background:rgba(16,185,129,0.12);}
+.home-streak-cat-icon.icon-pelis{color:var(--cat-color-peliculas);background:var(--cat-bg-peliculas);border:1px solid var(--cat-border-peliculas);}
+.home-streak-cat-icon.icon-musica{color:var(--cat-color-musica);background:var(--cat-bg-musica);border:1px solid var(--cat-border-musica);}
+.home-streak-cat-icon.icon-lectura{color:var(--cat-color-lecturas);background:var(--cat-bg-lecturas);border:1px solid var(--cat-border-lecturas);}
 .home-streak-cat-name{font-size:0.76rem;font-weight:700;color:var(--text);letter-spacing:-0.2px;}
 .home-streak-col-stat{display:flex;align-items:baseline;justify-content:center;gap:4px;line-height:1;margin:1px 0;}
 .home-streak-flame{display:inline-flex;align-items:center;color:var(--muted);opacity:0.55;transition:all 0.2s ease;}
-.home-streak-flame.active{color:#f59e0b;opacity:1;animation:pulseFlame 2.2s ease-in-out infinite;}
+.home-streak-flame.active{opacity:1;animation:pulseFlame 2.2s ease-in-out infinite;}
+.col-pelis .home-streak-flame.active{color:var(--cat-color-peliculas);}
+.col-musica .home-streak-flame.active{color:var(--cat-color-musica);}
+.col-lectura .home-streak-flame.active{color:var(--cat-color-lecturas);}
 @keyframes pulseFlame{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
 .home-streak-val{font-size:1.18rem;font-weight:800;color:var(--text);line-height:1;letter-spacing:-0.5px;}
 .home-streak-unit{font-size:0.70rem;font-weight:600;color:var(--muted);}
+.home-streak-col.col-pelis.active .home-streak-val{color:var(--cat-color-peliculas);}
+.home-streak-col.col-musica.active .home-streak-val{color:var(--cat-color-musica);}
+.home-streak-col.col-lectura.active .home-streak-val{color:var(--cat-color-lecturas);}
+.home-streak-col.col-pelis.active{background:var(--cat-bg-peliculas);}
+.home-streak-col.col-musica.active{background:var(--cat-bg-musica);}
+.home-streak-col.col-lectura.active{background:var(--cat-bg-lecturas);}
+.home-streak-col.col-pelis:hover{background:var(--cat-bg-peliculas);}
+.home-streak-col.col-musica:hover{background:var(--cat-bg-musica);}
+.home-streak-col.col-lectura:hover{background:var(--cat-bg-lecturas);}
 .home-streak-col-action{width:100%;display:flex;justify-content:center;margin-top:2px;}
 .btn-streak-pill{display:inline-flex;align-items:center;justify-content:center;gap:3px;height:22px;padding:0 9px;border-radius:3px;font-size:0.69rem;font-weight:700;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);transition:all 0.18s cubic-bezier(0.4,0,0.2,1);white-space:nowrap;box-sizing:border-box;font-family:inherit;}
 .btn-streak-pill:hover{transform:scale(1.03);background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.22);}
 .btn-streak-pill.done{background:rgba(16,185,129,0.12);color:#34d399;border-color:rgba(16,185,129,0.32);}
-.btn-streak-pill.done:hover{background:rgba(16,185,129,0.2);border-color:rgba(16,185,129,0.5);color:#10b981;}
+.col-pelis .btn-streak-pill.done{background:var(--cat-bg-peliculas);color:var(--cat-color-peliculas);border-color:var(--cat-border-peliculas);}
+.col-pelis .btn-streak-pill.done:hover{background:var(--cat-border-peliculas);border-color:var(--cat-color-peliculas);}
+.col-musica .btn-streak-pill.done{background:var(--cat-bg-musica);color:var(--cat-color-musica);border-color:var(--cat-border-musica);}
+.col-musica .btn-streak-pill.done:hover{background:var(--cat-border-musica);border-color:var(--cat-color-musica);}
+.col-lectura .btn-streak-pill.done{background:var(--cat-bg-lecturas);color:var(--cat-color-lecturas);border-color:var(--cat-border-lecturas);}
+.col-lectura .btn-streak-pill.done:hover{background:var(--cat-border-lecturas);border-color:var(--cat-color-lecturas);}
 [data-theme$="-light"] .btn-streak-pill{background:rgba(0,0,0,0.04);}
 [data-theme$="-light"] .btn-streak-pill:hover{background:rgba(0,0,0,0.08);}
-[data-theme$="-light"] .btn-streak-pill.done{background:rgba(16,185,129,0.12);color:#059669;border-color:rgba(16,185,129,0.35);}
+[data-theme$="-light"] .col-pelis .btn-streak-pill.done{background:var(--cat-bg-peliculas);color:var(--cat-color-peliculas);border-color:var(--cat-border-peliculas);}
+[data-theme$="-light"] .col-musica .btn-streak-pill.done{background:var(--cat-bg-musica);color:var(--cat-color-musica);border-color:var(--cat-border-musica);}
+[data-theme$="-light"] .col-lectura .btn-streak-pill.done{background:var(--cat-bg-lecturas);color:var(--cat-color-lecturas);border-color:var(--cat-border-lecturas);}
 
 /* ESTILOS MODERNOS DEL SELECTOR DE PERSONAJE FAVORITO */
 .char-picker-tabs{display:flex;background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:4px;gap:4px;margin-bottom:16px;}
@@ -2106,24 +2125,24 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
 [data-theme$="-light"] .char-result-card:hover .btn-select-char-pill{background:#d97706;color:#fff;}
 .char-custom-preview-box{margin-top:14px;padding:14px;background:var(--bg);border:1.5px dashed var(--border);border-radius:14px;}
 /* TARJETA / BOTÓN "HE LEÍDO HOY" */
-.home-reading-tracker-card{display:flex;align-items:center;justify-content:space-between;gap:14px;background:linear-gradient(135deg,rgba(245,158,11,0.08) 0%,rgba(217,119,6,0.03) 100%);border:1.5px solid rgba(245,158,11,0.28);border-radius:4px;padding:12px 16px;margin-top:12px;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);box-sizing:border-box;}
-.home-reading-tracker-card:hover{border-color:#f59e0b;background:linear-gradient(135deg,rgba(245,158,11,0.14) 0%,rgba(217,119,6,0.07) 100%);transform:translateY(-1px);box-shadow:0 4px 16px rgba(245,158,11,0.16);}
-.home-reading-tracker-card.active-read{background:linear-gradient(135deg,rgba(16,185,129,0.12) 0%,rgba(5,150,105,0.05) 100%);border-color:rgba(16,185,129,0.4);}
-.home-reading-tracker-card.active-read:hover{border-color:#10b981;box-shadow:0 4px 16px rgba(16,185,129,0.18);}
-.reading-tracker-icon{width:42px;height:42px;border-radius:12px;background:rgba(245,158,11,0.15);color:#fbbf24;display:grid;place-items:center;font-size:1.3rem;flex-shrink:0;transition:transform .2s ease;}
-.active-read .reading-tracker-icon{background:rgba(16,185,129,0.18);color:#34d399;}
+.home-reading-tracker-card{display:flex;align-items:center;justify-content:space-between;gap:14px;background:var(--cat-bg-lecturas);border:1.5px solid var(--cat-border-lecturas);border-radius:4px;padding:12px 16px;margin-top:12px;cursor:pointer;transition:all .22s cubic-bezier(.4,0,.2,1);box-sizing:border-box;}
+.home-reading-tracker-card:hover{border-color:var(--cat-color-lecturas);background:var(--cat-bg-lecturas);transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,0,0,0.1);}
+.home-reading-tracker-card.active-read{background:var(--cat-bg-lecturas);border-color:var(--cat-color-lecturas);}
+.home-reading-tracker-card.active-read:hover{border-color:var(--cat-color-lecturas);}
+.reading-tracker-icon{width:42px;height:42px;border-radius:12px;background:var(--cat-bg-lecturas);color:var(--cat-color-lecturas);border:1px solid var(--cat-border-lecturas);display:grid;place-items:center;font-size:1.3rem;flex-shrink:0;transition:transform .2s ease;}
+.active-read .reading-tracker-icon{background:var(--cat-bg-lecturas);color:var(--cat-color-lecturas);}
 .reading-tracker-text{flex:1;min-width:0;}
 .reading-tracker-title{display:block;font-size:0.88rem;font-weight:700;color:var(--text);line-height:1.25;}
 .reading-tracker-sub{display:block;font-size:0.75rem;color:var(--muted);margin-top:2px;line-height:1.3;}
-.btn-read-today{background:linear-gradient(135deg,#c8955a,#ad783f);color:#ffffff;border:none;border-radius:3px;padding:8px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 3px 10px rgba(173,120,63,0.22);transition:all .2s ease;flex-shrink:0;}
-.btn-read-today:hover{transform:scale(1.04);background:linear-gradient(135deg,#d29e64,#b78248);box-shadow:0 4px 14px rgba(173,120,63,0.35);}
-.btn-read-today.done{background:linear-gradient(135deg,#4f9e83,#3c846c);color:#ffffff;box-shadow:0 3px 10px rgba(60,132,108,0.22);}
-.btn-read-today.done:hover{background:linear-gradient(135deg,#59aa8e,#459077);box-shadow:0 4px 14px rgba(60,132,108,0.35);}
+.btn-read-today{background:var(--cat-color-lecturas);color:#ffffff;border:none;border-radius:3px;padding:8px 16px;font-size:0.82rem;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;box-shadow:0 3px 10px rgba(0,0,0,0.18);transition:all .2s ease;flex-shrink:0;}
+.btn-read-today:hover{transform:scale(1.04);opacity:0.95;}
+.btn-read-today.done{background:var(--cat-bg-lecturas);color:var(--cat-color-lecturas);border:1px solid var(--cat-border-lecturas);box-shadow:none;}
+.btn-read-today.done:hover{background:var(--cat-border-lecturas);border-color:var(--cat-color-lecturas);}
 
 /* BARRA EN PESTAÑA LIBROS */
-.books-reading-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(135deg,rgba(245,158,11,0.09) 0%,rgba(217,119,6,0.04) 100%);border:1.5px solid rgba(245,158,11,0.3);border-radius:4px;padding:10px 16px;margin-bottom:14px;box-sizing:border-box;}
-.books-reading-strip.active-read{background:linear-gradient(135deg,rgba(16,185,129,0.12) 0%,rgba(5,150,105,0.05) 100%);border-color:rgba(16,185,129,0.4);}
-[data-theme$="-light"] .home-reading-tracker-card,[data-theme="nordic-light"] .home-reading-tracker-card,[data-theme="creme-latte"] .home-reading-tracker-card,[data-theme="parchment"] .home-reading-tracker-card,[data-theme="sage-garden"] .home-reading-tracker-card,[data-theme$="-light"] .books-reading-strip,[data-theme="nordic-light"] .books-reading-strip,[data-theme="creme-latte"] .books-reading-strip,[data-theme="parchment"] .books-reading-strip,[data-theme="sage-garden"] .books-reading-strip{background:rgba(245,158,11,0.10);border-color:rgba(217,119,6,0.35);}
+.books-reading-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--cat-bg-lecturas);border:1.5px solid var(--cat-border-lecturas);border-radius:4px;padding:10px 16px;margin-bottom:14px;box-sizing:border-box;}
+.books-reading-strip.active-read{background:var(--cat-bg-lecturas);border-color:var(--cat-color-lecturas);}
+[data-theme$="-light"] .home-reading-tracker-card,[data-theme="nordic-light"] .home-reading-tracker-card,[data-theme="creme-latte"] .home-reading-tracker-card,[data-theme="parchment"] .home-reading-tracker-card,[data-theme="sage-garden"] .home-reading-tracker-card,[data-theme$="-light"] .books-reading-strip,[data-theme="nordic-light"] .books-reading-strip,[data-theme="creme-latte"] .books-reading-strip,[data-theme="parchment"] .books-reading-strip,[data-theme="sage-garden"] .books-reading-strip{background:var(--cat-bg-lecturas);border-color:var(--cat-border-lecturas);}
 
 /* MODAL SELECTOR HORIZONTAL DE TIEMPO DE LECTURA */
 .reading-time-modal-box{max-width:440px !important;width:100%;border-radius:4px !important;padding:20px 20px 18px !important;box-sizing:border-box;}
@@ -8816,6 +8835,11 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 #vista-perfil .stats-chip-cat:hover {
   border-color: var(--accent) !important;
 }
+#vista-perfil .stats-chip-cat.stats-chip-cat-peliculas:hover { border-color: var(--cat-border-peliculas) !important; background: var(--cat-bg-peliculas) !important; }
+#vista-perfil .stats-chip-cat.stats-chip-cat-series:hover { border-color: var(--cat-border-series) !important; background: var(--cat-bg-series) !important; }
+#vista-perfil .stats-chip-cat.stats-chip-cat-musica:hover { border-color: var(--cat-border-musica) !important; background: var(--cat-bg-musica) !important; }
+#vista-perfil .stats-chip-cat.stats-chip-cat-juegos:hover { border-color: var(--cat-border-juegos) !important; background: var(--cat-bg-juegos) !important; }
+#vista-perfil .stats-chip-cat.stats-chip-cat-lecturas:hover { border-color: var(--cat-border-lecturas) !important; background: var(--cat-bg-lecturas) !important; }
 #vista-perfil .stats-chip-cat:last-child:nth-child(odd) {
   grid-column: span 2 !important;
 }
@@ -17478,16 +17502,18 @@ function verPerfilDeAmigo(emailAmigo) {
         ];
         const desg = res.desglose || {};
         desgloseBox.innerHTML = cats.map(c => {
+          const metaCat = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c.k) : null;
           const d = desg[c.k] || { total: 0, subs: {} };
           const subPills = Object.keys(d.subs).map(s => {
             const nomSubI18n = I18N[l]?.subs?.[s] || s;
-            return `<span class="amigo-sub-pill" onclick="event.stopPropagation(); abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}', '${s.replace(/'/g, "\\'")}')" title="${l === 'en' ? `View records of ${nomSubI18n}` : `Ver registros de ${nomSubI18n}`}">${nomSubI18n}: <strong>${d.subs[s]}</strong></span>`;
+            const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c.k, s) : null;
+            return `<span class="amigo-sub-pill" style="${metaSub ? `border-color:${metaSub.borderVar}; background:${metaSub.bgVar};` : ''}" onclick="event.stopPropagation(); abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}', '${s.replace(/'/g, "\\'")}')" title="${l === 'en' ? `View records of ${nomSubI18n}` : `Ver registros de ${nomSubI18n}`}">${nomSubI18n}: <strong style="${metaSub ? `color:${metaSub.colorVar};` : ''}">${d.subs[s]}</strong></span>`;
           }).join('');
           return `
-            <div class="amigo-cat-stat-card" style="cursor:pointer;" onclick="abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}')" title="${l === 'en' ? `View records of ${c.n}` : `Ver registros de ${c.n}`}">
+            <div class="amigo-cat-stat-card" style="cursor:pointer; ${metaCat ? `border-color:${metaCat.borderVar};` : ''}" onclick="abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}')" title="${l === 'en' ? `View records of ${c.n}` : `Ver registros de ${c.n}`}">
               <div class="amigo-cat-stat-head">
-                <span style="display:flex;align-items:center;gap:6px;"><span>${c.e}</span> <span>${c.n}</span></span>
-                <span class="amigo-cat-count-badge">${d.total} ${l === 'en' ? 'records' : 'registros'} <span style="font-size:0.68rem;opacity:0.8;">${getHeroIcon('arrow-right', '', 10)}</span></span>
+                <span style="display:flex;align-items:center;gap:6px;"><span style="${metaCat ? `color:${metaCat.colorVar};` : ''}">${c.e}</span> <span>${c.n}</span></span>
+                <span class="amigo-cat-count-badge" style="${metaCat ? `color:${metaCat.colorVar}; border-color:${metaCat.borderVar}; background:${metaCat.bgVar};` : ''}">${d.total} ${l === 'en' ? 'records' : 'registros'} <span style="font-size:0.68rem;opacity:0.8;">${getHeroIcon('arrow-right', '', 10)}</span></span>
               </div>
               <div class="amigo-sub-pills-wrap">${subPills || `<span style="font-size:0.75rem;color:var(--muted);">${l === 'en' ? 'No records yet' : 'Sin registros aún'}</span>`}</div>
             </div>
@@ -24021,11 +24047,17 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
 
   const { rachaActual, rachaMasAlta, esActivaHoy } = calcularRachaSubcategoria(cat, sub);
   const l = userPrefs.lang || 'es';
+  const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(cat, sub) : null;
 
   if (badgeHeader) {
     if (rachaActual >= 1) {
       badgeHeader.style.display = 'inline-flex';
       badgeHeader.className = 'badge-racha-header';
+      if (metaCol) {
+        badgeHeader.style.color = metaCol.colorVar;
+        badgeHeader.style.background = metaCol.bgVar;
+        badgeHeader.style.borderColor = metaCol.borderVar;
+      }
       badgeHeader.innerHTML = `${getHeroIcon('fire', '', 14)} ${rachaActual}${l === 'en' ? 'd' : 'd'}`;
       badgeHeader.title = (l === 'en' ? `Active streak: ${rachaActual} days` : `Racha activa: ${rachaActual} días`);
     } else {
@@ -24043,13 +24075,13 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
     const tiempoHoyTxt = tiempoHoyObj?.texto || '';
     if (ya) {
       lecturaBtnHtml = `
-        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy()" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4); color:#34d399; cursor:pointer;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
+        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy()" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.bgVar : 'rgba(16,185,129,0.15)'}; border:1px solid ${metaCol ? metaCol.borderVar : 'rgba(16,185,129,0.4)'}; color:${metaCol ? metaCol.colorVar : '#34d399'}; cursor:pointer;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
           <span>${getHeroIcon('check', '', 14)}</span> <span>${tiempoHoyTxt ? (typeof formatTiempoPill === 'function' ? formatTiempoPill(tiempoHoyTxt) : tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
         </button>
       `;
     } else {
       lecturaBtnHtml = `
-        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy()" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:var(--accent); color:#0f172a; border:none; font-weight:700; cursor:pointer;">
+        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy()" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.colorVar : 'var(--accent)'}; color:#ffffff; border:none; font-weight:700; cursor:pointer;">
           <span>${getHeroIcon('sparkles', '', 14)}</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
         </button>
       `;
@@ -24069,11 +24101,11 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
       : `${l === 'en' ? 'Record' : 'Récord'}: ${rachaMasAlta}d`;
 
     container.innerHTML = `
-      <div class="streak-simplified-card active-streak">
+      <div class="streak-simplified-card active-streak" style="border-color:${metaCol ? metaCol.borderVar : 'rgba(245, 158, 11, 0.4)'}; background:${metaCol ? metaCol.bgVar : 'var(--accent-warm-subtle)'};">
         <div class="streak-simplified-left">
-          <span class="streak-simplified-badge">${getHeroIcon('fire', '', 14)} ${rachaActual} ${rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
+          <span class="streak-simplified-badge" style="color:${metaCol ? metaCol.colorVar : 'var(--accent-warm)'}; background:${metaCol ? metaCol.bgVar : 'rgba(245, 158, 11, 0.16)'}; border-color:${metaCol ? metaCol.borderVar : 'rgba(245, 158, 11, 0.35)'};">${getHeroIcon('fire', '', 14)} ${rachaActual} ${rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
           <div class="streak-simplified-text">
-            <span>${l === 'en' ? 'Active streak' : 'Racha activa'}: <strong>${rachaActual}d</strong></span>
+            <span>${l === 'en' ? 'Active streak' : 'Racha activa'}: <strong style="color:${metaCol ? metaCol.colorVar : 'inherit'};">${rachaActual}d</strong></span>
             <span class="streak-simplified-sub"> · ${txtRecord}</span>
           </div>
         </div>
@@ -25151,36 +25183,36 @@ function renderizarStatsGeneral_(ctx) {
         <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">${formatearHorasStats_(horasTotal)} total</span>
       </div>
       <div style="height:8px; border-radius:4px; background:var(--card); display:flex; overflow:hidden; margin-bottom:12px;">
-        <div style="width:${pctPelis}%; background:#5ea3c9;" title="Películas: ${pctPelis}%"></div>
-        <div style="width:${pctSeries}%; background:#9177b9;" title="Series: ${pctSeries}%"></div>
-        <div style="width:${pctMusica}%; background:#d51007;" title="Música: ${pctMusica}%"></div>
-        <div style="width:${pctJuegos}%; background:#66c0f4;" title="Juegos: ${pctJuegos}%"></div>
-        <div style="width:${pctLecturas}%; background:#cf7098;" title="Lecturas: ${pctLecturas}%"></div>
+        <div style="width:${pctPelis}%; background:var(--cat-color-peliculas);" title="Películas: ${pctPelis}%"></div>
+        <div style="width:${pctSeries}%; background:var(--cat-color-series);" title="Series: ${pctSeries}%"></div>
+        <div style="width:${pctMusica}%; background:var(--cat-color-musica);" title="Música: ${pctMusica}%"></div>
+        <div style="width:${pctJuegos}%; background:var(--cat-color-juegos);" title="Juegos: ${pctJuegos}%"></div>
+        <div style="width:${pctLecturas}%; background:var(--cat-color-lecturas);" title="Lecturas: ${pctLecturas}%"></div>
       </div>
 
       <div class="stats-chips-container">
-        <div class="stats-chip-cat" onclick="cambiarCatStats('Peliculas')">
-          <span style="width:8px; height:8px; border-radius:50%; background:#5ea3c9; flex-shrink:0;"></span>
+        <div class="stats-chip-cat stats-chip-cat-peliculas" onclick="cambiarCatStats('Peliculas')">
+          <span style="width:8px; height:8px; border-radius:50%; background:var(--cat-color-peliculas); flex-shrink:0;"></span>
           <span>Películas:</span>
           <strong>${formatearHorasStats_(horasPelis)} (${pctPelis}%)</strong>
         </div>
-        <div class="stats-chip-cat" onclick="cambiarCatStats('Series')">
-          <span style="width:8px; height:8px; border-radius:50%; background:#9177b9; flex-shrink:0;"></span>
+        <div class="stats-chip-cat stats-chip-cat-series" onclick="cambiarCatStats('Series')">
+          <span style="width:8px; height:8px; border-radius:50%; background:var(--cat-color-series); flex-shrink:0;"></span>
           <span>Series:</span>
           <strong>${formatearHorasStats_(horasSeries)} (${pctSeries}%)</strong>
         </div>
-        <div class="stats-chip-cat" onclick="cambiarCatStats('Musica')">
-          <span style="width:8px; height:8px; border-radius:50%; background:#d51007; flex-shrink:0;"></span>
+        <div class="stats-chip-cat stats-chip-cat-musica" onclick="cambiarCatStats('Musica')">
+          <span style="width:8px; height:8px; border-radius:50%; background:var(--cat-color-musica); flex-shrink:0;"></span>
           <span>Música:</span>
           <strong>${formatearHorasStats_(horasMusica)} (${pctMusica}%)</strong>
         </div>
-        <div class="stats-chip-cat" onclick="cambiarCatStats('Juegos')">
-          <span style="width:8px; height:8px; border-radius:50%; background:#66c0f4; flex-shrink:0;"></span>
+        <div class="stats-chip-cat stats-chip-cat-juegos" onclick="cambiarCatStats('Juegos')">
+          <span style="width:8px; height:8px; border-radius:50%; background:var(--cat-color-juegos); flex-shrink:0;"></span>
           <span>Juegos:</span>
           <strong>${formatearHorasStats_(horasJuegosTotal)} (${pctJuegos}%)</strong>
         </div>
-        <div class="stats-chip-cat" onclick="cambiarCatStats('Lecturas')">
-          <span style="width:8px; height:8px; border-radius:50%; background:#cf7098; flex-shrink:0;"></span>
+        <div class="stats-chip-cat stats-chip-cat-lecturas" onclick="cambiarCatStats('Lecturas')">
+          <span style="width:8px; height:8px; border-radius:50%; background:var(--cat-color-lecturas); flex-shrink:0;"></span>
           <span>Lecturas:</span>
           <strong>${formatearHorasStats_(horasLecturas)} (${pctLecturas}%)</strong>
         </div>
@@ -25278,8 +25310,8 @@ function renderizarStatsPeliculas_(ctx) {
         <div class="stats-kpi-sub">De ${numCalifs} evaluadas</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Películas</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">${rachaPelis.rachaActual} ${rachaPelis.rachaActual === 1 ? 'día' : 'días'}</div>
+        <div class="stats-kpi-label"><span style="color:var(--cat-color-peliculas);">${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Películas</span></div>
+        <div class="stats-kpi-val" style="color:var(--cat-color-peliculas);">${rachaPelis.rachaActual} ${rachaPelis.rachaActual === 1 ? 'día' : 'días'}</div>
         <div class="stats-kpi-sub">Récord histórico: ${rachaPelis.rachaMasAlta} días</div>
       </div>
     </div>
@@ -25293,7 +25325,7 @@ function renderizarStatsPeliculas_(ctx) {
       subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
       items: chartItemsPelis,
       unidad: 'películas',
-      colorBarra: '#5ea3c9'
+      colorBarra: 'var(--cat-color-peliculas)'
     })}
 
     <!-- TOP 5 PELÍCULAS FAVORITAS -->
@@ -25399,8 +25431,8 @@ function renderizarStatsSeries_(ctx) {
         <div class="stats-kpi-sub">De ${numCalifs} evaluadas</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Series</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">${rachaSeries.rachaActual} ${rachaSeries.rachaActual === 1 ? 'día' : 'días'}</div>
+        <div class="stats-kpi-label"><span style="color:var(--cat-color-series);">${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Series</span></div>
+        <div class="stats-kpi-val" style="color:var(--cat-color-series);">${rachaSeries.rachaActual} ${rachaSeries.rachaActual === 1 ? 'día' : 'días'}</div>
         <div class="stats-kpi-sub">Récord histórico: ${rachaSeries.rachaMasAlta} días</div>
       </div>
     </div>
@@ -25414,7 +25446,7 @@ function renderizarStatsSeries_(ctx) {
       subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
       items: chartItemsSeries,
       unidad: 'series',
-      colorBarra: '#9177b9'
+      colorBarra: 'var(--cat-color-series)'
     })}
 
     <!-- TOP 5 SERIES FAVORITAS -->
@@ -25659,8 +25691,8 @@ function renderizarStatsMusica_(ctx) {
         <div class="stats-kpi-sub">${numCal ? `${numCal} calificaciones` : 'En tu diario'}</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Música</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">${rachaDiscos.rachaActual} ${rachaDiscos.rachaActual === 1 ? 'día' : 'días'}</div>
+        <div class="stats-kpi-label"><span style="color:var(--cat-color-musica);">${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Música</span></div>
+        <div class="stats-kpi-val" style="color:var(--cat-color-musica);">${rachaDiscos.rachaActual} ${rachaDiscos.rachaActual === 1 ? 'día' : 'días'}</div>
         <div class="stats-kpi-sub">Récord histórico: ${rachaDiscos.rachaMasAlta} días</div>
       </div>
     </div>
@@ -25674,7 +25706,7 @@ function renderizarStatsMusica_(ctx) {
       subtitulo: 'Detalle para cada día (últimos 7 días)',
       items: semMusicaItems,
       unidad: 'hrs',
-      colorBarra: '#d51007'
+      colorBarra: 'var(--cat-color-musica)'
     })}
 
     ${generarGraficoBarras_({
@@ -25682,7 +25714,7 @@ function renderizarStatsMusica_(ctx) {
       subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
       items: chartItemsMesesMusica,
       unidad: 'hrs',
-      colorBarra: '#d51007'
+      colorBarra: 'var(--cat-color-musica)'
     })}
 
     <!-- BANNERS O TOPS DE LAST.FM / SPOTIFY -->
@@ -25794,7 +25826,7 @@ function renderizarStatsJuegos_(ctx) {
       subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
       items: chartItemsJuegos,
       unidad: 'juegos',
-      colorBarra: '#66c0f4'
+      colorBarra: 'var(--cat-color-juegos)'
     })}
 
     <!-- INTEGRACIÓN PLAYSTATION (TROFEOS) -->
@@ -25977,8 +26009,8 @@ function renderizarStatsLecturas_(ctx) {
         <div class="stats-kpi-sub">De ${numCalifs} evaluadas</div>
       </div>
       <div class="stats-kpi-card">
-        <div class="stats-kpi-label"><span>${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Lectura</span></div>
-        <div class="stats-kpi-val" style="color:#f59e0b;">${rachaLectura.rachaActual} ${rachaLectura.rachaActual === 1 ? 'día' : 'días'}</div>
+        <div class="stats-kpi-label"><span style="color:var(--cat-color-lecturas);">${getHeroIcon("fire", "", 16)}</span> <span>Rachas de Lectura</span></div>
+        <div class="stats-kpi-val" style="color:var(--cat-color-lecturas);">${rachaLectura.rachaActual} ${rachaLectura.rachaActual === 1 ? 'día' : 'días'}</div>
         <div class="stats-kpi-sub">Récord histórico: ${rachaLectura.rachaMasAlta} días</div>
       </div>
     </div>
@@ -25992,9 +26024,16 @@ function renderizarStatsLecturas_(ctx) {
         <span>${getHeroIcon("squares-2x2", "", 16)} Desglose por Subcategoría</span>
         <span style="font-size:0.75rem; color:var(--muted); font-weight:600;">Libro, Cómic y Manga</span>
       </div>
+      ${lecturasPeriodo.length ? `
+      <div style="height:6px; border-radius:3px; background:var(--card); display:flex; overflow:hidden; margin:8px 0 10px;">
+        <div style="width:${Math.round((libros.length / lecturasPeriodo.length) * 100)}%; background:var(--cat-color-libros);" title="Libros: ${libros.length} (${Math.round((libros.length / lecturasPeriodo.length) * 100)}%)"></div>
+        <div style="width:${Math.round((comics.length / lecturasPeriodo.length) * 100)}%; background:var(--cat-color-comics);" title="Cómics: ${comics.length} (${Math.round((comics.length / lecturasPeriodo.length) * 100)}%)"></div>
+        <div style="width:${Math.round((mangas.length / lecturasPeriodo.length) * 100)}%; background:var(--cat-color-mangas);" title="Mangas: ${mangas.length} (${Math.round((mangas.length / lecturasPeriodo.length) * 100)}%)"></div>
+      </div>
+      ` : ''}
       <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; margin-top:4px;">
         <div style="background:transparent; border:none; padding:4px 6px; text-align:left;">
-          <div style="font-size:0.76rem; color:var(--muted); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <div style="font-size:0.76rem; color:var(--cat-color-libros); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
             <span>${getHeroIcon("book-open", "", 14)}</span> <span>Libros</span>
           </div>
           <div style="font-size:1.35rem; font-weight:800; color:var(--text); line-height:1.2;">${libros.length}</div>
@@ -26003,7 +26042,7 @@ function renderizarStatsLecturas_(ctx) {
           </div>
         </div>
         <div style="background:transparent; border:none; padding:4px 6px; text-align:left;">
-          <div style="font-size:0.76rem; color:var(--muted); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <div style="font-size:0.76rem; color:var(--cat-color-comics); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
             <span>${getHeroIcon("newspaper", "", 14)}</span> <span>Cómics</span>
           </div>
           <div style="font-size:1.35rem; font-weight:800; color:var(--text); line-height:1.2;">${comics.length}</div>
@@ -26012,7 +26051,7 @@ function renderizarStatsLecturas_(ctx) {
           </div>
         </div>
         <div style="background:transparent; border:none; padding:4px 6px; text-align:left;">
-          <div style="font-size:0.76rem; color:var(--muted); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+          <div style="font-size:0.76rem; color:var(--cat-color-mangas); font-weight:700; text-transform:uppercase; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
             <span>${getHeroIcon("bookmark", "", 14)}</span> <span>Mangas</span>
           </div>
           <div style="font-size:1.35rem; font-weight:800; color:var(--text); line-height:1.2;">${mangas.length}</div>
@@ -26029,7 +26068,7 @@ function renderizarStatsLecturas_(ctx) {
       subtitulo: 'Detalle diario de lectura (últimos 7 días)',
       items: semLecturaItems,
       unidad: 'min',
-      colorBarra: '#cf7098'
+      colorBarra: 'var(--cat-color-lecturas)'
     })}
 
     ${generarGraficoBarras_({
@@ -26037,7 +26076,7 @@ function renderizarStatsLecturas_(ctx) {
       subtitulo: estadoStatsModal.periodo === 'year' ? `Año ${nowYear}` : 'Histórico mensual',
       items: chartItemsMesesLectura,
       unidad: 'hrs',
-      colorBarra: '#cf7098'
+      colorBarra: 'var(--cat-color-lecturas)'
     })}
 
     <!-- TOP 5 LECTURAS FAVORITAS -->
