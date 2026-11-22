@@ -1770,8 +1770,8 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
 .home-en-progreso-poster-wrap{position:relative;width:96px;height:136px;border-radius:3px;overflow:hidden;margin-bottom:8px;flex-shrink:0;box-shadow:0 3px 10px rgba(0,0,0,0.28);cursor:pointer;}
 .home-en-progreso-poster-wrap:hover .home-en-progreso-card-poster{transform:scale(1.04);}
 .home-en-progreso-poster-wrap .home-en-progreso-card-poster{width:100%;height:100%;border-radius:0;box-shadow:none;margin-bottom:0;display:block;}
-.home-en-progreso-card-badge-overlay{position:absolute;top:5px;left:5px;z-index:2;font-size:0.65rem;font-weight:700;padding:2px 7px;border-radius:3px;background:rgba(15,23,42,0.88);backdrop-filter:blur(4px);color:#38bdf8;border:1px solid rgba(56,189,248,0.4);display:inline-flex;align-items:center;gap:3px;box-shadow:0 2px 6px rgba(0,0,0,0.4);pointer-events:none;}
-[data-theme$="-light"] .home-en-progreso-card-badge-overlay{background:rgba(255,255,255,0.92);color:#0284c7;border-color:rgba(2,132,199,0.3);box-shadow:0 2px 6px rgba(0,0,0,0.15);}
+.home-en-progreso-card-badge-overlay{position:absolute;top:6px;left:6px;z-index:2;font-size:0.65rem;font-weight:700;padding:2.5px 8.5px;border-radius:9999px;background:rgba(18,22,28,0.78);backdrop-filter:blur(12px) saturate(180%);-webkit-backdrop-filter:blur(12px) saturate(180%);color:var(--text);border:1px solid rgba(255,255,255,0.16);display:inline-flex;align-items:center;gap:4px;box-shadow:0 4px 12px rgba(0,0,0,0.35);pointer-events:none;letter-spacing:0.02em;}
+[data-theme$="-light"] .home-en-progreso-card-badge-overlay{background:rgba(255,255,255,0.88);color:var(--text);border-color:rgba(0,0,0,0.12);box-shadow:0 3px 10px rgba(0,0,0,0.1);}
 .home-en-progreso-card-top{display:none;}
 .home-en-progreso-card-poster{width:96px;height:136px;border-radius:3px;object-fit:cover;background:#334155;box-shadow:0 3px 10px rgba(0,0,0,0.28);cursor:pointer;transition:transform 0.15s ease;margin-bottom:8px;flex-shrink:0;}
 .home-en-progreso-card-poster:hover{transform:scale(1.03);}
@@ -8544,8 +8544,8 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   flex-direction: row !important;
   flex-wrap: nowrap !important;
   align-items: center !important;
-  gap: 16px !important;
-  padding: 4px 64px 8px 0 !important;
+  gap: 12px !important;
+  padding: 4px 0 8px 0 !important;
   position: relative !important;
   width: 100% !important;
   box-sizing: border-box !important;
@@ -8576,25 +8576,27 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 #modal-perfil-amigo .fav-char-text-block,
 #vista-perfil .fav-song-text-block,
 #modal-perfil-amigo .fav-song-text-block {
-  flex: 1 !important;
+  flex: 1 1 auto !important;
   min-width: 0 !important;
+  overflow: hidden !important;
   display: flex !important;
   flex-direction: column !important;
   gap: 2px !important;
 }
 #vista-perfil .fav-char-actions-wrap,
 #vista-perfil .fav-song-actions-wrap {
-  position: absolute !important;
-  top: 4px !important;
-  right: 0 !important;
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  margin: 0 0 0 auto !important;
   width: auto !important;
   border: none !important;
-  margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
   align-items: center !important;
   gap: 6px !important;
-  z-index: 3 !important;
+  z-index: 2 !important;
+  flex-shrink: 0 !important;
 }
 
 /* KPI GRID EN PERFIL (3 COLUMNAS CON ESPACIADO EQUILIBRADO) */
@@ -9994,7 +9996,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 <!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
 <h3 id="titulo-modal-fav" data-i18n="fav_modal_title"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 18.75h-9m9 0a3 3 0 0 1 3-3h1.5a1.5 1.5 0 0 0 1.5-1.5v-1.125c0-.828-.672-1.5-1.5-1.5H18m-1.5 7.125v1.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-1.5m0 0a3 3 0 0 1-3-3H4.5A1.5 1.5 0 0 1 3 13.125V12c0-.828.672-1.5 1.5-1.5H6m10.5 8.25H7.5m9-8.25V4.875A1.875 1.875 0 0 0 14.625 3H9.375A1.875 1.875 0 0 0 7.5 4.875V10.5a4.5 4.5 0 0 0 9 0Z"/></svg> Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;" data-i18n="fav_modal_hint">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="search" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true">
 </div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;" data-i18n="fav_modal_remove">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()" data-i18n="btn_close">Cerrar</button>
-</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;" onclick="cerrarDropdownsConfig()"> <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;"><h3 data-i18n="cfg_title" style="margin:0; display:flex; align-items:center; gap:8px;"><svg style="width:20px;height:20px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> Configuración y Estilo</h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></div>
+</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;" onclick="cerrarDropdownsConfig()"> <div style="position:sticky; top:-20px; z-index:20; background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); margin:-20px -20px 14px -20px; padding:16px 20px 12px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;"><h3 data-i18n="cfg_title" style="margin:0; display:flex; align-items:center; gap:8px;"><svg style="width:20px;height:20px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> <span data-i18n="cfg_title">Configuración y Estilo</span></h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></div>
 <div class="form-group">
   <label data-i18n="cfg_lang_label">Idioma</label>
   <input type="hidden" id="cfg-lang" value="es">
@@ -10235,9 +10237,6 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
         </button>
         <button type="button" class="cfg-app-logo-btn" id="cfg-opt-logo-playstation" data-service="playstation" style="--app-brand:#0070d1;--app-brand-bg:rgba(0,112,209,0.14);" onclick="clickAppVinculacionConfig('playstation')" title="PlayStation" aria-label="PlayStation">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="#0070d1"><path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg>
-        </button>
-        <button type="button" class="cfg-app-logo-btn" id="cfg-opt-logo-discord" data-service="discord" style="--app-brand:#5865F2;--app-brand-bg:rgba(88,101,242,0.14);" onclick="clickAppVinculacionConfig('discord')" title="Discord" aria-label="Discord">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
         </button>
       </div>
     </div>
@@ -11147,23 +11146,7 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
       </div>
     </div>
 
-    <!-- Opción 2: Detección automática en vivo vía Discord (Lanyard) -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
-      <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-        <span>Detección automática en vivo vía Discord</span>
-        <span style="font-size:0.68rem; background:rgba(88,101,242,0.18); color:#818cf8; padding:1px 6px; border-radius:3px; font-weight:700;">Recomendado</span>
-      </div>
-      <p style="font-size:0.75rem; color:var(--muted); margin:0 0 8px 0; line-height:1.4;">
-        Discord tiene enlace oficial con PlayStation y transmite tu juego en tiempo real sin cookies ni bloqueos. Si vinculaste tu PSN a Discord en Ajustes > Conexiones, ingresa tu Discord User ID:
-      </p>
-      <div class="app-connect-input-row" style="margin-top:6px;">
-        <input type="text" id="psn-input-discord-id" name="discord_user_id_modal" class="form-input" placeholder="Tu Discord User ID numérico" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" style="font-size:0.8rem; flex:1;">
-        <button type="button" class="btn-connect-action" style="background:#5865F2; color:#fff;" onclick="guardarDiscordIdDesdeInput('psn-input-discord-id')">Guardar</button>
-      </div>
-    </div>
-
-    <!-- Opción 3: Token NPSSO / Bearer Token -->
+    <!-- Opción 2: Token NPSSO / Bearer Token -->
     <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
       <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
         <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span> <span>Token NPSSO o Bearer Token de Sony</span>
@@ -11194,77 +11177,6 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   </div>
 </div>
 
-<!-- MODAL VINCULAR DISCORD PARA DETECCIÓN EN VIVO (PLAYSTATION / STEAM) -->
-<div id="modal-conectar-discord" class="modal-overlay" style="display:none; z-index:2250;" onclick="if(event.target===this) cerrarModalConectarDiscord()">
-  <div class="modal-box" style="max-width:460px; max-height:88vh; overflow-y:auto; border-radius:4px; padding:20px; display:flex; flex-direction:column; gap:12px; background:var(--card); border:1px solid var(--border); box-shadow:0 16px 40px rgba(0,0,0,0.35);">
-    
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <div style="display:flex; align-items:center; gap:8px;">
-        <span style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:4px; background:rgba(88,101,242,0.18); color:#5865F2;">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-        </span>
-        <h3 style="margin:0; font-size:1.02rem; font-weight:800; color:var(--text);">Vincular Discord (Auto-sync PS5 / PS4)</h3>
-      </div>
-      <button type="button" class="btn-close-modal" onclick="cerrarModalConectarDiscord()" style="background:none; border:none; color:var(--muted); font-size:1.3rem; cursor:pointer; padding:2px 6px; line-height:1;">&times;</button>
-    </div>
-
-    <p style="font-size:0.78rem; color:var(--muted); margin:0; line-height:1.45;">
-      PlayStation transmite en tiempo real a Discord qué juego tienes abierto. Sigue estos 3 pasos para activar la sincronización automática sin cookies ni bloqueos:
-    </p>
-
-    <!-- Paso 1 -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:10px 12px;">
-      <div style="font-weight:700; font-size:0.8rem; color:var(--text); margin-bottom:3px; display:flex; align-items:center; gap:6px;">
-        <span style="background:rgba(88,101,242,0.2); color:#818cf8; width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.72rem;">1</span>
-        <span>Activa el estado de actividad en Discord y PlayStation</span>
-      </div>
-      <div style="font-size:0.74rem; color:var(--muted); line-height:1.4;">
-        • En <strong>Discord</strong>: Ve a <em>Ajustes ➜ Privacidad de la actividad</em> y activa <strong>"Mostrar la actividad actual como mensaje de estado"</strong> (o "Compartir estado de actividad").<br>
-        • Para PlayStation: En Discord ve a <em>Ajustes ➜ Conexiones ➜ PlayStation</em> y activa <strong>"Mostrar PlayStation Network como tu estado"</strong>. <em>(Tu perfil y mensajes siguen siendo privados; solo se comparte la etiqueta del juego que tienes abierto).</em>
-      </div>
-    </div>
-
-    <!-- Paso 2 -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:10px 12px;">
-      <div style="font-weight:700; font-size:0.8rem; color:var(--text); margin-bottom:3px; display:flex; align-items:center; gap:6px;">
-        <span style="background:rgba(88,101,242,0.2); color:#818cf8; width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.72rem;">2</span>
-        <span>Únete al servidor del bot Lanyard (1 clic)</span>
-      </div>
-      <div style="font-size:0.74rem; color:var(--muted); line-height:1.4; margin-bottom:8px;">
-        Es el bot oficial que permite a la web leer tu actividad de juego en vivo sin pedir contraseñas. Solo requiere que tu cuenta esté en su servidor:
-      </div>
-      <a href="https://discord.gg/lanyard" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; justify-content:center; gap:7px; background:#5865F2; color:#fff; font-size:0.78rem; font-weight:700; padding:7px 12px; border-radius:4px; text-decoration:none; box-shadow:0 2px 6px rgba(88,101,242,0.3);">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-        <span>Unirse al servidor de Discord Lanyard ↗</span>
-      </a>
-    </div>
-
-    <!-- Paso 3 -->
-    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:10px 12px;">
-      <div style="font-weight:700; font-size:0.8rem; color:var(--text); margin-bottom:3px; display:flex; align-items:center; gap:6px;">
-        <span style="background:rgba(88,101,242,0.2); color:#818cf8; width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.72rem;">3</span>
-        <span>Ingresa tu Discord User ID numérico</span>
-      </div>
-      <p style="font-size:0.72rem; color:var(--muted); margin:0 0 6px 0; line-height:1.35;">
-        <em>¿Cómo obtenerlo?</em> En Discord ve a <strong>Ajustes ➜ Avanzado ➜ Activar Modo desarrollador</strong>. Luego haz clic derecho sobre tu foto de perfil y selecciona <strong>"Copiar ID de usuario"</strong>.
-      </p>
-      <div class="app-connect-input-row" style="margin-top:6px;">
-        <input type="text" id="discord-modal-input-id" class="form-input" placeholder="Ej: 803511102246789140" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" style="font-size:0.8rem; flex:1;" onkeydown="if(event.key==='Enter') guardarYProbarDiscordDesdeModal()">
-        <button type="button" class="btn-connect-action" id="btn-save-discord-modal" style="background:#5865F2; color:#fff;" onclick="guardarYProbarDiscordDesdeModal()">Guardar y Probar</button>
-      </div>
-    </div>
-
-    <!-- Caja de estado / feedback -->
-    <div id="discord-modal-status-box" style="display:none; font-size:0.75rem; padding:8px 12px; border-radius:4px; line-height:1.45;"></div>
-
-    <div class="modal-actions" style="margin-top:8px; justify-content:space-between;">
-      <button type="button" id="btn-disconnect-discord-modal" class="btn-modal-danger" onclick="desconectarDiscordModal()" style="display:none; font-size:0.78rem; padding:6px 12px;">
-        Desconectar Discord
-      </button>
-      <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarDiscord()" style="margin-left:auto;">Cerrar</button>
-    </div>
-  </div>
-</div>
 
 <!-- MODAL SELECCIONAR JUEGO EN VIVO (PLAYSTATION / STEAM) -->
 <div id="modal-seleccionar-juego-psn" class="modal-overlay" style="display:none; z-index:2200;" onclick="if(event.target===this) cerrarModalSeleccionarJuegoPsn()">
@@ -11576,6 +11488,11 @@ function optimizarUrlPoster(url, tipo = 'thumb') {
   url = url.trim();
   if (url.startsWith('data:image')) return url;
 
+  // Limpiar posibles URLs dañadas previamente con .jpgjpg
+  if (url.includes('.jpgjpg')) {
+    url = url.replace(/\.jpgjpg+/gi, '.jpg');
+  }
+
   // 1. TMDB (Películas, Series, Documentales)
   if (url.includes('image.tmdb.org/t/p/')) {
     const tmdbTam = (tipo === 'modal') ? 'w342' : 'w185';
@@ -11590,7 +11507,7 @@ function optimizarUrlPoster(url, tipo = 'thumb') {
   // 3. Deezer (Música)
   if (url.includes('e-cdns-images.dzcdn.net/images/cover/')) {
     const dzTam = (tipo === 'modal') ? '500x500.jpg' : '250x250.jpg';
-    return url.replace(/\/(1000x1000|500x500)\.jpg/, `/${dzTam}`);
+    return url.replace(/\/(?:1000x1000|500x500|250x250|120x120|56x56)(?:-[0-9\-]+)?\.jpg/i, `/${dzTam}`);
   }
 
   // 4. OpenLibrary (Libros)
@@ -11600,10 +11517,10 @@ function optimizarUrlPoster(url, tipo = 'thumb') {
     }
   }
 
-  // 5. Apple / iTunes (Música)
+  // 5. Apple / iTunes (Música y Canciones)
   if (url.includes('mzstatic.com/image/thumb/')) {
-    const itTam = (tipo === 'modal') ? '340x340bb.jpg' : '180x180bb.jpg';
-    return url.replace(/\/\d+x\d+bb\./, `/${itTam}`);
+    const itTam = (tipo === 'modal') ? '600x600bb.jpg' : '300x300bb.jpg';
+    return url.replace(/\/\d+x\d+bb\.(?:jpg|png|webp)?/i, `/${itTam}`);
   }
 
   // 6. Google Books
@@ -13535,75 +13452,7 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
         likes: (pPrefs.likes_recibidos && pPrefs.likes_recibidos[r.id]) ? pPrefs.likes_recibidos[r.id] : []
       }));
 
-      // Integrar temas recientes de Spotify del amigo si están vinculados
-      const spData = pPrefs.cuentasVinculadas?.spotify || pPrefs.cuentas_vinculadas?.spotify || pPrefs.spotify;
-      if (spData && !priv.ocultarRegistros) {
-        let statsObj = null;
-        try {
-          statsObj = typeof spData.stats === 'string' ? JSON.parse(spData.stats) : spData.stats;
-        } catch(e) {}
-
-        const recTrks = statsObj?.recentTracks || [];
-        const topTrks = statsObj?.topTracks || statsObj?.topTracksByRange?.short_term || [];
-
-        if (recTrks && recTrks.length > 0) {
-          recTrks.slice(0, 10).forEach((trk, tIdx) => {
-            const yaEsta = itemsAmigo.some(x => x.categoria === 'Musica' && (x.titulo || '').toLowerCase().trim() === (trk.name || '').toLowerCase().trim());
-            if (!yaEsta && trk.name) {
-              const playedIso = trk.played_at ? new Date(trk.played_at).toISOString() : new Date(Date.now() - ((tIdx + 1) * 1800000)).toISOString();
-              itemsAmigo.push({
-                id: `sp_rec_${cleanEmail}_${trk.id || tIdx}`,
-                userEmail: aEmail,
-                amigoNickname: p.nickname || aEmail.split('@')[0],
-                amigoAvatar: p.avatar || '🦊',
-                amigoUserId: pPrefs.userId || aEmail,
-                titulo: trk.name,
-                subtitulo: trk.album || '',
-                creador: trk.artist || '',
-                anio: '',
-                categoria: 'Musica',
-                subcategoria: 'Canciones',
-                poster: trk.image || '',
-                calificacion: 0,
-                comentario: '',
-                horas: '',
-                esRewatch: false,
-                fechaInicio: playedIso,
-                fechaFin: playedIso,
-                createdAt: playedIso
-              });
-            }
-          });
-        } else if (topTrks && topTrks.length > 0) {
-          topTrks.slice(0, 6).forEach((trk, tIdx) => {
-            const yaEsta = itemsAmigo.some(x => x.categoria === 'Musica' && (x.titulo || '').toLowerCase().trim() === (trk.name || '').toLowerCase().trim());
-            if (!yaEsta && trk.name) {
-              const fallbackDate = new Date(Date.now() - ((tIdx + 1) * 3600000)).toISOString();
-              itemsAmigo.push({
-                id: `sp_top_${cleanEmail}_${trk.id || tIdx}`,
-                userEmail: aEmail,
-                amigoNickname: p.nickname || aEmail.split('@')[0],
-                amigoAvatar: p.avatar || '🦊',
-                amigoUserId: pPrefs.userId || aEmail,
-                titulo: trk.name,
-                subtitulo: trk.album || '',
-                creador: trk.artist || '',
-                anio: '',
-                categoria: 'Musica',
-                subcategoria: 'Canciones',
-                poster: trk.image || '',
-                calificacion: 0,
-                comentario: '',
-                horas: '',
-                esRewatch: false,
-                fechaInicio: fallbackDate,
-                fechaFin: fallbackDate,
-                createdAt: fallbackDate
-              });
-            }
-          });
-        }
-      }
+      // Las canciones escuchadas no deben figurar en los últimos añadidos del feed de amigos
       return itemsAmigo;
     });
 
@@ -14908,7 +14757,7 @@ function renderizarFeedAmigos() {
   if (!contenedor) return;
   const l = userPrefs.lang || 'es';
   const filtro = estado.amigosFeedFiltro || 'todas';
-  const todos = estado.amigosFeedCache || [];
+  const todos = (estado.amigosFeedCache || []).filter(it => !esItemCancionMusica(it) && !String(it.id || '').startsWith('sp_rec_') && it.subcategoria !== 'Canciones');
   const items = todos.filter(it => filtro === 'todas' || it.categoria === filtro);
 
   if (!todos.length) {
@@ -16128,12 +15977,11 @@ async function consultarActividadEnVivoAmigos_(mostrarToast = false) {
 window.consultarActividadEnVivoAmigos_ = consultarActividadEnVivoAmigos_;
 
 function iniciarPollingFriendsLive() {
-  if (_amigosLivePollingInterval) return;
-  _amigosLivePollingInterval = setInterval(() => {
-    if (typeof estado !== 'undefined' && estado.userEmail && !document.hidden && (estado.categoria === 'inicio' || estado.categoria === 'amigos')) {
-      consultarActividadEnVivoAmigos_(false);
-    }
-  }, 30000);
+  // Desactivado el polling continuo en segundo plano para evitar sincronizaciones constantes
+  if (_amigosLivePollingInterval) {
+    clearInterval(_amigosLivePollingInterval);
+    _amigosLivePollingInterval = null;
+  }
 }
 window.iniciarPollingFriendsLive = iniciarPollingFriendsLive;
 
@@ -16144,14 +15992,6 @@ function detenerPollingFriendsLive() {
   }
 }
 window.detenerPollingFriendsLive = detenerPollingFriendsLive;
-
-if (typeof document !== 'undefined' && document.addEventListener) {
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden && typeof estado !== 'undefined' && estado.userEmail && (estado.categoria === 'inicio' || estado.categoria === 'amigos')) {
-      consultarActividadEnVivoAmigos_(false);
-    }
-  });
-}
 
 function renderizarFeedAmigosResumidoInicio() {
   renderizarLiveCardsAmigosInicio();
@@ -16932,7 +16772,7 @@ function verificarNuevasActividadesAmigos(feed) {
   }
 
   let huboNuevos = false;
-  const recientes = feed.filter(it => !esItemCancionMusica(it)).slice(0, 10);
+  const recientes = feed.filter(it => !esItemCancionMusica(it) && !(it.categoria === 'Musica' && (it.subcategoria === 'Canciones' || String(it.id || '').startsWith('sp_')))).slice(0, 10);
   for (const it of recientes) {
     if (!it || !it.id) continue;
     const idStr = String(it.id);
@@ -17291,7 +17131,7 @@ function verPerfilDeAmigo(emailAmigo) {
             <div class="fav-song-main-row" style="display:flex; align-items:center; justify-content:space-between; gap:16px; padding:4px 0 8px 0;">
               <div style="display:flex; align-items:center; gap:14px; min-width:0; flex:1;">
                 <div class="fav-song-cover-box" style="width:54px; height:54px; min-width:54px; max-width:54px; border-radius:8px; overflow:hidden; border:2px solid #10b981; box-shadow:0 0 12px rgba(16,185,129,0.25); position:relative; flex-shrink:0; background:var(--bg);">
-                  <img src="${escHtmlFeed_(s.poster || '')}" alt="${escHtmlFeed_(s.titulo)}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='🎵';">
+                  <img src="${escHtmlFeed_(typeof optimizarUrlPoster === 'function' ? optimizarUrlPoster(s.poster || '', 'thumb') : (s.poster || ''))}" alt="${escHtmlFeed_(s.titulo)}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='🎵';">
                   ${s.previewUrl ? `
                     <button type="button" class="btn-play-song-badge" onclick="event.stopPropagation(); toggleReproducirMuestraCancion('${s.previewUrl}', this)" title="${l === 'en' ? 'Play audio preview' : 'Reproducir muestra'}" aria-label="Reproducir muestra" style="position:absolute; inset:0; margin:auto; width:28px; height:28px; border-radius:50%; background:rgba(0,0,0,0.65); border:1.5px solid #10b981; color:#fff; display:grid; place-items:center; cursor:pointer; backdrop-filter:blur(3px);">
                       <svg class="icon-play-state" viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;margin-left:2px;"><path d="M8 5v14l11-7z"/></svg>
@@ -20853,13 +20693,24 @@ function renderizarCancionFavorita() {
     return;
   }
 
-  const esImg = song.poster && (song.poster.startsWith('http') || song.poster.startsWith('data:'));
+  let urlPosterCancion = song.poster || '';
+  if (typeof optimizarUrlPoster === 'function') {
+    urlPosterCancion = optimizarUrlPoster(urlPosterCancion, 'thumb');
+  }
+  if (urlPosterCancion && urlPosterCancion.includes('.jpgjpg')) {
+    urlPosterCancion = urlPosterCancion.replace(/\.jpgjpg+/gi, '.jpg');
+  }
+  if (song.poster && song.poster !== urlPosterCancion && song.poster.includes('.jpgjpg')) {
+    song.poster = urlPosterCancion;
+    try { localStorage.setItem('mediary_perfil_v1', JSON.stringify(perfilUsuario)); } catch(e) {}
+  }
+  const esImg = urlPosterCancion && (urlPosterCancion.startsWith('http') || urlPosterCancion.startsWith('data:'));
   cont.innerHTML = `
     <div class="profile-fav-song-card" style="padding:6px 0; border-radius:0; margin-bottom:0; position:relative;">
       <div class="fav-song-main-row" style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
         <div style="display:flex; align-items:center; gap:14px; min-width:0; flex:1;">
           <div class="fav-song-cover-box" style="width:54px; height:54px; min-width:54px; max-width:54px; border-radius:8px; overflow:hidden; border:2px solid #10b981; box-shadow:0 0 12px rgba(16,185,129,0.25); position:relative; flex-shrink:0; background:var(--bg);">
-            ${esImg ? `<img src="${song.poster}" alt="${song.titulo}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='🎵';">` : `<div style="width:100%; height:100%; display:grid; place-items:center; font-size:1.6rem;">🎵</div>`}
+            ${esImg ? `<img src="${urlPosterCancion}" alt="${song.titulo}" style="width:100%; height:100%; object-fit:cover; display:block;" onerror="this.onerror=null;this.parentElement.innerHTML='🎵';">` : `<div style="width:100%; height:100%; display:grid; place-items:center; font-size:1.6rem;">🎵</div>`}
             ${song.previewUrl ? `
               <button type="button" class="btn-play-song-badge" onclick="event.stopPropagation(); toggleReproducirMuestraCancion('${song.previewUrl}', this)" title="${l === 'en' ? 'Play audio preview' : 'Reproducir muestra'}" aria-label="Reproducir muestra" style="position:absolute; inset:0; margin:auto; width:28px; height:28px; border-radius:50%; background:rgba(0,0,0,0.65); border:1.5px solid #10b981; color:#fff; display:grid; place-items:center; cursor:pointer; backdrop-filter:blur(3px);">
                 <svg class="icon-play-state" viewBox="0 0 24 24" fill="currentColor" style="width:14px;height:14px;margin-left:2px;"><path d="M8 5v14l11-7z"/></svg>
@@ -25966,10 +25817,6 @@ function obtenerEstadoAppsVinculadasConfig() {
   try { const r = localStorage.getItem('mediary_psn_user'); if (r) psnUser = JSON.parse(r); } catch (e) {}
   const psnName = localStorage.getItem('mediary_psn_username') || (psnUser && psnUser.onlineId) || 'PlayStation';
 
-  const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
-  const discordConn = !!discordId;
-  const discordName = localStorage.getItem('mediary_discord_username') || (discordId ? `Discord (${discordId.slice(-4)})` : 'Discord');
-
   return [
     {
       id: 'spotify',
@@ -26028,21 +25875,6 @@ function obtenerEstadoAppsVinculadasConfig() {
       disconnectFn: 'desconectarPlayStation()',
       connectFn: () => { if (typeof abrirModalConectarPsn === 'function') abrirModalConectarPsn(); },
       extraLabel: 'Token NPSSO'
-    },
-    {
-      id: 'discord',
-      name: 'Discord',
-      category: 'juegos',
-      color: '#5865F2',
-      bg: 'rgba(88,101,242,0.14)',
-      connected: discordConn,
-      userName: discordName,
-      avatar: '',
-      svg: '<svg width="22" height="22" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>',
-      syncFn: 'forzarActualizacionJuegosLive(this)',
-      disconnectFn: 'desconectarDiscordModal()',
-      connectFn: () => { if (typeof abrirModalConectarDiscord === 'function') abrirModalConectarDiscord(); },
-      extraLabel: 'Discord User ID'
     }
   ];
 }
@@ -26092,27 +25924,9 @@ function renderizarAppsVinculadasConfig() {
       if (appSel.id === 'steam') {
         const hasKey = !!localStorage.getItem('mediary_steam_api_key');
         extraHtml = `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:0.74rem;color:var(--muted);">Steam Web API Key</span><button type="button" onclick="toggleSteamApiKeyInput()" id="btn-toggle-steam-key" style="background:none;border:none;color:#66c0f4;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasKey ? (l === 'en' ? 'Active' : 'Activa') : (l === 'en' ? '+ Configure' : '+ Configurar')}</button></div><div id="cfg-steam-apikey-wrap" style="display:none;margin-top:8px;"><div class="app-connect-input-row"><input type="text" id="cfg-steam-api-key-input" name="steam_api_key_input" class="form-input" placeholder="Steam Web API Key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" style="-webkit-text-security:disc;text-security:disc;" value="${(localStorage.getItem('mediary_steam_api_key') || '').replace(/"/g, '&quot;')}"><button type="button" class="btn-connect-action btn-connect-steam" onclick="guardarSteamApiKeyDesdeInput('cfg-steam-api-key-input')">${l === 'en' ? 'Save' : 'Guardar'}</button></div></div></div>`;
-      } else if (appSel.id === 'discord') {
-        const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
-        extraHtml = `
-          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:0.74rem;color:var(--muted);">ID: <strong>${escHtmlSpotify_(discordId)}</strong></span>
-            <button type="button" onclick="abrirModalConectarDiscord()" style="background:none;border:none;color:#818cf8;font-size:0.74rem;cursor:pointer;font-weight:600;">Configurar / Probar ↗</button>
-          </div>
-        `;
       } else if (appSel.id === 'playstation') {
         const hasTok = !!localStorage.getItem('mediary_psn_npsso');
-        const hasDiscord = !!localStorage.getItem('mediary_discord_user_id');
         extraHtml = `
-          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:0.74rem;color:var(--muted);display:flex;align-items:center;gap:5px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-                <span>Discord (Auto-sync PS5 / PS4)</span>
-              </span>
-              <button type="button" onclick="abrirModalConectarDiscord()" style="background:none;border:none;color:#818cf8;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasDiscord ? (l === 'en' ? 'Active · Manage' : 'Activo · Configurar') : (l === 'en' ? '+ Link' : '+ Vincular')}</button>
-            </div>
-          </div>
           <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <span style="font-size:0.74rem;color:var(--muted);">Token NPSSO (Sony)</span>
@@ -28544,25 +28358,16 @@ async function forzarActualizacionJuegosLive(btnEl) {
   labelSpans.forEach(s => { s.textContent = l === 'en' ? 'Syncing...' : 'Sincronizando...'; });
 
   const isSteamConn = localStorage.getItem('mediary_steam_connected') === 'true';
-  const isPsnConn = localStorage.getItem('mediary_psn_connected') === 'true';
-  const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
   const tasks = [];
   if (isSteamConn && typeof consultarActividadEnVivoSteam_ === 'function') {
     _steamUltimaConsultaLive = 0;
     tasks.push(consultarActividadEnVivoSteam_(true));
-  }
-  if ((isPsnConn || hasDiscord) && typeof consultarActividadEnVivoPlayStation_ === 'function') {
-    _psnUltimaConsultaLive = 0;
-    tasks.push(consultarActividadEnVivoPlayStation_(true));
   }
   if (tasks.length > 0) {
     try { await Promise.allSettled(tasks); } catch (_) {}
   }
   if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
     renderizarPlayStationNowPlayingInicio(false);
-  }
-  if (typeof consultarActividadEnVivoAmigos_ === 'function') {
-    consultarActividadEnVivoAmigos_(false);
   }
 
   allSyncBtns.forEach(b => {
@@ -28580,20 +28385,11 @@ async function forzarActualizacionJuegosLive(btnEl) {
   if (estadoActual && estadoActual.status === 'playing') {
     const d = estadoActual.data || {};
     const tit = d.titleName || d.name || 'Juego';
-    const plat = estadoActual.source === 'steam' ? 'Steam' : (d.platform || 'PlayStation');
-    mostrarToastPersonalizado(`🎮 ${plat}: ${l === 'en' ? 'Playing' : 'Jugando a'} ${tit}`);
+    mostrarToastPersonalizado(`🎮 Steam: ${l === 'en' ? 'Playing' : 'Jugando a'} ${tit}`);
   } else {
-    const hasNpsso = !!(localStorage.getItem('mediary_psn_npsso') || '').trim();
-    const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
-    if (isPsnConn && !hasDiscord && !hasNpsso) {
-      mostrarToastPersonalizado(l === 'en'
-        ? '🎮 Gaming in rest mode · Tap "Select game" to set your title or link Discord ID for auto-sync'
-        : '🎮 En reposo · Toca "Elegir juego" para poner lo que juegas o vincula tu Discord ID para auto-sync');
-    } else {
-      mostrarToastPersonalizado(l === 'en'
-        ? '🎮 Gaming synced · Rest mode (Tap "Select game" to set your title)'
-        : '🎮 Cuentas sincronizadas · En reposo (Toca "Elegir juego" para elegir título)');
-    }
+    mostrarToastPersonalizado(l === 'en'
+      ? '🎮 Steam synced · In rest mode'
+      : '🎮 Steam sincronizado · En reposo');
   }
 }
 window.forzarActualizacionJuegosLive = forzarActualizacionJuegosLive;
@@ -30574,425 +30370,27 @@ document.addEventListener('visibilitychange', () => {
     if (typeof intentarDesbloquearOrientacion === 'function') {
       intentarDesbloquearOrientacion();
     }
-    if (typeof estado !== 'undefined' && estado.userEmail && typeof sincronizarPerfilDesdeServidor === 'function') {
-      sincronizarPerfilDesdeServidor();
-    }
-    if (typeof estado !== 'undefined' && estado.categoria === 'inicio') {
-      _spotifyNowPlayingCache = null;
-      _spotifyUltimaConsultaLive = 0;
-      _steamUltimaConsultaLive = 0;
-      _psnUltimaConsultaLive = 0;
-      renderizarEscuchandoAhoraInicio(true);
-      if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
-        renderizarPlayStationNowPlayingInicio(true);
-      }
-      if (typeof consultarActividadEnVivoAmigos_ === 'function') {
-        consultarActividadEnVivoAmigos_(false);
-      }
-    }
-  }
-});
-
-window.addEventListener('focus', () => {
-  if (typeof estado !== 'undefined' && estado.categoria === 'inicio') {
-    _steamUltimaConsultaLive = 0;
-    _psnUltimaConsultaLive = 0;
-    if (typeof consultarActividadEnVivoSteam_ === 'function') {
-      consultarActividadEnVivoSteam_(true);
-    }
-    if (typeof consultarActividadEnVivoPlayStation_ === 'function') {
-      consultarActividadEnVivoPlayStation_(true);
-    }
-    if (typeof consultarActividadEnVivoAmigos_ === 'function') {
-      consultarActividadEnVivoAmigos_(false);
-    }
   }
 });
 
 // ==========================================
 // --- PLAYSTATION NETWORK (PSN) INTEGRATION ---
 // ==========================================
-let _psnNowPlayingCache = null;
-let _psnUltimaConsultaLive = 0;
-let _psnLiveFetchEnCurso = false;
-let _psnIntervalCadencia = 0;
-window.psnNowPlayingInterval = null;
-
-function guardarEstadoEnVivoPlayStation_(rawNowPlaying, opciones = {}) {
-  if (!rawNowPlaying || typeof rawNowPlaying !== 'object') return false;
-  let prev = null;
-  try {
-    const pRaw = localStorage.getItem('mediary_psn_now_playing');
-    if (pRaw) prev = JSON.parse(pRaw);
-  } catch (e) {}
-
-  const titleName = String(rawNowPlaying.titleName || rawNowPlaying.name || '').trim();
-  const isPlaying = !!(rawNowPlaying.isPlaying && titleName);
-
-  if (isPlaying) {
-    const platform = rawNowPlaying.platform || 'PS5';
-    let image = rawNowPlaying.image || rawNowPlaying.icon || '';
-    if (!image) {
-      try {
-        const psRaw = localStorage.getItem('mediary_psn_stats');
-        if (psRaw) {
-          const ps = JSON.parse(psRaw);
-          const match = (ps?.topGames || []).find(g => g && g.name && g.name.toLowerCase() === titleName.toLowerCase());
-          if (match && (match.image || match.icon)) image = match.image || match.icon;
-        }
-      } catch (e) {}
-    }
-
-    const mismoJuegoActivo = !!(prev && prev.isPlaying && (prev.titleName || '').trim().toLowerCase() === titleName.toLowerCase());
-    const updatedAt = (mismoJuegoActivo && Number(prev.updatedAt) > 0)
-      ? Number(prev.updatedAt)
-      : Date.now();
-
-    const nuevoObj = {
-      isPlaying: true,
-      titleName,
-      platform,
-      source: 'playstation',
-      image,
-      manual: !!(rawNowPlaying.manual || opciones.manual || (prev && prev.manual && mismoJuegoActivo)),
-      viaDiscord: !!rawNowPlaying.viaDiscord,
-      studio: rawNowPlaying.studio || 'PlayStation',
-      status: rawNowPlaying.status || 'Jugando ahora',
-      hours: rawNowPlaying.hours || 0,
-      trophyProgress: rawNowPlaying.trophyProgress || '',
-      updatedAt
-    };
-
-    const cambio = !mismoJuegoActivo || prev.image !== nuevoObj.image;
-    localStorage.setItem('mediary_psn_now_playing', JSON.stringify(nuevoObj));
-    localStorage.setItem('mediary_psn_manual_state', 'playing');
-    if (!mismoJuegoActivo) {
-      localStorage.setItem('mediary_last_active_game_platform', 'playstation');
-    }
-    if (cambio && !opciones.silenciarNube && typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
-      sincronizarPreferenciasYAppsHaciaNube(true);
-    }
-    if (cambio && typeof iniciarPollingPlayStationLive === 'function') {
-      iniciarPollingPlayStationLive();
-    }
-    return cambio;
-  } else {
-    const estabaJugando = !!(prev && prev.isPlaying);
-    const nuevoObj = {
-      isPlaying: false,
-      source: 'playstation',
-      updatedAt: estabaJugando ? Date.now() : (Number(prev?.updatedAt) || Date.now())
-    };
-    localStorage.setItem('mediary_psn_now_playing', JSON.stringify(nuevoObj));
-    localStorage.setItem('mediary_psn_manual_state', 'idle');
-    if (estabaJugando && !opciones.silenciarNube && typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
-      sincronizarPreferenciasYAppsHaciaNube(true);
-    }
-    if (estabaJugando && typeof renderizarPlayStationNowPlayingInicio === 'function') {
-      renderizarPlayStationNowPlayingInicio(false);
-    }
-    if (estabaJugando && typeof iniciarPollingPlayStationLive === 'function') {
-      iniciarPollingPlayStationLive();
-    }
-    return estabaJugando;
-  }
-}
+// Actividad en tiempo real de PlayStation y Discord retirada a petición del usuario.
+// Se mantiene la sincronización de cuenta (trofeos, horas y estadísticas de perfil).
+function guardarEstadoEnVivoPlayStation_() { return false; }
 window.guardarEstadoEnVivoPlayStation_ = guardarEstadoEnVivoPlayStation_;
 
-async function consultarActividadDiscordLive_(forzar = false) {
-  const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
-  if (!discordId) return null;
-
-  try {
-    const res = await fetch(`https://api.lanyard.rest/v1/users/${encodeURIComponent(discordId)}`, {
-      signal: AbortSignal.timeout(3800),
-      cache: 'no-store'
-    });
-    if (!res.ok) return null;
-    const json = await res.json().catch(() => null);
-    if (!json || !json.success || !json.data) return null;
-
-    const data = json.data;
-    if (data.discord_user) {
-      const uName = `${data.discord_user.username}${data.discord_user.discriminator && data.discord_user.discriminator !== '0' ? '#' + data.discord_user.discriminator : ''}`;
-      if (uName) localStorage.setItem('mediary_discord_username', uName);
-    }
-    const activities = Array.isArray(data.activities) ? data.activities : [];
-
-    // Buscar actividad de juego (type === 0 es Playing game)
-    const gameAct = activities.find(a => a && a.type === 0);
-    if (gameAct && gameAct.name) {
-      const gName = String(gameAct.name).trim();
-      const largeText = String(gameAct.assets?.large_text || '').toLowerCase();
-      const details = String(gameAct.details || '').toLowerCase();
-      const state = String(gameAct.state || '').toLowerCase();
-      const platformStr = String(gameAct.platform || '').toLowerCase();
-
-      let plat = 'PS5';
-      let isPsn = false;
-      let isSteam = false;
-
-      if (platformStr.includes('steam') || largeText.includes('steam')) {
-        plat = 'Steam';
-        isSteam = true;
-      } else if (platformStr.includes('ps4') || largeText.includes('playstation 4') || largeText.includes('ps4')) {
-        plat = 'PS4';
-        isPsn = true;
-      } else if (platformStr.includes('ps5') || largeText.includes('playstation 5') || largeText.includes('ps5') || largeText.includes('playstation')) {
-        plat = 'PS5';
-        isPsn = true;
-      } else {
-        const hasSteamOnly = localStorage.getItem('mediary_steam_connected') === 'true' && localStorage.getItem('mediary_psn_connected') !== 'true';
-        isPsn = !hasSteamOnly;
-        plat = isPsn ? 'PS5' : 'Steam';
-      }
-
-      let img = '';
-      if (gameAct.assets?.large_image) {
-        const li = gameAct.assets.large_image;
-        if (li.startsWith('mp:external/')) {
-          img = 'https://media.discordapp.net/external/' + li.replace('mp:external/', '');
-        } else if (!li.includes('/')) {
-          img = `https://cdn.discordapp.com/app-assets/${gameAct.application_id}/${li}.png`;
-        }
-      }
-
-      if (isSteam && !isPsn) {
-        guardarEstadoEnVivoSteam_({
-          isPlaying: true,
-          titleName: gName,
-          platform: 'Steam',
-          image: img,
-          source: 'steam'
-        });
-        return { isPlaying: true, titleName: gName, platform: 'Steam', source: 'steam', image: img };
-      } else {
-        const liveRes = {
-          isPlaying: true,
-          titleName: gName,
-          platform: plat,
-          source: 'playstation',
-          image: img,
-          viaDiscord: true
-        };
-        guardarEstadoEnVivoPlayStation_(liveRes);
-        return liveRes;
-      }
-    } else {
-      let prevSt = null;
-      try {
-        const pRaw = localStorage.getItem('mediary_psn_now_playing');
-        if (pRaw) prevSt = JSON.parse(pRaw);
-      } catch (e) {}
-      if (prevSt && prevSt.isPlaying && (prevSt.viaDiscord || !prevSt.manual)) {
-        guardarEstadoEnVivoPlayStation_({ isPlaying: false, source: 'playstation', platform: 'PS5' });
-      }
-      return { isPlaying: false, source: 'playstation' };
-    }
-  } catch (e) {
-    return null;
-  }
-}
+async function consultarActividadDiscordLive_() { return null; }
 window.consultarActividadDiscordLive_ = consultarActividadDiscordLive_;
 
-async function consultarActividadEnVivoPlayStation_(forzar = false) {
-  const isPsnConnected = localStorage.getItem('mediary_psn_connected') === 'true';
-  const username = (localStorage.getItem('mediary_psn_username') || '').trim();
-  const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
-  if (!isPsnConnected && !discordId) return null;
-
-  if (username === 'Gamer_Mediary') {
-    let prev = null;
-    try { prev = JSON.parse(localStorage.getItem('mediary_psn_now_playing')); } catch(e) {}
-    return prev;
-  }
-
-  let prevSt = null;
-  try {
-    const pRaw = localStorage.getItem('mediary_psn_now_playing');
-    if (pRaw) prevSt = JSON.parse(pRaw);
-  } catch (e) {}
-  const jugandoActualmente = !!(prevSt && prevSt.isPlaying);
-
-  const ahora = Date.now();
-  const intervaloMinimo = jugandoActualmente ? 15000 : 40000;
-  if (!forzar && (ahora - _psnUltimaConsultaLive < intervaloMinimo)) return null;
-  if (_psnLiveFetchEnCurso) return null;
-
-  _psnLiveFetchEnCurso = true;
-  _psnUltimaConsultaLive = ahora;
-
-  try {
-    let liveResult = null;
-
-    // 0. Detección automática en vivo vía Discord Lanyard si está configurado
-    if (discordId) {
-      try {
-        const discRes = await consultarActividadDiscordLive_(forzar);
-        if (discRes) {
-          liveResult = discRes;
-          if (discRes.isPlaying) {
-            return discRes;
-          }
-        }
-      } catch (_) {}
-    }
-
-    // 1. Detección directa vía Sony PlayStation Network (Token NPSSO o Bearer Token)
-    if (liveResult === null && isPsnConnected) {
-      const npsso = (localStorage.getItem('mediary_psn_npsso') || '').trim();
-      let accessToken = (localStorage.getItem('mediary_psn_access_token') || '').trim();
-      const tokenCandidates = [];
-      if (accessToken) tokenCandidates.push(accessToken);
-      if (npsso && npsso !== accessToken) tokenCandidates.push(npsso);
-
-      for (const tok of tokenCandidates) {
-        try {
-          const presRes = await fetch('https://m.np.playstation.com/api/userProfile/v1/internal/users/me/basicPresences?type=primary', {
-            headers: {
-            'Authorization': `Bearer ${tok}`,
-            'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8'
-          },
-          signal: AbortSignal.timeout(4500)
-        });
-        if (presRes.status === 401) {
-          // Token expirado o no es un Bearer válido
-          continue;
-        }
-        if (presRes.ok) {
-          const presData = await presRes.json().catch(() => null);
-          const bp = presData?.basicPresence;
-          if (bp) {
-            localStorage.setItem('mediary_psn_access_token', tok);
-            const platInfo = bp.primaryPlatformInfo || {};
-            const isOnline = platInfo.onlineStatus === 'online';
-            const titles = Array.isArray(bp.gameTitleInfoList) ? bp.gameTitleInfoList : [];
-            if (isOnline && titles.length > 0 && titles[0].titleName) {
-              const t0 = titles[0];
-              liveResult = {
-                isPlaying: true,
-                titleName: String(t0.titleName).trim(),
-                platform: String(t0.format || t0.launchPlatform || platInfo.platform || 'PS5').trim(),
-                image: t0.conceptIconUrl || '',
-                source: 'playstation'
-              };
-              break;
-            } else {
-              // Conexión exitosa a Sony confirmando que la consola está en reposo o sin juego abierto
-              liveResult = {
-                isPlaying: false,
-                source: 'playstation',
-                platform: platInfo.platform || 'PS5'
-              };
-              break;
-            }
-          }
-        }
-      } catch (_) {}
-    }
-  }
-
-    // 2. Consulta pública auxiliar vía perfil público PSNProfiles
-    if (liveResult === null && isPsnConnected && username) {
-      try {
-        const profUrl = `https://psnprofiles.com/${encodeURIComponent(username)}`;
-        const html = await fetchSteamProxyContent_(profUrl);
-        if (html && (html.includes('id="gamesTable"') || html.includes('class="game"'))) {
-          const mGame = html.match(/<tr[^>]*class="[^"]*game[^"]*"[^>]*>([\s\S]*?)<\/tr>/i) ||
-                        html.match(/<tr[^>]*>([\s\S]*?<a class="title"[^>]*>[\s\S]*?)<\/tr>/i);
-          if (mGame && mGame[1]) {
-            const row = mGame[1];
-            const mTitle = row.match(/<a class="title"[^>]*>([^<]+)<\/a>/i);
-            const mPlat = row.match(/<span class="platform"[^>]*>([^<]+)<\/span>/i);
-            const mImg = row.match(/<img[^>]*src="([^"]+)"[^>]*>/i);
-            const mTime = row.match(/<span class="typo-subtle"[^>]*>([^<]+)<\/span>/i) || row.match(/<td class="small-info"[^>]*>([\s\S]*?)<\/td>/i);
-
-            const title = mTitle ? mTitle[1].trim() : '';
-            const plat = mPlat ? mPlat[1].trim() : 'PS5';
-            const img = mImg ? mImg[1] : '';
-            const timeTxt = mTime ? mTime[1].replace(/<[^>]+>/g, '').trim().toLowerCase() : '';
-
-            const esReciente = timeTxt.includes('now') || timeTxt.includes('min') || timeTxt.includes('sec') || timeTxt.includes('just');
-            if (title && esReciente) {
-              liveResult = {
-                isPlaying: true,
-                titleName: title,
-                platform: plat,
-                source: 'playstation',
-                image: img
-              };
-            }
-          }
-        }
-      } catch (_) {}
-    }
-
-    // Exclusivamente actividad en tiempo real: nunca vincular con registros ni juegos del diario
-    if (liveResult) {
-      const cambio = guardarEstadoEnVivoPlayStation_(liveResult);
-      if ((cambio || forzar) && typeof renderizarPlayStationNowPlayingInicio === 'function') {
-        renderizarPlayStationNowPlayingInicio(false);
-      }
-    } else {
-      // Si las consultas remotas fallaron (timeout, bloqueo o sin red), NO apagar inmediatamente
-      // la sesión si el usuario estaba jugando hace poco. Dejar que expire tras 35 minutos.
-      if (jugandoActualmente && !prevSt?.manual) {
-        const upAt = Number(prevSt.updatedAt) || 0;
-        if (upAt > 0 && (ahora - upAt > 35 * 60 * 1000)) {
-          guardarEstadoEnVivoPlayStation_({ isPlaying: false, source: 'playstation', platform: 'PS5' });
-          if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
-            renderizarPlayStationNowPlayingInicio(false);
-          }
-        }
-      }
-    }
-    return liveResult;
-  } catch (e) {
-    console.warn('Error consultando actividad PlayStation:', e);
-    return null;
-  } finally {
-    _psnLiveFetchEnCurso = false;
-  }
-}
+async function consultarActividadEnVivoPlayStation_() { return null; }
 window.consultarActividadEnVivoPlayStation_ = consultarActividadEnVivoPlayStation_;
 
-function iniciarPollingPlayStationLive() {
-  const isPsnConn = localStorage.getItem('mediary_psn_connected') === 'true';
-  const username = (localStorage.getItem('mediary_psn_username') || '').trim();
-  const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
-  if (!isPsnConn && !discordId) return;
-  if (isPsnConn && !username && !discordId) return;
-
-  let prev = null;
-  try {
-    const raw = localStorage.getItem('mediary_psn_now_playing');
-    if (raw) prev = JSON.parse(raw);
-  } catch(e) {}
-  const jugando = !!(prev && prev.isPlaying);
-  const nuevoIntervaloMs = jugando ? 18000 : 45000;
-
-  if (window.psnNowPlayingInterval) {
-    if (_psnIntervalCadencia === nuevoIntervaloMs) return;
-    clearInterval(window.psnNowPlayingInterval);
-    window.psnNowPlayingInterval = null;
-  }
-
-  _psnIntervalCadencia = nuevoIntervaloMs;
-  window.psnNowPlayingInterval = setInterval(() => {
-    if (typeof estado !== 'undefined' && estado.categoria === 'inicio') {
-      consultarActividadEnVivoPlayStation_(false);
-    }
-  }, nuevoIntervaloMs);
-}
+function iniciarPollingPlayStationLive() {}
 window.iniciarPollingPlayStationLive = iniciarPollingPlayStationLive;
 
-function detenerPollingPlayStationLive() {
-  if (window.psnNowPlayingInterval) {
-    clearInterval(window.psnNowPlayingInterval);
-    window.psnNowPlayingInterval = null;
-    _psnIntervalCadencia = 0;
-  }
-}
+function detenerPollingPlayStationLive() {}
 window.detenerPollingPlayStationLive = detenerPollingPlayStationLive;
 
 async function sincronizarCuentaPlayStation(onlineIdManual = null, notificar = false) {
@@ -31072,9 +30470,6 @@ async function sincronizarCuentaPlayStation(onlineIdManual = null, notificar = f
     localStorage.setItem('mediary_psn_stats', JSON.stringify(statsData));
 
     actualizarUIPlayStation();
-    if (typeof consultarActividadEnVivoPlayStation_ === 'function') {
-      await consultarActividadEnVivoPlayStation_(true);
-    }
     if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
       renderizarPlayStationNowPlayingInicio(false);
     }
@@ -31149,10 +30544,6 @@ function abrirModalConectarPsn() {
   if (npssoInp) {
     npssoInp.value = localStorage.getItem('mediary_psn_npsso') || '';
   }
-  const discordInp = document.getElementById('psn-input-discord-id');
-  if (discordInp) {
-    discordInp.value = localStorage.getItem('mediary_discord_user_id') || '';
-  }
 }
 
 function cerrarModalConectarPsn() {
@@ -31200,16 +30591,11 @@ function conectarPlayStationPerfil() {
 
   const npssoInp = document.getElementById('psn-input-npsso-modal');
   const npsso = (npssoInp?.value || '').trim();
-  const discordInp = document.getElementById('psn-input-discord-id');
-  const discordId = (discordInp?.value || '').trim();
 
   localStorage.setItem('mediary_psn_connected', 'true');
   localStorage.setItem('mediary_psn_username', raw);
   if (npsso) {
     localStorage.setItem('mediary_psn_npsso', npsso);
-  }
-  if (discordId) {
-    localStorage.setItem('mediary_discord_user_id', discordId);
   }
 
   cerrarModalConectarPsn();
@@ -31343,257 +30729,12 @@ function guardarPsnNpssoDesdeInput(inputId) {
   if (btn) btn.textContent = '+ Configurar token';
 }
 
-function toggleDiscordIdInput() {
-  const wrap = document.getElementById('cfg-discord-id-wrap');
-  const btn = document.getElementById('btn-toggle-discord-id');
-  if (!wrap) return;
-  const isHidden = wrap.style.display === 'none' || !wrap.style.display;
-  wrap.style.display = isHidden ? 'block' : 'none';
-  if (btn) {
-    const has = !!localStorage.getItem('mediary_discord_user_id');
-    btn.textContent = isHidden ? '— Ocultar' : (has ? 'Activo' : '+ Configurar');
-  }
-  if (isHidden) {
-    const inp = document.getElementById('cfg-discord-id-input');
-    if (inp) {
-      inp.value = localStorage.getItem('mediary_discord_user_id') || '';
-      setTimeout(() => inp.focus(), 80);
-    }
-  }
-}
-window.toggleDiscordIdInput = toggleDiscordIdInput;
-
-function guardarDiscordIdDesdeInput(inputId) {
-  const inp = document.getElementById(inputId);
-  const val = (inp?.value || '').trim();
-  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  if (val) {
-    localStorage.setItem('mediary_discord_user_id', val);
-    mostrarToastPersonalizado(l === 'en' ? 'Discord User ID saved · Auto-detection active' : 'Discord User ID guardado · Detección automática activada');
-    if (typeof consultarActividadDiscordLive_ === 'function') {
-      consultarActividadDiscordLive_(true).then(() => {
-        if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
-          renderizarPlayStationNowPlayingInicio(false);
-        }
-      });
-    }
-  } else {
-    localStorage.removeItem('mediary_discord_user_id');
-    mostrarToastPersonalizado(l === 'en' ? 'Discord ID removed' : 'Discord ID eliminado');
-  }
-  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
-    sincronizarPreferenciasYAppsHaciaNube(true);
-  }
-  if (typeof renderizarAppsVinculadasConfig === 'function') {
-    renderizarAppsVinculadasConfig();
-  }
-  const wrap = document.getElementById('cfg-discord-id-wrap');
-  if (wrap) wrap.style.display = 'none';
-  const btn = document.getElementById('btn-toggle-discord-id');
-  if (btn) btn.textContent = val ? 'Activo' : '+ Configurar';
-}
-window.guardarDiscordIdDesdeInput = guardarDiscordIdDesdeInput;
-
-function abrirModalConectarDiscord() {
-  const m = document.getElementById('modal-conectar-discord');
-  if (!m) return;
-  const currentId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
-  const inp = document.getElementById('discord-modal-input-id');
-  if (inp) {
-    inp.value = currentId;
-    setTimeout(() => inp.focus(), 100);
-  }
-  const statusBox = document.getElementById('discord-modal-status-box');
-  if (statusBox) {
-    if (currentId) {
-      statusBox.style.display = 'block';
-      statusBox.style.background = 'rgba(88, 101, 242, 0.12)';
-      statusBox.style.border = '1px solid rgba(88, 101, 242, 0.35)';
-      statusBox.style.color = '#818cf8';
-      statusBox.innerHTML = `✓ ID configurado: <strong>${escHtmlSpotify_(currentId)}</strong>. Pulsa <em>"Guardar y Probar"</em> para verificar la conexión en vivo.`;
-    } else {
-      statusBox.style.display = 'none';
-      statusBox.innerHTML = '';
-    }
-  }
-  const btnDisc = document.getElementById('btn-disconnect-discord-modal');
-  if (btnDisc) {
-    btnDisc.style.display = currentId ? 'inline-block' : 'none';
-  }
-  m.style.display = 'flex';
-}
+// Funciones de Discord retiradas a petición del usuario.
+function abrirModalConectarDiscord() {}
 window.abrirModalConectarDiscord = abrirModalConectarDiscord;
-
-function cerrarModalConectarDiscord() {
-  const m = document.getElementById('modal-conectar-discord');
-  if (m) m.style.display = 'none';
-}
+function cerrarModalConectarDiscord() {}
 window.cerrarModalConectarDiscord = cerrarModalConectarDiscord;
-
-async function guardarYProbarDiscordDesdeModal() {
-  const inp = document.getElementById('discord-modal-input-id');
-  const btn = document.getElementById('btn-save-discord-modal');
-  const statusBox = document.getElementById('discord-modal-status-box');
-  const btnDisc = document.getElementById('btn-disconnect-discord-modal');
-  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-
-  const val = (inp?.value || '').trim();
-  if (!val) {
-    if (statusBox) {
-      statusBox.style.display = 'block';
-      statusBox.style.background = 'rgba(239, 68, 68, 0.12)';
-      statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
-      statusBox.style.color = '#ef4444';
-      statusBox.textContent = l === 'en' ? 'Please enter a numeric Discord User ID.' : 'Por favor ingresa un Discord User ID numérico.';
-    }
-    return;
-  }
-
-  if (!/^\d{16,22}$/.test(val)) {
-    if (statusBox) {
-      statusBox.style.display = 'block';
-      statusBox.style.background = 'rgba(245, 158, 11, 0.12)';
-      statusBox.style.border = '1px solid rgba(245, 158, 11, 0.35)';
-      statusBox.style.color = '#f59e0b';
-      statusBox.innerHTML = l === 'en'
-        ? '⚠️ The ID must be a 17-20 digit number (e.g., 803511102246789140), not your @username.'
-        : '⚠️ El ID debe ser un número de 17 a 20 dígitos (ej: 803511102246789140), no tu @nombre de usuario.';
-    }
-    return;
-  }
-
-  if (btn) {
-    btn.disabled = true;
-    btn.textContent = l === 'en' ? 'Testing...' : 'Probando...';
-  }
-  if (statusBox) {
-    statusBox.style.display = 'block';
-    statusBox.style.background = 'rgba(56, 189, 248, 0.12)';
-    statusBox.style.border = '1px solid rgba(56, 189, 248, 0.35)';
-    statusBox.style.color = '#38bdf8';
-    statusBox.textContent = l === 'en' ? 'Connecting to Discord Lanyard API...' : 'Conectando con la API de Discord Lanyard...';
-  }
-
-  try {
-    const res = await fetch(`https://api.lanyard.rest/v1/users/${encodeURIComponent(val)}`, {
-      cache: 'no-store',
-      signal: AbortSignal.timeout(6000)
-    });
-    const json = await res.json().catch(() => null);
-
-    if (json && json.success && json.data) {
-      localStorage.setItem('mediary_discord_user_id', val);
-      if (btnDisc) btnDisc.style.display = 'inline-block';
-
-      const d = json.data;
-      const uName = d.discord_user ? `${d.discord_user.username}${d.discord_user.discriminator && d.discord_user.discriminator !== '0' ? '#' + d.discord_user.discriminator : ''}` : val;
-      localStorage.setItem('mediary_discord_username', uName);
-      const activities = Array.isArray(d.activities) ? d.activities : [];
-      const gameAct = activities.find(a => a && a.type === 0);
-
-      let msgExtra = '';
-      if (gameAct && gameAct.name) {
-        msgExtra = `<br><span style="color:#10b981; font-weight:700;">🎮 Jugando ahora: ${escHtmlSpotify_(gameAct.name)}</span>`;
-      } else {
-        msgExtra = `<br><span style="color:var(--muted);">En reposo (no hay juego detectado en este momento en Discord).</span>`;
-      }
-
-      if (statusBox) {
-        statusBox.style.background = 'rgba(16, 185, 129, 0.12)';
-        statusBox.style.border = '1px solid rgba(16, 185, 129, 0.35)';
-        statusBox.style.color = '#10b981';
-        statusBox.innerHTML = `✅ <strong>¡Conexión exitosa!</strong> Usuario detectado: <strong>${escHtmlSpotify_(uName)}</strong>.${msgExtra}`;
-      }
-
-      mostrarToastPersonalizado(l === 'en' ? `✅ Connected to Discord (${uName})` : `✅ Vinculado a Discord (${uName})`);
-
-      if (typeof consultarActividadDiscordLive_ === 'function') {
-        await consultarActividadDiscordLive_(true).catch(() => null);
-      }
-      if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
-        renderizarPlayStationNowPlayingInicio(false);
-      }
-      if (typeof iniciarPollingPlayStationLive === 'function') {
-        iniciarPollingPlayStationLive();
-      }
-      if (typeof renderizarAppsVinculadasConfig === 'function') {
-        renderizarAppsVinculadasConfig();
-      }
-      if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
-        sincronizarPreferenciasYAppsHaciaNube(true);
-      }
-    } else if (json && json.error && json.error.code === 'user_not_monitored') {
-      if (statusBox) {
-        statusBox.style.background = 'rgba(245, 158, 11, 0.12)';
-        statusBox.style.border = '1px solid rgba(245, 158, 11, 0.35)';
-        statusBox.style.color = '#f59e0b';
-        statusBox.innerHTML = `⚠️ <strong>Falta el Paso 2:</strong> Tu usuario no está en el servidor de Lanyard.<br>Por favor <a href="https://discord.gg/lanyard" target="_blank" rel="noopener noreferrer" style="color:#818cf8; text-decoration:underline; font-weight:700;">haz clic aquí para unirte a discord.gg/lanyard</a> con tu cuenta y luego vuelve a presionar <em>Guardar y Probar</em>.`;
-      }
-    } else {
-      const errDetail = (json && json.error && json.error.message) ? json.error.message : 'No se pudo verificar el ID en Discord Lanyard.';
-      if (statusBox) {
-        statusBox.style.background = 'rgba(239, 68, 68, 0.12)';
-        statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
-        statusBox.style.color = '#ef4444';
-        statusBox.innerHTML = `❌ Error: ${escHtmlSpotify_(errDetail)}`;
-      }
-    }
-  } catch (err) {
-    if (statusBox) {
-      statusBox.style.background = 'rgba(239, 68, 68, 0.12)';
-      statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
-      statusBox.style.color = '#ef4444';
-      statusBox.innerHTML = `❌ Error de red al consultar Discord Lanyard (${escHtmlSpotify_(err.message || 'Timeout')}).`;
-    }
-  } finally {
-    if (btn) {
-      btn.disabled = false;
-      btn.textContent = l === 'en' ? 'Save & Test' : 'Guardar y Probar';
-    }
-  }
-}
-window.guardarYProbarDiscordDesdeModal = guardarYProbarDiscordDesdeModal;
-
-function desconectarDiscordModal() {
-  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const inp = document.getElementById('discord-modal-input-id');
-  if (inp) inp.value = '';
-  localStorage.removeItem('mediary_discord_user_id');
-  localStorage.removeItem('mediary_discord_username');
-
-  try {
-    const raw = localStorage.getItem('mediary_psn_now_playing');
-    if (raw) {
-      const p = JSON.parse(raw);
-      if (p && p.viaDiscord) {
-        guardarEstadoEnVivoPlayStation_({ isPlaying: false, source: 'playstation', platform: 'PS5' });
-      }
-    }
-  } catch(e) {}
-
-  const statusBox = document.getElementById('discord-modal-status-box');
-  if (statusBox) {
-    statusBox.style.display = 'block';
-    statusBox.style.background = 'rgba(239, 68, 68, 0.12)';
-    statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
-    statusBox.style.color = '#ef4444';
-    statusBox.textContent = l === 'en' ? 'Discord disconnected.' : 'Discord desconectado.';
-  }
-  const btnDisc = document.getElementById('btn-disconnect-discord-modal');
-  if (btnDisc) btnDisc.style.display = 'none';
-
-  mostrarToastPersonalizado(l === 'en' ? 'Discord disconnected' : 'Discord desconectado');
-
-  if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
-    renderizarPlayStationNowPlayingInicio(false);
-  }
-  if (typeof renderizarAppsVinculadasConfig === 'function') {
-    renderizarAppsVinculadasConfig();
-  }
-  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
-    sincronizarPreferenciasYAppsHaciaNube(true);
-  }
-}
+function desconectarDiscordModal() {}
 window.desconectarDiscordModal = desconectarDiscordModal;
 
 function obtenerJuegoEnProgresoPlayStation() {
@@ -31938,31 +31079,18 @@ function alternarJuegoUsuarioPlayStation(e) {
 }
 
 function obtenerEstadoJuegoActivoInicio() {
-  const isPsnConn = localStorage.getItem('mediary_psn_connected') === 'true';
   const isSteamConn = localStorage.getItem('mediary_steam_connected') === 'true';
-  const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
 
-  if (!isPsnConn && !isSteamConn && !hasDiscord) {
-    return { status: 'disconnected', isPsnConn: false, isSteamConn: false, hasDiscord: false };
-  }
-
-  let psnNP = null;
-  if (isPsnConn || hasDiscord) {
-    try {
-      const raw = localStorage.getItem('mediary_psn_now_playing');
-      if (raw) psnNP = JSON.parse(raw);
-    } catch (e) {}
+  if (!isSteamConn) {
+    return { status: 'disconnected', isSteamConn: false, isPsnConn: false };
   }
 
   let steamNP = null;
-  if (isSteamConn || hasDiscord) {
-    try {
-      const raw = localStorage.getItem('mediary_steam_now_playing');
-      if (raw) steamNP = JSON.parse(raw);
-    } catch (e) {}
-  }
+  try {
+    const raw = localStorage.getItem('mediary_steam_now_playing');
+    if (raw) steamNP = JSON.parse(raw);
+  } catch (e) {}
 
-  const psnPlaying = !!(psnNP && psnNP.isPlaying && (psnNP.titleName || psnNP.name));
   let steamPlaying = !!(steamNP && steamNP.isPlaying && (steamNP.titleName || steamNP.name));
 
   // Salvaguarda de expiración si la sesión de Steam quedó obsoleta sin confirmación
@@ -31984,57 +31112,21 @@ function obtenerEstadoJuegoActivoInicio() {
     }
   }
 
-  const lastPlat = (localStorage.getItem('mediary_last_active_game_platform') || '').toLowerCase();
-
-  const psnData = psnPlaying ? Object.assign({ source: 'playstation', platform: psnNP.platform || 'PS5' }, psnNP, { source: 'playstation' }) : null;
   const steamData = steamPlaying ? Object.assign({ source: 'steam', platform: 'Steam' }, steamNP, { source: 'steam', platform: 'Steam' }) : null;
-
-  if (psnPlaying && steamPlaying) {
-    const psnTs = Number(psnData.updatedAt) || 0;
-    const steamTs = Number(steamData.updatedAt) || 0;
-    const elegirSteam = steamTs > psnTs || (steamTs === psnTs && lastPlat === 'steam');
-    return {
-      status: 'playing',
-      source: elegirSteam ? 'steam' : 'playstation',
-      data: elegirSteam ? steamData : psnData,
-      otherActive: elegirSteam ? psnData : steamData,
-      isPsnConn,
-      isSteamConn,
-      hasDiscord
-    };
-  }
 
   if (steamPlaying) {
     return {
       status: 'playing',
       source: 'steam',
       data: steamData,
-      otherActive: null,
-      isPsnConn,
-      isSteamConn,
-      hasDiscord
-    };
-  }
-
-  if (psnPlaying) {
-    return {
-      status: 'playing',
-      source: 'playstation',
-      data: psnData,
-      otherActive: null,
-      isPsnConn,
-      isSteamConn,
-      hasDiscord
+      isSteamConn: true
     };
   }
 
   return {
     status: 'idle',
-    idlePlatform: (isPsnConn && isSteamConn) ? 'both' : (isSteamConn ? 'steam' : 'playstation'),
-    lastPlatform: lastPlat,
-    isPsnConn,
-    isSteamConn,
-    hasDiscord
+    idlePlatform: 'steam',
+    isSteamConn: true
   };
 }
 window.obtenerEstadoJuegoActivoInicio = obtenerEstadoJuegoActivoInicio;
@@ -32054,7 +31146,6 @@ function renderizarPlayStationNowPlayingInicio(forzar = false) {
   if (estadoJuego.status === 'disconnected') {
     if (badgePsn) badgePsn.style.display = 'none';
     detenerPollingSteamLive();
-    detenerPollingPlayStationLive();
     container.innerHTML = dibujarTarjetaPlayStationCompactaDesconectado();
     return;
   }
@@ -32075,15 +31166,6 @@ function renderizarPlayStationNowPlayingInicio(forzar = false) {
     }
   } else {
     detenerPollingSteamLive();
-  }
-
-  if (estadoJuego.isPsnConn || estadoJuego.hasDiscord) {
-    iniciarPollingPlayStationLive();
-    if (typeof consultarActividadEnVivoPlayStation_ === 'function') {
-      consultarActividadEnVivoPlayStation_(!!forzar);
-    }
-  } else {
-    detenerPollingPlayStationLive();
   }
 
   const spToken = localStorage.getItem('mediary_spotify_token');
@@ -32110,53 +31192,31 @@ function obtenerSvgLogoPlataformaJuego_(plataforma, size = 20) {
 
 function dibujarTarjetaPlayStationCompacta(data) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const isSteam = !!(data && (data.source === 'steam' || String(data.platform || '').toLowerCase() === 'steam'));
-  const titleName = data.titleName || data.name || (isSteam ? (l === 'en' ? 'Steam Game' : 'Juego de Steam') : (l === 'en' ? 'PlayStation Game' : 'Juego de PlayStation'));
-  const platform = isSteam ? 'Steam' : (data.platform || 'PS5');
-  const platformHeaderLabel = isSteam ? 'Steam' : 'PlayStation Network';
+  const titleName = data.titleName || data.name || (l === 'en' ? 'Steam Game' : 'Juego de Steam');
   const coverUrl = data.image || '';
   const isExp = estaLiveCardExpandida('playstation');
-  const accentColor = isSteam ? '#66c0f4' : '#38bdf8';
-  const placeholderBg = isSteam
-    ? 'linear-gradient(135deg,rgba(23,26,33,0.92),rgba(27,40,56,0.92))'
-    : 'linear-gradient(135deg,rgba(0,55,145,0.22),rgba(0,26,68,0.38))';
+  const accentColor = '#66c0f4';
+  const placeholderBg = 'linear-gradient(135deg,rgba(23,26,33,0.92),rgba(27,40,56,0.92))';
 
-  let brandHref = 'https://www.playstation.com';
-  if (isSteam) {
-    brandHref = data.appid ? `https://store.steampowered.com/app/${encodeURIComponent(data.appid)}` : 'https://store.steampowered.com';
-    try {
-      if (!data.appid) {
-        const uRaw = localStorage.getItem('mediary_steam_user');
-        if (uRaw) {
-          const u = JSON.parse(uRaw);
-          if (u && u.profileUrl) brandHref = u.profileUrl;
-        }
+  let brandHref = data.appid ? `https://store.steampowered.com/app/${encodeURIComponent(data.appid)}` : 'https://store.steampowered.com';
+  try {
+    if (!data.appid) {
+      const uRaw = localStorage.getItem('mediary_steam_user');
+      if (uRaw) {
+        const u = JSON.parse(uRaw);
+        if (u && u.profileUrl) brandHref = u.profileUrl;
       }
-    } catch (e) {}
-  }
-
-  const stopAction = isSteam ? 'detenerJuegoSteam()' : 'detenerJuegoPsn()';
-
-  const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
-  const discordSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`;
-  const discordBtnHtml = hasDiscord
-    ? `<button type="button" class="btn-psn-discord-connected" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="${l === 'en' ? 'Discord auto-sync active · Tap to manage' : 'Discord auto-sync activo · Toca para administrar'}">
-        ${discordSvg}
-        <span>Discord</span>
-       </button>`
-    : `<button type="button" class="btn-psn-discord-prominent" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="${l === 'en' ? 'Connect Discord for auto-sync PS5 / PS4' : 'Vincular Discord para sincronización automática PS5 / PS4'}">
-        ${discordSvg}
-        <span>+ Discord</span>
-       </button>`;
+    }
+  } catch (e) {}
 
   const coverHtml = coverUrl
-    ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(titleName)}" loading="lazy"><span class="home-psn-platform-badge">${escHtmlSpotify_(platform)}</span>`
+    ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(titleName)}" loading="lazy"><span class="home-psn-platform-badge">Steam</span>`
     : `<div style="width:100%;height:100%;display:grid;place-items:center;background:${placeholderBg};color:${accentColor};"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></div>`;
 
   return `
-    <div class="home-playstation-card-compact ${isSteam ? 'is-steam-active' : ''} home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" data-game-platform="${isSteam ? 'steam' : 'playstation'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
+    <div class="home-playstation-card-compact is-steam-active home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" data-game-platform="steam" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
       <!-- i. Portada -->
-      <div class="home-psn-cover-compact" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalSeleccionarJuegoPsn()" title="${l === 'en' ? 'Change game' : 'Cambiar juego'}">
+      <div class="home-psn-cover-compact">
         ${coverHtml}
       </div>
 
@@ -32169,7 +31229,7 @@ function dibujarTarjetaPlayStationCompacta(data) {
               <span class="home-np-scrollable">${escHtmlSpotify_(titleName)}</span>
             </div>
             <div style="font-size:0.72rem; color:${accentColor}; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px;">
-              <span>${escHtmlSpotify_(platform)}</span>
+              <span>Steam</span>
               <span style="opacity:0.5;">·</span>
               <span style="color:#10b981; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
                 <span class="home-np-dot" style="background:#10b981;"></span>
@@ -32182,7 +31242,7 @@ function dibujarTarjetaPlayStationCompacta(data) {
         <!-- VISTA EXPANDIDA (EXPANDED - SIMPLE Y LIMPIA) -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:2px;">
           <div class="home-psn-platform-label">
-            <span>${platformHeaderLabel}</span>
+            <span>Steam</span>
           </div>
           <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleName)}">
             <span class="home-np-scrollable">${escHtmlSpotify_(titleName)}</span>
@@ -32192,27 +31252,18 @@ function dibujarTarjetaPlayStationCompacta(data) {
               <span class="home-np-dot" style="background:#10b981;"></span>
               <span>${l === 'en' ? 'Live' : 'En vivo'}</span>
             </div>
-            <button type="button" class="btn-psn-select-game-prominent" onclick="event.stopPropagation(); abrirModalSeleccionarJuegoPsn()" title="${l === 'en' ? 'Change game' : 'Cambiar juego'}">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
-              <span>${l === 'en' ? 'Change game' : 'Cambiar juego'}</span>
-            </button>
-            <button type="button" class="btn-psn-stop-prominent" onclick="event.stopPropagation(); ${stopAction}" title="${l === 'en' ? 'Rest mode' : 'En reposo'}">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
-              <span>${l === 'en' ? 'Rest mode' : 'En reposo'}</span>
-            </button>
             <button type="button" class="btn-psn-sync-prominent" onclick="event.stopPropagation(); forzarActualizacionJuegosLive(this)" title="${l === 'en' ? 'Sync gaming status' : 'Sincronizar estado'}">
               <svg class="btn-sync-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               <span class="btn-sync-text">${l === 'en' ? 'Sync status' : 'Sincronizar estado'}</span>
             </button>
-            ${discordBtnHtml}
           </div>
         </div>
       </div>
 
-      <!-- iii. Borde derecho: logo de plataforma activa, botón de sincronización rápida y chevron -->
+      <!-- iii. Borde derecho: logo Steam, botón de sincronización rápida y chevron -->
       <div class="home-psn-right-col">
-        <a href="${escHtmlSpotify_(brandHref)}" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${isSteam ? (l === 'en' ? 'Open Steam' : 'Abrir Steam') : (l === 'en' ? 'Open PlayStation' : 'Abrir PlayStation')}">
-          ${obtenerSvgLogoPlataformaJuego_(isSteam ? 'steam' : 'playstation', 20)}
+        <a href="${escHtmlSpotify_(brandHref)}" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${l === 'en' ? 'Open Steam' : 'Abrir Steam'}">
+          ${obtenerSvgLogoPlataformaJuego_('steam', 20)}
         </a>
         <button type="button" class="btn-psn-sync-quick" onclick="event.stopPropagation(); forzarActualizacionJuegosLive(this)" title="${l === 'en' ? 'Sync gaming status' : 'Sincronizar estado'}">
           <svg class="btn-sync-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
@@ -32231,57 +31282,13 @@ function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
   const isExp = estaLiveCardExpandida('playstation');
   const titleTxt = l === 'en' ? 'Not playing anything right now' : 'No estás jugando a nada';
-
-  const isPsnConn = estadoJuego ? !!estadoJuego.isPsnConn : (localStorage.getItem('mediary_psn_connected') === 'true');
-  const isSteamConn = estadoJuego ? !!estadoJuego.isSteamConn : (localStorage.getItem('mediary_steam_connected') === 'true');
-  const soloSteam = isSteamConn && !isPsnConn;
-  const ambas = isPsnConn && isSteamConn;
-  const hasDiscord = estadoJuego ? !!estadoJuego.hasDiscord : !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
-
-  const discordSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`;
-  const discordBtnHtml = hasDiscord
-    ? `<button type="button" class="btn-psn-discord-connected" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="${l === 'en' ? 'Discord auto-sync active · Tap to manage' : 'Discord auto-sync activo · Toca para administrar'}">
-        ${discordSvg}
-        <span>Discord</span>
-       </button>`
-    : `<button type="button" class="btn-psn-discord-prominent" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="${l === 'en' ? 'Connect Discord for auto-sync PS5 / PS4' : 'Vincular Discord para sincronización automática PS5 / PS4'}">
-        ${discordSvg}
-        <span>+ Discord</span>
-       </button>`;
-
-  const platformShort = ambas ? 'PlayStation · Steam' : (soloSteam ? 'Steam' : 'PlayStation');
-  const platformHeader = ambas ? 'PlayStation · Steam' : (soloSteam ? 'Steam' : 'PlayStation Network');
-  const accentColor = soloSteam ? '#66c0f4' : '#38bdf8';
-  const coverStyle = soloSteam
-    ? 'background:linear-gradient(135deg,rgba(23,26,33,0.92),rgba(27,40,56,0.92)); color:#66c0f4; border:1px solid rgba(102,192,244,0.3);'
-    : 'background:linear-gradient(135deg,rgba(0,55,145,0.22),rgba(0,26,68,0.38)); color:#38bdf8; border:1px solid rgba(0,112,209,0.25);';
-
-  let rightLogoHtml = '';
-  if (ambas) {
-    rightLogoHtml = `
-      <span class="home-psn-logo-link live-card-expanded-only" style="width:auto; display:inline-flex; align-items:center; gap:4px;" onclick="event.stopPropagation()" title="PlayStation &amp; Steam">
-        ${obtenerSvgLogoPlataformaJuego_('playstation', 15)}
-        ${obtenerSvgLogoPlataformaJuego_('steam', 15)}
-      </span>
-    `;
-  } else if (soloSteam) {
-    rightLogoHtml = `
-      <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="Steam">
-        ${obtenerSvgLogoPlataformaJuego_('steam', 20)}
-      </a>
-    `;
-  } else {
-    rightLogoHtml = `
-      <a href="https://www.playstation.com" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="PlayStation">
-        ${obtenerSvgLogoPlataformaJuego_('playstation', 20)}
-      </a>
-    `;
-  }
+  const accentColor = '#66c0f4';
+  const coverStyle = 'background:linear-gradient(135deg,rgba(23,26,33,0.92),rgba(27,40,56,0.92)); color:#66c0f4; border:1px solid rgba(102,192,244,0.3);';
 
   return `
-    <div class="home-playstation-card-compact ${soloSteam ? 'is-steam-active' : ''} home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" data-game-platform="${soloSteam ? 'steam' : (ambas ? 'both' : 'playstation')}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <!-- i. Portada con mando sobrio y click para elegir juego -->
-      <div class="home-psn-cover-compact" style="display:grid; place-items:center; cursor:pointer; ${coverStyle}" onclick="event.stopPropagation(); abrirModalSeleccionarJuegoPsn()" title="${l === 'en' ? 'Select game you are playing' : 'Elegir juego que estás jugando'}">
+    <div class="home-playstation-card-compact is-steam-active home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" data-game-platform="steam" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
+      <!-- i. Portada con mando de Steam -->
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; ${coverStyle}">
         <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px; height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
 
@@ -32294,7 +31301,7 @@ function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {
               <span class="home-np-scrollable" style="color:var(--muted); font-weight:700;">${titleTxt}</span>
             </div>
             <div style="font-size:0.72rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px;">
-              <span>${platformShort}</span>
+              <span>Steam</span>
               <span style="opacity:0.5;">·</span>
               <span style="display:inline-flex; align-items:center; gap:3px; font-size:0.68rem;">
                 <span class="home-np-dot" style="background:#64748b; box-shadow:none; animation:none;"></span>
@@ -32307,7 +31314,7 @@ function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {
         <!-- VISTA EXPANDIDA (EXPANDED - SIMPLE Y LIMPIA) -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:2px;">
           <div class="home-psn-platform-label" style="color:${accentColor};">
-            <span>${platformHeader}</span>
+            <span>Steam</span>
           </div>
           <div class="home-psn-title-compact home-np-text-wrap" title="${titleTxt}">
             <span class="home-np-scrollable" style="color:var(--text); font-weight:700;">${titleTxt}</span>
@@ -32317,22 +31324,19 @@ function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {
               <span class="home-np-dot" style="background:#64748b; box-shadow:none; animation:none;"></span>
               <span>${l === 'en' ? 'Rest mode' : 'En reposo'}</span>
             </div>
-            <button type="button" class="btn-psn-select-game-prominent" onclick="event.stopPropagation(); abrirModalSeleccionarJuegoPsn()" title="${l === 'en' ? 'Select game you are playing now' : 'Elegir juego que estás jugando ahora'}">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
-              <span>${l === 'en' ? 'Select game' : 'Elegir juego'}</span>
-            </button>
             <button type="button" class="btn-psn-sync-prominent" onclick="event.stopPropagation(); forzarActualizacionJuegosLive(this)" title="${l === 'en' ? 'Sync gaming status' : 'Sincronizar estado'}">
               <svg class="btn-sync-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               <span class="btn-sync-text">${l === 'en' ? 'Sync status' : 'Sincronizar estado'}</span>
             </button>
-            ${discordBtnHtml}
           </div>
         </div>
       </div>
 
-      <!-- iii. Borde derecho: logo(s), botón de sincronización rápida y chevron -->
+      <!-- iii. Borde derecho: logo Steam, botón de sincronización rápida y chevron -->
       <div class="home-psn-right-col">
-        ${rightLogoHtml}
+        <a href="https://store.steampowered.com" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="Steam">
+          ${obtenerSvgLogoPlataformaJuego_('steam', 20)}
+        </a>
         <button type="button" class="btn-psn-sync-quick" onclick="event.stopPropagation(); forzarActualizacionJuegosLive(this)" title="${l === 'en' ? 'Sync gaming status' : 'Sincronizar estado'}">
           <svg class="btn-sync-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
         </button>
@@ -32351,7 +31355,7 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
   const isExp = estaLiveCardExpandida('playstation');
   return `
     <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" data-game-platform="disconnected" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <div class="home-psn-cover-compact" style="display:grid; place-items:center; background:linear-gradient(135deg,rgba(0,55,145,0.22),rgba(0,26,68,0.38)); color:#38bdf8; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarDiscord()">
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; background:linear-gradient(135deg,rgba(23,26,33,0.92),rgba(27,40,56,0.92)); color:#66c0f4; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarSteam()">
         <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px; height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
 
@@ -32359,11 +31363,11 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
         <!-- VISTA REDUCIDA (COLLAPSED) -->
         <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
           <div style="flex:1; min-width:0; overflow:hidden;">
-            <div class="home-psn-title-compact home-np-text-wrap" style="color:#38bdf8; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarDiscord()">
-              <span class="home-np-scrollable">${l === 'en' ? 'Connect PlayStation, Steam or Discord' : 'Conectar PlayStation, Steam o Discord'}</span>
+            <div class="home-psn-title-compact home-np-text-wrap" style="color:#66c0f4; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarSteam()">
+              <span class="home-np-scrollable">${l === 'en' ? 'Connect Steam' : 'Conectar Steam'}</span>
             </div>
             <div style="font-size:0.72rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-              <span>PlayStation · Steam · Discord</span>
+              <span>Steam</span>
             </div>
           </div>
         </div>
@@ -32371,29 +31375,25 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
         <!-- VISTA EXPANDIDA -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:2px;">
           <div class="home-psn-platform-label">
-            <span>PlayStation · Steam · Discord</span>
+            <span>Steam</span>
           </div>
-          <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarDiscord()">
-            <span class="home-np-scrollable" style="color:#38bdf8;">${l === 'en' ? 'Connect your gaming accounts' : 'Conecta tus cuentas de juegos'}</span>
+          <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarSteam()">
+            <span class="home-np-scrollable" style="color:#66c0f4;">${l === 'en' ? 'Connect Steam account' : 'Conecta tu cuenta de Steam'}</span>
           </div>
           <div class="home-psn-status-row" style="margin-top:2px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); abrirModalConectarDiscord()" style="color:#818cf8;border-color:rgba(88,101,242,0.45);background:rgba(88,101,242,0.16);font-weight:700;">
-              + <span>Discord (Auto-sync)</span>
+            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); abrirModalConectarSteam()" style="color:#66c0f4;border-color:rgba(102,192,244,0.3);background:rgba(102,192,244,0.12);">
+              + <span>Steam</span>
             </button>
             <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); abrirModalConectarPsn()">
               + <span>PlayStation</span>
-            </button>
-            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); abrirModalConectarSteam()" style="color:#66c0f4;border-color:rgba(102,192,244,0.3);background:rgba(102,192,244,0.12);">
-              + <span>Steam</span>
             </button>
           </div>
         </div>
       </div>
 
       <div class="home-psn-right-col">
-        <span class="home-psn-logo-link live-card-expanded-only" style="width:auto; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="PlayStation, Steam &amp; Discord">
-          ${obtenerSvgLogoPlataformaJuego_('playstation', 15)}
-          ${obtenerSvgLogoPlataformaJuego_('steam', 15)}
+        <span class="home-psn-logo-link live-card-expanded-only" style="width:auto; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarSteam()" title="Steam">
+          ${obtenerSvgLogoPlataformaJuego_('steam', 18)}
         </span>
         <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
@@ -33171,6 +32171,11 @@ window.onload = () => {
     inicializarPullToRefresh();
   }
 
+  // Inicializar navegación por swipe y scroll horizontal entre pestañas principales
+  if (typeof inicializarNavegacionHorizontalTabs === 'function') {
+    inicializarNavegacionHorizontalTabs();
+  }
+
   // Detección automática en boot de discos completados
   setTimeout(() => {
     if (typeof verificarYMostrarPromptDiscoCompletado === 'function') {
@@ -33204,6 +32209,123 @@ function inicializarPullToRefresh() {
     isPulling = false;
   }, { passive: true });
 }
+
+function inicializarNavegacionHorizontalTabs() {
+  const PESTANAS_PRINCIPALES_NAV = [
+    { id: 'inicio', nav: (p) => irInicio(p) },
+    { id: 'listas', nav: (p) => abrirVistaDashboardListas(p) },
+    { id: 'amigos', nav: (p) => abrirVistaAmigos(p) },
+    { id: 'perfil', nav: (p) => abrirVistaPerfil(p) }
+  ];
+
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchStartTime = 0;
+  let touchStartTarget = null;
+  let ultimaNavegacionHorizontal = 0;
+
+  function hayModalAbierto() {
+    const modales = document.querySelectorAll('.modal, .modal-overlay, #modal-configuracion, #modal-perfil, #modal-buscar-global, #modal-estadisticas-avanzadas, #modal-reseña, #modal-editar-disco, #modal-seleccionar-juego-psn, #modal-seleccionar-cancion');
+    for (const m of modales) {
+      if (m && m.style && m.style.display && m.style.display !== 'none') return true;
+    }
+    return false;
+  }
+
+  function obtenerIndicePestanaActual() {
+    const cat = (typeof estado !== 'undefined' && estado && estado.categoria) ? estado.categoria : 'inicio';
+    return PESTANAS_PRINCIPALES_NAV.findIndex(p => p.id === cat);
+  }
+
+  function estaEnScrollHorizontalInterno(target, direccionX) {
+    let el = target;
+    while (el && el !== document.body && el !== document.documentElement) {
+      if (el.classList && (
+        el.classList.contains('home-live-carousel') ||
+        el.classList.contains('home-en-progreso-carousel') ||
+        el.classList.contains('home-indice-carousel') ||
+        el.classList.contains('tabs-scroll-horizontal') ||
+        el.classList.contains('chips-scroll')
+      )) {
+        if (direccionX > 0 && el.scrollLeft < (el.scrollWidth - el.clientWidth - 5)) return true;
+        if (direccionX < 0 && el.scrollLeft > 5) return true;
+      }
+      if (el.scrollWidth > (el.clientWidth + 8)) {
+        const style = window.getComputedStyle(el);
+        const ox = style.overflowX;
+        if (ox === 'auto' || ox === 'scroll') {
+          if (direccionX > 0 && el.scrollLeft < (el.scrollWidth - el.clientWidth - 5)) return true;
+          if (direccionX < 0 && el.scrollLeft > 5) return true;
+        }
+      }
+      el = el.parentElement;
+    }
+    return false;
+  }
+
+  function cambiarPestanaRelativa(offset) {
+    const curIdx = obtenerIndicePestanaActual();
+    if (curIdx === -1) return;
+    const nuevoIdx = curIdx + offset;
+    if (nuevoIdx >= 0 && nuevoIdx < PESTANAS_PRINCIPALES_NAV.length) {
+      ultimaNavegacionHorizontal = Date.now();
+      PESTANAS_PRINCIPALES_NAV[nuevoIdx].nav(true);
+    }
+  }
+
+  // 1. GESTOS TOUCH (Móviles y Tablets)
+  window.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchStartTime = Date.now();
+      touchStartTarget = e.target;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', (e) => {
+    if (!e.changedTouches || e.changedTouches.length !== 1) return;
+    if (hayModalAbierto()) return;
+    const curIdx = obtenerIndicePestanaActual();
+    if (curIdx === -1) return;
+
+    const deltaX = e.changedTouches[0].clientX - touchStartX;
+    const deltaY = e.changedTouches[0].clientY - touchStartY;
+    const duration = Date.now() - touchStartTime;
+
+    if (duration > 650) return;
+    if (Math.abs(deltaX) < 55) return;
+    if (Math.abs(deltaX) < Math.abs(deltaY) * 1.4) return;
+    if (Date.now() - ultimaNavegacionHorizontal < 420) return;
+
+    const direccionX = deltaX < 0 ? 1 : -1;
+    if (estaEnScrollHorizontalInterno(touchStartTarget, direccionX)) return;
+
+    if (deltaX < -55) {
+      cambiarPestanaRelativa(1); // Swipe izquierda -> siguiente pestaña
+    } else if (deltaX > 55) {
+      cambiarPestanaRelativa(-1); // Swipe derecha -> pestaña anterior
+    }
+  }, { passive: true });
+
+  // 2. SCROLL HORIZONTAL CON TRACKPAD / RUEDA
+  window.addEventListener('wheel', (e) => {
+    if (hayModalAbierto()) return;
+    if (Math.abs(e.deltaX) < 45) return;
+    if (Math.abs(e.deltaX) < Math.abs(e.deltaY) * 1.4) return;
+    if (Date.now() - ultimaNavegacionHorizontal < 550) return;
+
+    const direccionX = e.deltaX > 0 ? 1 : -1;
+    if (estaEnScrollHorizontalInterno(e.target, direccionX)) return;
+
+    if (e.deltaX > 45) {
+      cambiarPestanaRelativa(1);
+    } else if (e.deltaX < -45) {
+      cambiarPestanaRelativa(-1);
+    }
+  }, { passive: true });
+}
+window.inicializarNavegacionHorizontalTabs = inicializarNavegacionHorizontalTabs;
 const irInicio = (pushNav = true) => {
   if (pushNav) registrarNavegacionApp('inicio');
   guardarEstadoNavegacionActual('inicio', '');
