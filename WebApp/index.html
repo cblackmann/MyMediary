@@ -11626,6 +11626,7 @@ if (!window.IS_APPS_SCRIPT && 'serviceWorker' in navigator && location.protocol.
 if (!window.IS_APPS_SCRIPT) { window.addEventListener('DOMContentLoaded', () => { const btnMig = document.getElementById('btn-migrar-sheets'); if (btnMig) btnMig.style.display = 'none'; const pAuth = document.getElementById('auth-input-pass'); if (pAuth) pAuth.value = ''; }); const SB_URL = 'https://cpksupowjteqilsiklde.supabase.co/rest/v1';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNwa3N1cG93anRlcWlsc2lrbGRlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NzIxMTUsImV4cCI6MjEwOTA0ODExNX0.-ojqwNdX7wXkCUGDU6wHComRNi2Uy-XrWket6zeEAVU';
 const uuid_ = () => (crypto && crypto.randomUUID) ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16); });
+window.uuid_ = uuid_;
 const normEm_ = em => String(em || '').trim().toLowerCase(); const hashP_ = async raw => { if (!raw) return ''; const buf = new TextEncoder().encode(String(raw) + '_mb_salt_v1'); const dig = await crypto.subtle.digest('SHA-256', buf);
 return Array.from(new Uint8Array(dig)).map(b => ('0' + b.toString(16)).slice(-2)).join(''); }; const sbFetch_ = async (endpoint, method = 'GET', payload = null, prefer = 'return=representation') => {
 const opts = { method: method.toUpperCase(), headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': prefer } }; if (payload !== null) opts.body = JSON.stringify(payload); const r = await fetch(`${SB_URL}/${endpoint}`, opts);
@@ -11837,8 +11838,10 @@ return lista.sort((a, b) => {
   const vB = (b.fechaFin && b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin)) ? parseTs_(b.fechaFin) : parseTs_(b.fechaInicio);
   return vA - vB;
 }); } catch (e) { return []; }
-}, async guardarRegistro(d, userEmail) { try { const email = normEm_(userEmail || d?.userEmail); if (!email) return { exito: false, error: 'Inicia sesión para guardar registros.' }; const admiteRango = subTieneRango(d.categoria, d.subcategoria);
+}, async guardarRegistro(d, userEmail) { try { const email = normEm_(userEmail || d?.userEmail); if (!email) return { exito: false, error: 'Inicia sesión para guardar registros.' };
+const genId = () => (typeof window.uuid_ === 'function' ? window.uuid_() : (typeof uuid_ === 'function' ? uuid_() : 'reg_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7)));
 const buildObj = o => {
+  const admiteRango = subTieneRango(o.categoria, o.subcategoria);
   let fIni = o.fechaInicio === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaInicio);
   let fFin = o.fechaFin === 'Sin fecha' ? 'Sin fecha' : fmtFecha_(o.fechaFin);
   if (!admiteRango) {
@@ -11847,7 +11850,7 @@ const buildObj = o => {
     fFin = fUnica;
   }
   return {
-    id: (o.id && typeof o.id === 'string' && o.id.length > 5) ? o.id : uuid_(), user_email: email, categoria: o.categoria || '', subcategoria: o.subcategoria || '', titulo: o.titulo || 'Sin título', subtitulo: o.subtitulo || '',
+    id: (o.id && typeof o.id === 'string' && o.id.length > 5) ? o.id : genId(), user_email: email, categoria: o.categoria || '', subcategoria: o.subcategoria || '', titulo: o.titulo || 'Sin título', subtitulo: o.subtitulo || '',
     creador: o.creador || '', anio: String(o.anio || ''), fecha_inicio: fIni, fecha_fin: fFin, calificacion: Number(o.calificacion) || 0, comentario: o.comentario || '',
     poster: o.poster || '', horas: o.horas || '', es_rewatch: !!o.esRewatch
   };
@@ -11866,12 +11869,19 @@ if (d.esTemporadaUnica && d.categoria === 'Series' && (d.subcategoria === 'Tempo
       };
       await sbFetch_(`registros?id=eq.${encodeURIComponent(wExisting[0].id)}&user_email=eq.${encodeURIComponent(email)}`, 'PATCH', patchObj);
     } else {
-      rows.push(buildObj(Object.assign({}, d, { subcategoria: 'Series Completas', titulo: baseTitle })));
+      rows.push(buildObj(Object.assign({}, d, { id: genId(), subcategoria: 'Series Completas', titulo: baseTitle })));
     }
   } catch (errSC) {
-    rows.push(buildObj(Object.assign({}, d, { subcategoria: 'Series Completas', titulo: baseTitle })));
+    rows.push(buildObj(Object.assign({}, d, { id: genId(), subcategoria: 'Series Completas', titulo: baseTitle })));
   }
 }
+const seenIds = new Set();
+rows.forEach(r => {
+  if (!r.id || seenIds.has(r.id)) {
+    r.id = genId();
+  }
+  seenIds.add(r.id);
+});
 await sbFetch_('registros', 'POST', rows); let estabaEnWatchlist = false, tituloWatchlist = ''; try { const wData = await sbFetch_(`watchlist?user_email=eq.${encodeURIComponent(email)}&categoria=eq.${encodeURIComponent(d.categoria || '')}&select=*`, 'GET') || [];
 const titNorm = String(d.tituloBase || d.titulo || '').toLowerCase().replace(/\s*\[s\d+\]$/i, '').trim(); for (const w of wData) { const itemTit = String(w.titulo || '').toLowerCase().trim(); if (itemTit === titNorm || (itemTit && (titNorm.startsWith(itemTit) || itemTit.startsWith(titNorm)))) {
 estabaEnWatchlist = true; tituloWatchlist = String(w.titulo); await sbFetch_(`watchlist?id=eq.${encodeURIComponent(w.id)}&user_email=eq.${encodeURIComponent(email)}`, 'DELETE'); }
@@ -26717,7 +26727,7 @@ function guardarDiscoDetectadoEnMediary() {
   const comentario = comInp ? asegurarPuntoFinal(comInp.value.trim()) : '';
   const calif = Number(estadoPromptAlbum.calificacion) || 5.0;
   const estimacionHoras = ((Number(album.totalTracks) || 10) * 3.5 / 60).toFixed(1) + ' hrs';
-  const savedId = (typeof uuid_ === 'function' ? uuid_() : 'reg_' + Date.now());
+  const savedId = (typeof window.uuid_ === 'function' ? window.uuid_() : (typeof uuid_ === 'function' ? uuid_() : 'reg_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7)));
 
   const nuevoRegistro = {
     id: savedId,
@@ -34293,7 +34303,7 @@ if (c === 'Juegos' && document.getElementById('input-horas-jugadas').value.trim(
 } else if ((c === 'Peliculas' || c === 'Series') && estado.seleccionado.duracionHoras) {
   horasGuardar = `${estado.seleccionado.duracionHoras} hrs`;
 }
-const savedId = (typeof uuid_ === 'function' ? uuid_() : 'reg_' + Date.now());
+const savedId = (typeof window.uuid_ === 'function' ? window.uuid_() : (typeof uuid_ === 'function' ? uuid_() : 'reg_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7)));
 const payload = { id: savedId, categoria: c, subcategoria: s, titulo: tTit, tituloBase: tBase, subtitulo: sub,
 creador: estado.seleccionado.creador, anio: estado.seleccionado.anio, fechaInicio: fI, fechaFin: fF, calificacion: calificacionNum, comentario: comentarioConPunto,
 poster: estado.seleccionado.poster, horas: horasGuardar, esTemporadaUnica: esUnica, numTempActual: numT, totalTempOficiales: totT, esRewatch: esRw
