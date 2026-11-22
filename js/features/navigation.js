@@ -13,8 +13,6 @@ function abrirVistaPerfil(pushNav = true) {
     estado.categoria = 'perfil';
     actualizarBarraNavegacionMovil('m-btn-perfil');
     actualizarNavWebActiva();
-    if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(true);
-    if (typeof animarCambioTabVista === 'function') animarCambioTabVista('perfil');
     const vIni = document.getElementById('vista-inicio'); if (vIni) vIni.style.display = 'none';
     const vCat = document.getElementById('vista-categoria'); if (vCat) vCat.style.display = 'none';
     const vDis = document.getElementById('vista-discover'); if (vDis) vDis.style.display = 'none';
@@ -23,6 +21,7 @@ function abrirVistaPerfil(pushNav = true) {
     const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
     const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
     const vPer = document.getElementById('vista-perfil'); if (vPer) vPer.style.display = 'block';
+    if (typeof animarCambioTabVista === 'function') animarCambioTabVista('perfil');
     renderizarCabeceraPerfil();
     renderizarFavoritosPerfil();
     if (typeof renderizarCancionFavorita === 'function') renderizarCancionFavorita();
@@ -282,17 +281,43 @@ function inicializarManejoBotonAtras() {
       }
     }
 
+    const catActual = (typeof estado !== 'undefined' && estado && estado.categoria) ? estado.categoria : 'inicio';
+
+    // Si ya estamos en inicio, avisar para salir
+    if (catActual === 'inicio') {
+      const l = userPrefs.lang || 'es';
+      mostrarToastPersonalizado(l === 'en' ? 'Press back again to exit' : 'Presiona atrás nuevamente para salir');
+      return;
+    }
+
+    // Pestañas principales de navegación horizontal
+    const PESTANAS_PRINCIPALES = ['inicio', 'listas', 'amigos', 'perfil'];
+
+    // 1. REGLA 1: Si estamos en una pestaña principal (Listas, Amigos, Perfil),
+    // retroceder debe volver a Inicio con animación fluida de scroll lateral entre pestañas,
+    // sincronizando inmediatamente la barra inferior para que quede marcado Inicio.
+    if (PESTANAS_PRINCIPALES.includes(catActual)) {
+      if (appNavHistory.length > 1) {
+        appNavHistory.pop();
+      }
+      isHandlingPopState = true;
+      try {
+        irInicio(false);
+      } finally {
+        isHandlingPopState = false;
+      }
+      return;
+    }
+
+    // 2. REGLA 2: Estamos dentro de una sub-pantalla (Calendario, Watchlists, Categoría de registros).
+    // Aquí SÍ se aplica la animación de retroceso que me "saca" de esa pantalla hacia la vista anterior.
     let anterior = 'inicio';
     if (appNavHistory.length > 1) {
       appNavHistory.pop();
       anterior = appNavHistory[appNavHistory.length - 1] || 'inicio';
-    } else if (estado.categoria !== 'inicio') {
+    } else {
       anterior = 'inicio';
       try { history.pushState({ appView: 'inicio', depth: 1 }, '', ''); } catch (err) {}
-    } else {
-      const l = userPrefs.lang || 'es';
-      mostrarToastPersonalizado(l === 'en' ? 'Press back again to exit' : 'Presiona atrás nuevamente para salir');
-      return;
     }
 
     const elActual = (typeof obtenerElementoVistaActual === 'function') ? obtenerElementoVistaActual() : null;
@@ -781,10 +806,10 @@ window.animarCambioTabVista = animarCambioTabVista;
 const irInicio = (pushNav = true) => {
   if (pushNav) registrarNavegacionApp('inicio');
   guardarEstadoNavegacionActual('inicio', '');
-  actualizarBarraNavegacionMovil('m-btn-inicio');
   actualizarVisibilidadMenuInferior(true);
-  animarCambioTabVista('inicio');
   cambiarCat('inicio', null, false);
+  actualizarBarraNavegacionMovil('m-btn-inicio');
+  animarCambioTabVista('inicio');
 };
 
 function reposicionarIndicadorNavMovil(el, animar = true) {
@@ -837,10 +862,9 @@ function actualizarBarraNavegacionMovil(btnId) {
   if (el) {
     el.classList.add('active');
     reposicionarIndicadorNavMovil(el, true);
-    requestAnimationFrame(() => reposicionarIndicadorNavMovil(el, false));
-    setTimeout(() => reposicionarIndicadorNavMovil(el, false), 50);
-    setTimeout(() => reposicionarIndicadorNavMovil(el, false), 180);
-    setTimeout(() => reposicionarIndicadorNavMovil(el, false), 350);
+    requestAnimationFrame(() => reposicionarIndicadorNavMovil(el, true));
+    setTimeout(() => reposicionarIndicadorNavMovil(el, true), 60);
+    setTimeout(() => reposicionarIndicadorNavMovil(el, true), 180);
   } else {
     const ind = document.getElementById('mobile-nav-indicator');
     if (ind) ind.style.opacity = '0';
@@ -1349,7 +1373,6 @@ function abrirVistaDashboardListas(pushNav = true) {
   actualizarBarraNavegacionMovil('m-btn-listas-ext');
   actualizarNavWebActiva();
   if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(true);
-  if (typeof animarCambioTabVista === 'function') animarCambioTabVista('listas');
   const vIni = document.getElementById('vista-inicio'); if (vIni) vIni.style.display = 'none';
   const vCat = document.getElementById('vista-categoria'); if (vCat) vCat.style.display = 'none';
   const vDisc = document.getElementById('vista-discover'); if (vDisc) vDisc.style.display = 'none';
@@ -1358,6 +1381,7 @@ function abrirVistaDashboardListas(pushNav = true) {
   const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
   const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
   const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'block';
+  if (typeof animarCambioTabVista === 'function') animarCambioTabVista('listas');
   if (modoReordenarListasActivo && typeof toggleModoReordenarListas === 'function') {
     toggleModoReordenarListas();
   }
