@@ -848,7 +848,7 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
 .home-fab-quick-add {
   width:60px;
   height:60px;
-  border-radius:10px;
+  border-radius:3px;
   background:var(--accent);
   color:var(--accent-contrast, #091428);
   border:1.5px solid rgba(255,255,255,0.35);
@@ -863,16 +863,17 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
   filter:brightness(1.06);
 }
 
-/* MIS WATCHLISTS / CALENDARIO (ABAJO, CUADRADO) */
+/* MIS WATCHLISTS / CALENDARIO (ABAJO, CUADRADO, COHERENTE CON THEME) */
 .home-fab-wl,
 .home-fab-cal {
   width:52px;
   height:52px;
-  border-radius:10px;
+  border-radius:3px;
   background:var(--card);
-  color:var(--accent-warm, #f59e0b);
-  border:1.5px solid var(--accent-warm-border, rgba(245,158,11,0.45));
+  color:var(--accent);
+  border:1.5px solid var(--accent-border, rgba(var(--accent-rgb, 56,189,248), 0.45));
   box-shadow:0 6px 20px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.12);
+  transition:all 0.18s ease;
 }
 .home-fab-wl svg,
 .home-fab-cal svg {
@@ -881,12 +882,20 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
 }
 .home-fab-wl:hover,
 .home-fab-cal:hover {
-  border-color:var(--accent-warm, #f59e0b);
-  box-shadow:0 10px 28px rgba(245,158,11,0.35);
+  border-color:var(--accent);
+  color:var(--accent);
+  box-shadow:0 10px 28px rgba(var(--accent-rgb, 56,189,248), 0.35);
+  transform:translateY(-2px);
+}
+.home-fab-cal:active,
+.home-fab-wl:active {
+  transform:scale(0.95);
 }
 .home-fab-cal.active {
-  background:var(--accent-warm, #f59e0b);
-  color:var(--card);
+  background:var(--accent);
+  color:var(--accent-contrast, #0f172a);
+  border-color:var(--accent);
+  box-shadow:0 0 18px rgba(var(--accent-rgb, 56,189,248), 0.45);
 }
 
 @media (max-width: 768px){
@@ -898,7 +907,7 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
   .home-fab-quick-add {
     width:56px;
     height:56px;
-    border-radius:9px;
+    border-radius:3px;
   }
   .home-fab-quick-add svg {
     width:30px;
@@ -908,7 +917,7 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
   .home-fab-cal {
     width:48px;
     height:48px;
-    border-radius:9px;
+    border-radius:3px;
   }
   .home-fab-wl svg,
   .home-fab-cal svg {

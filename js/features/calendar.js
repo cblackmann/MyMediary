@@ -167,6 +167,11 @@ function abrirVistaCalendario(pushNav = true) {
     if (pushNav) registrarNavegacionApp('calendario');
     guardarEstadoNavegacionActual('calendario', '');
     resetearBuscadoresYFormularios();
+    if (estado.categoria === 'listas') {
+      estado.vistaPreviaCalendario = 'listas';
+    } else if (estado.categoria !== 'calendario') {
+      estado.vistaPreviaCalendario = 'inicio';
+    }
     estado.categoria = 'calendario';
     estado.subcategoria = '';
     actualizarNavWebActiva();
@@ -198,6 +203,35 @@ function abrirVistaCalendario(pushNav = true) {
   }
 }
 window.abrirVistaCalendario = abrirVistaCalendario;
+
+function volverDesdeCalendario() {
+  const vCal = document.getElementById('vista-calendario');
+  const destino = (estado.vistaPreviaCalendario === 'listas') ? 'listas' : 'inicio';
+  const elDestino = destino === 'listas' ? document.getElementById('vista-listas-extendida') : document.getElementById('vista-inicio');
+
+  if (typeof animarSalidaVistaAtras === 'function') {
+    animarSalidaVistaAtras(vCal, () => {
+      if (typeof actualizarVisibilidadMenuInferior === 'function') {
+        actualizarVisibilidadMenuInferior(true);
+      }
+      if (destino === 'listas') {
+        if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas();
+      } else {
+        if (typeof irInicio === 'function') irInicio();
+      }
+    }, elDestino);
+  } else {
+    if (typeof actualizarVisibilidadMenuInferior === 'function') {
+      actualizarVisibilidadMenuInferior(true);
+    }
+    if (destino === 'listas') {
+      if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas();
+    } else {
+      if (typeof irInicio === 'function') irInicio();
+    }
+  }
+}
+window.volverDesdeCalendario = volverDesdeCalendario;
 
 function cambiarModoSubvistaCalendario(modo) {
   calModoSubvista = modo || 'grid';

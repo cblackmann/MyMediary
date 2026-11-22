@@ -565,19 +565,24 @@
 
 <!-- VISTA DEDICADA DE WATCHLISTS -->
 <div id="vista-watchlists" style="display:none;">
-  <div class="discover-header-bar" style="margin-bottom:14px;">
-    <div>
-      <h2 style="font-size:1.35rem; display:flex; align-items:center; gap:10px;">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;margin-right:6px;"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg><span data-i18n="wl_section_title">Mis Watchlists</span>
-      </h2>
-      <p style="color:var(--muted); font-size:.85rem; margin-top:3px;" data-i18n="wl_section_desc">Tus obras pendientes organizadas y separadas por cada subcategoría.</p>
-    </div>
-    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-      <button type="button" class="btn-recommend" id="btn-ruleta-amigo-wl" onclick="abrirModalRuletaPeliculas()" style="background:var(--accent-warm-subtle); border:1.5px solid var(--accent-warm-border); color:var(--accent-warm); font-weight:700;">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg><span data-i18n="btn_roulette_friend">Ruleta con Amigo</span>
+  <div class="watchlists-header-bar">
+    <div class="watchlists-title-wrap">
+      <button type="button" class="btn-wl-volver" id="btn-wl-volver" onclick="volverDesdeWatchlists()" title="Volver" data-i18n-title="wl_btn_back">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+          <path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+        </svg>
+        <span data-i18n="wl_btn_back">Volver</span>
       </button>
-      <button type="button" class="btn-recommend" id="btn-recomendar-azar-wl" onclick="iniciarRecomendacionAzar()">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"/></svg><span data-i18n="btn_recommend_shuffle">Recomiéndame</span>
+      <h2 class="watchlists-header-title">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg><span data-i18n="wl_section_title">Mis Watchlists</span>
+      </h2>
+    </div>
+    <div class="watchlists-actions-wrap">
+      <button type="button" class="btn-wl-action" id="btn-ruleta-amigo-wl" onclick="abrirModalRuletaPeliculas()">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg><span data-i18n="btn_roulette_friend">Ruleta con Amigo</span>
+      </button>
+      <button type="button" class="btn-wl-action btn-wl-action-accent" id="btn-recomendar-azar-wl" onclick="iniciarRecomendacionAzar()">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"/></svg><span data-i18n="btn_recommend_shuffle">Recomiéndame</span>
       </button>
     </div>
   </div>
@@ -586,10 +591,10 @@
   <div class="all-watchlists-bar" id="wl-categorias-bar" style="margin-bottom:12px;"></div>
 
   <!-- SELECTOR DE SUBCATEGORÍA DE WATCHLIST (PÍLDORAS CON CONTADORES EXACTOS) -->
-  <div class="subtabs" id="wl-subtabs-bar" style="margin-bottom:16px;"></div>
+  <div class="subtabs" id="wl-subtabs-bar" style="margin-bottom:14px;"></div>
 
   <!-- BUSCADOR EN VIVO DENTRO DE LA WATCHLIST ACTIVA -->
-  <div class="search-row" id="box-buscador-wl" style="margin-bottom:16px;">
+  <div class="search-row" id="box-buscador-wl" style="margin-bottom:14px;">
     <div class="search-box">
       <input type="text" id="input-search-wl" class="search-input" placeholder="Buscar título para agregar a esta lista..." oninput="buscarEnVivoWl(this.value)" data-i18n-placeholder="ph_search_wl">
       <div id="search-results-wl" class="search-results"></div>
@@ -599,7 +604,7 @@
     </button>
   </div>
 
-  <div class="history-header" style="margin-bottom:12px;">
+  <div class="history-header" style="margin-bottom:12px; margin-top:14px;">
     <div class="history-title" id="titulo-wl-dedicada" data-i18n="wl_default_title">Watchlist (0)</div>
   </div>
   <div class="watchlist-grid" id="grid-watchlist-dedicada"></div>
@@ -611,7 +616,7 @@
     <!-- 1. Cabecera de Calendario -->
     <div class="calendario-header-bar">
       <div class="calendario-title-wrap">
-        <button type="button" class="btn-cal-volver-inicio" onclick="irInicio()" title="Volver a Inicio" data-i18n-title="cal_btn_back_home">
+        <button type="button" class="btn-cal-volver-inicio" onclick="volverDesdeCalendario()" title="Volver a Inicio" data-i18n-title="cal_btn_back_home">
           <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
             <path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
           </svg>

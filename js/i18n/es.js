@@ -784,5 +784,6 @@ window.MEDIARY_I18N_ES = {
   "auth_google_direct_sub": "Vinculación directa para tu cuenta",
   "auth_google_direct_recent": "Cuentas recientes disponibles:",
   "auth_google_direct_email_lbl": "Correo de Google (@gmail.com):",
-  "auth_google_direct_btn": "Vincular y Conectar"
+  "auth_google_direct_btn": "Vincular y Conectar",
+  "wl_btn_back": "Volver"
 };

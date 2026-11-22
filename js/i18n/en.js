@@ -784,5 +784,6 @@ window.MEDIARY_I18N_EN = {
   "auth_google_direct_sub": "Direct linking for your account",
   "auth_google_direct_recent": "Available recent accounts:",
   "auth_google_direct_email_lbl": "Google email (@gmail.com):",
-  "auth_google_direct_btn": "Link and Connect"
+  "auth_google_direct_btn": "Link and Connect",
+  "wl_btn_back": "Back"
 };

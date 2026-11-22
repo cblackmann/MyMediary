@@ -566,6 +566,48 @@ function inicializarNavegacionHorizontalTabs() {
   }
   window.animarTransicionPestana = animarTransicionPestana;
 
+  let _animacionAtrasEnCurso = false;
+  function animarSalidaVistaAtras(elActual, fnDestino, elDestino) {
+    if (_animacionAtrasEnCurso) {
+      if (typeof fnDestino === 'function') fnDestino();
+      return;
+    }
+    if (!elActual) {
+      if (typeof fnDestino === 'function') fnDestino();
+      if (elDestino) {
+        elDestino.classList.remove('view-anim-enter-back');
+        void elDestino.offsetWidth;
+        elDestino.classList.add('view-anim-enter-back');
+        setTimeout(() => elDestino.classList.remove('view-anim-enter-back'), 280);
+      }
+      return;
+    }
+
+    _animacionAtrasEnCurso = true;
+    elActual.classList.remove('view-anim-exit-back');
+    void elActual.offsetWidth;
+    elActual.classList.add('view-anim-exit-back');
+
+    setTimeout(() => {
+      elActual.classList.remove('view-anim-exit-back');
+      if (typeof fnDestino === 'function') {
+        try {
+          fnDestino();
+        } catch (err) {
+          console.error('Error en transición atrás:', err);
+        }
+      }
+      _animacionAtrasEnCurso = false;
+      if (elDestino) {
+        elDestino.classList.remove('view-anim-enter-back');
+        void elDestino.offsetWidth;
+        elDestino.classList.add('view-anim-enter-back');
+        setTimeout(() => elDestino.classList.remove('view-anim-enter-back'), 280);
+      }
+    }, 180);
+  }
+  window.animarSalidaVistaAtras = animarSalidaVistaAtras;
+
   function obtenerElementoVistaTab(id) {
     if (id === 'inicio') return document.getElementById('vista-inicio');
     if (id === 'listas') return document.getElementById('vista-listas-extendida');
@@ -1317,7 +1359,12 @@ function volverAHistorialDesdeWatchlist() {
     else if (sLow.includes('manga')) subHist = 'Mangas';
     else subHist = 'Libros';
   }
-  cambiarCat(c, subHist);
+  const vCat = document.getElementById('vista-categoria');
+  if (typeof animarSalidaVistaAtras === 'function') {
+    animarSalidaVistaAtras(vCat, () => cambiarCat(c, subHist), vCat);
+  } else {
+    cambiarCat(c, subHist);
+  }
 }
 function renderizarSubtabs() { const box = document.getElementById('subtabs-bar'); const wlBox = document.getElementById('watchlist-dedicated-box'); if (box) box.innerHTML = ''; if (wlBox) wlBox.innerHTML = ''; const l = userPrefs.lang || 'es'; const c = estado.categoria; if (!CONFIG[c]) return;
 if (box) {
@@ -1327,7 +1374,15 @@ if (box) {
   btnBackListas.style.cssText = 'flex-shrink:0; font-weight:700; border-color:var(--border); display:inline-flex; align-items:center; gap:4px;';
   btnBackListas.title = l === 'en' ? 'Back to Lists' : 'Volver a Listas';
   btnBackListas.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg><span>${l === 'en' ? 'Lists' : 'Listas'}</span>`;
-  btnBackListas.onclick = () => abrirVistaDashboardListas();
+  btnBackListas.onclick = () => {
+    const vCat = document.getElementById('vista-categoria');
+    const vList = document.getElementById('vista-listas-extendida');
+    if (typeof animarSalidaVistaAtras === 'function') {
+      animarSalidaVistaAtras(vCat, () => abrirVistaDashboardListas(), vList);
+    } else {
+      abrirVistaDashboardListas();
+    }
+  };
   box.appendChild(btnBackListas);
 }
 const enWl = esSubcategoriaWatchlist(estado.subcategoria); CONFIG[c].subs.filter(s => !s.esWatchlist).forEach(s => { const btn = document.createElement('button');

@@ -67,6 +67,11 @@ function abrirMenuWatchlistGlobal(pushNav = true) {
   if (pushNav) registrarNavegacionApp('watchlists');
   guardarEstadoNavegacionActual('watchlists', '');
   resetearBuscadoresYFormularios();
+  if (estado.categoria === 'listas') {
+    estado.vistaPreviaWatchlists = 'listas';
+  } else if (estado.categoria !== 'watchlists') {
+    estado.vistaPreviaWatchlists = 'inicio';
+  }
   estado.categoria = 'watchlists';
   estado.subcategoria = '';
   // POINT 1: Default to Películas, NOT whatever was last open, and separate by subcategories cleanly
@@ -74,6 +79,9 @@ function abrirMenuWatchlistGlobal(pushNav = true) {
   estado.wlSubcategoria = 'Películas';
   actualizarBarraNavegacionMovil('m-btn-listas');
   actualizarNavWebActiva();
+  if (typeof actualizarVisibilidadMenuInferior === 'function') {
+    actualizarVisibilidadMenuInferior(false);
+  }
   document.getElementById('vista-inicio').style.display = 'none';
   document.getElementById('vista-categoria').style.display = 'none';
   document.getElementById('vista-discover').style.display = 'none';
@@ -85,6 +93,34 @@ function abrirMenuWatchlistGlobal(pushNav = true) {
   renderizarVistaWatchlistsDedicada();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+function volverDesdeWatchlists() {
+  const vWl = document.getElementById('vista-watchlists');
+  const destino = (estado.vistaPreviaWatchlists === 'listas') ? 'listas' : 'inicio';
+  const elDestino = destino === 'listas' ? document.getElementById('vista-listas-extendida') : document.getElementById('vista-inicio');
+
+  if (typeof animarSalidaVistaAtras === 'function') {
+    animarSalidaVistaAtras(vWl, () => {
+      if (typeof actualizarVisibilidadMenuInferior === 'function') {
+        actualizarVisibilidadMenuInferior(true);
+      }
+      if (destino === 'listas') {
+        if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas();
+      } else {
+        if (typeof irInicio === 'function') irInicio();
+      }
+    }, elDestino);
+  } else {
+    if (typeof actualizarVisibilidadMenuInferior === 'function') {
+      actualizarVisibilidadMenuInferior(true);
+    }
+    if (destino === 'listas') {
+      if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas();
+    } else {
+      if (typeof irInicio === 'function') irInicio();
+    }
+  }
+}
+window.volverDesdeWatchlists = volverDesdeWatchlists;
 function abrirMenuWatchlistMovil() { actualizarBarraNavegacionMovil('m-btn-listas'); abrirMenuWatchlistGlobal(); }
 
 function seleccionarCategoriaWl(cat) {
@@ -125,7 +161,9 @@ function renderizarVistaWatchlistsDedicada() {
     const totalCat = c.subs.reduce((acc, s) => acc + contarItemsWatchlistDe(c.cat, s.id), 0);
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = `wl-cat-pill ${c.cat === catActual ? 'active' : ''}`;
+    const catKey = c.cat.toLowerCase();
+    btn.className = `wl-cat-pill wl-pill-${catKey} ${c.cat === catActual ? 'active' : ''}`;
+    btn.dataset.cat = c.cat;
     btn.innerHTML = `<span class="emoji-dyn">${c.emoji}</span><span>${I18N[l]?.cats?.[c.cat] || c.nombre}</span><span class="wl-pill-count">${totalCat}</span>`;
     btn.onclick = () => seleccionarCategoriaWl(c.cat);
     catBar.appendChild(btn);
@@ -144,7 +182,9 @@ function renderizarVistaWatchlistsDedicada() {
     const cant = contarItemsWatchlistDe(catActual, s.id);
     const btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = `subtab-btn ${s.id === estado.wlSubcategoria ? 'active' : ''}`;
+    const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(catActual, s.id) : null;
+    const subColClass = metaSub ? `subtab-cat-${metaSub.key}` : '';
+    btn.className = `subtab-btn ${s.id === estado.wlSubcategoria ? 'active' : ''} ${subColClass}`;
     btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l]?.subs?.[s.id] || s.nombre} <span class="wl-count-badge" style="margin-left:5px;">${cant}</span>`;
     btn.onclick = () => seleccionarSubcategoriaWl(s.id);
     subBar.appendChild(btn);
@@ -166,7 +206,7 @@ function renderizarVistaWatchlistsDedicada() {
 
   grid.innerHTML = '';
   if (!items.length) {
-    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:36px 20px; color:var(--muted); background:var(--card); border-radius:4px; border:1px solid var(--border); line-height:1.6;">${l === 'en' ? `No pending items in <strong>Watchlist: ${nomSub}</strong>.<br><span style="font-size:0.85rem;">Use the search bar above to add one to this list or explore Discover!</span>` : `No tienes elementos pendientes en <strong>Watchlist: ${nomSub}</strong>.<br><span style="font-size:0.85rem;">¡Usa el buscador de arriba para agregar uno a esta lista o explora Discover!</span>`}</div>`;
+    grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:36px 20px; color:var(--muted); background:var(--card); border-radius:2px; border:1px solid var(--border); line-height:1.6;">${l === 'en' ? `No pending items in <strong>Watchlist: ${nomSub}</strong>.<br><span style="font-size:0.85rem;">Use the search bar above to add one to this list or explore Discover!</span>` : `No tienes elementos pendientes en <strong>Watchlist: ${nomSub}</strong>.<br><span style="font-size:0.85rem;">¡Usa el buscador de arriba para agregar uno a esta lista o explora Discover!</span>`}</div>`;
     aplicarEstilosGlobales();
     return;
   }
@@ -176,12 +216,14 @@ function renderizarVistaWatchlistsDedicada() {
     const card = document.createElement('div');
     card.className = 'watchlist-card';
     const catLblWl = it.categoria ? ((typeof traducirNombreCat === 'function') ? traducirNombreCat(it.categoria) : it.categoria) : '';
+    const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(it.categoria, it.subcategoria) : null;
+    const catColorVar = metaCol ? `var(--cat-color-${metaCol.key})` : 'var(--accent)';
     card.innerHTML = `
       <img class="watchlist-poster" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'170\' height=\'255\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'170\\' height=\\'255\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'" onclick="abrirFichaTecnica('${it.id}')" title="${tLang('Ver ficha técnica', 'View details')}">
       <div class="watchlist-body">
         <div>
           <div class="watchlist-item-title" onclick="abrirFichaTecnica('${it.id}')" style="cursor:pointer;">${it.titulo}</div>
-          <div class="watchlist-item-meta">${catLblWl ? `<span style="color:var(--accent);font-weight:700;">${catLblWl}</span> · ` : ''}${it.creador} ${it.anio ? '(' + it.anio + ')' : ''}</div>
+          <div class="watchlist-item-meta">${catLblWl ? `<span style="color:${catColorVar};font-weight:700;">${catLblWl}</span> · ` : ''}${it.creador} ${it.anio ? '(' + it.anio + ')' : ''}</div>
           ${obtenerBadgeAmigoActividad(it.titulo, it.categoria)}
         </div>
         <div class="watchlist-actions">
