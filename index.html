@@ -846,6 +846,14 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
 .btn-psn-sync-prominent:active{transform:translateY(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);}
 .home-playstation-card-compact.is-steam-active .btn-psn-sync-prominent{background:rgba(102,192,244,0.18);border-color:rgba(102,192,244,0.5);color:#66c0f4;}
 .home-playstation-card-compact.is-steam-active .btn-psn-sync-prominent:hover{background:#1b2838;border-color:#66c0f4;color:#fff;box-shadow:0 4px 14px rgba(102,192,244,0.38);}
+.btn-psn-select-game-prominent{background:rgba(56,189,248,0.16);border:1px solid rgba(56,189,248,0.45);color:#38bdf8;font-size:0.77rem;font-weight:700;border-radius:6px;padding:3px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--tr);height:28px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.12);user-select:none;}
+.btn-psn-select-game-prominent:hover{background:#38bdf8;border-color:#38bdf8;color:#0f172a;box-shadow:0 4px 14px rgba(56,189,248,0.4);transform:translateY(-1px);}
+.btn-psn-select-game-prominent:active{transform:translateY(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.home-playstation-card-compact.is-steam-active .btn-psn-select-game-prominent{background:rgba(102,192,244,0.16);border-color:rgba(102,192,244,0.45);color:#66c0f4;}
+.home-playstation-card-compact.is-steam-active .btn-psn-select-game-prominent:hover{background:#66c0f4;border-color:#66c0f4;color:#0f172a;box-shadow:0 4px 14px rgba(102,192,244,0.4);}
+.btn-psn-stop-prominent{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.38);color:#ef4444;font-size:0.77rem;font-weight:700;border-radius:6px;padding:3px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:var(--tr);height:28px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.12);user-select:none;}
+.btn-psn-stop-prominent:hover{background:#ef4444;border-color:#ef4444;color:#fff;box-shadow:0 4px 14px rgba(239,68,68,0.35);transform:translateY(-1px);}
+.btn-psn-stop-prominent:active{transform:translateY(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);}
 .btn-psn-sync-quick{width:26px;height:26px;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.08);border:1px solid var(--border);color:var(--muted);transition:var(--tr);flex-shrink:0;user-select:none;}
 .btn-psn-sync-quick:hover{color:var(--accent);background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.4);transform:scale(1.12);}
 .btn-psn-sync-quick:active{transform:scale(0.96);}
@@ -11107,6 +11115,14 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
       Vincula tu cuenta de PlayStation para habilitar la tarjeta <strong>"Jugando ahora"</strong> en vivo y sincronizar tu colección de trofeos y horas jugadas:
     </p>
 
+    <!-- Consejo destacado: Selector instantáneo de juego -->
+    <div style="background:rgba(56,189,248,0.08); border:1px solid rgba(56,189,248,0.25); border-radius:4px; padding:10px 12px; margin-bottom:12px; display:flex; align-items:center; gap:10px;">
+      <span style="font-size:1.2rem; flex-shrink:0;">🎮</span>
+      <div style="font-size:0.75rem; color:var(--text); line-height:1.4;">
+        <strong>¿Estás jugando en tu consola ahora mismo?</strong> Puedes tocar directamente la tarjeta en la pestaña Inicio o el botón <em>"Elegir juego"</em> para seleccionarlo en 1 segundo con su carátula oficial y sincronizarlo con tus amigos.
+      </div>
+    </div>
+
     <!-- Opción 1: Conectar por PSN Online ID -->
     <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
       <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
@@ -11123,13 +11139,29 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
       </div>
     </div>
 
-    <!-- Opción 2: Token NPSSO (Opcional, para presencia en vivo PS5/PS4) -->
+    <!-- Opción 2: Detección automática en vivo vía Discord (Lanyard) -->
     <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
-      <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
-        <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span> <span>Token NPSSO (Opcional · Presencia en vivo)</span>
+      <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        <span>Detección automática en vivo vía Discord</span>
+        <span style="font-size:0.68rem; background:rgba(88,101,242,0.18); color:#818cf8; padding:1px 6px; border-radius:3px; font-weight:700;">Recomendado</span>
       </div>
       <p style="font-size:0.75rem; color:var(--muted); margin:0 0 8px 0; line-height:1.4;">
-        Para detectar en vivo qué juego tienes abierto en tu PS5/PS4 y tus horas exactas, puedes pegar tu código NPSSO de 64 caracteres de Sony:
+        Discord tiene enlace oficial con PlayStation y transmite tu juego en tiempo real sin cookies ni bloqueos. Si vinculaste tu PSN a Discord en Ajustes > Conexiones, ingresa tu Discord User ID:
+      </p>
+      <div class="app-connect-input-row" style="margin-top:6px;">
+        <input type="text" id="psn-input-discord-id" name="discord_user_id_modal" class="form-input" placeholder="Tu Discord User ID numérico" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" style="font-size:0.8rem; flex:1;">
+        <button type="button" class="btn-connect-action" style="background:#5865F2; color:#fff;" onclick="guardarDiscordIdDesdeInput('psn-input-discord-id')">Guardar</button>
+      </div>
+    </div>
+
+    <!-- Opción 3: Token NPSSO / Bearer Token -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:12px 14px; margin-bottom:12px;">
+      <div style="font-weight:700; font-size:0.86rem; color:var(--text); margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+        <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span> <span>Token NPSSO o Bearer Token de Sony</span>
+      </div>
+      <p style="font-size:0.75rem; color:var(--muted); margin:0 0 8px 0; line-height:1.4;">
+        Puedes ingresar tu código NPSSO o token Bearer de PlayStation:
       </p>
       <div style="font-size:0.73rem; color:var(--muted); background:var(--card); padding:8px 10px; border-radius:4px; border:1px solid var(--border); margin-bottom:10px; line-height:1.45; word-break:break-word;">
         1. Inicia sesión en tu cuenta en <a href="https://my.playstation.com" target="_blank" rel="noopener noreferrer" style="color:#38bdf8; text-decoration:underline;">playstation.com ↗</a>.<br>
@@ -19945,6 +19977,7 @@ function empaquetarPreferenciasYAppsEnPerfil_(opciones = {}) {
       connected: localStorage.getItem('mediary_psn_connected') === 'true',
       username: localStorage.getItem('mediary_psn_username') || '',
       npsso: localStorage.getItem('mediary_psn_npsso') || '',
+      discordUserId: localStorage.getItem('mediary_discord_user_id') || '',
       user: localStorage.getItem('mediary_psn_user') || '',
       stats: localStorage.getItem('mediary_psn_stats') || '',
       nowPlaying: localStorage.getItem('mediary_psn_now_playing') || '',
@@ -20226,12 +20259,13 @@ function restaurarPreferenciasYAppsDesdeNube(prefs, opciones = {}) {
           localStorage.setItem('mediary_psn_connected', 'true');
           setOrRemove('mediary_psn_username', ps.username);
           setOrRemove('mediary_psn_npsso', ps.npsso);
+          setOrRemove('mediary_discord_user_id', ps.discordUserId);
           setOrRemove('mediary_psn_user', ps.user);
           setOrRemove('mediary_psn_stats', ps.stats);
           setOrRemove('mediary_psn_now_playing', ps.nowPlaying || prefs.actividad?.playstationNowPlaying);
           setOrRemove('mediary_psn_manual_state', ps.manualState);
         } else {
-          ['mediary_psn_connected', 'mediary_psn_username', 'mediary_psn_npsso', 'mediary_psn_user', 'mediary_psn_stats', 'mediary_psn_now_playing', 'mediary_psn_manual_state'].forEach(k => localStorage.removeItem(k));
+          ['mediary_psn_connected', 'mediary_psn_username', 'mediary_psn_npsso', 'mediary_discord_user_id', 'mediary_psn_user', 'mediary_psn_stats', 'mediary_psn_now_playing', 'mediary_psn_manual_state'].forEach(k => localStorage.removeItem(k));
         }
       }
 
@@ -25942,7 +25976,36 @@ function renderizarAppsVinculadasConfig() {
         extraHtml = `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:0.74rem;color:var(--muted);">Steam Web API Key</span><button type="button" onclick="toggleSteamApiKeyInput()" id="btn-toggle-steam-key" style="background:none;border:none;color:#66c0f4;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasKey ? (l === 'en' ? 'Active' : 'Activa') : (l === 'en' ? '+ Configure' : '+ Configurar')}</button></div><div id="cfg-steam-apikey-wrap" style="display:none;margin-top:8px;"><div class="app-connect-input-row"><input type="text" id="cfg-steam-api-key-input" name="steam_api_key_input" class="form-input" placeholder="Steam Web API Key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" style="-webkit-text-security:disc;text-security:disc;" value="${(localStorage.getItem('mediary_steam_api_key') || '').replace(/"/g, '&quot;')}"><button type="button" class="btn-connect-action btn-connect-steam" onclick="guardarSteamApiKeyDesdeInput('cfg-steam-api-key-input')">${l === 'en' ? 'Save' : 'Guardar'}</button></div></div></div>`;
       } else if (appSel.id === 'playstation') {
         const hasTok = !!localStorage.getItem('mediary_psn_npsso');
-        extraHtml = `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:0.74rem;color:var(--muted);">Token NPSSO</span><button type="button" onclick="togglePsnNpssoInput()" id="btn-toggle-psn-npsso" style="background:none;border:none;color:#38bdf8;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasTok ? (l === 'en' ? 'Active' : 'Activo') : (l === 'en' ? '+ Configure' : '+ Configurar')}</button></div><div id="cfg-psn-npsso-wrap" style="display:none;margin-top:8px;"><div class="app-connect-input-row"><input type="text" id="cfg-psn-npsso-input" name="psn_npsso_input" class="form-input" placeholder="Token NPSSO" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" style="-webkit-text-security:disc;text-security:disc;" value="${(localStorage.getItem('mediary_psn_npsso') || '').replace(/"/g, '&quot;')}"><button type="button" class="btn-connect-action btn-connect-psn" onclick="guardarPsnNpssoDesdeInput('cfg-psn-npsso-input')">${l === 'en' ? 'Save' : 'Guardar'}</button></div></div></div>`;
+        const hasDiscord = !!localStorage.getItem('mediary_discord_user_id');
+        extraHtml = `
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.74rem;color:var(--muted);display:flex;align-items:center;gap:5px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+                <span>Discord ID (Auto-sync)</span>
+              </span>
+              <button type="button" onclick="toggleDiscordIdInput()" id="btn-toggle-discord-id" style="background:none;border:none;color:#818cf8;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasDiscord ? (l === 'en' ? 'Active' : 'Activo') : (l === 'en' ? '+ Configure' : '+ Configurar')}</button>
+            </div>
+            <div id="cfg-discord-id-wrap" style="display:none;margin-top:8px;">
+              <p style="font-size:0.71rem;color:var(--muted);margin:0 0 6px 0;line-height:1.35;">${l === 'en' ? 'Detects your PS5/PS4 live games via your linked Discord account with zero token expiration.' : 'Detecta tus juegos de PS5/PS4 en vivo a través de tu cuenta de Discord vinculada a PlayStation.'}</p>
+              <div class="app-connect-input-row">
+                <input type="text" id="cfg-discord-id-input" name="discord_id_input" class="form-input" placeholder="Discord User ID" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" value="${(localStorage.getItem('mediary_discord_user_id') || '').replace(/"/g, '&quot;')}">
+                <button type="button" class="btn-connect-action" style="background:#5865F2;color:#fff;" onclick="guardarDiscordIdDesdeInput('cfg-discord-id-input')">${l === 'en' ? 'Save' : 'Guardar'}</button>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.74rem;color:var(--muted);">Token NPSSO (Sony)</span>
+              <button type="button" onclick="togglePsnNpssoInput()" id="btn-toggle-psn-npsso" style="background:none;border:none;color:#38bdf8;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasTok ? (l === 'en' ? 'Active' : 'Activo') : (l === 'en' ? '+ Configure' : '+ Configurar')}</button>
+            </div>
+            <div id="cfg-psn-npsso-wrap" style="display:none;margin-top:8px;">
+              <div class="app-connect-input-row">
+                <input type="text" id="cfg-psn-npsso-input" name="psn_npsso_input" class="form-input" placeholder="Token NPSSO" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" style="-webkit-text-security:disc;text-security:disc;" value="${(localStorage.getItem('mediary_psn_npsso') || '').replace(/"/g, '&quot;')}"><button type="button" class="btn-connect-action btn-connect-psn" onclick="guardarPsnNpssoDesdeInput('cfg-psn-npsso-input')">${l === 'en' ? 'Save' : 'Guardar'}</button>
+              </div>
+            </div>
+          </div>
+        `;
       }
       manageBox.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;"><div style="display:flex;align-items:center;gap:10px;min-width:0;">${appSel.svg}<div style="min-width:0;"><strong style="font-size:0.86rem;color:var(--text);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${safeUser}</strong></div></div><button type="button" onclick="abrirGestionAppVinculadaConfig(null)" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1;padding:4px;" aria-label="Cerrar">✕</button></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;"><button type="button" class="btn-spotify-sub-action" style="background:${appSel.bg};color:${appSel.color};border:1px solid ${appSel.color};" onclick="${appSel.syncFn}">${l === 'en' ? 'Sync' : 'Sincronizar'}</button><button type="button" class="btn-spotify-sub-action" style="background:rgba(239,68,68,0.08);color:#f87171;border:1px solid rgba(239,68,68,0.25);" onclick="${appSel.disconnectFn}">${l === 'en' ? 'Disconnect' : 'Desconectar'}</button></div>${extraHtml}`;
       manageBox.style.display = 'block';
@@ -28391,12 +28454,15 @@ async function forzarActualizacionJuegosLive(btnEl) {
     mostrarToastPersonalizado(`🎮 ${plat}: ${l === 'en' ? 'Playing' : 'Jugando a'} ${tit}`);
   } else {
     const hasNpsso = !!(localStorage.getItem('mediary_psn_npsso') || '').trim();
-    if (isPsnConn && !hasNpsso && !isSteamConn) {
+    const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
+    if (isPsnConn && !hasDiscord && !hasNpsso) {
       mostrarToastPersonalizado(l === 'en'
-        ? '🎮 PSN in rest mode. (Tip: Add your Sony NPSSO token to detect games automatically)'
-        : '🎮 PSN en reposo. (Tip: Agrega tu Token NPSSO de Sony en Configuración > Cuentas para detectar juegos automáticamente)');
+        ? '🎮 Gaming in rest mode · Tap "Select game" to set your title or link Discord ID for auto-sync'
+        : '🎮 En reposo · Toca "Elegir juego" para poner lo que juegas o vincula tu Discord ID para auto-sync');
     } else {
-      mostrarToastPersonalizado(l === 'en' ? '🎮 Gaming accounts synced · Rest mode' : '🎮 Cuentas sincronizadas · En reposo');
+      mostrarToastPersonalizado(l === 'en'
+        ? '🎮 Gaming synced · Rest mode (Tap "Select game" to set your title)'
+        : '🎮 Cuentas sincronizadas · En reposo (Toca "Elegir juego" para elegir título)');
     }
   }
 }
@@ -30458,6 +30524,8 @@ function guardarEstadoEnVivoPlayStation_(rawNowPlaying, opciones = {}) {
       platform,
       source: 'playstation',
       image,
+      manual: !!(rawNowPlaying.manual || opciones.manual || (prev && prev.manual && mismoJuegoActivo)),
+      viaDiscord: !!rawNowPlaying.viaDiscord,
       studio: rawNowPlaying.studio || 'PlayStation',
       status: rawNowPlaying.status || 'Jugando ahora',
       hours: rawNowPlaying.hours || 0,
@@ -30501,6 +30569,97 @@ function guardarEstadoEnVivoPlayStation_(rawNowPlaying, opciones = {}) {
 }
 window.guardarEstadoEnVivoPlayStation_ = guardarEstadoEnVivoPlayStation_;
 
+async function consultarActividadDiscordLive_(forzar = false) {
+  const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
+  if (!discordId) return null;
+
+  try {
+    const res = await fetch(`https://api.lanyard.rest/v1/users/${encodeURIComponent(discordId)}`, {
+      signal: AbortSignal.timeout(3800),
+      cache: 'no-store'
+    });
+    if (!res.ok) return null;
+    const json = await res.json().catch(() => null);
+    if (!json || !json.success || !json.data) return null;
+
+    const data = json.data;
+    const activities = Array.isArray(data.activities) ? data.activities : [];
+
+    // Buscar actividad de juego (type === 0 es Playing game)
+    const gameAct = activities.find(a => a && a.type === 0);
+    if (gameAct && gameAct.name) {
+      const gName = String(gameAct.name).trim();
+      const largeText = String(gameAct.assets?.large_text || '').toLowerCase();
+      const details = String(gameAct.details || '').toLowerCase();
+      const state = String(gameAct.state || '').toLowerCase();
+      const platformStr = String(gameAct.platform || '').toLowerCase();
+
+      let plat = 'PS5';
+      let isPsn = false;
+      let isSteam = false;
+
+      if (platformStr.includes('ps4') || largeText.includes('playstation 4') || largeText.includes('ps4')) {
+        plat = 'PS4';
+        isPsn = true;
+      } else if (platformStr.includes('ps5') || largeText.includes('playstation 5') || largeText.includes('ps5') || largeText.includes('playstation')) {
+        plat = 'PS5';
+        isPsn = true;
+      } else if (platformStr.includes('steam') || largeText.includes('steam')) {
+        plat = 'Steam';
+        isSteam = true;
+      } else {
+        isPsn = localStorage.getItem('mediary_psn_connected') === 'true';
+        plat = isPsn ? 'PS5' : 'Steam';
+      }
+
+      let img = '';
+      if (gameAct.assets?.large_image) {
+        const li = gameAct.assets.large_image;
+        if (li.startsWith('mp:external/')) {
+          img = 'https://media.discordapp.net/external/' + li.replace('mp:external/', '');
+        } else if (!li.includes('/')) {
+          img = `https://cdn.discordapp.com/app-assets/${gameAct.application_id}/${li}.png`;
+        }
+      }
+
+      if (isSteam && !isPsn) {
+        guardarEstadoEnVivoSteam_({
+          isPlaying: true,
+          titleName: gName,
+          platform: 'Steam',
+          image: img,
+          source: 'steam'
+        });
+        return { isPlaying: true, titleName: gName, platform: 'Steam', source: 'steam', image: img };
+      } else {
+        const liveRes = {
+          isPlaying: true,
+          titleName: gName,
+          platform: plat,
+          source: 'playstation',
+          image: img,
+          viaDiscord: true
+        };
+        guardarEstadoEnVivoPlayStation_(liveRes);
+        return liveRes;
+      }
+    } else {
+      let prevSt = null;
+      try {
+        const pRaw = localStorage.getItem('mediary_psn_now_playing');
+        if (pRaw) prevSt = JSON.parse(pRaw);
+      } catch (e) {}
+      if (prevSt && prevSt.isPlaying && (prevSt.viaDiscord || !prevSt.manual)) {
+        guardarEstadoEnVivoPlayStation_({ isPlaying: false, source: 'playstation', platform: 'PS5' });
+      }
+      return { isPlaying: false, source: 'playstation' };
+    }
+  } catch (e) {
+    return null;
+  }
+}
+window.consultarActividadDiscordLive_ = consultarActividadDiscordLive_;
+
 async function consultarActividadEnVivoPlayStation_(forzar = false) {
   if (localStorage.getItem('mediary_psn_connected') !== 'true') return null;
   const username = (localStorage.getItem('mediary_psn_username') || '').trim();
@@ -30530,17 +30689,29 @@ async function consultarActividadEnVivoPlayStation_(forzar = false) {
   try {
     let liveResult = null;
 
-    // 1. Detección directa vía Sony PlayStation Network (Token NPSSO o Bearer Token)
-    const npsso = (localStorage.getItem('mediary_psn_npsso') || '').trim();
-    let accessToken = (localStorage.getItem('mediary_psn_access_token') || '').trim();
-    const tokenCandidates = [];
-    if (accessToken) tokenCandidates.push(accessToken);
-    if (npsso && npsso !== accessToken) tokenCandidates.push(npsso);
-
-    for (const tok of tokenCandidates) {
+    // 0. Detección automática en vivo vía Discord Lanyard si está configurado
+    const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
+    if (discordId) {
       try {
-        const presRes = await fetch('https://m.np.playstation.com/api/userProfile/v1/internal/users/me/basicPresences?type=primary', {
-          headers: {
+        const discRes = await consultarActividadDiscordLive_(forzar);
+        if (discRes && discRes.isPlaying) {
+          liveResult = discRes;
+        }
+      } catch (_) {}
+    }
+
+    // 1. Detección directa vía Sony PlayStation Network (Token NPSSO o Bearer Token)
+    if (liveResult === null) {
+      const npsso = (localStorage.getItem('mediary_psn_npsso') || '').trim();
+      let accessToken = (localStorage.getItem('mediary_psn_access_token') || '').trim();
+      const tokenCandidates = [];
+      if (accessToken) tokenCandidates.push(accessToken);
+      if (npsso && npsso !== accessToken) tokenCandidates.push(npsso);
+
+      for (const tok of tokenCandidates) {
+        try {
+          const presRes = await fetch('https://m.np.playstation.com/api/userProfile/v1/internal/users/me/basicPresences?type=primary', {
+            headers: {
             'Authorization': `Bearer ${tok}`,
             'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8'
           },
@@ -30581,6 +30752,7 @@ async function consultarActividadEnVivoPlayStation_(forzar = false) {
         }
       } catch (_) {}
     }
+  }
 
     // 2. Consulta pública auxiliar vía perfil público PSNProfiles
     if (liveResult === null) {
@@ -30837,6 +31009,10 @@ function abrirModalConectarPsn() {
   if (npssoInp) {
     npssoInp.value = localStorage.getItem('mediary_psn_npsso') || '';
   }
+  const discordInp = document.getElementById('psn-input-discord-id');
+  if (discordInp) {
+    discordInp.value = localStorage.getItem('mediary_discord_user_id') || '';
+  }
 }
 
 function cerrarModalConectarPsn() {
@@ -30884,11 +31060,16 @@ function conectarPlayStationPerfil() {
 
   const npssoInp = document.getElementById('psn-input-npsso-modal');
   const npsso = (npssoInp?.value || '').trim();
+  const discordInp = document.getElementById('psn-input-discord-id');
+  const discordId = (discordInp?.value || '').trim();
 
   localStorage.setItem('mediary_psn_connected', 'true');
   localStorage.setItem('mediary_psn_username', raw);
   if (npsso) {
     localStorage.setItem('mediary_psn_npsso', npsso);
+  }
+  if (discordId) {
+    localStorage.setItem('mediary_discord_user_id', discordId);
   }
 
   cerrarModalConectarPsn();
@@ -30912,6 +31093,7 @@ function desconectarPlayStation() {
   localStorage.removeItem('mediary_psn_stats');
   localStorage.removeItem('mediary_psn_now_playing');
   localStorage.removeItem('mediary_psn_npsso');
+  localStorage.removeItem('mediary_discord_user_id');
   localStorage.removeItem('mediary_psn_last_auto_sync');
   actualizarUIPlayStation();
   renderizarPlayStationNowPlayingInicio(true);
@@ -31019,6 +31201,54 @@ function guardarPsnNpssoDesdeInput(inputId) {
   if (btn) btn.textContent = '+ Configurar token';
 }
 
+function toggleDiscordIdInput() {
+  const wrap = document.getElementById('cfg-discord-id-wrap');
+  const btn = document.getElementById('btn-toggle-discord-id');
+  if (!wrap) return;
+  const isHidden = wrap.style.display === 'none' || !wrap.style.display;
+  wrap.style.display = isHidden ? 'block' : 'none';
+  if (btn) {
+    const has = !!localStorage.getItem('mediary_discord_user_id');
+    btn.textContent = isHidden ? '— Ocultar' : (has ? 'Activo' : '+ Configurar');
+  }
+  if (isHidden) {
+    const inp = document.getElementById('cfg-discord-id-input');
+    if (inp) {
+      inp.value = localStorage.getItem('mediary_discord_user_id') || '';
+      setTimeout(() => inp.focus(), 80);
+    }
+  }
+}
+window.toggleDiscordIdInput = toggleDiscordIdInput;
+
+function guardarDiscordIdDesdeInput(inputId) {
+  const inp = document.getElementById(inputId);
+  const val = (inp?.value || '').trim();
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  if (val) {
+    localStorage.setItem('mediary_discord_user_id', val);
+    mostrarToastPersonalizado(l === 'en' ? 'Discord User ID saved · Auto-detection active' : 'Discord User ID guardado · Detección automática activada');
+    if (typeof consultarActividadDiscordLive_ === 'function') {
+      consultarActividadDiscordLive_(true).then(() => {
+        if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
+          renderizarPlayStationNowPlayingInicio(false);
+        }
+      });
+    }
+  } else {
+    localStorage.removeItem('mediary_discord_user_id');
+    mostrarToastPersonalizado(l === 'en' ? 'Discord ID removed' : 'Discord ID eliminado');
+  }
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
+  const wrap = document.getElementById('cfg-discord-id-wrap');
+  if (wrap) wrap.style.display = 'none';
+  const btn = document.getElementById('btn-toggle-discord-id');
+  if (btn) btn.textContent = val ? 'Activo' : '+ Configurar';
+}
+window.guardarDiscordIdDesdeInput = guardarDiscordIdDesdeInput;
+
 function obtenerJuegoEnProgresoPlayStation() {
   // Las tarjetas de juego en tiempo real no deben vincularse a registros del diario
   return null;
@@ -31095,6 +31325,35 @@ function renderizarListaJuegosModalEnVivo_() {
         });
       }
     } catch (e) {}
+  }
+
+  const popularesPsn = [
+    { tit: 'Astro Bot', cover: 'https://media.rawg.io/media/games/6b6/6b6a695be2e0ff36b04da102e3dc41dd.jpg', plat: 'PS5', source: 'playstation' },
+    { tit: "Marvel's Spider-Man 2", cover: 'https://media.rawg.io/media/games/043/043329aaeb7b63fbc19c991e604f7f6f.jpg', plat: 'PS5', source: 'playstation' },
+    { tit: 'God of War Ragnarök', cover: 'https://media.rawg.io/media/games/9aa/9aa42d16d425fa6f170459708643867a.jpg', plat: 'PS5', source: 'playstation' },
+    { tit: 'EA SPORTS FC 25', cover: 'https://media.rawg.io/media/games/c52/c529a6a81577c3855a90ad15570e3034.jpg', plat: 'PS5', source: 'playstation' },
+    { tit: 'Elden Ring', cover: 'https://media.rawg.io/media/games/b29/b2960c74da93519d11484042807e8577.jpg', plat: 'PS5', source: 'playstation' },
+    { tit: 'Black Myth: Wukong', cover: 'https://media.rawg.io/media/games/f8c/f8c6aed1916bed8648386c63c3e672e0.jpg', plat: 'PS5', source: 'playstation' },
+    { tit: 'The Last of Us Part I', cover: 'https://media.rawg.io/media/games/4be/4be6e471e695d7e52a8a816c27e85cfa.jpg', plat: 'PS5', source: 'playstation' },
+    { tit: 'Helldivers 2', cover: 'https://media.rawg.io/media/games/53c/53c07e056961474ecae2d1921c569f1a.jpg', plat: 'PS5', source: 'playstation' },
+    { tit: 'Silent Hill 2', cover: 'https://media.rawg.io/media/games/119/119a0f00225e36466399a9b0c5cb29c4.jpg', plat: 'PS5', source: 'playstation' },
+    { tit: 'Grand Theft Auto V', cover: 'https://media.rawg.io/media/games/456/456dea5e1c7e3cd0702502577319ea0a.jpg', plat: 'PS5', source: 'playstation' }
+  ];
+
+  const popularesSteam = [
+    { tit: 'Counter-Strike 2', cover: 'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/730/header.jpg', plat: 'Steam', source: 'steam' },
+    { tit: 'Dota 2', cover: 'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/570/header.jpg', plat: 'Steam', source: 'steam' },
+    { tit: "Baldur's Gate 3", cover: 'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1086940/header.jpg', plat: 'Steam', source: 'steam' },
+    { tit: 'Cyberpunk 2077', cover: 'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1091500/header.jpg', plat: 'Steam', source: 'steam' },
+    { tit: 'Elden Ring', cover: 'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1245620/header.jpg', plat: 'Steam', source: 'steam' },
+    { tit: 'Black Myth: Wukong', cover: 'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/2358720/header.jpg', plat: 'Steam', source: 'steam' },
+    { tit: 'Helldivers 2', cover: 'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/553850/header.jpg', plat: 'Steam', source: 'steam' },
+    { tit: 'Hades II', cover: 'https://shared.cloudflare.steamstatic.com/store_item_assets/steam/apps/1145350/header.jpg', plat: 'Steam', source: 'steam' }
+  ];
+
+  if (items.length < 8) {
+    const listPop = esSteam ? popularesSteam : popularesPsn;
+    listPop.forEach(p => agregarItem(p.tit, p.cover, p.plat, p.source));
   }
 
   if (items.length === 0) {
@@ -31192,24 +31451,23 @@ function seleccionarJuegoParaEnVivo(safeTit, safeCov, safePlat, safeSource) {
       status: l === 'en' ? 'Playing now' : 'Jugando ahora',
       hours: 0,
       image: cov,
+      manual: true,
       trophyProgress: '',
       updatedAt: Date.now()
     };
 
-    localStorage.setItem('mediary_psn_now_playing', JSON.stringify(data));
-    localStorage.setItem('mediary_psn_manual_state', 'playing');
-    localStorage.setItem('mediary_last_active_game_platform', 'playstation');
+    guardarEstadoEnVivoPlayStation_(data, { manual: true });
     cerrarModalSeleccionarJuegoPsn();
     renderizarPlayStationNowPlayingInicio(false);
     mostrarToastPersonalizado(l === 'en' ? `🎮 PlayStation: Now playing "${tit}"` : `🎮 PlayStation: Ahora jugando a "${tit}"`);
   }
 
   if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
-    sincronizarPreferenciasYAppsHaciaNube(false);
+    sincronizarPreferenciasYAppsHaciaNube(true);
   }
 }
 
-function iniciarJuegoManualPsn() {
+async function iniciarJuegoManualPsn() {
   const inp = document.getElementById('input-psn-otro-juego');
   const val = (inp?.value || '').trim();
   if (!val) {
@@ -31217,7 +31475,50 @@ function iniciarJuegoManualPsn() {
     return;
   }
   const isSteam = _modalJuegoPlataformaActiva === 'steam';
-  seleccionarJuegoParaEnVivo(encodeURIComponent(val), '', encodeURIComponent(isSteam ? 'Steam' : 'PS5'), encodeURIComponent(isSteam ? 'steam' : 'playstation'));
+  const plat = isSteam ? 'Steam' : 'PS5';
+  const source = isSteam ? 'steam' : 'playstation';
+
+  // Respuesta instantánea al usuario
+  seleccionarJuegoParaEnVivo(encodeURIComponent(val), '', encodeURIComponent(plat), encodeURIComponent(source));
+
+  // Búsqueda en segundo plano de carátula en alta resolución en RAWG
+  try {
+    if (typeof RAWG_K !== 'undefined' && RAWG_K) {
+      const q = encodeURIComponent(val);
+      const res = await fetch(`https://api.rawg.io/api/games?key=${RAWG_K}&search=${q}&page_size=1`, {
+        signal: AbortSignal.timeout(3500)
+      }).then(r => r.json()).catch(() => null);
+
+      const coverImg = res?.results?.[0]?.background_image;
+      if (coverImg) {
+        if (source === 'steam') {
+          const rawSt = localStorage.getItem('mediary_steam_now_playing');
+          if (rawSt) {
+            const stObj = JSON.parse(rawSt);
+            if (stObj && stObj.isPlaying && stObj.titleName === val) {
+              stObj.image = coverImg;
+              guardarEstadoEnVivoSteam_(stObj, { manual: true });
+              if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
+                renderizarPlayStationNowPlayingInicio(false);
+              }
+            }
+          }
+        } else {
+          const rawPs = localStorage.getItem('mediary_psn_now_playing');
+          if (rawPs) {
+            const psObj = JSON.parse(rawPs);
+            if (psObj && psObj.isPlaying && psObj.titleName === val) {
+              psObj.image = coverImg;
+              guardarEstadoEnVivoPlayStation_(psObj, { manual: true });
+              if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
+                renderizarPlayStationNowPlayingInicio(false);
+              }
+            }
+          }
+        }
+      }
+    }
+  } catch (_) {}
 }
 
 function detenerJuegoPsn() {
@@ -31491,7 +31792,7 @@ function dibujarTarjetaPlayStationCompacta(data) {
   return `
     <div class="home-playstation-card-compact ${isSteam ? 'is-steam-active' : ''} home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" data-game-platform="${isSteam ? 'steam' : 'playstation'}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
       <!-- i. Portada -->
-      <div class="home-psn-cover-compact">
+      <div class="home-psn-cover-compact" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalSeleccionarJuegoPsn()" title="${l === 'en' ? 'Change game' : 'Cambiar juego'}">
         ${coverHtml}
       </div>
 
@@ -31527,6 +31828,14 @@ function dibujarTarjetaPlayStationCompacta(data) {
               <span class="home-np-dot" style="background:#10b981;"></span>
               <span>${l === 'en' ? 'Live' : 'En vivo'}</span>
             </div>
+            <button type="button" class="btn-psn-select-game-prominent" onclick="event.stopPropagation(); abrirModalSeleccionarJuegoPsn()" title="${l === 'en' ? 'Change game' : 'Cambiar juego'}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
+              <span>${l === 'en' ? 'Change game' : 'Cambiar juego'}</span>
+            </button>
+            <button type="button" class="btn-psn-stop-prominent" onclick="event.stopPropagation(); ${stopAction}" title="${l === 'en' ? 'Rest mode' : 'En reposo'}">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              <span>${l === 'en' ? 'Rest mode' : 'En reposo'}</span>
+            </button>
             <button type="button" class="btn-psn-sync-prominent" onclick="event.stopPropagation(); forzarActualizacionJuegosLive(this)" title="${l === 'en' ? 'Sync gaming status' : 'Sincronizar estado'}">
               <svg class="btn-sync-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               <span class="btn-sync-text">${l === 'en' ? 'Sync status' : 'Sincronizar estado'}</span>
@@ -31563,6 +31872,7 @@ function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {
   const soloSteam = isSteamConn && !isPsnConn;
   const ambas = isPsnConn && isSteamConn;
   const hasNpsso = !!(localStorage.getItem('mediary_psn_npsso') || '').trim();
+  const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
 
   const platformShort = ambas ? 'PlayStation · Steam' : (soloSteam ? 'Steam' : 'PlayStation');
   const platformHeader = ambas ? 'PlayStation · Steam' : (soloSteam ? 'Steam' : 'PlayStation Network');
@@ -31595,8 +31905,8 @@ function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {
 
   return `
     <div class="home-playstation-card-compact ${soloSteam ? 'is-steam-active' : ''} home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" data-game-platform="${soloSteam ? 'steam' : (ambas ? 'both' : 'playstation')}" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <!-- i. Portada con mando sobrio -->
-      <div class="home-psn-cover-compact" style="display:grid; place-items:center; ${coverStyle}">
+      <!-- i. Portada con mando sobrio y click para elegir juego -->
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; cursor:pointer; ${coverStyle}" onclick="event.stopPropagation(); abrirModalSeleccionarJuegoPsn()" title="${l === 'en' ? 'Select game you are playing' : 'Elegir juego que estás jugando'}">
         <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px; height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
 
@@ -31632,14 +31942,18 @@ function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {
               <span class="home-np-dot" style="background:#64748b; box-shadow:none; animation:none;"></span>
               <span>${l === 'en' ? 'Rest mode' : 'En reposo'}</span>
             </div>
+            <button type="button" class="btn-psn-select-game-prominent" onclick="event.stopPropagation(); abrirModalSeleccionarJuegoPsn()" title="${l === 'en' ? 'Select game you are playing now' : 'Elegir juego que estás jugando ahora'}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
+              <span>${l === 'en' ? 'Select game' : 'Elegir juego'}</span>
+            </button>
             <button type="button" class="btn-psn-sync-prominent" onclick="event.stopPropagation(); forzarActualizacionJuegosLive(this)" title="${l === 'en' ? 'Sync gaming status' : 'Sincronizar estado'}">
               <svg class="btn-sync-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               <span class="btn-sync-text">${l === 'en' ? 'Sync status' : 'Sincronizar estado'}</span>
             </button>
-            ${(!hasNpsso && isPsnConn) ? `
-              <button type="button" class="btn-psn-token-hint" onclick="event.stopPropagation(); abrirModalConectarPsn()" title="${l === 'en' ? 'Set up Sony NPSSO Token for automatic live detection' : 'Configurar Token NPSSO de Sony para detección automática'}">
+            ${(!hasNpsso && !hasDiscord && isPsnConn) ? `
+              <button type="button" class="btn-psn-token-hint" onclick="event.stopPropagation(); abrirModalConectarPsn()" title="${l === 'en' ? 'Set up Discord or NPSSO for automatic live detection' : 'Configurar Discord o NPSSO para detección automática'}">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg>
-                <span>${l === 'en' ? 'Token auto-sync' : 'Token auto-sync'}</span>
+                <span>Auto-sync</span>
               </button>
             ` : ''}
           </div>
