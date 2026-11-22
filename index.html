@@ -125,7 +125,75 @@ if (typeof flatpickr === 'undefined') {
 </script>
 <style>
 .preload-no-transition,.preload-no-transition *,.preload-no-transition *::before,.preload-no-transition *::after{-webkit-transition:none !important;-moz-transition:none !important;-ms-transition:none !important;-o-transition:none !important;transition:none !important;}
-:root{--font-family:'Lexend',sans-serif;--font-scale:75%;--b-nav:84px;--tr:all .2s cubic-bezier(.4,0,.2,1);--color-scheme:dark;}
+:root{--font-family:'Lexend',sans-serif;--font-scale:75%;--b-nav:84px;--tr:all .2s cubic-bezier(.4,0,.2,1);--color-scheme:dark;
+  /* PALETA SUTIL POR CATEGORÍA Y SUBCATEGORÍA (DARK POR DEFECTO) */
+  --cat-color-peliculas: #c084fc;
+  --cat-bg-peliculas: rgba(192, 132, 252, 0.12);
+  --cat-border-peliculas: rgba(192, 132, 252, 0.28);
+
+  --cat-color-series: #38bdf8;
+  --cat-bg-series: rgba(56, 189, 248, 0.12);
+  --cat-border-series: rgba(56, 189, 248, 0.28);
+
+  --cat-color-musica: #f472b6;
+  --cat-bg-musica: rgba(244, 114, 182, 0.12);
+  --cat-border-musica: rgba(244, 114, 182, 0.28);
+
+  --cat-color-juegos: #60a5fa;
+  --cat-bg-juegos: rgba(96, 165, 250, 0.12);
+  --cat-border-juegos: rgba(96, 165, 250, 0.28);
+
+  --cat-color-lecturas: #d97706;
+  --cat-bg-lecturas: rgba(217, 119, 6, 0.12);
+  --cat-border-lecturas: rgba(217, 119, 6, 0.28);
+
+  --cat-color-libros: #facc15;
+  --cat-bg-libros: rgba(250, 204, 21, 0.12);
+  --cat-border-libros: rgba(250, 204, 21, 0.28);
+
+  --cat-color-comics: #fb923c;
+  --cat-bg-comics: rgba(251, 146, 60, 0.12);
+  --cat-border-comics: rgba(251, 146, 60, 0.28);
+
+  --cat-color-mangas: #f87171;
+  --cat-bg-mangas: rgba(248, 113, 113, 0.12);
+  --cat-border-mangas: rgba(248, 113, 113, 0.28);
+}
+
+[data-theme$="-light"], [data-theme="parchment"], [data-theme="creme-latte"] {
+  /* PALETA SUTIL POR CATEGORÍA Y SUBCATEGORÍA (LIGHT THEMES) */
+  --cat-color-peliculas: #9333ea;
+  --cat-bg-peliculas: rgba(147, 51, 234, 0.08);
+  --cat-border-peliculas: rgba(147, 51, 234, 0.24);
+
+  --cat-color-series: #0284c7;
+  --cat-bg-series: rgba(2, 132, 199, 0.08);
+  --cat-border-series: rgba(2, 132, 199, 0.24);
+
+  --cat-color-musica: #db2777;
+  --cat-bg-musica: rgba(219, 39, 119, 0.08);
+  --cat-border-musica: rgba(219, 39, 119, 0.24);
+
+  --cat-color-juegos: #2563eb;
+  --cat-bg-juegos: rgba(37, 99, 235, 0.08);
+  --cat-border-juegos: rgba(37, 99, 235, 0.24);
+
+  --cat-color-lecturas: #92400e;
+  --cat-bg-lecturas: rgba(146, 64, 14, 0.08);
+  --cat-border-lecturas: rgba(146, 64, 14, 0.24);
+
+  --cat-color-libros: #ca8a04;
+  --cat-bg-libros: rgba(202, 138, 4, 0.08);
+  --cat-border-libros: rgba(202, 138, 4, 0.24);
+
+  --cat-color-comics: #ea580c;
+  --cat-bg-comics: rgba(234, 88, 12, 0.08);
+  --cat-border-comics: rgba(234, 88, 12, 0.24);
+
+  --cat-color-mangas: #dc2626;
+  --cat-bg-mangas: rgba(220, 38, 38, 0.08);
+  --cat-border-mangas: rgba(220, 38, 38, 0.24);
+}
 
 /* ========================================================
    SISTEMA DE 5 ROLES FUNCIONALES DE COLOR
@@ -9015,6 +9083,157 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
   box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2) !important;
 }
 
+/* ==========================================================================
+   PALETA DE COLORES POR CATEGORÍA Y SUBCATEGORÍA (SUTILES Y ELEGANTES)
+   1. Películas: Morado
+   2. Series: Celeste
+   3. Música: Rosado
+   4. Juegos: Azul
+   5. Lecturas: Café
+   6. Libros: Amarillo
+   7. Cómics: Naranjo
+   8. Mangas: Rojo
+   ========================================================================== */
+
+/* Overlays en tarjetas En Progreso */
+.home-en-progreso-card-badge-overlay.cat-overlay-peliculas { border-color: var(--cat-border-peliculas); color: var(--cat-color-peliculas); }
+.home-en-progreso-card-badge-overlay.cat-overlay-series { border-color: var(--cat-border-series); color: var(--cat-color-series); }
+.home-en-progreso-card-badge-overlay.cat-overlay-musica { border-color: var(--cat-border-musica); color: var(--cat-color-musica); }
+.home-en-progreso-card-badge-overlay.cat-overlay-juegos { border-color: var(--cat-border-juegos); color: var(--cat-color-juegos); }
+.home-en-progreso-card-badge-overlay.cat-overlay-lecturas { border-color: var(--cat-border-lecturas); color: var(--cat-color-lecturas); }
+.home-en-progreso-card-badge-overlay.cat-overlay-libros { border-color: var(--cat-border-libros); color: var(--cat-color-libros); }
+.home-en-progreso-card-badge-overlay.cat-overlay-comics { border-color: var(--cat-border-comics); color: var(--cat-color-comics); }
+.home-en-progreso-card-badge-overlay.cat-overlay-mangas { border-color: var(--cat-border-mangas); color: var(--cat-color-mangas); }
+
+/* Badges en actividad reciente (Home y Amigos) */
+.feed-cat-badge.cat-badge-peliculas { background: var(--cat-bg-peliculas); color: var(--cat-color-peliculas); border-color: var(--cat-border-peliculas); }
+.feed-cat-badge.cat-badge-series { background: var(--cat-bg-series); color: var(--cat-color-series); border-color: var(--cat-border-series); }
+.feed-cat-badge.cat-badge-musica { background: var(--cat-bg-musica); color: var(--cat-color-musica); border-color: var(--cat-border-musica); }
+.feed-cat-badge.cat-badge-juegos { background: var(--cat-bg-juegos); color: var(--cat-color-juegos); border-color: var(--cat-border-juegos); }
+.feed-cat-badge.cat-badge-lecturas { background: var(--cat-bg-lecturas); color: var(--cat-color-lecturas); border-color: var(--cat-border-lecturas); }
+.feed-cat-badge.cat-badge-libros { background: var(--cat-bg-libros); color: var(--cat-color-libros); border-color: var(--cat-border-libros); }
+.feed-cat-badge.cat-badge-comics { background: var(--cat-bg-comics); color: var(--cat-color-comics); border-color: var(--cat-border-comics); }
+.feed-cat-badge.cat-badge-mangas { background: var(--cat-bg-mangas); color: var(--cat-color-mangas); border-color: var(--cat-border-mangas); }
+
+/* Nav category buttons: sutileza al estar activo o hovered */
+.nav-cat-card[data-cat="Peliculas"].active { border-color: var(--cat-border-peliculas) !important; }
+.nav-cat-card[data-cat="Peliculas"].active .emoji-dyn { color: var(--cat-color-peliculas); }
+.nav-cat-card[data-cat="Peliculas"]:hover { border-color: var(--cat-border-peliculas); }
+
+.nav-cat-card[data-cat="Series"].active { border-color: var(--cat-border-series) !important; }
+.nav-cat-card[data-cat="Series"].active .emoji-dyn { color: var(--cat-color-series); }
+.nav-cat-card[data-cat="Series"]:hover { border-color: var(--cat-border-series); }
+
+.nav-cat-card[data-cat="Musica"].active { border-color: var(--cat-border-musica) !important; }
+.nav-cat-card[data-cat="Musica"].active .emoji-dyn { color: var(--cat-color-musica); }
+.nav-cat-card[data-cat="Musica"]:hover { border-color: var(--cat-border-musica); }
+
+.nav-cat-card[data-cat="Juegos"].active { border-color: var(--cat-border-juegos) !important; }
+.nav-cat-card[data-cat="Juegos"].active .emoji-dyn { color: var(--cat-color-juegos); }
+.nav-cat-card[data-cat="Juegos"]:hover { border-color: var(--cat-border-juegos); }
+
+.nav-cat-card[data-cat="Lecturas"].active { border-color: var(--cat-border-lecturas) !important; }
+.nav-cat-card[data-cat="Lecturas"].active .emoji-dyn { color: var(--cat-color-lecturas); }
+.nav-cat-card[data-cat="Lecturas"]:hover { border-color: var(--cat-border-lecturas); }
+
+/* Pestañas de subcategorías activas */
+.subtab-btn.active.subtab-cat-peliculas { border-color: var(--cat-border-peliculas) !important; box-shadow: 0 0 10px rgba(192, 132, 252, 0.2) !important; }
+.subtab-btn.active.subtab-cat-peliculas .emoji-dyn, .subtab-btn.active.subtab-cat-peliculas svg { color: var(--cat-color-peliculas) !important; }
+
+.subtab-btn.active.subtab-cat-series { border-color: var(--cat-border-series) !important; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2) !important; }
+.subtab-btn.active.subtab-cat-series .emoji-dyn, .subtab-btn.active.subtab-cat-series svg { color: var(--cat-color-series) !important; }
+
+.subtab-btn.active.subtab-cat-musica { border-color: var(--cat-border-musica) !important; box-shadow: 0 0 10px rgba(244, 114, 182, 0.2) !important; }
+.subtab-btn.active.subtab-cat-musica .emoji-dyn, .subtab-btn.active.subtab-cat-musica svg { color: var(--cat-color-musica) !important; }
+
+.subtab-btn.active.subtab-cat-juegos { border-color: var(--cat-border-juegos) !important; box-shadow: 0 0 10px rgba(96, 165, 250, 0.2) !important; }
+.subtab-btn.active.subtab-cat-juegos .emoji-dyn, .subtab-btn.active.subtab-cat-juegos svg { color: var(--cat-color-juegos) !important; }
+
+.subtab-btn.active.subtab-cat-lecturas { border-color: var(--cat-border-lecturas) !important; box-shadow: 0 0 10px rgba(217, 119, 6, 0.2) !important; }
+.subtab-btn.active.subtab-cat-lecturas .emoji-dyn, .subtab-btn.active.subtab-cat-lecturas svg { color: var(--cat-color-lecturas) !important; }
+
+.subtab-btn.active.subtab-cat-libros { border-color: var(--cat-border-libros) !important; box-shadow: 0 0 10px rgba(250, 204, 21, 0.2) !important; }
+.subtab-btn.active.subtab-cat-libros .emoji-dyn, .subtab-btn.active.subtab-cat-libros svg { color: var(--cat-color-libros) !important; }
+
+.subtab-btn.active.subtab-cat-comics { border-color: var(--cat-border-comics) !important; box-shadow: 0 0 10px rgba(251, 146, 60, 0.2) !important; }
+.subtab-btn.active.subtab-cat-comics .emoji-dyn, .subtab-btn.active.subtab-cat-comics svg { color: var(--cat-color-comics) !important; }
+
+.subtab-btn.active.subtab-cat-mangas { border-color: var(--cat-border-mangas) !important; box-shadow: 0 0 10px rgba(248, 113, 113, 0.2) !important; }
+.subtab-btn.active.subtab-cat-mangas .emoji-dyn, .subtab-btn.active.subtab-cat-mangas svg { color: var(--cat-color-mangas) !important; }
+
+/* Botones de subcategorías en Home y Perfil (home-indice-btn) */
+.home-indice-btn.home-indice-peliculas:hover { border-color: var(--cat-border-peliculas); background: var(--cat-bg-peliculas); box-shadow: 0 4px 14px rgba(192, 132, 252, 0.2); }
+.home-indice-btn.home-indice-peliculas .home-indice-icon { color: var(--cat-color-peliculas); }
+
+.home-indice-btn.home-indice-series:hover { border-color: var(--cat-border-series); background: var(--cat-bg-series); box-shadow: 0 4px 14px rgba(56, 189, 248, 0.2); }
+.home-indice-btn.home-indice-series .home-indice-icon { color: var(--cat-color-series); }
+
+.home-indice-btn.home-indice-musica:hover { border-color: var(--cat-border-musica); background: var(--cat-bg-musica); box-shadow: 0 4px 14px rgba(244, 114, 182, 0.2); }
+.home-indice-btn.home-indice-musica .home-indice-icon { color: var(--cat-color-musica); }
+
+.home-indice-btn.home-indice-juegos:hover { border-color: var(--cat-border-juegos); background: var(--cat-bg-juegos); box-shadow: 0 4px 14px rgba(96, 165, 250, 0.2); }
+.home-indice-btn.home-indice-juegos .home-indice-icon { color: var(--cat-color-juegos); }
+
+.home-indice-btn.home-indice-lecturas:hover { border-color: var(--cat-border-lecturas); background: var(--cat-bg-lecturas); box-shadow: 0 4px 14px rgba(217, 119, 6, 0.2); }
+.home-indice-btn.home-indice-lecturas .home-indice-icon { color: var(--cat-color-lecturas); }
+
+.home-indice-btn.home-indice-libros:hover { border-color: var(--cat-border-libros); background: var(--cat-bg-libros); box-shadow: 0 4px 14px rgba(250, 204, 21, 0.2); }
+.home-indice-btn.home-indice-libros .home-indice-icon { color: var(--cat-color-libros); }
+
+.home-indice-btn.home-indice-comics:hover { border-color: var(--cat-border-comics); background: var(--cat-bg-comics); box-shadow: 0 4px 14px rgba(251, 146, 60, 0.2); }
+.home-indice-btn.home-indice-comics .home-indice-icon { color: var(--cat-color-comics); }
+
+.home-indice-btn.home-indice-mangas:hover { border-color: var(--cat-border-mangas); background: var(--cat-bg-mangas); box-shadow: 0 4px 14px rgba(248, 113, 113, 0.2); }
+.home-indice-btn.home-indice-mangas .home-indice-icon { color: var(--cat-color-mangas); }
+
+/* Botones de Categorías en Perfil Stats */
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Peliculas"].active { background: var(--cat-bg-peliculas) !important; border-color: var(--cat-border-peliculas) !important; color: var(--cat-color-peliculas) !important; box-shadow: 0 4px 12px rgba(192, 132, 252, 0.2) !important; }
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Series"].active { background: var(--cat-bg-series) !important; border-color: var(--cat-border-series) !important; color: var(--cat-color-series) !important; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2) !important; }
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Musica"].active { background: var(--cat-bg-musica) !important; border-color: var(--cat-border-musica) !important; color: var(--cat-color-musica) !important; box-shadow: 0 4px 12px rgba(244, 114, 182, 0.2) !important; }
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Juegos"].active { background: var(--cat-bg-juegos) !important; border-color: var(--cat-border-juegos) !important; color: var(--cat-color-juegos) !important; box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2) !important; }
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Lecturas"].active { background: var(--cat-bg-lecturas) !important; border-color: var(--cat-border-lecturas) !important; color: var(--cat-color-lecturas) !important; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2) !important; }
+
+/* Modal de Agregado Rápido (btn-quick-sub) */
+.btn-quick-sub.btn-quick-peliculas:hover { border-color: var(--cat-border-peliculas); background: var(--cat-bg-peliculas); }
+.btn-quick-sub.btn-quick-peliculas .emoji-dyn { color: var(--cat-color-peliculas); }
+
+.btn-quick-sub.btn-quick-series:hover { border-color: var(--cat-border-series); background: var(--cat-bg-series); }
+.btn-quick-sub.btn-quick-series .emoji-dyn { color: var(--cat-color-series); }
+
+.btn-quick-sub.btn-quick-musica:hover { border-color: var(--cat-border-musica); background: var(--cat-bg-musica); }
+.btn-quick-sub.btn-quick-musica .emoji-dyn { color: var(--cat-color-musica); }
+
+.btn-quick-sub.btn-quick-juegos:hover { border-color: var(--cat-border-juegos); background: var(--cat-bg-juegos); }
+.btn-quick-sub.btn-quick-juegos .emoji-dyn { color: var(--cat-color-juegos); }
+
+.btn-quick-sub.btn-quick-lecturas:hover { border-color: var(--cat-border-lecturas); background: var(--cat-bg-lecturas); }
+.btn-quick-sub.btn-quick-lecturas .emoji-dyn { color: var(--cat-color-lecturas); }
+
+.btn-quick-sub.btn-quick-libros:hover { border-color: var(--cat-border-libros); background: var(--cat-bg-libros); }
+.btn-quick-sub.btn-quick-libros .emoji-dyn { color: var(--cat-color-libros); }
+
+.btn-quick-sub.btn-quick-comics:hover { border-color: var(--cat-border-comics); background: var(--cat-bg-comics); }
+.btn-quick-sub.btn-quick-comics .emoji-dyn { color: var(--cat-color-comics); }
+
+.btn-quick-sub.btn-quick-mangas:hover { border-color: var(--cat-border-mangas); background: var(--cat-bg-mangas); }
+.btn-quick-sub.btn-quick-mangas .emoji-dyn { color: var(--cat-color-mangas); }
+
+/* Dashboard Listas: cat-wide-card */
+.cat-wide-card.cat-wide-peliculas:hover { border-color: var(--cat-border-peliculas) !important; }
+.cat-wide-card.cat-wide-peliculas .cat-wide-title .emoji-dyn { color: var(--cat-color-peliculas); }
+
+.cat-wide-card.cat-wide-series:hover { border-color: var(--cat-border-series) !important; }
+.cat-wide-card.cat-wide-series .cat-wide-title .emoji-dyn { color: var(--cat-color-series); }
+
+.cat-wide-card.cat-wide-musica:hover { border-color: var(--cat-border-musica) !important; }
+.cat-wide-card.cat-wide-musica .cat-wide-title .emoji-dyn { color: var(--cat-color-musica); }
+
+.cat-wide-card.cat-wide-juegos:hover { border-color: var(--cat-border-juegos) !important; }
+.cat-wide-card.cat-wide-juegos .cat-wide-title .emoji-dyn { color: var(--cat-color-juegos); }
+
+.cat-wide-card.cat-wide-lecturas:hover { border-color: var(--cat-border-lecturas) !important; }
+.cat-wide-card.cat-wide-lecturas .cat-wide-title .emoji-dyn { color: var(--cat-color-lecturas); }
+
 </style> </head> <body>
 <header class="app-header-integrated">
   <!-- 1. Esquina superior izquierda: Selector de año (más pequeño e integrado) -->
@@ -9578,10 +9797,10 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
     <span class="icon emoji-dyn" id="m-btn-perfil-icon"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg></span> <span data-i18n="nav_perfil">Perfil</span>
   </button>
 </nav> <!-- MODAL DE AGREGADO RÁPIDO (+) --> <div id="modal-agregado-rapido" class="modal-overlay" style="display:none;">
-<div class="modal-box"> <h3 style="display:flex; align-items:center; gap:8px;" data-i18n="quick_reg_title"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> ¿Qué deseas registrar?</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;" data-i18n="quick_reg_sub">Selecciona la categoría para abrir su buscador:</p> <div class="quick-add-grid" id="modal-quick-add-grid"> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Películas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Película</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Peliculas', 'Documentales')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Documental</button>
-<button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Series', 'Temporadas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg></span> Serie / Temp.</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Series', 'Series Documentales')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Docuserie</button>
-<button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Musica', 'Discos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"/></svg></span> Disco</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Musica', 'Artistas/Grupos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"/></svg></span> Artista</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Juegos', 'Videojuegos')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Videojuego</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Libros')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span> Libro</button>
-<button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Cómics')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span> Cómic</button> <button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('Lecturas', 'Mangas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg></span> Manga</button> </div> <div class="modal-actions" style="margin-top:16px;"> <button type="button" class="btn-modal-cancel" onclick="cerrarModalAgregadoRapido()">Cancelar</button> </div> </div>
+<div class="modal-box"> <h3 style="display:flex; align-items:center; gap:8px;" data-i18n="quick_reg_title"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> ¿Qué deseas registrar?</h3> <p style="color:var(--muted); font-size:0.85rem; margin-bottom:12px;" data-i18n="quick_reg_sub">Selecciona la categoría para abrir su buscador:</p> <div class="quick-add-grid" id="modal-quick-add-grid"> <button type="button" class="btn-quick-sub btn-quick-peliculas" onclick="ejecutarAgregadoRapido('Peliculas', 'Películas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Película</button> <button type="button" class="btn-quick-sub btn-quick-peliculas" onclick="ejecutarAgregadoRapido('Peliculas', 'Documentales')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Documental</button>
+<button type="button" class="btn-quick-sub btn-quick-series" onclick="ejecutarAgregadoRapido('Series', 'Temporadas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg></span> Serie / Temp.</button> <button type="button" class="btn-quick-sub btn-quick-series" onclick="ejecutarAgregadoRapido('Series', 'Series Documentales')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg></span> Docuserie</button>
+<button type="button" class="btn-quick-sub btn-quick-musica" onclick="ejecutarAgregadoRapido('Musica', 'Discos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/><path d="M12 14.25a2.25 2.25 0 1 0 0-4.5 2.25 2.25 0 0 0 0 4.5Z"/></svg></span> Disco</button> <button type="button" class="btn-quick-sub btn-quick-musica" onclick="ejecutarAgregadoRapido('Musica', 'Artistas/Grupos')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 1-3-3V4.5a3 3 0 1 1 6 0v8.25a3 3 0 0 1-3 3Z"/></svg></span> Artista</button> <button type="button" class="btn-quick-sub btn-quick-juegos" onclick="ejecutarAgregadoRapido('Juegos', 'Videojuegos')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Videojuego</button> <button type="button" class="btn-quick-sub btn-quick-libros" onclick="ejecutarAgregadoRapido('Lecturas', 'Libros')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span> Libro</button>
+<button type="button" class="btn-quick-sub btn-quick-comics" onclick="ejecutarAgregadoRapido('Lecturas', 'Cómics')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span> Cómic</button> <button type="button" class="btn-quick-sub btn-quick-mangas" onclick="ejecutarAgregadoRapido('Lecturas', 'Mangas')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg></span> Manga</button> </div> <div class="modal-actions" style="margin-top:16px;"> <button type="button" class="btn-modal-cancel" onclick="cerrarModalAgregadoRapido()">Cancelar</button> </div> </div>
 </div> <!-- MODAL FELICITACIÓN WATCHLIST COMPLETADA --> <div id="modal-felicitaciones-watchlist" class="modal-overlay" style="display:none;"> <div class="modal-box" style="text-align:center;"> <div style="font-size:2.8rem; margin-bottom:8px;"><svg style="width:36px;height:36px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg></div> <h3 style="color:#fbbf24; font-size:1.3rem; margin-bottom:8px;" data-i18n="modal_uno_menos_title">¡Uno menos de tu lista!</h3> <p style="color:var(--text); font-size:0.95rem; line-height:1.45; margin-bottom:14px;" id="msg-felicitacion-watchlist"></p>
 <p style="color:var(--muted); font-size:0.82rem; margin-bottom:18px;" data-i18n="modal_uno_menos_desc">Se ha retirado automáticamente de tu lista de pendientes para mantenerla impecable.</p> <div class="modal-actions" style="justify-content:center;"> <button class="btn-modal-save" onclick="cerrarModalFelicitacionWatchlist()" data-i18n="modal_uno_menos_btn">¡Genial, gracias!</button> </div> </div> </div> <!-- MODAL RECOMENDADOR SHUFFLE --> <div id="modal-shuffle-recomendar" class="modal-overlay" style="display:none;">
 <div class="modal-box" style="text-align:center; max-width:400px;"> <h3 style="color:var(--accent); font-size:1.2rem; margin-bottom:12px;" data-i18n="roulette_simple_title"><svg style="width:20px;height:20px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"/></svg> Ruleta de Elección</h3> <div class="shuffle-container"> <div class="shuffle-poster-box"> <img id="shuffle-img" class="shuffle-poster-img" src="" alt="Poster"> </div> <div id="shuffle-winner-area" style="min-height:55px;"> <h4 id="shuffle-title" style="font-size:1.05rem; margin-bottom:4px;" data-i18n="roulette_simple_shuffling">Mezclando...</h4>
@@ -14845,6 +15064,8 @@ function renderizarFeedAmigos() {
       </button>
     ` : '';
 
+    const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(it.categoria, it.subcategoria) : null;
+    const catBadgeClass = metaCol ? `cat-badge-${metaCol.key}` : '';
     const catBadgeText = `${catIcon} ${subNom || catNom}${it.esRewatch ? ' · Rewatch' : ''}`;
 
     return `
@@ -14870,7 +15091,7 @@ function renderizarFeedAmigos() {
           <div class="feed-card-info">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px;">
               <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                <span class="feed-cat-badge">${catBadgeText}</span>
+                <span class="feed-cat-badge ${catBadgeClass}">${catBadgeText}</span>
                 ${secondBadge}
               </div>
               ${btnWatchlistTopRight}
@@ -16137,6 +16358,8 @@ function renderizarFeedAmigosResumidoInicio() {
       </button>
     ` : '';
 
+    const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(it.categoria, it.subcategoria) : null;
+    const catBadgeClass = metaCol ? `cat-badge-${metaCol.key}` : '';
     const catBadgeText = `${catIcon} ${subNom || catNom}${it.esRewatch ? ' · Rewatch' : ''}`;
 
     html += `
@@ -16162,7 +16385,7 @@ function renderizarFeedAmigosResumidoInicio() {
           <div class="feed-card-info">
             <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:4px;">
               <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
-                <span class="feed-cat-badge">${catBadgeText}</span>
+                <span class="feed-cat-badge ${catBadgeClass}">${catBadgeText}</span>
                 ${secondBadge}
               </div>
               ${btnWatchlistTopRight}
@@ -17575,14 +17798,18 @@ function filtrarRegistrosAmigoModal() {
       subGroups.push({ id: 'general', nombre: l === 'en' ? 'General' : 'General', emoji: getHeroIcon('folder'), items: itemsSinSub });
     }
 
+    const metaCat = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(catGroup.key, '') : null;
+    const catBadgeStyle = metaCat ? `style="background:${metaCat.bgVar}; color:${metaCat.colorVar}; border-color:${metaCat.borderVar};"` : '';
+    const catIconStyle = metaCat ? `style="color:${metaCat.colorVar}; font-size:1.25rem;"` : 'style="font-size:1.25rem;"';
+
     fullHtml += `
       <div class="amigo-cat-block">
         <div class="amigo-cat-group-header">
           <div class="amigo-cat-group-title">
-            <span style="font-size:1.25rem;">${catGroup.emoji}</span>
+            <span ${catIconStyle}>${catGroup.emoji}</span>
             <span>${catGroup.nombre}</span>
           </div>
-          <span class="amigo-cat-group-badge">
+          <span class="amigo-cat-group-badge" ${catBadgeStyle}>
             ${catGroup.items.length} ${catGroup.items.length === 1 ? (l === 'en' ? 'record' : 'registro') : (l === 'en' ? 'records' : 'registros')}
           </span>
         </div>
@@ -17595,11 +17822,13 @@ function filtrarRegistrosAmigoModal() {
         const tsB = timestampDeFecha(b.fechaFin !== 'Sin fecha' ? b.fechaFin : b.fechaInicio);
         return esDescAmigo ? (tsB - tsA) : (tsA - tsB);
       });
+      const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(catGroup.key, subG.nombre || subG.id) : null;
+      const subIconStyle = metaSub ? `style="color:${metaSub.colorVar}; font-size:1rem;"` : 'style="font-size:1rem;"';
       fullHtml += `
         <div class="amigo-subcat-block">
           <div class="amigo-subcat-group-header">
             <div class="amigo-subcat-group-title">
-              <span style="font-size:1rem;">${subG.emoji}</span>
+              <span ${subIconStyle}>${subG.emoji}</span>
               <span>${subG.nombre}</span>
             </div>
             <span class="amigo-subcat-group-badge">
@@ -18330,7 +18559,9 @@ function mostrarResultadoRuletaGanadora(obra) {
   if (yearEl) yearEl.textContent = obra.anio ? `${lRuleta === 'en' ? 'Year' : 'Año'}: ${obra.anio}` : '';
 
   if (catBadgeEl) {
+    const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(obra.categoria, obra.subcategoria) : null;
     catBadgeEl.innerHTML = `${obra.catEmoji || getHeroIcon("film")} ${obra.catLabel || 'Obra'}`;
+    catBadgeEl.className = `ruleta-origin-pill cat-pill ${metaCol ? 'cat-badge-' + metaCol.key : ''}`;
   }
 
   if (provEl) {
@@ -18502,55 +18733,184 @@ const CONFIG = {
   Peliculas: {
     nombre: 'Películas',
     emoji: getHeroIcon('film'),
+    colorKey: 'peliculas',
+    colorVar: 'var(--cat-color-peliculas)',
     subs: [
-      { id: 'Películas', nombre: 'Películas', emoji: getHeroIcon('film'), rangoFechas: false, admiteRewatch: true },
-      { id: 'Documentales', nombre: 'Documentales', emoji: getHeroIcon('video-camera'), rangoFechas: false, admiteRewatch: false },
-      { id: 'Watchlist', nombre: 'Watchlist: Películas', emoji: getHeroIcon('bookmark'), esWatchlist: true, targetSub: 'Películas', rangoFechas: false },
-      { id: 'Watchlist: Documentales', nombre: 'Watchlist: Documentales', emoji: getHeroIcon('bookmark'), esWatchlist: true, targetSub: 'Documentales', rangoFechas: false }
+      { id: 'Películas', nombre: 'Películas', emoji: getHeroIcon('film'), colorKey: 'peliculas', rangoFechas: false, admiteRewatch: true },
+      { id: 'Documentales', nombre: 'Documentales', emoji: getHeroIcon('video-camera'), colorKey: 'peliculas', rangoFechas: false, admiteRewatch: false },
+      { id: 'Watchlist', nombre: 'Watchlist: Películas', emoji: getHeroIcon('bookmark'), colorKey: 'peliculas', esWatchlist: true, targetSub: 'Películas', rangoFechas: false },
+      { id: 'Watchlist: Documentales', nombre: 'Watchlist: Documentales', emoji: getHeroIcon('bookmark'), colorKey: 'peliculas', esWatchlist: true, targetSub: 'Documentales', rangoFechas: false }
     ]
   },
   Series: {
     nombre: 'Series',
     emoji: getHeroIcon('tv'),
+    colorKey: 'series',
+    colorVar: 'var(--cat-color-series)',
     subs: [
-      { id: 'Temporadas', nombre: 'Temporadas', emoji: getHeroIcon('clock'), rangoFechas: true, admiteRewatch: true },
-      { id: 'Series Completas', nombre: 'Series Completas', emoji: getHeroIcon('trophy'), rangoFechas: true, admiteRewatch: true },
-      { id: 'Series Documentales', nombre: 'Series Documentales', emoji: getHeroIcon('video-camera'), rangoFechas: true, admiteRewatch: false },
-      { id: 'Watchlist', nombre: 'Watchlist: Series', emoji: getHeroIcon('bookmark'), esWatchlist: true, targetSub: 'Series', rangoFechas: false },
-      { id: 'Watchlist: Docuseries', nombre: 'Watchlist: Docuseries', emoji: getHeroIcon('bookmark'), esWatchlist: true, targetSub: 'Series Documentales', rangoFechas: false }
+      { id: 'Temporadas', nombre: 'Temporadas', emoji: getHeroIcon('clock'), colorKey: 'series', rangoFechas: true, admiteRewatch: true },
+      { id: 'Series Completas', nombre: 'Series Completas', emoji: getHeroIcon('trophy'), colorKey: 'series', rangoFechas: true, admiteRewatch: true },
+      { id: 'Series Documentales', nombre: 'Series Documentales', emoji: getHeroIcon('video-camera'), colorKey: 'series', rangoFechas: true, admiteRewatch: false },
+      { id: 'Watchlist', nombre: 'Watchlist: Series', emoji: getHeroIcon('bookmark'), colorKey: 'series', esWatchlist: true, targetSub: 'Series', rangoFechas: false },
+      { id: 'Watchlist: Docuseries', nombre: 'Watchlist: Docuseries', emoji: getHeroIcon('bookmark'), colorKey: 'series', esWatchlist: true, targetSub: 'Series Documentales', rangoFechas: false }
     ]
   },
   Musica: {
     nombre: 'Música',
     emoji: getHeroIcon('musical-note'),
+    colorKey: 'musica',
+    colorVar: 'var(--cat-color-musica)',
     subs: [
-      { id: 'Discos', nombre: 'Discos', emoji: getHeroIcon('disc'), rangoFechas: false, admiteRewatch: false },
-      { id: 'Artistas/Grupos', nombre: 'Artistas/Grupos', emoji: getHeroIcon('microphone'), rangoFechas: true, admiteRewatch: false },
-      { id: 'Conciertos', nombre: 'Conciertos', emoji: getHeroIcon('ticket'), rangoFechas: false, admiteRewatch: false },
-      { id: 'To Listen', nombre: 'To Listen', emoji: getHeroIcon('bookmark'), esWatchlist: true, targetSub: 'Discos', rangoFechas: false }
+      { id: 'Discos', nombre: 'Discos', emoji: getHeroIcon('disc'), colorKey: 'musica', rangoFechas: false, admiteRewatch: false },
+      { id: 'Artistas/Grupos', nombre: 'Artistas/Grupos', emoji: getHeroIcon('microphone'), colorKey: 'musica', rangoFechas: true, admiteRewatch: false },
+      { id: 'Conciertos', nombre: 'Conciertos', emoji: getHeroIcon('ticket'), colorKey: 'musica', rangoFechas: false, admiteRewatch: false },
+      { id: 'To Listen', nombre: 'To Listen', emoji: getHeroIcon('bookmark'), colorKey: 'musica', esWatchlist: true, targetSub: 'Discos', rangoFechas: false }
     ]
   },
   Juegos: {
     nombre: 'Juegos',
     emoji: getHeroIcon('gamepad'),
+    colorKey: 'juegos',
+    colorVar: 'var(--cat-color-juegos)',
     subs: [
-      { id: 'Videojuegos', nombre: 'Videojuegos', emoji: getHeroIcon('gamepad'), rangoFechas: true, admiteRewatch: true },
-      { id: 'To Play', nombre: 'To Play', emoji: getHeroIcon('bookmark'), esWatchlist: true, targetSub: 'Videojuegos', rangoFechas: false }
+      { id: 'Videojuegos', nombre: 'Videojuegos', emoji: getHeroIcon('gamepad'), colorKey: 'juegos', rangoFechas: true, admiteRewatch: true },
+      { id: 'To Play', nombre: 'To Play', emoji: getHeroIcon('bookmark'), colorKey: 'juegos', esWatchlist: true, targetSub: 'Videojuegos', rangoFechas: false }
     ]
   },
   Lecturas: {
     nombre: 'Lecturas',
     emoji: getHeroIcon('book-open'),
+    colorKey: 'lecturas',
+    colorVar: 'var(--cat-color-lecturas)',
     subs: [
-      { id: 'Libros', nombre: 'Libros', emoji: getHeroIcon('book-open'), rangoFechas: true, admiteRewatch: true },
-      { id: 'Cómics', nombre: 'Cómics', emoji: getHeroIcon('bolt'), rangoFechas: true, admiteRewatch: true },
-      { id: 'Mangas', nombre: 'Mangas', emoji: getHeroIcon('bookmark-square'), rangoFechas: true, admiteRewatch: true },
-      { id: 'To Read: Libros', nombre: 'To Read: Libros', emoji: getHeroIcon('bookmark'), esWatchlist: true, targetSub: 'Libros', rangoFechas: false },
-      { id: 'To Read: Cómics', nombre: 'To Read: Cómics', emoji: getHeroIcon('bookmark'), esWatchlist: true, targetSub: 'Cómics', rangoFechas: false },
-      { id: 'To Read: Mangas', nombre: 'To Read: Mangas', emoji: getHeroIcon('bookmark'), esWatchlist: true, targetSub: 'Mangas', rangoFechas: false }
+      { id: 'Libros', nombre: 'Libros', emoji: getHeroIcon('book-open'), colorKey: 'libros', rangoFechas: true, admiteRewatch: true },
+      { id: 'Cómics', nombre: 'Cómics', emoji: getHeroIcon('bolt'), colorKey: 'comics', rangoFechas: true, admiteRewatch: true },
+      { id: 'Mangas', nombre: 'Mangas', emoji: getHeroIcon('bookmark-square'), colorKey: 'mangas', rangoFechas: true, admiteRewatch: true },
+      { id: 'To Read: Libros', nombre: 'To Read: Libros', emoji: getHeroIcon('bookmark'), colorKey: 'libros', esWatchlist: true, targetSub: 'Libros', rangoFechas: false },
+      { id: 'To Read: Cómics', nombre: 'To Read: Cómics', emoji: getHeroIcon('bookmark'), colorKey: 'comics', esWatchlist: true, targetSub: 'Cómics', rangoFechas: false },
+      { id: 'To Read: Mangas', nombre: 'To Read: Mangas', emoji: getHeroIcon('bookmark'), colorKey: 'mangas', esWatchlist: true, targetSub: 'Mangas', rangoFechas: false }
     ]
   }
-}; const I18N = {
+};
+
+function obtenerMetaColorCategoria(categoria, subcategoria) {
+  const c = String(categoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const s = String(subcategoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+
+  // 1. Cómics (Naranjo)
+  if (s.includes('comic') || c.includes('comic')) {
+    return {
+      key: 'comics',
+      nombre: 'Cómics',
+      colorVar: 'var(--cat-color-comics)',
+      bgVar: 'var(--cat-bg-comics)',
+      borderVar: 'var(--cat-border-comics)',
+      hexDark: '#fb923c',
+      hexLight: '#ea580c'
+    };
+  }
+  // 2. Mangas (Rojo)
+  if (s.includes('manga') || c.includes('manga')) {
+    return {
+      key: 'mangas',
+      nombre: 'Mangas',
+      colorVar: 'var(--cat-color-mangas)',
+      bgVar: 'var(--cat-bg-mangas)',
+      borderVar: 'var(--cat-border-mangas)',
+      hexDark: '#f87171',
+      hexLight: '#dc2626'
+    };
+  }
+  // 3. Libros (Amarillo)
+  if (s.includes('libro') || s.includes('book')) {
+    return {
+      key: 'libros',
+      nombre: 'Libros',
+      colorVar: 'var(--cat-color-libros)',
+      bgVar: 'var(--cat-bg-libros)',
+      borderVar: 'var(--cat-border-libros)',
+      hexDark: '#facc15',
+      hexLight: '#ca8a04'
+    };
+  }
+  // 4. Lecturas (Café)
+  if (c.includes('lectura') || c.includes('read')) {
+    return {
+      key: 'lecturas',
+      nombre: 'Lecturas',
+      colorVar: 'var(--cat-color-lecturas)',
+      bgVar: 'var(--cat-bg-lecturas)',
+      borderVar: 'var(--cat-border-lecturas)',
+      hexDark: '#d97706',
+      hexLight: '#92400e'
+    };
+  }
+  // 5. Películas (Morado)
+  if (c.includes('pelicula') || c.includes('movie') || c.includes('film')) {
+    return {
+      key: 'peliculas',
+      nombre: 'Películas',
+      colorVar: 'var(--cat-color-peliculas)',
+      bgVar: 'var(--cat-bg-peliculas)',
+      borderVar: 'var(--cat-border-peliculas)',
+      hexDark: '#c084fc',
+      hexLight: '#9333ea'
+    };
+  }
+  // 6. Series (Celeste)
+  if (c.includes('serie') || c.includes('show') || c.includes('tv')) {
+    return {
+      key: 'series',
+      nombre: 'Series',
+      colorVar: 'var(--cat-color-series)',
+      bgVar: 'var(--cat-bg-series)',
+      borderVar: 'var(--cat-border-series)',
+      hexDark: '#38bdf8',
+      hexLight: '#0284c7'
+    };
+  }
+  // 7. Música (Rosado)
+  if (c.includes('musica') || c.includes('music') || s.includes('disco') || s.includes('album') || s.includes('artista') || s.includes('concierto')) {
+    return {
+      key: 'musica',
+      nombre: 'Música',
+      colorVar: 'var(--cat-color-musica)',
+      bgVar: 'var(--cat-bg-musica)',
+      borderVar: 'var(--cat-border-musica)',
+      hexDark: '#f472b6',
+      hexLight: '#db2777'
+    };
+  }
+  // 8. Juegos (Azul)
+  if (c.includes('juego') || c.includes('game')) {
+    return {
+      key: 'juegos',
+      nombre: 'Juegos',
+      colorVar: 'var(--cat-color-juegos)',
+      bgVar: 'var(--cat-bg-juegos)',
+      borderVar: 'var(--cat-border-juegos)',
+      hexDark: '#60a5fa',
+      hexLight: '#2563eb'
+    };
+  }
+
+  return {
+    key: 'default',
+    nombre: categoria || '',
+    colorVar: 'var(--accent)',
+    bgVar: 'rgba(56,189,248,0.12)',
+    borderVar: 'rgba(56,189,248,0.28)',
+    hexDark: '#38bdf8',
+    hexLight: '#0284c7'
+  };
+}
+function obtenerColorCategoria(categoria, subcategoria) {
+  return obtenerMetaColorCategoria(categoria, subcategoria);
+}
+window.obtenerMetaColorCategoria = obtenerMetaColorCategoria;
+window.obtenerColorCategoria = obtenerColorCategoria;
+
+const I18N = {
  "es": {
  "nav_inicio": "Inicio",
  "nav_dashboard_listas": "Listas",
@@ -22981,18 +23341,21 @@ function clasificarSubcatOnGoing(r) {
     const tieneSeasonEnTitulo = /\[s\d+\]$/i.test(tit) || /\b(temporada|season)\s*\d+/i.test(tit) || /#\d+$/.test(tit);
     const tieneTemporadaEnSub = s.includes('temporada') || s.includes('season');
     if (!tieneTemporadaEnSub && !tieneSeasonEnTitulo) return null;
-    return { orden: 1, grupo: 'temporadas', label: isEn ? 'Season' : 'Temporada', emoji: getHeroIcon('tv') };
+    return { orden: 1, grupo: 'temporadas', label: isEn ? 'Season' : 'Temporada', emoji: getHeroIcon('tv'), catKey: 'series' };
   }
 
   // 2. Juegos
   if (c.includes('juego') || c.includes('game')) {
-    return { orden: 2, grupo: 'juegos', label: isEn ? 'Game' : 'Juego', emoji: getHeroIcon('gamepad') };
+    return { orden: 2, grupo: 'juegos', label: isEn ? 'Game' : 'Juego', emoji: getHeroIcon('gamepad'), catKey: 'juegos' };
   }
 
   // 3. Lecturas
   if (c.includes('lectura') || c.includes('libro') || c.includes('comic') || c.includes('manga') || c.includes('book') || c.includes('read')) {
-    const lbl = s.includes('comic') ? (isEn ? 'Comic' : 'Cómic') : (s.includes('manga') ? 'Manga' : (isEn ? 'Book' : 'Libro'));
-    return { orden: 3, grupo: 'lecturas', label: lbl, emoji: getHeroIcon('book-open') };
+    const isComic = s.includes('comic');
+    const isManga = s.includes('manga');
+    const lbl = isComic ? (isEn ? 'Comic' : 'Cómic') : (isManga ? 'Manga' : (isEn ? 'Book' : 'Libro'));
+    const catKey = isComic ? 'comics' : (isManga ? 'mangas' : 'libros');
+    return { orden: 3, grupo: 'lecturas', label: lbl, emoji: getHeroIcon('book-open'), catKey };
   }
 
   return null;
@@ -23071,7 +23434,8 @@ function renderizarObrasEnProgresoInicio() {
   const esTodosLosTiempos = (typeof estado !== 'undefined' && estado.anioActivo === 'todos');
 
   listEl.innerHTML = candidatos.map(r => {
-    const info = clasificarSubcatOnGoing(r) || { emoji: getHeroIcon('film'), label: r.subcategoria || r.categoria };
+    const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(r.categoria, r.subcategoria) : null;
+    const info = clasificarSubcatOnGoing(r) || { emoji: getHeroIcon('film'), label: r.subcategoria || r.categoria, catKey: metaCol ? metaCol.key : 'peliculas' };
     const posterSrc = r.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'140\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
     const fechaIniRaw = (r.fechaInicio && r.fechaInicio !== 'Sin fecha') ? r.fechaInicio : (r.fecha_inicio && r.fecha_inicio !== 'Sin fecha' ? r.fecha_inicio : '');
     const creadorStr = r.creador ? `${r.creador} ${r.anio ? `(${r.anio})` : ''}` : (r.anio ? `(${r.anio})` : '');
@@ -23113,7 +23477,7 @@ function renderizarObrasEnProgresoInicio() {
         <div class="home-en-progreso-item-date">${fechaIniDisplay || '&nbsp;'}</div>
         <div class="home-en-progreso-card" id="home-prog-${r.id}">
           <div class="home-en-progreso-poster-wrap" onclick="abrirFichaTecnica('${r.id}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">
-            <span class="home-en-progreso-card-badge-overlay"><span class="emoji-dyn">${info.emoji}</span> ${info.label}</span>
+            <span class="home-en-progreso-card-badge-overlay cat-overlay-${info.catKey || 'default'}"><span class="emoji-dyn">${info.emoji}</span> ${info.label}</span>
             <img src="${optimizarUrlPoster(posterSrc, 'thumb')}" class="home-en-progreso-card-poster" alt="${r.titulo}" loading="lazy" decoding="async">
           </div>
           <div class="home-en-progreso-card-title" onclick="abrirFichaTecnica('${r.id}')" title="${r.titulo}">${r.titulo}</div>
@@ -23443,7 +23807,9 @@ function renderizarOpcionesAgregadoRapido() {
   opsFiltradas.sort((a, b) => catsVisibles.indexOf(a.cat) - catsVisibles.indexOf(b.cat));
 
   grid.innerHTML = opsFiltradas.map(op => {
-    return `<button type="button" class="btn-quick-sub" onclick="ejecutarAgregadoRapido('${op.cat}', '${op.sub}')"><span class="emoji-dyn">${op.emoji}</span> <span>${op.label}</span></button>`;
+    const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(op.cat, op.sub) : null;
+    const catClass = metaCol ? `btn-quick-${metaCol.key}` : '';
+    return `<button type="button" class="btn-quick-sub ${catClass}" onclick="ejecutarAgregadoRapido('${op.cat}', '${op.sub}')"><span class="emoji-dyn">${op.emoji}</span> <span>${op.label}</span></button>`;
   }).join('');
 }
 window.renderizarOpcionesAgregadoRapido = renderizarOpcionesAgregadoRapido;
@@ -23467,8 +23833,10 @@ function renderizarSubcategoriasResumenInicio() {
   subcatsFiltradas.sort((a, b) => catsVisibles.indexOf(a.cat) - catsVisibles.indexOf(b.cat));
 
   cont.innerHTML = subcatsFiltradas.map(s => {
+    const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(s.cat, s.sub) : null;
+    const catClass = metaCol ? `home-indice-${metaCol.key}` : '';
     return `
-      <button type="button" class="home-indice-btn" onclick="cambiarCat('${s.cat}', '${s.sub}')" title="${s.label}">
+      <button type="button" class="home-indice-btn ${catClass}" onclick="cambiarCat('${s.cat}', '${s.sub}')" title="${s.label}">
         <span class="home-indice-icon emoji-dyn">${s.emoji}</span>
         <span class="home-indice-name">${s.label}</span>
       </button>
@@ -32949,7 +33317,9 @@ function volverAHistorialDesdeWatchlist() {
 }
 function renderizarSubtabs() { const box = document.getElementById('subtabs-bar'); const wlBox = document.getElementById('watchlist-dedicated-box'); if (box) box.innerHTML = ''; if (wlBox) wlBox.innerHTML = ''; const l = userPrefs.lang || 'es'; const c = estado.categoria; if (!CONFIG[c]) return;
 const enWl = esSubcategoriaWatchlist(estado.subcategoria); CONFIG[c].subs.filter(s => !s.esWatchlist).forEach(s => { const btn = document.createElement('button');
-btn.className = `subtab-btn ${!enWl && estado.subcategoria === s.id ? 'active' : ''}`; btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l]?.subs?.[s.id] || s.nombre}`;
+const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c, s.id) : null;
+const subClass = metaSub ? `subtab-cat-${metaSub.key}` : '';
+btn.className = `subtab-btn ${!enWl && estado.subcategoria === s.id ? 'active' : ''} ${subClass}`; btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l]?.subs?.[s.id] || s.nombre}`;
 btn.onclick = () => { resetearBuscadoresYFormularios(); estado.subcategoria = s.id; guardarEstadoNavegacionActual(estado.categoria, s.id); actualizarNavWebActiva(); renderizarSubtabs(); actualizarVisibilidadCamposEspeciales(); configurarFormularioFechas(); filtrarYMostrarHistorial(); }; if (box) box.appendChild(btn); }); if (wlBox) {
 const targetWl = obtenerSubWatchlistDeCategoria(c, estado.subcategoria); const wlMeta = CONFIG[c].subs.find(x => x.id === targetWl) || CONFIG[c].subs.find(x => x.esWatchlist); const countThisWl = contarItemsWatchlistDe(c, targetWl); if (enWl) {
 const btnBack = document.createElement('button'); btnBack.type = 'button'; btnBack.className = 'btn-watchlist-special active-wl';
@@ -33729,9 +34099,11 @@ function renderizarStats() {
         const ultSubTxt = ult ? `${ultCalifHtml}<span style="${ultCalifHtml ? 'margin-left:4px;' : ''}">(${uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')})</span>` : t('stat_sin_reg');
         const mejCalifHtml = mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : t('stat_sin_reg');
 
+        const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria('Lecturas', s.id) : null;
+        const subTitleColor = metaSub ? metaSub.colorVar : 'var(--accent)';
         return `
           <div class="stat-subcat-lecturas-card">
-            <div style="font-weight:700; color:var(--accent); font-size:.9rem; margin-bottom:6px;"><span class="emoji-dyn">${s.emoji} </span>${sNombre}</div>
+            <div style="font-weight:700; color:${subTitleColor}; font-size:.9rem; margin-bottom:6px;"><span class="emoji-dyn">${s.emoji} </span>${sNombre}</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
               <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''}>
                 <div class="highlight-card-title">
@@ -33803,8 +34175,10 @@ function renderizarStats() {
       `;
     }
 
+    const metaCat = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(cat, '') : null;
+    const catCardClass = metaCat ? `cat-wide-${metaCat.key}` : '';
     const c = document.createElement('div');
-    c.className = 'cat-wide-card';
+    c.className = `cat-wide-card ${catCardClass}`;
     c.innerHTML = `
       <div class="cat-wide-header" onclick="cambiarCat('${cat}')" title="Ir a ${catNombre}">
         <div class="cat-wide-title"><span class="emoji-dyn">${cfg.emoji} </span>${catNombre}</div>
@@ -34908,7 +35282,11 @@ function abrirModalTerminarObra(id) {
     if (crEl) crEl.textContent = (reg.creador || '') + (reg.anio ? ` (${reg.anio})` : '');
 
     const badgeEl = document.getElementById('terminar-subcat-badge');
-    if (badgeEl) badgeEl.textContent = `${reg.categoria} → ${reg.subcategoria}${reg.fechaInicio && reg.fechaInicio !== 'Sin fecha' ? ' | Inicio: ' + reg.fechaInicio : ''}`;
+    if (badgeEl) {
+      const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(reg.categoria, reg.subcategoria) : null;
+      badgeEl.textContent = `${reg.categoria} → ${reg.subcategoria}${reg.fechaInicio && reg.fechaInicio !== 'Sin fecha' ? ' | Inicio: ' + reg.fechaInicio : ''}`;
+      if (metaCol) badgeEl.style.color = metaCol.colorVar;
+    }
 
     const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
     const inputFin = document.getElementById('terminar-fecha-fin');
