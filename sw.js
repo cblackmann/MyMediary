@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mediary-pwa-v212';
+const CACHE_NAME = 'mediary-pwa-v213';
 const IMAGE_CACHE_NAME = 'mediary-images-v1';
 const MAX_IMAGE_ENTRIES = 90;
 

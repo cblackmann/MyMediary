@@ -854,6 +854,11 @@ html[data-ui-style="modern"] .home-friend-song-card{border-radius:12px !importan
 .btn-psn-stop-prominent{background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.38);color:#ef4444;font-size:0.77rem;font-weight:700;border-radius:6px;padding:3px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:var(--tr);height:28px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.12);user-select:none;}
 .btn-psn-stop-prominent:hover{background:#ef4444;border-color:#ef4444;color:#fff;box-shadow:0 4px 14px rgba(239,68,68,0.35);transform:translateY(-1px);}
 .btn-psn-stop-prominent:active{transform:translateY(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.btn-psn-discord-prominent{background:rgba(88,101,242,0.16);border:1px solid rgba(88,101,242,0.45);color:#818cf8;font-size:0.77rem;font-weight:700;border-radius:6px;padding:3px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--tr);height:28px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.12);user-select:none;}
+.btn-psn-discord-prominent:hover{background:#5865F2;border-color:#5865F2;color:#fff;box-shadow:0 4px 14px rgba(88,101,242,0.4);transform:translateY(-1px);}
+.btn-psn-discord-prominent:active{transform:translateY(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.btn-psn-discord-connected{background:rgba(88,101,242,0.1);border:1px solid rgba(88,101,242,0.32);color:#818cf8;font-size:0.75rem;font-weight:600;border-radius:6px;padding:3px 9px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:var(--tr);height:28px;line-height:1;user-select:none;}
+.btn-psn-discord-connected:hover{background:rgba(88,101,242,0.22);border-color:rgba(88,101,242,0.5);color:#fff;}
 .btn-psn-sync-quick{width:26px;height:26px;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.08);border:1px solid var(--border);color:var(--muted);transition:var(--tr);flex-shrink:0;user-select:none;}
 .btn-psn-sync-quick:hover{color:var(--accent);background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.4);transform:scale(1.12);}
 .btn-psn-sync-quick:active{transform:scale(0.96);}
@@ -11182,6 +11187,77 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
 
     <div class="modal-actions" style="margin-top:16px; justify-content:flex-end;">
       <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarPsn()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL VINCULAR DISCORD PARA DETECCIÓN EN VIVO (PLAYSTATION / STEAM) -->
+<div id="modal-conectar-discord" class="modal-overlay" style="display:none; z-index:2250;" onclick="if(event.target===this) cerrarModalConectarDiscord()">
+  <div class="modal-box" style="max-width:460px; max-height:88vh; overflow-y:auto; border-radius:4px; padding:20px; display:flex; flex-direction:column; gap:12px; background:var(--card); border:1px solid var(--border); box-shadow:0 16px 40px rgba(0,0,0,0.35);">
+    
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:4px; background:rgba(88,101,242,0.18); color:#5865F2;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </span>
+        <h3 style="margin:0; font-size:1.02rem; font-weight:800; color:var(--text);">Vincular Discord (Auto-sync PS5 / PS4)</h3>
+      </div>
+      <button type="button" class="btn-close-modal" onclick="cerrarModalConectarDiscord()" style="background:none; border:none; color:var(--muted); font-size:1.3rem; cursor:pointer; padding:2px 6px; line-height:1;">&times;</button>
+    </div>
+
+    <p style="font-size:0.78rem; color:var(--muted); margin:0; line-height:1.45;">
+      PlayStation transmite en tiempo real a Discord qué juego tienes abierto. Sigue estos 3 pasos para activar la sincronización automática sin cookies ni bloqueos:
+    </p>
+
+    <!-- Paso 1 -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:10px 12px;">
+      <div style="font-weight:700; font-size:0.8rem; color:var(--text); margin-bottom:3px; display:flex; align-items:center; gap:6px;">
+        <span style="background:rgba(88,101,242,0.2); color:#818cf8; width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.72rem;">1</span>
+        <span>Vincula tu PlayStation a Discord</span>
+      </div>
+      <div style="font-size:0.74rem; color:var(--muted); line-height:1.4;">
+        En tu consola ve a: <strong>Ajustes ➜ Usuarios y cuentas ➜ Servicios vinculados ➜ Discord</strong> y activa <em>"Mostrar PlayStation Network como tu estado"</em> (o en Discord PC/móvil en <em>Ajustes ➜ Conexiones</em>).
+      </div>
+    </div>
+
+    <!-- Paso 2 -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:10px 12px;">
+      <div style="font-weight:700; font-size:0.8rem; color:var(--text); margin-bottom:3px; display:flex; align-items:center; gap:6px;">
+        <span style="background:rgba(88,101,242,0.2); color:#818cf8; width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.72rem;">2</span>
+        <span>Únete al servidor del bot Lanyard (1 clic)</span>
+      </div>
+      <div style="font-size:0.74rem; color:var(--muted); line-height:1.4; margin-bottom:8px;">
+        Es el bot oficial que permite a la web leer tu actividad de juego en vivo sin pedir contraseñas. Solo requiere que tu cuenta esté en su servidor:
+      </div>
+      <a href="https://discord.gg/lanyard" target="_blank" rel="noopener noreferrer" style="display:flex; align-items:center; justify-content:center; gap:7px; background:#5865F2; color:#fff; font-size:0.78rem; font-weight:700; padding:7px 12px; border-radius:4px; text-decoration:none; box-shadow:0 2px 6px rgba(88,101,242,0.3);">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        <span>Unirse al servidor de Discord Lanyard ↗</span>
+      </a>
+    </div>
+
+    <!-- Paso 3 -->
+    <div style="background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:10px 12px;">
+      <div style="font-weight:700; font-size:0.8rem; color:var(--text); margin-bottom:3px; display:flex; align-items:center; gap:6px;">
+        <span style="background:rgba(88,101,242,0.2); color:#818cf8; width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:0.72rem;">3</span>
+        <span>Ingresa tu Discord User ID numérico</span>
+      </div>
+      <p style="font-size:0.72rem; color:var(--muted); margin:0 0 6px 0; line-height:1.35;">
+        <em>¿Cómo obtenerlo?</em> En Discord ve a <strong>Ajustes ➜ Avanzado ➜ Activar Modo desarrollador</strong>. Luego haz clic derecho sobre tu foto de perfil y selecciona <strong>"Copiar ID de usuario"</strong>.
+      </p>
+      <div class="app-connect-input-row" style="margin-top:6px;">
+        <input type="text" id="discord-modal-input-id" class="form-input" placeholder="Ej: 803511102246789140" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" style="font-size:0.8rem; flex:1;" onkeydown="if(event.key==='Enter') guardarYProbarDiscordDesdeModal()">
+        <button type="button" class="btn-connect-action" id="btn-save-discord-modal" style="background:#5865F2; color:#fff;" onclick="guardarYProbarDiscordDesdeModal()">Guardar y Probar</button>
+      </div>
+    </div>
+
+    <!-- Caja de estado / feedback -->
+    <div id="discord-modal-status-box" style="display:none; font-size:0.75rem; padding:8px 12px; border-radius:4px; line-height:1.45;"></div>
+
+    <div class="modal-actions" style="margin-top:8px; justify-content:space-between;">
+      <button type="button" id="btn-disconnect-discord-modal" class="btn-modal-danger" onclick="desconectarDiscordModal()" style="display:none; font-size:0.78rem; padding:6px 12px;">
+        Desconectar Discord
+      </button>
+      <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarDiscord()" style="margin-left:auto;">Cerrar</button>
     </div>
   </div>
 </div>
@@ -28420,12 +28496,13 @@ async function forzarActualizacionJuegosLive(btnEl) {
 
   const isSteamConn = localStorage.getItem('mediary_steam_connected') === 'true';
   const isPsnConn = localStorage.getItem('mediary_psn_connected') === 'true';
+  const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
   const tasks = [];
   if (isSteamConn && typeof consultarActividadEnVivoSteam_ === 'function') {
     _steamUltimaConsultaLive = 0;
     tasks.push(consultarActividadEnVivoSteam_(true));
   }
-  if (isPsnConn && typeof consultarActividadEnVivoPlayStation_ === 'function') {
+  if ((isPsnConn || hasDiscord) && typeof consultarActividadEnVivoPlayStation_ === 'function') {
     _psnUltimaConsultaLive = 0;
     tasks.push(consultarActividadEnVivoPlayStation_(true));
   }
@@ -30598,17 +30675,18 @@ async function consultarActividadDiscordLive_(forzar = false) {
       let isPsn = false;
       let isSteam = false;
 
-      if (platformStr.includes('ps4') || largeText.includes('playstation 4') || largeText.includes('ps4')) {
+      if (platformStr.includes('steam') || largeText.includes('steam')) {
+        plat = 'Steam';
+        isSteam = true;
+      } else if (platformStr.includes('ps4') || largeText.includes('playstation 4') || largeText.includes('ps4')) {
         plat = 'PS4';
         isPsn = true;
       } else if (platformStr.includes('ps5') || largeText.includes('playstation 5') || largeText.includes('ps5') || largeText.includes('playstation')) {
         plat = 'PS5';
         isPsn = true;
-      } else if (platformStr.includes('steam') || largeText.includes('steam')) {
-        plat = 'Steam';
-        isSteam = true;
       } else {
-        isPsn = localStorage.getItem('mediary_psn_connected') === 'true';
+        const hasSteamOnly = localStorage.getItem('mediary_steam_connected') === 'true' && localStorage.getItem('mediary_psn_connected') !== 'true';
+        isPsn = !hasSteamOnly;
         plat = isPsn ? 'PS5' : 'Steam';
       }
 
@@ -30661,9 +30739,10 @@ async function consultarActividadDiscordLive_(forzar = false) {
 window.consultarActividadDiscordLive_ = consultarActividadDiscordLive_;
 
 async function consultarActividadEnVivoPlayStation_(forzar = false) {
-  if (localStorage.getItem('mediary_psn_connected') !== 'true') return null;
+  const isPsnConnected = localStorage.getItem('mediary_psn_connected') === 'true';
   const username = (localStorage.getItem('mediary_psn_username') || '').trim();
-  if (!username) return null;
+  const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
+  if (!isPsnConnected && !discordId) return null;
 
   if (username === 'Gamer_Mediary') {
     let prev = null;
@@ -30690,18 +30769,20 @@ async function consultarActividadEnVivoPlayStation_(forzar = false) {
     let liveResult = null;
 
     // 0. Detección automática en vivo vía Discord Lanyard si está configurado
-    const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
     if (discordId) {
       try {
         const discRes = await consultarActividadDiscordLive_(forzar);
-        if (discRes && discRes.isPlaying) {
+        if (discRes) {
           liveResult = discRes;
+          if (discRes.isPlaying) {
+            return discRes;
+          }
         }
       } catch (_) {}
     }
 
     // 1. Detección directa vía Sony PlayStation Network (Token NPSSO o Bearer Token)
-    if (liveResult === null) {
+    if (liveResult === null && isPsnConnected) {
       const npsso = (localStorage.getItem('mediary_psn_npsso') || '').trim();
       let accessToken = (localStorage.getItem('mediary_psn_access_token') || '').trim();
       const tokenCandidates = [];
@@ -30755,7 +30836,7 @@ async function consultarActividadEnVivoPlayStation_(forzar = false) {
   }
 
     // 2. Consulta pública auxiliar vía perfil público PSNProfiles
-    if (liveResult === null) {
+    if (liveResult === null && isPsnConnected && username) {
       try {
         const profUrl = `https://psnprofiles.com/${encodeURIComponent(username)}`;
         const html = await fetchSteamProxyContent_(profUrl);
@@ -30819,9 +30900,11 @@ async function consultarActividadEnVivoPlayStation_(forzar = false) {
 window.consultarActividadEnVivoPlayStation_ = consultarActividadEnVivoPlayStation_;
 
 function iniciarPollingPlayStationLive() {
-  if (localStorage.getItem('mediary_psn_connected') !== 'true') return;
+  const isPsnConn = localStorage.getItem('mediary_psn_connected') === 'true';
   const username = (localStorage.getItem('mediary_psn_username') || '').trim();
-  if (!username) return;
+  const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
+  if (!isPsnConn && !discordId) return;
+  if (isPsnConn && !username && !discordId) return;
 
   let prev = null;
   try {
@@ -31249,6 +31332,200 @@ function guardarDiscordIdDesdeInput(inputId) {
 }
 window.guardarDiscordIdDesdeInput = guardarDiscordIdDesdeInput;
 
+function abrirModalConectarDiscord() {
+  const m = document.getElementById('modal-conectar-discord');
+  if (!m) return;
+  const currentId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
+  const inp = document.getElementById('discord-modal-input-id');
+  if (inp) {
+    inp.value = currentId;
+    setTimeout(() => inp.focus(), 100);
+  }
+  const statusBox = document.getElementById('discord-modal-status-box');
+  if (statusBox) {
+    if (currentId) {
+      statusBox.style.display = 'block';
+      statusBox.style.background = 'rgba(88, 101, 242, 0.12)';
+      statusBox.style.border = '1px solid rgba(88, 101, 242, 0.35)';
+      statusBox.style.color = '#818cf8';
+      statusBox.innerHTML = `✓ ID configurado: <strong>${escHtmlSpotify_(currentId)}</strong>. Pulsa <em>"Guardar y Probar"</em> para verificar la conexión en vivo.`;
+    } else {
+      statusBox.style.display = 'none';
+      statusBox.innerHTML = '';
+    }
+  }
+  const btnDisc = document.getElementById('btn-disconnect-discord-modal');
+  if (btnDisc) {
+    btnDisc.style.display = currentId ? 'inline-block' : 'none';
+  }
+  m.style.display = 'flex';
+}
+window.abrirModalConectarDiscord = abrirModalConectarDiscord;
+
+function cerrarModalConectarDiscord() {
+  const m = document.getElementById('modal-conectar-discord');
+  if (m) m.style.display = 'none';
+}
+window.cerrarModalConectarDiscord = cerrarModalConectarDiscord;
+
+async function guardarYProbarDiscordDesdeModal() {
+  const inp = document.getElementById('discord-modal-input-id');
+  const btn = document.getElementById('btn-save-discord-modal');
+  const statusBox = document.getElementById('discord-modal-status-box');
+  const btnDisc = document.getElementById('btn-disconnect-discord-modal');
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+
+  const val = (inp?.value || '').trim();
+  if (!val) {
+    if (statusBox) {
+      statusBox.style.display = 'block';
+      statusBox.style.background = 'rgba(239, 68, 68, 0.12)';
+      statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+      statusBox.style.color = '#ef4444';
+      statusBox.textContent = l === 'en' ? 'Please enter a numeric Discord User ID.' : 'Por favor ingresa un Discord User ID numérico.';
+    }
+    return;
+  }
+
+  if (!/^\d{16,22}$/.test(val)) {
+    if (statusBox) {
+      statusBox.style.display = 'block';
+      statusBox.style.background = 'rgba(245, 158, 11, 0.12)';
+      statusBox.style.border = '1px solid rgba(245, 158, 11, 0.35)';
+      statusBox.style.color = '#f59e0b';
+      statusBox.innerHTML = l === 'en'
+        ? '⚠️ The ID must be a 17-20 digit number (e.g., 803511102246789140), not your @username.'
+        : '⚠️ El ID debe ser un número de 17 a 20 dígitos (ej: 803511102246789140), no tu @nombre de usuario.';
+    }
+    return;
+  }
+
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = l === 'en' ? 'Testing...' : 'Probando...';
+  }
+  if (statusBox) {
+    statusBox.style.display = 'block';
+    statusBox.style.background = 'rgba(56, 189, 248, 0.12)';
+    statusBox.style.border = '1px solid rgba(56, 189, 248, 0.35)';
+    statusBox.style.color = '#38bdf8';
+    statusBox.textContent = l === 'en' ? 'Connecting to Discord Lanyard API...' : 'Conectando con la API de Discord Lanyard...';
+  }
+
+  try {
+    const res = await fetch(`https://api.lanyard.rest/v1/users/${encodeURIComponent(val)}`, {
+      cache: 'no-store',
+      signal: AbortSignal.timeout(6000)
+    });
+    const json = await res.json().catch(() => null);
+
+    if (json && json.success && json.data) {
+      localStorage.setItem('mediary_discord_user_id', val);
+      if (btnDisc) btnDisc.style.display = 'inline-block';
+
+      const d = json.data;
+      const uName = d.discord_user ? `${d.discord_user.username}${d.discord_user.discriminator && d.discord_user.discriminator !== '0' ? '#' + d.discord_user.discriminator : ''}` : val;
+      const activities = Array.isArray(d.activities) ? d.activities : [];
+      const gameAct = activities.find(a => a && a.type === 0);
+
+      let msgExtra = '';
+      if (gameAct && gameAct.name) {
+        msgExtra = `<br><span style="color:#10b981; font-weight:700;">🎮 Jugando ahora: ${escHtmlSpotify_(gameAct.name)}</span>`;
+      } else {
+        msgExtra = `<br><span style="color:var(--muted);">En reposo (no hay juego detectado en este momento en Discord).</span>`;
+      }
+
+      if (statusBox) {
+        statusBox.style.background = 'rgba(16, 185, 129, 0.12)';
+        statusBox.style.border = '1px solid rgba(16, 185, 129, 0.35)';
+        statusBox.style.color = '#10b981';
+        statusBox.innerHTML = `✅ <strong>¡Conexión exitosa!</strong> Usuario detectado: <strong>${escHtmlSpotify_(uName)}</strong>.${msgExtra}`;
+      }
+
+      mostrarToastPersonalizado(l === 'en' ? `✅ Connected to Discord (${uName})` : `✅ Vinculado a Discord (${uName})`);
+
+      if (typeof consultarActividadDiscordLive_ === 'function') {
+        await consultarActividadDiscordLive_(true).catch(() => null);
+      }
+      if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
+        renderizarPlayStationNowPlayingInicio(false);
+      }
+      if (typeof iniciarPollingPlayStationLive === 'function') {
+        iniciarPollingPlayStationLive();
+      }
+      if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+        sincronizarPreferenciasYAppsHaciaNube(true);
+      }
+    } else if (json && json.error && json.error.code === 'user_not_monitored') {
+      if (statusBox) {
+        statusBox.style.background = 'rgba(245, 158, 11, 0.12)';
+        statusBox.style.border = '1px solid rgba(245, 158, 11, 0.35)';
+        statusBox.style.color = '#f59e0b';
+        statusBox.innerHTML = `⚠️ <strong>Falta el Paso 2:</strong> Tu usuario no está en el servidor de Lanyard.<br>Por favor <a href="https://discord.gg/lanyard" target="_blank" rel="noopener noreferrer" style="color:#818cf8; text-decoration:underline; font-weight:700;">haz clic aquí para unirte a discord.gg/lanyard</a> con tu cuenta y luego vuelve a presionar <em>Guardar y Probar</em>.`;
+      }
+    } else {
+      const errDetail = (json && json.error && json.error.message) ? json.error.message : 'No se pudo verificar el ID en Discord Lanyard.';
+      if (statusBox) {
+        statusBox.style.background = 'rgba(239, 68, 68, 0.12)';
+        statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+        statusBox.style.color = '#ef4444';
+        statusBox.innerHTML = `❌ Error: ${escHtmlSpotify_(errDetail)}`;
+      }
+    }
+  } catch (err) {
+    if (statusBox) {
+      statusBox.style.background = 'rgba(239, 68, 68, 0.12)';
+      statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+      statusBox.style.color = '#ef4444';
+      statusBox.innerHTML = `❌ Error de red al consultar Discord Lanyard (${escHtmlSpotify_(err.message || 'Timeout')}).`;
+    }
+  } finally {
+    if (btn) {
+      btn.disabled = false;
+      btn.textContent = l === 'en' ? 'Save & Test' : 'Guardar y Probar';
+    }
+  }
+}
+window.guardarYProbarDiscordDesdeModal = guardarYProbarDiscordDesdeModal;
+
+function desconectarDiscordModal() {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  const inp = document.getElementById('discord-modal-input-id');
+  if (inp) inp.value = '';
+  localStorage.removeItem('mediary_discord_user_id');
+
+  try {
+    const raw = localStorage.getItem('mediary_psn_now_playing');
+    if (raw) {
+      const p = JSON.parse(raw);
+      if (p && p.viaDiscord) {
+        guardarEstadoEnVivoPlayStation_({ isPlaying: false, source: 'playstation', platform: 'PS5' });
+      }
+    }
+  } catch(e) {}
+
+  const statusBox = document.getElementById('discord-modal-status-box');
+  if (statusBox) {
+    statusBox.style.display = 'block';
+    statusBox.style.background = 'rgba(239, 68, 68, 0.12)';
+    statusBox.style.border = '1px solid rgba(239, 68, 68, 0.35)';
+    statusBox.style.color = '#ef4444';
+    statusBox.textContent = l === 'en' ? 'Discord disconnected.' : 'Discord desconectado.';
+  }
+  const btnDisc = document.getElementById('btn-disconnect-discord-modal');
+  if (btnDisc) btnDisc.style.display = 'none';
+
+  mostrarToastPersonalizado(l === 'en' ? 'Discord disconnected' : 'Discord desconectado');
+
+  if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
+    renderizarPlayStationNowPlayingInicio(false);
+  }
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
+}
+window.desconectarDiscordModal = desconectarDiscordModal;
+
 function obtenerJuegoEnProgresoPlayStation() {
   // Las tarjetas de juego en tiempo real no deben vincularse a registros del diario
   return null;
@@ -31593,13 +31870,14 @@ function alternarJuegoUsuarioPlayStation(e) {
 function obtenerEstadoJuegoActivoInicio() {
   const isPsnConn = localStorage.getItem('mediary_psn_connected') === 'true';
   const isSteamConn = localStorage.getItem('mediary_steam_connected') === 'true';
+  const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
 
-  if (!isPsnConn && !isSteamConn) {
-    return { status: 'disconnected', isPsnConn: false, isSteamConn: false };
+  if (!isPsnConn && !isSteamConn && !hasDiscord) {
+    return { status: 'disconnected', isPsnConn: false, isSteamConn: false, hasDiscord: false };
   }
 
   let psnNP = null;
-  if (isPsnConn) {
+  if (isPsnConn || hasDiscord) {
     try {
       const raw = localStorage.getItem('mediary_psn_now_playing');
       if (raw) psnNP = JSON.parse(raw);
@@ -31607,7 +31885,7 @@ function obtenerEstadoJuegoActivoInicio() {
   }
 
   let steamNP = null;
-  if (isSteamConn) {
+  if (isSteamConn || hasDiscord) {
     try {
       const raw = localStorage.getItem('mediary_steam_now_playing');
       if (raw) steamNP = JSON.parse(raw);
@@ -31651,7 +31929,8 @@ function obtenerEstadoJuegoActivoInicio() {
       data: elegirSteam ? steamData : psnData,
       otherActive: elegirSteam ? psnData : steamData,
       isPsnConn,
-      isSteamConn
+      isSteamConn,
+      hasDiscord
     };
   }
 
@@ -31662,7 +31941,8 @@ function obtenerEstadoJuegoActivoInicio() {
       data: steamData,
       otherActive: null,
       isPsnConn,
-      isSteamConn
+      isSteamConn,
+      hasDiscord
     };
   }
 
@@ -31673,7 +31953,8 @@ function obtenerEstadoJuegoActivoInicio() {
       data: psnData,
       otherActive: null,
       isPsnConn,
-      isSteamConn
+      isSteamConn,
+      hasDiscord
     };
   }
 
@@ -31682,7 +31963,8 @@ function obtenerEstadoJuegoActivoInicio() {
     idlePlatform: (isPsnConn && isSteamConn) ? 'both' : (isSteamConn ? 'steam' : 'playstation'),
     lastPlatform: lastPlat,
     isPsnConn,
-    isSteamConn
+    isSteamConn,
+    hasDiscord
   };
 }
 window.obtenerEstadoJuegoActivoInicio = obtenerEstadoJuegoActivoInicio;
@@ -31725,7 +32007,7 @@ function renderizarPlayStationNowPlayingInicio(forzar = false) {
     detenerPollingSteamLive();
   }
 
-  if (estadoJuego.isPsnConn) {
+  if (estadoJuego.isPsnConn || estadoJuego.hasDiscord) {
     iniciarPollingPlayStationLive();
     if (typeof consultarActividadEnVivoPlayStation_ === 'function') {
       consultarActividadEnVivoPlayStation_(!!forzar);
@@ -31785,6 +32067,18 @@ function dibujarTarjetaPlayStationCompacta(data) {
 
   const stopAction = isSteam ? 'detenerJuegoSteam()' : 'detenerJuegoPsn()';
 
+  const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
+  const discordSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`;
+  const discordBtnHtml = hasDiscord
+    ? `<button type="button" class="btn-psn-discord-connected" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="${l === 'en' ? 'Discord auto-sync active · Tap to manage' : 'Discord auto-sync activo · Toca para administrar'}">
+        ${discordSvg}
+        <span>Discord</span>
+       </button>`
+    : `<button type="button" class="btn-psn-discord-prominent" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="${l === 'en' ? 'Connect Discord for auto-sync PS5 / PS4' : 'Vincular Discord para sincronización automática PS5 / PS4'}">
+        ${discordSvg}
+        <span>+ Discord</span>
+       </button>`;
+
   const coverHtml = coverUrl
     ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(titleName)}" loading="lazy"><span class="home-psn-platform-badge">${escHtmlSpotify_(platform)}</span>`
     : `<div style="width:100%;height:100%;display:grid;place-items:center;background:${placeholderBg};color:${accentColor};"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></div>`;
@@ -31840,6 +32134,7 @@ function dibujarTarjetaPlayStationCompacta(data) {
               <svg class="btn-sync-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               <span class="btn-sync-text">${l === 'en' ? 'Sync status' : 'Sincronizar estado'}</span>
             </button>
+            ${discordBtnHtml}
           </div>
         </div>
       </div>
@@ -31871,8 +32166,18 @@ function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {
   const isSteamConn = estadoJuego ? !!estadoJuego.isSteamConn : (localStorage.getItem('mediary_steam_connected') === 'true');
   const soloSteam = isSteamConn && !isPsnConn;
   const ambas = isPsnConn && isSteamConn;
-  const hasNpsso = !!(localStorage.getItem('mediary_psn_npsso') || '').trim();
-  const hasDiscord = !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
+  const hasDiscord = estadoJuego ? !!estadoJuego.hasDiscord : !!(localStorage.getItem('mediary_discord_user_id') || '').trim();
+
+  const discordSvg = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`;
+  const discordBtnHtml = hasDiscord
+    ? `<button type="button" class="btn-psn-discord-connected" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="${l === 'en' ? 'Discord auto-sync active · Tap to manage' : 'Discord auto-sync activo · Toca para administrar'}">
+        ${discordSvg}
+        <span>Discord</span>
+       </button>`
+    : `<button type="button" class="btn-psn-discord-prominent" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="${l === 'en' ? 'Connect Discord for auto-sync PS5 / PS4' : 'Vincular Discord para sincronización automática PS5 / PS4'}">
+        ${discordSvg}
+        <span>+ Discord</span>
+       </button>`;
 
   const platformShort = ambas ? 'PlayStation · Steam' : (soloSteam ? 'Steam' : 'PlayStation');
   const platformHeader = ambas ? 'PlayStation · Steam' : (soloSteam ? 'Steam' : 'PlayStation Network');
@@ -31950,12 +32255,7 @@ function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {
               <svg class="btn-sync-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
               <span class="btn-sync-text">${l === 'en' ? 'Sync status' : 'Sincronizar estado'}</span>
             </button>
-            ${(!hasNpsso && !hasDiscord && isPsnConn) ? `
-              <button type="button" class="btn-psn-token-hint" onclick="event.stopPropagation(); abrirModalConectarPsn()" title="${l === 'en' ? 'Set up Discord or NPSSO for automatic live detection' : 'Configurar Discord o NPSSO para detección automática'}">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg>
-                <span>Auto-sync</span>
-              </button>
-            ` : ''}
+            ${discordBtnHtml}
           </div>
         </div>
       </div>
@@ -31981,7 +32281,7 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
   const isExp = estaLiveCardExpandida('playstation');
   return `
     <div class="home-playstation-card-compact home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" data-game-platform="disconnected" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <div class="home-psn-cover-compact" style="display:grid; place-items:center; background:linear-gradient(135deg,rgba(0,55,145,0.22),rgba(0,26,68,0.38)); color:#38bdf8; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
+      <div class="home-psn-cover-compact" style="display:grid; place-items:center; background:linear-gradient(135deg,rgba(0,55,145,0.22),rgba(0,26,68,0.38)); color:#38bdf8; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarDiscord()">
         <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px; height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
       </div>
 
@@ -31989,11 +32289,11 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
         <!-- VISTA REDUCIDA (COLLAPSED) -->
         <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
           <div style="flex:1; min-width:0; overflow:hidden;">
-            <div class="home-psn-title-compact home-np-text-wrap" style="color:#38bdf8; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
-              <span class="home-np-scrollable">${l === 'en' ? 'Connect PlayStation or Steam' : 'Conectar PlayStation o Steam'}</span>
+            <div class="home-psn-title-compact home-np-text-wrap" style="color:#38bdf8; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarDiscord()">
+              <span class="home-np-scrollable">${l === 'en' ? 'Connect PlayStation, Steam or Discord' : 'Conectar PlayStation, Steam o Discord'}</span>
             </div>
             <div style="font-size:0.72rem; color:var(--muted); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">
-              <span>PlayStation · Steam</span>
+              <span>PlayStation · Steam · Discord</span>
             </div>
           </div>
         </div>
@@ -32001,12 +32301,15 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
         <!-- VISTA EXPANDIDA -->
         <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:2px;">
           <div class="home-psn-platform-label">
-            <span>PlayStation · Steam</span>
+            <span>PlayStation · Steam · Discord</span>
           </div>
-          <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()">
+          <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarDiscord()">
             <span class="home-np-scrollable" style="color:#38bdf8;">${l === 'en' ? 'Connect your gaming accounts' : 'Conecta tus cuentas de juegos'}</span>
           </div>
           <div class="home-psn-status-row" style="margin-top:2px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+            <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); abrirModalConectarDiscord()" style="color:#818cf8;border-color:rgba(88,101,242,0.45);background:rgba(88,101,242,0.16);font-weight:700;">
+              + <span>Discord (Auto-sync)</span>
+            </button>
             <button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); abrirModalConectarPsn()">
               + <span>PlayStation</span>
             </button>
@@ -32018,7 +32321,7 @@ function dibujarTarjetaPlayStationCompactaDesconectado() {
       </div>
 
       <div class="home-psn-right-col">
-        <span class="home-psn-logo-link live-card-expanded-only" style="width:auto; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarPsn()" title="PlayStation &amp; Steam">
+        <span class="home-psn-logo-link live-card-expanded-only" style="width:auto; display:inline-flex; align-items:center; gap:4px; cursor:pointer;" onclick="event.stopPropagation(); abrirModalConectarDiscord()" title="PlayStation, Steam &amp; Discord">
           ${obtenerSvgLogoPlataformaJuego_('playstation', 15)}
           ${obtenerSvgLogoPlataformaJuego_('steam', 15)}
         </span>
