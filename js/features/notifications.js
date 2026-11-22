@@ -538,14 +538,18 @@ function verificarNuevosLikesRecibidos(likesRecibidos) {
 
 async function verificarLikesRecibidosEnNube() {
   if (!estado.userEmail) return;
-  const prefs = obtenerPreferenciasNotificaciones();
-  if (!prefs.likesAmigos) return;
   try {
     const rows = await sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(normEm_(estado.userEmail)) + '&select=preferencias', 'GET').catch(() => []);
     if (rows && rows.length > 0 && rows[0].preferencias) {
       const p = rows[0].preferencias;
       if (p.likes_recibidos) {
-        verificarNuevosLikesRecibidos(p.likes_recibidos);
+        if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+        perfilUsuario.preferencias.likes_recibidos = p.likes_recibidos;
+        guardarPerfilLocal();
+        const prefs = obtenerPreferenciasNotificaciones();
+        if (prefs && prefs.likesAmigos) {
+          verificarNuevosLikesRecibidos(p.likes_recibidos);
+        }
       }
     }
   } catch (e) {}

@@ -91,6 +91,10 @@ function renderizarInsigniasAmigosDiscover(it, cat) {
 }
 function abrirModalDetalleActividadAmigo(btnOrAct) {
   let act = btnOrAct;
+  if (btnOrAct && btnOrAct.closest && !btnOrAct.dataset?.act) {
+    const elWithAct = btnOrAct.closest('[data-act]');
+    if (elWithAct) btnOrAct = elWithAct;
+  }
   if (btnOrAct && btnOrAct.dataset && btnOrAct.dataset.act) {
     try { act = JSON.parse(decodeURIComponent(btnOrAct.dataset.act)); } catch(e){}
   }
@@ -108,7 +112,7 @@ function abrirModalDetalleActividadAmigo(btnOrAct) {
 
   document.getElementById('act-modal-friend-nick').textContent = act.amigo || tLang('Amigo', 'Friend');
 
-  const isVisto = act.tipo === 'visto';
+  const isVisto = act.tipo ? (act.tipo === 'visto') : true;
   const typeBadge = document.getElementById('act-modal-type-badge');
   const phraseEl = document.getElementById('act-modal-status-phrase');
 
@@ -374,6 +378,108 @@ function cargarAmigosYSolicitudes(mostrarToast = false) {
     if (mostrarToast) mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Friends list and updates refreshed ' : 'Lista de amigos y novedades actualizada ');
   }).obtenerDatosAmigosUsuario(estado.userEmail);
 }
+
+// === RESOLUCIÓN DE DATOS DE AMIGO Y POPUP DE LIKES ===
+function obtenerDatosAmigoPorEmail(email) {
+  if (!email) return { nickname: (userPrefs.lang === 'en' ? 'Friend' : 'Amigo'), avatar: '🦊', email: '' };
+  const emNorm = String(email).trim().toLowerCase();
+
+  // 1. Check estado.amigos
+  let lista = estado.amigos || [];
+  if (!lista.length && estado.userEmail) {
+    try {
+      const c = localStorage.getItem('mediary_cache_amigos_' + estado.userEmail.toLowerCase());
+      if (c) lista = JSON.parse(c);
+    } catch(e) {}
+  }
+  const am = lista.find(a => (a.email || '').toLowerCase() === emNorm);
+  if (am) {
+    return {
+      nickname: am.nickname || am.email?.split('@')[0] || (userPrefs.lang === 'en' ? 'Friend' : 'Amigo'),
+      avatar: am.avatar || '🦊',
+      email: am.email
+    };
+  }
+  // 2. Check estado.amigosFeedCache
+  const feed = estado.amigosFeedCache || [];
+  const fi = feed.find(f => (f.userEmail || '').toLowerCase() === emNorm);
+  if (fi) {
+    return {
+      nickname: fi.amigoNickname || fi.userEmail?.split('@')[0] || (userPrefs.lang === 'en' ? 'Friend' : 'Amigo'),
+      avatar: fi.amigoAvatar || '🦊',
+      email: fi.userEmail
+    };
+  }
+  // Fallback
+  return {
+    nickname: email.split('@')[0] || (userPrefs.lang === 'en' ? 'Friend' : 'Amigo'),
+    avatar: '🦊',
+    email: email
+  };
+}
+window.obtenerDatosAmigoPorEmail = obtenerDatosAmigoPorEmail;
+
+function mostrarCuadroLikeAmigo(regId, event) {
+  if (event && event.stopPropagation) event.stopPropagation();
+  const reg = (estado.registros || []).find(r => String(r.id) === String(regId));
+  const likesAmigos = (perfilUsuario?.preferencias?.likes_recibidos && (perfilUsuario.preferencias.likes_recibidos[String(regId)] || perfilUsuario.preferencias.likes_recibidos[regId])) || [];
+  if (!Array.isArray(likesAmigos) || !likesAmigos.length) return;
+  const l = userPrefs.lang || 'es';
+
+  const amigos = likesAmigos.map(em => obtenerDatosAmigoPorEmail(em));
+  const m = document.getElementById('modal-like-detalle-resena');
+  if (!m) return;
+
+  const avBox = document.getElementById('like-popup-avatar-container');
+  if (avBox) {
+    avBox.innerHTML = `
+      <div style="position:relative; display:inline-flex; align-items:center;">
+        ${amigos.slice(0, 3).map((am, i) => {
+          const offset = i > 0 ? 'margin-left:-14px;' : '';
+          const imgOrEmoji = (am.avatar && (am.avatar.startsWith('http') || am.avatar.startsWith('data:')))
+            ? `<img src="${am.avatar}" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--card);background:var(--bg);">`
+            : `<div style="width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-size:1.5rem;border:2px solid var(--card);background:var(--bg);">${am.avatar || '🦊'}</div>`;
+          return `<div style="${offset} z-index:${10 - i}; position:relative;">${imgOrEmoji}</div>`;
+        }).join('')}
+        <span style="position:absolute; bottom:-3px; right:-6px; width:22px; height:22px; border-radius:50%; background:#f43f5e; color:#fff; display:grid; place-items:center; border:2px solid var(--card); box-shadow:0 2px 6px rgba(244,63,94,0.4); z-index:15;">
+          ${getHeroIcon('heart', '', 12)}
+        </span>
+      </div>
+    `;
+  }
+
+  const txtBox = document.getElementById('like-popup-texto');
+  if (txtBox) {
+    const nombres = amigos.map(a => a.nickname);
+    let frase = '';
+    if (nombres.length === 1) {
+      frase = l === 'en' ? `${nombres[0]} liked your review` : `A ${nombres[0]} le ha gustado tu reseña`;
+    } else if (nombres.length === 2) {
+      frase = l === 'en' ? `${nombres[0]} and ${nombres[1]} liked your review` : `A ${nombres[0]} y ${nombres[1]} les ha gustado tu reseña`;
+    } else {
+      frase = l === 'en' ? `${nombres[0]} and ${nombres.length - 1} others liked your review` : `A ${nombres[0]} y a ${nombres.length - 1} más les ha gustado tu reseña`;
+    }
+    txtBox.textContent = frase;
+  }
+
+  const itemInfoBox = document.getElementById('like-popup-item-info');
+  if (itemInfoBox) {
+    if (reg && reg.titulo) {
+      itemInfoBox.textContent = `"${reg.titulo}"`;
+      itemInfoBox.style.display = 'block';
+    } else {
+      itemInfoBox.style.display = 'none';
+    }
+  }
+
+  m.style.display = 'flex';
+}
+function cerrarModalLikeDetalleResena() {
+  const m = document.getElementById('modal-like-detalle-resena');
+  if (m) m.style.display = 'none';
+}
+window.mostrarCuadroLikeAmigo = mostrarCuadroLikeAmigo;
+window.cerrarModalLikeDetalleResena = cerrarModalLikeDetalleResena;
 
 // === SISTEMA DE LIKES EN RESEÑAS DE AMIGOS ===
 let cacheLikesAmigosCount = {};
@@ -848,9 +954,28 @@ function renderizarFeedAmigos() {
       </button>
     `;
 
+    const actPayload = encodeURIComponent(JSON.stringify({
+      amigo: it.amigoNickname || it.amigoNick || (it.userEmail ? it.userEmail.split('@')[0] : 'Amigo'),
+      amigoAvatar: it.amigoAvatar || '🦊',
+      amigoEmail: it.userEmail || '',
+      tipo: it.tipo || ((it.fechaFin && !esEnProgresoTexto(it.fechaFin)) || it.calificacion ? 'visto' : 'pendiente'),
+      cat: it.categoria || 'Peliculas',
+      sub: it.subcategoria || '',
+      titulo: it.titulo || '',
+      subtitulo: it.subtitulo || '',
+      creador: it.creador || '',
+      anio: it.anio || '',
+      poster: it.poster || '',
+      calificacion: it.calificacion || '',
+      comentario: it.comentario || '',
+      fechaInicio: it.fechaInicio || '',
+      fechaFin: it.fechaFin || '',
+      horas: it.horas || ''
+    }));
+
     const reviewHtml = (it.comentario && it.comentario.trim() !== '')
       ? `
-        <div class="feed-review-box">
+        <div class="feed-review-box" data-act="${actPayload}" onclick="event.stopPropagation(); abrirModalDetalleActividadAmigo(this)" style="cursor:pointer;" title="${l === 'en' ? 'View record details' : 'Ver detalle del registro'}">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
             <div class="feed-review-title" style="font-size:0.75rem;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:5px;"><span>${getHeroIcon('chat-bubble-bottom-center-text', '', 13)}</span> <span>${l === 'en' ? 'Comment' : 'Comentario'}</span></div>
             ${likeBtnHtml}
@@ -2137,9 +2262,28 @@ function renderizarFeedAmigosResumidoInicio() {
       </button>
     `;
 
+    const actPayload = encodeURIComponent(JSON.stringify({
+      amigo: it.amigoNickname || it.amigoNick || (it.userEmail ? it.userEmail.split('@')[0] : 'Amigo'),
+      amigoAvatar: it.amigoAvatar || '🦊',
+      amigoEmail: it.userEmail || '',
+      tipo: it.tipo || ((it.fechaFin && !esEnProgresoTexto(it.fechaFin)) || it.calificacion ? 'visto' : 'pendiente'),
+      cat: it.categoria || 'Peliculas',
+      sub: it.subcategoria || '',
+      titulo: it.titulo || '',
+      subtitulo: it.subtitulo || '',
+      creador: it.creador || '',
+      anio: it.anio || '',
+      poster: it.poster || '',
+      calificacion: it.calificacion || '',
+      comentario: it.comentario || '',
+      fechaInicio: it.fechaInicio || '',
+      fechaFin: it.fechaFin || '',
+      horas: it.horas || ''
+    }));
+
     const reviewHtml = (it.comentario && it.comentario.trim() !== '')
       ? `
-        <div class="feed-review-box">
+        <div class="feed-review-box" data-act="${actPayload}" onclick="event.stopPropagation(); abrirModalDetalleActividadAmigo(this)" style="cursor:pointer;" title="${l === 'en' ? 'View record details' : 'Ver detalle del registro'}">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:6px;">
             <div class="feed-review-title" style="font-size:0.75rem;font-weight:800;color:var(--accent);display:flex;align-items:center;gap:5px;"><span>${getHeroIcon('chat-bubble-bottom-center-text', '', 13)}</span> <span>${l === 'en' ? 'Comment' : 'Comentario'}</span></div>
             ${likeBtnHtml}

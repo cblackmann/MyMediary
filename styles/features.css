@@ -676,10 +676,22 @@
 .feed-status-inprog {display:inline-flex;align-items:center;gap:6px;background:rgba(245,158,11,0.12);color:var(--star-active,#d97706);border:1px solid rgba(245,158,11,0.3);padding:3px 10px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.02em;}
 [data-theme$="-dark"] .feed-status-inprog,
 html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11,0.15);color:#fbbf24;border-color:rgba(245,158,11,0.35);}
-.feed-review-box {margin-top:10px;padding:10px 14px;background:rgba(56,189,248,0.06);border-left:3px solid var(--accent);border-radius:4px 8px 8px 4px;font-size:0.86rem;color:var(--text);line-height:1.45;word-break:break-word;position:relative;}
+.feed-review-box {margin-top:10px;padding:10px 14px;background:rgba(56,189,248,0.06);border-left:3px solid var(--accent);border-radius:4px 8px 8px 4px;font-size:0.86rem;color:var(--text);line-height:1.45;word-break:break-word;position:relative;cursor:pointer;transition:transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;}
+.feed-review-box:hover {background:rgba(56,189,248,0.12);transform:translateX(2px);}
 [data-theme$="-light"] .feed-review-box {background:rgba(0,0,0,0.03);}
+[data-theme$="-light"] .feed-review-box:hover {background:rgba(56,189,248,0.1);}
 .feed-review-title {font-size:0.72rem;font-weight:800;color:var(--accent);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:3px;display:flex;align-items:center;gap:5px;}
 .feed-review-text {font-style:italic;}
+
+/* BADGE DE LIKE EN RESEÑA DE REGISTRO */
+.review-like-avatar-badge {display:inline-flex;align-items:center;position:relative;cursor:pointer;margin-left:6px;vertical-align:middle;transition:transform 0.15s ease, filter 0.15s ease;user-select:none;}
+.review-like-avatar-badge:hover {transform:scale(1.15);}
+.review-like-avatar-inner {position:relative;display:inline-block;width:22px;height:22px;}
+.review-like-avatar-img {width:22px;height:22px;border-radius:50%;object-fit:cover;border:1.5px solid var(--accent);background:var(--bg);display:block;}
+.review-like-avatar-emoji {width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:0.72rem;border:1.5px solid var(--accent);background:var(--bg);}
+.review-like-heart-pin {position:absolute;bottom:-3px;right:-4px;width:12px;height:12px;border-radius:50%;background:#f43f5e;color:#fff;display:grid;place-items:center;border:1.5px solid var(--card);box-shadow:0 1px 3px rgba(244,63,94,0.45);}
+.review-like-heart-pin svg {width:7px;height:7px;}
+.review-like-extra-count {font-size:0.7rem;font-weight:700;color:var(--muted);margin-left:3px;}
 .feed-actions {display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap;}
 .btn-feed-action {background:var(--bg);border:1px solid var(--border);color:var(--text);padding:5px 12px;border-radius:8px;font-size:0.75rem;font-weight:600;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:5px;}
 .btn-feed-action:hover {border-color:var(--accent);color:var(--accent);background:rgba(56,189,248,0.1);}
@@ -851,8 +863,9 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
   filter:brightness(1.06);
 }
 
-/* MIS WATCHLISTS (ABAJO, CUADRADO) */
-.home-fab-wl {
+/* MIS WATCHLISTS / CALENDARIO (ABAJO, CUADRADO) */
+.home-fab-wl,
+.home-fab-cal {
   width:52px;
   height:52px;
   border-radius:10px;
@@ -861,13 +874,19 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
   border:1.5px solid var(--accent-warm-border, rgba(245,158,11,0.45));
   box-shadow:0 6px 20px rgba(0,0,0,0.28), 0 1px 3px rgba(0,0,0,0.12);
 }
-.home-fab-wl svg {
+.home-fab-wl svg,
+.home-fab-cal svg {
   width:24px;
   height:24px;
 }
-.home-fab-wl:hover {
+.home-fab-wl:hover,
+.home-fab-cal:hover {
   border-color:var(--accent-warm, #f59e0b);
   box-shadow:0 10px 28px rgba(245,158,11,0.35);
+}
+.home-fab-cal.active {
+  background:var(--accent-warm, #f59e0b);
+  color:var(--card);
 }
 
 @media (max-width: 768px){
@@ -885,12 +904,14 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
     width:30px;
     height:30px;
   }
-  .home-fab-wl {
+  .home-fab-wl,
+  .home-fab-cal {
     width:48px;
     height:48px;
     border-radius:9px;
   }
-  .home-fab-wl svg {
+  .home-fab-wl svg,
+  .home-fab-cal svg {
     width:22px;
     height:22px;
   }

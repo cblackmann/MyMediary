@@ -3,6 +3,7 @@ function asegurarPuntoFinal(str) { if (!str) return ''; const s = str.trim(); if
 function actualizarNavWebActiva() { const c = estado.categoria, s = estado.subcategoria, enWl = !!CONFIG[c] && esSubcategoriaWatchlist(s); document.querySelectorAll('.nav-sec-btn').forEach(b => b.classList.remove('active'));
 document.querySelectorAll('.nav-cat-card').forEach(b => b.classList.toggle('active', b.dataset.cat === c)); if (c === 'inicio') document.getElementById('tab-btn-inicio')?.classList.add('active'); else if (c === 'listas') document.getElementById('tab-btn-listas-ext')?.classList.add('active'); else if (c === 'discover') document.getElementById('tab-btn-discover')?.classList.add('active');
 else if (c === 'amigos') document.getElementById('tab-btn-amigos')?.classList.add('active'); else if (c === 'perfil') document.getElementById('tab-btn-perfil')?.classList.add('active'); else if (c === 'watchlists' || enWl) document.getElementById('tab-btn-listas')?.classList.add('active');
+document.getElementById('home-fab-calendario')?.classList.toggle('active', c === 'calendario');
 document.getElementById('btn-header-calendario')?.classList.toggle('active', c === 'calendario'); }
 function abrirVistaPerfil(pushNav = true) {
   try {
