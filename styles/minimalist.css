@@ -1,0 +1,631 @@
+/* Mediary — Minimalist app theme (data-app-theme="minimalist") */
+/* ========================================================
+   THEME MINIMALISTA (data-app-theme="minimalist")
+   - Tipografía DM Sans
+   - Títulos claros, destacados y con fuerte jerarquía visual
+   - Interfaz y controles en minúsculas
+   - Contenido del usuario legible y respetado
+   - Paleta de 2 colores: 1 neutro base + 1 acento de tema
+   - Estados suaves y desaturados (éxito y alertas atenuadas)
+   - Sin emojis decorativos innecesarios (se preservan menú y cabecera)
+   - Espaciado armónico, equilibrado y sin desbordes
+   ======================================================== */
+
+/* Fuente global DM Sans */
+html[data-app-theme="minimalist"],
+html[data-app-theme="minimalist"] body,
+html[data-app-theme="minimalist"] button,
+html[data-app-theme="minimalist"] input,
+html[data-app-theme="minimalist"] select,
+html[data-app-theme="minimalist"] textarea {
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* 1. TÍTULOS PROMINENTES, CLAROS Y CON FUERTE JERARQUÍA */
+html[data-app-theme="minimalist"] .home-greeting-title,
+html[data-app-theme="minimalist"] .home-mini-title,
+html[data-app-theme="minimalist"] .cat-wide-title,
+html[data-app-theme="minimalist"] .history-title,
+html[data-app-theme="minimalist"] .all-watchlists-title,
+html[data-app-theme="minimalist"] .discover-header-bar h2,
+html[data-app-theme="minimalist"] .detail-card h2,
+html[data-app-theme="minimalist"] .modal-box h3 {
+  font-size: 1.45rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.25 !important;
+  color: var(--text) !important;
+  text-transform: lowercase !important;
+  margin-bottom: 6px !important;
+}
+
+@media (max-width: 640px) {
+  html[data-app-theme="minimalist"] .home-greeting-title,
+html[data-app-theme="minimalist"] .home-mini-title,
+html[data-app-theme="minimalist"] .cat-wide-title,
+html[data-app-theme="minimalist"] .history-title,
+html[data-app-theme="minimalist"] .all-watchlists-title,
+html[data-app-theme="minimalist"] .discover-header-bar h2 {
+    font-size: 1.3rem !important;
+  }
+}
+
+html[data-app-theme="minimalist"] .home-greeting-banner {
+  align-items: stretch !important;
+  margin: 0 0 16px 0 !important;
+  gap: 26px !important;
+}
+html[data-app-theme="minimalist"] .home-greeting-title {
+  text-align: center !important;
+  justify-content: center !important;
+  margin: -6px auto 0 auto !important;
+  width: 100% !important;
+}
+html[data-app-theme="minimalist"] .home-clean-title,
+html[data-app-theme="minimalist"] .home-greeting-subtitle {
+  font-size: 1.06rem !important;
+  font-weight: 600 !important;
+  color: var(--muted) !important;
+  letter-spacing: 0.01em !important;
+  text-align: left !important;
+  justify-content: flex-start !important;
+  margin-bottom: 0 !important;
+}
+@media (max-width: 640px) {
+  html[data-app-theme="minimalist"] .home-clean-title,
+html[data-app-theme="minimalist"] .home-greeting-subtitle {
+    font-size: 0.95rem !important;
+  }
+}
+
+/* 2. MINÚSCULAS EN CONTROLES Y ELEMENTOS DE LA INTERFAZ */
+html[data-app-theme="minimalist"] .nav-sec-btn,
+html[data-app-theme="minimalist"] .nav-cat-card,
+html[data-app-theme="minimalist"] .subtab-btn,
+html[data-app-theme="minimalist"] .btn-save,
+html[data-app-theme="minimalist"] .btn-modal-save,
+html[data-app-theme="minimalist"] .btn-modal-cancel,
+html[data-app-theme="minimalist"] .btn-modal-danger,
+html[data-app-theme="minimalist"] .btn-watchlist-special,
+html[data-app-theme="minimalist"] .btn-today-pill,
+html[data-app-theme="minimalist"] .btn-action-manual,
+html[data-app-theme="minimalist"] .btn-hero-quick-add,
+html[data-app-theme="minimalist"] .btn-toggle-filter,
+html[data-app-theme="minimalist"] .btn-read-today-streak,
+html[data-app-theme="minimalist"] .btn-streak-pill,
+html[data-app-theme="minimalist"] .btn-reading-time-confirm,
+html[data-app-theme="minimalist"] .reading-time-chip,
+html[data-app-theme="minimalist"] .btn-terminar-badge,
+html[data-app-theme="minimalist"] .btn-terminar-card,
+html[data-app-theme="minimalist"] .btn-change-cover,
+html[data-app-theme="minimalist"] .btn-edit-profile,
+html[data-app-theme="minimalist"] .btn-choose-fav,
+html[data-app-theme="minimalist"] .profile-section-title,
+html[data-app-theme="minimalist"] .profile-stat-label,
+html[data-app-theme="minimalist"] .year-display-txt,
+html[data-app-theme="minimalist"] .badge-racha-header,
+html[data-app-theme="minimalist"] .streak-badge-pill,
+html[data-app-theme="minimalist"] .subtotal-pill,
+html[data-app-theme="minimalist"] .nav-cats-label,
+html[data-app-theme="minimalist"] .theme-title,
+html[data-app-theme="minimalist"] .theme-subtitle,
+html[data-app-theme="minimalist"] .theme-pill-btn,
+html[data-app-theme="minimalist"] .app-theme-card strong,
+html[data-app-theme="minimalist"] .app-theme-card span,
+html[data-app-theme="minimalist"] .table-container th,
+html[data-app-theme="minimalist"] .history-table th,
+html[data-app-theme="minimalist"] .form-group label {
+  text-transform: lowercase !important;
+}
+
+/* 3. PALETA DE 2 COLORES: 1 NEUTRO BASE + 1 ACENTO ÚNICO */
+html[data-app-theme="minimalist"] {
+  --accent-warm: var(--accent) !important;
+  --accent-warm-hover: var(--accent-hover) !important;
+  --accent-warm-rgb: var(--accent-rgb) !important;
+  --accent-warm-contrast: var(--accent-contrast) !important;
+  --accent-warm-subtle: var(--accent-subtle) !important;
+  --accent-warm-border: var(--accent-border) !important;
+  --star-active: var(--accent) !important;
+}
+
+/* Modo oscuro minimalista: base neutra elegante y desaturada */
+html[data-app-theme="minimalist"][data-theme$="-dark"],
+html[data-app-theme="minimalist"]:not([data-theme$="-light"]) {
+  --bg: #0c0e12 !important;
+  --card: #15181e !important;
+  --card-hover: #1e222b !important;
+  --header-bg: #090a0d !important;
+  --separator-bg: #090a0d !important;
+  --border: #252933 !important;
+  --text: #f0f2f5 !important;
+  --muted: #848997 !important;
+  --bottom-nav-bg: rgba(12, 14, 18, 0.92) !important;
+  --bottom-nav-border: rgba(255, 255, 255, 0.09) !important;
+  --bottom-nav-shadow: 0 16px 40px rgba(0, 0, 0, 0.65) !important;
+
+  /* Estados desaturados y suaves en oscuro */
+  --success: #3aa876 !important;
+  --success-hover: #329267 !important;
+  --success-rgb: 58, 168, 118 !important;
+  --success-contrast: #ffffff !important;
+  --success-subtle: rgba(58, 168, 118, 0.12) !important;
+  --success-border: rgba(58, 168, 118, 0.28) !important;
+
+  --danger: #b54a4a !important;
+  --danger-hover: #9c3c3c !important;
+  --danger-rgb: 181, 74, 74 !important;
+  --danger-contrast: #ffffff !important;
+  --danger-subtle: rgba(181, 74, 74, 0.12) !important;
+  --danger-border: rgba(181, 74, 74, 0.28) !important;
+}
+
+/* Modo claro minimalista: base neutra descansada sin blanco puro */
+html[data-app-theme="minimalist"][data-theme$="-light"] {
+  --bg: #eaecee !important;
+  --card: #f4f6f8 !important;
+  --card-hover: #e8eaed !important;
+  --header-bg: #dadde2 !important;
+  --separator-bg: #dadde2 !important;
+  --border: #c8cbd2 !important;
+  --text: #14161a !important;
+  --muted: #646875 !important;
+  --bottom-nav-bg: rgba(244, 246, 248, 0.92) !important;
+  --bottom-nav-border: rgba(0, 0, 0, 0.08) !important;
+  --bottom-nav-shadow: 0 12px 30px rgba(0, 0, 0, 0.07) !important;
+
+  /* Estados desaturados y suaves en claro */
+  --success: #2e8b5c !important;
+  --success-hover: #26734c !important;
+  --success-rgb: 46, 139, 92 !important;
+  --success-contrast: #ffffff !important;
+  --success-subtle: rgba(46, 139, 92, 0.12) !important;
+  --success-border: rgba(46, 139, 92, 0.28) !important;
+
+  --danger: #aa3d3d !important;
+  --danger-hover: #913131 !important;
+  --danger-rgb: 170, 61, 61 !important;
+  --danger-contrast: #ffffff !important;
+  --danger-subtle: rgba(170, 61, 61, 0.12) !important;
+  --danger-border: rgba(170, 61, 61, 0.28) !important;
+}
+
+/* Sobriedad visual: eliminar degradados o destellos fluorescentes */
+html[data-app-theme="minimalist"] .streak-celebration-banner {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: none !important;
+}
+html[data-app-theme="minimalist"] .streak-celebration-banner::before {
+  display: none !important;
+}
+html[data-app-theme="minimalist"] .streak-flame-box {
+  background: var(--accent-subtle) !important;
+  border: 1px solid var(--accent-border) !important;
+  color: var(--accent) !important;
+}
+html[data-app-theme="minimalist"] .streak-badge-pill {
+  background: var(--accent) !important;
+  color: var(--accent-contrast) !important;
+  box-shadow: none !important;
+}
+html[data-app-theme="minimalist"] .badge-racha-header {
+  background: var(--accent-subtle) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent-border) !important;
+}
+html[data-app-theme="minimalist"] .home-hero-card {
+  box-shadow: none !important;
+  border-color: var(--border) !important;
+}
+
+/* 4. SIN EMOJIS NO ESENCIALES (se conservan menú móvil inferior y cabecera) */
+html[data-app-theme="minimalist"] .emoji-dyn {
+  display: none !important;
+}
+html[data-app-theme="minimalist"] .mobile-bottom-nav .emoji-dyn,
+html[data-app-theme="minimalist"] .btn-header-icon .btn-icon-glyph,
+html[data-app-theme="minimalist"] .btn-header-icon span,
+html[data-app-theme="minimalist"] #badge-notif-count {
+  display: inline-block !important;
+}
+
+/* 5. ESPACIADO EQUILIBRADO Y SIN DESBORDES (respetando los anchos del contenedor) */
+html[data-app-theme="minimalist"] .container {
+  max-width: 1060px;
+  margin: 18px auto !important;
+  padding: 0 16px !important;
+  box-sizing: border-box !important;
+}
+html[data-app-theme="minimalist"] .home-clean-section,
+html[data-app-theme="minimalist"] .cat-wide-card {
+  margin-bottom: 26px !important;
+}
+html[data-app-theme="minimalist"] .home-section-divider {
+  margin: 22px 0 !important;
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  opacity: 0.45 !important;
+}
+html[data-app-theme="minimalist"] .home-clean-section-header {
+  margin-bottom: 12px !important;
+}
+html[data-app-theme="minimalist"] .subtabs {
+  gap: 8px !important;
+  margin-bottom: 18px !important;
+}
+html[data-app-theme="minimalist"] .nav-sections-row {
+  margin-bottom: 14px !important;
+}
+html[data-app-theme="minimalist"] .nav-categories-row {
+  margin-bottom: 18px !important;
+}
+/* ========================================================
+   ESTILOS PARA EL PANEL DE ESTADÍSTICAS DETALLADAS (MODAL)
+   ======================================================== */
+.stats-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.stats-kpi-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  min-height: 84px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.stats-kpi-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.stats-kpi-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.stats-kpi-val {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--text);
+  margin-top: 4px;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+}
+.stats-kpi-sub {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.25;
+}
+.stats-section-box {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+.stats-section-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.stats-cat-tabs-bar {
+  display: flex;
+  gap: 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 3px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.stats-cat-tab {
+  padding: 6px 12px;
+  border-radius: 9px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.stats-cat-tab:hover {
+  color: var(--text);
+}
+.stats-cat-tab.active {
+  background: var(--card);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  border: 1px solid var(--border);
+}
+.stats-period-group {
+  display: inline-flex;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2px;
+  gap: 2px;
+}
+.stats-period-btn {
+  padding: 4px 10px;
+  border-radius: 7px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.stats-period-btn:hover {
+  color: var(--text);
+}
+.stats-period-btn.active {
+  background: var(--card);
+  color: var(--text);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  border: 1px solid var(--border);
+}
+.stats-ranking-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  margin-bottom: 6px;
+  transition: all 0.15s ease;
+}
+.stats-ranking-row:hover {
+  border-color: var(--accent);
+  background: var(--card-hover, var(--bg));
+  transform: translateY(-1px);
+}
+.stats-rank-num {
+  font-size: 0.76rem;
+  font-weight: 800;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.stats-rank-num.rank-1 { background: rgba(200, 149, 90, 0.18); color: #c8955a; border: 1px solid rgba(200, 149, 90, 0.35); }
+.stats-rank-num.rank-2 { background: rgba(148, 163, 184, 0.15); color: var(--text); border: 1px solid rgba(148, 163, 184, 0.3); }
+.stats-rank-num.rank-3 { background: rgba(180, 120, 70, 0.15); color: #b47846; border: 1px solid rgba(180, 120, 70, 0.3); }
+.stats-chip-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  font-size: 0.78rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.stats-chip-cat:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   HEROICONS OUTLINE VECTOR SYSTEM STYLES
+   ========================================================================== */
+.h-icon,
+.heroicon {
+  display: inline-block;
+  vertical-align: -0.18em;
+  width: 1.24em;
+  height: 1.24em;
+  stroke-width: 1.85;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  transition: transform .2s ease, stroke .2s ease, color .2s ease;
+}
+.mobile-nav-btn .icon svg.h-icon {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.8;
+}
+.btn-clean-glyph svg.h-icon {
+  width: 25px;
+  height: 25px;
+  stroke-width: 1.8;
+}
+.live-dot-icon svg.h-icon {
+  width: 8px !important;
+  height: 8px !important;
+  stroke-width: 2.2 !important;
+}
+.nav-cat-card svg.h-icon {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.8;
+  margin-bottom: 2px;
+}
+.nav-sec-btn svg.h-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.85;
+  margin-right: 4px;
+}
+.quick-add-icon-badge svg.h-icon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+.home-indice-icon svg.h-icon {
+  width: 18px;
+  height: 18px;
+}
+.home-streak-flame-icon svg.h-icon {
+  width: 19px;
+  height: 19px;
+  color: #f97316;
+  stroke-width: 1.85;
+}
+.subtab-btn svg.h-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  vertical-align: -0.15em;
+}
+.btn-toggle-filter svg.h-icon,
+.btn-action-manual svg.h-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: -0.15em;
+}
+.year-dropdown-item svg.h-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align: -0.15em;
+}
+.emoji-dyn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.emoji-dyn svg.h-icon {
+  vertical-align: middle;
+}
+
+/* ==========================================================================
+   HEROICONS OUTLINE VECTOR SYSTEM STYLES
+   ========================================================================== */
+.h-icon,
+.heroicon {
+  display: inline-block;
+  vertical-align: -0.18em;
+  width: 1.22em;
+  height: 1.22em;
+  stroke-width: 1.85;
+  stroke: currentColor;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+  transition: transform .2s ease, stroke .2s ease, color .2s ease;
+}
+.mobile-nav-btn .icon svg.h-icon {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.8;
+}
+.btn-clean-glyph svg.h-icon {
+  width: 25px;
+  height: 25px;
+  stroke-width: 1.8;
+}
+.live-dot-icon svg.h-icon {
+  width: 8px !important;
+  height: 8px !important;
+  stroke-width: 2.2 !important;
+}
+.nav-cat-card svg.h-icon {
+  width: 22px;
+  height: 22px;
+  stroke-width: 1.8;
+  margin-bottom: 2px;
+}
+.nav-sec-btn svg.h-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.85;
+  margin-right: 4px;
+}
+.quick-add-icon-badge svg.h-icon {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+.home-indice-icon svg.h-icon {
+  width: 18px;
+  height: 18px;
+}
+.home-streak-flame-icon svg.h-icon {
+  width: 19px;
+  height: 19px;
+  color: #f97316;
+  stroke-width: 1.85;
+}
+.subtab-btn svg.h-icon,
+.btn-toggle-filter svg.h-icon,
+.btn-action-manual svg.h-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+  vertical-align: -0.15em;
+}
+.year-dropdown-item svg.h-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  vertical-align: -0.15em;
+}
+.btn-delete svg.h-icon,
+.m-card-btn-delete svg.h-icon,
+.btn-wl-del svg.h-icon {
+  width: 15px;
+  height: 15px;
+  vertical-align: middle;
+}
+.btn-terminar-badge svg.h-icon,
+.btn-wl-play svg.h-icon {
+  width: 15px;
+  height: 15px;
+  margin-right: 4px;
+  vertical-align: -0.15em;
+}
+.emoji-dyn {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.emoji-dyn svg.h-icon {
+  vertical-align: middle;
+}
+

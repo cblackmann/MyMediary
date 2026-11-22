@@ -1,19 +1,53 @@
-const CACHE_NAME = 'mediary-pwa-v218';
+const CACHE_NAME = 'mediary-pwa-v219';
 const IMAGE_CACHE_NAME = 'mediary-images-v1';
-const MAX_IMAGE_ENTRIES = 90;
+const MAX_IMAGE_ENTRIES = 120;
 
 const ASSETS = [
+  './',
   './index.html',
   './manifest.json',
   './manifest-dark.json',
+  './favicon.ico',
   './icon.png',
   './icon-192.png',
   './icon-512.png',
   './icon.svg',
-  './flatpickr.min.js',
-  './flatpickr.es.js',
-  './flatpickr.min.css',
-  './flatpickr.dark.min.css'
+  './vendor/flatpickr/flatpickr.min.css',
+  './vendor/flatpickr/flatpickr.dark.min.css',
+  './vendor/flatpickr/flatpickr.min.js',
+  './vendor/flatpickr/flatpickr.es.js',
+  './styles/base.css',
+  './styles/integrations.css',
+  './styles/features.css',
+  './styles/modern-ui.css',
+  './styles/minimalist.css',
+  './styles/responsive.css',
+  './styles/themes.css',
+  './styles/profile-stats.css',
+  './styles/calendar.css',
+  './js/core/config.js',
+  './js/core/state.js',
+  './js/core/pwa.js',
+  './js/core/supabase-api.js',
+  './js/i18n/es.js',
+  './js/i18n/en.js',
+  './js/i18n/i18n.js',
+  './js/features/auth.js',
+  './js/features/profile.js',
+  './js/features/friends.js',
+  './js/features/notifications.js',
+  './js/features/roulette.js',
+  './js/features/home.js',
+  './js/features/stats.js',
+  './js/features/settings.js',
+  './js/features/navigation.js',
+  './js/features/catalog.js',
+  './js/features/calendar.js',
+  './js/integrations/spotify.js',
+  './js/integrations/steam.js',
+  './js/integrations/lastfm.js',
+  './js/integrations/playstation.js',
+  './js/main.js'
 ];
 
 self.addEventListener('install', e => {
@@ -30,7 +64,7 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Purga automática LRU para evitar que la caché de imágenes crezca de forma indefinida
+// Purga automática LRU para evitar que la caché de imágenes crezca indefinidamente
 async function limitarTamanoCache(cacheName, maxItems) {
   try {
     const cache = await caches.open(cacheName);
@@ -48,12 +82,15 @@ self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   const url = e.request.url;
 
-  // No interceptar peticiones a la base de datos o llamadas dinámicas
-  if (url.includes('supabase.co')) return;
+  // No interceptar peticiones a Supabase ni APIs dinámicas externas
+  if (url.includes('supabase.co') || url.includes('api.spotify.com') || url.includes('accounts.spotify.com') || url.includes('ws.audioscrobbler.com')) {
+    return;
+  }
 
-  // Manejo optimizado de imágenes remotas (portadas, pósters y avatares de APIs)
+  // Caché LRU optimizada para imágenes remotas (portadas, pósters y avatares)
   const esImagenRemota = (
-    e.request.destination === 'image' ||
+    e.request.destination === 'image' && !url.startsWith(self.location.origin)
+  ) || (
     url.includes('image.tmdb.org') ||
     url.includes('media.rawg.io') ||
     url.includes('dzcdn.net') ||
@@ -84,7 +121,24 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Peticiones de recursos locales (archivos estáticos PWA)
+  // Recursos estáticos del mismo origen: Stale-While-Revalidate para arranque instantáneo
+  if (url.startsWith(self.location.origin)) {
+    e.respondWith(
+      caches.open(CACHE_NAME).then(async cache => {
+        const cached = await cache.match(e.request);
+        const networkPromise = fetch(e.request).then(res => {
+          if (res && res.status === 200) {
+            cache.put(e.request, res.clone());
+          }
+          return res;
+        }).catch(() => cached);
+        return cached || networkPromise;
+      })
+    );
+    return;
+  }
+
+  // Fallback estándar para otros recursos (p.ej. Google Fonts)
   e.respondWith(
     fetch(e.request).catch(() => caches.match(e.request))
   );

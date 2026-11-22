@@ -1,0 +1,1069 @@
+/* Mediary — Profile hero, KPIs, Stats tabs & category accent badges */
+/* BOTON DISCRETO DE EDITAR PERFIL EN ESQUINA SUPERIOR DERECHA */
+.btn-profile-edit-discreet {
+  position: absolute;
+  top: 6px;
+  right: 0;
+  width: 26px;
+  height: 26px;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: var(--muted) !important;
+  opacity: 0.55 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--tr);
+  z-index: 10;
+  padding: 0;
+  outline: none;
+}
+.btn-profile-edit-discreet:hover {
+  background: transparent !important;
+  border: none !important;
+  color: var(--accent) !important;
+  opacity: 1 !important;
+  transform: scale(1.12);
+}
+[data-theme$="-light"] .btn-profile-edit-discreet {
+  background: transparent !important;
+  border: none !important;
+  color: var(--muted) !important;
+  opacity: 0.55 !important;
+}
+[data-theme$="-light"] .btn-profile-edit-discreet:hover {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* BOTON DISCRETO PARA CONFIGURAR FAVORITOS POR CATEGORIA */
+.btn-config-favs-icon {
+  margin-left: auto !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: var(--tr) !important;
+  padding: 0 !important;
+  outline: none !important;
+  flex-shrink: 0 !important;
+}
+.btn-config-favs-icon:hover {
+  color: var(--accent) !important;
+  border-color: var(--accent) !important;
+  background: rgba(56, 189, 248, 0.1) !important;
+  transform: translateY(-1px) !important;
+}
+[data-theme$="-light"] .btn-config-favs-icon:hover {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ==========================================================================
+   FORMATO DE PERFIL: TARJETA HERO GRANDE, CENTRADA Y ARREGLADA;
+   FAVORITOS Y STATS ABIERTOS Y LIMPIOS CON ESPACIO PARA RESPIRAR
+   ========================================================================== */
+#vista-perfil {
+  padding-bottom: 48px !important;
+}
+#vista-perfil .home-clean-section {
+  margin-bottom: 26px !important;
+}
+#vista-perfil .home-clean-section-header {
+  margin-bottom: 18px !important;
+}
+#vista-perfil .home-section-divider {
+  margin: 30px 0 !important;
+  opacity: 0.55 !important;
+}
+@media (min-width: 641px) {
+  #vista-perfil .home-section-divider {
+    margin: 38px 0 !important;
+  }
+  #vista-perfil .home-clean-section {
+    margin-bottom: 34px !important;
+  }
+}
+
+/* TARJETA HERO DEL PERFIL: COMO ANTES, GRANDE, CENTRADA Y ARREGLADA */
+#vista-perfil #perfil-hero-card,
+.profile-hero-card {
+  position: relative !important;
+  overflow: hidden !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: 18px !important;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18) !important;
+  padding: 32px 24px 26px 24px !important;
+  margin-bottom: 24px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  transition: var(--tr) !important;
+}
+#vista-perfil #perfil-hero-card:not(.has-custom-cover),
+.profile-hero-card:not(.has-custom-cover) {
+  background: var(--card) !important;
+}
+@media (max-width: 600px) {
+  #vista-perfil #perfil-hero-card,
+.profile-hero-card {
+    padding: 26px 18px 22px 18px !important;
+    border-radius: 16px !important;
+  }
+}
+[data-theme$="-light"] #vista-perfil #perfil-hero-card,
+[data-theme$="-light"] .profile-hero-card {
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06) !important;
+}
+
+#vista-perfil .profile-identity-wrap,
+#modal-perfil-amigo .profile-identity-wrap {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  gap: 0 !important;
+  position: relative !important;
+  z-index: 2 !important;
+}
+#vista-perfil .profile-avatar-box,
+#modal-perfil-amigo .profile-avatar-box {
+  width: 88px !important;
+  height: 88px !important;
+  min-width: 88px !important;
+  max-width: 88px !important;
+  margin: 0 auto 12px auto !important;
+  border-radius: 50% !important;
+  border: 3px solid var(--accent) !important;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.28) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: var(--bg) !important;
+  cursor: pointer !important;
+  display: grid !important;
+  place-items: center !important;
+  line-height: 1 !important;
+  font-size: 2.3rem !important;
+  flex-shrink: 0 !important;
+  transition: transform 0.2s ease !important;
+}
+#vista-perfil .profile-avatar-box:hover,
+#modal-perfil-amigo .profile-avatar-box:hover {
+  transform: scale(1.05) !important;
+}
+@media (max-width: 600px) {
+  #vista-perfil .profile-avatar-box,
+#modal-perfil-amigo .profile-avatar-box {
+    width: 80px !important;
+    height: 80px !important;
+    min-width: 80px !important;
+    max-width: 80px !important;
+    font-size: 2.1rem !important;
+    margin-bottom: 10px !important;
+  }
+}
+#vista-perfil .profile-info-col,
+#modal-perfil-amigo .profile-info-col {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  padding: 0 !important;
+  min-width: 0 !important;
+}
+#vista-perfil .profile-nick-row,
+#modal-perfil-amigo .profile-nick-row {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  cursor: pointer !important;
+  margin-bottom: 4px !important;
+}
+#vista-perfil .profile-nick-display,
+#modal-perfil-amigo .profile-nick-display {
+  font-size: 1.35rem !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  line-height: 1.25 !important;
+  word-break: break-word !important;
+}
+@media (max-width: 600px) {
+  #vista-perfil .profile-nick-display,
+#modal-perfil-amigo .profile-nick-display {
+    font-size: 1.25rem !important;
+  }
+}
+#vista-perfil .profile-bio-txt,
+#modal-perfil-amigo .profile-bio-txt {
+  font-size: 0.88rem !important;
+  color: var(--muted) !important;
+  line-height: 1.45 !important;
+  margin: 4px auto 14px auto !important;
+  text-align: center !important;
+  max-width: 480px !important;
+}
+#vista-perfil .profile-badges-row,
+#modal-perfil-amigo .profile-badges-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  width: 100% !important;
+}
+#vista-perfil #perfil-id-badge,
+#modal-perfil-amigo #amigo-modal-id-badge {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  background: rgba(56, 189, 248, 0.12) !important;
+  border: 1px solid rgba(56, 189, 248, 0.35) !important;
+  color: var(--accent) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  cursor: pointer !important;
+  flex-shrink: 0 !important;
+  transition: var(--tr) !important;
+}
+#vista-perfil #perfil-id-badge:hover,
+#modal-perfil-amigo #amigo-modal-id-badge:hover {
+  background: rgba(56, 189, 248, 0.22) !important;
+  transform: translateY(-1px) !important;
+}
+#vista-perfil #perfil-email-render {
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  padding: 5px 12px !important;
+  border-radius: 20px !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  max-width: 100% !important;
+}
+[data-theme$="-light"] #vista-perfil #perfil-email-render {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+#vista-perfil #perfil-email-txt {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  max-width: 220px !important;
+  display: inline-block !important;
+}
+#vista-perfil .btn-profile-edit-discreet {
+  position: absolute !important;
+  top: 14px !important;
+  right: 14px !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 8px !important;
+  background: rgba(15, 23, 42, 0.55) !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 5 !important;
+  transition: all 0.18s ease !important;
+}
+[data-theme$="-light"] #vista-perfil .btn-profile-edit-discreet {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--text) !important;
+}
+#vista-perfil .btn-profile-edit-discreet:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  transform: scale(1.06) !important;
+}
+
+/* ESTILOS DE ALTO CONTRASTE Y ELEGANCIA CUANDO HAY PORTADA ACTIVA */
+#vista-perfil #perfil-hero-card.has-custom-cover,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover,
+.profile-hero-card.has-custom-cover {
+  border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.45) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .profile-nick-display,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .profile-nick-display,
+.profile-hero-card.has-custom-cover .profile-nick-display {
+  color: #ffffff !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .profile-nick-row svg,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .profile-nick-row svg {
+  color: #ffffff !important;
+  filter: drop-shadow(0 1px 4px rgba(0, 0, 0, 0.8)) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .profile-bio-txt,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .profile-bio-txt,
+.profile-hero-card.has-custom-cover .profile-bio-txt {
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.85) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover #perfil-id-badge,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover #amigo-modal-id-badge,
+.profile-hero-card.has-custom-cover #perfil-id-badge,
+.profile-hero-card.has-custom-cover #amigo-modal-id-badge {
+  background: rgba(15, 23, 42, 0.78) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover #perfil-id-badge svg,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover #amigo-modal-id-badge svg {
+  color: var(--accent) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover #perfil-email-render,
+.profile-hero-card.has-custom-cover #perfil-email-render {
+  background: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7) !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .btn-profile-edit-discreet,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .btn-profile-edit-discreet,
+[data-theme$="-light"] #vista-perfil #perfil-hero-card.has-custom-cover .btn-profile-edit-discreet {
+  background: rgba(15, 23, 42, 0.65) !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+}
+#vista-perfil #perfil-hero-card.has-custom-cover .profile-avatar-box,
+#modal-perfil-amigo #amigo-modal-hero-card.has-custom-cover .profile-avatar-box {
+  border: 3.5px solid #ffffff !important;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6), 0 0 14px rgba(255, 255, 255, 0.3) !important;
+}
+
+#vista-perfil .stats-kpi-card,
+#vista-perfil .stats-section-box,
+#vista-perfil .profile-stat-box,
+#vista-perfil .profile-fav-char-card,
+#modal-perfil-amigo .profile-fav-char-card,
+#vista-perfil .fav-char-empty-box,
+#vista-perfil .profile-fav-song-card,
+#modal-perfil-amigo .profile-fav-song-card,
+#vista-perfil .fav-song-empty-box,
+#vista-perfil .fav-slot-card,
+#vista-perfil .stats-ranking-row {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* BOTONES DE PERSONAJE Y CANCIÓN FAVORITA: ESTÉTICA INTEGRADA DE LA APP */
+.btn-char-action-icon,
+.btn-song-action-icon {
+  background: var(--bg) !important;
+  border: 1px solid var(--border) !important;
+  color: var(--muted) !important;
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  padding: 0 !important;
+  transition: all 0.18s ease !important;
+}
+.btn-char-action-icon:hover,
+.btn-song-action-icon:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: var(--accent-subtle, rgba(56, 189, 248, 0.12)) !important;
+  transform: translateY(-1px) !important;
+}
+.btn-song-action-icon.btn-song-play-main:hover {
+  border-color: #10b981 !important;
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.14) !important;
+}
+.btn-song-action-icon.playing,
+.btn-play-song-badge.playing {
+  border-color: #10b981 !important;
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.22) !important;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4) !important;
+}
+.btn-char-action-icon.btn-char-delete:hover,
+.btn-song-action-icon.btn-song-delete:hover {
+  border-color: #ef4444 !important;
+  color: #ef4444 !important;
+  background: rgba(239, 68, 68, 0.12) !important;
+}
+[data-theme$="-light"] .btn-char-action-icon,
+[data-theme$="-light"] .btn-song-action-icon {
+  background: var(--card) !important;
+}
+
+/* PERSONAJE Y CANCIÓN FAVORITA: HORIZONTAL Y CON ESPACIO PARA RESPIRAR */
+#vista-perfil .fav-char-main-row,
+#modal-perfil-amigo .fav-char-main-row,
+#vista-perfil .fav-song-main-row,
+#modal-perfil-amigo .fav-song-main-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 4px 0 8px 0 !important;
+  position: relative !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+#modal-perfil-amigo .fav-char-main-row,
+#modal-perfil-amigo .fav-song-main-row {
+  padding-right: 0 !important;
+}
+#vista-perfil .fav-char-avatar-box,
+#modal-perfil-amigo .fav-char-avatar-box {
+  width: 54px !important;
+  height: 54px !important;
+  min-width: 54px !important;
+  max-width: 54px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+}
+#vista-perfil .fav-song-cover-box,
+#modal-perfil-amigo .fav-song-cover-box {
+  width: 54px !important;
+  height: 54px !important;
+  min-width: 54px !important;
+  max-width: 54px !important;
+  border-radius: 8px !important;
+  flex-shrink: 0 !important;
+}
+#vista-perfil .fav-char-text-block,
+#modal-perfil-amigo .fav-char-text-block,
+#vista-perfil .fav-song-text-block,
+#modal-perfil-amigo .fav-song-text-block {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+}
+#vista-perfil .fav-char-actions-wrap,
+#vista-perfil .fav-song-actions-wrap {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  margin: 0 0 0 auto !important;
+  width: auto !important;
+  border: none !important;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  z-index: 2 !important;
+  flex-shrink: 0 !important;
+}
+
+/* KPI GRID EN PERFIL (3 COLUMNAS CON ESPACIADO EQUILIBRADO) */
+#vista-perfil .stats-kpi-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 12px 14px !important;
+  margin-bottom: 24px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+#vista-perfil .stats-kpi-card {
+  padding: 4px 0 !important;
+  border-radius: 0 !important;
+  min-height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  gap: 4px !important;
+}
+#vista-perfil .stats-kpi-card:hover {
+  border-color: transparent !important;
+  transform: none !important;
+}
+#vista-perfil .stats-kpi-label {
+  font-size: 0.72rem !important;
+  color: var(--muted) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  line-height: 1.25 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+  margin-bottom: 4px !important;
+  min-height: 2.4em !important;
+}
+#vista-perfil .stats-kpi-label svg {
+  width: 14px !important;
+  height: 14px !important;
+  flex-shrink: 0 !important;
+}
+#vista-perfil .stats-kpi-val {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  line-height: 1.25 !important;
+  word-break: break-word !important;
+  margin-bottom: 3px !important;
+}
+#vista-perfil .stats-kpi-sub {
+  font-size: 0.7rem !important;
+  color: var(--muted) !important;
+  line-height: 1.35 !important;
+  white-space: normal !important;
+  word-break: break-word !important;
+}
+
+#vista-perfil .stats-section-box {
+  padding: 14px 0 22px 0 !important;
+  border-radius: 0 !important;
+  margin-bottom: 22px !important;
+}
+#vista-perfil .stats-section-title {
+  margin-bottom: 14px !important;
+  font-size: 0.95rem !important;
+  font-weight: 700 !important;
+}
+
+/* ÍNDICE DE BOTONES DE CATEGORÍA DE ESTADÍSTICAS (5 COLUMNAS EN UNA SOLA FILA CON ESPACIO) */
+#perfil-stats-cats-index {
+  display: grid !important;
+  grid-template-columns: repeat(5, 1fr) !important;
+  gap: 8px !important;
+  margin: 24px 0 22px !important;
+  padding: 0 !important;
+  width: 100% !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+#perfil-stats-cats-index .home-indice-btn {
+  flex: auto !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: 64px !important;
+  padding: 10px 4px !important;
+  border-radius: 6px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  transition: all 0.15s ease !important;
+}
+#perfil-stats-cats-index .home-indice-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+#perfil-stats-cats-index .home-indice-label,
+#perfil-stats-cats-index .home-indice-name {
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100% !important;
+  display: block !important;
+}
+
+/* CHIPS DE DISTRIBUCIÓN DE TIEMPO EN PERFIL (GRILLA 2 COLUMNAS Y ÚLTIMO FULL CON AIRE) */
+#vista-perfil .stats-chips-container {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 10px 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  margin-top: 12px !important;
+}
+@media (min-width: 640px) {
+  #vista-perfil .stats-chips-container {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+    gap: 12px 12px !important;
+  }
+}
+#vista-perfil .stats-chip-cat {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 9px 12px !important;
+  font-size: 0.78rem !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  cursor: pointer !important;
+  transition: border-color 0.15s ease, background 0.15s ease !important;
+}
+[data-theme$="-light"] #vista-perfil .stats-chip-cat {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+#vista-perfil .stats-chip-cat:hover {
+  border-color: var(--accent) !important;
+}
+#vista-perfil .stats-chip-cat.stats-chip-cat-peliculas:hover { border-color: var(--cat-border-peliculas) !important; background: var(--cat-bg-peliculas) !important; }
+#vista-perfil .stats-chip-cat.stats-chip-cat-series:hover { border-color: var(--cat-border-series) !important; background: var(--cat-bg-series) !important; }
+#vista-perfil .stats-chip-cat.stats-chip-cat-musica:hover { border-color: var(--cat-border-musica) !important; background: var(--cat-bg-musica) !important; }
+#vista-perfil .stats-chip-cat.stats-chip-cat-juegos:hover { border-color: var(--cat-border-juegos) !important; background: var(--cat-bg-juegos) !important; }
+#vista-perfil .stats-chip-cat.stats-chip-cat-lecturas:hover { border-color: var(--cat-border-lecturas) !important; background: var(--cat-bg-lecturas) !important; }
+#vista-perfil .stats-chip-cat:last-child:nth-child(odd) {
+  grid-column: span 2 !important;
+}
+#vista-perfil .stats-chip-cat span:nth-child(2) {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  color: var(--muted) !important;
+}
+#vista-perfil .stats-chip-cat strong {
+  margin-left: auto !important;
+  white-space: nowrap !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+}
+
+/* RÉCORDS DE RITMO EN PERFIL (MÁS ESPACIOSOS Y LEGIBLES) */
+#vista-perfil .profile-grid-records {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 16px 14px !important;
+  margin-top: 20px !important;
+  margin-bottom: 24px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+@media (min-width: 640px) {
+  #vista-perfil .profile-grid-records {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 16px 18px !important;
+    margin-top: 24px !important;
+    margin-bottom: 28px !important;
+  }
+}
+#vista-perfil .profile-stat-box {
+  padding: 2px 0 !important;
+  border-radius: 0 !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  gap: 3px !important;
+}
+#vista-perfil .profile-stat-label {
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--accent) !important;
+  text-align: left !important;
+  margin-bottom: 5px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+#vista-perfil .profile-stat-val {
+  font-size: 1.02rem !important;
+  font-weight: 800 !important;
+  color: var(--text) !important;
+  text-align: left !important;
+  line-height: 1.3 !important;
+  word-break: break-word !important;
+  min-height: 2.4em !important;
+  margin-bottom: 3px !important;
+}
+#vista-perfil .profile-stat-sub {
+  font-size: 0.72rem !important;
+  color: var(--muted) !important;
+  text-align: left !important;
+  line-height: 1.35 !important;
+}
+
+/* ==========================================================================
+   ESTILO EN CUADRÍCULA (GRID) PARA FAVORITOS POR CATEGORÍA
+   ========================================================================== */
+#perfil-favoritos-grid.favs-grid,
+#amigo-grid-favoritos.favs-grid,
+.favs-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 18px 12px !important;
+  margin-bottom: 22px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+@media (min-width: 640px) {
+  #perfil-favoritos-grid.favs-grid,
+#amigo-grid-favoritos.favs-grid,
+.favs-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+    gap: 22px 16px !important;
+    margin-bottom: 26px !important;
+  }
+}
+
+#vista-perfil .fav-slot-card,
+.fav-slot-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  text-align: left !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  position: relative !important;
+  cursor: pointer !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  min-width: 0 !important;
+}
+#vista-perfil .fav-slot-poster,
+.fav-slot-poster {
+  width: 100% !important;
+  aspect-ratio: 2/3 !important;
+  height: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  border-radius: 8px !important;
+  object-fit: cover !important;
+  overflow: hidden !important;
+  position: relative !important;
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.4rem !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease !important;
+}
+#vista-perfil .fav-slot-card:hover .fav-slot-poster,
+.fav-slot-card:hover .fav-slot-poster {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25) !important;
+  border-color: var(--accent) !important;
+}
+#vista-perfil .fav-slot-poster img,
+.fav-slot-poster img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+#vista-perfil .fav-slot-edit-btn,
+.fav-slot-edit-btn {
+  position: absolute !important;
+  top: 5px !important;
+  right: 5px !important;
+  background: rgba(15, 23, 42, 0.78) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  color: #fff !important;
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  z-index: 4 !important;
+  opacity: 0.9 !important;
+  padding: 0 !important;
+  transition: all 0.15s ease !important;
+}
+#vista-perfil .fav-slot-edit-btn:hover,
+.fav-slot-edit-btn:hover {
+  opacity: 1 !important;
+  background: var(--accent) !important;
+  color: #0f172a !important;
+  transform: scale(1.08) !important;
+}
+.fav-slot-empty-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  opacity: 0.55;
+  color: var(--muted);
+  user-select: none;
+}
+.fav-empty-plus {
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.fav-empty-lbl {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+#vista-perfil .fav-slot-info,
+.fav-slot-info {
+  width: 100% !important;
+  margin-top: 8px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  text-align: left !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  gap: 2px !important;
+}
+#vista-perfil .fav-slot-subcat,
+.fav-slot-subcat {
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  color: var(--accent) !important;
+  text-align: left !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  line-height: 1.3em !important;
+  margin-bottom: 2px !important;
+  display: block !important;
+}
+#vista-perfil .fav-slot-title,
+.fav-slot-title {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  color: var(--text) !important;
+  text-align: left !important;
+  line-height: 1.3 !important;
+  min-height: 2.6em !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+  word-break: break-word !important;
+  width: 100% !important;
+}
+#vista-perfil .fav-slot-meta,
+.fav-slot-meta {
+  font-size: 0.72rem !important;
+  color: var(--star-active, #c8955a) !important;
+  text-align: left !important;
+  font-weight: 700 !important;
+  line-height: 1.25em !important;
+  width: 100% !important;
+  margin-top: 3px !important;
+}
+
+#vista-perfil .stats-ranking-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 10px 0 !important;
+  margin-bottom: 8px !important;
+}
+
+/* BOTONES DE CATEGORÍA DE ESTADÍSTICAS EN PERFIL */
+.home-indice-btn.perfil-stats-cat-btn.active {
+  background: var(--accent-subtle, rgba(56, 189, 248, 0.14)) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2) !important;
+}
+
+/* ==========================================================================
+   PALETA DE COLORES POR CATEGORÍA Y SUBCATEGORÍA (SUTILES Y ELEGANTES)
+   1. Películas: Morado
+   2. Series: Celeste
+   3. Música: Rosado
+   4. Juegos: Azul
+   5. Lecturas: Café
+   6. Libros: Amarillo
+   7. Cómics: Naranjo
+   8. Mangas: Rojo
+   ========================================================================== */
+
+/* Overlays en tarjetas En Progreso */
+.home-en-progreso-card-badge-overlay.cat-overlay-peliculas { border-color: var(--cat-border-peliculas); color: var(--cat-color-peliculas); }
+.home-en-progreso-card-badge-overlay.cat-overlay-series { border-color: var(--cat-border-series); color: var(--cat-color-series); }
+.home-en-progreso-card-badge-overlay.cat-overlay-musica { border-color: var(--cat-border-musica); color: var(--cat-color-musica); }
+.home-en-progreso-card-badge-overlay.cat-overlay-juegos { border-color: var(--cat-border-juegos); color: var(--cat-color-juegos); }
+.home-en-progreso-card-badge-overlay.cat-overlay-lecturas { border-color: var(--cat-border-lecturas); color: var(--cat-color-lecturas); }
+.home-en-progreso-card-badge-overlay.cat-overlay-libros { border-color: var(--cat-border-libros); color: var(--cat-color-libros); }
+.home-en-progreso-card-badge-overlay.cat-overlay-comics { border-color: var(--cat-border-comics); color: var(--cat-color-comics); }
+.home-en-progreso-card-badge-overlay.cat-overlay-mangas { border-color: var(--cat-border-mangas); color: var(--cat-color-mangas); }
+
+/* Badges en actividad reciente (Home y Amigos) */
+.feed-cat-badge.cat-badge-peliculas { background: var(--cat-bg-peliculas); color: var(--cat-color-peliculas); border-color: var(--cat-border-peliculas); }
+.feed-cat-badge.cat-badge-series { background: var(--cat-bg-series); color: var(--cat-color-series); border-color: var(--cat-border-series); }
+.feed-cat-badge.cat-badge-musica { background: var(--cat-bg-musica); color: var(--cat-color-musica); border-color: var(--cat-border-musica); }
+.feed-cat-badge.cat-badge-juegos { background: var(--cat-bg-juegos); color: var(--cat-color-juegos); border-color: var(--cat-border-juegos); }
+.feed-cat-badge.cat-badge-lecturas { background: var(--cat-bg-lecturas); color: var(--cat-color-lecturas); border-color: var(--cat-border-lecturas); }
+.feed-cat-badge.cat-badge-libros { background: var(--cat-bg-libros); color: var(--cat-color-libros); border-color: var(--cat-border-libros); }
+.feed-cat-badge.cat-badge-comics { background: var(--cat-bg-comics); color: var(--cat-color-comics); border-color: var(--cat-border-comics); }
+.feed-cat-badge.cat-badge-mangas { background: var(--cat-bg-mangas); color: var(--cat-color-mangas); border-color: var(--cat-border-mangas); }
+
+/* Nav category buttons: sutileza al estar activo o hovered */
+.nav-cat-card[data-cat="Peliculas"].active { border-color: var(--cat-border-peliculas) !important; }
+.nav-cat-card[data-cat="Peliculas"].active .emoji-dyn { color: var(--cat-color-peliculas); }
+.nav-cat-card[data-cat="Peliculas"]:hover { border-color: var(--cat-border-peliculas); }
+
+.nav-cat-card[data-cat="Series"].active { border-color: var(--cat-border-series) !important; }
+.nav-cat-card[data-cat="Series"].active .emoji-dyn { color: var(--cat-color-series); }
+.nav-cat-card[data-cat="Series"]:hover { border-color: var(--cat-border-series); }
+
+.nav-cat-card[data-cat="Musica"].active { border-color: var(--cat-border-musica) !important; }
+.nav-cat-card[data-cat="Musica"].active .emoji-dyn { color: var(--cat-color-musica); }
+.nav-cat-card[data-cat="Musica"]:hover { border-color: var(--cat-border-musica); }
+
+.nav-cat-card[data-cat="Juegos"].active { border-color: var(--cat-border-juegos) !important; }
+.nav-cat-card[data-cat="Juegos"].active .emoji-dyn { color: var(--cat-color-juegos); }
+.nav-cat-card[data-cat="Juegos"]:hover { border-color: var(--cat-border-juegos); }
+
+.nav-cat-card[data-cat="Lecturas"].active { border-color: var(--cat-border-lecturas) !important; }
+.nav-cat-card[data-cat="Lecturas"].active .emoji-dyn { color: var(--cat-color-lecturas); }
+.nav-cat-card[data-cat="Lecturas"]:hover { border-color: var(--cat-border-lecturas); }
+
+/* Pestañas de subcategorías activas */
+.subtab-btn.active.subtab-cat-peliculas { border-color: var(--cat-border-peliculas) !important; box-shadow: 0 0 10px rgba(192, 132, 252, 0.2) !important; }
+.subtab-btn.active.subtab-cat-peliculas .emoji-dyn,
+.subtab-btn.active.subtab-cat-peliculas svg { color: var(--cat-color-peliculas) !important; }
+
+.subtab-btn.active.subtab-cat-series { border-color: var(--cat-border-series) !important; box-shadow: 0 0 10px rgba(56, 189, 248, 0.2) !important; }
+.subtab-btn.active.subtab-cat-series .emoji-dyn,
+.subtab-btn.active.subtab-cat-series svg { color: var(--cat-color-series) !important; }
+
+.subtab-btn.active.subtab-cat-musica { border-color: var(--cat-border-musica) !important; box-shadow: 0 0 10px rgba(244, 114, 182, 0.2) !important; }
+.subtab-btn.active.subtab-cat-musica .emoji-dyn,
+.subtab-btn.active.subtab-cat-musica svg { color: var(--cat-color-musica) !important; }
+
+.subtab-btn.active.subtab-cat-juegos { border-color: var(--cat-border-juegos) !important; box-shadow: 0 0 10px rgba(96, 165, 250, 0.2) !important; }
+.subtab-btn.active.subtab-cat-juegos .emoji-dyn,
+.subtab-btn.active.subtab-cat-juegos svg { color: var(--cat-color-juegos) !important; }
+
+.subtab-btn.active.subtab-cat-lecturas { border-color: var(--cat-border-lecturas) !important; box-shadow: 0 0 10px rgba(217, 119, 6, 0.2) !important; }
+.subtab-btn.active.subtab-cat-lecturas .emoji-dyn,
+.subtab-btn.active.subtab-cat-lecturas svg { color: var(--cat-color-lecturas) !important; }
+
+.subtab-btn.active.subtab-cat-libros { border-color: var(--cat-border-libros) !important; box-shadow: 0 0 10px rgba(250, 204, 21, 0.2) !important; }
+.subtab-btn.active.subtab-cat-libros .emoji-dyn,
+.subtab-btn.active.subtab-cat-libros svg { color: var(--cat-color-libros) !important; }
+
+.subtab-btn.active.subtab-cat-comics { border-color: var(--cat-border-comics) !important; box-shadow: 0 0 10px rgba(251, 146, 60, 0.2) !important; }
+.subtab-btn.active.subtab-cat-comics .emoji-dyn,
+.subtab-btn.active.subtab-cat-comics svg { color: var(--cat-color-comics) !important; }
+
+.subtab-btn.active.subtab-cat-mangas { border-color: var(--cat-border-mangas) !important; box-shadow: 0 0 10px rgba(248, 113, 113, 0.2) !important; }
+.subtab-btn.active.subtab-cat-mangas .emoji-dyn,
+.subtab-btn.active.subtab-cat-mangas svg { color: var(--cat-color-mangas) !important; }
+
+/* Botones de subcategorías en Home y Perfil (home-indice-btn) */
+.home-indice-btn.home-indice-peliculas:hover { border-color: var(--cat-border-peliculas); background: var(--cat-bg-peliculas); box-shadow: 0 4px 14px rgba(192, 132, 252, 0.2); }
+.home-indice-btn.home-indice-peliculas .home-indice-icon { color: var(--cat-color-peliculas); }
+
+.home-indice-btn.home-indice-series:hover { border-color: var(--cat-border-series); background: var(--cat-bg-series); box-shadow: 0 4px 14px rgba(56, 189, 248, 0.2); }
+.home-indice-btn.home-indice-series .home-indice-icon { color: var(--cat-color-series); }
+
+.home-indice-btn.home-indice-musica:hover { border-color: var(--cat-border-musica); background: var(--cat-bg-musica); box-shadow: 0 4px 14px rgba(244, 114, 182, 0.2); }
+.home-indice-btn.home-indice-musica .home-indice-icon { color: var(--cat-color-musica); }
+
+.home-indice-btn.home-indice-juegos:hover { border-color: var(--cat-border-juegos); background: var(--cat-bg-juegos); box-shadow: 0 4px 14px rgba(96, 165, 250, 0.2); }
+.home-indice-btn.home-indice-juegos .home-indice-icon { color: var(--cat-color-juegos); }
+
+.home-indice-btn.home-indice-lecturas:hover { border-color: var(--cat-border-lecturas); background: var(--cat-bg-lecturas); box-shadow: 0 4px 14px rgba(217, 119, 6, 0.2); }
+.home-indice-btn.home-indice-lecturas .home-indice-icon { color: var(--cat-color-lecturas); }
+
+.home-indice-btn.home-indice-libros:hover { border-color: var(--cat-border-libros); background: var(--cat-bg-libros); box-shadow: 0 4px 14px rgba(250, 204, 21, 0.2); }
+.home-indice-btn.home-indice-libros .home-indice-icon { color: var(--cat-color-libros); }
+
+.home-indice-btn.home-indice-comics:hover { border-color: var(--cat-border-comics); background: var(--cat-bg-comics); box-shadow: 0 4px 14px rgba(251, 146, 60, 0.2); }
+.home-indice-btn.home-indice-comics .home-indice-icon { color: var(--cat-color-comics); }
+
+.home-indice-btn.home-indice-mangas:hover { border-color: var(--cat-border-mangas); background: var(--cat-bg-mangas); box-shadow: 0 4px 14px rgba(248, 113, 113, 0.2); }
+.home-indice-btn.home-indice-mangas .home-indice-icon { color: var(--cat-color-mangas); }
+
+/* Botones de Categorías en Perfil Stats */
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Peliculas"].active { background: var(--cat-bg-peliculas) !important; border-color: var(--cat-border-peliculas) !important; color: var(--cat-color-peliculas) !important; box-shadow: 0 4px 12px rgba(192, 132, 252, 0.2) !important; }
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Series"].active { background: var(--cat-bg-series) !important; border-color: var(--cat-border-series) !important; color: var(--cat-color-series) !important; box-shadow: 0 4px 12px rgba(56, 189, 248, 0.2) !important; }
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Musica"].active { background: var(--cat-bg-musica) !important; border-color: var(--cat-border-musica) !important; color: var(--cat-color-musica) !important; box-shadow: 0 4px 12px rgba(244, 114, 182, 0.2) !important; }
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Juegos"].active { background: var(--cat-bg-juegos) !important; border-color: var(--cat-border-juegos) !important; color: var(--cat-color-juegos) !important; box-shadow: 0 4px 12px rgba(96, 165, 250, 0.2) !important; }
+.home-indice-btn.perfil-stats-cat-btn[data-cat="Lecturas"].active { background: var(--cat-bg-lecturas) !important; border-color: var(--cat-border-lecturas) !important; color: var(--cat-color-lecturas) !important; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.2) !important; }
+
+/* Modal de Agregado Rápido (btn-quick-sub) */
+.btn-quick-sub.btn-quick-peliculas:hover { border-color: var(--cat-border-peliculas); background: var(--cat-bg-peliculas); }
+.btn-quick-sub.btn-quick-peliculas .emoji-dyn { color: var(--cat-color-peliculas); }
+
+.btn-quick-sub.btn-quick-series:hover { border-color: var(--cat-border-series); background: var(--cat-bg-series); }
+.btn-quick-sub.btn-quick-series .emoji-dyn { color: var(--cat-color-series); }
+
+.btn-quick-sub.btn-quick-musica:hover { border-color: var(--cat-border-musica); background: var(--cat-bg-musica); }
+.btn-quick-sub.btn-quick-musica .emoji-dyn { color: var(--cat-color-musica); }
+
+.btn-quick-sub.btn-quick-juegos:hover { border-color: var(--cat-border-juegos); background: var(--cat-bg-juegos); }
+.btn-quick-sub.btn-quick-juegos .emoji-dyn { color: var(--cat-color-juegos); }
+
+.btn-quick-sub.btn-quick-lecturas:hover { border-color: var(--cat-border-lecturas); background: var(--cat-bg-lecturas); }
+.btn-quick-sub.btn-quick-lecturas .emoji-dyn { color: var(--cat-color-lecturas); }
+
+.btn-quick-sub.btn-quick-libros:hover { border-color: var(--cat-border-libros); background: var(--cat-bg-libros); }
+.btn-quick-sub.btn-quick-libros .emoji-dyn { color: var(--cat-color-libros); }
+
+.btn-quick-sub.btn-quick-comics:hover { border-color: var(--cat-border-comics); background: var(--cat-bg-comics); }
+.btn-quick-sub.btn-quick-comics .emoji-dyn { color: var(--cat-color-comics); }
+
+.btn-quick-sub.btn-quick-mangas:hover { border-color: var(--cat-border-mangas); background: var(--cat-bg-mangas); }
+.btn-quick-sub.btn-quick-mangas .emoji-dyn { color: var(--cat-color-mangas); }
+
+/* Dashboard Listas: cat-wide-card */
+.cat-wide-card.cat-wide-peliculas:hover { border-color: var(--cat-border-peliculas) !important; }
+.cat-wide-card.cat-wide-peliculas .cat-wide-title .emoji-dyn { color: var(--cat-color-peliculas); }
+
+.cat-wide-card.cat-wide-series:hover { border-color: var(--cat-border-series) !important; }
+.cat-wide-card.cat-wide-series .cat-wide-title .emoji-dyn { color: var(--cat-color-series); }
+
+.cat-wide-card.cat-wide-musica:hover { border-color: var(--cat-border-musica) !important; }
+.cat-wide-card.cat-wide-musica .cat-wide-title .emoji-dyn { color: var(--cat-color-musica); }
+
+.cat-wide-card.cat-wide-juegos:hover { border-color: var(--cat-border-juegos) !important; }
+.cat-wide-card.cat-wide-juegos .cat-wide-title .emoji-dyn { color: var(--cat-color-juegos); }
+
+.cat-wide-card.cat-wide-lecturas:hover { border-color: var(--cat-border-lecturas) !important; }
+.cat-wide-card.cat-wide-lecturas .cat-wide-title .emoji-dyn { color: var(--cat-color-lecturas); }
+

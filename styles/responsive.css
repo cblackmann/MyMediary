@@ -1,0 +1,651 @@
+/* Mediary — Tablet landscape, mobile modals & responsive layout */
+/* ========================================================
+   SOPORTE PARA VISTA HORIZONTAL EN TABLETS
+   - Dispositivos tablet en orientación horizontal / landscape
+   - Optimización de alturas verticales, márgenes seguros (safe-area-inset)
+   - Modales centrados y scrolls táctiles fluidos
+   - Grids balanceados para pantallas panorámicas táctiles
+   ======================================================== */
+@media (orientation: landscape) and (min-width: 521px),
+screen and (min-width: 769px) and (orientation: landscape) {
+  :root {
+    --tablet-safe-left: max(20px, env(safe-area-inset-left, 0px));
+    --tablet-safe-right: max(20px, env(safe-area-inset-right, 0px));
+    --tablet-safe-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  }
+
+  body {
+    padding-bottom: 32px !important;
+    padding-left: env(safe-area-inset-left, 0px) !important;
+    padding-right: env(safe-area-inset-right, 0px) !important;
+  }
+
+  /* 1. NAVEGACIÓN SUPERIOR Y CABECERA OPTIMIZADAS */
+  .web-nav-wrapper {
+    display: flex !important;
+  }
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+  header, header.app-header-integrated {
+    padding: calc(env(safe-area-inset-top, 0px) + 10px) var(--tablet-safe-right) 8px var(--tablet-safe-left) !important;
+    min-height: 50px !important;
+  }
+  .logo {
+    font-size: 2.15rem !important;
+  }
+  .header-brand-text {
+    font-size: 2.15rem !important;
+  }
+  .year-display {
+    font-size: 1.35rem !important;
+  }
+  .btn-year-picker-compact {
+    padding: 5px 12px !important;
+  }
+  .btn-year-picker-compact .year-display-txt {
+    font-size: 1.25rem !important;
+  }
+  .btn-header-clean-icon {
+    font-size: 1.35rem !important;
+    padding: 4px 6px !important;
+  }
+
+  .nav-sections-row {
+    padding: 6px var(--tablet-safe-right) 6px var(--tablet-safe-left) !important;
+    gap: 10px !important;
+  }
+  .nav-sec-btn {
+    padding: 6px 14px !important;
+    font-size: 0.83rem !important;
+    border-radius: 16px !important;
+  }
+  .nav-categories-row {
+    padding: 6px var(--tablet-safe-right) 6px var(--tablet-safe-left) !important;
+    gap: 8px !important;
+  }
+  .nav-cat-card {
+    padding: 6px 12px !important;
+    font-size: 0.83rem !important;
+    min-width: 105px !important;
+    border-radius: 10px !important;
+  }
+
+  /* 2. CONTENEDOR PRINCIPAL */
+  .container,
+  html[data-ui-style="modern"] .container {
+    max-width: min(1200px, calc(100vw - 40px)) !important;
+    margin: 10px auto 26px auto !important;
+    padding-left: var(--tablet-safe-left) !important;
+    padding-right: var(--tablet-safe-right) !important;
+  }
+
+  /* 3. SALUDO Y HERO EN PANTALLA DE INICIO */
+  .home-greeting-banner {
+    margin: 0 0 12px 0 !important;
+    gap: 16px !important;
+  }
+  .home-greeting-title {
+    font-size: 1.62rem !important;
+  }
+  .home-greeting-subtitle {
+    font-size: 0.98rem !important;
+  }
+
+  /* 4. CARRUSEL EN VIVO (SPOTIFY + PSN) Y RACHAS */
+  .home-live-carousel-wrapper {
+    max-width: 680px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    margin-bottom: 12px !important;
+  }
+  .home-streaks-strip {
+    max-width: 780px !important;
+    margin: 0 auto 20px auto !important;
+  }
+
+  /* 5. PROCESO E ÍNDICE */
+  .home-en-progreso-carousel {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    gap: 14px !important;
+  }
+  .home-indice-carousel {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    gap: 10px !important;
+  }
+  .home-indice-btn {
+    flex: 0 0 88px !important;
+    min-width: 88px !important;
+    height: 84px !important;
+  }
+
+  /* 6. AMIGOS Y DESCUBRIR */
+  .home-friend-feed-scroll {
+    padding: 4px var(--tablet-safe-left) 12px !important;
+  }
+  .home-friend-feed-scroll .amigo-feed-card,
+  .home-friend-card {
+    flex: 0 0 380px !important;
+    min-width: 380px !important;
+    max-width: 380px !important;
+  }
+  .discover-carousel-track {
+    padding: 6px var(--tablet-safe-left) 12px !important;
+  }
+  .watchlist-grid, .discover-grid {
+    grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  /* 7. MODALES CENTRADOS Y OPTIMIZADOS PARA ALTURA HORIZONTAL */
+  .modal-overlay {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 16px !important;
+  }
+  .modal-box,
+  html[data-ui-style="modern"] .modal-box {
+    width: 90% !important;
+    max-width: 620px !important;
+    max-height: 86vh !important;
+    border-radius: 18px !important;
+    padding: 20px 24px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .modal-swipe-handle {
+    display: none !important;
+  }
+  .date-row {
+    flex-direction: row !important;
+    gap: 10px !important;
+    align-items: flex-end !important;
+  }
+  .date-input-group {
+    flex: 1 !important;
+  }
+  .btn-today-pill {
+    width: auto !important;
+    height: 44px !important;
+  }
+  .quick-add-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+  }
+  .ficha-grid {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    gap: 18px !important;
+  }
+  .ficha-poster {
+    width: 120px !important;
+    height: 175px !important;
+  }
+
+  /* 8. BOTONES FLOTANTES */
+  .home-floating-actions {
+    right: max(24px, env(safe-area-inset-right, 0px)) !important;
+    bottom: max(38px, env(safe-area-inset-bottom, 0px)) !important;
+    gap: 12px !important;
+  }
+
+  /* 9. VISTA DE PERFIL */
+  .profile-hero-card {
+    flex-direction: row !important;
+    align-items: center !important;
+    text-align: left !important;
+    padding: 20px 24px !important;
+    gap: 20px !important;
+  }
+  .profile-identity-wrap {
+    flex-direction: row !important;
+    align-items: center !important;
+    text-align: left !important;
+    min-width: auto !important;
+    flex: 1 !important;
+  }
+  .profile-avatar-box {
+    width: 84px !important;
+    height: 84px !important;
+    margin: 0 !important;
+  }
+  .profile-nick-row {
+    justify-content: flex-start !important;
+  }
+  .profile-info-col {
+    align-items: flex-start !important;
+  }
+  .profile-hero-side-actions {
+    flex-direction: column !important;
+    width: auto !important;
+  }
+  .profile-grid-records {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+  }
+  .profile-grid-highlights {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 10px !important;
+  }
+  .profile-grid-fun {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  /* 10. VISTA DE CATEGORÍAS */
+  .cat-wide-body {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  .cat-subtotals-wrap {
+    grid-column: span 2 !important;
+  }
+  .table-container {
+    display: block !important;
+    overflow-x: auto !important;
+  }
+  .mobile-history-list {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   SQUARED DESIGN SYSTEM REWORK (v161)
+   Tarjetas, Badges y Botones Más Cuadrados en Toda la Aplicación
+   ========================================================================== */
+
+/* 1. TARJETAS Y CONTENEDORES (CARDS) - BORDER RADIUS: 4px */
+.cat-wide-card,
+.cat-grid-card,
+.watchlist-card,
+.discover-card,
+.home-en-progreso-card,
+.home-streaks-strip,
+.home-reading-tracker-card,
+.home-friend-card,
+.home-friend-music-card,
+.home-friend-game-card,
+.home-spotify-card-compact,
+.home-playstation-card-compact,
+.home-live-card,
+.home-hero-card,
+.amigo-feed-card,
+.amigo-wide-card,
+.friend-card,
+.mobile-history-card,
+.highlight-card,
+.modal-box,
+.modal-content,
+.reading-time-modal-box,
+.reading-time-display-card,
+.books-reading-strip,
+.detail-card,
+.concierto-box,
+.all-watchlists-panel,
+.en-progreso-box,
+.checkbox-row,
+.char-result-card,
+.char-custom-preview-box,
+.profile-hero-card,
+.profile-fav-char-card,
+.cover-option-card,
+.fav-slot-card,
+.notif-card,
+.notif-pref-card,
+.stats-kpi-card,
+.stats-section-box,
+.stats-ranking-row,
+.amigo-cat-stat-card,
+.amigo-reg-item-card,
+.amigo-cat-group-header,
+.amigo-cat-block,
+.spotify-stat-card,
+.lastfm-stat-card,
+.psn-stat-card,
+.ruleta-banner-card,
+.ruleta-wheel-box,
+.cfg-option-card,
+.theme-family-card,
+.table-container,
+.stat-subcat-lecturas-card,
+.reorder-panel-box,
+.reorder-item-row,
+.import-export-box,
+.card,
+.setting-card,
+.profile-stat-box,
+.streak-active-card,
+.shuffle-poster-box,
+.ficha-sinopsis-box,
+.toast-popup,
+.cat-grid-destacados,
+.lightbox-avatar-box,
+.cropper-stage-wrap,
+.home-live-expandable-card.is-expanded,
+html[data-ui-style="modern"] .cat-wide-card,
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-card,
+html[data-ui-style="modern"] .home-friend-card,
+html[data-ui-style="modern"] .home-friend-feed-scroll .amigo-feed-card,
+html[data-ui-style="modern"] .modal-box,
+html[data-ui-style="modern"] .stat-subcat-lecturas-card,
+html[data-ui-style="modern"] .highlight-card,
+html[data-ui-style="modern"] .amigo-wide-card,
+html[data-ui-style="modern"] .friend-card,
+html[data-ui-style="modern"] .fav-slot-card,
+html[data-ui-style="modern"] .home-live-expandable-card.is-expanded {
+  border-radius: 4px !important;
+}
+
+/* Modales en móvil: esquinas cuadradas limpias y ajuste seguro de scroll y padding */
+@media (max-width: 768px) {
+  .modal-box,
+  html[data-ui-style="modern"] .modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-top-left-radius: 6px !important;
+    border-top-right-radius: 6px !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    padding: 16px 16px calc(24px + env(safe-area-inset-bottom, 16px)) !important;
+    max-height: calc(100dvh - 20px) !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+}
+
+/* 2. BOTONES (BUTTONS) - BORDER RADIUS: 3px */
+button,
+input[type="button"],
+input[type="submit"],
+.btn,
+.btn-save,
+.btn-modal-save,
+.btn-modal-cancel,
+.btn-modal-danger,
+.btn-action-manual,
+.btn-trigger-manual,
+.btn-watchlist-special,
+.btn-wl-play,
+.btn-wl-del,
+.btn-recommend,
+.btn-today-pill,
+.btn-today-input,
+.btn-toggle-tipo,
+.btn-toggle-filter,
+.btn-terminar-card-carousel,
+.btn-streak-pill,
+.btn-read-today,
+.subtab-btn,
+.wl-cat-pill,
+.all-wl-pill,
+.home-indice-btn,
+.date-prec-btn,
+.char-picker-tab-btn,
+.btn-select-char-pill,
+.btn-primary,
+.btn-auth-submit,
+.ruleta-mode-btn,
+.ruleta-btn-spin,
+.ruleta-btn-girar-banner,
+.ruleta-cat-chip,
+.ruleta-amigo-chip,
+.reading-time-chip,
+.btn-reading-time-confirm,
+.btn-reading-time-cancel,
+.btn-reading-time-unmark,
+.btn-reorder-move,
+.btn-reorder-eye,
+.btn-reorder-done,
+.home-fab-quick-add,
+.home-fab-wl,
+.btn-cat-grid-open,
+.btn-log-discover,
+.btn-discover-more,
+.btn-google-login,
+.btn-edit-profile,
+.btn-toggle-fav-show,
+.btn-choose-fav,
+.btn-upload-avatar-cta,
+.btn-friend-records,
+.btn-change-cover,
+.btn-fav-char-pill,
+.btn-fav-char-remove-pill,
+.btn-choose-char-cta,
+.btn-feed-action,
+.btn-year-picker,
+.btn-year-picker-compact,
+.stats-cat-tab,
+.stats-period-btn,
+.theme-mode-btn,
+.theme-pill-btn,
+.notif-tab-btn,
+.btn-notif-action-pill,
+.btn-delete,
+.m-card-btn-delete,
+.nav-sec-btn,
+.nav-cat-card,
+.btn-hero-quick-add,
+.home-subcat-pill,
+.cropper-btn,
+.btn-close-form,
+.btn-close-concierto,
+.btn-quick-sub,
+.btn-add-discover,
+.btn-ghost,
+.btn-manual,
+.btn-cancel,
+.btn-terminar-badge,
+.btn-terminar-card,
+#btn-guardar-terminar-obra,
+.btn-today-terminar,
+.btn-psn-quick-add,
+.btn-steam-connect,
+.btn-psn-connect,
+.btn-spotify-connect,
+.btn-lastfm-connect,
+.btn-spotify-sub-action,
+.btn-lastfm-sub-action,
+.btn-steam-sub-action,
+.btn-psn-sub-action,
+.btn-np-quick-add,
+.btn-like-resena,
+.btn-listas-reorder,
+.btn-view-mode,
+.size-line-lbl-btn,
+.year-dropdown-item,
+.home-live-expandable-card.is-collapsed,
+html[data-ui-style="modern"] .subtab-btn,
+html[data-ui-style="modern"] .btn-watchlist-special,
+html[data-ui-style="modern"] .btn-hero-quick-add,
+html[data-ui-style="modern"] .home-subcat-pill,
+html[data-ui-style="modern"] .btn-terminar-card-carousel,
+html[data-ui-style="modern"] .btn-today-input,
+html[data-ui-style="modern"] .btn-modal-save,
+html[data-ui-style="modern"] .btn-save,
+html[data-ui-style="modern"] .btn-modal-cancel {
+  border-radius: 3px !important;
+}
+
+/* 3. BADGES, PILLS, COUNTERS & TAGS - BORDER RADIUS: 2px */
+.badge,
+.badge-amigo,
+.pill-count,
+.wl-badge-count,
+.wl-pill-count,
+.wl-count-badge,
+.carousel-indicator,
+.tag-artista,
+.tag-genero,
+.feed-cat-badge,
+.feed-status-inprog,
+.home-en-progreso-card-badge,
+.home-en-progreso-card-badge-overlay,
+.home-streaks-global-badge,
+.home-streak-cat-icon,
+.reading-tracker-icon,
+.home-indice-icon,
+.cat-wide-total,
+.subtotal-pill,
+.home-psn-live-pill,
+.home-np-live-status-pill,
+.badge-auto-actualizar,
+.perfil-id-badge,
+.ruleta-origin-pill,
+.ruleta-badge-coop,
+.act-type-badge,
+.year-badge-active,
+.reorder-badge-hidden,
+.fav-char-header-tag,
+.amigo-cat-count-badge,
+.amigo-sub-pill,
+.amigo-cat-group-header,
+.amigo-cat-group-badge,
+.amigo-subcat-group-header,
+.discover-live-badge,
+.discover-year-badge,
+.discover-rec-badge,
+.discover-count-badge,
+.reading-time-icon-badge,
+.stats-rank-num,
+.stats-chip-cat,
+.profile-google-pill,
+.cover-check-pill,
+.notif-badge-pill,
+.notif-tab-counter,
+.notif-pref-icon,
+.notif-card-icon-box,
+.home-indice-count,
+.badge-rewatch,
+.badge-racha-header,
+.m-card-horas,
+.char-tag,
+.spotify-rank-badge,
+.home-psn-platform-badge,
+.cover-selected-badge,
+.rating-badge,
+.amigo-activity-pill,
+.amigo-subcat-group-badge,
+.amigo-card-avg-badge,
+.notif-header-bell-badge,
+.cat-grid-rating,
+.cat-grid-subtotal-pill,
+.discover-friends-tag-row,
+.spotify-pill-tab,
+.home-friend-media-box,
+.home-friend-review-box,
+html[data-ui-style="modern"] .subtotal-pill,
+html[data-ui-style="modern"] .cat-wide-total,
+html[data-ui-style="modern"] .home-subcat-pill .pill-count,
+html[data-ui-style="modern"] .home-en-progreso-card-badge {
+  border-radius: 2px !important;
+}
+
+/* 4. INPUTS, CONTROLES DE FORMULARIO Y SELECTORES - BORDER RADIUS: 3px */
+input[type="text"],
+input[type="search"],
+input[type="date"],
+input[type="number"],
+input[type="url"],
+input[type="password"],
+input[type="email"],
+select,
+textarea,
+.form-input,
+.settings-select,
+.search-input,
+.search-results,
+textarea.comment-box,
+.date-precision-tabs,
+.char-picker-tabs,
+.year-dropdown-menu,
+.editable-cell,
+.stats-cat-tabs-bar,
+.stats-period-group,
+.reading-time-chip-strip,
+.view-mode-toggle,
+.size-line-container,
+html[data-ui-style="modern"] .search-input,
+html[data-ui-style="modern"] .form-input,
+html[data-ui-style="modern"] textarea.comment-box,
+html[data-ui-style="modern"] .settings-select {
+  border-radius: 3px !important;
+}
+
+/* 5. POSTERS, MINIATURAS E IMÁGENES - BORDER RADIUS: 3px */
+.watchlist-poster,
+.discover-poster,
+.media-poster,
+.ficha-poster,
+.result-thumb,
+.col-thumb,
+.m-card-thumb,
+.fav-slot-poster,
+.feed-card-poster-wrap,
+.home-en-progreso-card-poster,
+.home-en-progreso-poster-wrap,
+.home-np-cover-compact,
+.home-psn-cover-compact,
+.cat-grid-thumb,
+.lightbox-avatar-img,
+.lightbox-avatar-emoji,
+.header-logo-icon,
+html[data-ui-style="modern"] .watchlist-poster,
+html[data-ui-style="modern"] .discover-poster,
+html[data-ui-style="modern"] .home-en-progreso-card-poster,
+html[data-ui-style="modern"] .m-card-thumb {
+  border-radius: 3px !important;
+}
+
+/* 6. PRESERVAR EXCLUSIVAMENTE ELEMENTOS CIRCULARES (AVATARES Y PUNTOS DE ESTADO) */
+.user-avatar,
+.feed-user-avatar,
+.friend-avatar,
+.home-friend-avatar,
+.home-np-friend-avatar-badge,
+.profile-avatar-box,
+.profile-avatar,
+.avatar-preset-btn,
+.discover-avatar-circle,
+.char-result-avatar,
+.ruleta-amigo-avatar,
+.home-np-dot,
+.status-dot,
+.discover-live-dot,
+.live-dot-btn,
+.btn-close-lightbox,
+.modal-confirm-icon,
+.theme-dual-circle,
+.fav-char-avatar-box,
+.fav-char-empty-icon,
+.notif-unread-dot,
+.size-line-node,
+.switch-slider:before,
+.btn-spotify-ctrl,
+.btn-carousel-nav,
+.btn-header-icon,
+.notif-dismiss-btn,
+.discover-friend-mini-badge,
+.tag-artista img,
+img[alt="Avatar"],
+#amigo-modal-avatar,
+#act-modal-friend-avatar,
+#cfg-lastfm-user-avatar,
+#cfg-spotify-user-avatar,
+#cfg-steam-user-avatar,
+#cfg-psn-user-avatar,
+#crop-confirmed-img,
+#badge-sp-live-pill,
+#badge-psn-live-pill,
+#badge-friends-sp-live-pill,
+#badge-friends-psn-live-pill {
+  border-radius: 50% !important;
+}
+
