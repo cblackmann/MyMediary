@@ -13485,17 +13485,18 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
 
     const liveData = (typeof SERVER_API.extraerActividadEnVivoDePerfiles_ === 'function')
       ? SERVER_API.extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap)
-      : { music: [], games: [] };
+      : { music: [], recentMusic: [], games: [] };
 
     return { exito: true, feed: feed.slice(0, Math.max(limite || 30, 80)), live: liveData };
   } catch (e) {
-    return { exito: false, error: e.toString(), feed: [], live: { music: [], games: [] } };
+    return { exito: false, error: e.toString(), feed: [], live: { music: [], recentMusic: [], games: [] } };
   }
 },
 extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
   const liveMusic = [];
+  const recentMusic = [];
   const liveGames = [];
-  if (!Array.isArray(amigosEmails) || !amigosMap) return { music: liveMusic, games: liveGames };
+  if (!Array.isArray(amigosEmails) || !amigosMap) return { music: liveMusic, recentMusic: recentMusic, games: liveGames };
 
   amigosEmails.forEach(aEmail => {
     const p = amigosMap[aEmail];
@@ -13514,16 +13515,23 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
     const act = pPrefs.actividad || {};
     const cuentas = pPrefs.cuentas_vinculadas || pPrefs.cuentasVinculadas || {};
 
-    // 1. MÚSICA EN VIVO (Spotify / Last.fm)
+    // 1. MÚSICA EN VIVO & HISTORIAL DE CANCIONES (Spotify / Last.fm)
     let spNow = act.spotifyNowPlaying || cuentas.spotify?.nowPlaying || pPrefs.spotify?.nowPlaying;
     if (typeof spNow === 'string' && spNow) {
       try { spNow = JSON.parse(spNow); } catch(e) { spNow = null; }
     }
     const spTitle = spNow ? (spNow.name || spNow.track || spNow.title || spNow.titleName || '') : '';
+    const spArtist = spNow ? (spNow.artist || (Array.isArray(spNow.artists) ? spNow.artists.join(', ') : '') || '') : '';
+    const spAlbum = spNow ? (spNow.album || '') : '';
+    const spImage = spNow ? (spNow.image || spNow.albumArt || spNow.cover || '') : '';
+    const spUrl = spNow ? (spNow.url || spNow.trackUrl || '') : '';
+    const spUpAt = Number(spNow?.updatedAt || spNow?.timestamp) || 0;
+
+    let agregadoLive = false;
+
     if (spNow && spNow.isPlaying && (spTitle || spNow.trackId)) {
-      const upAt = Number(spNow.updatedAt || spNow.timestamp) || 0;
-      const diff = Date.now() - upAt;
-      const fresca = (!upAt || diff <= 35 * 60 * 1000);
+      const diff = Date.now() - spUpAt;
+      const fresca = (!spUpAt || diff <= 35 * 60 * 1000);
       if (fresca) {
         liveMusic.push({
           userEmail: aEmail,
@@ -13535,40 +13543,86 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
           isLive: true,
           title: spTitle,
           track: spTitle,
-          artist: spNow.artist || (Array.isArray(spNow.artists) ? spNow.artists.join(', ') : '') || '',
-          album: spNow.album || '',
-          image: spNow.image || spNow.albumArt || spNow.cover || '',
-          url: spNow.url || spNow.trackUrl || '',
+          artist: spArtist,
+          album: spAlbum,
+          image: spImage,
+          url: spUrl,
           source: 'spotify',
-          updatedAt: upAt || Date.now()
+          updatedAt: spUpAt || Date.now()
         });
+        agregadoLive = true;
       }
-    } else {
-      const lfm = cuentas.lastfm || pPrefs.lastfm;
-      let lfmStats = lfm?.stats;
-      if (typeof lfmStats === 'string' && lfmStats) {
-        try { lfmStats = JSON.parse(lfmStats); } catch(e) {}
-      }
-      const rec = lfmStats?.recentTracks?.[0];
-      if (rec && (rec.isNowPlaying || rec['@attr']?.nowplaying === 'true')) {
-        const lfmTrack = rec.name || rec.title || '';
-        liveMusic.push({
-          userEmail: aEmail,
-          amigoEmail: aEmail,
-          amigoNickname: nick,
-          amigoAvatar: avatar,
-          amigoUserId: userId,
-          isPlaying: true,
-          isLive: true,
-          title: lfmTrack,
-          track: lfmTrack,
-          artist: rec.artist || '',
-          album: rec.album || '',
-          image: rec.image || '',
-          url: rec.url || '',
-          source: 'lastfm',
-          updatedAt: Date.now()
-        });
+    }
+
+    // Historial de canciones de Spotify: si no está en vivo pero tiene una canción previa escuchada
+    if (!agregadoLive && spTitle) {
+      recentMusic.push({
+        userEmail: aEmail,
+        amigoEmail: aEmail,
+        amigoNickname: nick,
+        amigoAvatar: avatar,
+        amigoUserId: userId,
+        isPlaying: false,
+        isLive: false,
+        title: spTitle,
+        track: spTitle,
+        artist: spArtist,
+        album: spAlbum,
+        image: spImage,
+        url: spUrl,
+        source: 'spotify',
+        updatedAt: spUpAt || 0
+      });
+    }
+
+    // Last.fm: soporte para reproducción actual y scrobbles recientes
+    const lfm = cuentas.lastfm || pPrefs.lastfm;
+    let lfmStats = lfm?.stats;
+    if (typeof lfmStats === 'string' && lfmStats) {
+      try { lfmStats = JSON.parse(lfmStats); } catch(e) {}
+    }
+    const rec = lfmStats?.recentTracks?.[0];
+    if (rec) {
+      const lfmTrack = rec.name || rec.title || '';
+      const isLfmNow = !!(rec.isNowPlaying || rec['@attr']?.nowplaying === 'true');
+      if (lfmTrack) {
+        if (isLfmNow && !agregadoLive) {
+          liveMusic.push({
+            userEmail: aEmail,
+            amigoEmail: aEmail,
+            amigoNickname: nick,
+            amigoAvatar: avatar,
+            amigoUserId: userId,
+            isPlaying: true,
+            isLive: true,
+            title: lfmTrack,
+            track: lfmTrack,
+            artist: rec.artist || '',
+            album: rec.album || '',
+            image: rec.image || '',
+            url: rec.url || '',
+            source: 'lastfm',
+            updatedAt: Date.now()
+          });
+        } else if (!agregadoLive && !spTitle) {
+          recentMusic.push({
+            userEmail: aEmail,
+            amigoEmail: aEmail,
+            amigoNickname: nick,
+            amigoAvatar: avatar,
+            amigoUserId: userId,
+            isPlaying: false,
+            isLive: false,
+            title: lfmTrack,
+            track: lfmTrack,
+            artist: rec.artist || '',
+            album: rec.album || '',
+            image: rec.image || '',
+            url: rec.url || '',
+            source: 'lastfm',
+            updatedAt: Date.now()
+          });
+        }
       }
     }
 
@@ -13658,20 +13712,21 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
   });
 
   liveMusic.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
+  recentMusic.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   liveGames.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-  return { music: liveMusic, games: liveGames };
+  return { music: liveMusic, recentMusic: recentMusic, games: liveGames };
 },
 async obtenerActividadEnVivoAmigos(userEmail) {
   try {
     const email = normEm_(userEmail);
-    if (!email) return { exito: false, live: { music: [], games: [] } };
+    if (!email) return { exito: false, live: { music: [], recentMusic: [], games: [] } };
     const myP = await SERVER_API.obtenerPerfilUsuario(email);
     let prefs = myP.preferencias || {};
     if (typeof prefs === 'string') {
       try { prefs = JSON.parse(prefs); } catch(e) { prefs = {}; }
     }
     const amigosEmails = prefs.amigos || [];
-    if (!amigosEmails.length) return { exito: true, live: { music: [], games: [] } };
+    if (!amigosEmails.length) return { exito: true, live: { music: [], recentMusic: [], games: [] } };
 
     const pRowsList = await Promise.all(
       amigosEmails.map(aEmail => sbFetch_('perfiles?user_email=eq.' + encodeURIComponent(normEm_(aEmail)) + '&select=*', 'GET').catch(() => []))
@@ -13687,10 +13742,10 @@ async obtenerActividadEnVivoAmigos(userEmail) {
 
     const liveData = (typeof SERVER_API.extraerActividadEnVivoDePerfiles_ === 'function')
       ? SERVER_API.extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap)
-      : { music: [], games: [] };
+      : { music: [], recentMusic: [], games: [] };
     return { exito: true, live: liveData };
   } catch (e) {
-    return { exito: false, error: e.toString(), live: { music: [], games: [] } };
+    return { exito: false, error: e.toString(), live: { music: [], recentMusic: [], games: [] } };
   }
 }
 }; window.SERVER_API = SERVER_API; const makeRunner_ = (onSuccess = null, onFailure = null) => new Proxy({}, { get(_, prop) { if (prop === 'withSuccessHandler') return fn => makeRunner_(fn, onFailure); if (prop === 'withFailureHandler') return fn => makeRunner_(onSuccess, fn); return (...args) => {
@@ -14910,61 +14965,30 @@ function esFechaDeUltimaSemana(it) {
   return false;
 }
 
+// Las tarjetas de actividad de amigos en tiempo real NO deben vincularse a registros ni discos agregados del catálogo.
+// Se vinculan EXCLUSIVAMENTE a actividad en vivo (Spotify, Steam, PSN) y al historial de canciones de Spotify.
 function obtenerUltimaCancionAmigos() {
-  const feed = estado.amigosFeedCache || [];
-  if (!feed.length) return null;
-
-  // 1. Si algún amigo está escuchando música en vivo / en progreso (Aún escuchando)
-  const enVivo = feed.find(it => it.categoria === 'Musica' && esEnProgresoTexto(it.fechaFin));
-  if (enVivo) return enVivo;
-
-  // 2. Priorizar canciones / singles específicos
-  const cancion = feed.find(it => {
-    if (it.categoria !== 'Musica') return false;
-    const sub = String(it.subcategoria || '').toLowerCase();
-    return sub.includes('canc') || sub.includes('single') || sub.includes('track');
-  });
-  if (cancion) return cancion;
-
-  // 3. Cualquier registro de Música en orden cronológico (Discos, Álbumes, etc.)
-  return feed.find(it => it.categoria === 'Musica') || null;
+  return null;
 }
 
 function obtenerUltimoJuegoAmigos() {
-  const feed = estado.amigosFeedCache || [];
-  if (!feed.length) return null;
-
-  // 1. Si algún amigo está jugando en vivo / en progreso (Aún jugando)
-  const enVivo = feed.find(it => it.categoria === 'Juegos' && esEnProgresoTexto(it.fechaFin));
-  if (enVivo) return enVivo;
-
-  // 2. Priorizar títulos con mención a PlayStation en plataforma o subcategoría
-  const psn = feed.find(it => {
-    if (it.categoria !== 'Juegos') return false;
-    const sub = String(it.subcategoria || '').toLowerCase();
-    const subtit = String(it.subtitulo || '').toLowerCase();
-    return sub.includes('ps') || sub.includes('playstation') || subtit.includes('ps') || subtit.includes('playstation');
-  });
-  if (psn) return psn;
-
-  // 3. Cualquier videojuego registrado por amigos
-  return feed.find(it => it.categoria === 'Juegos') || null;
+  return null;
 }
 
 function dibujarTarjetaUltimaCancionAmigos(it) {
   if (!it) return '';
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const enProg = esEnProgresoTexto(it.fechaFin);
-  const timeStr = formatearTiempoRelativoFeed(it.createdAt || it.fechaFin || it.fechaInicio, l);
-  const artist = it.creador || 'Artista';
-  const album = it.subtitulo || it.subcategoria || (l === 'en' ? 'Music' : 'Música');
-  const title = it.titulo || (l === 'en' ? 'Untitled' : 'Sin título');
+  const timeStr = it.updatedAt ? formatearTiempoRelativoFeed(it.updatedAt, l) : (it.createdAt || it.fechaFin || it.fechaInicio ? formatearTiempoRelativoFeed(it.createdAt || it.fechaFin || it.fechaInicio, l) : '');
+  const artist = it.artist || it.creador || (l === 'en' ? 'Artist' : 'Artista');
+  const album = it.album || it.subtitulo || (l === 'en' ? 'Spotify History' : 'Historial de Spotify');
+  const title = it.title || it.track || it.titulo || (l === 'en' ? 'Untitled' : 'Sin título');
   const nick = it.amigoNickname || (it.userEmail ? it.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
-  const califNum = Number(it.calificacion) || 0;
+  const coverUrl = it.image || it.poster || '';
+  const isExp = (typeof estaLiveCardExpandida === 'function') ? estaLiveCardExpandida('friends_spotify') : false;
 
-  const coverHtml = it.poster
-    ? `<img src="${escHtmlFeed_(it.poster)}" alt="${escHtmlFeed_(title)}" loading="lazy" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="cover-music-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.5rem;background:var(--bg);">${getHeroIcon('musical-note', '', 24)}</div>`
-    : `<div class="cover-music-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;background:var(--bg);">${getHeroIcon('musical-note', '', 24)}</div>`;
+  const coverHtml = coverUrl
+    ? `<img src="${escHtmlFeed_(coverUrl)}" alt="${escHtmlFeed_(title)}" loading="lazy" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="cover-music-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.5rem;background:var(--bg);color:#10b981;">${getHeroIcon('musical-note', '', 24)}</div>`
+    : `<div class="cover-music-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;background:var(--bg);color:#10b981;">${getHeroIcon('musical-note', '', 24)}</div>`;
 
   const avatarHtml = (it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:')))
     ? `<img src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
@@ -14972,10 +14996,9 @@ function dibujarTarjetaUltimaCancionAmigos(it) {
 
   const safeTitle = encodeURIComponent(title);
   const safeArtist = encodeURIComponent(artist);
-  const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent((title + ' ' + (it.creador || '')).trim())}`;
-  const modalAccion = `abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(nick)}', 'Musica')`;
-  const perfilAccion = `verPerfilDeAmigo('${escHtmlFeed_(it.userEmail)}')`;
-  const isExp = (typeof estaLiveCardExpandida === 'function') ? estaLiveCardExpandida('friends_spotify') : false;
+  const spotifySearchUrl = it.url || `https://open.spotify.com/search/${encodeURIComponent((title + ' ' + artist).trim())}`;
+  const modalAccion = it.userEmail ? `abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(nick)}', 'Musica')` : '';
+  const perfilAccion = it.userEmail ? `verPerfilDeAmigo('${escHtmlFeed_(it.userEmail)}')` : '';
 
   return `
     <div class="home-spotify-card-compact home-friend-music-card home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('friends_spotify', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
@@ -14998,9 +15021,9 @@ function dibujarTarjetaUltimaCancionAmigos(it) {
             <div style="font-size:0.73rem; color:#10b981; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; justify-content:center; gap:5px; margin-top:1px;">
               <span>${escHtmlFeed_(nick)}</span>
               <span style="opacity:0.5;">·</span>
-              <span style="color:${enProg ? '#10b981' : 'var(--accent)'}; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
-                <span class="home-np-dot" style="${enProg ? 'background:#10b981;' : 'background:var(--accent); box-shadow:none; animation:none;'}"></span>
-                <span>${enProg ? (l === 'en' ? 'Listening' : 'Escuchando') : (l === 'en' ? 'Listened' : 'Escuchó')}</span>
+              <span style="color:var(--accent); display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
+                <span class="home-np-dot" style="background:var(--accent); box-shadow:none; animation:none;"></span>
+                <span>${l === 'en' ? 'Listened' : 'Escuchó'}</span>
               </span>
               ${timeStr ? `<span style="opacity:0.5;">·</span><span style="color:var(--muted); font-size:0.68rem;">${timeStr}</span>` : ''}
             </div>
@@ -15018,7 +15041,7 @@ function dibujarTarjetaUltimaCancionAmigos(it) {
               ${escHtmlFeed_(nick)}
             </strong>
             <span style="color:var(--muted); font-size:0.68rem; white-space:nowrap;">
-              ${enProg ? (l === 'en' ? 'is listening to' : 'está escuchando') : (l === 'en' ? 'listened to' : 'escuchó')}
+              ${l === 'en' ? 'listened to (Spotify history)' : 'escuchó (historial de Spotify)'}
             </span>
             ${timeStr ? `<span style="color:var(--muted); font-size:0.66rem; margin-left:auto; flex-shrink:0; white-space:nowrap; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('clock', '', 11)} ${timeStr}</span>` : ''}
           </div>
@@ -15038,29 +15061,12 @@ function dibujarTarjetaUltimaCancionAmigos(it) {
             <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
           </div>
 
-          <!-- Fila inferior: Estado de escucha y calificación -->
+          <!-- Fila inferior: Estado de escucha -->
           <div class="home-np-ctrls-compact" style="margin-top:2px; gap:6px; flex-wrap:nowrap; overflow:hidden;">
-            ${enProg ? `
-              <span class="home-np-live-status-pill" style="font-size:0.68rem; color:#10b981; display:inline-flex; align-items:center; gap:4px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:2px; padding:2px 7px; flex-shrink:0;">
-                <span class="home-np-dot" style="width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
-                <span>${l === 'en' ? 'Listening now' : 'Escuchando ahora'}</span>
-              </span>
-            ` : `
-              <span class="home-np-live-status-pill paused" style="font-size:0.68rem; color:var(--accent); display:inline-flex; align-items:center; gap:4px; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.25); border-radius:2px; padding:2px 7px; flex-shrink:0;">
-                <span>${getHeroIcon('musical-note', '', 12)}</span>
-                <span>${l === 'en' ? 'Friends latest track' : 'Última canción de amigos'}</span>
-              </span>
-            `}
-            ${califNum > 0 ? `
-              <div style="display:inline-flex; align-items:center; background:var(--bg); border:1px solid var(--border); padding:1px 6px; border-radius:4px; font-size:0.68rem; line-height:1; flex-shrink:0;">
-                ${renderEstrellasVisuales(califNum)}
-              </div>
-            ` : ''}
-            ${it.comentario ? `
-              <span style="cursor:pointer; font-size:0.72rem; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px; line-height:1;" onclick="${modalAccion}" title="${escHtmlFeed_(it.comentario)}">
-                ${getHeroIcon('chat-bubble-bottom-center-text', '', 12)} "${escHtmlFeed_(it.comentario)}"
-              </span>
-            ` : ''}
+            <span class="home-np-live-status-pill paused" style="font-size:0.68rem; color:var(--accent); display:inline-flex; align-items:center; gap:4px; background:rgba(56,189,248,0.1); border:1px solid rgba(56,189,248,0.25); border-radius:2px; padding:2px 7px; flex-shrink:0;">
+              <span>${getHeroIcon('musical-note', '', 12)}</span>
+              <span>${l === 'en' ? 'Spotify History' : 'Historial de Spotify'}</span>
+            </span>
           </div>
         </div>
       </div>
@@ -15168,11 +15174,23 @@ function obtenerEstadoAmigosMusicaActivo() {
     };
   }
 
-  const rec = obtenerUltimaCancionAmigos();
-  if (rec) {
-    return { status: 'recent', tipo: 'recent', data: rec, total: 1, index: 0 };
+  // Si ningún amigo está escuchando música en vivo, buscar en el historial de canciones de Spotify de amigos
+  const recentList = (estado && estado.amigosLiveCache && Array.isArray(estado.amigosLiveCache.recentMusic))
+    ? estado.amigosLiveCache.recentMusic
+    : [];
+
+  if (recentList.length > 0) {
+    const idx = _amigosLiveMusicIdx % recentList.length;
+    return {
+      status: 'recent',
+      tipo: 'recent',
+      data: recentList[idx],
+      total: recentList.length,
+      index: idx
+    };
   }
 
+  // En reposo (nunca vinculada a discos o álbumes agregados en el catálogo)
   return { status: 'idle', tipo: 'idle', data: null, total: 0, index: 0 };
 }
 window.obtenerEstadoAmigosMusicaActivo = obtenerEstadoAmigosMusicaActivo;
@@ -15204,14 +15222,7 @@ function obtenerEstadoAmigosJuegosActivo() {
     };
   }
 
-  const rec = obtenerUltimoJuegoAmigos();
-  if (rec) {
-    const subStr = String(rec.subcategoria || '').toLowerCase();
-    const subTitStr = String(rec.subtitulo || '').toLowerCase();
-    const isSteam = !!(subStr.includes('steam') || subTitStr.includes('steam') || String(rec.plataforma || '').toLowerCase().includes('steam'));
-    return { status: 'recent', tipo: 'recent', data: rec, total: 1, index: 0, isSteam };
-  }
-
+  // Tarjeta de juegos de amigos EXCLUSIVAMENTE en vivo (nunca vinculada a registros ni al catálogo)
   return { status: 'idle', tipo: 'idle', data: null, total: 0, index: 0, isSteam: false };
 }
 window.obtenerEstadoAmigosJuegosActivo = obtenerEstadoAmigosJuegosActivo;
@@ -15935,8 +15946,6 @@ function renderizarLiveCardsAmigosInicio() {
   if (contJuego) {
     if (estJuego.status === 'playing') {
       contJuego.innerHTML = dibujarTarjetaAmigoJuegoLive(estJuego.data, { total: estJuego.total, index: estJuego.index });
-    } else if (estJuego.status === 'recent') {
-      contJuego.innerHTML = dibujarTarjetaUltimoJuegoAmigos(estJuego.data);
     } else {
       contJuego.innerHTML = dibujarTarjetaUltimoJuegoAmigosIdle();
     }
@@ -30196,7 +30205,11 @@ function actualizarVistaSegunResultadoAct(resultado) {
       if (prevRaw) {
         const prev = JSON.parse(prevRaw);
         if (prev && prev.isPlaying) {
-          localStorage.setItem('mediary_spotify_now_playing', JSON.stringify({ isPlaying: false, updatedAt: Date.now() }));
+          localStorage.setItem('mediary_spotify_now_playing', JSON.stringify({
+            ...prev,
+            isPlaying: false,
+            updatedAt: Date.now()
+          }));
           if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
             sincronizarPreferenciasYAppsHaciaNube(false);
           }
@@ -30505,20 +30518,9 @@ async function consultarActividadEnVivoPlayStation_(forzar = false) {
       }
     } catch (_) {}
 
-    // 2. Fallback: Juego en progreso local en Mediary
+    // Exclusivamente actividad en tiempo real: nunca vincular con registros ni juegos en progreso de Mediary
     if (liveResult === null) {
-      const jProg = typeof obtenerJuegoEnProgresoPlayStation === 'function' ? obtenerJuegoEnProgresoPlayStation() : null;
-      if (jProg && (jProg.titulo || jProg.tituloBase)) {
-        liveResult = {
-          isPlaying: true,
-          titleName: jProg.tituloBase || jProg.titulo,
-          platform: (jProg.creador && jProg.creador.includes('PS4')) ? 'PS4' : 'PS5',
-          source: 'playstation',
-          image: jProg.poster || ''
-        };
-      } else {
-        liveResult = { isPlaying: false };
-      }
+      liveResult = { isPlaying: false, source: 'playstation', platform: 'PS5' };
     }
 
     if (liveResult) {
@@ -30911,22 +30913,8 @@ function guardarPsnNpssoDesdeInput(inputId) {
 }
 
 function obtenerJuegoEnProgresoPlayStation() {
-  if (!window.estado || !Array.isArray(estado.registros)) return null;
-  const jProg = estado.registros.find(r => {
-    if (!r) return false;
-    const c = String(r.categoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    const s = String(r.subcategoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    const esJuego = c.includes('juego') || c.includes('game') || s.includes('juego') || s.includes('consola') || s.includes('playstation');
-    if (!esJuego) return false;
-    if (s.includes('watchlist') || s.includes('to play')) return false;
-    const fFin = r.fechaFin || r.fecha_fin;
-    const fIni = r.fechaInicio || r.fecha_inicio;
-    const fFinLower = String(fFin || '').trim().toLowerCase();
-    const fIniValida = (fIni && String(fIni).trim().toLowerCase() !== 'sin fecha');
-    const esSinFechaFin = (!fFin || fFinLower === 'sin fecha' || fFinLower === '');
-    return (typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(fFin)) || (esSinFechaFin && fIniValida) || r.enProgreso === true;
-  });
-  return jProg || null;
+  // Las tarjetas de juego en tiempo real no deben vincularse a registros del diario
+  return null;
 }
 
 function obtenerTodosJuegosPlayStation() {
