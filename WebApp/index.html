@@ -10236,6 +10236,9 @@ html[data-ui-style="modern"][data-theme="espresso"] textarea.comment-box {
         <button type="button" class="cfg-app-logo-btn" id="cfg-opt-logo-playstation" data-service="playstation" style="--app-brand:#0070d1;--app-brand-bg:rgba(0,112,209,0.14);" onclick="clickAppVinculacionConfig('playstation')" title="PlayStation" aria-label="PlayStation">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="#0070d1"><path d="M8.984 2.596v17.547l3.915 1.261V6.688c0-.69.304-1.151.794-.991.636.18.76.814.76 1.505v5.875c2.441 1.193 4.362-.002 4.362-3.152 0-3.237-1.126-4.675-4.438-5.827-1.307-.448-3.728-1.186-5.39-1.502zm4.656 16.241l6.296-2.275c.715-.258.826-.625.246-.818-.586-.192-1.637-.139-2.357.123l-4.205 1.5V14.98l.24-.085s1.201-.42 2.913-.615c1.696-.18 3.785.03 5.437.661 1.848.601 2.04 1.472 1.576 2.072-.465.6-1.622 1.036-1.622 1.036l-8.544 3.107V18.86zM1.807 18.6c-1.9-.545-2.214-1.668-1.352-2.32.801-.586 2.16-1.052 2.16-1.052l5.615-2.013v2.313L4.205 17c-.705.271-.825.632-.239.826.586.195 1.637.15 2.343-.12L8.247 17v2.074c-.12.03-.256.044-.39.073-1.939.331-3.996.196-6.038-.479z"/></svg>
         </button>
+        <button type="button" class="cfg-app-logo-btn" id="cfg-opt-logo-discord" data-service="discord" style="--app-brand:#5865F2;--app-brand-bg:rgba(88,101,242,0.14);" onclick="clickAppVinculacionConfig('discord')" title="Discord" aria-label="Discord">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -19961,6 +19964,8 @@ function limpiarDatosCuentaEnDispositivo_() {
     'mediary_steam_now_playing',
     'mediary_last_active_game_platform',
     'mediary_cuentas_sync_updated_at',
+    'mediary_discord_user_id',
+    'mediary_discord_username',
     'mediary_liked_reviews',
     'mediary_dias_lectura_default',
     'mediary_tiempos_lectura_default'
@@ -20067,6 +20072,11 @@ function empaquetarPreferenciasYAppsEnPerfil_(opciones = {}) {
       user: localStorage.getItem('mediary_steam_user') || '',
       stats: localStorage.getItem('mediary_steam_stats') || '',
       nowPlaying: localStorage.getItem('mediary_steam_now_playing') || ''
+    },
+    discord: {
+      connected: !!(localStorage.getItem('mediary_discord_user_id') || '').trim(),
+      userId: localStorage.getItem('mediary_discord_user_id') || '',
+      username: localStorage.getItem('mediary_discord_username') || ''
     },
     lastActiveGamePlatform: localStorage.getItem('mediary_last_active_game_platform') || '',
     apiKeys: {
@@ -20335,13 +20345,25 @@ function restaurarPreferenciasYAppsDesdeNube(prefs, opciones = {}) {
           localStorage.setItem('mediary_psn_connected', 'true');
           setOrRemove('mediary_psn_username', ps.username);
           setOrRemove('mediary_psn_npsso', ps.npsso);
-          setOrRemove('mediary_discord_user_id', ps.discordUserId);
+          if (ps.discordUserId) setOrRemove('mediary_discord_user_id', ps.discordUserId);
           setOrRemove('mediary_psn_user', ps.user);
           setOrRemove('mediary_psn_stats', ps.stats);
           setOrRemove('mediary_psn_now_playing', ps.nowPlaying || prefs.actividad?.playstationNowPlaying);
           setOrRemove('mediary_psn_manual_state', ps.manualState);
         } else {
-          ['mediary_psn_connected', 'mediary_psn_username', 'mediary_psn_npsso', 'mediary_discord_user_id', 'mediary_psn_user', 'mediary_psn_stats', 'mediary_psn_now_playing', 'mediary_psn_manual_state'].forEach(k => localStorage.removeItem(k));
+          ['mediary_psn_connected', 'mediary_psn_username', 'mediary_psn_npsso', 'mediary_psn_user', 'mediary_psn_stats', 'mediary_psn_now_playing', 'mediary_psn_manual_state'].forEach(k => localStorage.removeItem(k));
+        }
+      }
+
+      // Discord
+      if (cuentas.discord && typeof cuentas.discord === 'object') {
+        const dc = cuentas.discord;
+        if (dc.userId || dc.connected) {
+          setOrRemove('mediary_discord_user_id', dc.userId);
+          setOrRemove('mediary_discord_username', dc.username);
+        } else if (!cuentas.playstation?.discordUserId) {
+          localStorage.removeItem('mediary_discord_user_id');
+          localStorage.removeItem('mediary_discord_username');
         }
       }
 
@@ -25943,6 +25965,10 @@ function obtenerEstadoAppsVinculadasConfig() {
   try { const r = localStorage.getItem('mediary_psn_user'); if (r) psnUser = JSON.parse(r); } catch (e) {}
   const psnName = localStorage.getItem('mediary_psn_username') || (psnUser && psnUser.onlineId) || 'PlayStation';
 
+  const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
+  const discordConn = !!discordId;
+  const discordName = localStorage.getItem('mediary_discord_username') || (discordId ? `Discord (${discordId.slice(-4)})` : 'Discord');
+
   return [
     {
       id: 'spotify',
@@ -26001,6 +26027,21 @@ function obtenerEstadoAppsVinculadasConfig() {
       disconnectFn: 'desconectarPlayStation()',
       connectFn: () => { if (typeof abrirModalConectarPsn === 'function') abrirModalConectarPsn(); },
       extraLabel: 'Token NPSSO'
+    },
+    {
+      id: 'discord',
+      name: 'Discord',
+      category: 'juegos',
+      color: '#5865F2',
+      bg: 'rgba(88,101,242,0.14)',
+      connected: discordConn,
+      userName: discordName,
+      avatar: '',
+      svg: '<svg width="22" height="22" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>',
+      syncFn: 'forzarActualizacionJuegosLive(this)',
+      disconnectFn: 'desconectarDiscordModal()',
+      connectFn: () => { if (typeof abrirModalConectarDiscord === 'function') abrirModalConectarDiscord(); },
+      extraLabel: 'Discord User ID'
     }
   ];
 }
@@ -26050,6 +26091,14 @@ function renderizarAppsVinculadasConfig() {
       if (appSel.id === 'steam') {
         const hasKey = !!localStorage.getItem('mediary_steam_api_key');
         extraHtml = `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:0.74rem;color:var(--muted);">Steam Web API Key</span><button type="button" onclick="toggleSteamApiKeyInput()" id="btn-toggle-steam-key" style="background:none;border:none;color:#66c0f4;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasKey ? (l === 'en' ? 'Active' : 'Activa') : (l === 'en' ? '+ Configure' : '+ Configurar')}</button></div><div id="cfg-steam-apikey-wrap" style="display:none;margin-top:8px;"><div class="app-connect-input-row"><input type="text" id="cfg-steam-api-key-input" name="steam_api_key_input" class="form-input" placeholder="Steam Web API Key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" style="-webkit-text-security:disc;text-security:disc;" value="${(localStorage.getItem('mediary_steam_api_key') || '').replace(/"/g, '&quot;')}"><button type="button" class="btn-connect-action btn-connect-steam" onclick="guardarSteamApiKeyDesdeInput('cfg-steam-api-key-input')">${l === 'en' ? 'Save' : 'Guardar'}</button></div></div></div>`;
+      } else if (appSel.id === 'discord') {
+        const discordId = (localStorage.getItem('mediary_discord_user_id') || '').trim();
+        extraHtml = `
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:0.74rem;color:var(--muted);">ID: <strong>${escHtmlSpotify_(discordId)}</strong></span>
+            <button type="button" onclick="abrirModalConectarDiscord()" style="background:none;border:none;color:#818cf8;font-size:0.74rem;cursor:pointer;font-weight:600;">Configurar / Probar ↗</button>
+          </div>
+        `;
       } else if (appSel.id === 'playstation') {
         const hasTok = !!localStorage.getItem('mediary_psn_npsso');
         const hasDiscord = !!localStorage.getItem('mediary_discord_user_id');
@@ -26058,16 +26107,9 @@ function renderizarAppsVinculadasConfig() {
             <div style="display:flex;justify-content:space-between;align-items:center;">
               <span style="font-size:0.74rem;color:var(--muted);display:flex;align-items:center;gap:5px;">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-                <span>Discord ID (Auto-sync)</span>
+                <span>Discord (Auto-sync PS5 / PS4)</span>
               </span>
-              <button type="button" onclick="toggleDiscordIdInput()" id="btn-toggle-discord-id" style="background:none;border:none;color:#818cf8;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasDiscord ? (l === 'en' ? 'Active' : 'Activo') : (l === 'en' ? '+ Configure' : '+ Configurar')}</button>
-            </div>
-            <div id="cfg-discord-id-wrap" style="display:none;margin-top:8px;">
-              <p style="font-size:0.71rem;color:var(--muted);margin:0 0 6px 0;line-height:1.35;">${l === 'en' ? 'Detects your PS5/PS4 live games via your linked Discord account with zero token expiration.' : 'Detecta tus juegos de PS5/PS4 en vivo a través de tu cuenta de Discord vinculada a PlayStation.'}</p>
-              <div class="app-connect-input-row">
-                <input type="text" id="cfg-discord-id-input" name="discord_id_input" class="form-input" placeholder="Discord User ID" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" value="${(localStorage.getItem('mediary_discord_user_id') || '').replace(/"/g, '&quot;')}">
-                <button type="button" class="btn-connect-action" style="background:#5865F2;color:#fff;" onclick="guardarDiscordIdDesdeInput('cfg-discord-id-input')">${l === 'en' ? 'Save' : 'Guardar'}</button>
-              </div>
+              <button type="button" onclick="abrirModalConectarDiscord()" style="background:none;border:none;color:#818cf8;font-size:0.74rem;cursor:pointer;font-weight:600;">${hasDiscord ? (l === 'en' ? 'Active · Manage' : 'Activo · Configurar') : (l === 'en' ? '+ Link' : '+ Vincular')}</button>
             </div>
           </div>
           <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
@@ -28486,6 +28528,12 @@ function detenerPollingSteamLive() {
 
 async function forzarActualizacionJuegosLive(btnEl) {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  let originalBtnText = '';
+  if (btnEl && btnEl.tagName === 'BUTTON') {
+    originalBtnText = btnEl.textContent;
+    btnEl.textContent = l === 'en' ? 'Syncing...' : 'Sincronizando...';
+    btnEl.disabled = true;
+  }
   const allSyncBtns = document.querySelectorAll('.btn-psn-sync-prominent, .btn-psn-sync-quick, .btn-psn-sync-compact');
   allSyncBtns.forEach(b => {
     b.classList.add('is-syncing');
@@ -28521,6 +28569,10 @@ async function forzarActualizacionJuegosLive(btnEl) {
     b.style.pointerEvents = 'auto';
   });
   labelSpans.forEach(s => { s.textContent = l === 'en' ? 'Sync status' : 'Sincronizar estado'; });
+  if (btnEl && btnEl.tagName === 'BUTTON' && originalBtnText) {
+    btnEl.textContent = originalBtnText;
+    btnEl.disabled = false;
+  }
 
   // Notificación de estado con diagnóstico útil
   const estadoActual = typeof obtenerEstadoJuegoActivoInicio === 'function' ? obtenerEstadoJuegoActivoInicio() : null;
@@ -30660,6 +30712,10 @@ async function consultarActividadDiscordLive_(forzar = false) {
     if (!json || !json.success || !json.data) return null;
 
     const data = json.data;
+    if (data.discord_user) {
+      const uName = `${data.discord_user.username}${data.discord_user.discriminator && data.discord_user.discriminator !== '0' ? '#' + data.discord_user.discriminator : ''}`;
+      if (uName) localStorage.setItem('mediary_discord_username', uName);
+    }
     const activities = Array.isArray(data.activities) ? data.activities : [];
 
     // Buscar actividad de juego (type === 0 es Playing game)
@@ -31176,10 +31232,12 @@ function desconectarPlayStation() {
   localStorage.removeItem('mediary_psn_stats');
   localStorage.removeItem('mediary_psn_now_playing');
   localStorage.removeItem('mediary_psn_npsso');
-  localStorage.removeItem('mediary_discord_user_id');
   localStorage.removeItem('mediary_psn_last_auto_sync');
   actualizarUIPlayStation();
   renderizarPlayStationNowPlayingInicio(true);
+  if (typeof renderizarAppsVinculadasConfig === 'function') {
+    renderizarAppsVinculadasConfig();
+  }
   const modalStats = document.getElementById('modal-estadisticas-avanzadas');
   if (modalStats && modalStats.style.display === 'flex' && typeof renderizarContenidoEstadisticasAvanzadas === 'function') {
     renderizarContenidoEstadisticasAvanzadas();
@@ -31325,6 +31383,9 @@ function guardarDiscordIdDesdeInput(inputId) {
   if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
     sincronizarPreferenciasYAppsHaciaNube(true);
   }
+  if (typeof renderizarAppsVinculadasConfig === 'function') {
+    renderizarAppsVinculadasConfig();
+  }
   const wrap = document.getElementById('cfg-discord-id-wrap');
   if (wrap) wrap.style.display = 'none';
   const btn = document.getElementById('btn-toggle-discord-id');
@@ -31425,6 +31486,7 @@ async function guardarYProbarDiscordDesdeModal() {
 
       const d = json.data;
       const uName = d.discord_user ? `${d.discord_user.username}${d.discord_user.discriminator && d.discord_user.discriminator !== '0' ? '#' + d.discord_user.discriminator : ''}` : val;
+      localStorage.setItem('mediary_discord_username', uName);
       const activities = Array.isArray(d.activities) ? d.activities : [];
       const gameAct = activities.find(a => a && a.type === 0);
 
@@ -31452,6 +31514,9 @@ async function guardarYProbarDiscordDesdeModal() {
       }
       if (typeof iniciarPollingPlayStationLive === 'function') {
         iniciarPollingPlayStationLive();
+      }
+      if (typeof renderizarAppsVinculadasConfig === 'function') {
+        renderizarAppsVinculadasConfig();
       }
       if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
         sincronizarPreferenciasYAppsHaciaNube(true);
@@ -31493,6 +31558,7 @@ function desconectarDiscordModal() {
   const inp = document.getElementById('discord-modal-input-id');
   if (inp) inp.value = '';
   localStorage.removeItem('mediary_discord_user_id');
+  localStorage.removeItem('mediary_discord_username');
 
   try {
     const raw = localStorage.getItem('mediary_psn_now_playing');
@@ -31519,6 +31585,9 @@ function desconectarDiscordModal() {
 
   if (typeof renderizarPlayStationNowPlayingInicio === 'function') {
     renderizarPlayStationNowPlayingInicio(false);
+  }
+  if (typeof renderizarAppsVinculadasConfig === 'function') {
+    renderizarAppsVinculadasConfig();
   }
   if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
     sincronizarPreferenciasYAppsHaciaNube(true);
