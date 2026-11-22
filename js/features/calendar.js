@@ -215,9 +215,13 @@ function volverDesdeCalendario() {
         actualizarVisibilidadMenuInferior(true);
       }
       if (destino === 'listas') {
-        if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas();
+        if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas(false);
       } else {
-        if (typeof irInicio === 'function') irInicio();
+        if (typeof irInicio === 'function') irInicio(false);
+      }
+      const targetBtn = destino === 'listas' ? 'm-btn-listas-ext' : 'm-btn-inicio';
+      if (typeof actualizarBarraNavegacionMovil === 'function') {
+        actualizarBarraNavegacionMovil(targetBtn);
       }
     }, elDestino);
   } else {
@@ -225,9 +229,13 @@ function volverDesdeCalendario() {
       actualizarVisibilidadMenuInferior(true);
     }
     if (destino === 'listas') {
-      if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas();
+      if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas(false);
     } else {
-      if (typeof irInicio === 'function') irInicio();
+      if (typeof irInicio === 'function') irInicio(false);
+    }
+    const targetBtn = destino === 'listas' ? 'm-btn-listas-ext' : 'm-btn-inicio';
+    if (typeof actualizarBarraNavegacionMovil === 'function') {
+      actualizarBarraNavegacionMovil(targetBtn);
     }
   }
 }

@@ -77,7 +77,7 @@ function abrirMenuWatchlistGlobal(pushNav = true) {
   // POINT 1: Default to Películas, NOT whatever was last open, and separate by subcategories cleanly
   estado.wlCategoria = 'Peliculas';
   estado.wlSubcategoria = 'Películas';
-  actualizarBarraNavegacionMovil('m-btn-listas');
+  actualizarBarraNavegacionMovil(null);
   actualizarNavWebActiva();
   if (typeof actualizarVisibilidadMenuInferior === 'function') {
     actualizarVisibilidadMenuInferior(false);
@@ -104,9 +104,13 @@ function volverDesdeWatchlists() {
         actualizarVisibilidadMenuInferior(true);
       }
       if (destino === 'listas') {
-        if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas();
+        if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas(false);
       } else {
-        if (typeof irInicio === 'function') irInicio();
+        if (typeof irInicio === 'function') irInicio(false);
+      }
+      const targetBtn = destino === 'listas' ? 'm-btn-listas-ext' : 'm-btn-inicio';
+      if (typeof actualizarBarraNavegacionMovil === 'function') {
+        actualizarBarraNavegacionMovil(targetBtn);
       }
     }, elDestino);
   } else {
@@ -114,14 +118,18 @@ function volverDesdeWatchlists() {
       actualizarVisibilidadMenuInferior(true);
     }
     if (destino === 'listas') {
-      if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas();
+      if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas(false);
     } else {
-      if (typeof irInicio === 'function') irInicio();
+      if (typeof irInicio === 'function') irInicio(false);
+    }
+    const targetBtn = destino === 'listas' ? 'm-btn-listas-ext' : 'm-btn-inicio';
+    if (typeof actualizarBarraNavegacionMovil === 'function') {
+      actualizarBarraNavegacionMovil(targetBtn);
     }
   }
 }
 window.volverDesdeWatchlists = volverDesdeWatchlists;
-function abrirMenuWatchlistMovil() { actualizarBarraNavegacionMovil('m-btn-listas'); abrirMenuWatchlistGlobal(); }
+function abrirMenuWatchlistMovil() { actualizarBarraNavegacionMovil(null); abrirMenuWatchlistGlobal(); }
 
 function seleccionarCategoriaWl(cat) {
   estado.wlCategoria = cat;

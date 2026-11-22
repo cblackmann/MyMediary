@@ -663,7 +663,7 @@ function cargarFeedActividadAmigos(mostrarToast = false) {
   }).obtenerFeedAmigos(estado.userEmail);
 }
 function actualizarContadoresFeedAmigos() {
-  const feed = estado.amigosFeedCache || [];
+  const feed = (estado.amigosFeedCache || []).filter(it => !esItemCancionMusica(it) && !String(it.id || '').startsWith('sp_rec_') && it.subcategoria !== 'Canciones' && (typeof esActividadAmigoReciente === 'function' ? esActividadAmigoReciente(it) : true));
   const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
   setTxt('badge-feed-count', feed.length);
   setTxt('count-feed-todas', feed.length);
@@ -885,7 +885,7 @@ function renderizarFeedAmigos() {
   if (!contenedor) return;
   const l = userPrefs.lang || 'es';
   const filtro = estado.amigosFeedFiltro || 'todas';
-  const todos = (estado.amigosFeedCache || []).filter(it => !esItemCancionMusica(it) && !String(it.id || '').startsWith('sp_rec_') && it.subcategoria !== 'Canciones');
+  const todos = (estado.amigosFeedCache || []).filter(it => !esItemCancionMusica(it) && !String(it.id || '').startsWith('sp_rec_') && it.subcategoria !== 'Canciones' && (typeof esActividadAmigoReciente === 'function' ? esActividadAmigoReciente(it) : true));
   const items = todos.filter(it => filtro === 'todas' || it.categoria === filtro);
 
   if (!todos.length) {
@@ -1035,9 +1035,9 @@ function renderizarFeedAmigos() {
   }).join('');
 }
 function agregarFeedItemAWatchlist(idx, btnEl) {
-  const feed = estado.amigosFeedCache || [];
+  const todos = (estado.amigosFeedCache || []).filter(it => !esItemCancionMusica(it) && !String(it.id || '').startsWith('sp_rec_') && it.subcategoria !== 'Canciones' && (typeof esActividadAmigoReciente === 'function' ? esActividadAmigoReciente(it) : true));
   const filtro = estado.amigosFeedFiltro || 'todas';
-  const items = feed.filter(it => filtro === 'todas' || it.categoria === filtro);
+  const items = todos.filter(it => filtro === 'todas' || it.categoria === filtro);
   const it = items[idx];
   if (!it) return;
   const itemConCat = {
@@ -1064,36 +1064,85 @@ window.filtrarFeedAmigos = filtrarFeedAmigos;
 window.renderizarFeedAmigos = renderizarFeedAmigos;
 window.agregarFeedItemAWatchlist = agregarFeedItemAWatchlist;
 
-function esFechaDeUltimaSemana(it) {
+function esActividadAmigoReciente(it, maxDias = 10) {
   if (!it) return false;
-  const sieteDiasMs = 7 * 24 * 60 * 60 * 1000;
+  const maxMs = maxDias * 24 * 60 * 60 * 1000;
   const ahora = Date.now();
+
+  // 1. Verificar fecha de término/completado (fechaFin)
+  const fFin = it.fechaFin || it.fecha_fin;
+  if (fFin && fFin !== 'Sin fecha') {
+    if (typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(fFin)) {
+      const fIni = it.fechaInicio || it.fecha_inicio;
+      if (fIni && fIni !== 'Sin fecha') {
+        const tIni = (typeof timestampDeFecha === 'function') ? timestampDeFecha(fIni) : 0;
+        if (tIni > 0 && (ahora - tIni > maxMs * 3)) return false;
+      }
+      if (it.createdAt) {
+        const tCre = new Date(it.createdAt).getTime();
+        if (!isNaN(tCre) && (ahora - tCre > maxMs * 3)) return false;
+      }
+      return true;
+    }
+    const tFin = (typeof timestampDeFecha === 'function') ? timestampDeFecha(fFin) : 0;
+    if (tFin > 0) {
+      const diff = ahora - tFin;
+      // Si la fecha consumida fue hace más de maxDias (ej: 1 mes atrás o 2022), NO es reciente
+      if (diff < -86400000 || diff > maxMs) return false;
+    } else {
+      const mYear = String(fFin).match(/\b(19\d{2}|20\d{2})\b/);
+      if (mYear && Number(mYear[1]) < new Date().getFullYear()) return false;
+    }
+  }
+
+  // 2. Verificar fecha de inicio si no hubo fecha de término
+  const fIni = it.fechaInicio || it.fecha_inicio;
+  if ((!fFin || fFin === 'Sin fecha') && fIni && fIni !== 'Sin fecha') {
+    const tIni = (typeof timestampDeFecha === 'function') ? timestampDeFecha(fIni) : 0;
+    if (tIni > 0) {
+      const diff = ahora - tIni;
+      if (diff < -86400000 || diff > maxMs) return false;
+    } else {
+      const mYear = String(fIni).match(/\b(19\d{2}|20\d{2})\b/);
+      if (mYear && Number(mYear[1]) < new Date().getFullYear()) return false;
+    }
+  }
+
+  // 3. Verificar propiedad fecha genérica si existe
+  if (it.fecha && it.fecha !== 'Sin fecha' && !(typeof esEnProgresoTexto === 'function' && esEnProgresoTexto(it.fecha))) {
+    const tF = (typeof timestampDeFecha === 'function') ? timestampDeFecha(it.fecha) : 0;
+    if (tF > 0) {
+      const diff = ahora - tF;
+      if (diff < -86400000 || diff > maxMs) return false;
+    }
+  }
+
+  // 4. Verificar fecha de registro en la base de datos (createdAt)
   if (it.createdAt) {
     const tCre = new Date(it.createdAt).getTime();
     if (!isNaN(tCre)) {
-      const diff = ahora - tCre;
-      if (diff >= 0 && diff <= sieteDiasMs) return true;
+      const diffCre = ahora - tCre;
+      if (diffCre > maxMs * 1.5) return false;
     }
   }
-  const fFin = it.fechaFin || it.fecha_fin;
-  if (fFin && fFin !== 'Sin fecha') {
-    if (fFin === 'En progreso') return true;
-    const tFin = timestampDeFecha(fFin);
-    if (tFin > 0) {
-      const diff = ahora - tFin;
-      if (diff >= 0 && diff <= sieteDiasMs) return true;
+
+  // 5. Si no tiene ninguna fecha de consumo indicada
+  if ((!fFin || fFin === 'Sin fecha') && (!fIni || fIni === 'Sin fecha')) {
+    if (it.createdAt) {
+      const tCre = new Date(it.createdAt).getTime();
+      if (!isNaN(tCre)) {
+        const diffCre = ahora - tCre;
+        if (diffCre >= 0 && diffCre <= maxMs) return true;
+      }
     }
+    return false;
   }
-  const fIni = it.fechaInicio || it.fecha_inicio;
-  if (fIni && fIni !== 'Sin fecha') {
-    const tIni = timestampDeFecha(fIni);
-    if (tIni > 0) {
-      const diff = ahora - tIni;
-      if (diff >= 0 && diff <= sieteDiasMs) return true;
-    }
-  }
-  return false;
+
+  return true;
 }
+const esFechaDeUltimaSemana = esActividadAmigoReciente;
+window.esActividadAmigoReciente = esActividadAmigoReciente;
+window.esFechaDeUltimaSemana = esActividadAmigoReciente;
 
 // Las tarjetas de actividad de amigos en tiempo real NO deben vincularse a registros ni discos agregados del catálogo.
 // Se vinculan EXCLUSIVAMENTE a actividad en vivo (Spotify, Steam, PSN) y al historial de canciones de Spotify.
@@ -2189,13 +2238,13 @@ function renderizarFeedAmigosResumidoInicio() {
   }
 
   // Las canciones escuchadas NO deben salir en las tarjetas de agregados, pero SÍ los discos
-  const feedAgregados = feed.filter(it => !esItemCancionMusica(it));
+  const feedAgregados = feed.filter(it => !esItemCancionMusica(it) && !String(it.id || '').startsWith('sp_rec_') && it.subcategoria !== 'Canciones' && (typeof esActividadAmigoReciente === 'function' ? esActividadAmigoReciente(it) : true));
 
   if (!feedAgregados.length) {
     contenedor.innerHTML = `
       <div style="background:rgba(15,23,42,0.4);border:1px dashed var(--border);border-radius:3px;padding:20px;text-align:center;color:var(--muted);font-size:0.85rem;">
         <span style="display:block;margin-bottom:6px;">${getHeroIcon('users', '', 28)}</span>
-        ${l === 'en' ? 'No friend updates logged yet.' : 'Aún no hay actividad de tus amigos en esta semana.'}
+        ${l === 'en' ? 'No recent activity from friends.' : 'Aún no hay actividad reciente de tus amigos en estos días.'}
         <div style="margin-top:10px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
           <button type="button" class="btn-today-pill" style="height:32px;padding:0 12px;font-size:0.78rem;" onclick="abrirVistaAmigos()">
             ${getHeroIcon('users', '', 14)} ${l === 'en' ? 'Manage Friends' : 'Buscar Amigos'}
@@ -2209,12 +2258,7 @@ function renderizarFeedAmigosResumidoInicio() {
     return;
   }
 
-  let itemsSemana = feedAgregados.filter(it => esFechaDeUltimaSemana(it));
-  if (!itemsSemana.length) {
-    itemsSemana = feedAgregados.slice(0, 8);
-  } else {
-    itemsSemana = itemsSemana.slice(0, 15);
-  }
+  const itemsSemana = feedAgregados.slice(0, 15);
 
   const catIcons = { Peliculas: getHeroIcon('film'), Series: getHeroIcon('tv'), Musica: getHeroIcon('musical-note'), Juegos: getHeroIcon('gamepad'), Lecturas: getHeroIcon('book-open') };
 

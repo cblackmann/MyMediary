@@ -187,6 +187,40 @@ function registrarNavegacionApp(destino) {
     try { history.pushState({ appView: destino, depth: appNavHistory.length }, '', ''); } catch (e) {}
   }
 }
+function obtenerElementoVistaActual() {
+  const ids = [
+    'vista-calendario',
+    'vista-watchlists',
+    'vista-listas-extendida',
+    'vista-categoria',
+    'vista-amigos',
+    'vista-perfil',
+    'vista-discover',
+    'vista-inicio'
+  ];
+  for (const id of ids) {
+    const el = document.getElementById(id);
+    if (el && el.style.display !== 'none' && el.style.display !== '') {
+      return el;
+    }
+  }
+  return null;
+}
+window.obtenerElementoVistaActual = obtenerElementoVistaActual;
+
+function obtenerElementoVistaDestino(vista) {
+  if (vista === 'inicio') return document.getElementById('vista-inicio');
+  if (vista === 'listas') return document.getElementById('vista-listas-extendida');
+  if (vista === 'calendario') return document.getElementById('vista-calendario');
+  if (vista === 'watchlists') return document.getElementById('vista-watchlists');
+  if (vista === 'amigos') return document.getElementById('vista-amigos');
+  if (vista === 'perfil') return document.getElementById('vista-perfil');
+  if (vista === 'discover') return document.getElementById('vista-discover');
+  if (typeof CONFIG !== 'undefined' && CONFIG && CONFIG[vista]) return document.getElementById('vista-categoria');
+  return document.getElementById('vista-inicio');
+}
+window.obtenerElementoVistaDestino = obtenerElementoVistaDestino;
+
 function ejecutarCambioVista(vista) {
   if (vista === 'inicio') irInicio(false);
   else if (vista === 'listas') abrirVistaDashboardListas(false);
@@ -247,23 +281,51 @@ function inicializarManejoBotonAtras() {
         return;
       }
     }
+
+    let anterior = 'inicio';
     if (appNavHistory.length > 1) {
-      isHandlingPopState = true;
       appNavHistory.pop();
-      const anterior = appNavHistory[appNavHistory.length - 1] || 'inicio';
-      ejecutarCambioVista(anterior);
-      isHandlingPopState = false;
-      return;
-    }
-    if (estado.categoria !== 'inicio') {
-      isHandlingPopState = true;
-      ejecutarCambioVista('inicio');
-      isHandlingPopState = false;
+      anterior = appNavHistory[appNavHistory.length - 1] || 'inicio';
+    } else if (estado.categoria !== 'inicio') {
+      anterior = 'inicio';
       try { history.pushState({ appView: 'inicio', depth: 1 }, '', ''); } catch (err) {}
+    } else {
+      const l = userPrefs.lang || 'es';
+      mostrarToastPersonalizado(l === 'en' ? 'Press back again to exit' : 'Presiona atrás nuevamente para salir');
       return;
     }
-    const l = userPrefs.lang || 'es';
-    mostrarToastPersonalizado(l === 'en' ? 'Press back again to exit' : 'Presiona atrás nuevamente para salir');
+
+    const elActual = (typeof obtenerElementoVistaActual === 'function') ? obtenerElementoVistaActual() : null;
+    const elDestino = (typeof obtenerElementoVistaDestino === 'function') ? obtenerElementoVistaDestino(anterior) : document.getElementById('vista-inicio');
+
+    const fnEjecutar = () => {
+      isHandlingPopState = true;
+      try {
+        ejecutarCambioVista(anterior);
+      } finally {
+        isHandlingPopState = false;
+      }
+
+      const mapaBtns = {
+        'inicio': 'm-btn-inicio',
+        'listas': 'm-btn-listas-ext',
+        'amigos': 'm-btn-amigos',
+        'perfil': 'm-btn-perfil'
+      };
+      const targetBtnId = mapaBtns[anterior] || null;
+      if (typeof actualizarBarraNavegacionMovil === 'function') {
+        actualizarBarraNavegacionMovil(targetBtnId);
+      }
+      if (typeof actualizarVisibilidadMenuInferior === 'function') {
+        actualizarVisibilidadMenuInferior(Boolean(targetBtnId));
+      }
+    };
+
+    if (typeof animarSalidaVistaAtras === 'function' && elActual && elDestino && elActual !== elDestino) {
+      animarSalidaVistaAtras(elActual, fnEjecutar, elDestino);
+    } else {
+      fnEjecutar();
+    }
   });
 }
 
@@ -584,6 +646,7 @@ function inicializarNavegacionHorizontalTabs() {
     }
 
     _animacionAtrasEnCurso = true;
+    window.__animacionAtrasEnCurso = true;
     elActual.classList.remove('view-anim-exit-back');
     void elActual.offsetWidth;
     elActual.classList.add('view-anim-exit-back');
@@ -598,6 +661,7 @@ function inicializarNavegacionHorizontalTabs() {
         }
       }
       _animacionAtrasEnCurso = false;
+      window.__animacionAtrasEnCurso = false;
       if (elDestino) {
         elDestino.classList.remove('view-anim-enter-back');
         void elDestino.offsetWidth;
@@ -700,6 +764,7 @@ window.actualizarVisibilidadMenuInferior = actualizarVisibilidadMenuInferior;
 
 window.__tabActualIndice = 0;
 function animarCambioTabVista(targetId) {
+  if (window.__animacionAtrasEnCurso) return;
   const tabs = ['inicio', 'listas', 'amigos', 'perfil'];
   const nuevoIdx = tabs.indexOf(targetId);
   if (nuevoIdx === -1) return;
@@ -733,29 +798,52 @@ function reposicionarIndicadorNavMovil(el, animar = true) {
   }
   const navRect = nav.getBoundingClientRect();
   const btnRect = targetBtn.getBoundingClientRect();
-  if (btnRect.width === 0) return;
-  const left = btnRect.left - navRect.left;
+  let left = 0;
+  let width = 0;
+  if (btnRect.width > 0 && navRect.width > 0) {
+    left = btnRect.left - navRect.left;
+    width = btnRect.width;
+  } else if (targetBtn.offsetWidth > 0) {
+    left = targetBtn.offsetLeft;
+    width = targetBtn.offsetWidth;
+  } else {
+    return;
+  }
+
   if (!animar) {
     const prevTrans = ind.style.transition;
     ind.style.transition = 'none';
-    ind.style.width = `${btnRect.width}px`;
+    ind.style.width = `${width}px`;
     ind.style.transform = `translateX(${left}px)`;
     ind.style.opacity = '1';
     void ind.offsetWidth;
     ind.style.transition = prevTrans || '';
   } else {
-    ind.style.width = `${btnRect.width}px`;
+    ind.style.width = `${width}px`;
     ind.style.transform = `translateX(${left}px)`;
     ind.style.opacity = '1';
   }
 }
 
 function actualizarBarraNavegacionMovil(btnId) {
-  document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
-  const el = document.getElementById(btnId);
+  document.querySelectorAll('.mobile-nav-btn').forEach(b => {
+    b.classList.remove('active');
+    try { b.blur(); } catch(e) {}
+  });
+  if (document.activeElement && typeof document.activeElement.blur === 'function') {
+    try { document.activeElement.blur(); } catch(e) {}
+  }
+  const el = btnId ? document.getElementById(btnId) : null;
   if (el) {
     el.classList.add('active');
-    reposicionarIndicadorNavMovil(el);
+    reposicionarIndicadorNavMovil(el, true);
+    requestAnimationFrame(() => reposicionarIndicadorNavMovil(el, false));
+    setTimeout(() => reposicionarIndicadorNavMovil(el, false), 50);
+    setTimeout(() => reposicionarIndicadorNavMovil(el, false), 180);
+    setTimeout(() => reposicionarIndicadorNavMovil(el, false), 350);
+  } else {
+    const ind = document.getElementById('mobile-nav-indicator');
+    if (ind) ind.style.opacity = '0';
   }
 }
 let _navResizeRaf = 0;

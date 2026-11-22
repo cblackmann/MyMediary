@@ -576,7 +576,7 @@ function verificarNuevasActividadesAmigos(feed) {
   }
 
   let huboNuevos = false;
-  const recientes = feed.filter(it => !esItemCancionMusica(it) && !(it.categoria === 'Musica' && (it.subcategoria === 'Canciones' || String(it.id || '').startsWith('sp_')))).slice(0, 10);
+  const recientes = (feed || []).filter(it => !esItemCancionMusica(it) && !(it.categoria === 'Musica' && (it.subcategoria === 'Canciones' || String(it.id || '').startsWith('sp_'))) && (typeof esActividadAmigoReciente === 'function' ? esActividadAmigoReciente(it) : true)).slice(0, 10);
   for (const it of recientes) {
     if (!it || !it.id) continue;
     const idStr = String(it.id);
