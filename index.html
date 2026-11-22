@@ -616,13 +616,18 @@
     <!-- 1. Cabecera de Calendario -->
     <div class="calendario-header-bar">
       <div class="calendario-title-wrap">
+        <button type="button" class="btn-cal-volver-inicio" onclick="irInicio()" title="Volver a Inicio" data-i18n-title="cal_btn_back_home">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+            <path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+          </svg>
+          <span data-i18n="cal_btn_back_home">Inicio</span>
+        </button>
         <h2 class="calendario-header-title">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;color:var(--accent);">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--accent);">
             <path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/>
           </svg>
           <span data-i18n="cal_title">Calendario</span>
         </h2>
-        <p class="calendario-subtitle" data-i18n="cal_subtitle">Registros diarios por categoría y próximos estrenos programados</p>
       </div>
 
       <div class="calendario-header-actions">
@@ -901,7 +906,7 @@
             <label for="estreno-select-cat" data-i18n="estreno_lbl_cat">Categoría: *</label>
             <select id="estreno-select-cat" class="form-input" required>
               <option value="Peliculas" data-i18n="nav_peliculas">Películas</option>
-              <option value="Series" data-i18n="nav_series">Series</option>
+              <option value="Series" data-i18n="cal_opt_series_temporadas">Series (Temporadas)</option>
               <option value="Musica" data-i18n="nav_musica">Música</option>
               <option value="Juegos" data-i18n="nav_juegos">Juegos</option>
               <option value="Libros" data-i18n="cal_legend_books">Libros</option>
@@ -1356,7 +1361,7 @@
 <!-- MODAL SELECCIONAR FAVORITO DE SUBCATEGORÍA --> <div id="modal-seleccionar-favorito" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:520px;">
 <h3 id="titulo-modal-fav" data-i18n="fav_modal_title"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 18.75h-9m9 0a3 3 0 0 1 3-3h1.5a1.5 1.5 0 0 0 1.5-1.5v-1.125c0-.828-.672-1.5-1.5-1.5H18m-1.5 7.125v1.5a1.5 1.5 0 0 1-1.5 1.5h-6a1.5 1.5 0 0 1-1.5-1.5v-1.5m0 0a3 3 0 0 1-3-3H4.5A1.5 1.5 0 0 1 3 13.125V12c0-.828.672-1.5 1.5-1.5H6m10.5 8.25H7.5m9-8.25V4.875A1.875 1.875 0 0 0 14.625 3H9.375A1.875 1.875 0 0 0 7.5 4.875V10.5a4.5 4.5 0 0 0 9 0Z"/></svg> Elegir Favorito</h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:10px;" data-i18n="fav_modal_hint">Selecciona uno de tus registros guardados en esta subcategoría o búscalo abajo:</p> <div class="form-group"> <input type="search" id="input-filtro-fav" class="form-input" placeholder="Filtrar en tu historial o buscar online..." oninput="filtrarOpcionesFavorito(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_fav_filter">
 </div> <div id="lista-candidatos-fav" style="max-height:300px; overflow-y:auto; display:flex; flex-direction:column; gap:8px; margin-bottom:12px;"></div> <div class="modal-actions" style="justify-content:space-between;"> <button type="button" class="btn-modal-danger" id="btn-quitar-fav" onclick="quitarFavoritoSubcategoria()" style="display:none;" data-i18n="fav_modal_remove">Quitar favorito</button> <button type="button" class="btn-modal-cancel" onclick="cerrarModalSeleccionarFavorito()" data-i18n="btn_close">Cerrar</button>
-</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;" onclick="cerrarDropdownsConfig()"> <div style="position:sticky; top:-20px; z-index:20; background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); margin:-20px -20px 14px -20px; padding:16px 20px 12px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;"><h3 style="margin:0; display:flex; align-items:center; gap:8px;"><svg style="width:20px;height:20px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> <span data-i18n="cfg_title">Configuración y Estilo</span></h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></div>
+</div> </div> </div> <!-- MODAL CONFIGURACIÓN MEJORADO --> <div id="modal-configuracion" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarModalConfiguracion()"> <div class="modal-box" style="max-width:560px; max-height:90vh; overflow-y:auto;" onclick="cerrarDropdownsConfig()"> <div class="sticky-cfg-header" style="position:sticky; top:-20px; z-index:20; background:var(--card); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); margin:-20px -20px 14px -20px; padding:10px 20px 12px 20px; border-bottom:1px solid var(--border); display:flex; flex-direction:column; gap:8px;"><div class="modal-swipe-handle" style="margin:0 auto; cursor:grab;"></div><div style="display:flex; justify-content:space-between; align-items:center; width:100%;"><h3 style="margin:0; display:flex; align-items:center; gap:8px;"><svg style="width:20px;height:20px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg> <span data-i18n="cfg_title">Configuración y Estilo</span></h3><button type="button" class="btn-close-form" onclick="cerrarModalConfiguracion()" style="position:static;"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></div></div>
 <div class="form-group">
   <label data-i18n="cfg_lang_label">Idioma</label>
   <input type="hidden" id="cfg-lang" value="es">
@@ -2779,10 +2784,55 @@
   </div>
 </div>
 
+<!-- MODAL VINCULACIÓN DIRECTA GOOGLE -->
+<div id="modal-conectar-google" class="modal-overlay" style="display:none; z-index:2200;" onclick="if(event.target===this) cerrarModalConectarGoogle()">
+  <div class="modal-box modal-box-app-connect" style="max-width:440px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:8px;">
+      <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
+        <div style="width:36px; height:36px; border-radius:4px; background:rgba(255,255,255,0.06); border:1px solid var(--border); display:grid; place-items:center; flex-shrink:0;">
+          <svg width="20" height="20" viewBox="0 0 48 48">
+            <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+            <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+            <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+            <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          </svg>
+        </div>
+        <div style="min-width:0; flex:1;">
+          <h3 style="margin:0; font-size:1.05rem; color:var(--text); font-weight:800; line-height:1.25;" data-i18n="auth_google_direct_title">Conectar cuenta de Google</h3>
+          <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="auth_google_direct_sub">Vinculación directa para tu cuenta</span>
+        </div>
+      </div>
+      <button type="button" class="btn-close-form" style="position:static; flex-shrink:0;" onclick="cerrarModalConectarGoogle()"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
+    </div>
+
+    <!-- Lista de cuentas guardadas para conexión en 1 clic -->
+    <div id="google-saved-accounts-box" style="display:none; margin-bottom:12px;">
+      <label style="font-size:0.75rem; color:var(--muted); display:block; margin-bottom:6px; font-weight:600;" data-i18n="auth_google_direct_recent">Cuentas recientes disponibles:</label>
+      <div id="google-saved-accounts-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+    </div>
+
+    <form id="form-conectar-google-directo" onsubmit="event.preventDefault(); ejecutarConexionDirectaGoogle();">
+      <div class="form-group" style="margin-bottom:12px;">
+        <label for="google-direct-input-email" style="font-size:0.8rem; font-weight:700; color:var(--text); margin-bottom:6px; display:block;" data-i18n="auth_google_direct_email_lbl">Correo de Google (@gmail.com):</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="google-direct-input-email" class="form-input" placeholder="tu.correo@gmail.com" autocomplete="email" style="flex:1;" onkeydown="if(event.key==='Enter') ejecutarConexionDirectaGoogle()">
+        </div>
+      </div>
+      <div id="google-direct-error-msg" style="display:none; color:#f87171; background:rgba(239,68,68,0.12); border:1px solid rgba(239,68,68,0.35); padding:8px 10px; border-radius:4px; font-size:0.8rem; margin-bottom:12px;"></div>
+      <div class="modal-actions" style="justify-content:flex-end; gap:8px;">
+        <button type="button" class="btn-modal-cancel" onclick="cerrarModalConectarGoogle()" data-i18n="btn_cancel_plain">Cancelar</button>
+        <button type="submit" class="btn-modal-save" id="btn-submit-google-directo" style="display:inline-flex; align-items:center; gap:6px;">
+          <span data-i18n="auth_google_direct_btn">Vincular y Conectar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- MODAL AUTENTICACIÓN MULTI-USUARIO (SUPABASE + GOOGLE + CONTRASEÑA) --> <div id="modal-auth-supabase" class="modal-overlay" style="display:none;"> <div class="modal-box" style="max-width:440px;"> <h3 style="display:flex; align-items:center; justify-content:space-between;">
 <span data-i18n="auth_modal_title"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg> Cuenta Mediary</span> <span style="font-size:0.7rem; background:rgba(16,185,129,0.15); color:#34d399; border:1px solid rgba(16,185,129,0.35); padding:3px 8px; border-radius:2px; font-weight:700;"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> Supabase Cloud</span> </h3> <p style="font-size:0.82rem; color:var(--muted); margin-bottom:12px; line-height:1.4;" data-i18n="auth_modal_desc">Cada usuario tiene su propio historial, watchlists, estadísticas y favoritos sincronizados en la nube.</p>
 <div id="auth-saved-accounts-box" style="display:none; margin-bottom:12px;"> <label style="font-size:0.76rem; color:var(--muted); display:block; margin-bottom:5px;" data-i18n="auth_recent_accounts">Cuentas recientes en este dispositivo:</label> <div id="auth-saved-accounts-list" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
-</div> <button type="button" class="btn-google-login" style="width:100%; justify-content:center; padding:11px 16px; font-size:0.9rem; margin-bottom:12px;" onclick="iniciarFlujoGoogleAuth()"> <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+</div> <button type="button" class="btn-google-login" style="width:100%; justify-content:center; padding:11px 16px; font-size:0.9rem; margin-bottom:12px;" onclick="abrirModalConectarGoogle()"> <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
 <span id="txt-auth-google-btn" data-i18n="auth_btn_google">Continuar con cuenta de Google</span> </button> <div style="display:flex; align-items:center; gap:10px; margin:10px 0 12px;"> <div style="flex:1; height:1px; background:var(--border);"></div> <span style="font-size:0.74rem; color:var(--muted); text-transform:uppercase; font-weight:700;" data-i18n="auth_divider_or">o con correo / usuario y contraseña</span>
 <div style="flex:1; height:1px; background:var(--border);"></div> </div> <form id="form-auth-supabase" autocomplete="on" onsubmit="event.preventDefault(); enviarFormularioAuthSupabase();"> <div style="display:flex; gap:6px; margin-bottom:12px;"> <button type="button" class="btn-toggle-tipo active" id="btn-auth-tab-login" style="padding:8px; font-size:0.84rem;" onclick="cambiarModoModalAuth('login')" data-i18n="auth_tab_login">Iniciar Sesión</button>
 <button type="button" class="btn-toggle-tipo" id="btn-auth-tab-registro" style="padding:8px; font-size:0.84rem;" onclick="cambiarModoModalAuth('registro')" data-i18n="auth_tab_register">Crear Cuenta</button> </div> <div class="form-group"> <label id="lbl-auth-email" data-i18n="auth_lbl_email">Correo de Google (@gmail.com) o Usuario:</label>

@@ -777,5 +777,12 @@ window.MEDIARY_I18N_EN = {
   "modal_estreno_title": "Add Upcoming Release",
   "btn_remove": "Remove",
   "song_del_title": "Remove Favorite Song?",
-  "song_del_desc": "Your favorite song will be removed from your profile. You can pick a new one at any time."
+  "song_del_desc": "Your favorite song will be removed from your profile. You can pick a new one at any time.",
+  "cal_btn_back_home": "Home",
+  "cal_opt_series_temporadas": "Series (Seasons)",
+  "auth_google_direct_title": "Connect Google Account",
+  "auth_google_direct_sub": "Direct linking for your account",
+  "auth_google_direct_recent": "Available recent accounts:",
+  "auth_google_direct_email_lbl": "Google email (@gmail.com):",
+  "auth_google_direct_btn": "Link and Connect"
 };

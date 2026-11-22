@@ -61,8 +61,16 @@ function obtenerFechaHoyKey() {
   return `${y}-${m}-${d}`;
 }
 
+function esSerieCompletaRegistro(r) {
+  if (!r) return false;
+  const c = String(r.categoria || '').trim();
+  const s = String(r.subcategoria || '').trim().toLowerCase();
+  return c === 'Series' && (s === 'series completas' || s.includes('completa'));
+}
+window.esSerieCompletaRegistro = esSerieCompletaRegistro;
+
 function obtenerFechaKeyDeRegistro(r) {
-  if (!r) return null;
+  if (!r || esSerieCompletaRegistro(r)) return null;
   let fStr = (r.fechaFin && r.fechaFin !== 'Sin fecha' && typeof esEnProgresoTexto === 'function' && !esEnProgresoTexto(r.fechaFin))
     ? r.fechaFin
     : '';
@@ -87,6 +95,7 @@ function agruparRegistrosPorDia() {
   const mapa = {};
   const regs = Array.isArray(estado.registros) ? estado.registros : [];
   for (const r of regs) {
+    if (esSerieCompletaRegistro(r)) continue;
     const key = obtenerFechaKeyDeRegistro(r);
     if (!key) continue;
     if (!mapa[key]) mapa[key] = [];
@@ -161,6 +170,7 @@ function abrirVistaCalendario(pushNav = true) {
     estado.categoria = 'calendario';
     estado.subcategoria = '';
     actualizarNavWebActiva();
+    if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(false);
 
     const vIni = document.getElementById('vista-inicio'); if (vIni) vIni.style.display = 'none';
     const vCat = document.getElementById('vista-categoria'); if (vCat) vCat.style.display = 'none';

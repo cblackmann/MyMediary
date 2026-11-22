@@ -328,6 +328,8 @@ function abrirVistaAmigos(pushNav = true) {
   estado.categoria = 'amigos';
   actualizarBarraNavegacionMovil('m-btn-amigos');
   actualizarNavWebActiva();
+  if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(true);
+  if (typeof animarCambioTabVista === 'function') animarCambioTabVista('amigos');
   document.getElementById('vista-inicio').style.display = 'none';
   document.getElementById('vista-categoria').style.display = 'none';
   document.getElementById('vista-discover').style.display = 'none';

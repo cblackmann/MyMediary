@@ -777,5 +777,12 @@ window.MEDIARY_I18N_ES = {
   "modal_estreno_title": "Añadir Próximo Estreno",
   "btn_remove": "Quitar",
   "song_del_title": "¿Quitar Canción Favorita?",
-  "song_del_desc": "Tu canción favorita se retirará de tu perfil. Podrás volver a elegir una nueva en cualquier momento."
+  "song_del_desc": "Tu canción favorita se retirará de tu perfil. Podrás volver a elegir una nueva en cualquier momento.",
+  "cal_btn_back_home": "Inicio",
+  "cal_opt_series_temporadas": "Series (Temporadas)",
+  "auth_google_direct_title": "Conectar cuenta de Google",
+  "auth_google_direct_sub": "Vinculación directa para tu cuenta",
+  "auth_google_direct_recent": "Cuentas recientes disponibles:",
+  "auth_google_direct_email_lbl": "Correo de Google (@gmail.com):",
+  "auth_google_direct_btn": "Vincular y Conectar"
 };

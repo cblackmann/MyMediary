@@ -12,6 +12,8 @@ function abrirVistaPerfil(pushNav = true) {
     estado.categoria = 'perfil';
     actualizarBarraNavegacionMovil('m-btn-perfil');
     actualizarNavWebActiva();
+    if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(true);
+    if (typeof animarCambioTabVista === 'function') animarCambioTabVista('perfil');
     const vIni = document.getElementById('vista-inicio'); if (vIni) vIni.style.display = 'none';
     const vCat = document.getElementById('vista-categoria'); if (vCat) vCat.style.display = 'none';
     const vDis = document.getElementById('vista-discover'); if (vDis) vDis.style.display = 'none';
@@ -278,6 +280,8 @@ function cerrarModalGenerico(overlay) {
     'modal-amigo-registro-detalle': typeof cerrarModalDetalleActividadAmigo === 'function' ? cerrarModalDetalleActividadAmigo : null,
     'modal-privacidad-amigos': typeof cerrarModalPrivacidadAmigos === 'function' ? cerrarModalPrivacidadAmigos : null,
     'modal-configuracion': typeof cerrarModalConfiguracion === 'function' ? cerrarModalConfiguracion : null,
+    'modal-conectar-google': typeof cerrarModalConectarGoogle === 'function' ? cerrarModalConectarGoogle : null,
+    'modal-agregar-estreno': typeof cerrarModalAgregarEstreno === 'function' ? cerrarModalAgregarEstreno : null,
     'modal-edicion': typeof cerrarModal === 'function' ? cerrarModal : null,
     'modal-terminar-obra': typeof cerrarModalTerminarObra === 'function' ? cerrarModalTerminarObra : null,
     'modal-confirmar-eliminar': typeof cerrarModalEliminar === 'function' ? cerrarModalEliminar : null,
@@ -335,13 +339,14 @@ function inicializarGestosSwipeDownModales() {
       if (target.closest('#amigo-regs-grid') && !target.closest('.modal-swipe-handle')) {
         return;
       }
-      if (box.scrollTop > 5 && !target.closest('.modal-swipe-handle')) {
+      const isHandleTouch = !!(target.closest('.modal-swipe-handle') || target.closest('.sticky-cfg-header'));
+      if (box.scrollTop > 5 && !isHandleTouch) {
         return;
       }
       // Si el elemento interno donde se inició el toque tiene scroll acumulado, no interceptar
       let scrollCheck = target;
-      while (scrollCheck && scrollCheck !== overlay) {
-        if (scrollCheck.scrollTop > 5 && !target.closest('.modal-swipe-handle')) {
+      while (scrollCheck && scrollCheck !== overlay && scrollCheck !== box) {
+        if (scrollCheck.scrollTop > 5 && !isHandleTouch) {
           return;
         }
         scrollCheck = scrollCheck.parentElement;
@@ -362,26 +367,32 @@ function inicializarGestosSwipeDownModales() {
       const diffY = clientY - startY;
       const diffX = Math.abs(clientX - startX);
 
-      // Si algún contenedor interno o el modal tiene scroll vertical, cancelar arrastre de cierre
-      let hasInnerScroll = false;
-      let el = e.target;
-      while (el && el !== overlay) {
-        if (el.scrollTop > 0) {
-          hasInnerScroll = true;
-          break;
+      const isHandleTouch = !!(e.target.closest('.modal-swipe-handle') || e.target.closest('.sticky-cfg-header'));
+      if (!isHandleTouch) {
+        let hasInnerScroll = false;
+        let el = e.target;
+        while (el && el !== overlay && el !== box) {
+          if (el.scrollTop > 4) {
+            hasInnerScroll = true;
+            break;
+          }
+          el = el.parentElement;
         }
-        el = el.parentElement;
-      }
 
-      if (box.scrollTop > 0 || hasInnerScroll || (e.target.closest('#amigo-regs-grid') && !e.target.closest('.modal-swipe-handle'))) {
-        startY = clientY;
-        if (isTracking) {
-          isTracking = false;
-          box.classList.remove('swiping-down');
-          box.style.transform = '';
-          overlay.style.backgroundColor = '';
+        if (box.scrollTop > 4 || hasInnerScroll || (e.target.closest('#amigo-regs-grid') && !e.target.closest('.modal-swipe-handle'))) {
+          startY = clientY;
+          if (isTracking) {
+            isTracking = false;
+            box.classList.remove('swiping-down');
+            box.style.transform = '';
+            overlay.style.backgroundColor = '';
+          }
+          return;
         }
-        return;
+      } else {
+        if (box.scrollTop > 0 && diffY > 0) {
+          box.scrollTop = 0;
+        }
       }
 
       if (diffY > 0 && diffY > diffX) {
@@ -542,13 +553,39 @@ function inicializarNavegacionHorizontalTabs() {
     return false;
   }
 
+  function animarTransicionPestana(direccion, elDestino) {
+    if (!elDestino) return;
+    const cls = (direccion === 'right' || direccion > 0) ? 'tab-anim-slide-right' : 'tab-anim-slide-left';
+    elDestino.classList.remove('tab-anim-slide-right', 'tab-anim-slide-left');
+    void elDestino.offsetWidth;
+    elDestino.classList.add(cls);
+    setTimeout(() => {
+      elDestino.classList.remove('tab-anim-slide-right', 'tab-anim-slide-left');
+    }, 320);
+  }
+  window.animarTransicionPestana = animarTransicionPestana;
+
+  function obtenerElementoVistaTab(id) {
+    if (id === 'inicio') return document.getElementById('vista-inicio');
+    if (id === 'listas') return document.getElementById('vista-listas-extendida');
+    if (id === 'amigos') return document.getElementById('vista-amigos');
+    if (id === 'perfil') return document.getElementById('vista-perfil');
+    return null;
+  }
+  window.obtenerElementoVistaTab = obtenerElementoVistaTab;
+
   function cambiarPestanaRelativa(offset) {
     const curIdx = obtenerIndicePestanaActual();
     if (curIdx === -1) return;
     const nuevoIdx = curIdx + offset;
     if (nuevoIdx >= 0 && nuevoIdx < PESTANAS_PRINCIPALES_NAV.length) {
       ultimaNavegacionHorizontal = Date.now();
-      PESTANAS_PRINCIPALES_NAV[nuevoIdx].nav(true);
+      const targetItem = PESTANAS_PRINCIPALES_NAV[nuevoIdx];
+      targetItem.nav(true);
+      const targetEl = obtenerElementoVistaTab(targetItem.id);
+      if (targetEl) {
+        animarTransicionPestana(offset > 0 ? 'right' : 'left', targetEl);
+      }
     }
   }
 
@@ -605,10 +642,40 @@ function inicializarNavegacionHorizontalTabs() {
   }, { passive: true });
 }
 window.inicializarNavegacionHorizontalTabs = inicializarNavegacionHorizontalTabs;
+
+function actualizarVisibilidadMenuInferior(visible) {
+  const nav = document.getElementById('mobile-bottom-nav') || document.querySelector('.mobile-bottom-nav');
+  if (!nav) return;
+  if (visible) {
+    nav.classList.remove('mobile-nav-hidden');
+    nav.classList.remove('mobile-bottom-nav-hidden');
+  } else {
+    nav.classList.add('mobile-nav-hidden');
+  }
+}
+window.actualizarVisibilidadMenuInferior = actualizarVisibilidadMenuInferior;
+
+window.__tabActualIndice = 0;
+function animarCambioTabVista(targetId) {
+  const tabs = ['inicio', 'listas', 'amigos', 'perfil'];
+  const nuevoIdx = tabs.indexOf(targetId);
+  if (nuevoIdx === -1) return;
+  const viejoIdx = (typeof window.__tabActualIndice === 'number') ? window.__tabActualIndice : 0;
+  window.__tabActualIndice = nuevoIdx;
+  if (nuevoIdx === viejoIdx) return;
+  const targetEl = (typeof obtenerElementoVistaTab === 'function') ? obtenerElementoVistaTab(targetId) : null;
+  if (targetEl && typeof animarTransicionPestana === 'function') {
+    animarTransicionPestana(nuevoIdx > viejoIdx ? 'right' : 'left', targetEl);
+  }
+}
+window.animarCambioTabVista = animarCambioTabVista;
+
 const irInicio = (pushNav = true) => {
   if (pushNav) registrarNavegacionApp('inicio');
   guardarEstadoNavegacionActual('inicio', '');
   actualizarBarraNavegacionMovil('m-btn-inicio');
+  actualizarVisibilidadMenuInferior(true);
+  animarCambioTabVista('inicio');
   cambiarCat('inicio', null, false);
 };
 
@@ -1060,10 +1127,18 @@ document.getElementById('ficha-modal-poster').src = optimizarUrlPoster(reg.poste
 const l = userPrefs.lang || 'es';
 renderizarFichaTecnicaEsqueleto(reg, l);
 document.getElementById('modal-ficha-tecnica').style.display = 'flex';
+if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(false);
 google.script.run
 .withSuccessHandler(info => { if (!info) return; if (info.poster) document.getElementById('ficha-modal-poster').src = optimizarUrlPoster(info.poster, 'modal'); renderizarFichaTecnicaContenido(reg, info, l); })
 .obtenerDetalleTecnicoModal(reg.titulo, reg.creador, reg.categoria, reg.subcategoria); }
-const cerrarModalFicha = () => document.getElementById('modal-ficha-tecnica').style.display = 'none'; function resetearBuscadoresYFormularios() { ['input-search', 'input-buscar-artista-concierto'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+const cerrarModalFicha = () => {
+  const m = document.getElementById('modal-ficha-tecnica');
+  if (m) m.style.display = 'none';
+  if (['inicio', 'listas', 'amigos', 'perfil'].includes(estado.categoria)) {
+    if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(true);
+  }
+};
+function resetearBuscadoresYFormularios() { ['input-search', 'input-buscar-artista-concierto'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 ['search-results', 'search-results-artistas'].forEach(id => { const el = document.getElementById(id); if (el) { el.innerHTML = ''; el.style.display = 'none'; } });
 ocultarFormulario(); cerrarModalManual(); cerrarModalFicha(); cerrarModalNuevoArtista(); cerrarModalShuffle(); cerrarModalAgregadoRapido(); limpiarCarruselTimers(); }
 function limpiarCarruselTimers() { carruselIntervalos.forEach(t => clearInterval(t)); carruselIntervalos = []; }
@@ -1075,6 +1150,9 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
   if (pushNav) registrarNavegacionApp(cat);
   resetearBuscadoresYFormularios();
   estado.categoria = cat;
+  if (typeof actualizarVisibilidadMenuInferior === 'function') {
+    actualizarVisibilidadMenuInferior(cat === 'inicio');
+  }
   if (typeof actualizarBarraNavegacionMovil === 'function') {
     actualizarBarraNavegacionMovil(cat === 'inicio' ? 'm-btn-inicio' : null);
   }
@@ -1139,6 +1217,8 @@ function abrirVistaDashboardListas(pushNav = true) {
   estado.subcategoria = '';
   actualizarBarraNavegacionMovil('m-btn-listas-ext');
   actualizarNavWebActiva();
+  if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(true);
+  if (typeof animarCambioTabVista === 'function') animarCambioTabVista('listas');
   const vIni = document.getElementById('vista-inicio'); if (vIni) vIni.style.display = 'none';
   const vCat = document.getElementById('vista-categoria'); if (vCat) vCat.style.display = 'none';
   const vDisc = document.getElementById('vista-discover'); if (vDisc) vDisc.style.display = 'none';
@@ -1239,6 +1319,16 @@ function volverAHistorialDesdeWatchlist() {
   cambiarCat(c, subHist);
 }
 function renderizarSubtabs() { const box = document.getElementById('subtabs-bar'); const wlBox = document.getElementById('watchlist-dedicated-box'); if (box) box.innerHTML = ''; if (wlBox) wlBox.innerHTML = ''; const l = userPrefs.lang || 'es'; const c = estado.categoria; if (!CONFIG[c]) return;
+if (box) {
+  const btnBackListas = document.createElement('button');
+  btnBackListas.type = 'button';
+  btnBackListas.className = 'subtab-btn btn-subtabs-back-listas';
+  btnBackListas.style.cssText = 'flex-shrink:0; font-weight:700; border-color:var(--border); display:inline-flex; align-items:center; gap:4px;';
+  btnBackListas.title = l === 'en' ? 'Back to Lists' : 'Volver a Listas';
+  btnBackListas.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg><span>${l === 'en' ? 'Lists' : 'Listas'}</span>`;
+  btnBackListas.onclick = () => abrirVistaDashboardListas();
+  box.appendChild(btnBackListas);
+}
 const enWl = esSubcategoriaWatchlist(estado.subcategoria); CONFIG[c].subs.filter(s => !s.esWatchlist).forEach(s => { const btn = document.createElement('button');
 const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c, s.id) : null;
 const subClass = metaSub ? `subtab-cat-${metaSub.key}` : '';

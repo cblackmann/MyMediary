@@ -15,10 +15,135 @@ const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang ==
 if (btnSub) btnSub.textContent = modo === 'registro' ? (isEn ? 'Create Supabase account' : 'Crear cuenta en Supabase') : (isEn ? 'Sign in to my account' : 'Entrar a mi cuenta'); const errBox = document.getElementById('auth-error-msg'); if (errBox) errBox.style.display = 'none'; }
 function mostrarErrorAuth(msg) { const errBox = document.getElementById('auth-error-msg'); if (errBox) { errBox.textContent = msg; errBox.style.display = 'block'; }
 }
-function iniciarFlujoGoogleAuth() { const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en'); const emailEscrito = document.getElementById('auth-input-email').value.trim().toLowerCase(); const passEscrita = document.getElementById('auth-input-pass').value; const txtBtn = document.getElementById('txt-auth-google-btn');
-if (txtBtn) txtBtn.textContent = isEn ? 'Connecting with Google...' : 'Conectando con Google... '; google.script.run.withSuccessHandler(res => { if (txtBtn) txtBtn.textContent = isEn ? 'Continue with Google account' : 'Continuar con cuenta de Google'; if (res && res.exito) { aplicarSesionExitosa(res, true); } else if (res && res.necesitaInputGoogle) {
-mostrarErrorAuth(isEn ? 'Enter your @gmail.com address below and click "Continue with Google account" again to sign in.' : 'Escribe tu correo @gmail.com en el campo de abajo y vuelve a pulsar "Continuar con cuenta de Google" para entrar.'); document.getElementById('auth-input-email').focus(); } else { mostrarErrorAuth(res?.error || (isEn ? 'Could not connect with Google.' : 'No se pudo conectar con Google.')); }
-}).iniciarSesionConGoogle(emailEscrito, passEscrita); }
+function abrirModalConectarGoogle() {
+  const m = document.getElementById('modal-conectar-google');
+  if (!m) return;
+  const err = document.getElementById('google-direct-error-msg');
+  if (err) err.style.display = 'none';
+
+  const emInput = document.getElementById('google-direct-input-email');
+  const emPadre = document.getElementById('auth-input-email');
+  if (emInput) {
+    emInput.value = (emPadre && emPadre.value.trim()) ? emPadre.value.trim() : '';
+  }
+
+  const boxSaved = document.getElementById('google-saved-accounts-box');
+  const listSaved = document.getElementById('google-saved-accounts-list');
+  const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
+  try {
+    const raw = (localStorage.getItem('Mediary_saved_accounts_v1') || localStorage.getItem('MyMediary_saved_accounts_v1')) || '[]';
+    const cuentas = JSON.parse(raw);
+    if (cuentas && cuentas.length && boxSaved && listSaved) {
+      boxSaved.style.display = 'block';
+      listSaved.innerHTML = '';
+      cuentas.forEach(c => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'subtab-btn';
+        b.style.cssText = 'padding:7px 12px; font-size:0.8rem; display:flex; align-items:center; justify-content:space-between; width:100%; text-align:left; border-radius:3px; margin-bottom:4px;';
+        const txtConectar = isEn ? 'Connect ›' : 'Conectar ›';
+        b.innerHTML = `
+          <span style="display:flex; align-items:center; gap:8px;">
+            <span>${c.avatar && !c.avatar.startsWith('data:') && !c.avatar.startsWith('http') ? c.avatar : '🦊'}</span>
+            <strong>${c.nickname || c.email}</strong>
+            <span style="opacity:0.65; font-size:0.74rem;">(${c.email})</span>
+          </span>
+          <span style="font-size:0.72rem; color:var(--accent); font-weight:700;">${txtConectar}</span>
+        `;
+        b.onclick = () => {
+          if (emInput) emInput.value = c.email;
+          ejecutarConexionDirectaGoogle(c.email);
+        };
+        listSaved.appendChild(b);
+      });
+    } else if (boxSaved) {
+      boxSaved.style.display = 'none';
+    }
+  } catch (_) {
+    if (boxSaved) boxSaved.style.display = 'none';
+  }
+
+  m.style.display = 'flex';
+  setTimeout(() => {
+    if (emInput) emInput.focus();
+  }, 100);
+}
+window.abrirModalConectarGoogle = abrirModalConectarGoogle;
+
+function cerrarModalConectarGoogle() {
+  const m = document.getElementById('modal-conectar-google');
+  if (m) m.style.display = 'none';
+}
+window.cerrarModalConectarGoogle = cerrarModalConectarGoogle;
+
+function ejecutarConexionDirectaGoogle(emailForzado = null) {
+  const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
+  let email = emailForzado;
+  if (!email) {
+    const inp = document.getElementById('google-direct-input-email');
+    email = inp ? inp.value.trim().toLowerCase() : '';
+  }
+  const errBox = document.getElementById('google-direct-error-msg');
+  if (errBox) errBox.style.display = 'none';
+
+  if (!email) {
+    if (errBox) {
+      errBox.textContent = isEn ? 'Please enter your Google email (@gmail.com).' : 'Por favor ingresa tu correo de Google (@gmail.com).';
+      errBox.style.display = 'block';
+    }
+    return;
+  }
+  if (!email.includes('@')) {
+    email += '@gmail.com';
+    const inp = document.getElementById('google-direct-input-email');
+    if (inp) inp.value = email;
+  }
+
+  const btn = document.getElementById('btn-submit-google-directo');
+  const txtOrig = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.disabled = true;
+    btn.innerHTML = `<span>${isEn ? 'Connecting...' : 'Conectando...'}</span>`;
+  }
+
+  const passEscrita = document.getElementById('auth-input-pass')?.value || '';
+  google.script.run
+    .withSuccessHandler(res => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = txtOrig;
+      }
+      if (res && res.exito) {
+        cerrarModalConectarGoogle();
+        cerrarModalAuthSupabase();
+        aplicarSesionExitosa(res, true);
+        if (typeof mostrarToastPersonalizado === 'function') {
+          mostrarToastPersonalizado(isEn ? 'Google account connected!' : '¡Cuenta de Google conectada!');
+        }
+      } else {
+        if (errBox) {
+          errBox.textContent = res?.error || (isEn ? 'Could not connect with Google account.' : 'No se pudo conectar con la cuenta de Google.');
+          errBox.style.display = 'block';
+        }
+      }
+    })
+    .withFailureHandler(err => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = txtOrig;
+      }
+      if (errBox) {
+        errBox.textContent = (isEn ? 'Connection error: ' : 'Error de conexión: ') + (err?.message || err);
+        errBox.style.display = 'block';
+      }
+    })
+    .iniciarSesionConGoogle(email, passEscrita);
+}
+window.ejecutarConexionDirectaGoogle = ejecutarConexionDirectaGoogle;
+
+function iniciarFlujoGoogleAuth() {
+  abrirModalConectarGoogle();
+}
 function enviarFormularioAuthSupabase() { const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en'); const email = document.getElementById('auth-input-email').value.trim().toLowerCase(); const password = document.getElementById('auth-input-pass').value; const nickname = document.getElementById('auth-input-nick').value.trim();
 if (!email) return mostrarErrorAuth(isEn ? 'Please enter your email (e.g. user@gmail.com) or username.' : 'Por favor escribe tu correo (ej. usuario@gmail.com) o nombre de usuario.'); const btn = document.getElementById('btn-auth-submit'); const txtOrig = btn.textContent; btn.textContent = isEn ? 'Verifying on Supabase...' : 'Verificando en Supabase... '; btn.disabled = true;
 google.script.run.withSuccessHandler(res => { btn.textContent = txtOrig; btn.disabled = false; if (res && res.exito) { aplicarSesionExitosa(res, true); } else { mostrarErrorAuth(res?.error || (isEn ? 'Error authenticating with Supabase.' : 'Error al autenticar con Supabase.')); }
