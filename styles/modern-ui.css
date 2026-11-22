@@ -1,0 +1,826 @@
+/* Mediary — Light theme overrides & Modern UI design refinements */
+/* Light Theme Overrides */
+[data-theme$="-light"] .ruleta-banner-card {
+  background: linear-gradient(135deg, rgba(245,158,11,0.14) 0%, rgba(147,51,234,0.08) 100%);
+  border: 1.5px solid #d97706;
+  box-shadow: 0 4px 16px rgba(217,119,6,0.12);
+}
+
+[data-theme$="-light"] .ruleta-badge-coop {
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #f59e0b;
+  font-weight: 800;
+}
+
+[data-theme$="-light"] .ruleta-amigo-chip.active {
+  background: rgba(2,132,199,0.12);
+  border-color: var(--accent);
+}
+
+[data-theme$="-light"] .ruleta-mode-btn.active {
+  background: var(--card);
+  border-color: var(--accent);
+  box-shadow: 0 4px 14px rgba(2,132,199,0.18);
+}
+
+[data-theme$="-light"] .ruleta-origin-pill.ambos {
+  background: #d1fae5;
+  color: #065f46;
+  border-color: #34d399;
+}
+
+[data-theme$="-light"] .ruleta-origin-pill.mio {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #38bdf8;
+}
+
+[data-theme$="-light"] .ruleta-origin-pill.amigo {
+  background: #f3e8ff;
+  color: #6b21a8;
+  border-color: #c084fc;
+}
+
+[data-theme$="-light"] .ruleta-origin-pill.cat-pill {
+  background: rgba(0,0,0,0.06);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+@media (min-width: 769px){.modal-swipe-handle {display:none !important;}}
+
+/* ========================================================
+   DISEÑO MODERNO & MINIMALISTA (data-ui-style="modern")
+   Más moderno, compacto y minimalista.
+   Marca las secciones con espacios, fuentes y tamaños en vez de tarjetas.
+   Aplica a todas las pestañas, secciones y cuadros/modales.
+   ======================================================== */
+html[data-ui-style="modern"] body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html[data-ui-style="modern"] .container {
+  max-width: 1060px;
+  margin: 14px auto;
+  padding: 0 16px;
+}
+
+/* 1. SECCIONES GENERALES: SEPARACIÓN POR ESPACIO Y TIPOGRAFÍA EN VEZ DE TARJETAS */
+html[data-ui-style="modern"] .home-hero-card,
+html[data-ui-style="modern"] .all-watchlists-panel,
+html[data-ui-style="modern"] .concierto-box,
+html[data-ui-style="modern"] .detail-card,
+html[data-ui-style="modern"] .ruleta-banner-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 0 0 28px 0 !important;
+  margin-bottom: 32px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .home-hero-card,
+[data-theme$="-light"][data-ui-style="modern"] .all-watchlists-panel,
+[data-theme$="-light"][data-ui-style="modern"] .concierto-box,
+[data-theme$="-light"][data-ui-style="modern"] .detail-card,
+[data-theme$="-light"][data-ui-style="modern"] .ruleta-banner-card {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+/* EN LA PESTAÑA DE LISTAS: LAS DISTINTAS CATEGORÍAS SE MANTIENEN DENTRO DE TARJETAS */
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-card {
+  background: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+  padding: 20px !important;
+  margin-bottom: 16px !important;
+  border-bottom: 1px solid var(--border) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] #vista-listas-extendida .cat-wide-card {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05) !important;
+}
+
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-card:hover {
+  border-color: var(--accent) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22) !important;
+}
+
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding-bottom: 12px !important;
+  margin-bottom: 14px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] #vista-listas-extendida .cat-wide-header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-title {
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.015em !important;
+}
+
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-total {
+  background: var(--bg) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  padding: 4px 12px !important;
+  font-weight: 700 !important;
+  font-size: 0.92rem !important;
+  color: var(--accent) !important;
+}
+
+html[data-ui-style="modern"] .cat-wide-header,
+html[data-ui-style="modern"] .home-mini-section-header,
+html[data-ui-style="modern"] .history-header,
+html[data-ui-style="modern"] .all-watchlists-header,
+html[data-ui-style="modern"] .discover-header-bar {
+  border-bottom: none !important;
+  margin-bottom: 14px !important;
+  padding-bottom: 0 !important;
+}
+
+html[data-ui-style="modern"] .home-mini-title,
+html[data-ui-style="modern"] .history-title,
+html[data-ui-style="modern"] .all-watchlists-title,
+html[data-ui-style="modern"] .discover-header-bar h2 {
+  font-size: 1.32rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+}
+
+html[data-ui-style="modern"] .home-mini-hint,
+html[data-ui-style="modern"] .home-en-progreso-hint,
+html[data-ui-style="modern"] .discover-subtitle,
+html[data-ui-style="modern"] .discover-filter-hint {
+  font-size: 0.72rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 700 !important;
+  color: var(--muted) !important;
+}
+
+/* 2. PESTAÑA INICIO: SECCIÓN HERO (AGREGADO RÁPIDO, WATCHLISTS) CENTRADA */
+html[data-ui-style="modern"] .home-hero-card {
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 12px 16px 24px 16px !important;
+  margin: 0 auto 28px auto !important;
+}
+
+html[data-ui-style="modern"] .home-hero-content {
+  text-align: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  max-width: 680px !important;
+  margin: 0 auto !important;
+}
+
+html[data-ui-style="modern"] .home-hero-content h2 {
+  justify-content: center !important;
+  text-align: center !important;
+  font-size: 1.55rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 6px !important;
+}
+
+html[data-ui-style="modern"] .home-hero-content p {
+  text-align: center !important;
+  font-size: 0.86rem !important;
+  line-height: 1.45 !important;
+  margin: 0 auto !important;
+}
+
+html[data-ui-style="modern"] .home-hero-actions {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  margin-top: 16px !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+}
+
+html[data-ui-style="modern"] .btn-hero-quick-add {
+  background: var(--accent) !important;
+  color: var(--accent-contrast) !important;
+  padding: 10px 20px !important;
+  font-size: 0.9rem !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.3) !important;
+}
+
+html[data-ui-style="modern"] .home-subcat-pill {
+  background: rgba(255, 255, 255, 0.025) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 9px !important;
+  padding: 5px 9px !important;
+  font-size: 0.76rem !important;
+  min-height: 32px !important;
+  transition: all 0.18s ease !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .home-subcat-pill {
+  background: rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+html[data-ui-style="modern"] .home-subcat-pill:hover {
+  border-color: var(--accent) !important;
+  background: rgba(56, 189, 248, 0.08) !important;
+  transform: translateY(-1px) !important;
+}
+
+html[data-ui-style="modern"] .home-subcat-pill .pill-count {
+  background: rgba(255, 255, 255, 0.06) !important;
+  font-size: 0.7rem !important;
+  padding: 1px 5px !important;
+  border-radius: 5px !important;
+}
+
+/* ON GOING CAROUSEL COMPACTO MINIMALISTA */
+html[data-ui-style="modern"] .home-en-progreso-item-wrap {
+  width: 108px !important;
+  flex: 0 0 108px !important;
+  max-width: 108px !important;
+  box-sizing: border-box !important;
+  scroll-snap-align: start !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+html[data-ui-style="modern"] .home-en-progreso-item-date {
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  color: var(--muted) !important;
+  margin-bottom: 5px !important;
+  min-height: 16px !important;
+  line-height: 16px !important;
+  text-align: center !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  width: 100% !important;
+}
+html[data-ui-style="modern"] .home-en-progreso-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 0 0 auto !important;
+  min-height: auto !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-poster {
+  width: 100% !important;
+  height: 154px !important;
+  border-radius: 3px !important;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3) !important;
+  transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-poster:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-badge {
+  font-size: 0.62rem !important;
+  padding: 1px 5px !important;
+  border-radius: 3px !important;
+  backdrop-filter: blur(8px) !important;
+  margin-bottom: 3px !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-title {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  margin: 4px 0 1px !important;
+  line-height: 1.2 !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-sub {
+  font-size: 0.68rem !important;
+  color: var(--muted) !important;
+}
+
+html[data-ui-style="modern"] .home-en-progreso-card-date {
+  font-size: 0.64rem !important;
+  color: var(--accent) !important;
+  margin-top: 2px !important;
+}
+
+html[data-ui-style="modern"] .btn-terminar-card-carousel {
+  width: auto !important;
+  min-width: 76px !important;
+  max-width: 105px !important;
+  margin: auto auto 0 auto !important;
+  padding: 2px 8px !important;
+  font-size: 0.68rem !important;
+  font-weight: 700 !important;
+  border-radius: 3px !important;
+  min-height: 22px !important;
+  height: 22px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* SEPARADORES Y ESPACIADO ENTRE SECCIONES INICIO EN DISEÑO MODERNO */
+html[data-ui-style="modern"] .home-section-divider {
+  margin: 30px 0 !important;
+}
+@media (min-width: 641px) {
+  html[data-ui-style="modern"] .home-section-divider {
+    margin: 36px 0 !important;
+  }
+}
+html[data-ui-style="modern"] .home-clean-section {
+  margin-bottom: 16px !important;
+}
+html[data-ui-style="modern"] .home-clean-section-header {
+  margin-bottom: 14px !important;
+}
+html[data-ui-style="modern"] #home-sec-streaks {
+  margin-top: 10px !important;
+  margin-bottom: 24px !important;
+}
+
+/* RACHAS COMPACTAS MINIMALISTAS */
+html[data-ui-style="modern"] .home-streaks-strip {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 4px !important;
+  margin-bottom: 14px !important;
+}
+[data-theme$="-light"][data-ui-style="modern"] .home-streaks-strip {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+html[data-ui-style="modern"] .home-streak-col {
+  padding: 12px 8px !important;
+  min-height: 92px !important;
+  gap: 5px !important;
+}
+html[data-ui-style="modern"] .home-streak-col:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+[data-theme$="-light"][data-ui-style="modern"] .home-streak-col:not(:last-child) {
+  border-right-color: rgba(0, 0, 0, 0.07) !important;
+}
+html[data-ui-style="modern"] .btn-streak-pill {
+  font-family: inherit !important;
+}
+
+/* SUBCATEGORÍAS DE LECTURA ADAPTATIVAS EN MODERNO */
+html[data-ui-style="modern"] .stat-subcat-lecturas-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+}
+[data-theme$="-light"][data-ui-style="modern"] .stat-subcat-lecturas-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+html[data-ui-style="modern"] .stat-subcat-lecturas-card .highlight-card {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+[data-theme$="-light"][data-ui-style="modern"] .stat-subcat-lecturas-card .highlight-card {
+  background: rgba(0, 0, 0, 0.025) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* NOVEDADES DE AMIGOS & DISCOVER */
+html[data-ui-style="modern"] .home-friend-card,
+html[data-ui-style="modern"] .home-friend-feed-scroll .amigo-feed-card {
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border-radius: 14px !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .home-friend-card,
+[data-theme$="-light"][data-ui-style="modern"] .home-friend-feed-scroll .amigo-feed-card {
+  background: var(--card) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-ui-style="modern"] .home-friend-media-box {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .home-friend-media-box {
+  background: var(--card) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+html[data-ui-style="modern"] .home-friend-review-box {
+  background: rgba(56, 189, 248, 0.11) !important;
+  border: 1px solid rgba(56, 189, 248, 0.28) !important;
+  border-left: 3px solid var(--accent) !important;
+  color: var(--text) !important;
+}
+
+[data-theme$="-light"] .home-friend-review-box,
+[data-theme$="-light"][data-ui-style="modern"] .home-friend-review-box {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid var(--border) !important;
+  border-left: 3px solid var(--accent) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+html[data-ui-style="modern"] .feed-review-box {
+  background: rgba(56, 189, 248, 0.07) !important;
+  border: 1px solid rgba(56, 189, 248, 0.22) !important;
+  border-left: 3px solid var(--accent) !important;
+  color: var(--text) !important;
+}
+
+[data-theme$="-light"] .feed-review-box,
+[data-theme$="-light"][data-ui-style="modern"] .feed-review-box {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid var(--border) !important;
+  border-left: 3px solid var(--accent) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+html[data-ui-style="modern"] .discover-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+html[data-ui-style="modern"] .discover-poster {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28) !important;
+  transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+html[data-ui-style="modern"] .discover-poster:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42) !important;
+}
+
+html[data-ui-style="modern"] .discover-body {
+  padding: 8px 2px 2px !important;
+}
+
+html[data-ui-style="modern"] .discover-item-title {
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+}
+
+/* 3. PESTAÑA LISTAS / CATEGORÍAS: SUBTABS, BUSCADOR Y TABLAS */
+html[data-ui-style="modern"] .subtab-btn {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 6px 12px !important;
+  font-size: 0.8rem !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .subtab-btn {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html[data-ui-style="modern"] .subtab-btn.active {
+  background: var(--accent) !important;
+  color: var(--accent-contrast) !important;
+  border-color: var(--accent) !important;
+  font-weight: 700 !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .subtab-btn.active {
+  color: #ffffff !important;
+}
+
+html[data-ui-style="modern"] .btn-watchlist-special {
+  background: var(--accent-warm-subtle) !important;
+  border: 1px solid var(--accent-warm-border) !important;
+  color: var(--accent-warm) !important;
+  padding: 6px 12px !important;
+  font-size: 0.8rem !important;
+  border-radius: 8px !important;
+}
+
+html[data-ui-style="modern"] .search-input {
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  font-size: 0.9rem !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .search-input {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+/* HISTORIAL DESKTOP SIN CONTENEDOR BOX */
+html[data-ui-style="modern"] .table-container {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+html[data-ui-style="modern"] .history-table th {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  font-size: 0.7rem !important;
+  letter-spacing: 0.08em !important;
+  padding: 10px 8px !important;
+  color: var(--muted) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .history-table th {
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-ui-style="modern"] .history-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+  padding: 10px 8px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .history-table td {
+  border-bottom-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+html[data-ui-style="modern"] .month-separator-tr {
+  background: transparent !important;
+}
+
+html[data-ui-style="modern"] .month-separator-td {
+  background: transparent !important;
+  border-top: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  font-size: 0.74rem !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  font-weight: 800 !important;
+  padding: 20px 8px 6px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .month-separator-td {
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-ui-style="modern"] .row-month-even,
+html[data-ui-style="modern"] .row-month-odd {
+  background: transparent !important;
+}
+
+html[data-ui-style="modern"] .history-table tr:hover td {
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .history-table tr:hover td {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
+
+/* HISTORIAL MÓVIL: FILAS MINIMALISTAS EN VEZ DE TARJETAS AISLADAS */
+html[data-ui-style="modern"] .mobile-history-card {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 12px 2px !important;
+  margin-bottom: 0 !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .mobile-history-card {
+  border-bottom-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+html[data-ui-style="modern"] .m-card-thumb {
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+html[data-ui-style="modern"] .m-card-title {
+  font-size: 0.92rem !important;
+  font-weight: 700 !important;
+}
+
+html[data-ui-style="modern"] .m-card-bottom {
+  border-top: none !important;
+  padding-top: 4px !important;
+}
+
+/* WATCHLIST CARDS */
+html[data-ui-style="modern"] .watchlist-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+html[data-ui-style="modern"] .watchlist-poster {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28) !important;
+  transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+html[data-ui-style="modern"] .watchlist-poster:hover {
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.42) !important;
+}
+
+html[data-ui-style="modern"] .watchlist-body {
+  padding: 8px 2px 2px !important;
+}
+
+html[data-ui-style="modern"] .watchlist-item-title {
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+}
+
+/* 4. PESTAÑA DASHBOARD / ÍNDICE DE LISTAS */
+html[data-ui-style="modern"] .subtotal-pill {
+  background: transparent !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  padding: 4px 8px !important;
+  font-size: 0.76rem !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .subtotal-pill {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+html[data-ui-style="modern"] .highlight-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  padding: 12px 14px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .highlight-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* 5. PESTAÑA COMUNIDAD, AMIGOS & PERFIL */
+html[data-ui-style="modern"] .amigo-wide-card:not(.has-custom-cover),
+html[data-ui-style="modern"] .friend-card:not(.has-custom-cover) {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 14px !important;
+  box-shadow: none !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .amigo-wide-card:not(.has-custom-cover),
+[data-theme$="-light"][data-ui-style="modern"] .friend-card:not(.has-custom-cover) {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+html[data-ui-style="modern"] .fav-slot-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  padding: 10px 12px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .fav-slot-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+  border-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+/* 6. TODOS LOS CUADROS Y MODALES */
+html[data-ui-style="modern"] .modal-box {
+  background: var(--card) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 20px !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6), 0 0 1px rgba(255, 255, 255, 0.12) !important;
+  padding: 22px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .modal-box {
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.14) !important;
+}
+
+html[data-ui-style="modern"] .form-group {
+  margin-bottom: 11px !important;
+}
+
+html[data-ui-style="modern"] .form-group label {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 5px !important;
+  color: var(--muted) !important;
+}
+
+html[data-ui-style="modern"] .form-input,
+html[data-ui-style="modern"] textarea.comment-box,
+html[data-ui-style="modern"] .settings-select {
+  background: rgba(255, 255, 255, 0.035) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 10px !important;
+  font-size: 0.88rem !important;
+  padding: 9px 12px !important;
+  min-height: 40px !important;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease !important;
+}
+
+html[data-ui-style="modern"] .btn-today-input {
+  min-height: 40px !important;
+  height: 40px !important;
+  border-radius: 10px !important;
+  font-size: 0.82rem !important;
+  padding: 0 14px !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .form-input,
+[data-theme$="-light"][data-ui-style="modern"] textarea.comment-box,
+[data-theme$="-light"][data-ui-style="modern"] .settings-select {
+  background: rgba(0, 0, 0, 0.03) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+}
+
+html[data-ui-style="modern"] .form-input:focus,
+html[data-ui-style="modern"] textarea.comment-box:focus,
+html[data-ui-style="modern"] .settings-select:focus {
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.18) !important;
+}
+
+html[data-ui-style="modern"] .btn-modal-save,
+html[data-ui-style="modern"] .btn-save {
+  background: var(--accent) !important;
+  color: var(--accent-contrast) !important;
+  border-radius: 10px !important;
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  padding: 10px 18px !important;
+  min-height: 42px !important;
+  box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.25) !important;
+}
+
+html[data-ui-style="modern"] .btn-modal-cancel {
+  border-radius: 10px !important;
+  font-size: 0.88rem !important;
+  padding: 10px 18px !important;
+  min-height: 42px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme$="-light"][data-ui-style="modern"] .btn-modal-cancel {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Modales en móvil: aspecto de panel inferior minimalista */
+@media (max-width: 768px) {
+  html[data-ui-style="modern"] .modal-box {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 24px !important;
+    border-top-right-radius: 24px !important;
+    padding: 18px 18px calc(24px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
+
+.btn-terminar-badge,
+.btn-terminar-card,
+#btn-guardar-terminar-obra,
+.btn-today-terminar {
+  background: var(--success) !important;
+  color: var(--success-contrast) !important;
+  border: none !important;
+  box-shadow: 0 3px 10px rgba(var(--success-rgb), 0.35) !important;
+  font-weight: 700 !important;
+}
+.btn-terminar-badge:hover,
+.btn-terminar-card:hover,
+#btn-guardar-terminar-obra:hover,
+.btn-today-terminar:hover {
+  background: var(--success-hover) !important;
+  transform: translateY(-1px);
+}
+.terminar-modal-title { color: var(--success) !important; }
+

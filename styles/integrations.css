@@ -1,0 +1,308 @@
+/* Mediary — Spotify, Last.fm, Steam & PlayStation integration styles */
+/* ESTILOS INTEGRACIÓN SPOTIFY */
+.btn-spotify-connect {background:var(--card);color:var(--text);border:1px solid rgba(29,185,84,0.38);font-weight:700;font-size:0.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr);box-shadow:0 2px 8px rgba(0,0,0,0.15);text-decoration:none;}
+.btn-spotify-connect:hover {background:#1DB954;color:#000;border-color:#1DB954;transform:translateY(-1px);box-shadow:0 4px 14px rgba(29,185,84,0.35);}
+.btn-spotify-connect svg path {fill:#1DB954;transition:fill 0.2s;}
+.btn-spotify-connect:hover svg path {fill:#000;}
+.btn-spotify-sub-action {height:34px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:0.78rem;font-weight:700;border-radius:8px;cursor:pointer;transition:var(--tr);text-decoration:none;}
+.btn-spotify-sub-action:hover {transform:translateY(-1px);filter:brightness(1.15);}
+.spotify-stat-card {background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;transition:var(--tr);}
+.spotify-stat-card:hover {border-color:rgba(29,185,84,0.4);transform:translateY(-1px);}
+.spotify-item-row {display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--border);transition:var(--tr);margin-bottom:8px;}
+.spotify-item-row:hover {border-color:rgba(29,185,84,0.45);transform:translateX(2px);}
+.spotify-rank-badge {width:24px;height:24px;border-radius:6px;background:rgba(29,185,84,0.14);border:1px solid rgba(29,185,84,0.3);color:#10b981;display:grid;place-items:center;font-size:0.75rem;font-weight:900;flex-shrink:0;}
+[data-theme$="-dark"] .spotify-rank-badge {color:#1ed760;}
+.spotify-pill-tab {background:var(--bg);border:1px solid var(--border);color:var(--muted);font-size:0.76rem;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;transition:var(--tr);}
+.spotify-pill-tab.active {background:rgba(29,185,84,0.16);border-color:rgba(29,185,84,0.4);color:#10b981;}
+[data-theme$="-dark"] .spotify-pill-tab.active {color:#1ed760;}
+
+/* ESTILOS INTEGRACIÓN LAST.FM */
+.btn-lastfm-connect {background:var(--card);color:var(--text);border:1px solid rgba(213,16,7,0.38);font-weight:700;font-size:0.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr);box-shadow:0 2px 8px rgba(0,0,0,0.15);text-decoration:none;}
+.btn-lastfm-connect:hover {background:#d51007;color:#fff;border-color:#d51007;transform:translateY(-1px);box-shadow:0 4px 14px rgba(213,16,7,0.35);}
+.btn-lastfm-connect svg path {fill:#d51007;transition:fill 0.2s;}
+.btn-lastfm-connect:hover svg path {fill:#fff;}
+.btn-lastfm-sub-action {height:34px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:0.78rem;font-weight:700;border-radius:8px;cursor:pointer;transition:var(--tr);text-decoration:none;}
+.btn-lastfm-sub-action:hover {transform:translateY(-1px);filter:brightness(1.15);}
+.lastfm-stat-card {background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;transition:var(--tr);}
+.lastfm-stat-card:hover {border-color:rgba(213,16,7,0.4);transform:translateY(-1px);}
+
+/* ESTILOS INTEGRACIÓN STEAM */
+.btn-steam-connect {background:var(--card);color:var(--text);border:1px solid rgba(102,192,244,0.38);font-weight:700;font-size:0.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr);box-shadow:0 2px 8px rgba(0,0,0,0.15);text-decoration:none;}
+.btn-steam-connect:hover {background:#1b2838;color:#66c0f4;border-color:#66c0f4;transform:translateY(-1px);box-shadow:0 4px 14px rgba(102,192,244,0.25);}
+.btn-steam-connect svg path {fill:#66c0f4;transition:fill 0.2s;}
+.btn-steam-connect:hover svg path {fill:#66c0f4;}
+.btn-steam-sub-action {height:34px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:0.78rem;font-weight:700;border-radius:8px;cursor:pointer;transition:var(--tr);text-decoration:none;}
+.btn-steam-sub-action:hover {transform:translateY(-1px);filter:brightness(1.15);}
+
+/* ESTILOS INTEGRACIÓN PLAYSTATION NETWORK */
+.btn-psn-connect {background:var(--card);color:var(--text);border:1px solid rgba(0,112,209,0.38);font-weight:700;font-size:0.85rem;padding:10px 16px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--tr);box-shadow:0 2px 8px rgba(0,0,0,0.15);text-decoration:none;}
+.btn-psn-connect:hover {background:#003791;color:#fff;border-color:#0070d1;transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,112,209,0.35);}
+.btn-psn-connect svg path {fill:#0070d1;transition:fill 0.2s;}
+.btn-psn-connect:hover svg path {fill:#fff;}
+.btn-psn-sub-action {height:34px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:0.78rem;font-weight:700;border-radius:8px;cursor:pointer;transition:var(--tr);text-decoration:none;}
+.btn-psn-sub-action:hover {transform:translateY(-1px);filter:brightness(1.15);}
+.psn-stat-card {background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;display:flex;align-items:center;gap:12px;transition:var(--tr);}
+.psn-stat-card:hover {border-color:rgba(0,112,209,0.4);transform:translateY(-1px);}
+
+/* FILAS DE ENTRADA Y BOTONES PARA CONEXIÓN DE APPS (RESPONSIVE MÓVIL Y DESKTOP) */
+.modal-box-app-connect {max-width:480px;max-height:90vh;overflow-y:auto;border-radius:4px;padding:22px;}
+.app-connect-input-row {display:flex !important;gap:8px !important;align-items:stretch !important;width:100% !important;box-sizing:border-box !important;}
+.app-connect-input-row .form-input,
+.app-connect-input-row input {flex:1 1 auto !important;min-width:0 !important;width:auto !important;height:42px !important;min-height:42px !important;box-sizing:border-box !important;font-size:0.84rem !important;padding:8px 12px !important;border-radius:4px !important;}
+.btn-connect-action {flex:0 0 auto !important;width:auto !important;min-width:86px !important;height:42px !important;padding:0 16px !important;font-size:0.84rem !important;font-weight:700 !important;border-radius:4px !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;cursor:pointer !important;white-space:nowrap !important;transition:var(--tr) !important;box-sizing:border-box !important;text-decoration:none !important;}
+.btn-connect-action:hover {transform:translateY(-1px) !important;filter:brightness(1.1) !important;}
+.btn-connect-action:active {transform:translateY(1px) !important;}
+.btn-connect-lastfm {background:rgba(213,16,7,0.16) !important;border:1px solid rgba(213,16,7,0.45) !important;color:#d51007 !important;}
+.btn-connect-lastfm:hover {background:#d51007 !important;color:#fff !important;}
+.btn-connect-psn {background:rgba(0,112,209,0.18) !important;border:1px solid rgba(0,112,209,0.45) !important;color:#38bdf8 !important;}
+.btn-connect-psn:hover {background:#0070d1 !important;color:#fff !important;}
+.btn-connect-steam {background:rgba(102,192,244,0.16) !important;border:1px solid rgba(102,192,244,0.45) !important;color:#38bdf8 !important;}
+.btn-connect-steam:hover {background:#1b2838 !important;color:#66c0f4 !important;}
+.btn-connect-demo {width:100% !important;min-height:40px !important;border-radius:4px !important;font-size:0.8rem !important;font-weight:600 !important;display:inline-flex !important;align-items:center !important;justify-content:center !important;gap:6px !important;cursor:pointer !important;transition:var(--tr) !important;box-sizing:border-box !important;padding:8px 12px !important;text-decoration:none !important;}
+.btn-connect-demo:hover {transform:translateY(-1px) !important;filter:brightness(1.08) !important;}
+.btn-connect-demo-lastfm {background:rgba(213,16,7,0.08) !important;border:1px solid rgba(213,16,7,0.28) !important;color:#d51007 !important;}
+.btn-connect-demo-psn {background:rgba(0,112,209,0.08) !important;border:1px solid rgba(0,112,209,0.28) !important;color:#38bdf8 !important;}
+.btn-connect-demo-steam {background:rgba(56,189,248,0.08) !important;border:1px solid rgba(56,189,248,0.28) !important;color:var(--accent) !important;}
+@media (max-width: 360px){.app-connect-input-row {flex-direction:column !important;}.app-connect-input-row .btn-connect-action {width:100% !important;}}
+
+/* CARRUSEL EN VIVO: SPOTIFY + PLAYSTATION */
+.home-live-carousel-wrapper {position:relative;margin-bottom:12px;display:flex;flex-direction:column;align-items:center;width:100%;max-width:560px;margin-left:auto !important;margin-right:auto !important;}
+.home-live-carousel {display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 2px 4px 2px;scroll-behavior:smooth;width:100%;}
+.home-live-carousel::-webkit-scrollbar {display:none;}
+.home-live-carousel-item {flex:0 0 100%;min-width:100%;scroll-snap-align:center;scroll-snap-stop:always;box-sizing:border-box;display:flex !important;justify-content:center !important;align-items:center !important;}
+.home-live-carousel-item .home-spotify-card-compact,
+.home-live-carousel-item .home-playstation-card-compact {margin-bottom:0;}
+.home-live-carousel-dots {display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px;}
+.live-dot-btn {background:var(--bg);border:1px solid var(--border);color:var(--muted);width:16px;height:16px;padding:0;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;position:relative;transition:var(--tr);box-shadow:0 1px 2px rgba(0,0,0,0.06);}
+.live-dot-btn:hover {color:var(--text);border-color:var(--border-hover, #64748b);transform:scale(1.08);}
+.live-dot-btn.active {background:var(--card);color:var(--accent);border-color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,0.18);transform:scale(1.06);}
+.live-dot-icon {display:inline-flex;align-items:center;justify-content:center;}
+.live-dot-icon svg,
+.live-dot-icon svg.h-icon {width:8px !important;height:8px !important;stroke-width:2.2 !important;}
+#badge-sp-live-pill,
+#badge-psn-live-pill,
+#badge-friends-sp-live-pill,
+#badge-friends-psn-live-pill {position:absolute !important;top:-1.5px !important;right:-1.5px !important;width:4px !important;height:4px !important;}
+
+/* TARJETAS REDUCTIBLES (ESTILO NOTIFICACIONES ANDROID) */
+.home-live-expandable-card {cursor:pointer;user-select:none;transition:padding .32s cubic-bezier(.2,0,0,1),min-height .32s cubic-bezier(.2,0,0,1),max-width .32s cubic-bezier(.2,0,0,1),border-radius .32s cubic-bezier(.2,0,0,1),border-color .2s ease,box-shadow .25s ease !important;will-change:min-height,padding,max-width,border-radius;position:relative;}
+.home-live-expandable-card:active {transform:scale(0.992);}
+.home-live-expandable-card button,
+.home-live-expandable-card a {cursor:pointer;}
+.home-live-expandable-card.is-collapsed {padding:4px 24px !important;min-height:30px !important;max-width:215px !important;width:100% !important;margin:0 auto !important;border-radius:9999px !important;gap:0 !important;justify-content:center !important;align-items:center !important;text-align:center !important;}
+.home-live-expandable-card.is-collapsed::before {display:none !important;}
+.home-live-expandable-card.is-collapsed .home-np-cover-compact,
+.home-live-expandable-card.is-collapsed .home-psn-cover-compact {display:none !important;width:0 !important;height:0 !important;margin:0 !important;padding:0 !important;border:none !important;overflow:hidden !important;}
+.home-live-expandable-card.is-collapsed .home-psn-platform-badge {display:none !important;}
+.home-live-expandable-card.is-collapsed .live-card-expanded-only {display:none !important;max-height:0 !important;opacity:0 !important;margin:0 !important;padding:0 !important;overflow:hidden !important;pointer-events:none !important;}
+.home-live-expandable-card.is-collapsed .home-np-right-col,
+.home-live-expandable-card.is-collapsed .home-psn-right-col {position:absolute !important;right:8px !important;top:50% !important;transform:translateY(-50%) !important;height:auto !important;padding:0 !important;justify-content:center !important;display:flex !important;flex-direction:row !important;align-items:center !important;gap:6px !important;}
+.home-live-expandable-card.is-collapsed .home-np-right-col .home-np-sp-logo-link,
+.home-live-expandable-card.is-collapsed .home-np-right-col .btn-np-quick-add,
+.home-live-expandable-card.is-collapsed .home-np-right-col .live-card-collapsed-only,
+.home-live-expandable-card.is-collapsed .home-psn-right-col .home-psn-logo-link,
+.home-live-expandable-card.is-collapsed .home-psn-right-col .btn-psn-quick-add {display:none !important;}
+.live-card-collapsed-only {display:none;}
+.home-live-expandable-card.is-collapsed .live-card-collapsed-only {display:flex !important;align-items:center !important;justify-content:center !important;text-align:center !important;width:100% !important;}
+.home-live-expandable-card.is-collapsed .live-card-collapsed-only > div {display:flex !important;flex-direction:column !important;align-items:center !important;justify-content:center !important;text-align:center !important;width:100% !important;min-width:0 !important;}
+.home-live-expandable-card.is-collapsed .live-card-collapsed-only div div {text-align:center !important;width:100% !important;}
+.home-live-expandable-card.is-collapsed .home-np-title-compact,
+.home-live-expandable-card.is-collapsed .home-psn-title-compact {font-size:0.74rem !important;font-weight:700 !important;line-height:1.15 !important;text-align:center !important;width:100% !important;}
+.home-live-expandable-card.is-collapsed .home-np-text-wrap {display:flex !important;justify-content:center !important;text-align:center !important;width:100% !important;}
+.home-live-expandable-card.is-collapsed .home-np-scrollable {text-align:center !important;}
+.home-live-expandable-card.is-collapsed .home-np-center-compact,
+.home-live-expandable-card.is-collapsed .home-psn-center-compact {gap:0px !important;width:100% !important;align-items:center !important;justify-content:center !important;text-align:center !important;}
+.home-live-expandable-card.is-collapsed .live-card-expand-indicator {width:15px !important;height:15px !important;}
+.home-live-expandable-card.is-collapsed .live-card-expand-indicator svg {width:10px !important;height:10px !important;}
+.home-live-expandable-card.is-expanded {padding:9px 12px !important;min-height:86px !important;max-width:520px !important;width:100% !important;margin:0 auto !important;border-radius:14px !important;}
+.home-live-expandable-card.is-expanded .home-np-cover-compact,
+.home-live-expandable-card.is-expanded .home-psn-cover-compact {width:64px !important;height:64px !important;border-radius:8px !important;transition:width .28s cubic-bezier(.2,0,0,1),height .28s cubic-bezier(.2,0,0,1) !important;}
+.home-live-expandable-card.is-expanded .live-card-expanded-only {display:flex !important;flex-direction:column !important;gap:1.5px !important;max-height:160px !important;opacity:1 !important;overflow:visible !important;pointer-events:auto !important;transform:translateY(0);transition:max-height .32s cubic-bezier(.2,0,0,1),opacity .25s ease,transform .25s ease,margin .2s ease !important;}
+.home-live-expandable-card.is-expanded .live-card-collapsed-only {display:none !important;}
+.home-live-expandable-card.is-expanded .home-np-right-col,
+.home-live-expandable-card.is-expanded .home-psn-right-col {height:auto !important;align-self:stretch !important;justify-content:space-between !important;gap:4px !important;}
+.live-card-expand-indicator {display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;color:var(--muted);background:rgba(255,255,255,0.06);transition:transform .3s cubic-bezier(.2,0,0,1),color .2s ease,background .2s ease;flex-shrink:0;}
+.home-live-expandable-card:hover .live-card-expand-indicator {color:var(--accent);background:rgba(56,189,248,0.12);}
+.home-live-expandable-card.is-expanded .live-card-expand-indicator {transform:rotate(180deg);color:var(--accent);width:22px;height:22px;}
+
+/* TARJETA PLAYSTATION COMPACTA (JUGANDO AHORA) */
+.home-playstation-card-compact {background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:var(--tr);position:relative;overflow:hidden;}
+.home-playstation-card-compact:hover {border-color:rgba(0,112,209,0.45);box-shadow:0 4px 16px rgba(0,112,209,0.14);}
+.home-playstation-card-compact::before {content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:#0070d1;opacity:0.95;}
+.home-psn-cover-compact {width:64px;height:64px;border-radius:3px;overflow:hidden;background:var(--card);border:1px solid var(--border);flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.2);position:relative;}
+.home-psn-cover-compact img {width:100%;height:100%;object-fit:cover;display:block;}
+.home-psn-platform-badge {position:absolute;bottom:2px;right:2px;background:rgba(0,55,145,0.92);backdrop-filter:blur(4px);color:#fff;font-size:0.58rem;font-weight:800;padding:1px 4px;border-radius:3px;letter-spacing:0.3px;}
+.home-psn-center-compact {flex:1;min-width:0;display:flex;flex-direction:column;gap:1.5px;overflow:hidden;}
+.home-psn-platform-label {font-size:0.75rem;font-weight:700;color:#38bdf8;line-height:1.2;display:flex;align-items:center;gap:5px;}
+.home-psn-meta-compact {font-size:0.69rem;color:var(--muted);line-height:1.15;}
+.home-psn-title-compact {font-size:0.96rem;font-weight:800;color:var(--text);line-height:1.25;}
+.home-psn-live-pill {display:inline-flex;align-items:center;gap:4px;font-size:0.68rem;color:#10b981;font-weight:700;cursor:pointer;padding:2px 8px;border-radius:4px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);transition:var(--tr);user-select:none;}
+.home-psn-live-pill:hover {background:rgba(16,185,129,0.22);transform:scale(1.03);}
+.home-psn-live-pill.idle {color:var(--muted);background:rgba(100,116,139,0.12);border-color:rgba(100,116,139,0.25);}
+.home-psn-live-pill.idle:hover {color:var(--text);background:rgba(100,116,139,0.2);transform:scale(1.03);}
+.home-psn-live-pill.idle .home-np-dot {background:#64748b;box-shadow:none;animation:none;}
+.home-psn-right-col {display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:64px;flex-shrink:0;padding-left:4px;}
+.home-psn-logo-link {display:grid;place-items:center;width:24px;height:24px;transition:var(--tr);text-decoration:none;}
+.home-psn-logo-link:hover {transform:scale(1.18);}
+.btn-psn-quick-add {width:28px;height:28px;border-radius:4px;background:rgba(0,112,209,0.15);border:1px solid rgba(0,112,209,0.38);color:#38bdf8;display:flex !important;align-items:center !important;justify-content:center !important;font-size:0.8rem;cursor:pointer;transition:var(--tr);padding:0 !important;margin:0 !important;line-height:0 !important;box-sizing:border-box !important;}
+.btn-psn-quick-add svg {display:block !important;margin:0 auto !important;width:14px !important;height:14px !important;flex-shrink:0 !important;}
+.btn-psn-quick-add:hover {background:#0070d1;color:#fff;transform:translateY(-1px);}
+
+/* BOTÓN DE RECARGA / SINCRONIZACIÓN DESTACADO Y VISIBLE */
+.btn-psn-sync-prominent {background:rgba(0,112,209,0.18);border:1px solid rgba(56,189,248,0.45);color:#38bdf8;font-size:0.77rem;font-weight:700;border-radius:6px;padding:3px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--tr);height:28px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.12);user-select:none;}
+.btn-psn-sync-prominent:hover {background:#0070d1;border-color:#38bdf8;color:#fff;box-shadow:0 4px 14px rgba(0,112,209,0.4);transform:translateY(-1px);}
+.btn-psn-sync-prominent:active {transform:translateY(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.home-playstation-card-compact.is-steam-active .btn-psn-sync-prominent {background:rgba(102,192,244,0.18);border-color:rgba(102,192,244,0.5);color:#66c0f4;}
+.home-playstation-card-compact.is-steam-active .btn-psn-sync-prominent:hover {background:#1b2838;border-color:#66c0f4;color:#fff;box-shadow:0 4px 14px rgba(102,192,244,0.38);}
+.btn-psn-select-game-prominent {background:rgba(56,189,248,0.16);border:1px solid rgba(56,189,248,0.45);color:#38bdf8;font-size:0.77rem;font-weight:700;border-radius:6px;padding:3px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--tr);height:28px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.12);user-select:none;}
+.btn-psn-select-game-prominent:hover {background:#38bdf8;border-color:#38bdf8;color:#0f172a;box-shadow:0 4px 14px rgba(56,189,248,0.4);transform:translateY(-1px);}
+.btn-psn-select-game-prominent:active {transform:translateY(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.home-playstation-card-compact.is-steam-active .btn-psn-select-game-prominent {background:rgba(102,192,244,0.16);border-color:rgba(102,192,244,0.45);color:#66c0f4;}
+.home-playstation-card-compact.is-steam-active .btn-psn-select-game-prominent:hover {background:#66c0f4;border-color:#66c0f4;color:#0f172a;box-shadow:0 4px 14px rgba(102,192,244,0.4);}
+.btn-psn-stop-prominent {background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.38);color:#ef4444;font-size:0.77rem;font-weight:700;border-radius:6px;padding:3px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:var(--tr);height:28px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,0.12);user-select:none;}
+.btn-psn-stop-prominent:hover {background:#ef4444;border-color:#ef4444;color:#fff;box-shadow:0 4px 14px rgba(239,68,68,0.35);transform:translateY(-1px);}
+.btn-psn-stop-prominent:active {transform:translateY(0);box-shadow:0 1px 3px rgba(0,0,0,0.2);}
+.btn-psn-sync-quick {width:26px;height:26px;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.08);border:1px solid var(--border);color:var(--muted);transition:var(--tr);flex-shrink:0;user-select:none;}
+.btn-psn-sync-quick:hover {color:var(--accent);background:rgba(56,189,248,0.18);border-color:rgba(56,189,248,0.4);transform:scale(1.12);}
+.btn-psn-sync-quick:active {transform:scale(0.96);}
+.home-live-expandable-card.is-expanded .btn-psn-sync-quick {display:none !important;}
+.home-live-expandable-card.is-collapsed .btn-psn-sync-quick {display:inline-flex !important;}
+.btn-psn-token-hint {background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.35);color:#f59e0b;font-size:0.7rem;font-weight:700;border-radius:4px;padding:2px 7px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:var(--tr);height:26px;user-select:none;}
+.btn-psn-token-hint:hover {background:rgba(245,158,11,0.22);border-color:#f59e0b;color:#fff;}
+.is-syncing .btn-sync-svg {animation:liveSyncSpin 0.75s linear infinite !important;}
+@keyframes liveSyncSpin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+
+.btn-psn-sync-compact {background:rgba(0,112,209,0.14);border:1px solid rgba(0,112,209,0.32);color:#38bdf8;font-size:0.72rem;font-weight:700;border-radius:4px;padding:2px 8px;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:var(--tr);height:24px;line-height:1;}
+.btn-psn-sync-compact:hover {background:rgba(0,112,209,0.26);border-color:#0070d1;color:#fff;}
+.home-psn-trophy-tag {font-size:0.64rem;background:rgba(0,112,209,0.15);color:#38bdf8;padding:1px 5px;border-radius:2px;font-weight:700;display:inline-flex;align-items:center;gap:2px;}
+.home-psn-hours-tag {font-size:0.68rem;color:var(--muted);font-weight:600;display:inline-flex;align-items:center;gap:2px;}
+.home-playstation-card-compact.is-steam-active::before {background:#66c0f4;}
+.home-playstation-card-compact.is-steam-active:hover {border-color:rgba(102,192,244,0.48);box-shadow:0 4px 16px rgba(102,192,244,0.16);}
+.home-playstation-card-compact.is-steam-active .home-psn-platform-badge {background:rgba(23,26,33,0.92);color:#66c0f4;border:1px solid rgba(102,192,244,0.35);}
+.home-playstation-card-compact.is-steam-active .home-psn-platform-label {color:#66c0f4;}
+.home-playstation-card-compact.is-steam-active .btn-psn-sync-compact {background:rgba(102,192,244,0.14);border-color:rgba(102,192,244,0.35);color:#66c0f4;}
+.home-playstation-card-compact.is-steam-active .btn-psn-sync-compact:hover {background:rgba(102,192,244,0.26);border-color:#66c0f4;color:#fff;}
+.game-live-platform-switch {display:inline-flex;gap:4px;background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:3px;width:100%;}
+.game-live-platform-btn {flex:1;border:none;background:transparent;color:var(--muted);font-size:0.76rem;font-weight:700;padding:6px 10px;border-radius:4px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:var(--tr);}
+.game-live-platform-btn.active[data-plat="playstation"] {background:rgba(0,112,209,0.18);color:#38bdf8;box-shadow:inset 0 0 0 1px rgba(0,112,209,0.4);}
+.game-live-platform-btn.active[data-plat="steam"] {background:rgba(102,192,244,0.18);color:#66c0f4;box-shadow:inset 0 0 0 1px rgba(102,192,244,0.45);}
+
+/* ESCUCHANDO AHORA COMPACTO (EN PROCESO) */
+.home-spotify-card-compact {background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:9px 12px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:var(--tr);position:relative;overflow:hidden;margin-bottom:12px;}
+.home-spotify-card-compact:hover {border-color:rgba(29,185,84,0.45);box-shadow:0 4px 16px rgba(29,185,84,0.12);}
+.home-spotify-card-compact::before {content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:#1DB954;opacity:0.9;}
+.home-np-cover-compact {width:64px;height:64px;border-radius:3px;overflow:hidden;background:var(--card);border:1px solid var(--border);flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.home-np-cover-compact img {width:100%;height:100%;object-fit:cover;display:block;}
+.home-np-center-compact {flex:1;min-width:0;display:flex;flex-direction:column;gap:1.5px;overflow:hidden;}
+.home-np-text-wrap {width:100%;overflow:hidden;white-space:nowrap;position:relative;}
+.home-np-text-wrap.has-overflow {mask-image:linear-gradient(to right, black calc(100% - 14px), transparent 100%);-webkit-mask-image:linear-gradient(to right, black calc(100% - 14px), transparent 100%);}
+.home-np-scrollable {display:inline-block;white-space:nowrap;will-change:transform;}
+.home-np-scrollable.is-overflowing {animation:spotifyMarquee 8s cubic-bezier(0.42, 0, 0.58, 1) infinite;}
+@keyframes spotifyMarquee{
+  0%, 20% { transform: translateX(0); }
+  60%, 80% { transform: translateX(calc(-1 * var(--overflow-dist, 30px))); }
+  95%, 100% { transform: translateX(0); }
+}
+.home-np-artist-compact {font-size:0.78rem;font-weight:600;color:var(--accent);line-height:1.2;}
+.home-np-album-compact {font-size:0.69rem;color:var(--muted);line-height:1.15;}
+.home-np-title-compact {font-size:0.96rem;font-weight:800;color:var(--text);line-height:1.25;}
+.home-np-prog-row-compact {display:flex;align-items:center;gap:8px;margin:3px 0 2px 0;}
+.home-np-prog-bg-compact {flex:1;height:4px;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+[data-theme$="-light"] .home-np-prog-bg-compact {background:rgba(0,0,0,0.08);}
+.home-np-prog-fill-compact {height:100%;background:linear-gradient(90deg,#10b981,#1DB954);border-radius:6px;transition:width 0.35s ease;}
+.home-np-times-compact {font-size:0.65rem;color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums;display:inline-flex;gap:2px;flex-shrink:0;}
+.home-np-ctrls-compact {display:flex;align-items:center;gap:8px;}
+.btn-spotify-ctrl {background:var(--card);border:1px solid var(--border);color:var(--text);width:24px;height:24px;border-radius:50%;display:grid;place-items:center;cursor:pointer;transition:var(--tr);padding:0;}
+.btn-spotify-ctrl:hover {background:var(--card-hover);border-color:#1DB954;color:#1DB954;transform:scale(1.1);}
+.btn-spotify-ctrl-play {width:26px;height:26px;background:rgba(29,185,84,0.15);border-color:rgba(29,185,84,0.4);color:#10b981;}
+.btn-spotify-ctrl-play:hover {background:#1DB954;color:#000;border-color:#1DB954;}
+.home-np-live-status-pill {display:inline-flex;align-items:center;gap:4px;margin-left:6px;font-size:0.68rem;color:#10b981;}
+.home-np-live-status-pill.paused .home-np-dot {background:#f59e0b;box-shadow:none;animation:none;}
+.spotify-device-option {transition:var(--tr);}
+.spotify-device-option:hover {border-color:rgba(29,185,84,0.45) !important;transform:translateX(2px);}
+.spotify-device-option.is-active {background:rgba(16,185,129,0.09) !important;}
+.home-np-right-col {display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:64px;flex-shrink:0;padding-left:4px;}
+.home-np-sp-logo-link {display:grid;place-items:center;width:24px;height:24px;transition:var(--tr);text-decoration:none;}
+.home-np-sp-logo-link:hover {transform:scale(1.18);}
+.btn-np-quick-add {width:28px;height:28px;border-radius:8px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.38);color:#10b981;display:flex !important;align-items:center !important;justify-content:center !important;font-size:0.8rem;cursor:pointer;transition:var(--tr);padding:0 !important;margin:0 !important;line-height:0 !important;box-sizing:border-box !important;}
+.btn-np-quick-add svg {display:block !important;margin:0 auto !important;width:14px !important;height:14px !important;flex-shrink:0 !important;}
+.btn-np-quick-add:hover {background:#10b981;color:#0f172a;transform:translateY(-1px);}
+/* TARJETA DE ÚLTIMA CANCIÓN & JUEGO DE AMIGOS */
+.home-friend-music-card,
+.home-friend-game-card {position:relative;overflow:hidden;margin-bottom:14px;transition:var(--tr);}
+.home-live-carousel-item .home-friend-music-card,
+.home-live-carousel-item .home-friend-game-card {margin-bottom:0 !important;}
+.home-friend-music-card::before {content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:linear-gradient(180deg,#1DB954,#38bdf8);opacity:0.95;}
+.home-friend-music-card:hover {border-color:rgba(56,189,248,0.45);box-shadow:0 4px 16px rgba(56,189,248,0.14);}
+.home-friend-game-card::before {content:"";position:absolute;top:0;left:0;width:3.5px;height:100%;background:linear-gradient(180deg,#0070d1,#38bdf8);opacity:0.95;}
+.home-friend-game-card:hover {border-color:rgba(0,112,209,0.45);box-shadow:0 4px 16px rgba(0,112,209,0.14);}
+.home-friend-game-card.is-steam-active::before {background:linear-gradient(180deg,#66c0f4,#1b2838) !important;}
+.home-friend-game-card.is-steam-active:hover {border-color:rgba(102,192,244,0.45) !important;box-shadow:0 4px 16px rgba(102,192,244,0.14) !important;}
+.home-friend-game-card.is-steam-active .home-psn-platform-badge {background:rgba(102,192,244,0.18) !important;color:#66c0f4 !important;border:1px solid rgba(102,192,244,0.35) !important;}
+.home-np-friend-avatar-badge {position:absolute;bottom:-2px;right:-2px;width:20px;height:20px;border-radius:50%;overflow:hidden;border:1.5px solid var(--card);background:var(--bg);display:grid;place-items:center;font-size:0.72rem;box-shadow:0 1px 4px rgba(0,0,0,0.35);z-index:2;}
+.home-np-friend-avatar-badge img {width:100%;height:100%;object-fit:cover;}
+/* TOGGLE VISTA Y CUADRICULA LISTAS */
+.view-mode-toggle {display:inline-flex;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:3px;gap:4px}
+.btn-view-mode {background:transparent;border:none;color:var(--muted);font-size:0.8rem;font-weight:600;padding:6px 12px;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:var(--tr)}
+.btn-view-mode.active {background:var(--card);color:var(--accent);font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.25)}
+.btn-view-mode:hover:not(.active) {color:var(--text)}
+.dashboard-grid-view {display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:16px;margin-top:14px}
+.cat-grid-card {background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;display:flex;flex-direction:column;justify-content:space-between;transition:var(--tr);box-shadow:0 4px 16px rgba(0,0,0,0.15)}
+.cat-grid-card:hover {border-color:var(--accent);box-shadow:0 6px 20px rgba(0,0,0,0.25)}
+.cat-grid-header {display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.cat-grid-rating {font-weight:800;color:var(--star-active);font-size:0.95rem;background:rgba(234,179,8,0.12);padding:3px 8px;border-radius:8px;border:1px solid rgba(234,179,8,0.25)}
+.cat-grid-subtotals {display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.cat-grid-subtotal-pill {font-size:0.74rem;background:var(--bg);border:1px solid var(--border);padding:3px 8px;border-radius:6px;color:var(--text);display:inline-flex;align-items:center;gap:4px}
+.cat-grid-destacados {display:flex;flex-direction:column;gap:8px;margin-bottom:14px;background:var(--bg);border-radius:10px;padding:10px;border:1px solid var(--border)}
+.cat-grid-item-row {display:flex;align-items:center;gap:8px;font-size:0.78rem;cursor:pointer}
+.cat-grid-item-row:hover .cat-grid-item-title {color:var(--accent)}
+.cat-grid-thumb {width:32px;height:46px;border-radius:4px;object-fit:cover;background:#334155;flex-shrink:0}
+.cat-grid-item-title {font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px}
+.cat-grid-item-meta {font-size:0.72rem;color:var(--muted)}
+.btn-cat-grid-open {width:100%;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);color:var(--accent);padding:8px 14px;border-radius:8px;font-weight:700;font-size:0.82rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:var(--tr)}
+.btn-cat-grid-open:hover {background:var(--accent);color:#0f172a}
+/* NUEVOS ESTILOS: DISCOVER MEJORADO, PERFIL COMPLETO Y CONFIGURACIÓN VISUAL */ .discover-section-title {justify-content:space-between}.btn-log-discover {background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.45);color:#34d399;font-weight:700;border-radius:6px;padding:6px 8px;font-size:0.78rem;cursor:pointer;transition:var(--tr)}
+.btn-log-discover:hover {background:#10b981;color:#0f172a}.discover-header-bar {display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px}.discover-controls {display:flex;align-items:center;gap:8px;flex-wrap:wrap}.discover-live-badge {display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.35);color:#34d399;padding:5px 11px;border-radius:20px;font-size:0.75rem;font-weight:700}
+.discover-live-dot {width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:pulseDot 1.8s infinite}@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.45;transform:scale(0.85)}}.discover-year-badge {position:absolute;top:8px;right:8px;background:rgba(15,23,42,0.88);backdrop-filter:blur(4px);border:1px solid rgba(56,189,248,0.4);color:var(--accent);font-size:0.7rem;font-weight:700;padding:2px 7px;border-radius:6px;pointer-events:none}.btn-add-discover.added {background:rgba(16,185,129,0.22)!important;border-color:#10b981!important;color:#34d399!important;box-shadow:0 0 10px rgba(16,185,129,0.3)!important;cursor:default!important}.btn-add-discover.added:hover {background:rgba(16,185,129,0.22)!important;color:#34d399!important}.discover-rec-badge {position:absolute;top:8px;left:8px;background:rgba(15,23,42,0.92);backdrop-filter:blur(6px);border:1px solid rgba(168,85,247,0.55);color:#d8b4fe;font-size:0.68rem;font-weight:700;padding:2px 7px;border-radius:6px;pointer-events:none;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,0.45);display:inline-flex;align-items:center;gap:4px}.discover-creator-tag {color:#38bdf8;font-weight:600;font-size:0.78rem;display:inline-block;line-height:1.25}.discover-year-sub {color:var(--muted);font-size:0.74rem;margin-left:4px}
+.discover-filter-bar {display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding-bottom:6px;margin-bottom:14px;scrollbar-width:none;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;max-width:100%}.discover-filter-bar::-webkit-scrollbar {display:none}.discover-filter-bar .subtab-btn {flex-shrink:0;white-space:nowrap}.discover-item-en-sub {font-size:0.76rem;color:var(--accent);font-style:italic;margin-bottom:4px;line-height:1.2;opacity:0.9}.discover-more-wrap {display:flex;justify-content:center;margin:14px 0 24px}
+.btn-discover-more {background:rgba(56,189,248,0.12);border:1px solid var(--accent);color:var(--accent);padding:9px 22px;border-radius:20px;font-weight:700;font-size:0.84rem;cursor:pointer;transition:var(--tr);display:inline-flex;align-items:center;gap:8px}.btn-discover-more:hover {background:var(--accent);color:#0f172a;transform:translateY(-1px);box-shadow:0 4px 14px rgba(56,189,248,0.35)}.profile-hero-card {background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:20px;display:flex;gap:20px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:0 8px 24px rgba(0,0,0,0.25)}
+.profile-identity-wrap {display:flex;gap:18px;align-items:center;flex:1;min-width:250px}.profile-avatar-box {position:relative;width:86px;height:86px;border-radius:50%;border:3px solid var(--accent);overflow:hidden;background:var(--bg);flex-shrink:0;cursor:pointer;display:grid;place-items:center;line-height:1;font-size:2.4rem;box-shadow:0 0 18px rgba(56,189,248,0.3);transition:var(--tr)}
+.profile-avatar-box:hover {transform:scale(1.05)}.profile-avatar-box img {width:100%;height:100%;object-fit:cover}.profile-avatar-edit-badge {position:absolute;bottom:0;right:0;left:0;background:rgba(15,23,42,0.82);color:var(--accent);font-size:0.65rem;text-align:center;padding:3px 0;font-weight:700}
+.profile-info-col {flex:1}.profile-nick-row {display:flex;align-items:center;gap:8px;flex-wrap:wrap}.profile-nick-display {font-size:1.4rem;font-weight:800;color:var(--text)}.profile-google-pill {display:inline-flex;align-items:center;gap:5px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:var(--accent);font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px}
+.profile-bio-txt {font-size:0.86rem;color:var(--muted);margin-top:4px}.profile-google-box {display:flex;flex-direction:column;gap:8px;align-items:flex-end}.btn-google-login {background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:9px 15px;font-size:0.84rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:var(--tr);box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.btn-google-login:hover {transform:translateY(-1px);box-shadow:0 4px 14px rgba(255,255,255,0.2)}.btn-edit-profile {background:rgba(56,189,248,0.12);border:1px solid var(--accent);color:var(--accent);border-radius:10px;padding:8px 14px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:var(--tr)}
+.btn-edit-profile:hover {background:var(--accent);color:#0f172a}.avatar-presets-grid {display:grid;grid-template-columns:repeat(6, 1fr);gap:8px;margin:10px 0}.avatar-preset-btn {background:var(--bg);border:2px solid var(--border);border-radius:50%;width:48px;height:48px;padding:0;line-height:1;display:grid;place-items:center;font-size:1.45rem;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;cursor:pointer;transition:var(--tr);margin:0 auto;overflow:hidden}
+.avatar-preset-btn:hover,
+.avatar-preset-btn.selected {border-color:var(--accent);transform:scale(1.1);box-shadow:0 0 12px rgba(56,189,248,0.35)}.favs-grid {display:grid;grid-template-columns:repeat(auto-fill, minmax(245px, 1fr));gap:12px;margin-bottom:20px}.fav-slot-card {background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px;display:flex;gap:12px;align-items:center;transition:var(--tr);position:relative}.fav-slot-card:hover {border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,0.35)}.fav-slot-poster {width:56px;height:80px;border-radius:8px;object-fit:cover;background:var(--bg);border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:var(--muted);overflow:hidden}
+.fav-slot-poster img {width:100%;height:100%;object-fit:cover}.fav-slot-info {flex:1;min-width:0}.fav-slot-top-row {display:flex;justify-content:space-between;align-items:center;gap:4px;margin-bottom:3px}.fav-slot-subcat {font-size:0.7rem;font-weight:700;text-transform:uppercase;color:var(--accent);letter-spacing:0.04em}.btn-toggle-fav-show {background:rgba(16,185,129,0.14);border:1px solid rgba(16,185,129,0.4);color:#34d399;border-radius:12px;padding:2px 7px;font-size:0.66rem;font-weight:700;cursor:pointer;transition:var(--tr);white-space:nowrap}
+.btn-toggle-fav-show.hidden-fav {background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.35);color:#f87171}.fav-slot-title {font-size:0.9rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.fav-slot-meta {font-size:0.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}.btn-choose-fav {margin-top:6px;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);color:var(--accent);border-radius:6px;padding:4px 9px;font-size:0.73rem;font-weight:700;cursor:pointer;transition:var(--tr)}
+.btn-choose-fav:hover {background:var(--accent);color:#0f172a}.cfg-visual-grid {display:grid;grid-template-columns:1fr 1fr;gap:8px}.cfg-option-card {background:var(--bg);border:2px solid var(--border);border-radius:10px;padding:10px 12px;cursor:pointer;transition:var(--tr);text-align:left;display:flex;flex-direction:column;gap:3px}
+.cfg-option-card:hover {border-color:rgba(56,189,248,0.5)}.cfg-option-card.active {border-color:var(--accent);background:rgba(56,189,248,0.1);box-shadow:0 0 12px rgba(56,189,248,0.22)}/* LÍNEA CONTINUA INTERACTIVA DE 5 NIVELES PARA TAMAÑO DE LETRA */ .size-line-container {background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:18px 20px 14px;margin-top:4px;user-select:none;box-sizing:border-box}
+.size-line-track-wrap {position:relative;height:36px;display:flex;align-items:center;justify-content:space-between;margin:0 14px;cursor:pointer}
+.size-line-track-bg {position:absolute;left:0;right:0;height:6px;background:var(--border);border-radius:6px;top:50%;transform:translateY(-50%);z-index:1}
+.size-line-track-fill {position:absolute;left:0;height:6px;background:var(--accent);border-radius:6px;top:50%;transform:translateY(-50%);z-index:2;transition:width 0.25s cubic-bezier(0.4,0,0.2,1);width:50%}
+.size-line-node {position:relative;z-index:3;width:26px;height:26px;min-width:26px;max-width:26px;padding:0;line-height:1;border-radius:50%;background:var(--card);border:3px solid var(--border);cursor:pointer;transition:var(--tr);display:grid;place-items:center;box-sizing:border-box;flex-shrink:0}
+.size-line-node:hover {border-color:var(--accent);transform:scale(1.15)}
+.size-line-node.reached {border-color:var(--accent)}
+.size-line-node.active {background:var(--accent);border-color:var(--text);color:#0f172a;box-shadow:0 0 14px rgba(56,189,248,0.6);transform:scale(1.22)}
+.size-line-labels {display:flex;justify-content:space-between;align-items:center;margin:8px 14px 0 14px;padding:0}
+.size-line-lbl-btn {background:none;border:none;color:var(--muted);cursor:pointer;width:26px;min-width:26px;max-width:26px;padding:6px 0;margin:0;display:flex;justify-content:center;align-items:center;text-align:center;flex-shrink:0;transition:var(--tr);position:relative;border-radius:6px}
+.size-line-lbl-btn::before {content:'';position:absolute;top:-8px;bottom:-8px;left:-10px;right:-10px}
+.size-line-lbl-btn:hover {color:var(--text);background:rgba(56,189,248,0.08)}
+.size-line-lbl-btn.active {color:var(--accent);font-weight:800}
+.size-line-lbl-btn span {display:inline-block;text-align:center;line-height:1}/* CÍRCULO ÚNICO BICOLOR PARA TEMAS (100% VECTORIAL SIN ESPACIOS EN BLANCO NI CUADRADOS) */
+.theme-card-row {display:flex;align-items:center;gap:12px;flex-direction:row !important}
+.theme-dual-circle {width:40px;height:40px;min-width:40px;min-height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;display:block;padding:0;margin:0;border:none;background:none;filter:drop-shadow(0 3px 8px rgba(0,0,0,0.45))}
+.theme-mode-btn {display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;transition:var(--tr);text-align:left}
+.theme-mode-btn:hover {background:var(--card-hover);color:var(--text);border-color:var(--accent)}
+.theme-mode-btn.active {background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:700;box-shadow:0 0 12px rgba(56,189,248,0.35)}
+[data-theme$="-light"] .theme-mode-btn.active {color:#ffffff}
+.theme-family-card {cursor:pointer;position:relative;transition:var(--tr);display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px}
+.theme-family-card:hover {transform:translateY(-2px);border-color:var(--accent)}
+.theme-family-card.active {border-color:var(--accent);box-shadow:0 0 14px rgba(56,189,248,0.25)}
+.theme-pill-btn {display:inline-flex;align-items:center;gap:4px;font-size:0.72rem;padding:3px 9px;border-radius:6px;border:1px solid var(--border);background:rgba(0,0,0,0.25);color:var(--muted);cursor:pointer;transition:var(--tr);font-weight:600}
+.theme-pill-btn:hover {background:rgba(0,0,0,0.45);color:var(--text)}
+.theme-pill-btn.active {background:var(--accent);color:#0f172a;border-color:var(--accent);font-weight:700}
+[data-theme$="-light"] .theme-pill-btn {background:rgba(0,0,0,0.06);color:var(--muted)}
+[data-theme$="-light"] .theme-pill-btn:hover {background:rgba(0,0,0,0.12);color:var(--text)}
+[data-theme$="-light"] .theme-pill-btn.active {color:#ffffff}
