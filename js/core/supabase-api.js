@@ -168,7 +168,8 @@ if (actualPrefs.actividad && inPrefs.actividad) {
     prefsObj.actividad = actualPrefs.actividad;
   }
 }
-if (datos.portada) prefsObj.portada = datos.portada;
+const portVal = datos.portada || inPrefs.portada || datos.preferencias?.portada;
+if (portVal) prefsObj.portada = portVal;
 if (datos.cancionFavorita !== undefined) {
   prefsObj.cancionFavorita = datos.cancionFavorita;
   if (!datos.favoritos) datos.favoritos = Object.assign({}, actual.favoritos || {});
@@ -182,10 +183,10 @@ const prevDias = Array.isArray(actualPrefs.rachas?.diasLectura) ? actualPrefs.ra
 const inDias = Array.isArray(datos.diasLectura) ? datos.diasLectura : (Array.isArray(inPrefs.rachas?.diasLectura) ? inPrefs.rachas.diasLectura : []);
 const prevTiempos = (actualPrefs.rachas?.tiemposLectura && typeof actualPrefs.rachas.tiemposLectura === 'object') ? actualPrefs.rachas.tiemposLectura : ((actualPrefs.tiemposLectura && typeof actualPrefs.tiemposLectura === 'object') ? actualPrefs.tiemposLectura : {});
 const inTiempos = (datos.tiemposLectura && typeof datos.tiemposLectura === 'object') ? datos.tiemposLectura : ((inPrefs.rachas?.tiemposLectura && typeof inPrefs.rachas.tiemposLectura === 'object') ? inPrefs.rachas.tiemposLectura : {});
-if (datos.diasLectura || datos.tiemposLectura || inPrefs.rachas) {
-  const mergedDias = Array.from(new Set([...prevDias, ...inDias])).filter(Boolean).sort();
-  const mergedTiempos = Object.assign({}, prevTiempos, inTiempos);
-  prefsObj.rachas = { diasLectura: mergedDias, tiemposLectura: mergedTiempos, updatedAt: Date.now() };
+if (datos.diasLectura !== undefined || datos.tiemposLectura !== undefined || inPrefs.rachas) {
+  const finalDias = Array.isArray(datos.diasLectura) ? datos.diasLectura : (Array.isArray(inPrefs.rachas?.diasLectura) ? inPrefs.rachas.diasLectura : prevDias);
+  const finalTiempos = (datos.tiemposLectura && typeof datos.tiemposLectura === 'object') ? datos.tiemposLectura : ((inPrefs.rachas?.tiemposLectura && typeof inPrefs.rachas.tiemposLectura === 'object') ? inPrefs.rachas.tiemposLectura : prevTiempos);
+  prefsObj.rachas = { diasLectura: finalDias, tiemposLectura: finalTiempos, updatedAt: Date.now() };
 }
 const payload = { user_email: email,
 nickname: datos.nickname !== undefined ? String(datos.nickname) : (actual.nickname || email.split('@')[0]), bio: datos.bio !== undefined ? String(datos.bio) : (actual.bio || 'Coleccionando historias en Mediary'),

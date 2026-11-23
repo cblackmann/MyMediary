@@ -1306,15 +1306,37 @@ function renderizarFichaTecnicaContenido(reg, info, l) {
   bottomBox.innerHTML = bottomHtml;
 }
 
-function abrirFichaTecnica(id) { const reg = estado.registros.find(r => r.id === id) || estado.watchlist.find(w => w.id === id); if (!reg) return; document.getElementById('ficha-modal-title').textContent = reg.titulo;
-document.getElementById('ficha-modal-poster').src = optimizarUrlPoster(reg.poster, 'modal') || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'125\' height=\'180\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
-const l = userPrefs.lang || 'es';
-renderizarFichaTecnicaEsqueleto(reg, l);
-document.getElementById('modal-ficha-tecnica').style.display = 'flex';
-if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(false);
-google.script.run
-.withSuccessHandler(info => { if (!info) return; if (info.poster) document.getElementById('ficha-modal-poster').src = optimizarUrlPoster(info.poster, 'modal'); renderizarFichaTecnicaContenido(reg, info, l); })
-.obtenerDetalleTecnicoModal(reg.titulo, reg.creador, reg.categoria, reg.subcategoria); }
+function abrirFichaTecnica(id) {
+  let reg = null;
+  if (typeof id === 'object' && id !== null) {
+    reg = id;
+  } else {
+    reg = (estado.registros || []).find(r => String(r.id) === String(id)) ||
+          (estado.watchlist || []).find(w => String(w.id) === String(id)) ||
+          (typeof amigoRegistrosCache !== 'undefined' && Array.isArray(amigoRegistrosCache) ? amigoRegistrosCache.find(r => String(r.id) === String(id)) : null);
+  }
+  if (!reg) return;
+  document.getElementById('ficha-modal-title').textContent = reg.titulo;
+  document.getElementById('ficha-modal-poster').src = optimizarUrlPoster(reg.poster, 'modal') || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'125\' height=\'180\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
+  const l = userPrefs.lang || 'es';
+  renderizarFichaTecnicaEsqueleto(reg, l);
+  document.getElementById('modal-ficha-tecnica').style.display = 'flex';
+  if (typeof actualizarVisibilidadMenuInferior === 'function') actualizarVisibilidadMenuInferior(false);
+
+  const onDetalle = info => {
+    if (!info) return;
+    if (info.poster) document.getElementById('ficha-modal-poster').src = optimizarUrlPoster(info.poster, 'modal');
+    renderizarFichaTecnicaContenido(reg, info, l);
+  };
+
+  if (typeof SERVER_API !== 'undefined' && SERVER_API.obtenerDetalleTecnicoModal) {
+    SERVER_API.obtenerDetalleTecnicoModal(reg.titulo, reg.creador, reg.categoria, reg.subcategoria).then(onDetalle);
+  } else if (window.google?.script?.run) {
+    google.script.run
+      .withSuccessHandler(onDetalle)
+      .obtenerDetalleTecnicoModal(reg.titulo, reg.creador, reg.categoria, reg.subcategoria);
+  }
+}
 const cerrarModalFicha = () => {
   const m = document.getElementById('modal-ficha-tecnica');
   if (m) m.style.display = 'none';

@@ -518,15 +518,25 @@
 }
 
 /* KPI GRID EN PERFIL (3 COLUMNAS CON ESPACIADO EQUILIBRADO) */
-#vista-perfil .stats-kpi-grid {
+#vista-perfil .stats-kpi-grid,
+#vista-perfil-amigo .stats-kpi-grid {
   display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
+  grid-template-columns: repeat(2, 1fr) !important;
   gap: 12px 14px !important;
   margin-bottom: 24px !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
-#vista-perfil .stats-kpi-card {
+@media (min-width: 640px) {
+  #vista-perfil .stats-kpi-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  #vista-perfil-amigo .stats-kpi-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+#vista-perfil .stats-kpi-card,
+#vista-perfil-amigo .stats-kpi-card {
   padding: 4px 0 !important;
   border-radius: 0 !important;
   min-height: auto !important;
@@ -537,11 +547,13 @@
   min-width: 0 !important;
   gap: 4px !important;
 }
-#vista-perfil .stats-kpi-card:hover {
+#vista-perfil .stats-kpi-card:hover,
+#vista-perfil-amigo .stats-kpi-card:hover {
   border-color: transparent !important;
   transform: none !important;
 }
-#vista-perfil .stats-kpi-label {
+#vista-perfil .stats-kpi-label,
+#vista-perfil-amigo .stats-kpi-label {
   font-size: 0.72rem !important;
   color: var(--muted) !important;
   display: flex !important;
@@ -553,12 +565,14 @@
   margin-bottom: 4px !important;
   min-height: 2.4em !important;
 }
-#vista-perfil .stats-kpi-label svg {
+#vista-perfil .stats-kpi-label svg,
+#vista-perfil-amigo .stats-kpi-label svg {
   width: 14px !important;
   height: 14px !important;
   flex-shrink: 0 !important;
 }
-#vista-perfil .stats-kpi-val {
+#vista-perfil .stats-kpi-val,
+#vista-perfil-amigo .stats-kpi-val {
   font-size: 1.25rem !important;
   font-weight: 800 !important;
   color: var(--text) !important;
@@ -566,7 +580,8 @@
   word-break: break-word !important;
   margin-bottom: 3px !important;
 }
-#vista-perfil .stats-kpi-sub {
+#vista-perfil .stats-kpi-sub,
+#vista-perfil-amigo .stats-kpi-sub {
   font-size: 0.7rem !important;
   color: var(--muted) !important;
   line-height: 1.35 !important;

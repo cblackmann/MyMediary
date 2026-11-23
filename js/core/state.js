@@ -43,6 +43,12 @@ let _listenersCambioAnioRegistrados = false;
 function obtenerAnioActualSistema() {
  return Math.max(ANIO_MINIMO_SELECTOR, new Date().getFullYear());
 }
+
+function obtenerFechaHoyStr() {
+ const d = new Date();
+ return `${String(d.getDate()).padStart(2, '0')}/${String(d.getMonth() + 1).padStart(2, '0')}/${d.getFullYear()}`;
+}
+window.obtenerFechaHoyStr = window.obtenerFechaHoyStr || obtenerFechaHoyStr;
 function obtenerListaAniosSelector(anioActual = obtenerAnioActualSistema()) {
  const anios = [];
  for (let y = anioActual; y >= ANIO_MINIMO_SELECTOR; y--) {
@@ -455,6 +461,9 @@ function sincronizarPreferenciasYAppsHaciaNube(forzarInmediato = false, opciones
     try {
       empaquetarPreferenciasYAppsEnPerfil_(opciones);
       guardarPerfilLocal();
+      if (typeof SERVER_API !== 'undefined' && SERVER_API?.guardarPerfilUsuario && estado?.userEmail) {
+        SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+      }
       if (typeof google !== 'undefined' && google.script?.run) {
         google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
       }

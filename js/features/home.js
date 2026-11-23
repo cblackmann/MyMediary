@@ -383,11 +383,15 @@ function guardarTiempoLecturaFecha(fechaStr, tiempoTexto) {
   const clave = 'mediary_tiempos_lectura_' + (estado.userEmail || 'default');
   try {
     localStorage.setItem(clave, JSON.stringify(mapa));
+    localStorage.setItem('mediary_tiempos_lectura_default', JSON.stringify(mapa));
   } catch (e) {}
 
   if (perfilUsuario) {
     perfilUsuario.tiemposLectura = mapa;
     guardarPerfilLocal();
+    if (typeof SERVER_API !== 'undefined' && SERVER_API?.guardarPerfilUsuario && estado?.userEmail) {
+      SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+    }
     if (typeof google !== 'undefined' && google.script?.run) {
       google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
     }
@@ -399,13 +403,17 @@ function guardarTiempoLecturaFecha(fechaStr, tiempoTexto) {
 }
 
 function abrirModalTiempoLectura() {
-  const hoyStr = obtenerFechaHoyStr();
-  const mapa = obtenerMapaTiemposLectura();
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
+  const mapa = (typeof obtenerMapaTiemposLectura === 'function') ? obtenerMapaTiemposLectura() : {};
   const infoHoy = mapa[hoyStr];
-  const yaLeyo = haLeidoHoy();
+  const yaLeyo = (typeof haLeidoHoy === 'function') ? haLeidoHoy() : false;
 
-  if (infoHoy && infoHoy.texto) {
-    tiempoLecturaSeleccionadoActual = infoHoy.texto;
+  if (infoHoy) {
+    if (typeof infoHoy === 'string') {
+      tiempoLecturaSeleccionadoActual = infoHoy;
+    } else if (infoHoy.texto) {
+      tiempoLecturaSeleccionadoActual = infoHoy.texto;
+    }
   } else if (!tiempoLecturaSeleccionadoActual) {
     tiempoLecturaSeleccionadoActual = '30 minutos';
   }
@@ -446,6 +454,7 @@ function abrirModalTiempoLectura() {
     }, 60);
   }
 }
+window.abrirModalTiempoLectura = abrirModalTiempoLectura;
 
 function seleccionarTiempoLectura(tiempo) {
   tiempoLecturaSeleccionadoActual = tiempo;
@@ -462,6 +471,7 @@ function seleccionarTiempoLectura(tiempo) {
   }
   actualizarDisplayTiempoLectura(tiempo);
 }
+window.seleccionarTiempoLectura = seleccionarTiempoLectura;
 
 function formatearTiempoLecturaIdioma_(tiempo) {
   const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
@@ -499,11 +509,13 @@ function actualizarDisplayTiempoLectura(tiempo) {
     btnConfirmTxt.textContent = isEn ? `Confirm (${tiempoDisp})` : `Confirmar (${tiempoDisp})`;
   }
 }
+window.actualizarDisplayTiempoLectura = actualizarDisplayTiempoLectura;
 
 function cerrarModalTiempoLectura() {
   const modal = document.getElementById('modal-tiempo-lectura');
   if (modal) modal.style.display = 'none';
 }
+window.cerrarModalTiempoLectura = cerrarModalTiempoLectura;
 
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
@@ -516,7 +528,7 @@ window.addEventListener('keydown', (e) => {
 
 function confirmarTiempoLectura() {
   const tiempo = tiempoLecturaSeleccionadoActual || '30 minutos';
-  const hoyStr = obtenerFechaHoyStr();
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
   let lista = obtenerListaDiasLectura();
   if (!lista.includes(hoyStr)) {
     lista.push(hoyStr);
@@ -525,11 +537,15 @@ function confirmarTiempoLectura() {
   const claveDias = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
   try {
     localStorage.setItem(claveDias, JSON.stringify(lista));
+    localStorage.setItem('mediary_dias_lectura_default', JSON.stringify(lista));
   } catch (e) {}
 
   if (perfilUsuario) {
     perfilUsuario.diasLectura = lista;
     guardarPerfilLocal();
+    if (typeof SERVER_API !== 'undefined' && SERVER_API?.guardarPerfilUsuario && estado?.userEmail) {
+      SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+    }
     if (typeof google !== 'undefined' && google.script?.run) {
       google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
     }
@@ -546,23 +562,31 @@ function confirmarTiempoLectura() {
   actualizarBotonLecturaHoyLibros();
   renderizarRachasActualesInicio();
   if (estado.categoria === 'Lecturas') {
-    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria);
+    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria || 'Libros');
+  }
+  if (typeof renderizarStats === 'function') {
+    renderizarStats();
   }
 }
+window.confirmarTiempoLectura = confirmarTiempoLectura;
 
 function desmarcarLecturaHoy() {
-  const hoyStr = obtenerFechaHoyStr();
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
   let lista = obtenerListaDiasLectura();
   lista = lista.filter(f => f !== hoyStr);
 
   const claveDias = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
   try {
     localStorage.setItem(claveDias, JSON.stringify(lista));
+    localStorage.setItem('mediary_dias_lectura_default', JSON.stringify(lista));
   } catch (e) {}
 
   if (perfilUsuario) {
     perfilUsuario.diasLectura = lista;
     guardarPerfilLocal();
+    if (typeof SERVER_API !== 'undefined' && SERVER_API?.guardarPerfilUsuario && estado?.userEmail) {
+      SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+    }
     if (typeof google !== 'undefined' && google.script?.run) {
       google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
     }
@@ -573,19 +597,27 @@ function desmarcarLecturaHoy() {
   cerrarModalTiempoLectura();
 
   const l = userPrefs.lang || 'es';
-  mostrarToastPersonalizado(l === 'en' ? 'Reading session for today unmarked.' : ' Lectura de hoy desmarcada.');
+  mostrarToastPersonalizado(l === 'en' ? 'Reading session for today unmarked.' : 'Lectura de hoy desmarcada.');
 
   actualizarBotonLecturaHoyInicio();
   actualizarBotonLecturaHoyLibros();
   renderizarRachasActualesInicio();
   if (estado.categoria === 'Lecturas') {
-    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria);
+    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria || 'Libros');
+  }
+  if (typeof renderizarStats === 'function') {
+    renderizarStats();
   }
 }
+window.desmarcarLecturaHoy = desmarcarLecturaHoy;
 
-function toggleLecturaHoy() {
+function toggleLecturaHoy(e) {
+  if (e && typeof e.stopPropagation === 'function') {
+    e.stopPropagation();
+  }
   abrirModalTiempoLectura();
 }
+window.toggleLecturaHoy = toggleLecturaHoy;
 
 function actualizarBotonLecturaHoyInicio() {
   const box = document.getElementById('home-reading-quick-box');
@@ -625,7 +657,7 @@ function actualizarBotonLecturaHoyLibros() {
             <span style="font-size:0.75rem; color:var(--muted);">${tiempoHoyTxt ? (l === 'en' ? `Session time: ${tiempoHoyTxt}` : `Tiempo registrado: ${tiempoHoyTxt}`) : (l === 'en' ? 'Session logged into your streak.' : 'Tu sesión de hoy está sumada a tu racha.')}</span>
           </div>
         </div>
-        <button type="button" class="btn-read-today done" onclick="toggleLecturaHoy()" style="padding:8px 18px; font-size:0.84rem;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
+        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:8px 18px; font-size:0.84rem;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
           <span>${getHeroIcon("check", "", 14)}</span> <span>${tiempoHoyTxt ? formatTiempoPill(tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
         </button>
       </div>
@@ -640,7 +672,7 @@ function actualizarBotonLecturaHoyLibros() {
             <span style="font-size:0.75rem; color:var(--muted);">${l === 'en' ? 'Keep your daily reading streak alive.' : 'Suma tu avance diario tocando el botón.'}</span>
           </div>
         </div>
-        <button type="button" class="btn-read-today" onclick="toggleLecturaHoy()" style="padding:8px 18px; font-size:0.84rem;">
+        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:8px 18px; font-size:0.84rem;">
           <span>${getHeroIcon('sparkles', '', 14)}</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
         </button>
       </div>
@@ -1416,8 +1448,8 @@ function renderizarRachasActualesInicio() {
           <span class="home-streak-val">${rLectura.rachaActual}</span>
           <span class="home-streak-unit">${rLectura.rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
         </div>
-        <div class="home-streak-col-action">
-          <button type="button" class="btn-streak-pill ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy()" title="${rLectura.esActivaHoy ? (tiempoHoyTxt ? (l === 'en' ? `Read today: ${tiempoHoyTxt}. Click to adjust or unmark` : `Leído hoy: ${tiempoHoyTxt}. Toca para ajustar tiempo o desmarcar`) : (l === 'en' ? 'Read today! Click to adjust or unmark' : '¡Leído hoy! Toca para ajustar tiempo o desmarcar')) : (l === 'en' ? 'Mark reading today' : 'Marcar lectura de hoy')}">
+        <div class="home-streak-col-action" onclick="event.stopPropagation(); toggleLecturaHoy(event)">
+          <button type="button" class="btn-streak-pill ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy(event)" title="${rLectura.esActivaHoy ? (tiempoHoyTxt ? (l === 'en' ? `Read today: ${tiempoHoyTxt}. Click to adjust or unmark` : `Leído hoy: ${tiempoHoyTxt}. Toca para ajustar tiempo o desmarcar`) : (l === 'en' ? 'Read today! Click to adjust or unmark' : '¡Leído hoy! Toca para ajustar tiempo o desmarcar')) : (l === 'en' ? 'Mark reading today' : 'Marcar lectura de hoy')}">
             ${rLectura.esActivaHoy ? getHeroIcon('check', '', 11) : getHeroIcon('plus', '', 11)}
             <span>${rLectura.esActivaHoy ? (tiempoHoyTxt ? formatTiempoPill(tiempoHoyTxt) : (l === 'en' ? 'Today' : 'Hoy')) : (l === 'en' ? 'Mark' : 'Marcar')}</span>
           </button>
@@ -1552,13 +1584,13 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
     const tiempoHoyTxt = tiempoHoyObj?.texto || '';
     if (ya) {
       lecturaBtnHtml = `
-        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy()" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.bgVar : 'rgba(16,185,129,0.15)'}; border:1px solid ${metaCol ? metaCol.borderVar : 'rgba(16,185,129,0.4)'}; color:${metaCol ? metaCol.colorVar : '#34d399'}; cursor:pointer;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
+        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.bgVar : 'rgba(16,185,129,0.15)'}; border:1px solid ${metaCol ? metaCol.borderVar : 'rgba(16,185,129,0.4)'}; color:${metaCol ? metaCol.colorVar : '#34d399'}; cursor:pointer;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
           <span>${getHeroIcon('check', '', 14)}</span> <span>${tiempoHoyTxt ? (typeof formatTiempoPill === 'function' ? formatTiempoPill(tiempoHoyTxt) : tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
         </button>
       `;
     } else {
       lecturaBtnHtml = `
-        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy()" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.colorVar : 'var(--accent)'}; color:#ffffff; border:none; font-weight:700; cursor:pointer;">
+        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.colorVar : 'var(--accent)'}; color:#ffffff; border:none; font-weight:700; cursor:pointer;">
           <span>${getHeroIcon('sparkles', '', 14)}</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
         </button>
       `;

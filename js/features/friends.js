@@ -2463,13 +2463,22 @@ function renderizarListaAmigos(amigos) {
     const avgRating = a.stats && a.stats.promedio ? a.stats.promedio : '-';
     const emailEscaped = (a.email || '').replace(/'/g, "\\'");
     const nickEscaped = (a.nickname || '').replace(/'/g, "\\'");
-    let coverId = String(a.portada || 'predeterminada').trim().toLowerCase();
-    if (coverId.startsWith('cover-')) coverId = coverId.replace(/^cover-/, '');
-    const hasCustomCover = !!(coverId && coverId !== 'predeterminada');
-    const coverClass = hasCustomCover ? `cover-${coverId} has-custom-cover` : '';
+    const hasCustomImg = typeof a.portada === 'string' && (a.portada.startsWith('data:image/') || a.portada.startsWith('http://') || a.portada.startsWith('https://'));
+    let coverClass = '';
+    let coverStyle = '';
+    if (hasCustomImg) {
+      coverClass = 'has-custom-cover has-custom-image-cover';
+      coverStyle = `background-image: linear-gradient(rgba(0,0,0,0.48), rgba(0,0,0,0.78)), url('${a.portada.replace(/'/g, "\\'")}'); background-size: cover; background-position: center; border: 1.5px solid var(--accent);`;
+    } else {
+      let coverId = String(a.portada || 'predeterminada').trim().toLowerCase();
+      if (coverId.startsWith('cover-')) coverId = coverId.replace(/^cover-/, '');
+      const hasCustomCover = !!(coverId && coverId !== 'predeterminada');
+      coverClass = hasCustomCover ? `cover-${coverId} has-custom-cover` : '';
+      coverStyle = hasCustomCover ? '' : 'background:var(--card); border:1px solid var(--border);';
+    }
 
     return `
-      <div class="amigo-wide-card ${coverClass}" style="${hasCustomCover ? '' : 'background:var(--card); border:1px solid var(--border);'} border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px; transition:var(--tr); box-shadow:0 2px 8px rgba(0,0,0,0.06); position:relative; overflow:hidden;">
+      <div class="amigo-wide-card ${coverClass}" style="${coverStyle} border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px; transition:var(--tr); box-shadow:0 2px 8px rgba(0,0,0,0.06); position:relative; overflow:hidden;">
         <!-- Fila superior: Foto + Nickname interactivo + Bio a la izquierda; Calificación promedio en la esquina superior derecha -->
         <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; position:relative; z-index:2;">
           <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
@@ -2646,13 +2655,23 @@ function abrirVistaPerfilAmigo(emailAmigo, pushNav = true) {
     }
     const amHero = document.getElementById('amigo-modal-hero-card');
     if (amHero) {
-      PORTADAS_DISPONIBLES.forEach(p => amHero.classList.remove(`cover-${p.id}`));
-      amHero.classList.remove('has-custom-cover');
-      const coverAmigo = a.portada || 'predeterminada';
-      if (coverAmigo && coverAmigo !== 'predeterminada') {
-        amHero.classList.add(`cover-${coverAmigo}`, 'has-custom-cover');
+      if (typeof aplicarPortadaEnHeroCard === 'function') {
+        aplicarPortadaEnHeroCard(amHero, a.portada);
       } else {
-        amHero.classList.add('cover-predeterminada');
+        const coverAmigo = a.portada || 'predeterminada';
+        const isCustomImg = typeof coverAmigo === 'string' && (coverAmigo.startsWith('data:image/') || coverAmigo.startsWith('http://') || coverAmigo.startsWith('https://'));
+        PORTADAS_DISPONIBLES.forEach(p => amHero.classList.remove(`cover-${p.id}`));
+        amHero.classList.remove('has-custom-cover', 'has-custom-image-cover');
+        if (isCustomImg) {
+          amHero.classList.add('has-custom-cover', 'has-custom-image-cover');
+          amHero.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.72)), url("${coverAmigo}")`;
+          amHero.style.backgroundSize = 'cover';
+          amHero.style.backgroundPosition = 'center';
+        } else if (coverAmigo && coverAmigo !== 'predeterminada') {
+          amHero.classList.add(`cover-${coverAmigo}`, 'has-custom-cover');
+        } else {
+          amHero.classList.add('cover-predeterminada');
+        }
       }
     }
     // Canción favorita del amigo
@@ -2923,6 +2942,32 @@ let amigoRegistrosCache = [];
 let amigoRegsFiltroCat = 'todas';
 let amigoRegsFiltroSub = 'todas';
 let amigoRegsEmailActual = '';
+let amigoRegsOrden = 'desc';
+
+function actualizarBotonOrdenHistorialAmigo() {
+  const btn = document.getElementById('btn-toggle-orden-amigo');
+  const txt = document.getElementById('txt-orden-historial-amigo');
+  const ico = document.getElementById('ico-orden-historial-amigo');
+  if (!btn || !txt) return;
+  const l = userPrefs.lang || 'es';
+  if (amigoRegsOrden === 'desc') {
+    txt.textContent = l === 'en' ? 'Newest first' : 'Del más reciente al más antiguo';
+    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25 4.5L17.25 21m0 0L21 17.25M17.25 21V10.5"/></svg>`;
+    btn.classList.add('active');
+  } else {
+    txt.textContent = l === 'en' ? 'Oldest first' : 'Del primero al último';
+    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v10.5"/></svg>`;
+    btn.classList.remove('active');
+  }
+}
+
+function toggleOrdenHistorialAmigo() {
+  amigoRegsOrden = (amigoRegsOrden === 'desc') ? 'asc' : 'desc';
+  actualizarBotonOrdenHistorialAmigo();
+  filtrarRegistrosAmigoModal();
+}
+window.toggleOrdenHistorialAmigo = toggleOrdenHistorialAmigo;
+window.actualizarBotonOrdenHistorialAmigo = actualizarBotonOrdenHistorialAmigo;
 function abrirVistaRegistrosAmigo(email, nickname, catInicial = 'todas', subInicial = 'todas', pushNav = true) {
   const amEmail = (email || amigoPerfilEmailActual || (amigoSeleccionadoActual ? (amigoSeleccionadoActual.email || amigoSeleccionadoActual.user_email) : '') || amigoRegsEmailActual || '').trim();
   amigoRegsEmailActual = amEmail;
@@ -2973,6 +3018,7 @@ function abrirVistaRegistrosAmigo(email, nickname, catInicial = 'todas', subInic
   amigoRegsFiltroCat = catInicial || 'todas';
   amigoRegsFiltroSub = subInicial || 'todas';
   amigoRegistrosCache = [];
+  actualizarBotonOrdenHistorialAmigo();
   renderizarTabsCategoriasAmigo();
   const subTabs = document.getElementById('amigo-regs-subcat-tabs');
   if (subTabs) {
@@ -3243,13 +3289,25 @@ function filtrarRegistrosAmigoModal() {
         </div>
     `;
 
-    const esDescAmigo = (typeof obtenerOrdenHistorialActual === 'function' ? obtenerOrdenHistorialActual() : 'asc') === 'desc';
+    const esDescAmigo = amigoRegsOrden === 'desc';
     subGroups.forEach(subG => {
       subG.items.sort((a, b) => {
         const tsA = timestampDeFecha(a.fechaFin !== 'Sin fecha' ? a.fechaFin : a.fechaInicio);
         const tsB = timestampDeFecha(b.fechaFin !== 'Sin fecha' ? b.fechaFin : b.fechaInicio);
-        return esDescAmigo ? (tsB - tsA) : (tsA - tsB);
+        const diff = tsB - tsA;
+        return esDescAmigo ? diff : -diff;
       });
+      const subTieneR = (typeof subTieneRango === 'function') ? subTieneRango(catGroup.key, subG.id) : false;
+      const conteosMes = {};
+      subG.items.forEach(r => {
+        const fI = sanitizarFechaFrontend(r.fechaInicio), fF = sanitizarFechaFrontend(r.fechaFin);
+        const enProg = subTieneR && (esEnProgresoTexto(fF) || (!fF || fF === 'Sin fecha' || fF === ''));
+        const fechaParaMes = (!subTieneR) ? fI : ((fF && fF !== 'Sin fecha' && !esEnProgresoTexto(fF)) ? fF : fI);
+        const mKey = enProg ? 'EN_PROGRESO' : extraerMesClave(fechaParaMes).clave;
+        conteosMes[mKey] = (conteosMes[mKey] || 0) + 1;
+      });
+      let mesClaveActual = '';
+
       const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(catGroup.key, subG.nombre || subG.id) : null;
       const subIconStyle = metaSub ? `style="color:${metaSub.colorVar}; font-size:1rem;"` : 'style="font-size:1rem;"';
       fullHtml += `
@@ -3273,7 +3331,6 @@ function filtrarRegistrosAmigoModal() {
         const starsHtml = enProg
           ? `<span class="badge-en-progreso" style="background:rgba(245,158,11,0.12); color:var(--star-active); font-weight:700; padding:2px 8px; border-radius:2px; font-size:0.75rem; border:1px solid rgba(245,158,11,0.3); white-space:nowrap;display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('clock', '', 12)} ${obtenerTextoEnProgreso(r.categoria, r.subcategoria) || (l === 'en' ? 'In progress' : 'En curso')}</span>`
           : (calif > 0 ? renderEstrellasVisuales(calif) : `<span style="color:var(--muted); font-size:0.78rem;">${l === 'en' ? 'No rating' : 'Sin calificar'}</span>`);
-        const subTieneR = (typeof subTieneRango === 'function') ? subTieneRango(r.categoria, r.subcategoria) : false;
         const fI_am = sanitizarFechaFrontend(r.fechaInicio), fF_am = sanitizarFechaFrontend(r.fechaFin);
         const infoI_am = desglosarFechaParaCuadro(fI_am);
         const infoF_am = desglosarFechaParaCuadro(fF_am);
@@ -3303,12 +3360,29 @@ function filtrarRegistrosAmigoModal() {
           </div>
         ` : '';
 
+        const fechaParaMes = (!subTieneR) ? fI_am : ((fF_am && fF_am !== 'Sin fecha' && !esEnProgresoTexto(fF_am)) ? fF_am : fI_am);
+        const mesData = enProg
+          ? { clave: 'EN_PROGRESO', mesNombre: (obtenerTextoEnProgreso(r.categoria, r.subcategoria) || (l === 'en' ? 'In progress' : 'En curso')), anio: '' }
+          : extraerMesClave(fechaParaMes);
+
+        if (mesData.clave !== mesClaveActual) {
+          mesClaveActual = mesData.clave;
+          const count = conteosMes[mesData.clave] || 1;
+          const textoMesContador = enProg
+            ? `${mesData.mesNombre} (${count})`
+            : (mesData.clave === 'SIN_FECHA' ? (l === 'en' ? 'No date' : 'Sin fecha') : (mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`));
+          const emojiSeparador = enProg ? `<span class="emoji-dyn">${getHeroIcon('clock', '', 13)} </span>` : '';
+          fullHtml += `<div class="month-separator-card" style="margin-top:6px; margin-bottom:2px;">${emojiSeparador}${textoMesContador}</div>`;
+        }
+
+        const rIdSafe = String(r.id || '').replace(/'/g, "\\'");
+
         fullHtml += `
           <div class="mobile-history-card amigo-reg-item-card" style="margin-bottom:0; box-shadow:0 1px 4px rgba(0,0,0,0.06);">
             <div class="m-card-top">
-              <img class="m-card-thumb" src="${poster}" loading="lazy" alt="${escHtmlFeed_(r.titulo)}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'50\\' height=\\'72\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'">
+              <img class="m-card-thumb" src="${poster}" loading="lazy" style="cursor:pointer;" onclick="abrirFichaTecnica('${rIdSafe}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}" alt="${escHtmlFeed_(r.titulo)}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'50\\' height=\\'72\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'">
               <div class="m-card-info" style="padding-right:0;">
-                <div class="m-card-title">${r.titulo}</div>
+                <div class="m-card-title" style="cursor:pointer;" onclick="abrirFichaTecnica('${rIdSafe}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">${r.titulo}</div>
                 ${r.subtitulo && r.subtitulo !== r.titulo ? `<div style="font-size:0.75rem; color:var(--muted); margin-bottom:2px;">(${r.subtitulo})</div>` : ''}
                 <div class="m-card-meta">${meta}</div>
                 <div class="m-card-date-row" style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:4px;">

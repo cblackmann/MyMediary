@@ -307,68 +307,188 @@ const PORTADAS_DISPONIBLES = [
  }
 ];
 
+function esPortadaImagenPersonalizada(cover) {
+  return typeof cover === 'string' && (cover.startsWith('data:image/') || cover.startsWith('http://') || cover.startsWith('https://'));
+}
+
 function obtenerPortadaActual() {
- return perfilUsuario?.portada || perfilUsuario?.preferencias?.portada || perfilUsuario?.favoritos?.portada || 'predeterminada';
+  return perfilUsuario?.portada || perfilUsuario?.preferencias?.portada || perfilUsuario?.favoritos?.portada || 'predeterminada';
 }
 
 function aplicarPortadaEnHeroCard(targetElId = 'perfil-hero-card', idCover = null) {
-  const el = document.getElementById(targetElId);
+  const el = typeof targetElId === 'string' ? document.getElementById(targetElId) : targetElId;
   if (!el) return;
-  const cover = idCover || obtenerPortadaActual();
+  const cover = (idCover !== null && idCover !== undefined) ? idCover : obtenerPortadaActual();
   PORTADAS_DISPONIBLES.forEach(p => el.classList.remove(`cover-${p.id}`));
-  el.classList.remove('has-custom-cover');
-  if (cover && cover !== 'predeterminada') {
+  el.classList.remove('has-custom-cover', 'has-custom-image-cover');
+
+  if (esPortadaImagenPersonalizada(cover)) {
+    el.classList.add('has-custom-cover', 'has-custom-image-cover');
+    el.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.72)), url("${cover}")`;
+    el.style.backgroundSize = 'cover';
+    el.style.backgroundPosition = 'center';
+    el.style.backgroundRepeat = 'no-repeat';
+  } else if (cover && cover !== 'predeterminada') {
+    el.style.backgroundImage = '';
+    el.style.backgroundSize = '';
+    el.style.backgroundPosition = '';
+    el.style.backgroundRepeat = '';
     el.classList.add(`cover-${cover}`, 'has-custom-cover');
   } else {
+    el.style.backgroundImage = '';
+    el.style.backgroundSize = '';
+    el.style.backgroundPosition = '';
+    el.style.backgroundRepeat = '';
     el.classList.add('cover-predeterminada');
   }
 }
 
 function abrirModalElegirPortada() {
- renderizarOpcionesPortadas();
- const m = document.getElementById('modal-elegir-portada');
- if (m) m.style.display = 'flex';
+  renderizarOpcionesPortadas();
+  const m = document.getElementById('modal-elegir-portada');
+  if (m) m.style.display = 'flex';
 }
 
 function cerrarModalElegirPortada() {
- const m = document.getElementById('modal-elegir-portada');
- if (m) m.style.display = 'none';
+  const m = document.getElementById('modal-elegir-portada');
+  if (m) m.style.display = 'none';
+}
+
+function procesarSubidaPortadaCustom(inputEl) {
+  if (!inputEl || !inputEl.files || !inputEl.files[0]) return;
+  const archivo = inputEl.files[0];
+  if (!archivo.type || !archivo.type.startsWith('image/')) {
+    mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Please select an image file' : 'Por favor selecciona un archivo de imagen');
+    inputEl.value = '';
+    return;
+  }
+
+  const lector = new FileReader();
+  lector.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      try {
+        const maxAncho = 1200;
+        const maxAlto = 675;
+        let w = img.width;
+        let h = img.height;
+        if (w > maxAncho || h > maxAlto) {
+          const ratio = Math.min(maxAncho / w, maxAlto / h);
+          w = Math.round(w * ratio);
+          h = Math.round(h * ratio);
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+        seleccionarPortadaPerfil(dataUrl);
+      } catch (err) {
+        console.error('Error al redimensionar portada personalizada:', err);
+        seleccionarPortadaPerfil(e.target.result);
+      }
+      inputEl.value = '';
+    };
+    img.onerror = function() {
+      mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Could not read image file' : 'No se pudo leer el archivo de imagen');
+      inputEl.value = '';
+    };
+    img.src = e.target.result;
+  };
+  lector.onerror = function() {
+    mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Could not read image file' : 'No se pudo leer el archivo de imagen');
+    inputEl.value = '';
+  };
+  lector.readAsDataURL(archivo);
+}
+
+function quitarPortadaPersonalizada() {
+  seleccionarPortadaPerfil('predeterminada');
 }
 
 function renderizarOpcionesPortadas() {
- const c = document.getElementById('profile-covers-options-list');
- if (!c) return;
- const actual = obtenerPortadaActual();
- c.innerHTML = PORTADAS_DISPONIBLES.map(p => {
- const isAct = (p.id === actual);
- return `
- <div class="cover-option-card ${isAct ? 'active selected' : ''}" onclick="seleccionarPortadaPerfil('${p.id}')">
- <div class="cover-preview-stage ${p.previewClass}" style="background:${p.gradientePreview};">
- <div style="font-size:1.85rem; text-shadow:0 2px 8px rgba(0,0,0,0.6);">${p.icono}</div>
- ${isAct ? `<div class="cover-selected-badge">${tLang('✓ Activa', '✓ Active')}</div>` : ''}
- </div>
- <div class="cover-meta-wrap">
- <strong class="cover-name-txt">${tLang(p.nombre, p.nombreEn)}</strong>
- <p class="cover-desc-txt">${tLang(p.descripcion, p.descripcionEn)}</p>
- </div>
- </div>
- `;
- }).join('');
+  const c = document.getElementById('profile-covers-options-list');
+  if (!c) return;
+  const actual = obtenerPortadaActual();
+  const esCustom = esPortadaImagenPersonalizada(actual);
+
+  let customActiveHtml = '';
+  if (esCustom) {
+    customActiveHtml = `
+      <div class="cover-option-card active selected has-custom-image-cover" style="grid-column: 1 / -1; margin-bottom: 8px;">
+        <div class="cover-preview-stage" style="background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.65)), url('${actual}') center/cover no-repeat; min-height: 90px; border-radius: 4px; position:relative;">
+          <div class="cover-selected-badge">${tLang('✓ Activa', '✓ Active')}</div>
+        </div>
+        <div class="cover-meta-wrap" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+          <div>
+            <strong class="cover-name-txt" data-i18n="profile_cover_custom_title">${tLang('Portada personalizada', 'Custom Cover')}</strong>
+            <p class="cover-desc-txt" data-i18n="profile_cover_custom_desc">${tLang('Tu foto subida para la tarjeta superior de tu perfil.', 'Your uploaded photo for your profile header card.')}</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="btn-today-pill" style="font-size:0.75rem; padding:4px 10px; margin:0;" onclick="document.getElementById('input-subir-portada-custom').click()" data-i18n="btn_change_photo">${tLang('Cambiar', 'Change')}</button>
+            <button type="button" class="btn-modal-cancel" style="font-size:0.75rem; padding:4px 10px; border-color:rgba(239,68,68,0.4); color:#f87171;" onclick="quitarPortadaPersonalizada()" data-i18n="profile_cover_remove_btn">${tLang('Quitar portada', 'Remove cover')}</button>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  const uploadCtaHtml = `
+    <div class="cover-option-card cover-upload-card" onclick="document.getElementById('input-subir-portada-custom').click()" style="cursor:pointer; border:1.5px dashed var(--accent); background:rgba(var(--accent-rgb, 56,189,248), 0.05); transition:all 0.18s ease; ${esCustom ? 'display:none;' : ''}">
+      <div class="cover-preview-stage" style="background:linear-gradient(135deg, rgba(var(--accent-rgb, 56,189,248), 0.15), rgba(99,102,241,0.15)); display:grid; place-items:center; min-height:85px;">
+        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:28px;height:28px;color:var(--accent);"><path d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z"/></svg>
+      </div>
+      <div class="cover-meta-wrap">
+        <strong class="cover-name-txt" style="color:var(--accent);" data-i18n="profile_cover_upload_action">${tLang('Subir foto personalizada', 'Upload custom photo')}</strong>
+        <p class="cover-desc-txt" data-i18n="profile_cover_upload_hint">${tLang('Sube una imagen desde tu dispositivo (JPG, PNG o WebP)', 'Upload an image from your device (JPG, PNG or WebP)')}</p>
+      </div>
+    </div>
+  `;
+
+  const presetsHtml = PORTADAS_DISPONIBLES.map(p => {
+    const isAct = (!esCustom && p.id === actual);
+    return `
+      <div class="cover-option-card ${isAct ? 'active selected' : ''}" onclick="seleccionarPortadaPerfil('${p.id}')">
+        <div class="cover-preview-stage ${p.previewClass}" style="background:${p.gradientePreview};">
+          <div style="font-size:1.85rem; text-shadow:0 2px 8px rgba(0,0,0,0.6);">${p.icono}</div>
+          ${isAct ? `<div class="cover-selected-badge">${tLang('✓ Activa', '✓ Active')}</div>` : ''}
+        </div>
+        <div class="cover-meta-wrap">
+          <strong class="cover-name-txt">${tLang(p.nombre, p.nombreEn)}</strong>
+          <p class="cover-desc-txt">${tLang(p.descripcion, p.descripcionEn)}</p>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  c.innerHTML = customActiveHtml + uploadCtaHtml + presetsHtml;
 }
 
 function seleccionarPortadaPerfil(idCover) {
- perfilUsuario.portada = idCover;
- if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
- perfilUsuario.preferencias.portada = idCover;
- if (!perfilUsuario.favoritos) perfilUsuario.favoritos = {};
- perfilUsuario.favoritos.portada = idCover;
- guardarPerfilLocal();
- aplicarPortadaEnHeroCard('perfil-hero-card', idCover);
- renderizarOpcionesPortadas();
- const pObj = PORTADAS_DISPONIBLES.find(x => x.id === idCover);
- const pNom = pObj ? tLang(pObj.nombre, pObj.nombreEn) : idCover;
- mostrarToastPersonalizado(userPrefs.lang === 'en' ? ` Cover "${pNom}" applied` : ` Portada "${pNom}" aplicada`);
- google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+  perfilUsuario.portada = idCover;
+  if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+  perfilUsuario.preferencias.portada = idCover;
+  if (!perfilUsuario.favoritos) perfilUsuario.favoritos = {};
+  perfilUsuario.favoritos.portada = idCover;
+  guardarPerfilLocal();
+  aplicarPortadaEnHeroCard('perfil-hero-card', idCover);
+  renderizarOpcionesPortadas();
+
+  const esImg = esPortadaImagenPersonalizada(idCover);
+  const pObj = PORTADAS_DISPONIBLES.find(x => x.id === idCover);
+  const pNom = esImg ? tLang('Personalizada', 'Custom') : (pObj ? tLang(pObj.nombre, pObj.nombreEn) : idCover);
+  mostrarToastPersonalizado(userPrefs.lang === 'en' ? `Cover "${pNom}" applied` : `Portada "${pNom}" aplicada`);
+
+  if (typeof SERVER_API !== 'undefined' && SERVER_API.guardarPerfilUsuario && estado.userEmail) {
+    SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+  }
+  if (window.google?.script?.run) {
+    google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+  }
+  if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+    sincronizarPreferenciasYAppsHaciaNube(true);
+  }
 }
 
 // ==========================================
@@ -1746,3 +1866,14 @@ function inicializarLongPressAvatares() {
     }
   }, true);
 }
+
+window.esPortadaImagenPersonalizada = esPortadaImagenPersonalizada;
+window.obtenerPortadaActual = obtenerPortadaActual;
+window.aplicarPortadaEnHeroCard = aplicarPortadaEnHeroCard;
+window.abrirModalElegirPortada = abrirModalElegirPortada;
+window.cerrarModalElegirPortada = cerrarModalElegirPortada;
+window.procesarSubidaPortadaCustom = procesarSubidaPortadaCustom;
+window.quitarPortadaPersonalizada = quitarPortadaPersonalizada;
+window.renderizarOpcionesPortadas = renderizarOpcionesPortadas;
+window.seleccionarPortadaPerfil = seleccionarPortadaPerfil;
+
