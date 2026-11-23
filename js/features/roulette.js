@@ -90,7 +90,7 @@ function obtenerEmojiYNombreCategoria(cat) {
 }
 
 function abrirModalRuletaConAmigoActual() {
-  const email = amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '';
+  const email = (amigoSeleccionadoActual ? (amigoSeleccionadoActual.email || amigoSeleccionadoActual.user_email) : '') || (typeof amigoRegsEmailActual !== 'undefined' ? amigoRegsEmailActual : '') || (typeof amigoPerfilEmailActual !== 'undefined' ? amigoPerfilEmailActual : '');
   cerrarModalPerfilAmigo();
   abrirModalRuleta('Peliculas', email);
 }

@@ -263,7 +263,22 @@ function cambiarModoSubvistaCalendario(modo) {
 }
 window.cambiarModoSubvistaCalendario = cambiarModoSubvistaCalendario;
 
-function toggleDropdownMesCalendario(force) {
+const CAL_MESES_FALLBACK_ES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+const CAL_MESES_FALLBACK_EN = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+function obtenerNombreMesCalendario(idx) {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
+  const i18nArr = (typeof I18N !== 'undefined' && I18N[l]?.meses) || (typeof window.I18N !== 'undefined' && window.I18N[l]?.meses) || (typeof MEDIARY_I18N_ES !== 'undefined' && MEDIARY_I18N_ES.meses);
+  if (Array.isArray(i18nArr) && i18nArr[idx]) return i18nArr[idx];
+  const fallback = l === 'en' ? CAL_MESES_FALLBACK_EN : CAL_MESES_FALLBACK_ES;
+  return fallback[idx] || `Mes ${idx + 1}`;
+}
+window.obtenerNombreMesCalendario = obtenerNombreMesCalendario;
+
+function toggleDropdownMesCalendario(eventOrForce) {
+  if (eventOrForce && typeof eventOrForce.stopPropagation === 'function') {
+    eventOrForce.stopPropagation();
+  }
   const menu = document.getElementById('cal-menu-mes');
   const trigger = document.getElementById('cal-trigger-mes');
   const menuAnio = document.getElementById('cal-menu-anio');
@@ -274,14 +289,17 @@ function toggleDropdownMesCalendario(force) {
     triggerAnio.setAttribute('aria-expanded', 'false');
   }
   if (!menu || !trigger) return;
-  const isOpen = (typeof force === 'boolean') ? force : !menu.classList.contains('open');
+  const isOpen = (typeof eventOrForce === 'boolean') ? eventOrForce : !menu.classList.contains('open');
   menu.classList.toggle('open', isOpen);
   trigger.classList.toggle('active', isOpen);
   trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 }
 window.toggleDropdownMesCalendario = toggleDropdownMesCalendario;
 
-function toggleDropdownAnioCalendario(force) {
+function toggleDropdownAnioCalendario(eventOrForce) {
+  if (eventOrForce && typeof eventOrForce.stopPropagation === 'function') {
+    eventOrForce.stopPropagation();
+  }
   const menu = document.getElementById('cal-menu-anio');
   const trigger = document.getElementById('cal-trigger-anio');
   const menuMes = document.getElementById('cal-menu-mes');
@@ -292,7 +310,7 @@ function toggleDropdownAnioCalendario(force) {
     triggerMes.setAttribute('aria-expanded', 'false');
   }
   if (!menu || !trigger) return;
-  const isOpen = (typeof force === 'boolean') ? force : !menu.classList.contains('open');
+  const isOpen = (typeof eventOrForce === 'boolean') ? eventOrForce : !menu.classList.contains('open');
   menu.classList.toggle('open', isOpen);
   trigger.classList.toggle('active', isOpen);
   trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
@@ -318,30 +336,38 @@ function cerrarDropdownsCalendario() {
 window.cerrarDropdownsCalendario = cerrarDropdownsCalendario;
 
 document.addEventListener('click', (e) => {
-  if (!e.target.closest('#cal-dd-mes') && !e.target.closest('#cal-dd-anio')) {
+  const path = (e.composedPath && e.composedPath()) || [];
+  const isInside = path.some(el => el && el.id && (el.id === 'cal-dd-mes' || el.id === 'cal-dd-anio'));
+  const closestTarget = (e.target && typeof e.target.closest === 'function')
+    ? (e.target.closest('#cal-dd-mes') || e.target.closest('#cal-dd-anio'))
+    : null;
+  if (!isInside && !closestTarget) {
     cerrarDropdownsCalendario();
   }
 });
 
-function seleccionarMesCalendario(val) {
+function seleccionarMesCalendario(val, e) {
+  if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
   calMesActivo = parseInt(val, 10);
   cerrarDropdownsCalendario();
   poblarSelectoresMesYAnio();
   renderizarGridMesCalendario();
+  renderizarDetalleDiaSeleccionado();
 }
 window.seleccionarMesCalendario = seleccionarMesCalendario;
 
-function seleccionarAnioCalendario(val) {
+function seleccionarAnioCalendario(val, e) {
+  if (e && typeof e.stopPropagation === 'function') e.stopPropagation();
   calAnioActivo = parseInt(val, 10);
   cerrarDropdownsCalendario();
   poblarSelectoresMesYAnio();
   renderizarGridMesCalendario();
+  renderizarDetalleDiaSeleccionado();
 }
 window.seleccionarAnioCalendario = seleccionarAnioCalendario;
 
 function poblarSelectoresMesYAnio() {
-  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
-  const nombreMes = (typeof I18N !== 'undefined' && I18N[l]?.meses?.[calMesActivo]) || (NOMBRE_MESES[calMesActivo] || 'Mes');
+  const nombreMes = obtenerNombreMesCalendario(calMesActivo);
 
   const lblMes = document.getElementById('cal-lbl-mes');
   if (lblMes) lblMes.textContent = nombreMes;
@@ -353,10 +379,10 @@ function poblarSelectoresMesYAnio() {
   if (menuMes) {
     const mesesItems = [];
     for (let i = 0; i < 12; i++) {
-      const nom = (typeof I18N !== 'undefined' && I18N[l]?.meses?.[i]) || (NOMBRE_MESES[i] || `Mes ${i+1}`);
+      const nom = obtenerNombreMesCalendario(i);
       const isSel = Number(calMesActivo) === i;
       mesesItems.push(`
-        <button type="button" class="cal-dd-item ${isSel ? 'selected' : ''}" onclick="seleccionarMesCalendario(${i})" role="option" aria-selected="${isSel ? 'true' : 'false'}">
+        <button type="button" class="cal-dd-item ${isSel ? 'selected' : ''}" onclick="event.stopPropagation(); seleccionarMesCalendario(${i}, event)" role="option" aria-selected="${isSel ? 'true' : 'false'}">
           <span>${nom}</span>
           ${isSel ? '<span style="font-size:0.75rem;color:var(--accent);">✓</span>' : ''}
         </button>
@@ -369,23 +395,25 @@ function poblarSelectoresMesYAnio() {
   const aniosSet = new Set([anioActual - 2, anioActual - 1, anioActual, anioActual + 1, anioActual + 2, anioActual + 3]);
   if (calAnioActivo) aniosSet.add(Number(calAnioActivo));
 
-  if (Array.isArray(estado.registros)) {
-    estado.registros.forEach(r => {
-      const k = obtenerFechaKeyDeRegistro(r);
-      if (k) {
-        const y = parseInt(k.slice(0, 4), 10);
-        if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
-      }
-    });
-  }
-  if (Array.isArray(estado.proximosEstrenos)) {
-    estado.proximosEstrenos.forEach(e => {
-      const k = normalizarFechaAKeyYYYYMMDD(e.fechaEstreno);
-      if (k) {
-        const y = parseInt(k.slice(0, 4), 10);
-        if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
-      }
-    });
+  if (typeof estado !== 'undefined' && estado) {
+    if (Array.isArray(estado.registros)) {
+      estado.registros.forEach(r => {
+        const k = obtenerFechaKeyDeRegistro(r);
+        if (k) {
+          const y = parseInt(k.slice(0, 4), 10);
+          if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
+        }
+      });
+    }
+    if (Array.isArray(estado.proximosEstrenos)) {
+      estado.proximosEstrenos.forEach(e => {
+        const k = normalizarFechaAKeyYYYYMMDD(e.fechaEstreno);
+        if (k) {
+          const y = parseInt(k.slice(0, 4), 10);
+          if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
+        }
+      });
+    }
   }
 
   const aniosArr = Array.from(aniosSet).sort((a, b) => b - a);
@@ -394,7 +422,7 @@ function poblarSelectoresMesYAnio() {
     menuAnio.innerHTML = aniosArr.map(y => {
       const isSel = Number(calAnioActivo) === y;
       return `
-        <button type="button" class="cal-dd-item ${isSel ? 'selected' : ''}" onclick="seleccionarAnioCalendario(${y})" role="option" aria-selected="${isSel ? 'true' : 'false'}">
+        <button type="button" class="cal-dd-item ${isSel ? 'selected' : ''}" onclick="event.stopPropagation(); seleccionarAnioCalendario(${y}, event)" role="option" aria-selected="${isSel ? 'true' : 'false'}">
           <span>${y}</span>
           ${isSel ? '<span style="font-size:0.75rem;color:var(--accent);">✓</span>' : ''}
         </button>

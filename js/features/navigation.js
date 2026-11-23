@@ -69,6 +69,8 @@ if (s.includes('➔') || s.includes(' - ') || s.startsWith('Semana') || /^[a-zá
 const d = new Date(s); return isNaN(d.getTime()) ? s : `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`; }
 const NOMBRES_MESES_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 const NOMBRES_MESES_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+window.NOMBRES_MESES_ES = NOMBRES_MESES_ES;
+window.NOMBRES_MESES_EN = NOMBRES_MESES_EN;
 const timestampDeFecha = v => {
   if (!v || v === 'Sin fecha' || esEnProgresoTexto(v)) return 0;
   const s = String(v).trim();

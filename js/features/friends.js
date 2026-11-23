@@ -2523,7 +2523,7 @@ function enviarSolicitudAmistadPorId() {
   feedback.style.background = 'rgba(56,189,248,0.12)';
   feedback.style.color = 'var(--accent)';
   feedback.style.display = 'block';
-  google.script.run.withSuccessHandler(res => {
+  const onExitoEnv = res => {
     if (res && res.exito) {
       feedback.textContent = res.mensaje || tLang('¡Solicitud enviada con éxito!', 'Friend request sent successfully!');
       feedback.style.background = 'rgba(16,185,129,0.15)';
@@ -2535,24 +2535,45 @@ function enviarSolicitudAmistadPorId() {
       feedback.style.background = 'rgba(239,68,68,0.15)';
       feedback.style.color = '#f87171';
     }
-  }).enviarSolicitudAmistad(estado.userEmail, idInput);
+  };
+  const onFalloEnv = err => {
+    feedback.textContent = err?.message || err || tLang('Error al enviar solicitud', 'Error sending request');
+    feedback.style.background = 'rgba(239,68,68,0.15)';
+    feedback.style.color = '#f87171';
+  };
+  if (typeof SERVER_API !== 'undefined' && SERVER_API.enviarSolicitudAmistad) {
+    SERVER_API.enviarSolicitudAmistad(estado.userEmail, idInput).then(onExitoEnv).catch(onFalloEnv);
+  } else if (window.google?.script?.run) {
+    window.google.script.run.withSuccessHandler(onExitoEnv).withFailureHandler(onFalloEnv).enviarSolicitudAmistad(estado.userEmail, idInput);
+  }
 }
 function responderSolicitudAmistad(emailAmigo, aceptar) {
-  google.script.run.withSuccessHandler(res => {
+  const onExitoResp = res => {
     if (res && res.exito) {
       mostrarToastPersonalizado(userPrefs.lang === 'en' ? (aceptar ? 'Request accepted! You are now friends' : 'Request declined.') : (aceptar ? '¡Solicitud aceptada! Ahora son amigos' : 'Solicitud rechazada.'));
       cargarAmigosYSolicitudes();
     } else {
       mostrarToastPersonalizado(res?.error || (userPrefs.lang === 'en' ? 'Error processing request' : 'Error al procesar solicitud'));
     }
-  }).procesarRespuestaSolicitud(estado.userEmail, emailAmigo, aceptar);
+  };
+  const onFalloResp = err => {
+    mostrarToastPersonalizado(err?.message || (userPrefs.lang === 'en' ? 'Error processing request' : 'Error al procesar solicitud'));
+  };
+  if (typeof SERVER_API !== 'undefined' && SERVER_API.procesarRespuestaSolicitud) {
+    SERVER_API.procesarRespuestaSolicitud(estado.userEmail, emailAmigo, aceptar).then(onExitoResp).catch(onFalloResp);
+  } else if (window.google?.script?.run) {
+    window.google.script.run.withSuccessHandler(onExitoResp).withFailureHandler(onFalloResp).procesarRespuestaSolicitud(estado.userEmail, emailAmigo, aceptar);
+  }
 }
+let amigoPerfilEmailActual = '';
 function abrirVistaPerfilAmigo(emailAmigo, pushNav = true) {
   const l = userPrefs.lang || 'es';
   if (!emailAmigo) {
     mostrarToastPersonalizado(l === 'en' ? 'Friend not found.' : 'Amigo no encontrado.');
     return;
   }
+  amigoPerfilEmailActual = String(emailAmigo).trim();
+  amigoRegsEmailActual = amigoPerfilEmailActual;
 
   if (pushNav && typeof registrarNavegacionApp === 'function') {
     registrarNavegacionApp('amigo-perfil');
@@ -2594,7 +2615,7 @@ function abrirVistaPerfilAmigo(emailAmigo, pushNav = true) {
     if (headerNick) headerNick.textContent = amigoCache.nickname || tLang('Perfil de Amigo', 'Friend Profile');
   }
 
-  google.script.run.withSuccessHandler(res => {
+  const onExito = res => {
     if (!res || !res.exito) {
       return mostrarToastPersonalizado(res?.error || (l === 'en' ? 'Could not load friend profile.' : 'No se pudo cargar el perfil del amigo.'));
     }
@@ -2794,7 +2815,18 @@ function abrirVistaPerfilAmigo(emailAmigo, pushNav = true) {
         }).join('');
       }
     }
-  }).obtenerPerfilAmigoCompleto(emailAmigo);
+  };
+
+  const onFallo = err => {
+    console.error('Error al cargar perfil completo de amigo:', err);
+    mostrarToastPersonalizado(l === 'en' ? 'Could not load friend profile.' : 'No se pudo cargar el perfil del amigo.');
+  };
+
+  if (typeof SERVER_API !== 'undefined' && SERVER_API.obtenerPerfilAmigoCompleto) {
+    SERVER_API.obtenerPerfilAmigoCompleto(emailAmigo).then(onExito).catch(onFallo);
+  } else if (window.google?.script?.run) {
+    window.google.script.run.withSuccessHandler(onExito).withFailureHandler(onFallo).obtenerPerfilAmigoCompleto(emailAmigo);
+  }
 }
 window.abrirVistaPerfilAmigo = abrirVistaPerfilAmigo;
 window.verPerfilDeAmigo = function(emailAmigo) {
@@ -2868,21 +2900,31 @@ function copiarIdAmigoDesdeModal() {
   mostrarToastPersonalizado(l === 'en' ? 'Friend ID copied to clipboard!' : '¡ID de amigo copiado al portapapeles!');
 }
 function eliminarAmigoSeleccionado() {
-  if (!amigoSeleccionadoActual || !estado.userEmail) return;
-  const confMsg = userPrefs.lang === 'en' ? `Remove ${amigoSeleccionadoActual.nickname} from your friends list?` : `¿Eliminar a ${amigoSeleccionadoActual.nickname} de tu lista de amigos?`;
+  const targetEmail = amigoSeleccionadoActual?.email || amigoSeleccionadoActual?.user_email || amigoPerfilEmailActual;
+  if (!targetEmail || !estado.userEmail) return;
+  const confMsg = userPrefs.lang === 'en' ? `Remove ${amigoSeleccionadoActual?.nickname || 'friend'} from your friends list?` : `¿Eliminar a ${amigoSeleccionadoActual?.nickname || 'este amigo'} de tu lista de amigos?`;
   if (!confirm(confMsg)) return;
-  google.script.run.withSuccessHandler(res => {
+  const onExito = res => {
     volverDesdePerfilAmigo();
     mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Friend removed.' : 'Amigo eliminado.');
     cargarAmigosYSolicitudes();
-  }).procesarRespuestaSolicitud(estado.userEmail, amigoSeleccionadoActual.email, false);
+  };
+  const onFallo = err => {
+    console.error('Error al eliminar amigo:', err);
+    mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Error removing friend' : 'Error al eliminar amigo');
+  };
+  if (typeof SERVER_API !== 'undefined' && SERVER_API.procesarRespuestaSolicitud) {
+    SERVER_API.procesarRespuestaSolicitud(estado.userEmail, targetEmail, false).then(onExito).catch(onFallo);
+  } else if (window.google?.script?.run) {
+    window.google.script.run.withSuccessHandler(onExito).withFailureHandler(onFallo).procesarRespuestaSolicitud(estado.userEmail, targetEmail, false);
+  }
 }
 let amigoRegistrosCache = [];
 let amigoRegsFiltroCat = 'todas';
 let amigoRegsFiltroSub = 'todas';
 let amigoRegsEmailActual = '';
 function abrirVistaRegistrosAmigo(email, nickname, catInicial = 'todas', subInicial = 'todas', pushNav = true) {
-  const amEmail = (email || (amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '') || '').trim();
+  const amEmail = (email || amigoPerfilEmailActual || (amigoSeleccionadoActual ? (amigoSeleccionadoActual.email || amigoSeleccionadoActual.user_email) : '') || amigoRegsEmailActual || '').trim();
   amigoRegsEmailActual = amEmail;
   const amFriend = (estado.amigos || []).find(x => (x.email || '').toLowerCase() === amEmail.toLowerCase());
   const amNick = nickname || (amFriend ? amFriend.nickname : (amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : tLang('Amigo', 'Friend')));

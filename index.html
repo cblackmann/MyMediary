@@ -558,7 +558,7 @@
 
       <!-- 7. BOTONES DE ACCIÓN: VER REGISTROS Y MEZCLAR WATCHLISTS -->
       <div style="display:flex; flex-direction:column; gap:10px; margin:14px 0 8px;">
-        <button type="button" class="btn-today-pill amigo-card-regs-btn" id="btn-ver-regs-amigo" style="height:38px; padding:0 14px; font-size:0.84rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:2px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; width:100%; transition:var(--tr); box-sizing:border-box;" onclick="abrirVistaRegistrosAmigo(amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '', amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')">
+        <button type="button" class="btn-today-pill amigo-card-regs-btn" id="btn-ver-regs-amigo" style="height:38px; padding:0 14px; font-size:0.84rem; margin:0; background:var(--bg); border:1px solid var(--border); color:var(--text); border-radius:2px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-weight:700; width:100%; transition:var(--tr); box-sizing:border-box;" onclick="abrirVistaRegistrosAmigo(amigoSeleccionadoActual ? (amigoSeleccionadoActual.email || amigoSeleccionadoActual.user_email) : (amigoRegsEmailActual || ''), amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : '')">
           <span><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></span>
           <span id="txt-ver-regs-amigo-btn" data-i18n="friend_view_records_zero">Ver Registros (0)</span>
         </button>
@@ -812,7 +812,7 @@
         <div class="cal-nav-selectors">
           <!-- Selector integrado de Mes -->
           <div class="cal-custom-dropdown" id="cal-dd-mes">
-            <button type="button" class="cal-dd-trigger" id="cal-trigger-mes" onclick="toggleDropdownMesCalendario()" aria-haspopup="listbox" aria-expanded="false" title="Seleccionar mes" data-i18n-title="cal_select_month_title">
+            <button type="button" class="cal-dd-trigger" id="cal-trigger-mes" onclick="event.stopPropagation(); toggleDropdownMesCalendario(event)" aria-haspopup="listbox" aria-expanded="false" title="Seleccionar mes" data-i18n-title="cal_select_month_title">
               <span id="cal-lbl-mes">Mes</span>
               <svg class="h-icon cal-dd-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
             </button>
@@ -821,7 +821,7 @@
 
           <!-- Selector integrado de Año -->
           <div class="cal-custom-dropdown" id="cal-dd-anio">
-            <button type="button" class="cal-dd-trigger" id="cal-trigger-anio" onclick="toggleDropdownAnioCalendario()" aria-haspopup="listbox" aria-expanded="false" title="Seleccionar año" data-i18n-title="cal_select_year_title">
+            <button type="button" class="cal-dd-trigger" id="cal-trigger-anio" onclick="event.stopPropagation(); toggleDropdownAnioCalendario(event)" aria-haspopup="listbox" aria-expanded="false" title="Seleccionar año" data-i18n-title="cal_select_year_title">
               <span id="cal-lbl-anio">Año</span>
               <svg class="h-icon cal-dd-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px;"><path d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
             </button>

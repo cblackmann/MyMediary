@@ -1,5 +1,6 @@
 /* Mediary — js/i18n/i18n.js */
 const I18N = { es: window.MEDIARY_I18N_ES, en: window.MEDIARY_I18N_EN };
+window.I18N = I18N;
 
 function getLang_() {
   return (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';

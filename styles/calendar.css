@@ -241,12 +241,13 @@
   border: 1px solid var(--border);
   border-radius: 2px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
-  z-index: 1000;
+  z-index: 1200;
   display: none;
   padding: 4px;
   max-height: 220px;
   overflow-y: auto;
   box-sizing: border-box;
+  pointer-events: auto;
 }
 
 .cal-dd-menu.open {
@@ -257,6 +258,8 @@
 
 .cal-dd-menu-years {
   min-width: 90px;
+  right: 0;
+  left: auto;
 }
 
 .cal-dd-item {
@@ -273,6 +276,9 @@
   transition: all 0.12s ease;
   display: flex;
   align-items: center;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  pointer-events: auto;
   justify-content: space-between;
   box-sizing: border-box;
 }
