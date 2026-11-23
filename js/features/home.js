@@ -270,14 +270,18 @@ function obtenerListaDiasLectura() {
 }
 
 function haLeidoHoy() {
-  const hoyStr = obtenerFechaHoyStr();
-  const lista = obtenerListaDiasLectura();
-  return lista.includes(hoyStr);
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : '';
+  const lista = (typeof obtenerListaDiasLectura === 'function') ? obtenerListaDiasLectura() : [];
+  if (lista.includes(hoyStr)) return true;
+  if (!hoyStr) return false;
+  const hoyIdx = fechaStrToDayIndex(hoyStr);
+  if (hoyIdx === null) return false;
+  return lista.some(f => fechaStrToDayIndex(f) === hoyIdx);
 }
 
 function obtenerDayIndicesDeLecturaDiaria() {
   const set = new Set();
-  const lista = obtenerListaDiasLectura();
+  const lista = (typeof obtenerListaDiasLectura === 'function') ? obtenerListaDiasLectura() : [];
   lista.forEach(fStr => {
     const idx = fechaStrToDayIndex(fStr);
     if (idx !== null) set.add(idx);
@@ -300,13 +304,33 @@ const LISTA_TIEMPOS_LECTURA = [
 
 let tiempoLecturaSeleccionadoActual = '30 minutos';
 
+function normalizarTiempoLectura(t) {
+  if (!t) return '30 minutos';
+  const str = String(t).trim();
+  if (str === '10m' || str === '10 min' || str.startsWith('10 min')) return '10 minutos';
+  if (str === '20m' || str === '20 min' || str.startsWith('20 min')) return '20 minutos';
+  if (str === '30m' || str === '30 min' || str.startsWith('30 min')) return '30 minutos';
+  if (str === '45m' || str === '45 min' || str.startsWith('45 min')) return '45 minutos';
+  if (str === '1h' || str === '1 hora' || str === '1 hour' || (str.startsWith('1 h') && !str.includes('30'))) return '1 hora';
+  if (str === '1h 30m' || (str.includes('1') && str.includes('30'))) return '1 hora 30 minutos';
+  if (str === '2h' || str === '2 horas' || str === '2 hours' || (str.startsWith('2') && !str.includes('30') && (str.includes('h') || str.includes('hora')))) return '2 horas';
+  if (str === '2h 30m' || (str.includes('2') && str.includes('30'))) return '2 horas 30 minutos';
+  if (str === '3h' || str === '3 horas' || str === '3 hours' || str.startsWith('3')) return '3 horas';
+  if (str === '4h' || str === '4 horas' || str === '4 hours' || str.startsWith('4')) return '4 horas';
+  return str;
+}
+
 function formatTiempoPill(txt) {
   if (!txt) return '';
-  return txt
+  return String(txt)
     .replace(' minutos', 'm')
     .replace(' minuto', 'm')
+    .replace(' minutes', 'm')
+    .replace(' minute', 'm')
     .replace(' horas', 'h')
-    .replace(' hora', 'h');
+    .replace(' hora', 'h')
+    .replace(' hours', 'h')
+    .replace(' hour', 'h');
 }
 
 function obtenerMapaTiemposLectura() {
@@ -314,8 +338,15 @@ function obtenerMapaTiemposLectura() {
   const incorporar = obj => {
     if (obj && typeof obj === 'object') {
       Object.keys(obj).forEach(f => {
-        if (!mapa[f] || (obj[f]?.ts && (!mapa[f].ts || obj[f].ts > mapa[f].ts))) {
-          mapa[f] = obj[f];
+        const val = obj[f];
+        if (typeof val === 'string') {
+          if (!mapa[f]) {
+            mapa[f] = { texto: val, ts: Date.now() };
+          }
+        } else if (val && typeof val === 'object' && val.texto) {
+          if (!mapa[f] || (val.ts && (!mapa[f].ts || val.ts > mapa[f].ts))) {
+            mapa[f] = val;
+          }
         }
       });
     }
@@ -380,19 +411,38 @@ function guardarTiempoLecturaFecha(fechaStr, tiempoTexto) {
     delete mapa[fechaStr];
   }
 
-  const clave = 'mediary_tiempos_lectura_' + (estado.userEmail || 'default');
+  const uEmail = (typeof estado !== 'undefined' && estado?.userEmail) ? estado.userEmail : 'default';
+  const clave = 'mediary_tiempos_lectura_' + uEmail;
   try {
     localStorage.setItem(clave, JSON.stringify(mapa));
     localStorage.setItem('mediary_tiempos_lectura_default', JSON.stringify(mapa));
+    localStorage.setItem('mediary_tiempos_lectura', JSON.stringify(mapa));
+    if (!tiempoTexto) {
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('mediary_tiempos_lectura')) {
+          try {
+            const m = JSON.parse(localStorage.getItem(k));
+            if (m && typeof m === 'object' && m[fechaStr]) {
+              delete m[fechaStr];
+              localStorage.setItem(k, JSON.stringify(m));
+            }
+          } catch(e) {}
+        }
+      }
+    }
   } catch (e) {}
 
   if (perfilUsuario) {
     perfilUsuario.tiemposLectura = mapa;
+    if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+    if (!perfilUsuario.preferencias.rachas) perfilUsuario.preferencias.rachas = {};
+    perfilUsuario.preferencias.rachas.tiemposLectura = mapa;
     guardarPerfilLocal();
     if (typeof SERVER_API !== 'undefined' && SERVER_API?.guardarPerfilUsuario && estado?.userEmail) {
       SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
     }
-    if (typeof google !== 'undefined' && google.script?.run) {
+    if (typeof google !== 'undefined' && google.script?.run?.guardarPerfilUsuario && estado?.userEmail) {
       google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
     }
   }
@@ -403,55 +453,67 @@ function guardarTiempoLecturaFecha(fechaStr, tiempoTexto) {
 }
 
 function abrirModalTiempoLectura() {
-  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
-  const mapa = (typeof obtenerMapaTiemposLectura === 'function') ? obtenerMapaTiemposLectura() : {};
-  const infoHoy = mapa[hoyStr];
-  const yaLeyo = (typeof haLeidoHoy === 'function') ? haLeidoHoy() : false;
-
-  if (infoHoy) {
-    if (typeof infoHoy === 'string') {
-      tiempoLecturaSeleccionadoActual = infoHoy;
-    } else if (infoHoy.texto) {
-      tiempoLecturaSeleccionadoActual = infoHoy.texto;
-    }
-  } else if (!tiempoLecturaSeleccionadoActual) {
-    tiempoLecturaSeleccionadoActual = '30 minutos';
-  }
-
-  const strip = document.getElementById('reading-time-chip-strip');
-  if (strip) {
-    strip.innerHTML = LISTA_TIEMPOS_LECTURA.map(t => {
-      const isSel = (t === tiempoLecturaSeleccionadoActual);
-      return `<button type="button" class="reading-time-chip ${isSel ? 'selected' : ''}" data-tiempo="${t}" onclick="seleccionarTiempoLectura('${t}')">${t}</button>`;
-    }).join('');
-
-    if (!strip._hasWheelListener) {
-      strip.addEventListener('wheel', (e) => {
-        if (e.deltaY !== 0) {
-          e.preventDefault();
-          strip.scrollLeft += e.deltaY;
+  try {
+    const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
+    const mapa = (typeof obtenerMapaTiemposLectura === 'function') ? obtenerMapaTiemposLectura() : {};
+    let infoHoy = mapa[hoyStr];
+    if (!infoHoy && hoyStr) {
+      const hoyIdx = (typeof fechaStrToDayIndex === 'function') ? fechaStrToDayIndex(hoyStr) : null;
+      if (hoyIdx !== null) {
+        for (const k of Object.keys(mapa)) {
+          if (fechaStrToDayIndex(k) === hoyIdx) {
+            infoHoy = mapa[k];
+            break;
+          }
         }
-      }, { passive: false });
-      strip._hasWheelListener = true;
-    }
-  }
-
-  actualizarDisplayTiempoLectura(tiempoLecturaSeleccionadoActual);
-
-  const btnUnmark = document.getElementById('btn-desmarcar-lectura');
-  if (btnUnmark) {
-    btnUnmark.style.display = yaLeyo ? 'block' : 'none';
-  }
-
-  const modal = document.getElementById('modal-tiempo-lectura');
-  if (modal) {
-    modal.style.display = 'flex';
-    setTimeout(() => {
-      const activeChip = strip?.querySelector('.reading-time-chip.selected');
-      if (activeChip) {
-        activeChip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       }
-    }, 60);
+    }
+    const yaLeyo = (typeof haLeidoHoy === 'function') ? haLeidoHoy() : false;
+
+    if (infoHoy) {
+      const val = (typeof infoHoy === 'string') ? infoHoy : (infoHoy.texto || '');
+      tiempoLecturaSeleccionadoActual = normalizarTiempoLectura(val);
+    } else {
+      tiempoLecturaSeleccionadoActual = '30 minutos';
+    }
+
+    const strip = document.getElementById('reading-time-chip-strip');
+    if (strip) {
+      strip.innerHTML = LISTA_TIEMPOS_LECTURA.map(t => {
+        const isSel = (t === tiempoLecturaSeleccionadoActual);
+        return `<button type="button" class="reading-time-chip ${isSel ? 'selected' : ''}" data-tiempo="${t}" onclick="seleccionarTiempoLectura('${t}')">${formatearTiempoLecturaIdioma_(t)}</button>`;
+      }).join('');
+
+      if (!strip._hasWheelListener) {
+        strip.addEventListener('wheel', (e) => {
+          if (e.deltaY !== 0) {
+            e.preventDefault();
+            strip.scrollLeft += e.deltaY;
+          }
+        }, { passive: false });
+        strip._hasWheelListener = true;
+      }
+    }
+
+    actualizarDisplayTiempoLectura(tiempoLecturaSeleccionadoActual);
+
+    const btnUnmark = document.getElementById('btn-desmarcar-lectura');
+    if (btnUnmark) {
+      btnUnmark.style.display = yaLeyo ? 'block' : 'none';
+    }
+
+    const modal = document.getElementById('modal-tiempo-lectura');
+    if (modal) {
+      modal.style.display = 'flex';
+      setTimeout(() => {
+        const activeChip = strip?.querySelector('.reading-time-chip.selected');
+        if (activeChip) {
+          activeChip.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+      }, 60);
+    }
+  } catch (err) {
+    console.error('Error al abrir modal de tiempo de lectura:', err);
   }
 }
 window.abrirModalTiempoLectura = abrirModalTiempoLectura;
@@ -527,93 +589,154 @@ window.addEventListener('keydown', (e) => {
 });
 
 function confirmarTiempoLectura() {
-  const tiempo = tiempoLecturaSeleccionadoActual || '30 minutos';
-  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
-  let lista = obtenerListaDiasLectura();
-  if (!lista.includes(hoyStr)) {
-    lista.push(hoyStr);
-  }
-
-  const claveDias = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
   try {
-    localStorage.setItem(claveDias, JSON.stringify(lista));
-    localStorage.setItem('mediary_dias_lectura_default', JSON.stringify(lista));
-  } catch (e) {}
-
-  if (perfilUsuario) {
-    perfilUsuario.diasLectura = lista;
-    guardarPerfilLocal();
-    if (typeof SERVER_API !== 'undefined' && SERVER_API?.guardarPerfilUsuario && estado?.userEmail) {
-      SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+    const tiempo = tiempoLecturaSeleccionadoActual || '30 minutos';
+    const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
+    let lista = (typeof obtenerListaDiasLectura === 'function') ? obtenerListaDiasLectura() : [];
+    if (!lista.includes(hoyStr)) {
+      lista.push(hoyStr);
     }
-    if (typeof google !== 'undefined' && google.script?.run) {
-      google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+
+    const uEmail = (typeof estado !== 'undefined' && estado?.userEmail) ? estado.userEmail : 'default';
+    const claveDias = 'mediary_dias_lectura_' + uEmail;
+    try {
+      localStorage.setItem(claveDias, JSON.stringify(lista));
+      localStorage.setItem('mediary_dias_lectura_default', JSON.stringify(lista));
+      localStorage.setItem('mediary_dias_lectura', JSON.stringify(lista));
+    } catch (e) {}
+
+    if (typeof perfilUsuario !== 'undefined' && perfilUsuario) {
+      perfilUsuario.diasLectura = lista;
+      if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+      if (!perfilUsuario.preferencias.rachas) perfilUsuario.preferencias.rachas = {};
+      perfilUsuario.preferencias.rachas.diasLectura = lista;
+      if (typeof guardarPerfilLocal === 'function') guardarPerfilLocal();
+      if (typeof SERVER_API !== 'undefined' && SERVER_API?.guardarPerfilUsuario && estado?.userEmail) {
+        SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+      }
+      if (typeof google !== 'undefined' && google.script?.run?.guardarPerfilUsuario && estado?.userEmail) {
+        google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+      }
     }
-  }
 
-  guardarTiempoLecturaFecha(hoyStr, tiempo);
+    guardarTiempoLecturaFecha(hoyStr, tiempo);
 
-  cerrarModalTiempoLectura();
+    cerrarModalTiempoLectura();
 
-  const l = userPrefs.lang || 'es';
-  mostrarToastPersonalizado(l === 'en' ? `Reading session logged: ${tiempo}! Streak on fire 🔥` : `¡Lectura registrada (${tiempo})! Tu racha sigue encendida 🔥`);
+    const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
+    const dispTiempo = (typeof formatearTiempoLecturaIdioma_ === 'function') ? formatearTiempoLecturaIdioma_(tiempo) : tiempo;
+    if (typeof mostrarToastPersonalizado === 'function') {
+      mostrarToastPersonalizado(l === 'en' ? `Reading session logged: ${dispTiempo}! Streak on fire 🔥` : `¡Lectura registrada (${dispTiempo})! Tu racha sigue encendida 🔥`);
+    }
 
-  actualizarBotonLecturaHoyInicio();
-  actualizarBotonLecturaHoyLibros();
-  renderizarRachasActualesInicio();
-  if (estado.categoria === 'Lecturas') {
-    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria || 'Libros');
-  }
-  if (typeof renderizarStats === 'function') {
-    renderizarStats();
+    if (typeof actualizarBotonLecturaHoyInicio === 'function') actualizarBotonLecturaHoyInicio();
+    if (typeof actualizarBotonLecturaHoyLibros === 'function') actualizarBotonLecturaHoyLibros();
+    if (typeof renderizarRachasActualesInicio === 'function') renderizarRachasActualesInicio();
+    if (typeof estado !== 'undefined' && estado.categoria === 'Lecturas' && typeof renderizarBannerRachaSubcategoria === 'function') {
+      renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria || 'Libros');
+    }
+    if (typeof renderizarStats === 'function') {
+      renderizarStats();
+    }
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(true);
+    }
+  } catch (err) {
+    console.error('Error al confirmar tiempo de lectura:', err);
+    cerrarModalTiempoLectura();
   }
 }
 window.confirmarTiempoLectura = confirmarTiempoLectura;
 
 function desmarcarLecturaHoy() {
-  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
-  let lista = obtenerListaDiasLectura();
-  lista = lista.filter(f => f !== hoyStr);
-
-  const claveDias = 'mediary_dias_lectura_' + (estado.userEmail || 'default');
   try {
-    localStorage.setItem(claveDias, JSON.stringify(lista));
-    localStorage.setItem('mediary_dias_lectura_default', JSON.stringify(lista));
-  } catch (e) {}
+    const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
+    let lista = (typeof obtenerListaDiasLectura === 'function') ? obtenerListaDiasLectura() : [];
+    lista = lista.filter(f => f !== hoyStr);
 
-  if (perfilUsuario) {
-    perfilUsuario.diasLectura = lista;
-    guardarPerfilLocal();
-    if (typeof SERVER_API !== 'undefined' && SERVER_API?.guardarPerfilUsuario && estado?.userEmail) {
-      SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+    const uEmail = (typeof estado !== 'undefined' && estado?.userEmail) ? estado.userEmail : 'default';
+    const claveDias = 'mediary_dias_lectura_' + uEmail;
+    try {
+      localStorage.setItem(claveDias, JSON.stringify(lista));
+      localStorage.setItem('mediary_dias_lectura_default', JSON.stringify(lista));
+      localStorage.setItem('mediary_dias_lectura', JSON.stringify(lista));
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith('mediary_dias_lectura')) {
+          try {
+            const arr = JSON.parse(localStorage.getItem(k));
+            if (Array.isArray(arr) && arr.includes(hoyStr)) {
+              localStorage.setItem(k, JSON.stringify(arr.filter(f => f !== hoyStr)));
+            }
+          } catch(e) {}
+        }
+      }
+      ['Mediary_perfil_v1', 'MyMediary_perfil_v1'].forEach(k => {
+        try {
+          const raw = localStorage.getItem(k);
+          if (raw) {
+            const obj = JSON.parse(raw);
+            let mod = false;
+            if (Array.isArray(obj?.diasLectura) && obj.diasLectura.includes(hoyStr)) {
+              obj.diasLectura = obj.diasLectura.filter(f => f !== hoyStr);
+              mod = true;
+            }
+            if (Array.isArray(obj?.preferencias?.rachas?.diasLectura) && obj.preferencias.rachas.diasLectura.includes(hoyStr)) {
+              obj.preferencias.rachas.diasLectura = obj.preferencias.rachas.diasLectura.filter(f => f !== hoyStr);
+              mod = true;
+            }
+            if (mod) localStorage.setItem(k, JSON.stringify(obj));
+          }
+        } catch(e) {}
+      });
+    } catch (e) {}
+
+    if (typeof perfilUsuario !== 'undefined' && perfilUsuario) {
+      perfilUsuario.diasLectura = lista;
+      if (!perfilUsuario.preferencias) perfilUsuario.preferencias = {};
+      if (!perfilUsuario.preferencias.rachas) perfilUsuario.preferencias.rachas = {};
+      perfilUsuario.preferencias.rachas.diasLectura = lista;
+      if (typeof guardarPerfilLocal === 'function') guardarPerfilLocal();
+      if (typeof SERVER_API !== 'undefined' && SERVER_API?.guardarPerfilUsuario && estado?.userEmail) {
+        SERVER_API.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+      }
+      if (typeof google !== 'undefined' && google.script?.run?.guardarPerfilUsuario && estado?.userEmail) {
+        google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+      }
     }
-    if (typeof google !== 'undefined' && google.script?.run) {
-      google.script.run.guardarPerfilUsuario(perfilUsuario, estado.userEmail);
+
+    guardarTiempoLecturaFecha(hoyStr, null);
+
+    cerrarModalTiempoLectura();
+
+    const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
+    if (typeof mostrarToastPersonalizado === 'function') {
+      mostrarToastPersonalizado(l === 'en' ? 'Reading session for today unmarked.' : 'Lectura de hoy desmarcada.');
     }
-  }
 
-  guardarTiempoLecturaFecha(hoyStr, null);
-
-  cerrarModalTiempoLectura();
-
-  const l = userPrefs.lang || 'es';
-  mostrarToastPersonalizado(l === 'en' ? 'Reading session for today unmarked.' : 'Lectura de hoy desmarcada.');
-
-  actualizarBotonLecturaHoyInicio();
-  actualizarBotonLecturaHoyLibros();
-  renderizarRachasActualesInicio();
-  if (estado.categoria === 'Lecturas') {
-    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria || 'Libros');
-  }
-  if (typeof renderizarStats === 'function') {
-    renderizarStats();
+    if (typeof actualizarBotonLecturaHoyInicio === 'function') actualizarBotonLecturaHoyInicio();
+    if (typeof actualizarBotonLecturaHoyLibros === 'function') actualizarBotonLecturaHoyLibros();
+    if (typeof renderizarRachasActualesInicio === 'function') renderizarRachasActualesInicio();
+    if (typeof estado !== 'undefined' && estado.categoria === 'Lecturas' && typeof renderizarBannerRachaSubcategoria === 'function') {
+      renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria || 'Libros');
+    }
+    if (typeof renderizarStats === 'function') {
+      renderizarStats();
+    }
+    if (typeof sincronizarPreferenciasYAppsHaciaNube === 'function') {
+      sincronizarPreferenciasYAppsHaciaNube(true);
+    }
+  } catch (err) {
+    console.error('Error al desmarcar lectura:', err);
+    cerrarModalTiempoLectura();
   }
 }
 window.desmarcarLecturaHoy = desmarcarLecturaHoy;
 
 function toggleLecturaHoy(e) {
-  if (e && typeof e.stopPropagation === 'function') {
-    e.stopPropagation();
+  if (e) {
+    if (typeof e.stopPropagation === 'function') e.stopPropagation();
+    if (typeof e.preventDefault === 'function') e.preventDefault();
   }
   abrirModalTiempoLectura();
 }
@@ -621,31 +744,53 @@ window.toggleLecturaHoy = toggleLecturaHoy;
 
 function actualizarBotonLecturaHoyInicio() {
   const box = document.getElementById('home-reading-quick-box');
-  if (box) {
-    box.innerHTML = '';
-    box.style.display = 'none';
-  }
+  if (!box) return;
+
+  const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
+  const ya = (typeof haLeidoHoy === 'function') ? haLeidoHoy() : false;
+  const mapaTiempos = (typeof obtenerMapaTiemposLectura === 'function') ? obtenerMapaTiemposLectura() : {};
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : '';
+  const tiempoHoyObj = mapaTiempos[hoyStr];
+  const tiempoHoyTxt = (typeof tiempoHoyObj === 'string') ? tiempoHoyObj : (tiempoHoyObj?.texto || '');
+
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div class="home-reading-tracker-card ${ya ? 'active-read' : ''}" onclick="toggleLecturaHoy(event)" style="margin-top:10px;">
+      <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
+        <span class="reading-tracker-icon">${ya ? getHeroIcon('check-circle', '', 22) : getHeroIcon('book-open', '', 22)}</span>
+        <div class="reading-tracker-text">
+          <strong class="reading-tracker-title">${ya ? (l === 'en' ? 'You read today!' : '¡Ya leíste hoy!') : (l === 'en' ? 'Did you read today?' : '¿Avanzaste en tu lectura hoy?')}</strong>
+          <span class="reading-tracker-sub">${ya ? (tiempoHoyTxt ? (l === 'en' ? `Session time: ${tiempoHoyTxt}` : `Tiempo registrado: ${tiempoHoyTxt}`) : (l === 'en' ? 'Session logged into your streak.' : 'Tu sesión de hoy está sumada a tu racha.')) : (l === 'en' ? 'Log your daily progress and keep your streak alive.' : 'Toca para registrar tu tiempo y sumar el día a tu racha.')}</span>
+        </div>
+      </div>
+      <button type="button" class="btn-read-today ${ya ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy(event)" title="${ya ? (l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ajustar tiempo o desmarcar') : (l === 'en' ? 'Mark reading today' : 'Registrar lectura de hoy')}">
+        <span>${ya ? getHeroIcon('check', '', 14) : getHeroIcon('sparkles', '', 14)}</span>
+        <span>${ya ? (tiempoHoyTxt ? (typeof formatTiempoPill === 'function' ? formatTiempoPill(tiempoHoyTxt) : tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')) : (l === 'en' ? 'I read today' : 'Ya leí hoy')}</span>
+      </button>
+    </div>
+  `;
 }
+window.actualizarBotonLecturaHoyInicio = actualizarBotonLecturaHoyInicio;
 
 function actualizarBotonLecturaHoyLibros() {
   const box = document.getElementById('box-lectura-hoy-libros');
   if (!box) return;
-  const c = estado.categoria;
-  const s = estado.subcategoria;
-  const esLibros = (c === 'Lecturas' && (s === 'Libros' || s === 'Libro'));
+  const c = (typeof estado !== 'undefined' && estado?.categoria) ? estado.categoria : '';
+  const esLectura = (c === 'Lecturas');
 
-  if (!esLibros) {
+  if (!esLectura) {
     box.style.display = 'none';
     box.innerHTML = '';
     return;
   }
 
   box.style.display = 'block';
-  const l = userPrefs.lang || 'es';
-  const ya = haLeidoHoy();
-  const mapaTiempos = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
-  const tiempoHoyObj = mapaTiempos[obtenerFechaHoyStr()];
-  const tiempoHoyTxt = tiempoHoyObj?.texto || '';
+  const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
+  const ya = (typeof haLeidoHoy === 'function') ? haLeidoHoy() : false;
+  const mapaTiempos = (typeof obtenerMapaTiemposLectura === 'function') ? obtenerMapaTiemposLectura() : {};
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : '';
+  const tiempoHoyObj = mapaTiempos[hoyStr];
+  const tiempoHoyTxt = (typeof tiempoHoyObj === 'string') ? tiempoHoyObj : (tiempoHoyObj?.texto || '');
 
   if (ya) {
     box.innerHTML = `
@@ -658,7 +803,7 @@ function actualizarBotonLecturaHoyLibros() {
           </div>
         </div>
         <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:8px 18px; font-size:0.84rem;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
-          <span>${getHeroIcon("check", "", 14)}</span> <span>${tiempoHoyTxt ? formatTiempoPill(tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
+          <span>${getHeroIcon("check", "", 14)}</span> <span>${tiempoHoyTxt ? (typeof formatTiempoPill === 'function' ? formatTiempoPill(tiempoHoyTxt) : tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
         </button>
       </div>
     `;
@@ -679,6 +824,7 @@ function actualizarBotonLecturaHoyLibros() {
     `;
   }
 }
+window.actualizarBotonLecturaHoyLibros = actualizarBotonLecturaHoyLibros;
 
 function calcularRachaDesdeDayIndices(setDayIndices) {
   if (!setDayIndices || !setDayIndices.size) {
@@ -1394,8 +1540,20 @@ function renderizarRachasActualesInicio() {
   const rLectura = calcularRachaLectura();
 
   const mapaTiempos = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
-  const tiempoHoyObj = mapaTiempos[obtenerFechaHoyStr()];
-  const tiempoHoyTxt = tiempoHoyObj?.texto || '';
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : '';
+  let tiempoHoyObj = mapaTiempos[hoyStr];
+  if (!tiempoHoyObj && hoyStr) {
+    const hoyIdx = (typeof fechaStrToDayIndex === 'function') ? fechaStrToDayIndex(hoyStr) : null;
+    if (hoyIdx !== null) {
+      for (const k of Object.keys(mapaTiempos)) {
+        if (fechaStrToDayIndex(k) === hoyIdx) {
+          tiempoHoyObj = mapaTiempos[k];
+          break;
+        }
+      }
+    }
+  }
+  const tiempoHoyTxt = (typeof tiempoHoyObj === 'string') ? tiempoHoyObj : (tiempoHoyObj?.texto || '');
 
   cont.innerHTML = `
     <div class="home-streaks-strip">
@@ -1438,7 +1596,7 @@ function renderizarRachasActualesInicio() {
       </div>
 
       <!-- 3. Lectura -->
-      <div class="home-streak-col col-lectura ${rLectura.esActivaHoy ? 'active' : ''}" onclick="cambiarCat('Lecturas', 'Libros')" title="${l === 'en' ? 'View books' : 'Ver libros'}">
+      <div class="home-streak-col col-lectura ${rLectura.esActivaHoy ? 'active' : ''}" onclick="toggleLecturaHoy(event)" style="cursor:pointer;" title="${rLectura.esActivaHoy ? (tiempoHoyTxt ? (l === 'en' ? `Read today: ${tiempoHoyTxt}. Click to adjust or unmark` : `Leído hoy: ${tiempoHoyTxt}. Toca para ajustar tiempo o desmarcar`) : (l === 'en' ? 'Read today! Click to adjust or unmark' : '¡Leído hoy! Toca para ajustar tiempo o desmarcar')) : (l === 'en' ? 'Mark reading today' : 'Registrar lectura de hoy')}">
         <div class="home-streak-col-header">
           <span class="home-streak-cat-icon icon-lectura">${getHeroIcon("book-open", "", 13)}</span>
           <span class="home-streak-cat-name">${l === 'en' ? 'Reading' : 'Lectura'}</span>
@@ -1450,8 +1608,8 @@ function renderizarRachasActualesInicio() {
         </div>
         <div class="home-streak-col-action" onclick="event.stopPropagation(); toggleLecturaHoy(event)">
           <button type="button" class="btn-streak-pill ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy(event)" title="${rLectura.esActivaHoy ? (tiempoHoyTxt ? (l === 'en' ? `Read today: ${tiempoHoyTxt}. Click to adjust or unmark` : `Leído hoy: ${tiempoHoyTxt}. Toca para ajustar tiempo o desmarcar`) : (l === 'en' ? 'Read today! Click to adjust or unmark' : '¡Leído hoy! Toca para ajustar tiempo o desmarcar')) : (l === 'en' ? 'Mark reading today' : 'Marcar lectura de hoy')}">
-            ${rLectura.esActivaHoy ? getHeroIcon('check', '', 11) : getHeroIcon('plus', '', 11)}
-            <span>${rLectura.esActivaHoy ? (tiempoHoyTxt ? formatTiempoPill(tiempoHoyTxt) : (l === 'en' ? 'Today' : 'Hoy')) : (l === 'en' ? 'Mark' : 'Marcar')}</span>
+            ${rLectura.esActivaHoy ? getHeroIcon('check', '', 11) : getHeroIcon('sparkles', '', 11)}
+            <span>${rLectura.esActivaHoy ? (tiempoHoyTxt ? formatTiempoPill(tiempoHoyTxt) : (l === 'en' ? 'Today' : 'Hoy')) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
           </button>
         </div>
       </div>
@@ -1460,6 +1618,7 @@ function renderizarRachasActualesInicio() {
 
   actualizarBotonLecturaHoyInicio();
 }
+window.renderizarRachasActualesInicio = renderizarRachasActualesInicio;
 
 function calcularRachaMasAltaGlobal(regs) {
   const l = userPrefs.lang || 'es';
@@ -1578,10 +1737,22 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
   const esLectura = (cat === 'Lecturas');
   let lecturaBtnHtml = '';
   if (esLectura) {
-    const ya = haLeidoHoy();
+    const ya = (typeof haLeidoHoy === 'function') ? haLeidoHoy() : false;
     const mapaTiempos = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
-    const tiempoHoyObj = mapaTiempos[obtenerFechaHoyStr()];
-    const tiempoHoyTxt = tiempoHoyObj?.texto || '';
+    const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : '';
+    let tiempoHoyObj = mapaTiempos[hoyStr];
+    if (!tiempoHoyObj && hoyStr) {
+      const hoyIdx = (typeof fechaStrToDayIndex === 'function') ? fechaStrToDayIndex(hoyStr) : null;
+      if (hoyIdx !== null) {
+        for (const k of Object.keys(mapaTiempos)) {
+          if (fechaStrToDayIndex(k) === hoyIdx) {
+            tiempoHoyObj = mapaTiempos[k];
+            break;
+          }
+        }
+      }
+    }
+    const tiempoHoyTxt = (typeof tiempoHoyObj === 'string') ? tiempoHoyObj : (tiempoHoyObj?.texto || '');
     if (ya) {
       lecturaBtnHtml = `
         <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.bgVar : 'rgba(16,185,129,0.15)'}; border:1px solid ${metaCol ? metaCol.borderVar : 'rgba(16,185,129,0.4)'}; color:${metaCol ? metaCol.colorVar : '#34d399'}; cursor:pointer;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
@@ -1640,6 +1811,7 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
     container.innerHTML = '';
   }
 }
+window.renderizarBannerRachaSubcategoria = renderizarBannerRachaSubcategoria;
 
 function calcularYMostrarEstadisticasPerfil() {
   try {
