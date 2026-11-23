@@ -1104,10 +1104,8 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
 .reading-time-val-text {font-size:1.35rem;font-weight:800;color:var(--text);letter-spacing:-0.02em;line-height:1.2;}
 .reading-time-sub-text {font-size:0.74rem;color:var(--muted);margin-top:2px;}
 .reading-time-selector-wrap {position:relative;margin-bottom:16px;}
-.reading-time-chip-strip {display:flex;align-items:center;gap:8px;overflow-x:auto;padding:6px 4px 10px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:thin;}
-.reading-time-chip-strip::-webkit-scrollbar {height:4px;}
-.reading-time-chip-strip::-webkit-scrollbar-thumb {background:var(--border);border-radius:4px;}
-.reading-time-chip {flex-shrink:0;scroll-snap-align:center;padding:8px 15px;border-radius:3px;font-size:0.84rem;font-weight:600;cursor:pointer;background:var(--card-hover, rgba(255,255,255,0.04));border:1.5px solid var(--border);color:var(--text);transition:all 0.18s cubic-bezier(0.4,0,0.2,1);white-space:nowrap;user-select:none;outline:none;font-family:inherit;}
+.reading-time-chip-strip {display:grid;grid-template-columns:repeat(2, 1fr);gap:8px;padding:4px 0 8px;}
+.reading-time-chip {display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 12px;border-radius:6px;font-size:0.83rem;font-weight:600;cursor:pointer;background:var(--card-hover, rgba(255,255,255,0.04));border:1.5px solid var(--border);color:var(--text);transition:all 0.18s cubic-bezier(0.4,0,0.2,1);white-space:nowrap;user-select:none;outline:none;font-family:inherit;box-sizing:border-box;text-align:center;}
 .reading-time-chip:hover {border-color:#10b981;background:rgba(16,185,129,0.08);transform:translateY(-1px);}
 .reading-time-chip.selected {background:#10b981 !important;border-color:#10b981 !important;color:#ffffff !important;font-weight:700;box-shadow:0 4px 14px rgba(16,185,129,0.35);transform:translateY(-1px);}
 .reading-time-actions {display:flex;flex-direction:column;gap:8px;}
@@ -1119,6 +1117,9 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
 .btn-reading-time-unmark:hover {background:rgba(239,68,68,0.15);border-color:#ef4444;}
 [data-theme$="-light"] .reading-time-display-card {background:rgba(16,185,129,0.08);border-color:rgba(16,185,129,0.2);}
 [data-theme$="-light"] .reading-time-chip {background:rgba(0,0,0,0.03);}
+@media (max-width: 350px) {
+  .reading-time-chip {font-size:0.75rem;padding:0 6px;}
+}
 
 /* ESTILOS DE LA RULETA CO-OP CON AMIGOS (Películas, Series y Juegos) */
 @keyframes popInWinner {0%{transform:scale(0.85);opacity:0;}70%{transform:scale(1.03);}100%{transform:scale(1);opacity:1;}}

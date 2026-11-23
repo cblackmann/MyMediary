@@ -537,13 +537,22 @@ function seleccionarTiempoLectura(tiempo) {
     strip.querySelectorAll('.reading-time-chip').forEach(btn => {
       if (btn.getAttribute('data-tiempo') === tiempo) {
         btn.classList.add('selected');
-        btn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
       } else {
         btn.classList.remove('selected');
       }
     });
   }
   actualizarDisplayTiempoLectura(tiempo);
+
+  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
+  guardarTiempoLecturaFecha(hoyStr, tiempo);
+
+  if (typeof actualizarBotonLecturaHoyInicio === 'function') actualizarBotonLecturaHoyInicio();
+  if (typeof actualizarBotonLecturaHoyLibros === 'function') actualizarBotonLecturaHoyLibros();
+  if (typeof renderizarRachasActualesInicio === 'function') renderizarRachasActualesInicio();
+  if (typeof estado !== 'undefined' && estado.categoria === 'Lecturas' && typeof renderizarBannerRachaSubcategoria === 'function') {
+    renderizarBannerRachaSubcategoria(estado.categoria, estado.subcategoria || 'Libros');
+  }
 }
 window.seleccionarTiempoLectura = seleccionarTiempoLectura;
 
@@ -611,9 +620,9 @@ window.addEventListener('keydown', (e) => {
   }
 });
 
-function confirmarTiempoLectura() {
+function marcarLecturaHoy(tiempoDeseado, mostrarToast = false) {
   try {
-    const tiempo = tiempoLecturaSeleccionadoActual || '30 minutos';
+    const tiempo = tiempoDeseado || tiempoLecturaSeleccionadoActual || '30 minutos';
     const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : `${String(new Date().getDate()).padStart(2, '0')}/${String(new Date().getMonth() + 1).padStart(2, '0')}/${new Date().getFullYear()}`;
     let lista = (typeof obtenerListaDiasLectura === 'function') ? obtenerListaDiasLectura() : [];
     if (!lista.includes(hoyStr)) {
@@ -644,12 +653,12 @@ function confirmarTiempoLectura() {
 
     guardarTiempoLecturaFecha(hoyStr, tiempo);
 
-    cerrarModalTiempoLectura();
-
-    const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
-    const dispTiempo = (typeof formatearTiempoLecturaIdioma_ === 'function') ? formatearTiempoLecturaIdioma_(tiempo) : tiempo;
-    if (typeof mostrarToastPersonalizado === 'function') {
-      mostrarToastPersonalizado(l === 'en' ? `Reading session logged: ${dispTiempo}! Streak on fire 🔥` : `¡Lectura registrada (${dispTiempo})! Tu racha sigue encendida 🔥`);
+    if (mostrarToast) {
+      const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
+      const dispTiempo = (typeof formatearTiempoLecturaIdioma_ === 'function') ? formatearTiempoLecturaIdioma_(tiempo) : tiempo;
+      if (typeof mostrarToastPersonalizado === 'function') {
+        mostrarToastPersonalizado(l === 'en' ? `Reading session logged: ${dispTiempo}! Streak on fire 🔥` : `¡Lectura registrada (${dispTiempo})! Tu racha sigue encendida 🔥`);
+      }
     }
 
     if (typeof actualizarBotonLecturaHoyInicio === 'function') actualizarBotonLecturaHoyInicio();
@@ -665,9 +674,15 @@ function confirmarTiempoLectura() {
       sincronizarPreferenciasYAppsHaciaNube(true);
     }
   } catch (err) {
-    console.error('Error al confirmar tiempo de lectura:', err);
-    cerrarModalTiempoLectura();
+    console.error('Error al marcar tiempo de lectura:', err);
   }
+}
+window.marcarLecturaHoy = marcarLecturaHoy;
+
+function confirmarTiempoLectura() {
+  const tiempo = tiempoLecturaSeleccionadoActual || '30 minutos';
+  marcarLecturaHoy(tiempo, true);
+  cerrarModalTiempoLectura();
 }
 window.confirmarTiempoLectura = confirmarTiempoLectura;
 
@@ -760,6 +775,10 @@ function toggleLecturaHoy(e) {
   if (e) {
     if (typeof e.stopPropagation === 'function') e.stopPropagation();
     if (typeof e.preventDefault === 'function') e.preventDefault();
+  }
+  const ya = (typeof haLeidoHoy === 'function') ? haLeidoHoy() : false;
+  if (!ya) {
+    marcarLecturaHoy(tiempoLecturaSeleccionadoActual || '30 minutos', false);
   }
   abrirModalTiempoLectura();
 }
