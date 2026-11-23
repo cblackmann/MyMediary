@@ -291,13 +291,13 @@ function obtenerDayIndicesDeLecturaDiaria() {
 
 const LISTA_TIEMPOS_LECTURA = [
   '10 minutos',
+  '15 minutos',
   '20 minutos',
   '30 minutos',
   '45 minutos',
   '1 hora',
-  '1 hora 30 minutos',
+  '1 hora y 30 minutos',
   '2 horas',
-  '2 horas 30 minutos',
   '3 horas',
   '4 horas'
 ];
@@ -308,13 +308,13 @@ function normalizarTiempoLectura(t) {
   if (!t) return '30 minutos';
   const str = String(t).trim();
   if (str === '10m' || str === '10 min' || str.startsWith('10 min')) return '10 minutos';
+  if (str === '15m' || str === '15 min' || str.startsWith('15 min')) return '15 minutos';
   if (str === '20m' || str === '20 min' || str.startsWith('20 min')) return '20 minutos';
   if (str === '30m' || str === '30 min' || str.startsWith('30 min')) return '30 minutos';
   if (str === '45m' || str === '45 min' || str.startsWith('45 min')) return '45 minutos';
   if (str === '1h' || str === '1 hora' || str === '1 hour' || (str.startsWith('1 h') && !str.includes('30'))) return '1 hora';
-  if (str === '1h 30m' || (str.includes('1') && str.includes('30'))) return '1 hora 30 minutos';
-  if (str === '2h' || str === '2 horas' || str === '2 hours' || (str.startsWith('2') && !str.includes('30') && (str.includes('h') || str.includes('hora')))) return '2 horas';
-  if (str === '2h 30m' || (str.includes('2') && str.includes('30'))) return '2 horas 30 minutos';
+  if (str === '1h 30m' || str === '1 hora 30 minutos' || (str.includes('1') && str.includes('30'))) return '1 hora y 30 minutos';
+  if (str === '2h' || str === '2 horas' || str === '2 hours' || (str.startsWith('2') && (str.includes('h') || str.includes('hora')))) return '2 horas';
   if (str === '3h' || str === '3 horas' || str === '3 hours' || str.startsWith('3')) return '3 horas';
   if (str === '4h' || str === '4 horas' || str === '4 hours' || str.startsWith('4')) return '4 horas';
   return str;
@@ -327,6 +327,8 @@ function formatTiempoPill(txt) {
     .replace(' minuto', 'm')
     .replace(' minutes', 'm')
     .replace(' minute', 'm')
+    .replace(' y ', ' ')
+    .replace(' and ', ' ')
     .replace(' horas', 'h')
     .replace(' hora', 'h')
     .replace(' hours', 'h')
@@ -505,6 +507,16 @@ function abrirModalTiempoLectura() {
     const modal = document.getElementById('modal-tiempo-lectura');
     if (modal) {
       modal.style.display = 'flex';
+      modal.style.opacity = '1';
+      modal.style.visibility = 'visible';
+      modal.style.pointerEvents = 'auto';
+      const box = modal.querySelector('.modal-box');
+      if (box) {
+        box.style.transform = '';
+        box.style.transition = '';
+        box.style.opacity = '1';
+        box.classList.remove('swiping-down');
+      }
       setTimeout(() => {
         const activeChip = strip?.querySelector('.reading-time-chip.selected');
         if (activeChip) {
@@ -542,7 +554,8 @@ function formatearTiempoLecturaIdioma_(tiempo) {
     .replace(/minutos/g, 'minutes')
     .replace(/minuto/g, 'minute')
     .replace(/horas/g, 'hours')
-    .replace(/hora/g, 'hour');
+    .replace(/hora/g, 'hour')
+    .replace(/ y /g, ' and ');
 }
 
 function actualizarDisplayTiempoLectura(tiempo) {
@@ -554,11 +567,11 @@ function actualizarDisplayTiempoLectura(tiempo) {
   const sub = document.getElementById('reading-time-sub-display');
   if (sub) {
     let msg = isEn ? 'Great reading pace today!' : '¡Buen ritmo de lectura hoy!';
-    if (tiempo === '10 minutos' || tiempo === '20 minutos') {
+    if (tiempo === '10 minutos' || tiempo === '15 minutos' || tiempo === '20 minutos') {
       msg = isEn ? 'Every minute counts to strengthen your habit!' : '¡Cada minuto cuenta para fortalecer tu hábito!';
     } else if (tiempo === '30 minutos' || tiempo === '45 minutos') {
       msg = isEn ? 'Great progress and focus in your reading!' : '¡Gran progreso y concentración en tu lectura!';
-    } else if (tiempo === '1 hora' || tiempo === '1 hora 30 minutos') {
+    } else if (tiempo === '1 hora' || tiempo === '1 hora y 30 minutos' || tiempo === '1 hora 30 minutos') {
       msg = isEn ? 'Excellent reading time and immersion!' : '¡Excelente tiempo de lectura e inmersión!';
     } else {
       msg = isEn ? 'Impressive reading marathon today!' : '¡Maratón de lectura impresionante hoy!';
@@ -575,7 +588,17 @@ window.actualizarDisplayTiempoLectura = actualizarDisplayTiempoLectura;
 
 function cerrarModalTiempoLectura() {
   const modal = document.getElementById('modal-tiempo-lectura');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.style.display = 'none';
+    modal.style.opacity = '';
+    const box = modal.querySelector('.modal-box');
+    if (box) {
+      box.style.transform = '';
+      box.style.transition = '';
+      box.style.opacity = '';
+      box.classList.remove('swiping-down');
+    }
+  }
 }
 window.cerrarModalTiempoLectura = cerrarModalTiempoLectura;
 
@@ -744,31 +767,10 @@ window.toggleLecturaHoy = toggleLecturaHoy;
 
 function actualizarBotonLecturaHoyInicio() {
   const box = document.getElementById('home-reading-quick-box');
-  if (!box) return;
-
-  const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
-  const ya = (typeof haLeidoHoy === 'function') ? haLeidoHoy() : false;
-  const mapaTiempos = (typeof obtenerMapaTiemposLectura === 'function') ? obtenerMapaTiemposLectura() : {};
-  const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : '';
-  const tiempoHoyObj = mapaTiempos[hoyStr];
-  const tiempoHoyTxt = (typeof tiempoHoyObj === 'string') ? tiempoHoyObj : (tiempoHoyObj?.texto || '');
-
-  box.style.display = 'block';
-  box.innerHTML = `
-    <div class="home-reading-tracker-card ${ya ? 'active-read' : ''}" onclick="toggleLecturaHoy(event)" style="margin-top:10px;">
-      <div style="display:flex; align-items:center; gap:12px; min-width:0; flex:1;">
-        <span class="reading-tracker-icon">${ya ? getHeroIcon('check-circle', '', 22) : getHeroIcon('book-open', '', 22)}</span>
-        <div class="reading-tracker-text">
-          <strong class="reading-tracker-title">${ya ? (l === 'en' ? 'You read today!' : '¡Ya leíste hoy!') : (l === 'en' ? 'Did you read today?' : '¿Avanzaste en tu lectura hoy?')}</strong>
-          <span class="reading-tracker-sub">${ya ? (tiempoHoyTxt ? (l === 'en' ? `Session time: ${tiempoHoyTxt}` : `Tiempo registrado: ${tiempoHoyTxt}`) : (l === 'en' ? 'Session logged into your streak.' : 'Tu sesión de hoy está sumada a tu racha.')) : (l === 'en' ? 'Log your daily progress and keep your streak alive.' : 'Toca para registrar tu tiempo y sumar el día a tu racha.')}</span>
-        </div>
-      </div>
-      <button type="button" class="btn-read-today ${ya ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy(event)" title="${ya ? (l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ajustar tiempo o desmarcar') : (l === 'en' ? 'Mark reading today' : 'Registrar lectura de hoy')}">
-        <span>${ya ? getHeroIcon('check', '', 14) : getHeroIcon('sparkles', '', 14)}</span>
-        <span>${ya ? (tiempoHoyTxt ? (typeof formatTiempoPill === 'function' ? formatTiempoPill(tiempoHoyTxt) : tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')) : (l === 'en' ? 'I read today' : 'Ya leí hoy')}</span>
-      </button>
-    </div>
-  `;
+  if (box) {
+    box.style.display = 'none';
+    box.innerHTML = '';
+  }
 }
 window.actualizarBotonLecturaHoyInicio = actualizarBotonLecturaHoyInicio;
 
@@ -818,7 +820,7 @@ function actualizarBotonLecturaHoyLibros() {
           </div>
         </div>
         <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:8px 18px; font-size:0.84rem;">
-          <span>${getHeroIcon('sparkles', '', 14)}</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
+          <span>${getHeroIcon('plus', '', 14)}</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
         </button>
       </div>
     `;
@@ -1608,8 +1610,8 @@ function renderizarRachasActualesInicio() {
         </div>
         <div class="home-streak-col-action" onclick="event.stopPropagation(); toggleLecturaHoy(event)">
           <button type="button" class="btn-streak-pill ${rLectura.esActivaHoy ? 'done' : ''}" onclick="event.stopPropagation(); toggleLecturaHoy(event)" title="${rLectura.esActivaHoy ? (tiempoHoyTxt ? (l === 'en' ? `Read today: ${tiempoHoyTxt}. Click to adjust or unmark` : `Leído hoy: ${tiempoHoyTxt}. Toca para ajustar tiempo o desmarcar`) : (l === 'en' ? 'Read today! Click to adjust or unmark' : '¡Leído hoy! Toca para ajustar tiempo o desmarcar')) : (l === 'en' ? 'Mark reading today' : 'Marcar lectura de hoy')}">
-            ${rLectura.esActivaHoy ? getHeroIcon('check', '', 11) : getHeroIcon('sparkles', '', 11)}
-            <span>${rLectura.esActivaHoy ? (tiempoHoyTxt ? formatTiempoPill(tiempoHoyTxt) : (l === 'en' ? 'Today' : 'Hoy')) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
+            ${rLectura.esActivaHoy ? getHeroIcon('check', '', 11) : getHeroIcon('plus', '', 11)}
+            <span>${rLectura.esActivaHoy ? (tiempoHoyTxt ? formatTiempoPill(tiempoHoyTxt) : (l === 'en' ? 'Today' : 'Hoy')) : (l === 'en' ? 'Mark' : 'Marcar')}</span>
           </button>
         </div>
       </div>
@@ -1762,7 +1764,7 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
     } else {
       lecturaBtnHtml = `
         <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.colorVar : 'var(--accent)'}; color:#ffffff; border:none; font-weight:700; cursor:pointer;">
-          <span>${getHeroIcon('sparkles', '', 14)}</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
+          <span>${getHeroIcon('plus', '', 14)}</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
         </button>
       `;
     }
