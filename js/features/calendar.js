@@ -184,6 +184,8 @@ function abrirVistaCalendario(pushNav = true) {
     const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none';
     const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
     const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
+    const vAmPerf = document.getElementById('vista-perfil-amigo'); if (vAmPerf) vAmPerf.style.display = 'none';
+    const vAmRegs = document.getElementById('vista-registros-amigo'); if (vAmRegs) vAmRegs.style.display = 'none';
 
     const vCal = document.getElementById('vista-calendario');
     if (vCal) vCal.style.display = 'block';
@@ -205,6 +207,10 @@ function abrirVistaCalendario(pushNav = true) {
 window.abrirVistaCalendario = abrirVistaCalendario;
 
 function volverDesdeCalendario() {
+  if (window.history && window.history.length > 1 && typeof appNavHistory !== 'undefined' && appNavHistory.length > 1) {
+    history.back();
+    return;
+  }
   const vCal = document.getElementById('vista-calendario');
   const destino = (estado.vistaPreviaCalendario === 'listas') ? 'listas' : 'inicio';
   const elDestino = destino === 'listas' ? document.getElementById('vista-listas-extendida') : document.getElementById('vista-inicio');
@@ -257,36 +263,150 @@ function cambiarModoSubvistaCalendario(modo) {
 }
 window.cambiarModoSubvistaCalendario = cambiarModoSubvistaCalendario;
 
+function toggleDropdownMesCalendario(force) {
+  const menu = document.getElementById('cal-menu-mes');
+  const trigger = document.getElementById('cal-trigger-mes');
+  const menuAnio = document.getElementById('cal-menu-anio');
+  const triggerAnio = document.getElementById('cal-trigger-anio');
+  if (menuAnio) menuAnio.classList.remove('open');
+  if (triggerAnio) {
+    triggerAnio.classList.remove('active');
+    triggerAnio.setAttribute('aria-expanded', 'false');
+  }
+  if (!menu || !trigger) return;
+  const isOpen = (typeof force === 'boolean') ? force : !menu.classList.contains('open');
+  menu.classList.toggle('open', isOpen);
+  trigger.classList.toggle('active', isOpen);
+  trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+window.toggleDropdownMesCalendario = toggleDropdownMesCalendario;
+
+function toggleDropdownAnioCalendario(force) {
+  const menu = document.getElementById('cal-menu-anio');
+  const trigger = document.getElementById('cal-trigger-anio');
+  const menuMes = document.getElementById('cal-menu-mes');
+  const triggerMes = document.getElementById('cal-trigger-mes');
+  if (menuMes) menuMes.classList.remove('open');
+  if (triggerMes) {
+    triggerMes.classList.remove('active');
+    triggerMes.setAttribute('aria-expanded', 'false');
+  }
+  if (!menu || !trigger) return;
+  const isOpen = (typeof force === 'boolean') ? force : !menu.classList.contains('open');
+  menu.classList.toggle('open', isOpen);
+  trigger.classList.toggle('active', isOpen);
+  trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+window.toggleDropdownAnioCalendario = toggleDropdownAnioCalendario;
+
+function cerrarDropdownsCalendario() {
+  const menuMes = document.getElementById('cal-menu-mes');
+  const triggerMes = document.getElementById('cal-trigger-mes');
+  const menuAnio = document.getElementById('cal-menu-anio');
+  const triggerAnio = document.getElementById('cal-trigger-anio');
+  if (menuMes) menuMes.classList.remove('open');
+  if (triggerMes) {
+    triggerMes.classList.remove('active');
+    triggerMes.setAttribute('aria-expanded', 'false');
+  }
+  if (menuAnio) menuAnio.classList.remove('open');
+  if (triggerAnio) {
+    triggerAnio.classList.remove('active');
+    triggerAnio.setAttribute('aria-expanded', 'false');
+  }
+}
+window.cerrarDropdownsCalendario = cerrarDropdownsCalendario;
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('#cal-dd-mes') && !e.target.closest('#cal-dd-anio')) {
+    cerrarDropdownsCalendario();
+  }
+});
+
+function seleccionarMesCalendario(val) {
+  calMesActivo = parseInt(val, 10);
+  cerrarDropdownsCalendario();
+  poblarSelectoresMesYAnio();
+  renderizarGridMesCalendario();
+}
+window.seleccionarMesCalendario = seleccionarMesCalendario;
+
+function seleccionarAnioCalendario(val) {
+  calAnioActivo = parseInt(val, 10);
+  cerrarDropdownsCalendario();
+  poblarSelectoresMesYAnio();
+  renderizarGridMesCalendario();
+}
+window.seleccionarAnioCalendario = seleccionarAnioCalendario;
+
 function poblarSelectoresMesYAnio() {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
+  const nombreMes = (typeof I18N !== 'undefined' && I18N[l]?.meses?.[calMesActivo]) || (NOMBRE_MESES[calMesActivo] || 'Mes');
+
+  const lblMes = document.getElementById('cal-lbl-mes');
+  if (lblMes) lblMes.textContent = nombreMes;
+
+  const lblAnio = document.getElementById('cal-lbl-anio');
+  if (lblAnio) lblAnio.textContent = String(calAnioActivo);
+
+  const menuMes = document.getElementById('cal-menu-mes');
+  if (menuMes) {
+    const mesesItems = [];
+    for (let i = 0; i < 12; i++) {
+      const nom = (typeof I18N !== 'undefined' && I18N[l]?.meses?.[i]) || (NOMBRE_MESES[i] || `Mes ${i+1}`);
+      const isSel = Number(calMesActivo) === i;
+      mesesItems.push(`
+        <button type="button" class="cal-dd-item ${isSel ? 'selected' : ''}" onclick="seleccionarMesCalendario(${i})" role="option" aria-selected="${isSel ? 'true' : 'false'}">
+          <span>${nom}</span>
+          ${isSel ? '<span style="font-size:0.75rem;color:var(--accent);">✓</span>' : ''}
+        </button>
+      `);
+    }
+    menuMes.innerHTML = mesesItems.join('');
+  }
+
+  const anioActual = new Date().getFullYear();
+  const aniosSet = new Set([anioActual - 2, anioActual - 1, anioActual, anioActual + 1, anioActual + 2, anioActual + 3]);
+  if (calAnioActivo) aniosSet.add(Number(calAnioActivo));
+
+  if (Array.isArray(estado.registros)) {
+    estado.registros.forEach(r => {
+      const k = obtenerFechaKeyDeRegistro(r);
+      if (k) {
+        const y = parseInt(k.slice(0, 4), 10);
+        if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
+      }
+    });
+  }
+  if (Array.isArray(estado.proximosEstrenos)) {
+    estado.proximosEstrenos.forEach(e => {
+      const k = normalizarFechaAKeyYYYYMMDD(e.fechaEstreno);
+      if (k) {
+        const y = parseInt(k.slice(0, 4), 10);
+        if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
+      }
+    });
+  }
+
+  const aniosArr = Array.from(aniosSet).sort((a, b) => b - a);
+  const menuAnio = document.getElementById('cal-menu-anio');
+  if (menuAnio) {
+    menuAnio.innerHTML = aniosArr.map(y => {
+      const isSel = Number(calAnioActivo) === y;
+      return `
+        <button type="button" class="cal-dd-item ${isSel ? 'selected' : ''}" onclick="seleccionarAnioCalendario(${y})" role="option" aria-selected="${isSel ? 'true' : 'false'}">
+          <span>${y}</span>
+          ${isSel ? '<span style="font-size:0.75rem;color:var(--accent);">✓</span>' : ''}
+        </button>
+      `;
+    }).join('');
+  }
+
+  // Soporte de compatibilidad con selects ocultos
   const selMes = document.getElementById('cal-select-mes');
   const selAnio = document.getElementById('cal-select-anio');
   if (selMes) selMes.value = String(calMesActivo);
-
   if (selAnio) {
-    const anioActual = new Date().getFullYear();
-    const aniosSet = new Set([anioActual - 2, anioActual - 1, anioActual, anioActual + 1, anioActual + 2, anioActual + 3]);
-    if (calAnioActivo) aniosSet.add(Number(calAnioActivo));
-
-    if (Array.isArray(estado.registros)) {
-      estado.registros.forEach(r => {
-        const k = obtenerFechaKeyDeRegistro(r);
-        if (k) {
-          const y = parseInt(k.slice(0, 4), 10);
-          if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
-        }
-      });
-    }
-    if (Array.isArray(estado.proximosEstrenos)) {
-      estado.proximosEstrenos.forEach(e => {
-        const k = normalizarFechaAKeyYYYYMMDD(e.fechaEstreno);
-        if (k) {
-          const y = parseInt(k.slice(0, 4), 10);
-          if (y >= 1990 && y <= anioActual + 10) aniosSet.add(y);
-        }
-      });
-    }
-
-    const aniosArr = Array.from(aniosSet).sort((a, b) => b - a);
     selAnio.innerHTML = aniosArr.map(y => `<option value="${y}" ${Number(calAnioActivo) === y ? 'selected' : ''}>${y}</option>`).join('');
     selAnio.value = String(calAnioActivo);
   }
@@ -294,14 +414,12 @@ function poblarSelectoresMesYAnio() {
 window.poblarSelectoresMesYAnio = poblarSelectoresMesYAnio;
 
 function onSelectMesCalendario(val) {
-  calMesActivo = parseInt(val, 10);
-  renderizarGridMesCalendario();
+  seleccionarMesCalendario(val);
 }
 window.onSelectMesCalendario = onSelectMesCalendario;
 
 function onSelectAnioCalendario(val) {
-  calAnioActivo = parseInt(val, 10);
-  renderizarGridMesCalendario();
+  seleccionarAnioCalendario(val);
 }
 window.onSelectAnioCalendario = onSelectAnioCalendario;
 

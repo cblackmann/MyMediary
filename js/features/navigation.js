@@ -20,6 +20,8 @@ function abrirVistaPerfil(pushNav = true) {
     const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
     const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
     const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
+    const vAmPerf = document.getElementById('vista-perfil-amigo'); if (vAmPerf) vAmPerf.style.display = 'none';
+    const vAmRegs = document.getElementById('vista-registros-amigo'); if (vAmRegs) vAmRegs.style.display = 'none';
     const vPer = document.getElementById('vista-perfil'); if (vPer) vPer.style.display = 'block';
     if (typeof animarCambioTabVista === 'function') animarCambioTabVista('perfil');
     renderizarCabeceraPerfil();
@@ -166,6 +168,16 @@ function restaurarPestanaGuardada() {
         abrirVistaDiscover(false);
         return true;
       }
+    } else if (cat === 'amigo-perfil') {
+      if (typeof abrirVistaPerfilAmigo === 'function' && sub) {
+        abrirVistaPerfilAmigo(sub, false);
+        return true;
+      }
+    } else if (cat === 'amigo-registros') {
+      if (typeof abrirVistaRegistrosAmigo === 'function' && sub) {
+        abrirVistaRegistrosAmigo(sub, null, 'todas', 'todas', false);
+        return true;
+      }
     } else if (typeof CONFIG !== 'undefined' && CONFIG && CONFIG[cat]) {
       if (typeof cambiarCat === 'function') {
         cambiarCat(cat, sub || null, false);
@@ -188,6 +200,8 @@ function registrarNavegacionApp(destino) {
 }
 function obtenerElementoVistaActual() {
   const ids = [
+    'vista-registros-amigo',
+    'vista-perfil-amigo',
     'vista-calendario',
     'vista-watchlists',
     'vista-listas-extendida',
@@ -215,6 +229,8 @@ function obtenerElementoVistaDestino(vista) {
   if (vista === 'amigos') return document.getElementById('vista-amigos');
   if (vista === 'perfil') return document.getElementById('vista-perfil');
   if (vista === 'discover') return document.getElementById('vista-discover');
+  if (vista === 'amigo-perfil') return document.getElementById('vista-perfil-amigo');
+  if (vista === 'amigo-registros') return document.getElementById('vista-registros-amigo');
   if (typeof CONFIG !== 'undefined' && CONFIG && CONFIG[vista]) return document.getElementById('vista-categoria');
   return document.getElementById('vista-inicio');
 }
@@ -228,57 +244,58 @@ function ejecutarCambioVista(vista) {
   else if (vista === 'amigos') abrirVistaAmigos(false);
   else if (vista === 'perfil') abrirVistaPerfil(false);
   else if (vista === 'watchlists') abrirMenuWatchlistGlobal(false);
-  else cambiarCat(vista, null, false);
+  else if (vista === 'amigo-perfil') {
+    if (typeof abrirVistaPerfilAmigo === 'function' && amigoSeleccionadoActual?.email) {
+      abrirVistaPerfilAmigo(amigoSeleccionadoActual.email, false);
+    } else if (typeof abrirVistaAmigos === 'function') {
+      abrirVistaAmigos(false);
+    }
+  } else if (vista === 'amigo-registros') {
+    if (typeof abrirVistaRegistrosAmigo === 'function' && amigoRegsEmailActual) {
+      abrirVistaRegistrosAmigo(amigoRegsEmailActual, null, amigoRegsFiltroCat, amigoRegsFiltroSub, false);
+    } else if (typeof abrirVistaAmigos === 'function') {
+      abrirVistaAmigos(false);
+    }
+  } else {
+    cambiarCat(vista, null, false);
+  }
 }
 function inicializarManejoBotonAtras() {
   const initView = (typeof estado !== 'undefined' && estado && estado.categoria) ? estado.categoria : 'inicio';
   appNavHistory = [initView];
   try { history.replaceState({ appView: initView, depth: 1 }, '', ''); } catch (e) {}
   window.addEventListener('popstate', function(e) {
-    const modalIds = [
-      'modal-agregar-estreno',
-      'modal-registros-amigo',
-      'modal-perfil-amigo',
-      'modal-privacidad-amigos',
-      'modal-configuracion',
-      'modal-edicion',
-      'modal-serie-completa',
-      'modal-confirmar-eliminar',
-      'modal-agregado-rapido',
-      'modal-ficha-tecnica',
-      'modal-ingreso-manual',
-      'modal-felicitaciones-watchlist',
-      'modal-shuffle-recomendar',
-      'modal-lightbox-avatar',
-      'modal-nuevo-artista',
-      'modal-editar-perfil',
-      'modal-elegir-portada',
-      'modal-seleccionar-personaje'
-    ];
-    for (const mId of modalIds) {
-      const el = document.getElementById(mId);
-      if (el && el.style.display !== 'none' && el.style.display !== '') {
-        if (mId === 'modal-agregar-estreno') cerrarModalAgregarEstreno();
-        else if (mId === 'modal-registros-amigo') cerrarModalRegistrosAmigo();
-        else if (mId === 'modal-perfil-amigo') cerrarModalPerfilAmigo();
-        else if (mId === 'modal-privacidad-amigos') cerrarModalPrivacidadAmigos();
-        else if (mId === 'modal-configuracion') cerrarModalConfiguracion();
-        else if (mId === 'modal-edicion') cerrarModal();
-        else if (mId === 'modal-confirmar-eliminar') cerrarModalEliminar();
-        else if (mId === 'modal-agregado-rapido') cerrarModalAgregadoRapido();
-        else if (mId === 'modal-ficha-tecnica') cerrarModalFicha();
-        else if (mId === 'modal-ingreso-manual') cerrarModalManual();
-        else if (mId === 'modal-felicitaciones-watchlist') cerrarModalFelicitacionWatchlist();
-        else if (mId === 'modal-shuffle-recomendar') cerrarModalShuffle();
-        else if (mId === 'modal-lightbox-avatar') cerrarLightboxAvatar();
-        else if (mId === 'modal-nuevo-artista') cerrarModalNuevoArtista();
-        else if (mId === 'modal-editar-perfil') cerrarModalEditarPerfil();
-        else if (mId === 'modal-elegir-portada') cerrarModalElegirPortada();
-        else if (mId === 'modal-seleccionar-personaje') cerrarModalSeleccionarPersonaje();
-        else el.style.display = 'none';
-        try { history.pushState({ appView: estado.categoria || 'inicio', depth: appNavHistory.length }, '', ''); } catch (err) {}
-        return;
+    // 0. Si hay dropdowns de calendario abiertos, cerrarlos primero
+    const ddsAbiertos = Array.from(document.querySelectorAll('.cal-dd-menu.open, .cal-dd-menu.show, .custom-year-menu.show'));
+    if (ddsAbiertos.length > 0) {
+      if (typeof cerrarDropdownsCalendario === 'function') cerrarDropdownsCalendario();
+      ddsAbiertos.forEach(d => { d.classList.remove('open'); d.classList.remove('show'); });
+      try { history.pushState({ appView: estado?.categoria || 'inicio', depth: appNavHistory.length }, '', ''); } catch (err) {}
+      return;
+    }
+
+    // 1. Comprobar si hay algún modal, overlay o menú que se desliza hacia abajo (swipe-down) abierto actualmente
+    const overlaysAbiertos = Array.from(document.querySelectorAll('.modal-overlay, .crop-modal-overlay, .modal')).filter(m => {
+      if (!m) return false;
+      const s = window.getComputedStyle(m);
+      return s.display !== 'none' && s.visibility !== 'hidden' && s.opacity !== '0';
+    });
+
+    if (overlaysAbiertos.length > 0) {
+      // Ordenar por z-index descendente para cerrar el que esté visible encima
+      overlaysAbiertos.sort((a, b) => {
+        const za = parseInt(window.getComputedStyle(a).zIndex, 10) || 0;
+        const zb = parseInt(window.getComputedStyle(b).zIndex, 10) || 0;
+        return zb - za;
+      });
+      const topOverlay = overlaysAbiertos[0];
+      if (typeof cerrarModalGenerico === 'function') {
+        cerrarModalGenerico(topOverlay);
+      } else {
+        topOverlay.style.display = 'none';
       }
+      try { history.pushState({ appView: estado?.categoria || 'inicio', depth: appNavHistory.length }, '', ''); } catch (err) {}
+      return;
     }
 
     const catActual = (typeof estado !== 'undefined' && estado && estado.categoria) ? estado.categoria : 'inicio';
@@ -387,7 +404,17 @@ function cerrarModalGenerico(overlay) {
     'modal-confirmar-quitar-personaje': typeof cerrarModalConfirmarQuitarPersonaje === 'function' ? cerrarModalConfirmarQuitarPersonaje : null,
     'modal-seleccionar-favorito': typeof cerrarModalSeleccionarFavorito === 'function' ? cerrarModalSeleccionarFavorito : null,
     'modal-serie-completa': typeof omitirGuardadoSerieCompleta === 'function' ? omitirGuardadoSerieCompleta : null,
-    'modal-auth-supabase': typeof cerrarModalAuthSupabase === 'function' ? cerrarModalAuthSupabase : null
+    'modal-auth-supabase': typeof cerrarModalAuthSupabase === 'function' ? cerrarModalAuthSupabase : null,
+    'modal-like-detalle-resena': typeof cerrarModalLikeDetalleResena === 'function' ? cerrarModalLikeDetalleResena : null,
+    'modal-tiempo-lectura': typeof cerrarModalTiempoLectura === 'function' ? cerrarModalTiempoLectura : null,
+    'modal-spotify-connect': typeof cerrarModalConectarSpotify === 'function' ? cerrarModalConectarSpotify : null,
+    'modal-conectar-steam': typeof cerrarModalConectarSteam === 'function' ? cerrarModalConectarSteam : null,
+    'modal-conectar-lastfm': typeof cerrarModalConectarLastFm === 'function' ? cerrarModalConectarLastFm : null,
+    'modal-conectar-psn': typeof cerrarModalConectarPsn === 'function' ? cerrarModalConectarPsn : null,
+    'modal-seleccionar-juego-psn': typeof cerrarModalSeleccionarJuegoPsn === 'function' ? cerrarModalSeleccionarJuegoPsn : null,
+    'modal-album-completado-spotify': typeof descartarPromptDiscoDetectado === 'function' ? descartarPromptDiscoDetectado : null,
+    'modal-spotify-stats': typeof cerrarModalEstadisticasSpotify === 'function' ? cerrarModalEstadisticasSpotify : null,
+    'modal-estadisticas-avanzadas': typeof cerrarModalEstadisticasAvanzadas === 'function' ? cerrarModalEstadisticasAvanzadas : null
   };
 
   if (mapaCierres[mId]) {
@@ -1325,6 +1352,8 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
   if (vWl) vWl.style.display = 'none';
   if (vList) vList.style.display = 'none';
   if (vCal) vCal.style.display = 'none';
+  const vAmPerf = document.getElementById('vista-perfil-amigo'); if (vAmPerf) vAmPerf.style.display = 'none';
+  const vAmRegs = document.getElementById('vista-registros-amigo'); if (vAmRegs) vAmRegs.style.display = 'none';
   if (cat === 'inicio') {
     estado.subcategoria = '';
     guardarEstadoNavegacionActual('inicio', '');
@@ -1380,6 +1409,8 @@ function abrirVistaDashboardListas(pushNav = true) {
   const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
   const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
   const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
+  const vAmPerf = document.getElementById('vista-perfil-amigo'); if (vAmPerf) vAmPerf.style.display = 'none';
+  const vAmRegs = document.getElementById('vista-registros-amigo'); if (vAmRegs) vAmRegs.style.display = 'none';
   const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'block';
   if (typeof animarCambioTabVista === 'function') animarCambioTabVista('listas');
   if (modoReordenarListasActivo && typeof toggleModoReordenarListas === 'function') {

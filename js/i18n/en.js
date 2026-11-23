@@ -785,5 +785,10 @@ window.MEDIARY_I18N_EN = {
   "auth_google_direct_recent": "Available recent accounts:",
   "auth_google_direct_email_lbl": "Google email (@gmail.com):",
   "auth_google_direct_btn": "Link and Connect",
-  "wl_btn_back": "Back"
+  "wl_btn_back": "Back",
+  "cal_select_month_title": "Select month",
+  "cal_select_year_title": "Select year",
+  "friend_btn_back_friends": "Back to Friends",
+  "friend_back_to_friends_title": "Back to Friends",
+  "friend_profile_subview_title": "Friend Profile"
 };

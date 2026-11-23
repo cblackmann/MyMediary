@@ -785,5 +785,10 @@ window.MEDIARY_I18N_ES = {
   "auth_google_direct_recent": "Cuentas recientes disponibles:",
   "auth_google_direct_email_lbl": "Correo de Google (@gmail.com):",
   "auth_google_direct_btn": "Vincular y Conectar",
-  "wl_btn_back": "Volver"
+  "wl_btn_back": "Volver",
+  "cal_select_month_title": "Seleccionar mes",
+  "cal_select_year_title": "Seleccionar año",
+  "friend_btn_back_friends": "Volver a Amigos",
+  "friend_back_to_friends_title": "Volver a Amigos",
+  "friend_profile_subview_title": "Perfil de Amigo"
 };

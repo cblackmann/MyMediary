@@ -89,11 +89,17 @@ function abrirMenuWatchlistGlobal(pushNav = true) {
   const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
   const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
   const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
+  const vAmPerf = document.getElementById('vista-perfil-amigo'); if (vAmPerf) vAmPerf.style.display = 'none';
+  const vAmRegs = document.getElementById('vista-registros-amigo'); if (vAmRegs) vAmRegs.style.display = 'none';
   const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'block';
   renderizarVistaWatchlistsDedicada();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function volverDesdeWatchlists() {
+  if (window.history && window.history.length > 1 && typeof appNavHistory !== 'undefined' && appNavHistory.length > 1) {
+    history.back();
+    return;
+  }
   const vWl = document.getElementById('vista-watchlists');
   const destino = (estado.vistaPreviaWatchlists === 'listas') ? 'listas' : 'inicio';
   const elDestino = destino === 'listas' ? document.getElementById('vista-listas-extendida') : document.getElementById('vista-inicio');

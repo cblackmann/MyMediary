@@ -339,6 +339,8 @@ function abrirVistaAmigos(pushNav = true) {
   const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
   const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
   const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
+  const vAmPerf = document.getElementById('vista-perfil-amigo'); if (vAmPerf) vAmPerf.style.display = 'none';
+  const vAmRegs = document.getElementById('vista-registros-amigo'); if (vAmRegs) vAmRegs.style.display = 'none';
   const vAm = document.getElementById('vista-amigos');
   if (vAm) vAm.style.display = 'block';
   if (typeof animarCambioTabVista === 'function') animarCambioTabVista('amigos');
@@ -2545,18 +2547,62 @@ function responderSolicitudAmistad(emailAmigo, aceptar) {
     }
   }).procesarRespuestaSolicitud(estado.userEmail, emailAmigo, aceptar);
 }
-function verPerfilDeAmigo(emailAmigo) {
+function abrirVistaPerfilAmigo(emailAmigo, pushNav = true) {
   const l = userPrefs.lang || 'es';
   if (!emailAmigo) {
     mostrarToastPersonalizado(l === 'en' ? 'Friend not found.' : 'Amigo no encontrado.');
     return;
   }
+
+  if (pushNav && typeof registrarNavegacionApp === 'function') {
+    registrarNavegacionApp('amigo-perfil');
+  }
+  if (typeof guardarEstadoNavegacionActual === 'function') {
+    guardarEstadoNavegacionActual('amigo-perfil', emailAmigo);
+  }
+  estado.categoria = 'amigo-perfil';
+  estado.subcategoria = '';
+
+  if (typeof actualizarVisibilidadMenuInferior === 'function') {
+    actualizarVisibilidadMenuInferior(false);
+  }
+  if (typeof actualizarBarraNavegacionMovil === 'function') {
+    actualizarBarraNavegacionMovil(null);
+  }
+
+  const vIni = document.getElementById('vista-inicio'); if (vIni) vIni.style.display = 'none';
+  const vCat = document.getElementById('vista-categoria'); if (vCat) vCat.style.display = 'none';
+  const vDis = document.getElementById('vista-discover'); if (vDis) vDis.style.display = 'none';
+  const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
+  const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none';
+  const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
+  const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
+  const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
+  const vRegsAm = document.getElementById('vista-registros-amigo'); if (vRegsAm) vRegsAm.style.display = 'none';
+
+  const vPerfAm = document.getElementById('vista-perfil-amigo');
+  if (vPerfAm) vPerfAm.style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Pre-poblar si existe en caché de amigos
+  const amigoCache = (estado.amigos || []).find(x => (x.email || '').toLowerCase() === emailAmigo.toLowerCase());
+  if (amigoCache) {
+    amigoSeleccionadoActual = amigoCache;
+    const nickEl = document.getElementById('amigo-modal-nick');
+    if (nickEl) nickEl.textContent = amigoCache.nickname || tLang('Amigo', 'Friend');
+    const headerNick = document.getElementById('amigo-vista-header-nick');
+    if (headerNick) headerNick.textContent = amigoCache.nickname || tLang('Perfil de Amigo', 'Friend Profile');
+  }
+
   google.script.run.withSuccessHandler(res => {
     if (!res || !res.exito) {
       return mostrarToastPersonalizado(res?.error || (l === 'en' ? 'Could not load friend profile.' : 'No se pudo cargar el perfil del amigo.'));
     }
     amigoSeleccionadoActual = res.amigo;
     const a = res.amigo;
+    const headerNick = document.getElementById('amigo-vista-header-nick');
+    if (headerNick) headerNick.textContent = a.nickname || tLang('Perfil de Amigo', 'Friend Profile');
+
     const avEl = document.getElementById('amigo-modal-avatar');
     if (avEl) {
       avEl.setAttribute('data-avatar-zoom', a.avatar || '🦊');
@@ -2734,10 +2780,10 @@ function verPerfilDeAmigo(emailAmigo) {
           const subPills = Object.keys(d.subs).map(s => {
             const nomSubI18n = I18N[l]?.subs?.[s] || s;
             const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c.k, s) : null;
-            return `<span class="amigo-sub-pill" style="${metaSub ? `border-color:${metaSub.borderVar}; background:${metaSub.bgVar};` : ''}" onclick="event.stopPropagation(); abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}', '${s.replace(/'/g, "\\'")}')" title="${l === 'en' ? `View records of ${nomSubI18n}` : `Ver registros de ${nomSubI18n}`}">${nomSubI18n}: <strong style="${metaSub ? `color:${metaSub.colorVar};` : ''}">${d.subs[s]}</strong></span>`;
+            return `<span class="amigo-sub-pill" style="${metaSub ? `border-color:${metaSub.borderVar}; background:${metaSub.bgVar};` : ''}" onclick="event.stopPropagation(); abrirVistaRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}', '${s.replace(/'/g, "\\'")}')" title="${l === 'en' ? `View records of ${nomSubI18n}` : `Ver registros de ${nomSubI18n}`}">${nomSubI18n}: <strong style="${metaSub ? `color:${metaSub.colorVar};` : ''}">${d.subs[s]}</strong></span>`;
           }).join('');
           return `
-            <div class="amigo-cat-stat-card" style="cursor:pointer; ${metaCat ? `border-color:${metaCat.borderVar};` : ''}" onclick="abrirModalRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}')" title="${l === 'en' ? `View records of ${c.n}` : `Ver registros de ${c.n}`}">
+            <div class="amigo-cat-stat-card" style="cursor:pointer; ${metaCat ? `border-color:${metaCat.borderVar};` : ''}" onclick="abrirVistaRegistrosAmigo('${a.user_email || a.email}', '${a.nickname}', '${c.k}')" title="${l === 'en' ? `View records of ${c.n}` : `Ver registros de ${c.n}`}">
               <div class="amigo-cat-stat-head">
                 <span style="display:flex;align-items:center;gap:6px;"><span style="${metaCat ? `color:${metaCat.colorVar};` : ''}">${c.e}</span> <span>${c.n}</span></span>
                 <span class="amigo-cat-count-badge" style="${metaCat ? `color:${metaCat.colorVar}; border-color:${metaCat.borderVar}; background:${metaCat.bgVar};` : ''}">${d.total} ${l === 'en' ? 'records' : 'registros'} <span style="font-size:0.68rem;opacity:0.8;">${getHeroIcon('arrow-right', '', 10)}</span></span>
@@ -2748,20 +2794,73 @@ function verPerfilDeAmigo(emailAmigo) {
         }).join('');
       }
     }
-    const m = document.getElementById('modal-perfil-amigo');
-    if (m) m.style.display = 'flex';
   }).obtenerPerfilAmigoCompleto(emailAmigo);
 }
-window.verPerfilDeAmigo = verPerfilDeAmigo;
+window.abrirVistaPerfilAmigo = abrirVistaPerfilAmigo;
+window.verPerfilDeAmigo = function(emailAmigo) {
+  return abrirVistaPerfilAmigo(emailAmigo, true);
+};
+
+function volverDesdePerfilAmigo() {
+  if (_audioMuestraCancionFav && !_audioMuestraCancionFav.paused) {
+    _audioMuestraCancionFav.pause();
+    _audioMuestraCancionFav = null;
+    if (typeof actualizarTodosIconosPlay === 'function') actualizarTodosIconosPlay(false);
+  }
+  if (window.history && window.history.length > 1 && typeof appNavHistory !== 'undefined' && appNavHistory.length > 1) {
+    history.back();
+    return;
+  }
+  const elActual = document.getElementById('vista-perfil-amigo');
+  let anterior = 'amigos';
+  if (typeof appNavHistory !== 'undefined' && appNavHistory.length > 1) {
+    appNavHistory.pop();
+    anterior = appNavHistory[appNavHistory.length - 1] || 'amigos';
+  }
+  const elDestino = (typeof obtenerElementoVistaDestino === 'function') ? obtenerElementoVistaDestino(anterior) : document.getElementById('vista-amigos');
+
+  const fnEjecutar = () => {
+    if (typeof ejecutarCambioVista === 'function') {
+      ejecutarCambioVista(anterior);
+    } else if (typeof abrirVistaAmigos === 'function') {
+      abrirVistaAmigos(false);
+    }
+    const mapaBtns = {
+      'inicio': 'm-btn-inicio',
+      'listas': 'm-btn-listas-ext',
+      'amigos': 'm-btn-amigos',
+      'perfil': 'm-btn-perfil'
+    };
+    const targetBtn = mapaBtns[anterior] || (anterior === 'amigos' ? 'm-btn-amigos' : null);
+    if (typeof actualizarBarraNavegacionMovil === 'function') {
+      actualizarBarraNavegacionMovil(targetBtn);
+    }
+    if (typeof actualizarVisibilidadMenuInferior === 'function') {
+      actualizarVisibilidadMenuInferior(Boolean(targetBtn));
+    }
+  };
+
+  if (typeof animarSalidaVistaAtras === 'function' && elActual && elDestino && elActual !== elDestino) {
+    animarSalidaVistaAtras(elActual, fnEjecutar, elDestino);
+  } else {
+    if (elActual) elActual.style.display = 'none';
+    fnEjecutar();
+  }
+}
+window.volverDesdePerfilAmigo = volverDesdePerfilAmigo;
+
 function cerrarModalPerfilAmigo() {
-  document.getElementById('modal-perfil-amigo').style.display = 'none';
+  const m = document.getElementById('vista-perfil-amigo');
+  if (m) m.style.display = 'none';
   amigoSeleccionadoActual = null;
   if (_audioMuestraCancionFav && !_audioMuestraCancionFav.paused) {
     _audioMuestraCancionFav.pause();
     _audioMuestraCancionFav = null;
-    actualizarTodosIconosPlay(false);
+    if (typeof actualizarTodosIconosPlay === 'function') actualizarTodosIconosPlay(false);
   }
 }
+window.cerrarModalPerfilAmigo = cerrarModalPerfilAmigo;
+
 function copiarIdAmigoDesdeModal() {
   if (!amigoSeleccionadoActual || !amigoSeleccionadoActual.userId) return;
   copiarTextoAlPortapapeles(amigoSeleccionadoActual.userId);
@@ -2773,7 +2872,7 @@ function eliminarAmigoSeleccionado() {
   const confMsg = userPrefs.lang === 'en' ? `Remove ${amigoSeleccionadoActual.nickname} from your friends list?` : `¿Eliminar a ${amigoSeleccionadoActual.nickname} de tu lista de amigos?`;
   if (!confirm(confMsg)) return;
   google.script.run.withSuccessHandler(res => {
-    cerrarModalPerfilAmigo();
+    volverDesdePerfilAmigo();
     mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Friend removed.' : 'Amigo eliminado.');
     cargarAmigosYSolicitudes();
   }).procesarRespuestaSolicitud(estado.userEmail, amigoSeleccionadoActual.email, false);
@@ -2782,14 +2881,45 @@ let amigoRegistrosCache = [];
 let amigoRegsFiltroCat = 'todas';
 let amigoRegsFiltroSub = 'todas';
 let amigoRegsEmailActual = '';
-function abrirModalRegistrosAmigo(email, nickname, catInicial = 'todas', subInicial = 'todas') {
+function abrirVistaRegistrosAmigo(email, nickname, catInicial = 'todas', subInicial = 'todas', pushNav = true) {
   const amEmail = (email || (amigoSeleccionadoActual ? amigoSeleccionadoActual.email : '') || '').trim();
   amigoRegsEmailActual = amEmail;
   const amFriend = (estado.amigos || []).find(x => (x.email || '').toLowerCase() === amEmail.toLowerCase());
   const amNick = nickname || (amFriend ? amFriend.nickname : (amigoSeleccionadoActual ? amigoSeleccionadoActual.nickname : tLang('Amigo', 'Friend')));
   if (!amEmail) return;
   const l = userPrefs.lang || 'es';
-  const modal = document.getElementById('modal-registros-amigo');
+
+  if (pushNav && typeof registrarNavegacionApp === 'function') {
+    registrarNavegacionApp('amigo-registros');
+  }
+  if (typeof guardarEstadoNavegacionActual === 'function') {
+    guardarEstadoNavegacionActual('amigo-registros', amEmail);
+  }
+  estado.categoria = 'amigo-registros';
+  estado.subcategoria = '';
+
+  if (typeof actualizarVisibilidadMenuInferior === 'function') {
+    actualizarVisibilidadMenuInferior(false);
+  }
+  if (typeof actualizarBarraNavegacionMovil === 'function') {
+    actualizarBarraNavegacionMovil(null);
+  }
+
+  const vIni = document.getElementById('vista-inicio'); if (vIni) vIni.style.display = 'none';
+  const vCat = document.getElementById('vista-categoria'); if (vCat) vCat.style.display = 'none';
+  const vDis = document.getElementById('vista-discover'); if (vDis) vDis.style.display = 'none';
+  const vAm = document.getElementById('vista-amigos'); if (vAm) vAm.style.display = 'none';
+  const vPerf = document.getElementById('vista-perfil'); if (vPerf) vPerf.style.display = 'none';
+  const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'none';
+  const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'none';
+  const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
+  const vPerfAm = document.getElementById('vista-perfil-amigo'); if (vPerfAm) vPerfAm.style.display = 'none';
+
+  const vistaRegs = document.getElementById('vista-registros-amigo');
+  if (vistaRegs) vistaRegs.style.display = 'block';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
   const title = document.getElementById('amigo-regs-modal-title');
   const grid = document.getElementById('amigo-regs-grid');
   const inSearch = document.getElementById('input-buscar-regs-amigo');
@@ -2810,7 +2940,6 @@ function abrirModalRegistrosAmigo(email, nickname, catInicial = 'todas', subInic
   if (grid) {
     grid.innerHTML = `<div style="text-align:center;padding:30px 10px;color:var(--muted);"><span class="spinning" style="display:inline-block;margin-bottom:8px;">${getHeroIcon('clock', '', 20)}</span><div>${l === 'en' ? 'Loading records...' : 'Cargando registros...'}</div></div>`;
   }
-  if (modal) modal.style.display = 'flex';
 
   const onExito = res => {
     try {
@@ -2847,6 +2976,10 @@ function abrirModalRegistrosAmigo(email, nickname, catInicial = 'todas', subInic
     }
   }
 }
+window.abrirVistaRegistrosAmigo = abrirVistaRegistrosAmigo;
+window.abrirModalRegistrosAmigo = function(email, nickname, catInicial, subInicial) {
+  return abrirVistaRegistrosAmigo(email, nickname, catInicial, subInicial, true);
+};
 function renderizarTabsCategoriasAmigo() {
   const tabs = document.getElementById('amigo-regs-cat-tabs');
   if (!tabs) return;
@@ -3167,8 +3300,55 @@ function filtrarRegistrosAmigoModal() {
 
   grid.innerHTML = fullHtml;
 }
+function volverDesdeRegistrosAmigo() {
+  if (window.history && window.history.length > 1 && typeof appNavHistory !== 'undefined' && appNavHistory.length > 1) {
+    history.back();
+    return;
+  }
+  const elActual = document.getElementById('vista-registros-amigo');
+  let anterior = 'amigos';
+  if (typeof appNavHistory !== 'undefined' && appNavHistory.length > 1) {
+    appNavHistory.pop();
+    anterior = appNavHistory[appNavHistory.length - 1] || 'amigos';
+  }
+  const elDestino = (typeof obtenerElementoVistaDestino === 'function') ? obtenerElementoVistaDestino(anterior) : document.getElementById('vista-amigos');
+
+  const fnEjecutar = () => {
+    if (typeof ejecutarCambioVista === 'function') {
+      ejecutarCambioVista(anterior);
+    } else if (anterior === 'amigo-perfil' && amigoSeleccionadoActual?.email) {
+      abrirVistaPerfilAmigo(amigoSeleccionadoActual.email, false);
+    } else if (typeof abrirVistaAmigos === 'function') {
+      abrirVistaAmigos(false);
+    }
+    const mapaBtns = {
+      'inicio': 'm-btn-inicio',
+      'listas': 'm-btn-listas-ext',
+      'amigos': 'm-btn-amigos',
+      'perfil': 'm-btn-perfil'
+    };
+    const targetBtn = mapaBtns[anterior] || (anterior === 'amigos' ? 'm-btn-amigos' : null);
+    if (typeof actualizarBarraNavegacionMovil === 'function') {
+      actualizarBarraNavegacionMovil(targetBtn);
+    }
+    if (typeof actualizarVisibilidadMenuInferior === 'function') {
+      actualizarVisibilidadMenuInferior(Boolean(targetBtn));
+    }
+  };
+
+  if (typeof animarSalidaVistaAtras === 'function' && elActual && elDestino && elActual !== elDestino) {
+    animarSalidaVistaAtras(elActual, fnEjecutar, elDestino);
+  } else {
+    if (elActual) elActual.style.display = 'none';
+    fnEjecutar();
+  }
+}
+window.volverDesdeRegistrosAmigo = volverDesdeRegistrosAmigo;
+
 function cerrarModalRegistrosAmigo() {
-  const m = document.getElementById('modal-registros-amigo');
+  const m = document.getElementById('vista-registros-amigo');
   if (m) m.style.display = 'none';
 }
+window.cerrarModalRegistrosAmigo = cerrarModalRegistrosAmigo;
+
 
