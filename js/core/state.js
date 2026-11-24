@@ -12,7 +12,8 @@ const WATCHLIST_ESTRUCTURA = [
  { id: 'Series Documentales', subWl: 'Watchlist: Docuseries', nombre: 'Docuseries', emoji: getHeroIcon('tv') }
  ] },
  { cat: 'Musica', nombre: 'Música', emoji: getHeroIcon('musical-note'), subs: [
- { id: 'Discos', subWl: 'To Listen', nombre: 'Discos / Música', emoji: getHeroIcon('musical-note') }
+  { id: 'Discos', subWl: 'To Listen', nombre: 'Discos / Música', emoji: getHeroIcon('musical-note') },
+  { id: 'Artistas/Grupos', subWl: 'To Listen: Artistas', nombre: 'Artistas/Grupos', emoji: getHeroIcon('microphone') }
  ] },
  { cat: 'Juegos', nombre: 'Juegos', emoji: getHeroIcon('gamepad'), subs: [
  { id: 'Videojuegos', subWl: 'To Play', nombre: 'Videojuegos', emoji: getHeroIcon('gamepad') }
@@ -28,7 +29,8 @@ const TODAS_LAS_WATCHLISTS = [
  { cat: 'Peliculas', sub: 'Watchlist: Documentales', emoji: getHeroIcon('film'), label: 'Documentales' },
  { cat: 'Series', sub: 'Watchlist', emoji: getHeroIcon('tv'), label: 'Series' },
  { cat: 'Series', sub: 'Watchlist: Docuseries', emoji: getHeroIcon('tv'), label: 'Docuseries' },
- { cat: 'Musica', sub: 'To Listen', emoji: getHeroIcon('musical-note'), label: 'To Listen (Música)' },
+ { cat: 'Musica', sub: 'To Listen', emoji: getHeroIcon('musical-note'), label: 'To Listen: Discos' },
+ { cat: 'Musica', sub: 'To Listen: Artistas', emoji: getHeroIcon('microphone'), label: 'To Listen: Artistas' },
  { cat: 'Juegos', sub: 'To Play', emoji: getHeroIcon('gamepad'), label: 'To Play (Juegos)' },
  { cat: 'Lecturas', sub: 'To Read: Libros', emoji: getHeroIcon('book-open'), label: 'To Read: Libros' },
  { cat: 'Lecturas', sub: 'To Read: Cómics', emoji: getHeroIcon('book-open'), label: 'To Read: Cómics' },
@@ -70,7 +72,7 @@ discoverAutoRefresh: true, modoConfigurarFavs: false, seleccionado: null, califi
 }; window.estado = estado; let cropState = { img: null, scale: 1, minScale: 1, offsetX: 0, offsetY: 0, dragging: false, startX: 0, startY: 0, confirmedDataUrl: null, listenersReady: false };
 let fpInicio = null, fpFin = null; let timerDebounce = null, timerDebounceArtista = null, timerDebounceFav = null; let timerAutoDiscover = null; let carruselIntervalos = []; let serieCompletaPendiente = null, calificacionSerieCompleta = 0, idParaEliminar = null, regParaEliminar = null;
 let _searchRequestId = 0; const _CLIENT_SEARCH_CACHE = new Map(); const _CLIENT_ARTISTA_CACHE = new Map();
-function esSubcategoriaWatchlist(s) { if (!s) return false; return s === 'Watchlist' || s.startsWith('Watchlist:') || s === 'To Listen' || s === 'To Play' || s.startsWith('To Read') || s === 'todas_watchlists'; }
+function esSubcategoriaWatchlist(s) { if (!s) return false; return s === 'Watchlist' || s.startsWith('Watchlist:') || s === 'To Listen' || s.startsWith('To Listen:') || s === 'To Play' || s.startsWith('To Read') || s === 'todas_watchlists'; }
 
 function renderizarOpcionesSelectorAnio(forzar = false) {
  const cont = document.getElementById('lista-anios-selector');

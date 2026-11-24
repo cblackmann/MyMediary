@@ -1323,17 +1323,94 @@ if (sList && sList.length && sList[0].episodeOrder) {
 }
 return { idRef: s.id, tituloOriginal: s.name || '', tituloIngles: '', creador: crs.length ? crs.join(', ') : (s.network?.name || tLang('Showrunner desconocido', 'Unknown showrunner')), anio: (aIni && aFin && aIni !== aFin) ? `${aIni}-${aFin}` : aIni, totalSeasons: sList?.length || 0, estadoSerie: s.status || '', sinopsis: s.summary ? s.summary.replace(/<[^>]*>?/gm, '') : sinSinopsis, poster: s.image?.medium || s.image?.original || '', duracionHoras: durHoras, seasonsList: sList || [], avgRuntime: avgRun };
 })); }
-if (cat === 'Musica') { if (sub === 'Discos' || sub === 'Disco') { const resultados = [], vistos = new Set(); const itRes = (await getJson_(`https://itunes.apple.com/search?term=${q}&entity=album&limit=10`))?.results || []; itRes.forEach(al => {
-const tit = al.collectionName || '', art = al.artistName || tLang('Artista', 'Artist'), k = `${tit.toLowerCase()}_${art.toLowerCase()}`;
-if (!vistos.has(k)) { vistos.add(k); resultados.push({ tituloOriginal: tit, tituloIngles: '', creador: art, anio: al.releaseDate ? al.releaseDate.substring(0, 4) : '', sinopsis: tLang(`Álbum discográfico. Canciones: ${al.trackCount || 'N/D'}. Género: ${al.primaryGenreName || 'Música'}.`, `Studio album. Tracks: ${al.trackCount || 'N/A'}. Genre: ${al.primaryGenreName || 'Music'}.`), poster: (al.artworkUrl100 || '').replace('100x100bb', '600x600bb') }); }
-}); if (resultados.length < 8) { const dzRes = (await getJson_(`https://api.deezer.com/search/album?q=${q}&limit=8`))?.data || []; dzRes.forEach(it => { const tit = it.title || '', art = it.artist?.name || tLang('Artista', 'Artist'), k = `${tit.toLowerCase()}_${art.toLowerCase()}`;
-if (!vistos.has(k)) { vistos.add(k); resultados.push({ tituloOriginal: tit, tituloIngles: '', creador: art, anio: '', sinopsis: tLang('Álbum discográfico (Deezer)', 'Music album (Deezer)'), poster: it.cover_xl || it.cover_big || it.cover_medium || '' }); }
-}); }
-return resultados.slice(0, 10); }
-const end = (sub.includes('Artista') || sub.includes('Concierto') || sub === 'To Listen') ? 'artist' : 'album'; const dzList = (await getJson_(`https://api.deezer.com/search/${end}?q=${q}&limit=6`))?.data || []; return dzList.map(it => ({
-tituloOriginal: (end === 'artist' ? it.name : it.title) || '', tituloIngles: '', creador: (end === 'artist' ? it.name : it.artist?.name) || tLang('Artista', 'Artist'), anio: '',
-sinopsis: end === 'artist' ? tLang(`Seguidores: ${(it.nb_fan || 0).toLocaleString()}`, `Followers: ${(it.nb_fan || 0).toLocaleString()}`) : tLang('Álbum discográfico', 'Music album'), poster: end === 'artist' ? (it.picture_medium || it.picture_big || '') : (it.cover_medium || it.cover_big || '')
-})); }
+if (cat === 'Musica') {
+  const isDiscoSub = sub === 'Discos' || sub === 'Disco' || sub === 'To Listen' || sub === 'To Listen: Discos';
+  if (isDiscoSub) {
+    const resultados = [], vistos = new Set();
+    const itRes = (await getJson_(`https://itunes.apple.com/search?term=${q}&entity=album&limit=10`))?.results || [];
+    itRes.forEach(al => {
+      const tit = al.collectionName || '', art = al.artistName || tLang('Artista', 'Artist'), k = `${tit.toLowerCase()}_${art.toLowerCase()}`;
+      if (!vistos.has(k)) {
+        vistos.add(k);
+        resultados.push({
+          tituloOriginal: tit,
+          tituloIngles: '',
+          creador: art,
+          anio: al.releaseDate ? al.releaseDate.substring(0, 4) : '',
+          sinopsis: tLang(`Álbum discográfico. Canciones: ${al.trackCount || 'N/D'}. Género: ${al.primaryGenreName || 'Música'}.`, `Studio album. Tracks: ${al.trackCount || 'N/A'}. Genre: ${al.primaryGenreName || 'Music'}.`),
+          poster: (al.artworkUrl100 || '').replace('100x100bb', '600x600bb')
+        });
+      }
+    });
+    if (resultados.length < 8) {
+      const dzRes = (await getJson_(`https://api.deezer.com/search/album?q=${q}&limit=8`))?.data || [];
+      dzRes.forEach(it => {
+        const tit = it.title || '', art = it.artist?.name || tLang('Artista', 'Artist'), k = `${tit.toLowerCase()}_${art.toLowerCase()}`;
+        if (!vistos.has(k)) {
+          vistos.add(k);
+          resultados.push({
+            tituloOriginal: tit,
+            tituloIngles: '',
+            creador: art,
+            anio: '',
+            sinopsis: tLang('Álbum discográfico (Deezer)', 'Music album (Deezer)'),
+            poster: it.cover_xl || it.cover_big || it.cover_medium || ''
+          });
+        }
+      });
+    }
+    return resultados.slice(0, 10);
+  }
+
+  // Búsqueda específica de Artistas / Grupos (para Artistas/Grupos, To Listen: Artistas, Conciertos)
+  const isArtSub = sub.includes('Artista') || sub.includes('Concierto') || sub === 'To Listen: Artistas';
+  const end = isArtSub ? 'artist' : 'album';
+  const dzList = (await getJson_(`https://api.deezer.com/search/${end}?q=${q}&limit=8`))?.data || [];
+  const resultadosArt = [];
+  const vistosArt = new Set();
+  dzList.forEach(it => {
+    const nom = (end === 'artist' ? it.name : it.title) || '';
+    if (!nom) return;
+    const k = nom.toLowerCase();
+    if (!vistosArt.has(k)) {
+      vistosArt.add(k);
+      const followers = it.nb_fan ? ` · ${tLang('Seguidores', 'Followers')}: ${Number(it.nb_fan).toLocaleString()}` : '';
+      const albums = it.nb_album ? ` · ${tLang('Álbumes', 'Albums')}: ${it.nb_album}` : '';
+      resultadosArt.push({
+        tituloOriginal: nom,
+        tituloIngles: '',
+        creador: end === 'artist' ? nom : (it.artist?.name || tLang('Artista', 'Artist')),
+        anio: '',
+        sinopsis: end === 'artist' ? `${tLang('Artista / Grupo musical', 'Music Artist / Group')}${followers}${albums}` : tLang('Álbum discográfico', 'Music album'),
+        poster: end === 'artist' ? (it.picture_big || it.picture_medium || it.picture_xl || '') : (it.cover_big || it.cover_medium || '')
+      });
+    }
+  });
+
+  if (isArtSub && resultadosArt.length < 5) {
+    try {
+      const itArtRes = (await getJson_(`https://itunes.apple.com/search?term=${q}&entity=musicArtist&limit=6`))?.results || [];
+      itArtRes.forEach(a => {
+        const nom = a.artistName || '';
+        if (!nom) return;
+        const k = nom.toLowerCase();
+        if (!vistosArt.has(k)) {
+          vistosArt.add(k);
+          resultadosArt.push({
+            tituloOriginal: nom,
+            tituloIngles: '',
+            creador: nom,
+            anio: '',
+            sinopsis: a.primaryGenreName ? `${tLang('Artista musical', 'Music artist')} · ${a.primaryGenreName}` : tLang('Artista musical', 'Music artist'),
+            poster: ''
+          });
+        }
+      });
+    } catch (e) {}
+  }
+
+  return resultadosArt.slice(0, 10);
+}
 if (cat === 'Juegos') {
   const qClean = qTrim;
   // RAWG es nuestra fuente principal y más completa (con soporte nativo CORS para juegos de todas las plataformas)

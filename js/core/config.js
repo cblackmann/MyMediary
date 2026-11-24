@@ -324,7 +324,8 @@ const CONFIG = {
       { id: 'Discos', nombre: 'Discos', emoji: getHeroIcon('disc'), colorKey: 'musica', rangoFechas: false, admiteRewatch: false },
       { id: 'Artistas/Grupos', nombre: 'Artistas/Grupos', emoji: getHeroIcon('microphone'), colorKey: 'musica', rangoFechas: true, admiteRewatch: false },
       { id: 'Conciertos', nombre: 'Conciertos', emoji: getHeroIcon('ticket'), colorKey: 'musica', rangoFechas: false, admiteRewatch: false },
-      { id: 'To Listen', nombre: 'To Listen', emoji: getHeroIcon('bookmark'), colorKey: 'musica', esWatchlist: true, targetSub: 'Discos', rangoFechas: false }
+      { id: 'To Listen', nombre: 'To Listen: Discos', emoji: getHeroIcon('bookmark'), colorKey: 'musica', esWatchlist: true, targetSub: 'Discos', rangoFechas: false },
+      { id: 'To Listen: Artistas', nombre: 'To Listen: Artistas', emoji: getHeroIcon('microphone'), colorKey: 'musica', esWatchlist: true, targetSub: 'Artistas/Grupos', rangoFechas: false }
     ]
   },
   Juegos: {

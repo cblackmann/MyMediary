@@ -207,9 +207,16 @@ function renderizarVistaWatchlistsDedicada() {
   // 3. Actualizar Placeholder del buscador
   const nomSub = I18N[l]?.subs?.[subObjActual.id] || subObjActual.nombre;
   if (inSearch) {
-    inSearch.placeholder = userPrefs.lang === 'en'
-      ? `Search and add to Watchlist: ${nomSub}...`
-      : `Buscar título para agregar a Watchlist de ${nomSub}...`;
+    const esArt = String(subObjActual.id).toLowerCase().includes('artista');
+    if (userPrefs.lang === 'en') {
+      inSearch.placeholder = esArt
+        ? 'Search artist or band to add to To Listen...'
+        : `Search and add to Watchlist: ${nomSub}...`;
+    } else {
+      inSearch.placeholder = esArt
+        ? 'Buscar artista o grupo para agregar a To Listen...'
+        : `Buscar título para agregar a Watchlist de ${nomSub}...`;
+    }
   }
 
   // 4. Renderizar Items de la subcategoría seleccionada
@@ -668,7 +675,8 @@ function agregarAWatchlistDirecto(it, btnEl = null) {
     if (String(targetSub).toLowerCase().includes('docu')) targetSub = 'Series Documentales';
     else targetSub = 'Temporadas';
   } else if (targetCat === 'Musica') {
-    targetSub = 'Discos';
+    if (String(targetSub).toLowerCase().includes('artista')) targetSub = 'Artistas/Grupos';
+    else targetSub = 'Discos';
   } else if (targetCat === 'Juegos') {
     targetSub = 'Videojuegos';
   } else if (targetCat === 'Lecturas') {
@@ -718,7 +726,7 @@ if (destCat === 'Peliculas') {
 } else if (destCat === 'Series') {
   destSub = (String(destSub).toLowerCase().includes('docu')) ? 'Series Documentales' : 'Temporadas';
 } else if (destCat === 'Musica') {
-  destSub = 'Discos';
+  destSub = (String(destSub).toLowerCase().includes('artista')) ? 'Artistas/Grupos' : 'Discos';
 } else if (destCat === 'Juegos') {
   destSub = 'Videojuegos';
 } else if (destCat === 'Lecturas') {

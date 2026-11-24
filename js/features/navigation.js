@@ -1468,7 +1468,9 @@ function itemPerteneceAWatchlist(w, cat, sub) {
     return pideDocu ? esDocu : !esDocu;
   }
   if (cat === 'Musica' || wCat === 'Musica') {
-    return wCat === 'Musica' || cat === 'Musica';
+    const esArtista = wSub.includes('artista');
+    const pideArtista = subNorm.includes('artista');
+    return pideArtista ? esArtista : !esArtista;
   }
   if (cat === 'Juegos' || wCat === 'Juegos') {
     return wCat === 'Juegos' || cat === 'Juegos';
@@ -1498,7 +1500,10 @@ function obtenerSubWatchlistDeCategoria(cat, subActual) {
     if (String(subActual).toLowerCase().includes('docu')) return 'Watchlist: Docuseries';
     return 'Watchlist';
   }
-  if (cat === 'Musica') return 'To Listen';
+  if (cat === 'Musica') {
+    if (String(subActual).toLowerCase().includes('artista')) return 'To Listen: Artistas';
+    return 'To Listen';
+  }
   if (cat === 'Juegos') return 'To Play';
   if (cat === 'Lecturas') {
     const sLow = String(subActual).toLowerCase();
@@ -1517,7 +1522,7 @@ function volverAHistorialDesdeWatchlist() {
   } else if (c === 'Series') {
     subHist = String(estado.subcategoria).toLowerCase().includes('docu') ? 'Series Documentales' : 'Temporadas';
   } else if (c === 'Musica') {
-    subHist = 'Discos';
+    subHist = String(estado.subcategoria).toLowerCase().includes('artista') ? 'Artistas/Grupos' : 'Discos';
   } else if (c === 'Juegos') {
     subHist = 'Videojuegos';
   } else if (c === 'Lecturas') {
@@ -1598,7 +1603,21 @@ if (boxProg) {
     if (chkProg) chkProg.checked = false;
   }
 }
-actualizarBotonLecturaHoyLibros();
+  const inSearch = document.getElementById('input-search');
+  if (inSearch) {
+    const l = userPrefs.lang || 'es';
+    if (esWl) {
+      const esArt = String(s).toLowerCase().includes('artista');
+      inSearch.placeholder = l === 'en'
+        ? (esArt ? 'Search artist or band to add to To Listen...' : `Search to add to ${I18N[l]?.subs?.[s] || s}...`)
+        : (esArt ? 'Buscar artista o grupo para agregar a To Listen...' : `Buscar título para agregar a ${I18N[l]?.subs?.[s] || s}...`);
+    } else if (c === 'Musica' && (s === 'Artistas/Grupos' || s === 'Artistas')) {
+      inSearch.placeholder = l === 'en' ? 'Search artist or band...' : 'Buscar artista o grupo...';
+    } else {
+      inSearch.placeholder = l === 'en' ? 'Search title in real time...' : 'Buscar título en tiempo real...';
+    }
+  }
+  actualizarBotonLecturaHoyLibros();
 }
 function toggleOcultarRewatches() { estado.ocultarRewatches = !estado.ocultarRewatches; const btn = document.getElementById('btn-filtro-rewatches'); btn.classList.toggle('active', estado.ocultarRewatches);
 document.getElementById('txt-filtro-rewatches').textContent = estado.ocultarRewatches ? t('btn_mostrar_rw') : t('btn_ocultar_rw'); filtrarYMostrarHistorial(); }
