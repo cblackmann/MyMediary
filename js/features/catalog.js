@@ -62,6 +62,22 @@ function abrirModalAgregadoRapido() { if (typeof renderizarOpcionesAgregadoRapid
 function cerrarModalAgregadoRapido() { document.getElementById('modal-agregado-rapido').style.display = 'none'; }
 function ejecutarAgregadoRapido(cat, sub) { cerrarModalAgregadoRapido(); cambiarCat(cat, sub); setTimeout(() => { const inp = document.getElementById('input-search'); if (inp) { inp.focus(); inp.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
 }, 250); }
+function ejecutarAgregadoRapidoWatchlists(cat = null) {
+  const catPrevia = cat || (CONFIG[estado.categoria] ? estado.categoria : null);
+  cerrarModalAgregadoRapido();
+  abrirMenuWatchlistGlobal();
+  if (catPrevia && typeof seleccionarCategoriaWl === 'function') {
+    seleccionarCategoriaWl(catPrevia);
+  }
+  setTimeout(() => {
+    const inp = document.getElementById('input-search-wl');
+    if (inp) {
+      inp.focus();
+      inp.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, 250);
+}
+window.ejecutarAgregadoRapidoWatchlists = ejecutarAgregadoRapidoWatchlists;
 // --- ACCESO A WATCHLISTS DEDICADAS DESDE MÓVIL Y WEB ---
 function abrirMenuWatchlistGlobal(pushNav = true) {
   if (pushNav) registrarNavegacionApp('watchlists');
