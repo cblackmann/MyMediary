@@ -1421,264 +1421,131 @@ function ciclarAmigoLiveJuego(ev) {
 }
 window.ciclarAmigoLiveJuego = ciclarAmigoLiveJuego;
 
-function dibujarTarjetaAmigoMusicaLive(data, opciones = {}) {
+function dibujarTarjetaAmigoMusicaSimple(data) {
   if (!data) return '';
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const isExp = (typeof estaLiveCardExpandida === 'function') ? estaLiveCardExpandida('friends_spotify') : false;
 
-  const title = data.title || (l === 'en' ? 'Untitled' : 'Sin título');
+  const title = data.title || data.name || (l === 'en' ? 'Untitled' : 'Sin título');
   const artist = data.artist || (l === 'en' ? 'Artist' : 'Artista');
-  const album = data.album || (l === 'en' ? 'Music' : 'Música');
   const nick = data.amigoNickname || (data.userEmail ? data.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
   const userEmail = data.userEmail || '';
   const coverUrl = data.image || '';
-  const source = data.source || 'spotify';
-  const isLastFm = source === 'lastfm';
+  const searchUrl = data.url || `https://open.spotify.com/search/${encodeURIComponent((title + ' ' + artist).trim())}`;
 
   const coverHtml = coverUrl
-    ? `<img src="${escHtmlFeed_(coverUrl)}" alt="${escHtmlFeed_(title)}" loading="lazy" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="cover-music-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.5rem;background:var(--bg);color:#10b981;">${getHeroIcon('musical-note', '', 24)}</div>`
-    : `<div class="cover-music-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;background:var(--bg);color:#10b981;">${getHeroIcon('musical-note', '', 24)}</div>`;
+    ? `<img src="${escHtmlFeed_(coverUrl)}" alt="${escHtmlFeed_(title)}" loading="lazy">`
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(29,185,84,0.15);color:#1DB954;"><svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg></div>`;
 
   const avatarHtml = (data.amigoAvatar && (data.amigoAvatar.startsWith('http') || data.amigoAvatar.startsWith('data:')))
-    ? `<img loading="lazy" decoding="async" src="${escHtmlFeed_(data.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
+    ? `<img loading="lazy" decoding="async" src="${escHtmlFeed_(data.amigoAvatar)}" alt="${escHtmlFeed_(nick)}">`
     : `<span>${escHtmlFeed_(data.amigoAvatar || '🦊')}</span>`;
 
-  const safeTitle = encodeURIComponent(title);
   const safeArtist = encodeURIComponent(artist);
-  const searchUrl = data.url || `https://open.spotify.com/search/${encodeURIComponent((title + ' ' + artist).trim())}`;
-  const modalAccion = userEmail ? `abrirModalRegistrosAmigo('${escHtmlFeed_(userEmail)}', '${escHtmlFeed_(nick)}', 'Musica')` : '';
-  const perfilAccion = userEmail ? `verPerfilDeAmigo('${escHtmlFeed_(userEmail)}')` : '';
-
-  const total = opciones.total || opciones.totalLiveCount || 1;
-  const index = opciones.index !== undefined ? opciones.index : (opciones.currentIndex || 0);
-  const switcherHtml = total > 1
-    ? `<button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); ciclarAmigoLiveMusica(event)" title="${l === 'en' ? 'View next friend' : 'Ver siguiente amigo'}" style="margin-left:auto; font-size:0.68rem; padding:1px 6px; height:20px;">${index + 1}/${total} ▶</button>`
-    : '';
+  const safeAlbum = encodeURIComponent(data.album || title);
+  const clickAccion = userEmail ? `verPerfilDeAmigo('${escHtmlFeed_(userEmail)}')` : `window.open('${escHtmlFeed_(searchUrl)}', '_blank')`;
 
   return `
-    <div class="home-spotify-card-compact home-friend-music-card home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('friends_spotify', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <!-- Portada con mini-avatar superpuesto del amigo -->
-      <div class="home-np-cover-compact" style="position:relative; cursor:pointer;" onclick="event.stopPropagation(); ${modalAccion}" title="${l === 'en' ? 'View friend details' : 'Ver actividad del amigo'}">
+    <div class="home-live-card-simple" onclick="${clickAccion}" style="cursor:pointer;" title="${l === 'en' ? 'View profile: ' + escHtmlFeed_(nick) : 'Ver perfil de ' + escHtmlFeed_(nick)}">
+      <div class="home-live-cover-box">
         ${coverHtml}
-        <div class="home-np-friend-avatar-badge" title="${escHtmlFeed_(nick)}">
+        <div class="home-live-cover-avatar" title="${escHtmlFeed_(nick)}">
           ${avatarHtml}
         </div>
       </div>
-
-      <!-- Centro: Vistas reducida y expandida -->
-      <div class="home-np-center-compact">
-        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN ANDROID) -->
-        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
-          <div style="flex:1; min-width:0; overflow:hidden;">
-            <div class="home-np-title-compact home-np-text-wrap" title="${escHtmlFeed_(title)}">
-              <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
-            </div>
-            <div style="font-size:0.73rem; color:#10b981; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; justify-content:center; gap:5px; margin-top:1px;">
-              <span>${escHtmlFeed_(nick)}</span>
-              <span style="opacity:0.5;">·</span>
-              <span style="color:#10b981; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
-                <span class="home-np-dot" style="background:#10b981;"></span>
-                <span>${l === 'en' ? 'Live' : 'En vivo'}</span>
-              </span>
-              <span style="opacity:0.5;">·</span>
-              <span style="color:var(--muted); font-size:0.68rem;">${escHtmlFeed_(artist)}</span>
-              ${total > 1 ? `<span style="opacity:0.5;">·</span><span style="color:var(--accent); font-size:0.66rem; font-weight:700;">(${index + 1}/${total})</span>` : ''}
-            </div>
-          </div>
+      <div class="home-live-info-box">
+        <div class="home-live-title-row" title="${escHtmlFeed_(title)}">
+          ${escHtmlFeed_(title)}
         </div>
-
-        <!-- VISTA EXPANDIDA -->
-        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
-          <!-- Fila de identificación del amigo -->
-          <div style="display:flex; align-items:center; gap:5px; font-size:0.72rem; line-height:1.2; margin-bottom:1px; overflow:hidden;">
-            <span style="width:15px; height:15px; border-radius:50%; overflow:hidden; display:inline-grid; place-items:center; flex-shrink:0; border:1px solid var(--border); font-size:0.65rem; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}">
-              ${avatarHtml}
-            </span>
-            <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:130px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
-              ${escHtmlFeed_(nick)}
-            </strong>
-            <span style="color:var(--muted); font-size:0.68rem; white-space:nowrap;">
-              ${l === 'en' ? 'is listening now to' : 'está escuchando ahora'}
-            </span>
-            ${switcherHtml}
-          </div>
-
-          <!-- Artista -->
-          <div class="home-np-artist-compact home-np-text-wrap" title="${escHtmlFeed_(artist)}">
-            <span class="home-np-scrollable">${escHtmlFeed_(artist)}</span>
-          </div>
-
-          <!-- Disco / Álbum -->
-          <div class="home-np-album-compact home-np-text-wrap" title="${escHtmlFeed_(album)}">
-            <span class="home-np-scrollable">${escHtmlFeed_(album)}</span>
-          </div>
-
-          <!-- Título de la canción -->
-          <div class="home-np-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="${modalAccion}" title="${escHtmlFeed_(title)}">
-            <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
-          </div>
-
-          <!-- Fila inferior: Estado de escucha en vivo -->
-          <div class="home-np-ctrls-compact" style="margin-top:2px; gap:6px; flex-wrap:nowrap; overflow:hidden;">
-            <span class="home-np-live-status-pill" style="font-size:0.68rem; color:#10b981; display:inline-flex; align-items:center; gap:4px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:2px; padding:2px 7px; flex-shrink:0;">
-              <span class="home-np-dot" style="width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
-              <span>${l === 'en' ? 'Listening now' : 'Escuchando ahora'}</span>
-            </span>
-            ${isLastFm ? `
-              <span style="font-size:0.68rem; color:#d51007; font-weight:700; background:rgba(213,16,7,0.12); border:1px solid rgba(213,16,7,0.3); border-radius:2px; padding:1px 6px;">
-                Last.fm
-              </span>
-            ` : ''}
-          </div>
+        <div class="home-live-subtitle-row" title="${escHtmlFeed_(nick)} · ${escHtmlFeed_(artist)}">
+          <span style="font-weight:600; color:var(--text);">${escHtmlFeed_(nick)}</span>
+          <span class="home-live-pulse-dot"></span>
+          <span>${escHtmlFeed_(artist)}</span>
         </div>
       </div>
-
-      <!-- Borde derecho: Logo de Spotify / Last.fm arriba, botón rápido de agregar abajo -->
-      <div class="home-np-right-col">
-        <a href="${searchUrl}" target="_blank" rel="noopener noreferrer" class="home-np-sp-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${isLastFm ? 'Last.fm' : (l === 'en' ? 'Listen on Spotify' : 'Escuchar en Spotify')}">
-          ${isLastFm ? `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#d51007"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm1.782 17.587c-1.423 0-2.434-.698-2.766-1.74l-.271.855h-2.348l1.455-7.382h2.327l-.604 3.064c.542-.782 1.45-1.298 2.502-1.298 1.956 0 3.327 1.579 2.977 3.351-.351 1.776-1.897 3.15-3.272 3.15zm-7.669-.885h-2.42l2.457-7.382h2.42l-2.457 7.382z"/></svg>
-          ` : `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
-          `}
-        </a>
-        <button type="button" class="btn-np-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
+      <div class="home-live-action-box" onclick="event.stopPropagation()">
+        <button type="button" class="btn-live-quick-add" onclick="registrarDiscoActualEnMediary(decodeURIComponent('${safeAlbum}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Add album in Mediary' : 'Registrar disco en Mediary'}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
-        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </span>
+        <a href="${escHtmlFeed_(searchUrl)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="Spotify">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+        </a>
       </div>
     </div>
   `;
 }
+window.dibujarTarjetaAmigoMusicaSimple = dibujarTarjetaAmigoMusicaSimple;
 
-function dibujarTarjetaAmigoJuegoLive(data, opciones = {}) {
+function dibujarTarjetaAmigoMusicaLive(data, opciones = {}) {
+  return dibujarTarjetaAmigoMusicaSimple(data);
+}
+window.dibujarTarjetaAmigoMusicaLive = dibujarTarjetaAmigoMusicaLive;
+
+function dibujarTarjetaAmigoJuegoSimple(data) {
   if (!data) return '';
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const isExp = (typeof estaLiveCardExpandida === 'function') ? estaLiveCardExpandida('friends_playstation') : false;
 
-  const isSteam = !!(data && (data.source === 'steam' || String(data.platform || '').toLowerCase() === 'steam'));
-  const title = data.title || (isSteam ? (l === 'en' ? 'Steam Game' : 'Juego de Steam') : (l === 'en' ? 'PlayStation Game' : 'Juego de PlayStation'));
-  const platform = isSteam ? 'Steam' : (data.platform || 'PS5');
+  const title = data.titleName || data.name || data.title || (l === 'en' ? 'Game' : 'Videojuego');
   const nick = data.amigoNickname || (data.userEmail ? data.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
   const userEmail = data.userEmail || '';
   const coverUrl = data.image || '';
-  const accentColor = isSteam ? '#66c0f4' : '#38bdf8';
-  const platformHeader = isSteam ? 'Steam' : (platform.includes('PS5') ? 'PlayStation 5' : (platform.includes('PS4') ? 'PlayStation 4' : 'PlayStation'));
+  const isSteam = (data.source === 'steam' || String(data.platform || '').toLowerCase() === 'steam');
+  const platformName = isSteam ? 'Steam' : 'PlayStation';
+  const platformColor = isSteam ? '#66c0f4' : '#0070d1';
 
-  const coverHtml = coverUrl
-    ? `<img src="${escHtmlFeed_(coverUrl)}" alt="${escHtmlFeed_(title)}" loading="lazy" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="cover-game-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.5rem;background:${isSteam ? 'linear-gradient(135deg,#171a21,#1b2838)' : 'linear-gradient(135deg,#003791,#001a44)'};color:${accentColor};">${getHeroIcon('gamepad', '', 24)}</div>`
-    : `<div class="cover-game-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.5rem;background:${isSteam ? 'linear-gradient(135deg,#171a21,#1b2838)' : 'linear-gradient(135deg,#003791,#001a44)'};color:${accentColor};">${getHeroIcon('gamepad', '', 24)}</div>`;
-
-  const avatarHtml = (data.amigoAvatar && (data.amigoAvatar.startsWith('http') || data.amigoAvatar.startsWith('data:')))
-    ? `<img loading="lazy" decoding="async" src="${escHtmlFeed_(data.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
-    : `<span>${escHtmlFeed_(data.amigoAvatar || '🦊')}</span>`;
-
-  const safeTitle = encodeURIComponent(title);
-  const safePlatform = encodeURIComponent(platform);
   let storeUrl = isSteam
     ? (data.appid ? `https://store.steampowered.com/app/${encodeURIComponent(data.appid)}` : `https://store.steampowered.com/search/?term=${encodeURIComponent(title)}`)
     : `https://store.playstation.com/search/${encodeURIComponent(title)}`;
 
-  const modalAccion = userEmail ? `abrirModalRegistrosAmigo('${escHtmlFeed_(userEmail)}', '${escHtmlFeed_(nick)}', 'Juegos')` : '';
-  const perfilAccion = userEmail ? `verPerfilDeAmigo('${escHtmlFeed_(userEmail)}')` : '';
+  const logoSvg = (typeof obtenerSvgLogoPlataformaJuego_ === 'function')
+    ? obtenerSvgLogoPlataformaJuego_(isSteam ? 'steam' : 'playstation', 22)
+    : `<svg width="22" height="22" viewBox="0 0 24 24" fill="${platformColor}"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.031 4.524 4.527s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.005.105.005.159 0 1.875-1.515 3.396-3.39 3.396-1.635 0-3.016-1.173-3.331-2.727L.436 14.819C1.868 20.089 6.48 24 11.979 24c6.627 0 12-5.373 12-12S18.606 0 11.979 0z"/></svg>`;
 
-  const total = opciones.total || opciones.totalLiveCount || 1;
-  const index = opciones.index !== undefined ? opciones.index : (opciones.currentIndex || 0);
-  const switcherHtml = total > 1
-    ? `<button type="button" class="btn-psn-sync-compact" onclick="event.stopPropagation(); ciclarAmigoLiveJuego(event)" title="${l === 'en' ? 'View next friend' : 'Ver siguiente amigo'}" style="margin-left:auto; font-size:0.68rem; padding:1px 6px; height:20px;">${index + 1}/${total} ▶</button>`
-    : '';
+  const coverHtml = coverUrl
+    ? `<img src="${escHtmlFeed_(coverUrl)}" alt="${escHtmlFeed_(title)}" loading="lazy">`
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(23,26,33,0.92);color:${platformColor};"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></div>`;
+
+  const avatarHtml = (data.amigoAvatar && (data.amigoAvatar.startsWith('http') || data.amigoAvatar.startsWith('data:')))
+    ? `<img loading="lazy" decoding="async" src="${escHtmlFeed_(data.amigoAvatar)}" alt="${escHtmlFeed_(nick)}">`
+    : `<span>${escHtmlFeed_(data.amigoAvatar || '🦊')}</span>`;
+
+  const safeTitle = encodeURIComponent(title);
+  const clickAccion = userEmail ? `verPerfilDeAmigo('${escHtmlFeed_(userEmail)}')` : `window.open('${escHtmlFeed_(storeUrl)}', '_blank')`;
 
   return `
-    <div class="home-playstation-card-compact home-friend-game-card ${isSteam ? 'is-steam-active' : ''} home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" onclick="toggleLiveCardExpansion('friends_playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <!-- Portada con mini-avatar superpuesto del amigo -->
-      <div class="home-psn-cover-compact" style="position:relative; cursor:pointer;" onclick="event.stopPropagation(); ${modalAccion}" title="${l === 'en' ? 'View friend details' : 'Ver actividad del amigo'}">
+    <div class="home-live-card-simple" onclick="${clickAccion}" style="cursor:pointer;" title="${l === 'en' ? 'View profile: ' + escHtmlFeed_(nick) : 'Ver perfil de ' + escHtmlFeed_(nick)}">
+      <div class="home-live-cover-box">
         ${coverHtml}
-        <span class="home-psn-platform-badge ${isSteam ? 'home-psn-badge-steam' : ''}">${isSteam ? 'Steam' : (platform.includes('PS5') ? 'PS5' : (platform.includes('PS4') ? 'PS4' : 'PLAY'))}</span>
-        <div class="home-np-friend-avatar-badge" title="${escHtmlFeed_(nick)}">
+        <div class="home-live-cover-avatar" title="${escHtmlFeed_(nick)}">
           ${avatarHtml}
         </div>
       </div>
-
-      <!-- Centro: Vistas reducida y expandida -->
-      <div class="home-psn-center-compact">
-        <!-- VISTA REDUCIDA (ESTILO NOTIFICACIÓN ANDROID) -->
-        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
-          <div style="flex:1; min-width:0; overflow:hidden;">
-            <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlFeed_(title)}">
-              <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
-            </div>
-            <div style="font-size:0.73rem; color:${accentColor}; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; justify-content:center; gap:5px; margin-top:1px;">
-              <span>${escHtmlFeed_(nick)}</span>
-              <span style="opacity:0.5;">·</span>
-              <span style="color:#10b981; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
-                <span class="home-np-dot" style="background:#10b981;"></span>
-                <span>${l === 'en' ? 'Live' : 'En vivo'}</span>
-              </span>
-              <span style="opacity:0.5;">·</span>
-              <span style="color:var(--muted); font-size:0.68rem;">${escHtmlFeed_(platform)}</span>
-              ${total > 1 ? `<span style="opacity:0.5;">·</span><span style="color:var(--accent); font-size:0.66rem; font-weight:700;">(${index + 1}/${total})</span>` : ''}
-            </div>
-          </div>
+      <div class="home-live-info-box">
+        <div class="home-live-title-row" title="${escHtmlFeed_(title)}">
+          ${escHtmlFeed_(title)}
         </div>
-
-        <!-- VISTA EXPANDIDA -->
-        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:1.5px;">
-          <!-- Fila de identificación del amigo -->
-          <div style="display:flex; align-items:center; gap:5px; font-size:0.72rem; line-height:1.2; margin-bottom:1px; overflow:hidden;">
-            <span style="width:15px; height:15px; border-radius:50%; overflow:hidden; display:inline-grid; place-items:center; flex-shrink:0; border:1px solid var(--border); font-size:0.65rem; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}">
-              ${avatarHtml}
-            </span>
-            <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:130px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
-              ${escHtmlFeed_(nick)}
-            </strong>
-            <span style="color:var(--muted); font-size:0.68rem; white-space:nowrap;">
-              ${l === 'en' ? 'is playing now' : 'está jugando ahora'}
-            </span>
-            ${switcherHtml}
-          </div>
-
-          <!-- Plataforma y estudio / red -->
-          <div class="home-psn-platform-label">
-            ${obtenerSvgLogoPlataformaJuego_(isSteam ? 'steam' : 'playstation', 13)}
-            <span>${platformHeader}</span>
-          </div>
-
-          <!-- Título del juego -->
-          <div class="home-psn-title-compact home-np-text-wrap" style="cursor:pointer;" onclick="${modalAccion}" title="${escHtmlFeed_(title)}">
-            <span class="home-np-scrollable">${escHtmlFeed_(title)}</span>
-          </div>
-
-          <!-- Fila inferior: Estado de juego en vivo -->
-          <div class="home-psn-status-row" style="margin-top:2px; gap:6px; flex-wrap:nowrap; overflow:hidden;">
-            <span class="home-psn-live-pill" style="font-size:0.68rem; color:#10b981; display:inline-flex; align-items:center; gap:4px; background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.3); border-radius:2px; padding:2px 7px; flex-shrink:0;">
-              <span class="home-np-dot" style="width:6px; height:6px; border-radius:50%; background:#10b981;"></span>
-              <span>${l === 'en' ? 'Playing now' : 'Jugando ahora'}</span>
-            </span>
-          </div>
+        <div class="home-live-subtitle-row">
+          <span style="font-weight:600; color:var(--text);">${escHtmlFeed_(nick)}</span>
+          <span class="home-live-pulse-dot"></span>
+          <span style="color:${platformColor}; font-weight:600;">${platformName}</span>
         </div>
       </div>
-
-      <!-- Borde derecho: Logo oficial (Steam o PlayStation) y botón rápido -->
-      <div class="home-psn-right-col">
-        <a href="${storeUrl}" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${isSteam ? (l === 'en' ? 'Search on Steam' : 'Ver en Steam') : (l === 'en' ? 'Search on PlayStation Store' : 'Buscar en PlayStation Store')}">
-          ${obtenerSvgLogoPlataformaJuego_(isSteam ? 'steam' : 'playstation', 20)}
-        </a>
-        <button type="button" class="btn-psn-quick-add live-card-expanded-only" onclick="event.stopPropagation(); registrarJuegoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safePlatform}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
+      <div class="home-live-action-box" onclick="event.stopPropagation()">
+        <button type="button" class="btn-live-quick-add" onclick="registrarJuegoActualEnMediary(decodeURIComponent('${safeTitle}'))" title="${l === 'en' ? 'Add game in Mediary' : 'Registrar juego en Mediary'}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
         </button>
-        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </span>
+        <a href="${escHtmlFeed_(storeUrl)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="${platformName}">
+          ${logoSvg}
+        </a>
       </div>
     </div>
   `;
 }
+window.dibujarTarjetaAmigoJuegoSimple = dibujarTarjetaAmigoJuegoSimple;
+
+function dibujarTarjetaAmigoJuegoLive(data, opciones = {}) {
+  return dibujarTarjetaAmigoJuegoSimple(data);
+}
+window.dibujarTarjetaAmigoJuegoLive = dibujarTarjetaAmigoJuegoLive;
 
 function dibujarTarjetaUltimoJuegoAmigos(it) {
   if (!it) return '';
@@ -1885,13 +1752,15 @@ function cambiarSlideFriendsLive(idx) {
   carousel.scrollTo({ left: idx * carousel.clientWidth, behavior: 'smooth' });
   actualizarPillsCarouselFriendsLive(idx);
 }
+window.cambiarSlideFriendsLive = cambiarSlideFriendsLive;
 
 function actualizarPillsCarouselFriendsLive(idx) {
-  const dotSp = document.getElementById('dot-friends-live-spotify');
-  const dotPsn = document.getElementById('dot-friends-live-psn');
-  if (dotSp) dotSp.classList.toggle('active', idx === 0);
-  if (dotPsn) dotPsn.classList.toggle('active', idx === 1);
+  const dots = document.querySelectorAll('#home-friends-live-carousel-dots .live-carousel-dot');
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === idx);
+  });
 }
+window.actualizarPillsCarouselFriendsLive = actualizarPillsCarouselFriendsLive;
 
 function inicializarFriendsLiveCarouselScrollListener() {
   const carousel = document.getElementById('home-friends-live-carousel');
@@ -1907,6 +1776,7 @@ function inicializarFriendsLiveCarouselScrollListener() {
     });
   }, { passive: true });
 }
+window.inicializarFriendsLiveCarouselScrollListener = inicializarFriendsLiveCarouselScrollListener;
 
 function esItemCancionMusica(it) {
   if (!it) return false;
@@ -2088,62 +1958,116 @@ function renderizarUltimasCancionesAmigosInicio() {
 let _amigosLivePollingInterval = null;
 let _amigosLiveFetchEnCurso = false;
 
+function obtenerActividadesEnVivoAmigos() {
+  const ahora = Date.now();
+  const maxAgeMusica = 35 * 60 * 1000;
+  const maxAgeJuegos = 3.5 * 60 * 60 * 1000;
+
+  const musicList = (estado && estado.amigosLiveCache && Array.isArray(estado.amigosLiveCache.music))
+    ? estado.amigosLiveCache.music
+    : [];
+  const gamesList = (estado && estado.amigosLiveCache && Array.isArray(estado.amigosLiveCache.games))
+    ? estado.amigosLiveCache.games
+    : [];
+
+  const activeMusic = musicList.filter(item => {
+    if (!item || !item.isPlaying) return false;
+    const upAt = Number(item.updatedAt) || 0;
+    return (!upAt || (ahora - upAt <= maxAgeMusica));
+  });
+
+  const activeGames = gamesList.filter(item => {
+    if (!item || !item.isPlaying) return false;
+    const upAt = Number(item.updatedAt) || 0;
+    return (!upAt || (ahora - upAt <= maxAgeJuegos));
+  });
+
+  // Mapear por amigo (userEmail o nickname).
+  // Regla del usuario: Si un amigo escucha música, aparece música.
+  // Si luego se pone a jugar, debe cambiar por tarjeta de juego.
+  const friendsMap = new Map();
+
+  for (const m of activeMusic) {
+    const key = m.userEmail || m.amigoNickname || Math.random().toString();
+    friendsMap.set(key, { type: 'music', data: m });
+  }
+
+  for (const g of activeGames) {
+    const key = g.userEmail || g.amigoNickname || Math.random().toString();
+    friendsMap.set(key, { type: 'game', data: g });
+  }
+
+  return Array.from(friendsMap.values());
+}
+window.obtenerActividadesEnVivoAmigos = obtenerActividadesEnVivoAmigos;
+
 function renderizarLiveCardsAmigosInicio() {
   const wrapper = document.getElementById('home-friends-live-carousel-wrapper');
-  const contMusica = document.getElementById('home-friends-last-track-container');
-  const contJuego = document.getElementById('home-friends-psn-container');
+  const carousel = document.getElementById('home-friends-live-carousel');
+  const dotsContainer = document.getElementById('home-friends-live-carousel-dots');
+  if (!wrapper || !carousel) return;
 
   if (!estado || !estado.userEmail) {
-    if (wrapper) wrapper.style.display = 'none';
+    wrapper.style.display = 'none';
+    carousel.innerHTML = '';
+    if (dotsContainer) dotsContainer.style.display = 'none';
     renderizarUltimasCancionesAmigosInicio();
     return;
   }
 
-  if (wrapper) wrapper.style.display = 'flex';
-  if (typeof inicializarFriendsLiveCarouselScrollListener === 'function') {
-    inicializarFriendsLiveCarouselScrollListener();
+  const actividades = obtenerActividadesEnVivoAmigos();
+
+  // 1. Si no hay nadie haciendo nada, NO debe haber tarjeta (display: none)
+  if (actividades.length === 0) {
+    wrapper.style.display = 'none';
+    carousel.innerHTML = '';
+    if (dotsContainer) dotsContainer.style.display = 'none';
+    renderizarUltimasCancionesAmigosInicio();
+    return;
   }
+
+  // 2. Si hay actividad, mostrar wrapper
+  wrapper.style.display = 'flex';
+
+  const cardsHtml = actividades.map(act => {
+    const cardContent = act.type === 'game'
+      ? dibujarTarjetaAmigoJuegoSimple(act.data)
+      : dibujarTarjetaAmigoMusicaSimple(act.data);
+    return `<div class="home-live-carousel-item">${cardContent}</div>`;
+  }).join('');
+
+  carousel.innerHTML = cardsHtml;
+
+  // 3. Exactamente 1 amigo activo -> 1 tarjeta centrada, sin dots
+  if (actividades.length === 1) {
+    carousel.classList.add('home-live-single-item');
+    if (dotsContainer) dotsContainer.style.display = 'none';
+  } else {
+    // 4. Múltiples amigos activos -> carrusel deslizable con dots
+    carousel.classList.remove('home-live-single-item');
+    if (dotsContainer) {
+      dotsContainer.style.display = 'flex';
+      dotsContainer.innerHTML = actividades.map((_, i) =>
+        `<button type="button" class="live-carousel-dot ${i === 0 ? 'active' : ''}" onclick="cambiarSlideFriendsLive(${i})" aria-label="Slide ${i+1}"></button>`
+      ).join('');
+    }
+    if (typeof inicializarFriendsLiveCarouselScrollListener === 'function') {
+      inicializarFriendsLiveCarouselScrollListener();
+    }
+  }
+
   if (typeof iniciarPollingFriendsLive === 'function') {
     iniciarPollingFriendsLive();
-  }
-
-  const estMusica = obtenerEstadoAmigosMusicaActivo();
-  const estJuego = obtenerEstadoAmigosJuegosActivo();
-
-  // Actualizar dots y badges en vivo
-  const badgeSp = document.getElementById('badge-friends-sp-live-pill');
-  if (badgeSp) badgeSp.style.display = (estMusica.status === 'playing') ? 'inline-block' : 'none';
-
-  const badgePsn = document.getElementById('badge-friends-psn-live-pill');
-  if (badgePsn) badgePsn.style.display = (estJuego.status === 'playing') ? 'inline-block' : 'none';
-
-  if (contMusica) {
-    if (estMusica.status === 'playing') {
-      contMusica.innerHTML = dibujarTarjetaAmigoMusicaLive(estMusica.data, { total: estMusica.total, index: estMusica.index });
-    } else if (estMusica.status === 'recent') {
-      contMusica.innerHTML = dibujarTarjetaUltimaCancionAmigos(estMusica.data);
-    } else {
-      contMusica.innerHTML = dibujarTarjetaUltimaCancionAmigosIdle();
-    }
-  }
-
-  if (contJuego) {
-    if (estJuego.status === 'playing') {
-      contJuego.innerHTML = dibujarTarjetaAmigoJuegoLive(estJuego.data, { total: estJuego.total, index: estJuego.index });
-    } else {
-      contJuego.innerHTML = dibujarTarjetaUltimoJuegoAmigosIdle();
-    }
   }
 
   renderizarUltimasCancionesAmigosInicio();
 
   requestAnimationFrame(() => {
-    if (typeof ajustarMarqueeSpotify === 'function') ajustarMarqueeSpotify();
+    if (typeof ajustarMarqueeSpotify === 'function') setTimeout(ajustarMarqueeSpotify, 50);
   });
 }
 window.renderizarLiveCardsAmigosInicio = renderizarLiveCardsAmigosInicio;
 window.renderizarUltimaCancionAmigosInicio = renderizarLiveCardsAmigosInicio;
-window.cambiarSlideFriendsLive = cambiarSlideFriendsLive;
 
 async function consultarActividadEnVivoAmigos_(mostrarToast = false) {
   if (!estado || !estado.userEmail || _amigosLiveFetchEnCurso) return;

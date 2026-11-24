@@ -744,31 +744,42 @@ function obtenerEstadoJuegoActivoInicio() {
 window.obtenerEstadoJuegoActivoInicio = obtenerEstadoJuegoActivoInicio;
 
 function renderizarPlayStationNowPlayingInicio(forzar = false) {
-  const container = document.getElementById('home-psn-now-playing-container');
-  const wrapper = document.getElementById('home-live-carousel-wrapper');
-  if (!container) return;
-
-  if (wrapper) wrapper.style.display = 'flex';
-  container.style.display = 'flex';
-  inicializarLiveCarouselScrollListener();
-
   const estadoJuego = obtenerEstadoJuegoActivoInicio();
   const badgePsn = document.getElementById('badge-psn-live-pill');
 
   if (estadoJuego.status === 'disconnected') {
     if (badgePsn) badgePsn.style.display = 'none';
     detenerPollingSteamLive();
-    container.innerHTML = dibujarTarjetaPlayStationCompactaDesconectado();
+    if (!window._personalLiveState) {
+      window._personalLiveState = {
+        spotify: { isPlaying: false, data: null },
+        game: { isPlaying: false, data: null }
+      };
+    }
+    window._personalLiveState.game = { isPlaying: false, data: null };
+    if (typeof actualizarActividadEnVivoPersonal === 'function') {
+      actualizarActividadEnVivoPersonal();
+    }
     return;
   }
 
   const isPlaying = estadoJuego.status === 'playing';
-  if (isPlaying) {
-    if (badgePsn) badgePsn.style.display = 'inline-block';
-    container.innerHTML = dibujarTarjetaPlayStationCompacta(estadoJuego.data);
+  if (badgePsn) badgePsn.style.display = isPlaying ? 'inline-block' : 'none';
+
+  if (!window._personalLiveState) {
+    window._personalLiveState = {
+      spotify: { isPlaying: false, data: null },
+      game: { isPlaying: false, data: null }
+    };
+  }
+  if (isPlaying && estadoJuego.data) {
+    window._personalLiveState.game = { isPlaying: true, data: estadoJuego.data };
   } else {
-    if (badgePsn) badgePsn.style.display = 'none';
-    container.innerHTML = dibujarTarjetaPlayStationCompactaIdle(estadoJuego);
+    window._personalLiveState.game = { isPlaying: false, data: null };
+  }
+
+  if (typeof actualizarActividadEnVivoPersonal === 'function') {
+    actualizarActividadEnVivoPersonal();
   }
 
   if (estadoJuego.isSteamConn) {
@@ -780,18 +791,8 @@ function renderizarPlayStationNowPlayingInicio(forzar = false) {
     detenerPollingSteamLive();
   }
 
-  const spToken = localStorage.getItem('mediary_spotify_token');
-  if (!spToken || isPlaying) {
-    const carousel = document.getElementById('home-live-carousel');
-    if (carousel && carousel.scrollLeft === 0 && !spToken) {
-      setTimeout(() => {
-        if (typeof cambiarSlideLive === 'function') cambiarSlideLive(1);
-      }, 100);
-    }
-  }
-
   requestAnimationFrame(() => {
-    setTimeout(ajustarMarqueeSpotify, 50);
+    if (typeof ajustarMarqueeSpotify === 'function') setTimeout(ajustarMarqueeSpotify, 50);
   });
 }
 
@@ -803,91 +804,10 @@ function obtenerSvgLogoPlataformaJuego_(plataforma, size = 20) {
 }
 
 function dibujarTarjetaPlayStationCompacta(data) {
-  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
-  const titleName = data.titleName || data.name || (l === 'en' ? 'Steam Game' : 'Juego de Steam');
-  const coverUrl = data.image || '';
-  const isExp = estaLiveCardExpandida('playstation');
-  const accentColor = '#66c0f4';
-  const placeholderBg = 'linear-gradient(135deg,rgba(23,26,33,0.92),rgba(27,40,56,0.92))';
-
-  let brandHref = data.appid ? `https://store.steampowered.com/app/${encodeURIComponent(data.appid)}` : 'https://store.steampowered.com';
-  try {
-    if (!data.appid) {
-      const uRaw = localStorage.getItem('mediary_steam_user');
-      if (uRaw) {
-        const u = JSON.parse(uRaw);
-        if (u && u.profileUrl) brandHref = u.profileUrl;
-      }
-    }
-  } catch (e) {}
-
-  const coverHtml = coverUrl
-    ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(titleName)}" loading="lazy"><span class="home-psn-platform-badge">Steam</span>`
-    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:${placeholderBg};color:${accentColor};"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></div>`;
-
-  return `
-    <div class="home-playstation-card-compact is-steam-active home-live-expandable-card ${isExp ? 'is-expanded' : 'is-collapsed'}" data-game-platform="steam" onclick="toggleLiveCardExpansion('playstation', event)" title="${isExp ? (l === 'en' ? 'Tap to collapse' : 'Toca para reducir') : (l === 'en' ? 'Tap to expand' : 'Toca para expandir')}">
-      <!-- i. Portada -->
-      <div class="home-psn-cover-compact">
-        ${coverHtml}
-      </div>
-
-      <!-- ii. Centro -->
-      <div class="home-psn-center-compact">
-        <!-- VISTA REDUCIDA (COLLAPSED) -->
-        <div class="live-card-collapsed-only" style="width:100%; overflow:hidden;">
-          <div style="flex:1; min-width:0; overflow:hidden;">
-            <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleName)}">
-              <span class="home-np-scrollable">${escHtmlSpotify_(titleName)}</span>
-            </div>
-            <div style="font-size:0.72rem; color:${accentColor}; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; display:flex; align-items:center; gap:5px;">
-              <span>Steam</span>
-              <span style="opacity:0.5;">·</span>
-              <span style="color:#10b981; display:inline-flex; align-items:center; gap:3px; font-size:0.68rem; font-weight:700;">
-                <span class="home-np-dot" style="background:#10b981;"></span>
-                <span>${l === 'en' ? 'Live' : 'En vivo'}</span>
-              </span>
-            </div>
-          </div>
-        </div>
-
-        <!-- VISTA EXPANDIDA (EXPANDED - SIMPLE Y LIMPIA) -->
-        <div class="live-card-expanded-only" style="width:100%; display:flex; flex-direction:column; gap:2px;">
-          <div class="home-psn-platform-label">
-            <span>Steam</span>
-          </div>
-          <div class="home-psn-title-compact home-np-text-wrap" title="${escHtmlSpotify_(titleName)}">
-            <span class="home-np-scrollable">${escHtmlSpotify_(titleName)}</span>
-          </div>
-          <div class="home-psn-status-row" style="margin-top:2px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-            <div class="home-psn-live-pill" title="${l === 'en' ? 'Playing now' : 'Jugando ahora'}">
-              <span class="home-np-dot" style="background:#10b981;"></span>
-              <span>${l === 'en' ? 'Live' : 'En vivo'}</span>
-            </div>
-            <button type="button" class="btn-psn-sync-prominent" onclick="event.stopPropagation(); forzarActualizacionJuegosLive(this)" title="${l === 'en' ? 'Sync gaming status' : 'Sincronizar estado'}">
-              <svg class="btn-sync-svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-              <span class="btn-sync-text">${l === 'en' ? 'Sync status' : 'Sincronizar estado'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- iii. Borde derecho: logo Steam, botón de sincronización rápida y chevron -->
-      <div class="home-psn-right-col">
-        <a href="${escHtmlSpotify_(brandHref)}" target="_blank" rel="noopener noreferrer" class="home-psn-logo-link live-card-expanded-only" onclick="event.stopPropagation()" title="${l === 'en' ? 'Open Steam' : 'Abrir Steam'}">
-          ${obtenerSvgLogoPlataformaJuego_('steam', 20)}
-        </a>
-        <button type="button" class="btn-psn-sync-quick" onclick="event.stopPropagation(); forzarActualizacionJuegosLive(this)" title="${l === 'en' ? 'Sync gaming status' : 'Sincronizar estado'}">
-          <svg class="btn-sync-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-        </button>
-        <span class="live-card-expand-indicator" title="${isExp ? (l === 'en' ? 'Collapse' : 'Reducir') : (l === 'en' ? 'Expand' : 'Expandir')}">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 12 15 18 9"></polyline>
-          </svg>
-        </span>
-      </div>
-    </div>
-  `;
+  if (typeof dibujarTarjetaJuegoSimple === 'function') {
+    return dibujarTarjetaJuegoSimple(data);
+  }
+  return '';
 }
 
 function dibujarTarjetaPlayStationCompactaIdle(estadoJuego = null) {

@@ -65,24 +65,32 @@
 .btn-connect-demo-steam {background:rgba(56,189,248,0.08) !important;border:1px solid rgba(56,189,248,0.28) !important;color:var(--accent) !important;}
 @media (max-width: 360px){.app-connect-input-row {flex-direction:column !important;}.app-connect-input-row .btn-connect-action {width:100% !important;}}
 
-/* CARRUSEL EN VIVO: SPOTIFY + PLAYSTATION */
+/* CARRUSEL EN VIVO: TARJETAS DINÁMICAS (SPOTIFY / JUEGOS) */
 .home-live-carousel-wrapper {position:relative;margin-bottom:12px;display:flex;flex-direction:column;align-items:center;width:100%;max-width:560px;margin-left:auto !important;margin-right:auto !important;}
 .home-live-carousel {display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:2px 2px 4px 2px;scroll-behavior:smooth;width:100%;}
 .home-live-carousel::-webkit-scrollbar {display:none;}
+.home-live-carousel.home-live-single-item {overflow-x:hidden !important;scroll-snap-type:none !important;}
 .home-live-carousel-item {flex:0 0 100%;min-width:100%;scroll-snap-align:center;scroll-snap-stop:always;box-sizing:border-box;display:flex !important;justify-content:center !important;align-items:center !important;}
-.home-live-carousel-item .home-spotify-card-compact,
-.home-live-carousel-item .home-playstation-card-compact {margin-bottom:0;}
-.home-live-carousel-dots {display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px;}
-.live-dot-btn {background:var(--bg);border:1px solid var(--border);color:var(--muted);width:16px;height:16px;padding:0;border-radius:50%;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;position:relative;transition:var(--tr);box-shadow:0 1px 2px rgba(0,0,0,0.06);}
-.live-dot-btn:hover {color:var(--text);border-color:var(--border-hover, #64748b);transform:scale(1.08);}
-.live-dot-btn.active {background:var(--card);color:var(--accent);border-color:var(--accent);box-shadow:0 2px 8px rgba(0,0,0,0.18);transform:scale(1.06);}
-.live-dot-icon {display:inline-flex;align-items:center;justify-content:center;}
-.live-dot-icon svg,
-.live-dot-icon svg.h-icon {width:8px !important;height:8px !important;stroke-width:2.2 !important;}
-#badge-sp-live-pill,
-#badge-psn-live-pill,
-#badge-friends-sp-live-pill,
-#badge-friends-psn-live-pill {position:absolute !important;top:-1.5px !important;right:-1.5px !important;width:4px !important;height:4px !important;}
+.home-live-carousel-dots {display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;}
+.live-carousel-dot {width:6px;height:6px;border-radius:50%;background:var(--border);cursor:pointer;transition:all 0.22s cubic-bezier(0.4,0,0.2,1);padding:0;border:none;}
+.live-carousel-dot:hover {background:var(--muted);transform:scale(1.2);}
+.live-carousel-dot.active {background:var(--accent);width:16px;border-radius:999px;}
+
+/* TARJETA SIMPLE MINIMALISTA EN TIEMPO REAL (PERSONAL Y AMIGOS) */
+.home-live-card-simple {display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px 12px;width:100%;max-width:520px;box-sizing:border-box;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:border-color 0.2s ease,box-shadow 0.2s ease,transform 0.15s ease;position:relative;overflow:hidden;}
+.home-live-card-simple:hover {border-color:var(--border-hover, #64748b);box-shadow:0 4px 14px rgba(0,0,0,0.12);}
+.home-live-cover-box {width:44px;height:44px;min-width:44px;border-radius:8px;overflow:hidden;position:relative;background:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.12);}
+.home-live-cover-box img {width:100%;height:100%;object-fit:cover;display:block;}
+.home-live-cover-avatar {position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--card);overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:10px;}
+.home-live-cover-avatar img {width:100%;height:100%;object-fit:cover;}
+.home-live-info-box {flex:1 1 0%;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px;overflow:hidden;}
+.home-live-title-row {font-size:0.84rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;}
+.home-live-subtitle-row {font-size:0.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px;line-height:1.2;}
+.home-live-pulse-dot {width:6px;height:6px;min-width:6px;border-radius:50%;background:#10b981;animation:pulseDot 1.6s infinite;display:inline-block;}
+.home-live-action-box {display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.btn-live-quick-add {background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--tr);padding:0;}
+.btn-live-quick-add:hover {background:rgba(255,255,255,0.12);color:var(--text);border-color:var(--text);transform:scale(1.08);}
+.home-live-platform-icon {display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;}
 
 /* TARJETAS REDUCTIBLES (ESTILO NOTIFICACIONES ANDROID) */
 .home-live-expandable-card {cursor:pointer;user-select:none;transition:padding .32s cubic-bezier(.2,0,0,1),min-height .32s cubic-bezier(.2,0,0,1),max-width .32s cubic-bezier(.2,0,0,1),border-radius .32s cubic-bezier(.2,0,0,1),border-color .2s ease,box-shadow .25s ease !important;will-change:min-height,padding,max-width,border-radius;position:relative;}
