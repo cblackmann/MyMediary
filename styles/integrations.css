@@ -92,6 +92,14 @@
 .btn-live-quick-add:hover {background:rgba(255,255,255,0.12);color:var(--text);border-color:var(--text);transform:scale(1.08);}
 .home-live-platform-icon {display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;}
 
+/* ESTILOS DE ÚLTIMAS CANCIONES ESCUCHADAS DE AMIGOS Y REPETICIONES */
+.home-friend-song-card.is-lastfm::before {background:#d51007 !important;}
+.home-friend-song-card.is-lastfm:hover {border-color:rgba(213,16,7,0.45);box-shadow:0 4px 14px rgba(213,16,7,0.12);}
+.home-friend-song-repeat-badge {display:inline-flex;align-items:center;gap:4px;font-size:0.67rem;font-weight:700;color:#f59e0b;background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);border-radius:999px;padding:1px 7px;margin-top:3px;line-height:1.25;width:fit-content;white-space:nowrap;}
+.home-friend-song-repeat-badge.is-loop {color:#ec4899;background:rgba(236,72,153,0.12);border-color:rgba(236,72,153,0.35);}
+.home-friend-song-repeat-badge.is-heavy {color:#ef4444;background:rgba(239,68,68,0.14);border-color:rgba(239,68,68,0.4);}
+.home-friend-repeat-banner {display:flex;align-items:center;gap:8px;padding:8px 12px;background:linear-gradient(135deg, rgba(245,158,11,0.08), rgba(236,72,153,0.08));border:1px solid rgba(245,158,11,0.25);border-radius:8px;margin-bottom:10px;font-size:0.78rem;color:var(--text);line-height:1.35;}
+
 /* TARJETAS REDUCTIBLES (ESTILO NOTIFICACIONES ANDROID) */
 .home-live-expandable-card {cursor:pointer;user-select:none;transition:padding .32s cubic-bezier(.2,0,0,1),min-height .32s cubic-bezier(.2,0,0,1),max-width .32s cubic-bezier(.2,0,0,1),border-radius .32s cubic-bezier(.2,0,0,1),border-color .2s ease,box-shadow .25s ease !important;will-change:min-height,padding,max-width,border-radius;position:relative;}
 .home-live-expandable-card:active {transform:scale(0.992);}

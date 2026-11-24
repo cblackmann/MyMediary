@@ -1795,18 +1795,19 @@ async obtenerFeedAmigos(userEmail, limite = 30) {
 
     const liveData = (typeof SERVER_API.extraerActividadEnVivoDePerfiles_ === 'function')
       ? SERVER_API.extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap)
-      : { music: [], recentMusic: [], games: [] };
+      : { music: [], recentMusic: [], games: [], recentSongs: [] };
 
-    return { exito: true, feed: feed.slice(0, Math.max(limite || 30, 80)), live: liveData };
+    return { exito: true, feed: feed.slice(0, Math.max(limite || 30, 80)), live: liveData, recentSongs: liveData.recentSongs || [] };
   } catch (e) {
-    return { exito: false, error: e.toString(), feed: [], live: { music: [], recentMusic: [], games: [] } };
+    return { exito: false, error: e.toString(), feed: [], live: { music: [], recentMusic: [], games: [], recentSongs: [] }, recentSongs: [] };
   }
 },
 extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
   const liveMusic = [];
   const recentMusic = [];
   const liveGames = [];
-  if (!Array.isArray(amigosEmails) || !amigosMap) return { music: liveMusic, recentMusic: recentMusic, games: liveGames };
+  const recentSongs = [];
+  if (!Array.isArray(amigosEmails) || !amigosMap) return { music: liveMusic, recentMusic: recentMusic, games: liveGames, recentSongs: recentSongs };
 
   amigosEmails.forEach(aEmail => {
     const p = amigosMap[aEmail];
@@ -1843,7 +1844,7 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
       const diff = Date.now() - spUpAt;
       const fresca = (!spUpAt || diff <= 35 * 60 * 1000);
       if (fresca) {
-        liveMusic.push({
+        const itemLiveMusic = {
           userEmail: aEmail,
           amigoEmail: aEmail,
           amigoNickname: nick,
@@ -1859,8 +1860,14 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
           url: spUrl,
           source: 'spotify',
           updatedAt: spUpAt || Date.now()
-        });
+        };
+        liveMusic.push(itemLiveMusic);
         agregadoLive = true;
+        recentSongs.push({
+          ...itemLiveMusic,
+          playedAt: spUpAt || Date.now(),
+          isNowPlaying: true
+        });
       }
     }
 
@@ -1885,6 +1892,52 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
       });
     }
 
+    // Extraer lista completa de canciones escuchadas de Spotify (recentTracks)
+    let spStats = cuentas.spotify?.stats || pPrefs.spotify?.stats;
+    if (typeof spStats === 'string' && spStats) {
+      try { spStats = JSON.parse(spStats); } catch(e) { spStats = null; }
+    }
+    if (spStats && Array.isArray(spStats.recentTracks)) {
+      spStats.recentTracks.forEach(tr => {
+        const tTitle = tr ? (tr.name || tr.title || tr.track || '') : '';
+        if (!tTitle) return;
+        const tArtist = tr.artist || (Array.isArray(tr.artists) ? tr.artists.map(x => (typeof x === 'string' ? x : (x.name || ''))).filter(Boolean).join(', ') : '') || '';
+        recentSongs.push({
+          userEmail: aEmail,
+          amigoEmail: aEmail,
+          amigoNickname: nick,
+          amigoAvatar: avatar,
+          amigoUserId: userId,
+          title: tTitle,
+          track: tTitle,
+          artist: tArtist,
+          album: tr.album || '',
+          image: tr.image || tr.albumArt || tr.cover || '',
+          url: tr.url || tr.trackUrl || `https://open.spotify.com/search/${encodeURIComponent((tTitle + ' ' + tArtist).trim())}`,
+          playedAt: tr.played_at || tr.playedAt || '',
+          source: 'spotify',
+          isNowPlaying: false
+        });
+      });
+    } else if (!agregadoLive && spTitle) {
+      recentSongs.push({
+        userEmail: aEmail,
+        amigoEmail: aEmail,
+        amigoNickname: nick,
+        amigoAvatar: avatar,
+        amigoUserId: userId,
+        title: spTitle,
+        track: spTitle,
+        artist: spArtist,
+        album: spAlbum,
+        image: spImage,
+        url: spUrl,
+        playedAt: spUpAt || '',
+        source: 'spotify',
+        isNowPlaying: false
+      });
+    }
+
     // Last.fm: soporte para reproducción actual y scrobbles recientes
     const lfm = cuentas.lastfm || pPrefs.lastfm;
     let lfmStats = lfm?.stats;
@@ -1897,7 +1950,7 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
       const isLfmNow = !!(rec.isNowPlaying || rec['@attr']?.nowplaying === 'true');
       if (lfmTrack) {
         if (isLfmNow && !agregadoLive) {
-          liveMusic.push({
+          const itemLfmLive = {
             userEmail: aEmail,
             amigoEmail: aEmail,
             amigoNickname: nick,
@@ -1913,6 +1966,12 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
             url: rec.url || '',
             source: 'lastfm',
             updatedAt: Date.now()
+          };
+          liveMusic.push(itemLfmLive);
+          recentSongs.push({
+            ...itemLfmLive,
+            playedAt: Date.now(),
+            isNowPlaying: true
           });
         } else if (!agregadoLive && !spTitle) {
           recentMusic.push({
@@ -1934,6 +1993,30 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
           });
         }
       }
+    }
+
+    // Extraer lista completa de scrobbles escuchados de Last.fm (recentTracks)
+    if (lfmStats && Array.isArray(lfmStats.recentTracks)) {
+      lfmStats.recentTracks.forEach(tr => {
+        const tTitle = tr ? (tr.name || tr.title || '') : '';
+        if (!tTitle) return;
+        recentSongs.push({
+          userEmail: aEmail,
+          amigoEmail: aEmail,
+          amigoNickname: nick,
+          amigoAvatar: avatar,
+          amigoUserId: userId,
+          title: tTitle,
+          track: tTitle,
+          artist: tr.artist || '',
+          album: tr.album || '',
+          image: tr.image || '',
+          url: tr.url || `https://www.last.fm/search?q=${encodeURIComponent((tTitle + ' ' + (tr.artist || '')).trim())}`,
+          playedAt: tr.date || tr.playedAt || '',
+          isNowPlaying: !!tr.isNowPlaying,
+          source: 'lastfm'
+        });
+      });
     }
 
     // 2. VIDEOJUEGOS EN VIVO (Steam & PlayStation)
@@ -2024,7 +2107,12 @@ extraerActividadEnVivoDePerfiles_(amigosEmails, amigosMap) {
   liveMusic.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   recentMusic.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
   liveGames.sort((a, b) => (b.updatedAt || 0) - (a.updatedAt || 0));
-  return { music: liveMusic, recentMusic: recentMusic, games: liveGames };
+  recentSongs.sort((a, b) => {
+    const tA = a.playedAt ? (typeof a.playedAt === 'number' ? a.playedAt : new Date(a.playedAt).getTime()) : 0;
+    const tB = b.playedAt ? (typeof b.playedAt === 'number' ? b.playedAt : new Date(b.playedAt).getTime()) : 0;
+    return (tB || 0) - (tA || 0);
+  });
+  return { music: liveMusic, recentMusic: recentMusic, games: liveGames, recentSongs: recentSongs };
 },
 async obtenerActividadEnVivoAmigos(userEmail) {
   try {

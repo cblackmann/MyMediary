@@ -1796,36 +1796,175 @@ function esItemCancionMusica(it) {
 }
 window.esItemCancionMusica = esItemCancionMusica;
 
-function obtenerUltimasCancionesAmigos(limite = 10) {
-  const feed = estado.amigosFeedCache || [];
-  if (!feed.length) return [];
+function calcularCancionesRepetidasAmigos(canciones) {
+  if (!Array.isArray(canciones) || !canciones.length) {
+    return { cancionesUnicas: [], cancionMasRepetida: null, conteoPorAmigo: {} };
+  }
 
-  // Los discos agregados no deben salir en la parte de música escuchada recientemente, solo canciones
-  const itemsMusica = feed.filter(it => it && esItemCancionMusica(it));
-  if (!itemsMusica.length) return [];
+  // 1. Contar reproducciones de cada canción por cada amigo
+  const conteoPorAmigo = {};
+  canciones.forEach(c => {
+    const aEmail = String(c.userEmail || c.amigoEmail || 'amigo').toLowerCase();
+    if (!conteoPorAmigo[aEmail]) conteoPorAmigo[aEmail] = {};
+    const normTitle = (c.title || c.track || '').toLowerCase().trim();
+    const normArtist = (c.artist || '').toLowerCase().trim();
+    const trackKey = `${normTitle}___${normArtist}`;
+    conteoPorAmigo[aEmail][trackKey] = (conteoPorAmigo[aEmail][trackKey] || 0) + 1;
+  });
 
-  const copia = [...itemsMusica].sort((a, b) => {
-    const tA = a.createdAt ? new Date(a.createdAt).getTime() : timestampDeFecha(a.fechaFin || a.fechaInicio);
-    const tB = b.createdAt ? new Date(b.createdAt).getTime() : timestampDeFecha(b.fechaFin || b.fechaInicio);
+  // 2. Deduplicar para mostrar la instancia más reciente de cada canción por amigo,
+  // anotando cuántas veces la escuchó ese amigo recientemente
+  const vistas = new Set();
+  const cancionesUnicas = [];
+  let cancionMasRepetida = null;
+  let maxRepeticiones = 1;
+
+  canciones.forEach(c => {
+    const aEmail = String(c.userEmail || c.amigoEmail || 'amigo').toLowerCase();
+    const normTitle = (c.title || c.track || '').toLowerCase().trim();
+    const normArtist = (c.artist || '').toLowerCase().trim();
+    const trackKey = `${normTitle}___${normArtist}`;
+    const comboKey = `${aEmail}@@@${trackKey}`;
+    const repeticiones = (conteoPorAmigo[aEmail] && conteoPorAmigo[aEmail][trackKey]) || 1;
+
+    if (!vistas.has(comboKey)) {
+      vistas.add(comboKey);
+      const copia = {
+        ...c,
+        repeatCount: repeticiones,
+        isRepeat: repeticiones >= 2
+      };
+      cancionesUnicas.push(copia);
+
+      if (repeticiones > maxRepeticiones) {
+        maxRepeticiones = repeticiones;
+        cancionMasRepetida = copia;
+      }
+    }
+  });
+
+  return { cancionesUnicas, cancionMasRepetida, conteoPorAmigo };
+}
+window.calcularCancionesRepetidasAmigos = calcularCancionesRepetidasAmigos;
+
+function obtenerUltimasCancionesAmigos(limite = 15) {
+  // Recopilar canciones escuchadas desde Spotify y Last.fm (NO registros ni calificaciones)
+  const rawCanciones = [];
+
+  // A. De la caché en vivo de amigos (extraída desde perfiles de Supabase / API)
+  if (estado.amigosLiveCache && Array.isArray(estado.amigosLiveCache.recentSongs)) {
+    rawCanciones.push(...estado.amigosLiveCache.recentSongs);
+  }
+
+  // B. Si hay amigos escuchando música en vivo en este momento, ponerlos al frente
+  if (estado.amigosLiveCache && Array.isArray(estado.amigosLiveCache.music)) {
+    estado.amigosLiveCache.music.forEach(m => {
+      if (m && (m.title || m.track)) {
+        rawCanciones.unshift({
+          userEmail: m.userEmail || m.amigoEmail || '',
+          amigoNickname: m.amigoNickname || 'Amigo',
+          amigoAvatar: m.amigoAvatar || '🦊',
+          title: m.title || m.track,
+          track: m.title || m.track,
+          artist: m.artist || '',
+          album: m.album || '',
+          image: m.image || '',
+          url: m.url || '',
+          playedAt: m.updatedAt || Date.now(),
+          isNowPlaying: true,
+          source: m.source || 'spotify'
+        });
+      }
+    });
+  }
+
+  // C. Si aún no hay suficientes o viene de caché local de perfiles de amigos
+  if (!rawCanciones.length && Array.isArray(estado.amigos) && estado.amigos.length) {
+    estado.amigos.forEach(a => {
+      const aEmail = a.email || a.user_email;
+      if (!aEmail) return;
+      try {
+        const cP = localStorage.getItem('mediary_cache_perfil_amigo_' + aEmail.toLowerCase());
+        if (cP) {
+          const pData = JSON.parse(cP);
+          const pPrefs = pData.preferencias || {};
+          const cVin = pPrefs.cuentas_vinculadas || pPrefs.cuentasVinculadas || {};
+          // Spotify
+          let sStats = cVin.spotify?.stats || pPrefs.spotify?.stats;
+          if (typeof sStats === 'string' && sStats) { try { sStats = JSON.parse(sStats); } catch(e){} }
+          if (sStats && Array.isArray(sStats.recentTracks)) {
+            sStats.recentTracks.forEach(tr => {
+              const tTitle = tr ? (tr.name || tr.title || tr.track || '') : '';
+              if (!tTitle) return;
+              rawCanciones.push({
+                userEmail: aEmail,
+                amigoNickname: a.nickname || 'Amigo',
+                amigoAvatar: a.avatar || '🦊',
+                title: tTitle,
+                track: tTitle,
+                artist: tr.artist || (Array.isArray(tr.artists) ? tr.artists.map(x => x.name || x).join(', ') : '') || '',
+                album: tr.album || '',
+                image: tr.image || tr.albumArt || tr.cover || '',
+                url: tr.url || '',
+                playedAt: tr.played_at || '',
+                source: 'spotify'
+              });
+            });
+          }
+          // Last.fm
+          let lStats = cVin.lastfm?.stats || pPrefs.lastfm?.stats;
+          if (typeof lStats === 'string' && lStats) { try { lStats = JSON.parse(lStats); } catch(e){} }
+          if (lStats && Array.isArray(lStats.recentTracks)) {
+            lStats.recentTracks.forEach(tr => {
+              const tTitle = tr ? (tr.name || tr.title || '') : '';
+              if (!tTitle) return;
+              rawCanciones.push({
+                userEmail: aEmail,
+                amigoNickname: a.nickname || 'Amigo',
+                amigoAvatar: a.avatar || '🦊',
+                title: tTitle,
+                track: tTitle,
+                artist: tr.artist || '',
+                album: tr.album || '',
+                image: tr.image || '',
+                url: tr.url || '',
+                playedAt: tr.date || '',
+                isNowPlaying: !!tr.isNowPlaying,
+                source: 'lastfm'
+              });
+            });
+          }
+        }
+      } catch(e) {}
+    });
+  }
+
+  // D. Soporte para mocks o pruebas automáticas
+  if (!rawCanciones.length && window._amigosRecentSongsMock && Array.isArray(window._amigosRecentSongsMock)) {
+    rawCanciones.push(...window._amigosRecentSongsMock);
+  }
+
+  if (!rawCanciones.length) {
+    const vacio = [];
+    vacio.cancionMasRepetida = null;
+    return vacio;
+  }
+
+  // Ordenar por fecha reciente (o ahora mismo en reproducción)
+  rawCanciones.sort((a, b) => {
+    if (a.isNowPlaying && !b.isNowPlaying) return -1;
+    if (!a.isNowPlaying && b.isNowPlaying) return 1;
+    const tA = a.playedAt ? (typeof a.playedAt === 'number' ? a.playedAt : new Date(a.playedAt).getTime()) : 0;
+    const tB = b.playedAt ? (typeof b.playedAt === 'number' ? b.playedAt : new Date(b.playedAt).getTime()) : 0;
     return (tB || 0) - (tA || 0);
   });
 
-  const vistos = new Set();
-  const canciones = [];
-
-  for (const it of copia) {
-    const tit = (it.titulo || '').toLowerCase().trim();
-    const art = (it.creador || '').toLowerCase().trim();
-    const clave = `${it.userEmail || ''}_${tit}_${art}`;
-    if (!vistos.has(clave)) {
-      vistos.add(clave);
-      canciones.push(it);
-      if (canciones.length >= limite) break;
-    }
-  }
-
-  return canciones;
+  const { cancionesUnicas, cancionMasRepetida } = calcularCancionesRepetidasAmigos(rawCanciones);
+  const resultado = cancionesUnicas.slice(0, limite);
+  resultado.cancionMasRepetida = cancionMasRepetida;
+  return resultado;
 }
+window.obtenerUltimasCancionesAmigos = obtenerUltimasCancionesAmigos;
 
 function renderizarUltimasCancionesAmigosInicio() {
   const contenedor = document.getElementById('lista-amigos-ultimas-canciones');
@@ -1840,11 +1979,12 @@ function renderizarUltimasCancionesAmigosInicio() {
     return;
   }
 
-  const canciones = obtenerUltimasCancionesAmigos(10);
+  const canciones = obtenerUltimasCancionesAmigos(15);
+  const cancionMasRepetida = canciones.cancionMasRepetida;
 
   if (!canciones.length) {
-    const feed = estado.amigosFeedCache || [];
-    if (!feed.length) {
+    const tieneAmigos = (estado.amigos && estado.amigos.length > 0) || (estado.amigosFeedCache && estado.amigosFeedCache.length > 0);
+    if (!tieneAmigos) {
       if (seccion) seccion.style.display = 'none';
       contenedor.innerHTML = '';
       return;
@@ -1853,7 +1993,7 @@ function renderizarUltimasCancionesAmigosInicio() {
     contenedor.innerHTML = `
       <div style="background:var(--card); border:1px dashed var(--border); border-radius:10px; padding:18px 14px; text-align:center; color:var(--muted); font-size:0.83rem;">
         <span style="display:inline-block; margin-bottom:4px; color:#10b981;">${getHeroIcon('musical-note', '', 20)}</span>
-        <div>${l === 'en' ? 'No songs listened to by your friends recently.' : 'Tus amigos aún no han escuchado canciones recientemente.'}</div>
+        <div>${l === 'en' ? 'No songs listened to by your friends on Spotify or Last.fm recently.' : 'Tus amigos aún no han escuchado canciones en Spotify o Last.fm recientemente.'}</div>
       </div>
     `;
     return;
@@ -1861,18 +2001,65 @@ function renderizarUltimasCancionesAmigosInicio() {
 
   if (seccion) seccion.style.display = 'block';
 
-  let html = `<div class="home-friend-songs-scroll">`;
-  canciones.forEach(it => {
-    const timeStr = formatearTiempoRelativoFeed(it.createdAt || it.fechaFin || it.fechaInicio, l);
-    const artist = it.creador || (l === 'en' ? 'Artist' : 'Artista');
-    const album = it.subtitulo || it.subcategoria || (l === 'en' ? 'Music' : 'Música');
-    const title = it.titulo || (l === 'en' ? 'Untitled' : 'Sin título');
-    const nick = it.amigoNickname || (it.userEmail ? it.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
-    const califNum = Number(it.calificacion) || 0;
+  let html = '';
 
-    const coverHtml = it.poster
-      ? `<img src="${escHtmlFeed_(it.poster)}" alt="${escHtmlFeed_(title)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="cover-music-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.3rem;background:var(--bg);color:#10b981;">${getHeroIcon('musical-note', '', 22)}</div>`
-      : `<div class="cover-music-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.3rem;background:var(--bg);color:#10b981;">${getHeroIcon('musical-note', '', 22)}</div>`;
+  // Banner destacado si un amigo tiene una canción en bucle
+  if (cancionMasRepetida && cancionMasRepetida.repeatCount >= 2) {
+    const rCount = cancionMasRepetida.repeatCount;
+    const rNick = escHtmlFeed_(cancionMasRepetida.amigoNickname);
+    const rTitle = escHtmlFeed_(cancionMasRepetida.title);
+    const rArtist = escHtmlFeed_(cancionMasRepetida.artist);
+    const bannerMsg = l === 'en'
+      ? `<strong>${rNick}</strong> is listening to <em>"${rTitle}"</em> by ${rArtist} on repeat (${rCount} times recently)`
+      : `<strong>${rNick}</strong> no para de escuchar <em>"${rTitle}"</em> de ${rArtist} (${rCount} veces recientemente)`;
+
+    html += `
+      <div class="home-friend-repeat-banner">
+        <span style="font-size:1.15rem; line-height:1; flex-shrink:0;">🔂</span>
+        <div style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+          ${bannerMsg}
+        </div>
+      </div>
+    `;
+  }
+
+  html += `<div class="home-friend-songs-scroll">`;
+  canciones.forEach(it => {
+    const isNow = !!(it.isNowPlaying || it.isPlaying);
+    const timeStr = isNow
+      ? (l === 'en' ? 'Listening now' : 'Escuchando ahora')
+      : (it.playedAt ? formatearTiempoRelativoFeed(it.playedAt, l) : (l === 'en' ? 'Recently' : 'Reciente'));
+    const artist = it.artist || (l === 'en' ? 'Artist' : 'Artista');
+    const album = it.album || '';
+    const title = it.title || (l === 'en' ? 'Untitled' : 'Sin título');
+    const nick = it.amigoNickname || (it.userEmail ? it.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
+    const isLastFm = it.source === 'lastfm';
+
+    // Badge de repetición si fue escuchada varias veces recientemente
+    let repeatBadgeHtml = '';
+    if (it.repeatCount >= 4) {
+      repeatBadgeHtml = `
+        <span class="home-friend-song-repeat-badge is-heavy" title="${l === 'en' ? `Listened ${it.repeatCount} times recently` : `Escuchada ${it.repeatCount} veces recientemente`}">
+          🔥 <span>${l === 'en' ? `Heavy repeat · ${it.repeatCount}x` : `En bucle · ${it.repeatCount} veces`}</span>
+        </span>
+      `;
+    } else if (it.repeatCount === 3) {
+      repeatBadgeHtml = `
+        <span class="home-friend-song-repeat-badge is-loop" title="${l === 'en' ? `Listened 3 times recently` : `Escuchada ${it.repeatCount} veces recientemente`}">
+          🔂 <span>${l === 'en' ? 'On loop · 3x' : 'En bucle · 3 veces'}</span>
+        </span>
+      `;
+    } else if (it.repeatCount === 2) {
+      repeatBadgeHtml = `
+        <span class="home-friend-song-repeat-badge" title="${l === 'en' ? `Listened 2 times recently` : `Escuchada 2 veces recientemente`}">
+          🔂 <span>${l === 'en' ? 'Listened 2x' : 'Escuchada 2 veces'}</span>
+        </span>
+      `;
+    }
+
+    const coverHtml = it.image
+      ? `<img src="${escHtmlFeed_(it.image)}" alt="${escHtmlFeed_(title)}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';if(this.nextElementSibling)this.nextElementSibling.style.display='grid';"><div class="cover-music-placeholder" style="width:100%;height:100%;display:none;place-items:center;font-size:1.3rem;background:var(--bg);color:${isLastFm ? '#d51007' : '#10b981'};">${getHeroIcon('musical-note', '', 22)}</div>`
+      : `<div class="cover-music-placeholder" style="width:100%;height:100%;display:grid;place-items:center;font-size:1.3rem;background:var(--bg);color:${isLastFm ? '#d51007' : '#10b981'};">${getHeroIcon('musical-note', '', 22)}</div>`;
 
     const avatarHtml = (it.amigoAvatar && (it.amigoAvatar.startsWith('http') || it.amigoAvatar.startsWith('data:')))
       ? `<img loading="lazy" decoding="async" src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
@@ -1880,12 +2067,18 @@ function renderizarUltimasCancionesAmigosInicio() {
 
     const safeTitle = encodeURIComponent(title);
     const safeArtist = encodeURIComponent(artist);
-    const spotifySearchUrl = `https://open.spotify.com/search/${encodeURIComponent((title + ' ' + (it.creador || '')).trim())}`;
-    const modalAccion = `abrirModalRegistrosAmigo('${escHtmlFeed_(it.userEmail)}', '${escHtmlFeed_(nick)}', 'Musica')`;
+    const serviceUrl = it.url || (isLastFm
+      ? `https://www.last.fm/search?q=${encodeURIComponent(title + ' ' + artist)}`
+      : `https://open.spotify.com/search/${encodeURIComponent(title + ' ' + artist)}`);
+
     const perfilAccion = `verPerfilDeAmigo('${escHtmlFeed_(it.userEmail)}')`;
 
+    const logoSvg = isLastFm
+      ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="#d51007"><path d="M10.584 17.21l-.88-2.392s-1.43 1.594-3.573 1.594c-1.897 0-3.244-1.649-3.244-4.288 0-3.381 1.704-4.591 3.381-4.591 2.42 0 3.189 1.567 3.849 3.574l.88 2.749c.88 2.666 2.529 4.81 7.285 4.81 3.409 0 5.718-1.044 5.718-3.793 0-2.227-1.265-3.381-3.63-3.931l-1.758-.385c-1.21-.275-1.567-.77-1.567-1.595 0-.934.742-1.484 1.952-1.484 1.32 0 2.034.495 2.144 1.677l2.749-.33c-.22-2.474-1.924-3.492-4.729-3.492-2.474 0-4.893.935-4.893 3.932 0 1.87.907 3.051 3.189 3.601l1.87.44c1.402.33 1.869.907 1.869 1.704 0 1.017-.99 1.43-2.86 1.43-2.776 0-3.93-1.457-4.59-3.464l-.907-2.75c-1.155-3.573-2.997-4.893-6.653-4.893C2.144 5.333 0 7.89 0 12.233c0 4.18 2.144 6.434 5.993 6.434 3.106 0 4.591-1.457 4.591-1.457z"/></svg>`
+      : `<svg width="18" height="18" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>`;
+
     html += `
-      <div class="home-friend-song-card" onclick="${modalAccion}" title="${escHtmlFeed_(title)} · ${escHtmlFeed_(artist)}">
+      <div class="home-friend-song-card ${isLastFm ? 'is-lastfm' : 'is-spotify'}" onclick="window.open('${escHtmlFeed_(serviceUrl)}', '_blank')" title="${escHtmlFeed_(title)} · ${escHtmlFeed_(artist)}">
         <!-- Portada con mini-avatar superpuesto del amigo -->
         <div class="home-friend-song-cover-box" style="width:58px; height:58px; min-width:58px; max-width:58px; border-radius:8px; overflow:hidden; position:relative; background:var(--card); border:1px solid var(--border); box-shadow:0 2px 6px rgba(0,0,0,0.15); flex-shrink:0;">
           ${coverHtml}
@@ -1901,8 +2094,10 @@ function renderizarUltimasCancionesAmigosInicio() {
             <strong style="color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:115px; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
               ${escHtmlFeed_(nick)}
             </strong>
-            <span style="color:var(--muted); font-size:0.67rem; display:inline-flex; align-items:center; gap:3px; flex-shrink:0; white-space:nowrap;">
-              ${getHeroIcon('clock', '', 11)} <span>${timeStr || (l === 'en' ? 'Recently' : 'Reciente')}</span>
+            <span style="font-size:0.67rem; display:inline-flex; align-items:center; gap:3px; flex-shrink:0; white-space:nowrap;">
+              ${isNow
+                ? `<span style="color:#10b981; font-weight:700; display:inline-flex; align-items:center; gap:4px;"><span class="home-live-pulse-dot" style="width:6px; height:6px;"></span> <span>${timeStr}</span></span>`
+                : `<span style="color:var(--muted); display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('clock', '', 11)} <span>${timeStr}</span></span>`}
             </span>
           </div>
 
@@ -1918,29 +2113,16 @@ function renderizarUltimasCancionesAmigosInicio() {
             <span style="color:var(--text); opacity:0.85;">${escHtmlFeed_(artist)}</span>${album ? ` <span style="opacity:0.5;">·</span> <span>${escHtmlFeed_(album)}</span>` : ''}
           </div>
 
-          <!-- Rating o comentario si tiene -->
-          ${califNum > 0 || it.comentario ? `
-            <div style="display:flex; align-items:center; gap:5px; margin-top:2px; overflow:hidden;">
-              ${califNum > 0 ? `
-                <div style="display:inline-flex; align-items:center; background:var(--bg); border:1px solid var(--border); padding:1px 5px; border-radius:3px; font-size:0.64rem; line-height:1; flex-shrink:0;">
-                  ${renderEstrellasVisuales(califNum)}
-                </div>
-              ` : ''}
-              ${it.comentario ? `
-                <span style="font-size:0.68rem; color:var(--muted); font-style:italic; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" title="${escHtmlFeed_(it.comentario)}">
-                  "${escHtmlFeed_(it.comentario)}"
-                </span>
-              ` : ''}
-            </div>
-          ` : ''}
+          <!-- Badge de repetición si fue escuchada en bucle o repetida -->
+          ${repeatBadgeHtml}
         </div>
 
-        <!-- Columna derecha: Spotify + botón rápido -->
+        <!-- Columna derecha: Servicio + botón rápido -->
         <div style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; gap:6px; flex-shrink:0;">
-          <a href="${spotifySearchUrl}" target="_blank" rel="noopener noreferrer" style="display:grid; place-items:center; width:22px; height:22px; transition:var(--tr);" onclick="event.stopPropagation()" title="${l === 'en' ? 'Listen on Spotify' : 'Escuchar en Spotify'}">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+          <a href="${escHtmlFeed_(serviceUrl)}" target="_blank" rel="noopener noreferrer" style="display:grid; place-items:center; width:22px; height:22px; transition:var(--tr);" onclick="event.stopPropagation()" title="${isLastFm ? 'Ver en Last.fm' : 'Escuchar en Spotify'}">
+            ${logoSvg}
           </a>
-          <button type="button" class="btn-np-quick-add" style="width:24px; height:24px; border-radius:4px; padding:0; display:grid; place-items:center;" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
+          <button type="button" class="btn-live-quick-add" style="width:24px; height:24px; border-radius:4px; padding:0; display:grid; place-items:center;" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
           </button>
         </div>
