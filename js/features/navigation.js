@@ -1560,11 +1560,10 @@ function renderizarSubtabs() { const box = document.getElementById('subtabs-bar'
 if (box) {
   const btnBackListas = document.createElement('button');
   btnBackListas.type = 'button';
-  btnBackListas.className = 'subtab-btn btn-subtabs-back-listas';
-  btnBackListas.style.cssText = 'flex-shrink:0; width:34px; height:34px; min-width:34px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-color:var(--border); border-radius:4px; cursor:pointer;';
-  btnBackListas.title = l === 'en' ? 'Back to Lists' : 'Volver a Listas';
-  btnBackListas.setAttribute('aria-label', l === 'en' ? 'Back to Lists' : 'Volver a Listas');
-  btnBackListas.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>`;
+  btnBackListas.className = 'subtab-btn btn-subtabs-back-listas btn-mediary-back';
+  btnBackListas.title = l === 'en' ? 'Back' : 'Volver';
+  btnBackListas.setAttribute('aria-label', l === 'en' ? 'Back' : 'Volver');
+  btnBackListas.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>`;
   btnBackListas.onclick = () => {
     const vCat = document.getElementById('vista-categoria');
     const vList = document.getElementById('vista-listas-extendida');

@@ -881,12 +881,16 @@ function renderizarStats() {
       const sNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].subs && I18N[l].subs[s.id]) || s.nombre;
       const regsSub = obtenerRegistrosDeSubcategoria(cat, s.id);
       const countTotal = regsSub.length;
+      const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(cat, s.id) : null;
+      const subColor = metaSub ? metaSub.colorVar : 'var(--muted)';
+      const subKey = metaSub ? metaSub.key : '';
+
       if (s.admiteRewatch) {
         const countRewatches = regsSub.filter(r => r.esRewatch).length;
         const countNuevos = countTotal - countRewatches;
-        return `<div class="subtotal-pill"><span class="emoji-dyn">${s.emoji} </span>${sNombre}: <strong>${countTotal}</strong> <span style="color:var(--muted); font-size:0.75rem;">(${countNuevos} + ${countRewatches} ${getHeroIcon('arrow-path', '', 11)})</span></div>`;
+        return `<div class="subtotal-pill subtotal-pill-${subKey}"><span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span class="subtotal-pill-title">${sNombre}</span><span class="subtotal-pill-count">${countTotal}</span><span class="subtotal-pill-rewatch">(${countNuevos} + ${countRewatches} ${getHeroIcon('arrow-path', '', 10)})</span></div>`;
       }
-      return `<div class="subtotal-pill"><span class="emoji-dyn">${s.emoji} </span>${sNombre}: <strong>${countTotal}</strong></div>`;
+      return `<div class="subtotal-pill subtotal-pill-${subKey}"><span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span class="subtotal-pill-title">${sNombre}</span><span class="subtotal-pill-count">${countTotal}</span></div>`;
     }).join('');
 
     let destacados = '';
@@ -911,7 +915,7 @@ function renderizarStats() {
         const subTitleColor = metaSub ? metaSub.colorVar : 'var(--accent)';
         return `
           <div class="stat-subcat-lecturas-card">
-            <div style="font-weight:700; color:${subTitleColor}; font-size:.9rem; margin-bottom:6px;"><span class="emoji-dyn">${s.emoji} </span>${sNombre}</div>
+            <div style="font-weight:700; color:${subTitleColor}; font-size:.88rem; margin-bottom:6px; display:inline-flex; align-items:center; gap:6px;"><span class="subtotal-pill-icon" style="color:${subTitleColor};">${s.emoji}</span><span>${sNombre}</span></div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
               <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''}>
                 <div class="highlight-card-title">

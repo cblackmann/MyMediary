@@ -441,9 +441,8 @@
     <div id="vista-perfil-amigo" style="display:none;">
       <!-- Barra superior con botón volver y título -->
       <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; gap:10px; flex-wrap:wrap;">
-        <button type="button" class="btn-cal-volver" onclick="volverDesdePerfilAmigo()" title="Volver a Amigos" data-i18n-title="friend_back_to_friends_title">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
-          <span id="txt-btn-volver-perfil-amigo" data-i18n="friend_btn_back_friends">Volver a Amigos</span>
+        <button type="button" class="btn-cal-volver btn-mediary-back" onclick="volverDesdePerfilAmigo()" title="Volver a Amigos" data-i18n-title="friend_back_to_friends_title">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
         </button>
         <div style="font-size:0.92rem; font-weight:800; color:var(--text); display:flex; align-items:center; gap:6px;">
           <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--accent);"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>
@@ -556,9 +555,8 @@
       <!-- Barra superior con botón volver, título y orden -->
       <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; gap:10px; flex-wrap:wrap;">
         <div style="display:flex; align-items:center; gap:8px;">
-          <button type="button" class="btn-cal-volver" onclick="volverDesdeRegistrosAmigo()" title="Volver" data-i18n-title="wl_btn_back">
-            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
-            <span id="txt-btn-volver-regs-amigo" data-i18n="wl_btn_back">Volver</span>
+          <button type="button" class="btn-cal-volver btn-mediary-back" onclick="volverDesdeRegistrosAmigo()" title="Volver" data-i18n-title="wl_btn_back">
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>
           </button>
           <h3 id="amigo-regs-modal-title" style="margin:0; font-size:1.05rem; font-weight:800; display:flex; align-items:center; gap:8px; color:var(--text);">
             <svg style="width:20px;height:20px;color:var(--accent);" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
@@ -690,7 +688,7 @@
 <!-- VISTA DEDICADA DE WATCHLISTS -->
 <div id="vista-watchlists" style="display:none;">
   <div class="watchlists-header-bar">
-    <button type="button" class="btn-wl-volver" id="btn-wl-volver" onclick="volverDesdeWatchlists()" title="Volver" aria-label="Volver" data-i18n-title="wl_btn_back" data-i18n-aria-label="wl_btn_back">
+    <button type="button" class="btn-wl-volver btn-mediary-back" id="btn-wl-volver" onclick="volverDesdeWatchlists()" title="Volver" aria-label="Volver" data-i18n-title="wl_btn_back" data-i18n-aria-label="wl_btn_back">
       <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
         <path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
       </svg>
@@ -743,11 +741,10 @@
     <!-- 1. Cabecera de Calendario -->
     <div class="calendario-header-bar">
       <div class="calendario-title-wrap">
-        <button type="button" class="btn-cal-volver-inicio" onclick="volverDesdeCalendario()" title="Volver a Inicio" data-i18n-title="cal_btn_back_home">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+        <button type="button" class="btn-cal-volver-inicio btn-mediary-back" onclick="volverDesdeCalendario()" title="Volver a Inicio" data-i18n-title="cal_btn_back_home">
+          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
           </svg>
-          <span data-i18n="cal_btn_back_home">Inicio</span>
         </button>
         <h2 class="calendario-header-title">
           <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;color:var(--accent);">

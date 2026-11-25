@@ -1345,29 +1345,39 @@ async function consultarSpotifyCurrentlyPlaying() {
 }
 
 async function controlarSpotifyPlayback(accion) {
-  let token = await obtenerTokenSpotifyValido();
-  if (!token) {
-    mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'Connect Spotify first' : 'Conecta Spotify primero');
-    return;
-  }
-
   // Feedback optimista inmediato en la UI
-  const playBtn = document.querySelector('.btn-spotify-ctrl-play');
+  const playBtns = document.querySelectorAll('.btn-live-media-play, .btn-spotify-ctrl-play');
   const statusPill = document.querySelector('.home-np-live-status-pill');
-  if (playBtn) {
+  if (playBtns.length > 0) {
     if (accion === 'play') {
-      playBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+      playBtns.forEach(btn => {
+        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+        btn.setAttribute('onclick', "event.stopPropagation(); window.controlarSpotifyPlayback('pause');");
+        btn.title = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Pause' : 'Pausar';
+      });
       if (statusPill) {
         statusPill.classList.remove('paused');
-        statusPill.innerHTML = `<span class="home-np-dot"></span><span>${(typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Starting...' : 'Iniciando...'}</span>`;
+        statusPill.innerHTML = `<span class="home-np-dot"></span><span>${(typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Playing' : 'Reproduciendo'}</span>`;
       }
     } else if (accion === 'pause') {
-      playBtn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+      playBtns.forEach(btn => {
+        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+        btn.setAttribute('onclick', "event.stopPropagation(); window.controlarSpotifyPlayback('play');");
+        btn.title = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Play' : 'Reproducir';
+      });
       if (statusPill) {
         statusPill.classList.add('paused');
         statusPill.innerHTML = `<span class="home-np-dot"></span><span>${(typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Paused' : 'En pausa'}</span>`;
       }
     }
+  }
+
+  let token = await obtenerTokenSpotifyValido();
+  if (!token) {
+    if (typeof mostrarToastPersonalizado === 'function') {
+      mostrarToastPersonalizado((typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Connect Spotify first' : 'Conecta Spotify primero');
+    }
+    return;
   }
 
   const isMobile = /iPhone|iPad|iPod|Android|Mobile/i.test(navigator.userAgent);
@@ -1509,6 +1519,7 @@ async function controlarSpotifyPlayback(accion) {
     console.warn('Error en controlarSpotifyPlayback:', err);
   }
 }
+window.controlarSpotifyPlayback = controlarSpotifyPlayback;
 
 async function abrirSelectorDispositivosSpotify() {
   const modal = document.getElementById('modal-spotify-devices');
@@ -1851,9 +1862,13 @@ function dibujarTarjetaSpotifySimple(data) {
   const safeArtistaParam = encodeURIComponent(artistNames);
 
   const isCollapsed = Boolean(window._personalLiveCardCollapsed);
-  const isPlaying = (typeof item.is_playing !== 'undefined') ? Boolean(item.is_playing) : true;
-  const progressMs = item.progress_ms || 0;
-  const durationMs = item.duration_ms || item.item?.duration_ms || 0;
+  const isPlaying = (typeof data.is_playing !== 'undefined')
+    ? Boolean(data.is_playing)
+    : ((typeof item.is_playing !== 'undefined') ? Boolean(item.is_playing) : true);
+  const progressMs = (typeof data.progress_ms !== 'undefined')
+    ? Number(data.progress_ms)
+    : (Number(item.progress_ms) || 0);
+  const durationMs = Number(item.duration_ms) || Number(data.duration_ms) || 0;
   const pct = durationMs > 0 ? Math.min(100, Math.max(0, Math.round((progressMs / durationMs) * 100))) : 45;
   const fmtTime = (ms) => {
     const totalSec = Math.floor((ms || 0) / 1000);
@@ -1864,7 +1879,7 @@ function dibujarTarjetaSpotifySimple(data) {
 
   const coverHtml = coverUrl
     ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(trackTitle)}" loading="lazy">`
-    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(29,185,84,0.15);color:#1DB954;"><svg width="24" height="24" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg></div>`;
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(29,185,84,0.15);color:#1DB954;"><svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg></div>`;
 
   return `
     <div class="home-live-card-simple ${isCollapsed ? 'is-collapsed' : 'is-expanded'}" onclick="window.open('${escHtmlSpotify_(trackUrl)}', '_blank')" style="cursor:pointer;" title="${l === 'en' ? 'Open in Spotify' : 'Abrir en Spotify'}">
@@ -1889,10 +1904,10 @@ function dibujarTarjetaSpotifySimple(data) {
         </div>
         <div class="home-live-action-box" onclick="event.stopPropagation()">
           <button type="button" class="btn-live-quick-add" onclick="registrarDiscoActualEnMediary(decodeURIComponent('${safeAlbumParam}'), decodeURIComponent('${safeArtistaParam}'))" title="${l === 'en' ? 'Add album in Mediary' : 'Registrar disco en Mediary'}">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
           </button>
           <a href="${escHtmlSpotify_(trackUrl)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="Spotify">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
           </a>
           <button type="button" class="btn-live-toggle-expand" onclick="togglePersonalLiveCardCollapse(event)" title="${isCollapsed ? (l === 'en' ? 'Expand' : 'Expandir') : (l === 'en' ? 'Collapse' : 'Reducir')}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
@@ -1911,17 +1926,17 @@ function dibujarTarjetaSpotifySimple(data) {
             <span class="home-live-progress-time">${fmtTime(durationMs || 180000)}</span>
           </div>
           <div class="home-live-buttons-row">
-            <button type="button" class="btn-live-media-ctrl" onclick="event.stopPropagation(); if(typeof controlarSpotifyPlayback==='function') controlarSpotifyPlayback('previous');" title="${l === 'en' ? 'Previous' : 'Anterior'}">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+            <button type="button" class="btn-live-media-ctrl" onclick="event.stopPropagation(); window.controlarSpotifyPlayback('previous');" title="${l === 'en' ? 'Previous' : 'Anterior'}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
             </button>
-            <button type="button" class="btn-live-media-ctrl btn-live-media-play" onclick="event.stopPropagation(); if(typeof controlarSpotifyPlayback==='function') controlarSpotifyPlayback('${isPlaying ? 'pause' : 'play'}');" title="${isPlaying ? (l === 'en' ? 'Pause' : 'Pausar') : (l === 'en' ? 'Play' : 'Reproducir')}">
+            <button type="button" class="btn-live-media-ctrl btn-live-media-play" onclick="event.stopPropagation(); window.controlarSpotifyPlayback('${isPlaying ? 'pause' : 'play'}');" title="${isPlaying ? (l === 'en' ? 'Pause' : 'Pausar') : (l === 'en' ? 'Play' : 'Reproducir')}">
               ${isPlaying 
-                ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
-                : '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
+                ? '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+                : '<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
               }
             </button>
-            <button type="button" class="btn-live-media-ctrl" onclick="event.stopPropagation(); if(typeof controlarSpotifyPlayback==='function') controlarSpotifyPlayback('next');" title="${l === 'en' ? 'Next' : 'Siguiente'}">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            <button type="button" class="btn-live-media-ctrl" onclick="event.stopPropagation(); window.controlarSpotifyPlayback('next');" title="${l === 'en' ? 'Next' : 'Siguiente'}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
             </button>
           </div>
         </div>

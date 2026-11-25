@@ -36,24 +36,81 @@
   gap: 10px;
 }
 
-.btn-cal-volver-inicio {
-  background: var(--card);
-  border: 1px solid var(--border);
-  color: var(--text);
-  border-radius: 2px;
-  padding: 6px 12px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.15s ease;
+/* ============================================================
+   BOTÓN VOLVER UNIFICADO (LISTAS, WATCHLIST, CALENDARIO, AMIGOS, SUBPESTAÑAS)
+   ============================================================ */
+.btn-mediary-back,
+.btn-subtabs-back-listas,
+.btn-wl-volver,
+.btn-cal-volver-inicio,
+.btn-cal-volver,
+html[data-ui-style="modern"] .btn-mediary-back,
+html[data-ui-style="modern"] .btn-subtabs-back-listas,
+html[data-ui-style="modern"] .btn-wl-volver,
+html[data-ui-style="modern"] .btn-cal-volver-inicio,
+html[data-ui-style="modern"] .btn-cal-volver,
+html[data-app-theme="minimalist"] .btn-mediary-back,
+html[data-app-theme="minimalist"] .btn-subtabs-back-listas,
+html[data-app-theme="minimalist"] .btn-wl-volver,
+html[data-app-theme="minimalist"] .btn-cal-volver-inicio,
+html[data-app-theme="minimalist"] .btn-cal-volver {
+  width: 36px !important;
+  height: 36px !important;
+  min-width: 36px !important;
+  max-width: 36px !important;
+  padding: 0 !important;
+  background: var(--card) !important;
+  border: 1.5px solid var(--border) !important;
+  color: var(--text) !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.16s ease !important;
+  flex-shrink: 0 !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
 }
-.btn-cal-volver-inicio:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--card-hover);
+
+.btn-mediary-back svg,
+.btn-subtabs-back-listas svg,
+.btn-wl-volver svg,
+.btn-cal-volver-inicio svg,
+.btn-cal-volver svg {
+  width: 17px !important;
+  height: 17px !important;
+  display: block !important;
+  transition: transform 0.16s ease !important;
+}
+
+.btn-mediary-back:hover,
+.btn-subtabs-back-listas:hover,
+.btn-wl-volver:hover,
+.btn-cal-volver-inicio:hover,
+.btn-cal-volver:hover {
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  background: var(--card-hover) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16) !important;
+}
+
+.btn-mediary-back:hover svg,
+.btn-subtabs-back-listas:hover svg,
+.btn-wl-volver:hover svg,
+.btn-cal-volver-inicio:hover svg,
+.btn-cal-volver:hover svg {
+  transform: translateX(-2px) !important;
+}
+
+.btn-mediary-back:active,
+.btn-subtabs-back-listas:active,
+.btn-wl-volver:active,
+.btn-cal-volver-inicio:active,
+.btn-cal-volver:active {
+  transform: scale(0.94) !important;
 }
 
 .calendario-header-title {
@@ -756,32 +813,17 @@
 }
 
 .btn-wl-volver {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--card);
-  border: 1px solid var(--border);
-  color: var(--text);
-  border-radius: 4px;
-  width: 38px;
-  height: 38px;
-  padding: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s ease;
-  z-index: 2;
+  position: absolute !important;
+  left: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  z-index: 2 !important;
 }
 .btn-wl-volver:hover {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--card-hover);
-  transform: translateY(-50%) scale(1.04);
+  transform: translateY(-50%) !important;
 }
 .btn-wl-volver:active {
-  transform: translateY(-50%) scale(0.95);
+  transform: translateY(-50%) scale(0.94) !important;
 }
 
 .watchlists-header-title {
