@@ -1729,13 +1729,20 @@ function calcularRachaMasAltaGlobal(regs) {
 function renderizarBannerRachaSubcategoria(cat, sub) {
   const container = document.getElementById('banner-racha-subcategoria');
   const badgeHeader = document.getElementById('badge-racha-header');
-  if (!container) return;
-
-  // NO mostrar banners ni insignias de racha en Series ni en Juegos
-  if (!cat || !sub || !esCategoriaValidaParaRachas(cat) || (typeof esSubcategoriaWatchlist === 'function' && esSubcategoriaWatchlist(sub))) {
+  if (container) {
     container.style.display = 'none';
     container.innerHTML = '';
-    if (badgeHeader) badgeHeader.style.display = 'none';
+  }
+
+  // NO mostrar insignias de racha en Series ni en Juegos, ni en Watchlists
+  if (!cat || !sub || !esCategoriaValidaParaRachas(cat) || (typeof esSubcategoriaWatchlist === 'function' && esSubcategoriaWatchlist(sub))) {
+    if (badgeHeader) {
+      badgeHeader.style.display = 'none';
+      badgeHeader.innerHTML = '';
+    }
+    if (cat === 'Lecturas' && typeof actualizarBotonLecturaHoyLibros === 'function') {
+      actualizarBotonLecturaHoyLibros();
+    }
     return;
   }
 
@@ -1744,97 +1751,36 @@ function renderizarBannerRachaSubcategoria(cat, sub) {
   const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(cat, sub) : null;
 
   if (badgeHeader) {
+    badgeHeader.style.display = 'inline-flex';
     if (rachaActual >= 1) {
-      badgeHeader.style.display = 'inline-flex';
-      badgeHeader.className = 'badge-racha-header';
+      badgeHeader.className = 'badge-racha-header badge-racha-activa';
       if (metaCol) {
         badgeHeader.style.color = metaCol.colorVar;
         badgeHeader.style.background = metaCol.bgVar;
         badgeHeader.style.borderColor = metaCol.borderVar;
+      } else {
+        badgeHeader.style.color = '#f59e0b';
+        badgeHeader.style.background = 'rgba(245, 158, 11, 0.16)';
+        badgeHeader.style.borderColor = 'rgba(245, 158, 11, 0.38)';
       }
-      badgeHeader.innerHTML = `${getHeroIcon('fire', '', 14)} ${rachaActual}${l === 'en' ? 'd' : 'd'}`;
-      badgeHeader.title = (l === 'en' ? `Active streak: ${rachaActual} days` : `Racha activa: ${rachaActual} días`);
+      badgeHeader.innerHTML = `${getHeroIcon('fire', '', 13)} <span>${rachaActual}d</span>`;
+      const txtRecord = (rachaActual >= rachaMasAlta)
+        ? (l === 'en' ? 'New record!' : '¡Nuevo récord!')
+        : `${l === 'en' ? 'Record' : 'Récord'}: ${rachaMasAlta}d`;
+      badgeHeader.title = (l === 'en' ? `Active streak: ${rachaActual}d · ${txtRecord}` : `Racha activa: ${rachaActual}d · ${txtRecord}`);
     } else {
-      badgeHeader.style.display = 'none';
+      badgeHeader.className = 'badge-racha-header badge-racha-cero';
+      badgeHeader.style.color = 'var(--muted)';
+      badgeHeader.style.background = 'rgba(148, 163, 184, 0.1)';
+      badgeHeader.style.borderColor = 'rgba(148, 163, 184, 0.25)';
+      badgeHeader.innerHTML = `${getHeroIcon('bolt', '', 13)} <span>0d</span>`;
+      const txtRecord = rachaMasAlta > 0 ? ` · ${l === 'en' ? 'Record' : 'Récord'}: ${rachaMasAlta}d` : '';
+      badgeHeader.title = (l === 'en' ? `No active streak today${txtRecord}` : `Sin racha activa hoy${txtRecord}`);
     }
   }
 
-  // Contador de tiempo de lectura (para Lecturas) integrado dentro de la misma tarjeta
-  const esLectura = (cat === 'Lecturas');
-  let lecturaBtnHtml = '';
-  if (esLectura) {
-    const ya = (typeof haLeidoHoy === 'function') ? haLeidoHoy() : false;
-    const mapaTiempos = typeof obtenerMapaTiemposLectura === 'function' ? obtenerMapaTiemposLectura() : {};
-    const hoyStr = (typeof obtenerFechaHoyStr === 'function') ? obtenerFechaHoyStr() : '';
-    let tiempoHoyObj = mapaTiempos[hoyStr];
-    if (!tiempoHoyObj && hoyStr) {
-      const hoyIdx = (typeof fechaStrToDayIndex === 'function') ? fechaStrToDayIndex(hoyStr) : null;
-      if (hoyIdx !== null) {
-        for (const k of Object.keys(mapaTiempos)) {
-          if (fechaStrToDayIndex(k) === hoyIdx) {
-            tiempoHoyObj = mapaTiempos[k];
-            break;
-          }
-        }
-      }
-    }
-    const tiempoHoyTxt = (typeof tiempoHoyObj === 'string') ? tiempoHoyObj : (tiempoHoyObj?.texto || '');
-    if (ya) {
-      lecturaBtnHtml = `
-        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.bgVar : 'rgba(16,185,129,0.15)'}; border:1px solid ${metaCol ? metaCol.borderVar : 'rgba(16,185,129,0.4)'}; color:${metaCol ? metaCol.colorVar : '#34d399'}; cursor:pointer;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
-          <span>${getHeroIcon('check', '', 14)}</span> <span>${tiempoHoyTxt ? (typeof formatTiempoPill === 'function' ? formatTiempoPill(tiempoHoyTxt) : tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
-        </button>
-      `;
-    } else {
-      lecturaBtnHtml = `
-        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:4px 12px; font-size:0.78rem; height:32px; border-radius:6px; display:inline-flex; align-items:center; gap:5px; flex-shrink:0; background:${metaCol ? metaCol.colorVar : 'var(--accent)'}; color:#ffffff; border:none; font-weight:700; cursor:pointer;">
-          <span>${getHeroIcon('plus', '', 14)}</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
-        </button>
-      `;
-    }
-    const oldBox = document.getElementById('box-lectura-hoy-libros');
-    if (oldBox) {
-      oldBox.style.display = 'none';
-      oldBox.innerHTML = '';
-    }
-  }
-
-  if (rachaActual >= 1) {
-    container.style.display = 'block';
-    const esRecord = rachaActual >= rachaMasAlta;
-    const txtRecord = esRecord
-      ? (l === 'en' ? 'New record!' : '¡Nuevo récord!')
-      : `${l === 'en' ? 'Record' : 'Récord'}: ${rachaMasAlta}d`;
-
-    container.innerHTML = `
-      <div class="streak-simplified-card active-streak" style="border-color:${metaCol ? metaCol.borderVar : 'rgba(245, 158, 11, 0.4)'}; background:${metaCol ? metaCol.bgVar : 'var(--accent-warm-subtle)'};">
-        <div class="streak-simplified-left">
-          <span class="streak-simplified-badge" style="color:${metaCol ? metaCol.colorVar : 'var(--accent-warm)'}; background:${metaCol ? metaCol.bgVar : 'rgba(245, 158, 11, 0.16)'}; border-color:${metaCol ? metaCol.borderVar : 'rgba(245, 158, 11, 0.35)'};">${getHeroIcon('fire', '', 14)} ${rachaActual} ${rachaActual === 1 ? (l === 'en' ? 'day' : 'día') : (l === 'en' ? 'days' : 'días')}</span>
-          <div class="streak-simplified-text">
-            <span>${l === 'en' ? 'Active streak' : 'Racha activa'}: <strong style="color:${metaCol ? metaCol.colorVar : 'inherit'};">${rachaActual}d</strong></span>
-            <span class="streak-simplified-sub"> · ${txtRecord}</span>
-          </div>
-        </div>
-        ${lecturaBtnHtml}
-      </div>
-    `;
-  } else if (rachaMasAlta >= 2 || esLectura) {
-    container.style.display = 'block';
-    container.innerHTML = `
-      <div class="streak-simplified-card no-streak">
-        <div class="streak-simplified-left">
-          <span class="streak-simplified-badge badge-dim">${getHeroIcon('bolt', '', 14)} 0d</span>
-          <div class="streak-simplified-text">
-            <span>${l === 'en' ? 'No active streak today' : 'Sin racha activa hoy'}</span>
-            ${rachaMasAlta > 0 ? `<span class="streak-simplified-sub"> · ${l === 'en' ? 'Record' : 'Récord'}: ${rachaMasAlta}d</span>` : ''}
-          </div>
-        </div>
-        ${lecturaBtnHtml}
-      </div>
-    `;
-  } else {
-    container.style.display = 'none';
-    container.innerHTML = '';
+  if (cat === 'Lecturas' && typeof actualizarBotonLecturaHoyLibros === 'function') {
+    actualizarBotonLecturaHoyLibros();
   }
 }
 window.renderizarBannerRachaSubcategoria = renderizarBannerRachaSubcategoria;

@@ -210,6 +210,8 @@ function actualizarTextosInterfaz() {
   actualizarUISelectorAnio();
   if (typeof actualizarSaludoInicio === 'function') actualizarSaludoInicio();
   if (typeof actualizarBotonOrdenHistorial === 'function') actualizarBotonOrdenHistorial();
+  if (typeof actualizarBotonFiltroRewatches === 'function') actualizarBotonFiltroRewatches();
+  if (typeof actualizarBotonOrdenHistorialAmigo === 'function') actualizarBotonOrdenHistorialAmigo();
   if (typeof renderizarAppsVinculadasConfig === 'function') renderizarAppsVinculadasConfig();
   if (typeof actualizarUISpotify === 'function') actualizarUISpotify();
   if (typeof actualizarUISteam === 'function') actualizarUISteam();

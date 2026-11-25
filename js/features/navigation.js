@@ -1596,10 +1596,15 @@ btn.onclick = () => {
 };
 if (box) box.appendChild(btn); }); if (wlBox) {
 const targetWl = obtenerSubWatchlistDeCategoria(c, estado.subcategoria); const wlMeta = CONFIG[c].subs.find(x => x.id === targetWl) || CONFIG[c].subs.find(x => x.esWatchlist); const countThisWl = contarItemsWatchlistDe(c, targetWl); if (enWl) {
-const btnBack = document.createElement('button'); btnBack.type = 'button'; btnBack.className = 'btn-watchlist-special active-wl';
-btnBack.innerHTML = `<span>⬅ ${I18N[l]?.btn_volver_historial || 'Volver al Historial'}</span>`;
-btnBack.onclick = () => volverAHistorialDesdeWatchlist(); wlBox.appendChild(btnBack); } else if (wlMeta) { const btnWl = document.createElement('button'); btnWl.type = 'button'; btnWl.className = 'btn-watchlist-special'; const labelWl = I18N[l]?.subs?.[wlMeta.id] || wlMeta.nombre;
-btnWl.innerHTML = `<span class="subtotal-pill-icon" style="color:#f59e0b;">${wlMeta.emoji}</span><span>${labelWl}</span><span class="wl-count-badge">${countThisWl}</span>`;
+const btnBack = document.createElement('button'); btnBack.type = 'button'; btnBack.className = 'btn-watchlist-special active-wl btn-watchlist-icon-only';
+const labelWl = I18N[l]?.subs?.[wlMeta?.id] || wlMeta?.nombre || 'Watchlist';
+btnBack.title = `${labelWl} (${countThisWl})`;
+btnBack.setAttribute('aria-label', `${labelWl} (${countThisWl})`);
+btnBack.innerHTML = `<span class="subtotal-pill-icon" style="color:#f59e0b;">${wlMeta ? wlMeta.emoji : getHeroIcon('bookmark')}</span>`;
+btnBack.onclick = () => volverAHistorialDesdeWatchlist(); wlBox.appendChild(btnBack); } else if (wlMeta) { const btnWl = document.createElement('button'); btnWl.type = 'button'; btnWl.className = 'btn-watchlist-special btn-watchlist-icon-only'; const labelWl = I18N[l]?.subs?.[wlMeta.id] || wlMeta.nombre;
+btnWl.title = `${labelWl} (${countThisWl})`;
+btnWl.setAttribute('aria-label', `${labelWl} (${countThisWl})`);
+btnWl.innerHTML = `<span class="subtotal-pill-icon" style="color:#f59e0b;">${wlMeta.emoji}</span>`;
 btnWl.onclick = () => {
   if (typeof abrirMenuWatchlistGlobal === 'function') {
     abrirMenuWatchlistGlobal(true, c, targetWl);
@@ -1613,13 +1618,36 @@ aplicarEstilosGlobales(); }
 function renderizarBarraTodasWatchlists() { const panel = document.getElementById('all-watchlists-panel'); if (panel) panel.style.display = esSubcategoriaWatchlist(estado.subcategoria) ? 'block' : 'none'; const bar = document.getElementById('all-watchlists-bar'); if (!bar) return; bar.innerHTML = ''; const l = userPrefs.lang || 'es'; TODAS_LAS_WATCHLISTS.forEach(w => { const cant = contarItemsWatchlistDe(w.cat, w.sub);
 const activo = estado.categoria === w.cat && estado.subcategoria === w.sub; const btn = document.createElement('button'); btn.type = 'button'; btn.className = `all-wl-pill ${activo ? 'active' : ''}`; const nom = w.sub === 'Watchlist' ? `${w.label}` : (I18N[l].subs[w.sub] || w.label);
 btn.innerHTML = `<span class="subtotal-pill-icon">${w.emoji}</span><span>${nom}</span><span class="wl-pill-count">${cant}</span>`; btn.onclick = () => { estado.ultimaWatchlist = { cat: w.cat, sub: w.sub }; cambiarCat(w.cat, w.sub); }; bar.appendChild(btn); }); }
+function actualizarBotonFiltroRewatches() {
+  const btn = document.getElementById('btn-filtro-rewatches');
+  if (!btn) return;
+  const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
+  const ocultar = !!(typeof estado !== 'undefined' && estado?.ocultarRewatches);
+  btn.classList.toggle('active', ocultar);
+  const label = ocultar
+    ? (l === 'en' ? 'Show rewatches' : 'Mostrar Rewatches')
+    : (l === 'en' ? 'Hide rewatches' : 'Ocultar Rewatches');
+  btn.title = label;
+  btn.setAttribute('aria-label', label);
+  const eyeIcon = ocultar
+    ? (typeof getHeroIcon === 'function' ? getHeroIcon('eye-slash', '', 15) : '')
+    : (typeof getHeroIcon === 'function' ? getHeroIcon('eye', '', 15) : '');
+  const rwIcon = (typeof getHeroIcon === 'function') ? getHeroIcon('arrow-path', '', 15) : '';
+  btn.innerHTML = `<span class="rw-btn-icons" style="display:inline-flex;align-items:center;gap:4px;">${rwIcon}${eyeIcon}</span><span id="txt-filtro-rewatches" style="display:none;">${label}</span>`;
+}
+window.actualizarBotonFiltroRewatches = actualizarBotonFiltroRewatches;
+
 function actualizarVisibilidadCamposEspeciales() { const c = estado.categoria, s = estado.subcategoria; const esWl = esSubcategoriaWatchlist(s);
 const isCon = c === 'Musica' && (s === 'Conciertos' || s === 'Concierto'); document.getElementById('seccion-historial-contenido').style.display = esWl ? 'none' : 'block'; document.getElementById('seccion-watchlist-contenido').style.display = esWl ? 'block' : 'none';
 const bBusc = document.getElementById('box-buscador-general'); if (bBusc) bBusc.style.display = isCon ? 'none' : 'flex'; const mCon = document.getElementById('modulo-concierto-manual'); if (mCon) mCon.style.display = isCon ? 'block' : 'none'; if (isCon) limpiarModuloConcierto();
 const esTemp = c === 'Series' && (s === 'Temporadas' || s.includes('Temporada')); document.getElementById('grupo-temporada').style.display = esTemp ? 'block' : 'none';
 if (!esTemp) { document.getElementById('input-temporada-num').value = ''; document.getElementById('chk-temporada-unica').checked = false; }
 const admiteRw = subAdmiteRewatch(c, s); const boxRw = document.getElementById('grupo-rewatch-checkbox'); if (boxRw) { boxRw.style.display = admiteRw ? 'block' : 'none'; document.getElementById('chk-es-rewatch').checked = false; }
-const btnFiltroRw = document.getElementById('btn-filtro-rewatches'); if (btnFiltroRw) btnFiltroRw.style.display = admiteRw ? 'inline-flex' : 'none';
+const btnFiltroRw = document.getElementById('btn-filtro-rewatches');
+if (btnFiltroRw) {
+  btnFiltroRw.style.display = (admiteRw && !esWl) ? 'inline-flex' : 'none';
+  if (admiteRw && !esWl) actualizarBotonFiltroRewatches();
+}
 document.getElementById('grupo-comic-manga').style.display = (c === 'Lecturas' && (s === 'Cómics' || s === 'Cómic' || s === 'Mangas' || s === 'Manga')) ? 'block' : 'none'; document.getElementById('grupo-horas-juegos').style.display = (c === 'Juegos') ? 'block' : 'none';
 const admiteRangoForm = subTieneRango(c, s);
 const textoProg = admiteRangoForm ? obtenerTextoEnProgreso(c, s) : null;
@@ -1660,8 +1688,11 @@ if (boxProg) {
   }
   actualizarBotonLecturaHoyLibros();
 }
-function toggleOcultarRewatches() { estado.ocultarRewatches = !estado.ocultarRewatches; const btn = document.getElementById('btn-filtro-rewatches'); btn.classList.toggle('active', estado.ocultarRewatches);
-document.getElementById('txt-filtro-rewatches').textContent = estado.ocultarRewatches ? t('btn_mostrar_rw') : t('btn_ocultar_rw'); filtrarYMostrarHistorial(); }
+function toggleOcultarRewatches() {
+  estado.ocultarRewatches = !estado.ocultarRewatches;
+  actualizarBotonFiltroRewatches();
+  filtrarYMostrarHistorial();
+}
 function actualizarAnioTemporada(num) { if (estado.categoria === 'Series' && estado.seleccionado?.idRef && num) { google.script.run.withSuccessHandler(info => { if (info && estado.seleccionado) { if (info.anioFinTemp) { estado.seleccionado.anio = info.anioFinTemp;
 document.getElementById('form-creador-anio').textContent = `(${estado.seleccionado.creador}, ${info.anioFinTemp})`; }
 if (info.totalTemporadas) estado.seleccionado.totalSeasons = info.totalTemporadas; }

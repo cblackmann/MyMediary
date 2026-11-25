@@ -3057,15 +3057,22 @@ function actualizarBotonOrdenHistorialAmigo() {
   const btn = document.getElementById('btn-toggle-orden-amigo');
   const txt = document.getElementById('txt-orden-historial-amigo');
   const ico = document.getElementById('ico-orden-historial-amigo');
-  if (!btn || !txt) return;
+  if (!btn) return;
   const l = userPrefs.lang || 'es';
+  const label = amigoRegsOrden === 'desc'
+    ? (l === 'en' ? 'Newest first' : 'Del más reciente al más antiguo')
+    : (l === 'en' ? 'Oldest first' : 'Del primero al último');
+  btn.title = label;
+  btn.setAttribute('aria-label', label);
+  if (txt) {
+    txt.textContent = label;
+    txt.style.display = 'none';
+  }
   if (amigoRegsOrden === 'desc') {
-    txt.textContent = l === 'en' ? 'Newest first' : 'Del más reciente al más antiguo';
-    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25 4.5L17.25 21m0 0L21 17.25M17.25 21V10.5"/></svg>`;
+    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25 4.5L17.25 21m0 0L21 17.25M17.25 21V10.5"/></svg>`;
     btn.classList.add('active');
   } else {
-    txt.textContent = l === 'en' ? 'Oldest first' : 'Del primero al último';
-    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v10.5"/></svg>`;
+    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v10.5"/></svg>`;
     btn.classList.remove('active');
   }
 }

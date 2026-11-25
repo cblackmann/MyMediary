@@ -1941,16 +1941,23 @@ function actualizarBotonOrdenHistorial() {
   const btn = document.getElementById('btn-toggle-orden');
   const txt = document.getElementById('txt-orden-historial');
   const ico = document.getElementById('ico-orden-historial');
-  if (!btn || !txt) return;
+  if (!btn) return;
   const ord = obtenerOrdenHistorialActual();
   const l = userPrefs.lang || 'es';
+  const label = ord === 'desc'
+    ? (l === 'en' ? 'Latest first' : 'Del último al primero')
+    : (l === 'en' ? 'Oldest first' : 'Del primero al último');
+  btn.title = label;
+  btn.setAttribute('aria-label', label);
+  if (txt) {
+    txt.textContent = label;
+    txt.style.display = 'none';
+  }
   if (ord === 'desc') {
-    txt.textContent = l === 'en' ? 'Latest first' : 'Del último al primero';
-    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v10.5m0 0L13.5 15m3.75 4.5 3.75-4.5"/></svg>`;
+    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v10.5m0 0L13.5 15m3.75 4.5 3.75-4.5"/></svg>`;
     btn.classList.add('active');
   } else {
-    txt.textContent = l === 'en' ? 'Oldest first' : 'Del primero al último';
-    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v10.5"/></svg>`;
+    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v10.5"/></svg>`;
     btn.classList.remove('active');
   }
 }
@@ -2000,6 +2007,7 @@ renderizarBannerRachaSubcategoria(c, s);
 th.innerHTML = `<tr>${r ? `<th style="width:110px;">${t('table_th_fecha_ini')}</th><th style="width:110px;">${t('table_th_fecha_fin')}</th>` : `<th style="width:110px;">${t('table_th_fecha')}</th>`}${isJ ? `<th style="width:80px; text-align:center;">${t('table_th_horas')}</th>` : ''}<th>${obtenerNombreColumnaTitulo(c, s)}</th><th style="width:150px;">${t('table_th_calif')}</th><th>${t('table_th_comentario')}</th><th style="width:40px; text-align:center;"></th></tr>`;
 let l = obtenerRegistrosDeSubcategoria(c, s); if (estado.ocultarRewatches && subAdmiteRewatch(c, s)) { l = l.filter(x => !x.esRewatch && !x.subcategoria.includes('Rewatch')); }
 actualizarBotonOrdenHistorial();
+if (typeof actualizarBotonFiltroRewatches === 'function') actualizarBotonFiltroRewatches();
 const esDesc = obtenerOrdenHistorialActual() === 'desc';
 l.sort((a, b) => {
   const enProgA = r && (esEnProgresoTexto(a.fechaFin) || (!a.fechaFin || a.fechaFin === 'Sin fecha' || a.fechaFin === ''));
