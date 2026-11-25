@@ -77,20 +77,56 @@
 .live-carousel-dot.active {background:var(--accent);width:16px;border-radius:999px;}
 
 /* TARJETA SIMPLE MINIMALISTA EN TIEMPO REAL (PERSONAL Y AMIGOS) */
-.home-live-card-simple {display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:8px 12px;width:100%;max-width:520px;box-sizing:border-box;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:border-color 0.2s ease,box-shadow 0.2s ease,transform 0.15s ease;position:relative;overflow:hidden;}
-.home-live-card-simple:hover {border-color:var(--border-hover, #64748b);box-shadow:0 4px 14px rgba(0,0,0,0.12);}
-.home-live-cover-box {width:44px;height:44px;min-width:44px;border-radius:8px;overflow:hidden;position:relative;background:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.12);}
+/* TARJETA IDLE (REDUCIDA Y CENTRADA CUANDO NO HAY ACTIVIDAD) */
+.home-live-card-idle {display:inline-flex;align-items:center;justify-content:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:9999px;padding:6px 18px;max-width:320px;margin:0 auto;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:border-color 0.2s ease,box-shadow 0.2s ease,transform 0.15s ease;user-select:none;}
+.home-live-card-idle:hover {border-color:var(--accent);transform:translateY(-1px);box-shadow:0 4px 14px rgba(0,0,0,0.12);}
+.home-live-idle-dot {width:7px;height:7px;min-width:7px;border-radius:50%;background:var(--muted);opacity:0.65;}
+.home-live-idle-icons {display:flex;align-items:center;gap:6px;}
+.home-live-idle-text {font-size:0.78rem;font-weight:600;color:var(--muted);white-space:nowrap;}
+
+/* TARJETA DE ACTIVIDAD EN TIEMPO REAL EXPANDIDA/REDUCTIBLE (MÁS GRANDE, CONTROLADOR, DISCO) */
+.home-live-card-simple {display:flex;flex-direction:column;gap:8px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 14px;width:100%;max-width:540px;margin:0 auto;box-sizing:border-box;box-shadow:0 4px 16px rgba(0,0,0,0.08);transition:all 0.3s cubic-bezier(0.4,0,0.2,1);position:relative;overflow:hidden;}
+.home-live-card-simple:hover {border-color:var(--border-hover, #64748b);box-shadow:0 6px 20px rgba(0,0,0,0.14);}
+.home-live-top-row {display:flex;align-items:center;gap:12px;width:100%;}
+.home-live-cover-box {width:58px;height:58px;min-width:58px;border-radius:10px;overflow:hidden;position:relative;background:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,0.15);flex-shrink:0;transition:all 0.28s cubic-bezier(0.4,0,0.2,1);}
 .home-live-cover-box img {width:100%;height:100%;object-fit:cover;display:block;}
 .home-live-cover-avatar {position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;border:1.5px solid var(--card);overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:10px;}
 .home-live-cover-avatar img {width:100%;height:100%;object-fit:cover;}
 .home-live-info-box {flex:1 1 0%;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:2px;overflow:hidden;}
-.home-live-title-row {font-size:0.84rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;}
-.home-live-subtitle-row {font-size:0.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px;line-height:1.2;}
+.home-live-title-row {font-size:0.92rem;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.25;}
+.home-live-subtitle-row {font-size:0.78rem;color:var(--text);opacity:0.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px;line-height:1.2;}
+.home-live-album-row {font-size:0.73rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px;line-height:1.2;margin-top:1px;}
 .home-live-pulse-dot {width:6px;height:6px;min-width:6px;border-radius:50%;background:#10b981;animation:pulseDot 1.6s infinite;display:inline-block;}
-.home-live-action-box {display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.home-live-action-box {display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .btn-live-quick-add {background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--muted);width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:var(--tr);padding:0;}
 .btn-live-quick-add:hover {background:rgba(255,255,255,0.12);color:var(--text);border-color:var(--text);transform:scale(1.08);}
 .home-live-platform-icon {display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;flex-shrink:0;}
+.btn-live-toggle-expand {background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all 0.2s ease;}
+.btn-live-toggle-expand:hover {background:rgba(255,255,255,0.12);color:var(--text);border-color:var(--text);}
+.btn-live-toggle-expand svg {width:13px;height:13px;transition:transform 0.28s ease;}
+
+/* CONTROLADOR MULTIMEDIA SPOTIFY */
+.home-live-media-controls {display:flex;flex-direction:column;gap:6px;width:100%;margin-top:2px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);transition:all 0.25s ease;}
+.home-live-progress-bar-wrap {display:flex;align-items:center;gap:8px;width:100%;}
+.home-live-progress-time {font-size:0.68rem;color:var(--muted);font-variant-numeric:tabular-nums;flex-shrink:0;}
+.home-live-progress-track {flex:1;height:4px;background:rgba(255,255,255,0.1);border-radius:999px;overflow:hidden;position:relative;}
+.home-live-progress-fill {height:100%;background:#1DB954;border-radius:999px;transition:width 0.3s ease;}
+.home-live-buttons-row {display:flex;align-items:center;justify-content:center;gap:18px;width:100%;padding:2px 0;}
+.btn-live-media-ctrl {background:transparent;border:none;color:var(--text);opacity:0.85;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;padding:4px;border-radius:50%;transition:all 0.15s ease;}
+.btn-live-media-ctrl:hover {opacity:1;color:#1DB954;transform:scale(1.12);}
+.btn-live-media-ctrl:active {transform:scale(0.92);}
+.btn-live-media-play {width:32px;height:32px;background:#1DB954;color:#000000;opacity:1;box-shadow:0 2px 8px rgba(29,185,84,0.35);border-radius:50%;}
+.btn-live-media-play:hover {background:#1ed760;color:#000000;transform:scale(1.08);box-shadow:0 4px 12px rgba(29,185,84,0.5);}
+
+/* VERSIÓN REDUCIDA / COLAPSADA */
+.home-live-card-simple.is-collapsed {padding:6px 14px;border-radius:9999px;max-width:400px;gap:0;}
+.home-live-card-simple.is-collapsed .home-live-cover-box {width:30px;height:30px;min-width:30px;border-radius:50%;}
+.home-live-card-simple.is-collapsed .home-live-title-row {font-size:0.8rem;}
+.home-live-card-simple.is-collapsed .home-live-subtitle-row {font-size:0.7rem;}
+.home-live-card-simple.is-collapsed .home-live-album-row {display:none !important;}
+.home-live-card-simple.is-collapsed .home-live-media-controls {display:none !important;}
+.home-live-card-simple.is-collapsed .btn-live-quick-add {display:none !important;}
+.home-live-card-simple.is-collapsed .btn-live-toggle-expand svg {transform:rotate(180deg);}
 
 /* ESTILOS DE ÚLTIMAS CANCIONES ESCUCHADAS DE AMIGOS Y REPETICIONES */
 .home-friend-song-card.is-lastfm::before {background:#d51007 !important;}

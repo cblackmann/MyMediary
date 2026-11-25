@@ -188,7 +188,10 @@ function abrirVistaCalendario(pushNav = true) {
     const vAmRegs = document.getElementById('vista-registros-amigo'); if (vAmRegs) vAmRegs.style.display = 'none';
 
     const vCal = document.getElementById('vista-calendario');
-    if (vCal) vCal.style.display = 'block';
+    if (vCal) {
+      vCal.style.display = 'block';
+      if (typeof animarEntradaSubtab === 'function') animarEntradaSubtab(vCal);
+    }
 
     if (!calDiaSeleccionadoKey) {
       calDiaSeleccionadoKey = obtenerFechaHoyKey();

@@ -1850,32 +1850,82 @@ function dibujarTarjetaSpotifySimple(data) {
   const safeAlbumParam = encodeURIComponent(albumParaRegistrar);
   const safeArtistaParam = encodeURIComponent(artistNames);
 
+  const isCollapsed = Boolean(window._personalLiveCardCollapsed);
+  const isPlaying = (typeof item.is_playing !== 'undefined') ? Boolean(item.is_playing) : true;
+  const progressMs = item.progress_ms || 0;
+  const durationMs = item.duration_ms || item.item?.duration_ms || 0;
+  const pct = durationMs > 0 ? Math.min(100, Math.max(0, Math.round((progressMs / durationMs) * 100))) : 45;
+  const fmtTime = (ms) => {
+    const totalSec = Math.floor((ms || 0) / 1000);
+    const m = Math.floor(totalSec / 60);
+    const s = totalSec % 60;
+    return `${m}:${String(s).padStart(2, '0')}`;
+  };
+
   const coverHtml = coverUrl
     ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(trackTitle)}" loading="lazy">`
-    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(29,185,84,0.15);color:#1DB954;"><svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg></div>`;
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(29,185,84,0.15);color:#1DB954;"><svg width="24" height="24" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg></div>`;
 
   return `
-    <div class="home-live-card-simple" onclick="window.open('${escHtmlSpotify_(trackUrl)}', '_blank')" style="cursor:pointer;" title="${l === 'en' ? 'Open in Spotify' : 'Abrir en Spotify'}">
-      <div class="home-live-cover-box">
-        ${coverHtml}
-      </div>
-      <div class="home-live-info-box">
-        <div class="home-live-title-row" title="${escHtmlSpotify_(trackTitle)}">
-          ${escHtmlSpotify_(trackTitle)}
+    <div class="home-live-card-simple ${isCollapsed ? 'is-collapsed' : 'is-expanded'}" onclick="window.open('${escHtmlSpotify_(trackUrl)}', '_blank')" style="cursor:pointer;" title="${l === 'en' ? 'Open in Spotify' : 'Abrir en Spotify'}">
+      <div class="home-live-top-row">
+        <div class="home-live-cover-box">
+          ${coverHtml}
         </div>
-        <div class="home-live-subtitle-row" title="${escHtmlSpotify_(artistNames)}">
-          <span class="home-live-pulse-dot"></span>
-          <span>${escHtmlSpotify_(artistNames)}</span>
+        <div class="home-live-info-box">
+          <div class="home-live-title-row" title="${escHtmlSpotify_(trackTitle)}">
+            ${escHtmlSpotify_(trackTitle)}
+          </div>
+          <div class="home-live-subtitle-row" title="${escHtmlSpotify_(artistNames)}">
+            <span class="home-live-pulse-dot"></span>
+            <span>${escHtmlSpotify_(artistNames)}</span>
+          </div>
+          ${albumName ? `
+            <div class="home-live-album-row" title="${escHtmlSpotify_(albumName)}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="1"/></svg>
+              <span>${escHtmlSpotify_(albumName)}</span>
+            </div>
+          ` : ''}
+        </div>
+        <div class="home-live-action-box" onclick="event.stopPropagation()">
+          <button type="button" class="btn-live-quick-add" onclick="registrarDiscoActualEnMediary(decodeURIComponent('${safeAlbumParam}'), decodeURIComponent('${safeArtistaParam}'))" title="${l === 'en' ? 'Add album in Mediary' : 'Registrar disco en Mediary'}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <a href="${escHtmlSpotify_(trackUrl)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="Spotify">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+          </a>
+          <button type="button" class="btn-live-toggle-expand" onclick="togglePersonalLiveCardCollapse(event)" title="${isCollapsed ? (l === 'en' ? 'Expand' : 'Expandir') : (l === 'en' ? 'Collapse' : 'Reducir')}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+          </button>
         </div>
       </div>
-      <div class="home-live-action-box" onclick="event.stopPropagation()">
-        <button type="button" class="btn-live-quick-add" onclick="registrarDiscoActualEnMediary(decodeURIComponent('${safeAlbumParam}'), decodeURIComponent('${safeArtistaParam}'))" title="${l === 'en' ? 'Add album in Mediary' : 'Registrar disco en Mediary'}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
-        <a href="${escHtmlSpotify_(trackUrl)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="Spotify">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
-        </a>
-      </div>
+
+      <!-- CONTROLADOR MULTIMEDIA SPOTIFY (EXPANDIDO) -->
+      ${!isCollapsed ? `
+        <div class="home-live-media-controls" onclick="event.stopPropagation()">
+          <div class="home-live-progress-bar-wrap">
+            <span class="home-live-progress-time">${fmtTime(progressMs)}</span>
+            <div class="home-live-progress-track">
+              <div class="home-live-progress-fill" style="width:${pct}%;"></div>
+            </div>
+            <span class="home-live-progress-time">${fmtTime(durationMs || 180000)}</span>
+          </div>
+          <div class="home-live-buttons-row">
+            <button type="button" class="btn-live-media-ctrl" onclick="event.stopPropagation(); if(typeof controlarSpotifyPlayback==='function') controlarSpotifyPlayback('previous');" title="${l === 'en' ? 'Previous' : 'Anterior'}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+            </button>
+            <button type="button" class="btn-live-media-ctrl btn-live-media-play" onclick="event.stopPropagation(); if(typeof controlarSpotifyPlayback==='function') controlarSpotifyPlayback('${isPlaying ? 'pause' : 'play'}');" title="${isPlaying ? (l === 'en' ? 'Pause' : 'Pausar') : (l === 'en' ? 'Play' : 'Reproducir')}">
+              ${isPlaying 
+                ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+                : '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
+              }
+            </button>
+            <button type="button" class="btn-live-media-ctrl" onclick="event.stopPropagation(); if(typeof controlarSpotifyPlayback==='function') controlarSpotifyPlayback('next');" title="${l === 'en' ? 'Next' : 'Siguiente'}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+            </button>
+          </div>
+        </div>
+      ` : ''}
     </div>
   `;
 }
@@ -1889,6 +1939,7 @@ function dibujarTarjetaJuegoSimple(data) {
   const isSteam = (data.source === 'steam' || String(data.platform || '').toLowerCase() === 'steam');
   const platformName = isSteam ? 'Steam' : 'PlayStation';
   const platformColor = isSteam ? '#66c0f4' : '#0070d1';
+  const isCollapsed = Boolean(window._personalLiveCardCollapsed);
 
   let brandHref = isSteam
     ? (data.appid ? `https://store.steampowered.com/app/${encodeURIComponent(data.appid)}` : 'https://store.steampowered.com')
@@ -1900,44 +1951,69 @@ function dibujarTarjetaJuegoSimple(data) {
 
   const coverHtml = coverUrl
     ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(titleName)}" loading="lazy">`
-    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(23,26,33,0.92);color:${platformColor};"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></div>`;
+    : `<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(23,26,33,0.92);color:${platformColor};"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg></div>`;
 
   const safeTitle = encodeURIComponent(titleName);
 
   return `
-    <div class="home-live-card-simple" onclick="window.open('${escHtmlSpotify_(brandHref)}', '_blank')" style="cursor:pointer;" title="${l === 'en' ? 'Open in ' + platformName : 'Abrir en ' + platformName}">
-      <div class="home-live-cover-box">
-        ${coverHtml}
-      </div>
-      <div class="home-live-info-box">
-        <div class="home-live-title-row" title="${escHtmlSpotify_(titleName)}">
-          ${escHtmlSpotify_(titleName)}
+    <div class="home-live-card-simple ${isCollapsed ? 'is-collapsed' : 'is-expanded'}" onclick="window.open('${escHtmlSpotify_(brandHref)}', '_blank')" style="cursor:pointer;" title="${l === 'en' ? 'Open in ' + platformName : 'Abrir en ' + platformName}">
+      <div class="home-live-top-row">
+        <div class="home-live-cover-box">
+          ${coverHtml}
         </div>
-        <div class="home-live-subtitle-row">
-          <span class="home-live-pulse-dot"></span>
-          <span style="color:${platformColor}; font-weight:600;">${platformName}</span>
+        <div class="home-live-info-box">
+          <div class="home-live-title-row" title="${escHtmlSpotify_(titleName)}">
+            ${escHtmlSpotify_(titleName)}
+          </div>
+          <div class="home-live-subtitle-row">
+            <span class="home-live-pulse-dot"></span>
+            <span style="color:${platformColor}; font-weight:600;">${platformName}</span>
+          </div>
         </div>
-      </div>
-      <div class="home-live-action-box" onclick="event.stopPropagation()">
-        <button type="button" class="btn-live-quick-add" onclick="registrarJuegoActualEnMediary(decodeURIComponent('${safeTitle}'))" title="${l === 'en' ? 'Add game in Mediary' : 'Registrar juego en Mediary'}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
-        <a href="${escHtmlSpotify_(brandHref)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="${platformName}">
-          ${logoSvg}
-        </a>
+        <div class="home-live-action-box" onclick="event.stopPropagation()">
+          <button type="button" class="btn-live-quick-add" onclick="registrarJuegoActualEnMediary(decodeURIComponent('${safeTitle}'))" title="${l === 'en' ? 'Add game in Mediary' : 'Registrar juego en Mediary'}">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <a href="${escHtmlSpotify_(brandHref)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="${platformName}">
+            ${logoSvg}
+          </a>
+          <button type="button" class="btn-live-toggle-expand" onclick="togglePersonalLiveCardCollapse(event)" title="${isCollapsed ? (l === 'en' ? 'Expand' : 'Expandir') : (l === 'en' ? 'Collapse' : 'Reducir')}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   `;
 }
 window.dibujarTarjetaJuegoSimple = dibujarTarjetaJuegoSimple;
 
-function dibujarTarjetaSpotifyCompactaIdle() {
-  return '';
+function togglePersonalLiveCardCollapse(e) {
+  if (e) e.stopPropagation();
+  window._personalLiveCardCollapsed = !window._personalLiveCardCollapsed;
+  try {
+    localStorage.setItem('mediary_live_card_collapsed', window._personalLiveCardCollapsed ? '1' : '0');
+  } catch(err) {}
+  actualizarActividadEnVivoPersonal();
 }
+window.togglePersonalLiveCardCollapse = togglePersonalLiveCardCollapse;
 
-function dibujarTarjetaSpotifyCompactaDesconectado() {
-  return '';
+function dibujarTarjetaLiveIdle() {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
+  const txt = l === 'en' ? 'No real-time activity' : 'Sin reproducción activa';
+  return `
+    <div class="home-live-card-idle" onclick="if(typeof abrirModalConectarSpotify==='function') abrirModalConectarSpotify();" title="${l === 'en' ? 'Connect Spotify or Gaming' : 'Conectar Spotify o Juegos'}" style="cursor:pointer;">
+      <span class="home-live-idle-dot"></span>
+      <div class="home-live-idle-icons">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="color:var(--muted);opacity:0.85;"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--muted);opacity:0.85;"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>
+      </div>
+      <span class="home-live-idle-text">${txt}</span>
+    </div>
+  `;
 }
+window.dibujarTarjetaLiveIdle = dibujarTarjetaLiveIdle;
+window.dibujarTarjetaSpotifyCompactaIdle = dibujarTarjetaLiveIdle;
+window.dibujarTarjetaSpotifyCompactaDesconectado = dibujarTarjetaLiveIdle;
 
 if (!window._personalLiveState) {
   window._personalLiveState = {
@@ -1973,15 +2049,16 @@ function actualizarActividadEnVivoPersonal() {
     });
   }
 
-  // 1. Si no hay actividad -> NINGUNA tarjeta (display: none)
+  // 1. Si no hay actividad -> Mostrar versión reducida y centrada (Idle)
   if (activeCards.length === 0) {
-    wrapper.style.display = 'none';
-    carousel.innerHTML = '';
+    wrapper.style.display = 'flex';
+    wrapper.style.justifyContent = 'center';
+    carousel.innerHTML = dibujarTarjetaLiveIdle();
     if (dotsContainer) dotsContainer.style.display = 'none';
     return;
   }
 
-  // 2. Si hay actividad -> mostrar wrapper
+  // 2. Si hay actividad -> mostrar carrusel activo
   wrapper.style.display = 'flex';
 
   const cardsHtml = activeCards.map(c => `<div class="home-live-carousel-item">${c.html}</div>`).join('');

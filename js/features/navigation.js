@@ -726,6 +726,17 @@ function inicializarNavegacionHorizontalTabs() {
   }
   window.animarSalidaVistaAtras = animarSalidaVistaAtras;
 
+  function animarEntradaSubtab(el) {
+    if (!el) return;
+    el.classList.remove('anim-subtab-transition');
+    void el.offsetWidth;
+    el.classList.add('anim-subtab-transition');
+    setTimeout(() => {
+      try { el.classList.remove('anim-subtab-transition'); } catch (e) {}
+    }, 260);
+  }
+  window.animarEntradaSubtab = animarEntradaSubtab;
+
   function obtenerElementoVistaTab(id) {
     if (id === 'inicio') return document.getElementById('vista-inicio');
     if (id === 'listas') return document.getElementById('vista-listas-extendida');
@@ -1353,6 +1364,10 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
     if (typeof detenerPollingSpotifyLive === 'function') detenerPollingSpotifyLive();
   }
   if (cat === 'listas') return abrirVistaDashboardListas(pushNav);
+  if (cat === 'watchlists') return (typeof abrirMenuWatchlistGlobal === 'function' ? abrirMenuWatchlistGlobal(pushNav) : null);
+  if (subDestino && esSubcategoriaWatchlist(subDestino)) {
+    return (typeof abrirMenuWatchlistGlobal === 'function' ? abrirMenuWatchlistGlobal(pushNav, cat, subDestino) : null);
+  }
   if (pushNav) registrarNavegacionApp(cat);
   resetearBuscadoresYFormularios();
   estado.categoria = cat;
@@ -1395,16 +1410,15 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
     estado.subcategoria = subDestino || CONFIG[cat].subs[0].id;
     guardarEstadoNavegacionActual(cat, estado.subcategoria);
     if (esSubcategoriaWatchlist(estado.subcategoria)) {
-      estado.ultimaWatchlist = { cat, sub: estado.subcategoria };
+      return (typeof abrirMenuWatchlistGlobal === 'function' ? abrirMenuWatchlistGlobal(pushNav, cat, estado.subcategoria) : null);
     }
     actualizarNavWebActiva();
     renderizarSubtabs();
     actualizarVisibilidadCamposEspeciales();
     configurarFormularioFechas();
-    if (esSubcategoriaWatchlist(estado.subcategoria)) {
-      renderizarWatchlist();
-    } else {
-      filtrarYMostrarHistorial();
+    filtrarYMostrarHistorial();
+    if (typeof animarEntradaSubtab === 'function' && vCat) {
+      animarEntradaSubtab(vCat);
     }
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -1435,7 +1449,11 @@ function abrirVistaDashboardListas(pushNav = true) {
   const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
   const vAmPerf = document.getElementById('vista-perfil-amigo'); if (vAmPerf) vAmPerf.style.display = 'none';
   const vAmRegs = document.getElementById('vista-registros-amigo'); if (vAmRegs) vAmRegs.style.display = 'none';
-  const vList = document.getElementById('vista-listas-extendida'); if (vList) vList.style.display = 'block';
+  const vList = document.getElementById('vista-listas-extendida');
+  if (vList) {
+    vList.style.display = 'block';
+    if (typeof animarEntradaSubtab === 'function') animarEntradaSubtab(vList);
+  }
   if (typeof animarCambioTabVista === 'function') animarCambioTabVista('listas');
   if (modoReordenarListasActivo && typeof toggleModoReordenarListas === 'function') {
     toggleModoReordenarListas();
@@ -1543,9 +1561,10 @@ if (box) {
   const btnBackListas = document.createElement('button');
   btnBackListas.type = 'button';
   btnBackListas.className = 'subtab-btn btn-subtabs-back-listas';
-  btnBackListas.style.cssText = 'flex-shrink:0; font-weight:700; border-color:var(--border); display:inline-flex; align-items:center; gap:4px;';
+  btnBackListas.style.cssText = 'flex-shrink:0; width:34px; height:34px; min-width:34px; padding:0; display:inline-flex; align-items:center; justify-content:center; border-color:var(--border); border-radius:4px; cursor:pointer;';
   btnBackListas.title = l === 'en' ? 'Back to Lists' : 'Volver a Listas';
-  btnBackListas.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg><span>${l === 'en' ? 'Lists' : 'Listas'}</span>`;
+  btnBackListas.setAttribute('aria-label', l === 'en' ? 'Back to Lists' : 'Volver a Listas');
+  btnBackListas.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>`;
   btnBackListas.onclick = () => {
     const vCat = document.getElementById('vista-categoria');
     const vList = document.getElementById('vista-listas-extendida');
@@ -1561,12 +1580,33 @@ const enWl = esSubcategoriaWatchlist(estado.subcategoria); CONFIG[c].subs.filter
 const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c, s.id) : null;
 const subClass = metaSub ? `subtab-cat-${metaSub.key}` : '';
 btn.className = `subtab-btn ${!enWl && estado.subcategoria === s.id ? 'active' : ''} ${subClass}`; btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l]?.subs?.[s.id] || s.nombre}`;
-btn.onclick = () => { resetearBuscadoresYFormularios(); estado.subcategoria = s.id; guardarEstadoNavegacionActual(estado.categoria, s.id); actualizarNavWebActiva(); renderizarSubtabs(); actualizarVisibilidadCamposEspeciales(); configurarFormularioFechas(); filtrarYMostrarHistorial(); }; if (box) box.appendChild(btn); }); if (wlBox) {
+btn.onclick = () => {
+  resetearBuscadoresYFormularios();
+  estado.subcategoria = s.id;
+  guardarEstadoNavegacionActual(estado.categoria, s.id);
+  actualizarNavWebActiva();
+  renderizarSubtabs();
+  actualizarVisibilidadCamposEspeciales();
+  configurarFormularioFechas();
+  filtrarYMostrarHistorial();
+  if (typeof animarEntradaSubtab === 'function') {
+    animarEntradaSubtab(document.getElementById('seccion-historial-contenido') || document.getElementById('historial-cards'));
+  }
+};
+if (box) box.appendChild(btn); }); if (wlBox) {
 const targetWl = obtenerSubWatchlistDeCategoria(c, estado.subcategoria); const wlMeta = CONFIG[c].subs.find(x => x.id === targetWl) || CONFIG[c].subs.find(x => x.esWatchlist); const countThisWl = contarItemsWatchlistDe(c, targetWl); if (enWl) {
 const btnBack = document.createElement('button'); btnBack.type = 'button'; btnBack.className = 'btn-watchlist-special active-wl';
 btnBack.innerHTML = `<span>⬅ ${I18N[l]?.btn_volver_historial || 'Volver al Historial'}</span>`;
 btnBack.onclick = () => volverAHistorialDesdeWatchlist(); wlBox.appendChild(btnBack); } else if (wlMeta) { const btnWl = document.createElement('button'); btnWl.type = 'button'; btnWl.className = 'btn-watchlist-special'; const labelWl = I18N[l]?.subs?.[wlMeta.id] || wlMeta.nombre;
-btnWl.innerHTML = `<span class="emoji-dyn">${wlMeta.emoji}</span><span>${labelWl}</span><span class="wl-count-badge">${countThisWl}</span>`; btnWl.onclick = () => cambiarCat(c, targetWl); wlBox.appendChild(btnWl); }
+btnWl.innerHTML = `<span class="emoji-dyn">${wlMeta.emoji}</span><span>${labelWl}</span><span class="wl-count-badge">${countThisWl}</span>`;
+btnWl.onclick = () => {
+  if (typeof abrirMenuWatchlistGlobal === 'function') {
+    abrirMenuWatchlistGlobal(true, c, targetWl);
+  } else {
+    cambiarCat(c, targetWl);
+  }
+};
+wlBox.appendChild(btnWl); }
 }
 aplicarEstilosGlobales(); }
 function renderizarBarraTodasWatchlists() { const panel = document.getElementById('all-watchlists-panel'); if (panel) panel.style.display = esSubcategoriaWatchlist(estado.subcategoria) ? 'block' : 'none'; const bar = document.getElementById('all-watchlists-bar'); if (!bar) return; bar.innerHTML = ''; const l = userPrefs.lang || 'es'; TODAS_LAS_WATCHLISTS.forEach(w => { const cant = contarItemsWatchlistDe(w.cat, w.sub);

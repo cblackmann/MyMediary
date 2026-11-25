@@ -964,7 +964,7 @@
   }
 }
 
-/* Botón flotante de Ruleta en Mis Watchlists */
+/* Botón flotante de Ruleta en Mis Watchlists (cuadrado, más grande, integrado) */
 .wl-floating-actions {
   position: fixed;
   right: 22px;
@@ -975,13 +975,13 @@
   align-items: center;
 }
 .wl-fab-btn {
-  width: 50px;
-  height: 50px;
-  border-radius: 50% !important;
+  width: 58px;
+  height: 58px;
+  border-radius: 4px !important;
   background: var(--card);
   color: var(--accent);
   border: 1.5px solid var(--border);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28), 0 1px 3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -991,8 +991,8 @@
   -webkit-backdrop-filter: blur(16px);
 }
 .wl-fab-btn svg {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   display: block;
   transition: transform 0.2s ease;
 }
@@ -1000,11 +1000,11 @@
   background: var(--card-hover);
   border-color: var(--accent);
   color: var(--accent);
-  transform: translateY(-2px) scale(1.06);
+  transform: translateY(-2px) scale(1.05);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 14px rgba(var(--accent-rgb, 56, 189, 248), 0.25);
 }
 .wl-fab-btn:active {
-  transform: scale(0.94);
+  transform: scale(0.95);
 }
 @media (max-width: 768px) {
   .wl-floating-actions {
@@ -1012,13 +1012,29 @@
     bottom: calc(28px + env(safe-area-inset-bottom, 0px));
   }
   .wl-fab-btn {
-    width: 48px;
-    height: 48px;
+    width: 54px;
+    height: 54px;
+    border-radius: 4px !important;
   }
   .wl-fab-btn svg {
-    width: 22px;
-    height: 22px;
+    width: 26px;
+    height: 26px;
   }
+}
+
+/* Animación sutil para transiciones de subpestañas y vistas */
+@keyframes mediarySubtabFade {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.anim-subtab-transition {
+  animation: mediarySubtabFade 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
 /* Modal Selector de Ruleta (Individual o con Amigos) */

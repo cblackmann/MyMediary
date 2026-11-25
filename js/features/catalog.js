@@ -79,20 +79,35 @@ function ejecutarAgregadoRapidoWatchlists(cat = null) {
 }
 window.ejecutarAgregadoRapidoWatchlists = ejecutarAgregadoRapidoWatchlists;
 // --- ACCESO A WATCHLISTS DEDICADAS DESDE MÓVIL Y WEB ---
-function abrirMenuWatchlistGlobal(pushNav = true) {
+function abrirMenuWatchlistGlobal(pushNav = true, catInicial = null, subInicial = null) {
   if (pushNav) registrarNavegacionApp('watchlists');
   guardarEstadoNavegacionActual('watchlists', '');
   resetearBuscadoresYFormularios();
-  if (estado.categoria === 'listas') {
+  const catPrevia = estado.categoria;
+  if (catPrevia === 'listas') {
     estado.vistaPreviaWatchlists = 'listas';
-  } else if (estado.categoria !== 'watchlists') {
+  } else if (CONFIG[catPrevia] && catPrevia !== 'watchlists' && catPrevia !== 'inicio') {
+    estado.vistaPreviaWatchlists = 'categoria';
+    estado.categoriaPreviaWatchlist = catPrevia;
+  } else if (catPrevia !== 'watchlists') {
     estado.vistaPreviaWatchlists = 'inicio';
   }
   estado.categoria = 'watchlists';
   estado.subcategoria = '';
-  // POINT 1: Default to Películas, NOT whatever was last open, and separate by subcategories cleanly
-  estado.wlCategoria = 'Peliculas';
-  estado.wlSubcategoria = 'Películas';
+
+  const catTarget = catInicial || (estado.vistaPreviaWatchlists === 'categoria' ? estado.categoriaPreviaWatchlist : 'Peliculas');
+  if (catTarget && WATCHLIST_ESTRUCTURA.some(x => x.cat === catTarget)) {
+    estado.wlCategoria = catTarget;
+    const cfg = WATCHLIST_ESTRUCTURA.find(x => x.cat === catTarget);
+    if (subInicial && cfg?.subs.some(s => s.id === subInicial)) {
+      estado.wlSubcategoria = subInicial;
+    } else {
+      estado.wlSubcategoria = cfg?.subs[0]?.id || 'Películas';
+    }
+  } else {
+    estado.wlCategoria = 'Peliculas';
+    estado.wlSubcategoria = 'Películas';
+  }
   actualizarBarraNavegacionMovil(null);
   actualizarNavWebActiva();
   if (typeof actualizarVisibilidadMenuInferior === 'function') {
@@ -107,7 +122,11 @@ function abrirMenuWatchlistGlobal(pushNav = true) {
   const vCal = document.getElementById('vista-calendario'); if (vCal) vCal.style.display = 'none';
   const vAmPerf = document.getElementById('vista-perfil-amigo'); if (vAmPerf) vAmPerf.style.display = 'none';
   const vAmRegs = document.getElementById('vista-registros-amigo'); if (vAmRegs) vAmRegs.style.display = 'none';
-  const vWl = document.getElementById('vista-watchlists'); if (vWl) vWl.style.display = 'block';
+  const vWl = document.getElementById('vista-watchlists');
+  if (vWl) {
+    vWl.style.display = 'block';
+    if (typeof animarEntradaSubtab === 'function') animarEntradaSubtab(vWl);
+  }
   renderizarVistaWatchlistsDedicada();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -117,37 +136,35 @@ function volverDesdeWatchlists() {
     return;
   }
   const vWl = document.getElementById('vista-watchlists');
-  const destino = (estado.vistaPreviaWatchlists === 'listas') ? 'listas' : 'inicio';
-  const elDestino = destino === 'listas' ? document.getElementById('vista-listas-extendida') : document.getElementById('vista-inicio');
+  const destino = estado.vistaPreviaWatchlists || 'inicio';
+  let elDestino = document.getElementById('vista-inicio');
+  if (destino === 'listas') {
+    elDestino = document.getElementById('vista-listas-extendida');
+  } else if (destino === 'categoria') {
+    elDestino = document.getElementById('vista-categoria');
+  }
 
-  if (typeof animarSalidaVistaAtras === 'function') {
-    animarSalidaVistaAtras(vWl, () => {
-      if (typeof actualizarVisibilidadMenuInferior === 'function') {
-        actualizarVisibilidadMenuInferior(true);
-      }
-      if (destino === 'listas') {
-        if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas(false);
-      } else {
-        if (typeof irInicio === 'function') irInicio(false);
-      }
-      const targetBtn = destino === 'listas' ? 'm-btn-listas-ext' : 'm-btn-inicio';
-      if (typeof actualizarBarraNavegacionMovil === 'function') {
-        actualizarBarraNavegacionMovil(targetBtn);
-      }
-    }, elDestino);
-  } else {
+  const fnVolver = () => {
     if (typeof actualizarVisibilidadMenuInferior === 'function') {
-      actualizarVisibilidadMenuInferior(true);
+      actualizarVisibilidadMenuInferior(destino === 'inicio');
     }
     if (destino === 'listas') {
       if (typeof abrirVistaDashboardListas === 'function') abrirVistaDashboardListas(false);
+      if (typeof actualizarBarraNavegacionMovil === 'function') actualizarBarraNavegacionMovil('m-btn-listas-ext');
+    } else if (destino === 'categoria') {
+      const catAtras = estado.categoriaPreviaWatchlist || 'Peliculas';
+      if (typeof cambiarCat === 'function') cambiarCat(catAtras, null, false);
+      if (typeof actualizarBarraNavegacionMovil === 'function') actualizarBarraNavegacionMovil(null);
     } else {
       if (typeof irInicio === 'function') irInicio(false);
+      if (typeof actualizarBarraNavegacionMovil === 'function') actualizarBarraNavegacionMovil('m-btn-inicio');
     }
-    const targetBtn = destino === 'listas' ? 'm-btn-listas-ext' : 'm-btn-inicio';
-    if (typeof actualizarBarraNavegacionMovil === 'function') {
-      actualizarBarraNavegacionMovil(targetBtn);
-    }
+  };
+
+  if (typeof animarSalidaVistaAtras === 'function' && vWl && elDestino) {
+    animarSalidaVistaAtras(vWl, fnVolver, elDestino);
+  } else {
+    fnVolver();
   }
 }
 window.volverDesdeWatchlists = volverDesdeWatchlists;
@@ -162,6 +179,9 @@ function seleccionarCategoriaWl(cat) {
   const resBox = document.getElementById('search-results-wl');
   if (resBox) { resBox.innerHTML = ''; resBox.style.display = 'none'; }
   renderizarVistaWatchlistsDedicada();
+  if (typeof animarEntradaSubtab === 'function') {
+    animarEntradaSubtab(document.getElementById('grid-watchlist-dedicada'));
+  }
 }
 
 function seleccionarSubcategoriaWl(subId) {
@@ -171,6 +191,9 @@ function seleccionarSubcategoriaWl(subId) {
   const resBox = document.getElementById('search-results-wl');
   if (resBox) { resBox.innerHTML = ''; resBox.style.display = 'none'; }
   renderizarVistaWatchlistsDedicada();
+  if (typeof animarEntradaSubtab === 'function') {
+    animarEntradaSubtab(document.getElementById('grid-watchlist-dedicada'));
+  }
 }
 
 function renderizarVistaWatchlistsDedicada() {
