@@ -988,6 +988,13 @@ html[data-app-theme="minimalist"] .btn-cal-volver {
   color: var(--cat-color-lecturas) !important;
   box-shadow: 0 4px 14px rgba(217, 119, 6, 0.28) !important;
 }
+.all-watchlists-bar .wl-cat-pill.wl-pill-todas.active,
+.all-watchlists-bar .wl-cat-pill[data-cat="todas"].active {
+  background: var(--accent-subtle, rgba(56, 189, 248, 0.16)) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.28) !important;
+}
 
 @media (max-width: 768px) {
   .all-watchlists-bar {
@@ -1169,11 +1176,26 @@ html[data-app-theme="minimalist"] .btn-cal-volver {
 }
 
 
-#wl-subtabs-bar .subtab-btn {
+#wl-subtabs-bar .subtab-btn,
+#amigo-regs-subcat-tabs .subtab-btn {
   border-radius: 2px;
 }
-#wl-subtabs-bar .subtab-btn .wl-count-badge {
+#wl-subtabs-bar .subtab-btn .wl-count-badge,
+#amigo-regs-subcat-tabs .subtab-btn .wl-count-badge {
   border-radius: 2px;
+}
+.wl-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.74rem;
+  font-weight: 700;
+  opacity: 0.8;
+  margin-left: 4px;
+}
+.subtab-btn.active .wl-count-badge {
+  opacity: 0.95;
+  font-weight: 800;
 }
 
 #box-buscador-wl .search-input {

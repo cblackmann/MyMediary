@@ -3109,7 +3109,12 @@ function abrirVistaRegistrosAmigo(email, nickname, catInicial = 'todas', subInic
   const vPerfAm = document.getElementById('vista-perfil-amigo'); if (vPerfAm) vPerfAm.style.display = 'none';
 
   const vistaRegs = document.getElementById('vista-registros-amigo');
-  if (vistaRegs) vistaRegs.style.display = 'block';
+  if (vistaRegs) {
+    vistaRegs.style.display = 'block';
+    if (typeof animarEntradaSubtab === 'function') {
+      animarEntradaSubtab(vistaRegs);
+    }
+  }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
@@ -3179,29 +3184,53 @@ function renderizarTabsCategoriasAmigo() {
   if (!tabs) return;
   const l = userPrefs.lang || 'es';
   const hasCache = amigoRegistrosCache && amigoRegistrosCache.length > 0;
+
+  const ordenCats = (typeof obtenerCategoriasOrdenadas === 'function')
+    ? obtenerCategoriasOrdenadas(true)
+    : ['Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'];
+
+  const catsMeta = {
+    Peliculas: { id: 'Peliculas', label: l === 'en' ? 'Movies' : 'Películas', emoji: getHeroIcon('film'), count: amigoRegistrosCache.filter(r => r.categoria === 'Peliculas').length },
+    Series: { id: 'Series', label: 'Series', emoji: getHeroIcon('tv'), count: amigoRegistrosCache.filter(r => r.categoria === 'Series').length },
+    Musica: { id: 'Musica', label: l === 'en' ? 'Music' : 'Música', emoji: getHeroIcon('musical-note'), count: amigoRegistrosCache.filter(r => r.categoria === 'Musica').length },
+    Juegos: { id: 'Juegos', label: l === 'en' ? 'Games' : 'Juegos', emoji: getHeroIcon('gamepad'), count: amigoRegistrosCache.filter(r => r.categoria === 'Juegos').length },
+    Lecturas: { id: 'Lecturas', label: l === 'en' ? 'Books' : 'Lecturas', emoji: getHeroIcon('book-open'), count: amigoRegistrosCache.filter(r => r.categoria === 'Lecturas').length }
+  };
+
   const cats = [
     { id: 'todas', label: l === 'en' ? 'All' : 'Todas', emoji: getHeroIcon('sparkles'), count: amigoRegistrosCache.length },
-    { id: 'Peliculas', label: l === 'en' ? 'Movies' : 'Películas', emoji: getHeroIcon('film'), count: amigoRegistrosCache.filter(r => r.categoria === 'Peliculas').length },
-    { id: 'Series', label: 'Series', emoji: getHeroIcon('tv'), count: amigoRegistrosCache.filter(r => r.categoria === 'Series').length },
-    { id: 'Musica', label: l === 'en' ? 'Music' : 'Música', emoji: getHeroIcon('musical-note'), count: amigoRegistrosCache.filter(r => r.categoria === 'Musica').length },
-    { id: 'Juegos', label: l === 'en' ? 'Games' : 'Juegos', emoji: getHeroIcon('gamepad'), count: amigoRegistrosCache.filter(r => r.categoria === 'Juegos').length },
-    { id: 'Lecturas', label: l === 'en' ? 'Books' : 'Lecturas', emoji: getHeroIcon('book-open'), count: amigoRegistrosCache.filter(r => r.categoria === 'Lecturas').length }
+    ...ordenCats.map(k => catsMeta[k]).filter(Boolean)
   ];
-  tabs.innerHTML = cats.map(c => `
-    <button type="button" class="subtab-btn ${c.id === amigoRegsFiltroCat ? 'active' : ''}" onclick="cambiarFiltroCatAmigo('${c.id}', this)" style="flex-shrink:0;">
-      <span class="emoji-dyn">${c.emoji}</span> ${c.label} ${hasCache ? `<span style="opacity:0.75;font-size:0.75rem;font-weight:600;">(${c.count})</span>` : ''}
-    </button>
-  `).join('');
+
+  tabs.innerHTML = '';
+  cats.forEach(c => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    const catKey = c.id.toLowerCase();
+    btn.className = `wl-cat-pill wl-pill-${catKey} ${c.id === amigoRegsFiltroCat ? 'active' : ''}`;
+    btn.dataset.cat = c.id;
+    const catNom = (I18N[l]?.cats?.[c.id] || c.label) + (hasCache ? ` (${c.count})` : '');
+    btn.title = catNom;
+    btn.setAttribute('aria-label', catNom);
+    btn.innerHTML = `<span class="emoji-dyn">${c.emoji}</span>`;
+    btn.onclick = () => cambiarFiltroCatAmigo(c.id, btn);
+    tabs.appendChild(btn);
+  });
 }
 function renderizarTabsSubcategoriasAmigo() {
   const subTabsEl = document.getElementById('amigo-regs-subcat-tabs');
   if (!subTabsEl) return;
   const l = userPrefs.lang || 'es';
 
-  // Si está en "todas", no mostrar subcategorías (solo mostrar todas directamente)
+  // Si está en "todas", mostrar píldora de "Todos los registros" activa
   if (amigoRegsFiltroCat === 'todas') {
-    subTabsEl.style.display = 'none';
-    subTabsEl.innerHTML = '';
+    subTabsEl.style.display = 'flex';
+    subTabsEl.innerHTML = `
+      <button type="button" class="subtab-btn active" onclick="cambiarFiltroSubAmigo('todas', this)">
+        <span>${l === 'en' ? 'All records' : 'Todos los registros'}</span>
+        <span class="wl-count-badge">(${amigoRegistrosCache.length})</span>
+      </button>
+    `;
     amigoRegsFiltroSub = 'todas';
     return;
   }
@@ -3214,14 +3243,14 @@ function renderizarTabsSubcategoriasAmigo() {
     cfgSubs.forEach(s => {
       const count = pool.filter(r => r.subcategoria === s.id).length;
       if (count > 0 || pool.length === 0) {
-        subList.push({ id: s.id, label: I18N[l]?.subs?.[s.id] || s.nombre, emoji: s.emoji || getHeroIcon('folder'), count });
+        subList.push({ id: s.id, label: I18N[l]?.subs?.[s.id] || s.nombre, count });
       }
     });
     const knownIds = new Set(cfgSubs.map(s => s.id));
     const extraSubs = [...new Set(pool.map(r => r.subcategoria).filter(Boolean))].filter(s => !knownIds.has(s));
     extraSubs.forEach(s => {
       const count = pool.filter(r => r.subcategoria === s).length;
-      subList.push({ id: s, label: I18N[l]?.subs?.[s] || s, emoji: getHeroIcon('folder'), count });
+      subList.push({ id: s, label: I18N[l]?.subs?.[s] || s, count });
     });
   }
 
@@ -3237,15 +3266,22 @@ function renderizarTabsSubcategoriasAmigo() {
 
   subTabsEl.style.display = 'flex';
   const todasCount = pool.length;
+  const metaCat = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(amigoRegsFiltroCat, '') : null;
+  const baseCatColClass = metaCat ? `subtab-cat-${metaCat.key}` : '';
+
   let html = `
-    <button type="button" class="subtab-btn ${amigoRegsFiltroSub === 'todas' ? 'active' : ''}" onclick="cambiarFiltroSubAmigo('todas', this)" style="flex-shrink:0;font-size:0.8rem;padding:5px 12px;border-radius:3px;">
-      <span class="emoji-dyn">${getHeroIcon('star')}</span> ${l === 'en' ? 'All subcategories' : 'Todas las subcategorías'} <span style="opacity:0.75;font-size:0.72rem;font-weight:600;">(${todasCount})</span>
+    <button type="button" class="subtab-btn ${amigoRegsFiltroSub === 'todas' ? 'active' : ''} ${baseCatColClass}" onclick="cambiarFiltroSubAmigo('todas', this)">
+      <span>${l === 'en' ? 'All' : 'Todas'}</span>
+      <span class="wl-count-badge">(${todasCount})</span>
     </button>
   `;
   subList.forEach(s => {
+    const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(amigoRegsFiltroCat, s.id) : null;
+    const subColClass = metaSub ? `subtab-cat-${metaSub.key}` : baseCatColClass;
     html += `
-      <button type="button" class="subtab-btn ${amigoRegsFiltroSub === s.id ? 'active' : ''}" onclick="cambiarFiltroSubAmigo('${s.id.replace(/'/g, "\\'")}', this)" style="flex-shrink:0;font-size:0.8rem;padding:5px 12px;border-radius:3px;">
-        <span class="emoji-dyn">${s.emoji}</span> ${s.label} <span style="opacity:0.75;font-size:0.72rem;font-weight:600;">(${s.count})</span>
+      <button type="button" class="subtab-btn ${amigoRegsFiltroSub === s.id ? 'active' : ''} ${subColClass}" onclick="cambiarFiltroSubAmigo('${s.id.replace(/'/g, "\\'")}', this)">
+        <span>${s.label}</span>
+        <span class="wl-count-badge">(${s.count})</span>
       </button>
     `;
   });
@@ -3259,6 +3295,9 @@ function cambiarFiltroSubAmigo(subId, btnEl) {
   }
   if (btnEl) btnEl.classList.add('active');
   filtrarRegistrosAmigoModal();
+  if (typeof animarEntradaSubtab === 'function') {
+    animarEntradaSubtab(document.getElementById('amigo-regs-grid'));
+  }
 }
 function cambiarFiltroCatAmigo(catId, btnEl) {
   amigoRegsFiltroCat = catId;
@@ -3266,12 +3305,24 @@ function cambiarFiltroCatAmigo(catId, btnEl) {
   renderizarTabsCategoriasAmigo();
   renderizarTabsSubcategoriasAmigo();
   filtrarRegistrosAmigoModal();
+  if (typeof animarEntradaSubtab === 'function') {
+    animarEntradaSubtab(document.getElementById('amigo-regs-grid'));
+  }
 }
 function filtrarRegistrosAmigoModal() {
   const l = userPrefs.lang || 'es';
   const grid = document.getElementById('amigo-regs-grid');
   if (!grid) return;
-  const q = (document.getElementById('input-buscar-regs-amigo')?.value || '').toLowerCase().trim();
+  const inSearch = document.getElementById('input-buscar-regs-amigo');
+  const q = (inSearch?.value || '').toLowerCase().trim();
+  if (inSearch && !q) {
+    if (amigoRegsFiltroCat === 'todas') {
+      inSearch.placeholder = l === 'en' ? "Search in this friend's records..." : "Buscar en los registros de este amigo...";
+    } else {
+      const nomCat = I18N[l]?.cats?.[amigoRegsFiltroCat] || amigoRegsFiltroCat;
+      inSearch.placeholder = l === 'en' ? `Search in ${nomCat}...` : `Buscar en registros de ${nomCat}...`;
+    }
+  }
 
   const parseDateForSort = r => {
     const f = (r.fechaFin && r.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(r.fechaFin)) ? r.fechaFin : (r.fechaInicio && r.fechaInicio !== 'Sin fecha' ? r.fechaInicio : null);

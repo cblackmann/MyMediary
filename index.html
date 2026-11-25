@@ -569,14 +569,16 @@
         </button>
       </div>
 
-      <!-- Filtro Categorías -->
-      <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:6px; margin-bottom:8px;" id="amigo-regs-cat-tabs"></div>
-      <!-- Filtro Subcategorías -->
-      <div style="display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:12px; flex-wrap:wrap;" id="amigo-regs-subcat-tabs"></div>
+      <!-- Filtro Categorías (Índice superior con scroll horizontal) -->
+      <div class="all-watchlists-bar" id="amigo-regs-cat-tabs" style="margin-bottom:12px;"></div>
+      <!-- Filtro Subcategorías (debajo del índice, solo títulos) -->
+      <div class="subtabs" id="amigo-regs-subcat-tabs" style="margin-bottom:14px;"></div>
 
       <!-- Buscador en tiempo real de registros de amigo -->
-      <div style="margin-bottom:14px;">
-        <input type="search" id="input-buscar-regs-amigo" class="form-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_search_friend_records">
+      <div class="search-row" style="margin-bottom:14px;">
+        <div class="search-box" style="width:100%;">
+          <input type="search" id="input-buscar-regs-amigo" class="search-input" placeholder="Buscar en los registros de este amigo..." oninput="filtrarRegistrosAmigoModal()" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_search_friend_records">
+        </div>
       </div>
 
       <!-- Contenedor / Grilla de registros -->
