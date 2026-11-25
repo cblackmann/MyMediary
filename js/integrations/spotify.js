@@ -1351,7 +1351,7 @@ async function controlarSpotifyPlayback(accion) {
   if (playBtns.length > 0) {
     if (accion === 'play') {
       playBtns.forEach(btn => {
-        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
         btn.setAttribute('onclick', "event.stopPropagation(); window.controlarSpotifyPlayback('pause');");
         btn.title = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Pause' : 'Pausar';
       });
@@ -1361,7 +1361,7 @@ async function controlarSpotifyPlayback(accion) {
       }
     } else if (accion === 'pause') {
       playBtns.forEach(btn => {
-        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>`;
         btn.setAttribute('onclick', "event.stopPropagation(); window.controlarSpotifyPlayback('play');");
         btn.title = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Play' : 'Reproducir';
       });
@@ -1370,6 +1370,14 @@ async function controlarSpotifyPlayback(accion) {
         statusPill.innerHTML = `<span class="home-np-dot"></span><span>${(typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'Paused' : 'En pausa'}</span>`;
       }
     }
+  }
+
+  if (accion === 'next' || accion === 'previous') {
+    const nextBtns = document.querySelectorAll(accion === 'next' ? '.btn-live-media-next' : '.btn-live-media-prev');
+    nextBtns.forEach(b => {
+      b.style.transform = 'scale(0.88)';
+      setTimeout(() => { b.style.transform = ''; }, 160);
+    });
   }
 
   let token = await obtenerTokenSpotifyValido();
@@ -1881,6 +1889,10 @@ function dibujarTarjetaSpotifySimple(data) {
     ? `<img src="${escHtmlSpotify_(coverUrl)}" alt="${escHtmlSpotify_(trackTitle)}" loading="lazy">`
     : `<div style="width:100%;height:100%;display:grid;place-items:center;background:rgba(29,185,84,0.15);color:#1DB954;"><svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg></div>`;
 
+  setTimeout(() => {
+    if (typeof ajustarMarqueeLiveCard === 'function') ajustarMarqueeLiveCard();
+  }, 40);
+
   return `
     <div class="home-live-card-simple ${isCollapsed ? 'is-collapsed' : 'is-expanded'}" onclick="window.open('${escHtmlSpotify_(trackUrl)}', '_blank')" style="cursor:pointer;" title="${l === 'en' ? 'Open in Spotify' : 'Abrir en Spotify'}">
       <div class="home-live-top-row">
@@ -1889,11 +1901,7 @@ function dibujarTarjetaSpotifySimple(data) {
         </div>
         <div class="home-live-info-box">
           <div class="home-live-title-row" title="${escHtmlSpotify_(trackTitle)}">
-            ${escHtmlSpotify_(trackTitle)}
-          </div>
-          <div class="home-live-subtitle-row" title="${escHtmlSpotify_(artistNames)}">
-            <span class="home-live-pulse-dot"></span>
-            <span>${escHtmlSpotify_(artistNames)}</span>
+            <span class="home-live-title-scroll">${escHtmlSpotify_(trackTitle)}</span>
           </div>
           ${albumName ? `
             <div class="home-live-album-row" title="${escHtmlSpotify_(albumName)}" style="${isCollapsed ? 'display:none;' : ''}">
@@ -1901,13 +1909,40 @@ function dibujarTarjetaSpotifySimple(data) {
               <span>${escHtmlSpotify_(albumName)}</span>
             </div>
           ` : ''}
+          <div class="home-live-subtitle-row" title="${escHtmlSpotify_(artistNames)}">
+            <span class="home-live-pulse-dot"></span>
+            <span>${escHtmlSpotify_(artistNames)}</span>
+          </div>
         </div>
         <div class="home-live-action-box" onclick="event.stopPropagation()">
           <a href="${escHtmlSpotify_(trackUrl)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="${l === 'en' ? 'Open in Spotify' : 'Abrir en Spotify'}" onclick="event.stopPropagation()">
-            <svg width="19" height="19" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
           </a>
           <button type="button" class="btn-live-toggle-expand" onclick="togglePersonalLiveCardCollapse(event)" title="${isCollapsed ? (l === 'en' ? 'Expand' : 'Expandir') : (l === 'en' ? 'Collapse' : 'Reducir')}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="home-live-bottom-row" style="${isCollapsed ? 'display:none;' : ''}">
+        <div class="home-live-progress-container">
+          <span class="home-live-time">${fmtTime(progressMs)}</span>
+          <div class="home-live-progress-bar">
+            <div class="home-live-progress-fill" style="width:${pct}%;"></div>
+          </div>
+          <span class="home-live-time">${fmtTime(durationMs)}</span>
+        </div>
+        <div class="home-live-media-controls" onclick="event.stopPropagation()">
+          <button type="button" class="btn-live-media-ctrl btn-live-media-prev" onclick="event.stopPropagation(); window.controlarSpotifyPlayback('previous');" title="${l === 'en' ? 'Previous' : 'Anterior'}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+          </button>
+          <button type="button" class="btn-live-media-ctrl btn-live-media-play" onclick="event.stopPropagation(); window.controlarSpotifyPlayback('${isPlaying ? 'pause' : 'play'}');" title="${isPlaying ? (l === 'en' ? 'Pause' : 'Pausar') : (l === 'en' ? 'Play' : 'Reproducir')}">
+            ${isPlaying
+              ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>'
+              : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>'
+            }
+          </button>
+          <button type="button" class="btn-live-media-ctrl btn-live-media-next" onclick="event.stopPropagation(); window.controlarSpotifyPlayback('next');" title="${l === 'en' ? 'Next' : 'Siguiente'}">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="m6 18 8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
           </button>
         </div>
       </div>
@@ -1940,6 +1975,10 @@ function dibujarTarjetaJuegoSimple(data) {
 
   const safeTitle = encodeURIComponent(titleName);
 
+  setTimeout(() => {
+    if (typeof ajustarMarqueeLiveCard === 'function') ajustarMarqueeLiveCard();
+  }, 40);
+
   return `
     <div class="home-live-card-simple ${isCollapsed ? 'is-collapsed' : 'is-expanded'}" onclick="window.open('${escHtmlSpotify_(brandHref)}', '_blank')" style="cursor:pointer;" title="${l === 'en' ? 'Open in ' + platformName : 'Abrir en ' + platformName}">
       <div class="home-live-top-row">
@@ -1948,7 +1987,7 @@ function dibujarTarjetaJuegoSimple(data) {
         </div>
         <div class="home-live-info-box">
           <div class="home-live-title-row" title="${escHtmlSpotify_(titleName)}">
-            ${escHtmlSpotify_(titleName)}
+            <span class="home-live-title-scroll">${escHtmlSpotify_(titleName)}</span>
           </div>
           <div class="home-live-subtitle-row">
             <span class="home-live-pulse-dot"></span>
@@ -1972,6 +2011,28 @@ function dibujarTarjetaJuegoSimple(data) {
 }
 window.dibujarTarjetaJuegoSimple = dibujarTarjetaJuegoSimple;
 
+function ajustarMarqueeLiveCard() {
+  const cards = document.querySelectorAll('.home-live-card-simple.is-collapsed');
+  cards.forEach(card => {
+    const row = card.querySelector('.home-live-title-row');
+    const inner = card.querySelector('.home-live-title-scroll');
+    if (row && inner) {
+      const diff = inner.scrollWidth - row.clientWidth;
+      if (diff > 4) {
+        row.style.setProperty('--live-title-overflow', `${diff + 8}px`);
+        inner.classList.add('is-scrolling');
+      } else {
+        inner.classList.remove('is-scrolling');
+      }
+    }
+  });
+}
+window.ajustarMarqueeLiveCard = ajustarMarqueeLiveCard;
+if (typeof window !== 'undefined') {
+  window.removeEventListener?.('resize', ajustarMarqueeLiveCard);
+  window.addEventListener?.('resize', ajustarMarqueeLiveCard, { passive: true });
+}
+
 function togglePersonalLiveCardCollapse(e) {
   if (e) e.stopPropagation();
   window._personalLiveCardCollapsed = !window._personalLiveCardCollapsed;
@@ -1993,12 +2054,17 @@ function togglePersonalLiveCardCollapse(e) {
       if (albumRow) {
         albumRow.style.display = window._personalLiveCardCollapsed ? 'none' : 'flex';
       }
+      const bottomRow = card.querySelector('.home-live-bottom-row');
+      if (bottomRow) {
+        bottomRow.style.display = window._personalLiveCardCollapsed ? 'none' : 'flex';
+      }
       const toggleBtn = card.querySelector('.btn-live-toggle-expand');
       if (toggleBtn) {
         const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
         toggleBtn.title = window._personalLiveCardCollapsed ? (l === 'en' ? 'Expand' : 'Expandir') : (l === 'en' ? 'Collapse' : 'Reducir');
       }
     });
+    setTimeout(ajustarMarqueeLiveCard, 350);
   } else {
     actualizarActividadEnVivoPersonal();
   }

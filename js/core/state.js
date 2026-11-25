@@ -3,13 +3,13 @@ let userPrefs = { font: "'Lexend', sans-serif", fontSize: "75%", theme: "slate-d
 }; let perfilUsuario = { nickname: 'Cinéfilo & Lector', bio: 'Coleccionando historias en Mediary', avatar: '🦊', emailGoogle: '', logueadoGoogle: false, favoritos: {}, favoritosOcultos: {}
 }; const AVATARES_PRESET = ['🦊', '🐱', '🐶', '🐼', '🦁', '🐯', '🐨', '🐸', '🦉', '🐻', '🐵', '🐰']; const TODAS_CATS_DISCOVER = ['peliculas', 'documentales', 'series', 'docuseries', 'musica', 'juegos', 'libros', 'comics', 'mangas'];
 const WATCHLIST_ESTRUCTURA = [
- { cat: 'Peliculas', nombre: 'Películas', emoji: getHeroIcon('film'), subs: [
- { id: 'Películas', subWl: 'Watchlist', nombre: 'Películas', emoji: getHeroIcon('film') },
- { id: 'Documentales', subWl: 'Watchlist: Documentales', nombre: 'Documentales', emoji: getHeroIcon('film') }
+ { cat: 'Peliculas', nombre: 'Películas', emoji: getHeroIcon('clapperboard'), subs: [
+ { id: 'Películas', subWl: 'Watchlist', nombre: 'Películas', emoji: getHeroIcon('clapperboard') },
+ { id: 'Documentales', subWl: 'Watchlist: Documentales', nombre: 'Documentales', emoji: getHeroIcon('video-camera') }
  ] },
  { cat: 'Series', nombre: 'Series', emoji: getHeroIcon('tv'), subs: [
  { id: 'Series', subWl: 'Watchlist', nombre: 'Series', emoji: getHeroIcon('tv') },
- { id: 'Series Documentales', subWl: 'Watchlist: Docuseries', nombre: 'Docuseries', emoji: getHeroIcon('tv') }
+ { id: 'Series Documentales', subWl: 'Watchlist: Docuseries', nombre: 'Docuseries', emoji: getHeroIcon('docuseries') }
  ] },
  { cat: 'Musica', nombre: 'Música', emoji: getHeroIcon('musical-note'), subs: [
   { id: 'Discos', subWl: 'To Listen', nombre: 'Discos / Música', emoji: getHeroIcon('musical-note') },
@@ -25,10 +25,10 @@ const WATCHLIST_ESTRUCTURA = [
  ] }
 ];
 const TODAS_LAS_WATCHLISTS = [
- { cat: 'Peliculas', sub: 'Watchlist', emoji: getHeroIcon('film'), label: 'Películas' },
- { cat: 'Peliculas', sub: 'Watchlist: Documentales', emoji: getHeroIcon('film'), label: 'Documentales' },
+ { cat: 'Peliculas', sub: 'Watchlist', emoji: getHeroIcon('clapperboard'), label: 'Películas' },
+ { cat: 'Peliculas', sub: 'Watchlist: Documentales', emoji: getHeroIcon('video-camera'), label: 'Documentales' },
  { cat: 'Series', sub: 'Watchlist', emoji: getHeroIcon('tv'), label: 'Series' },
- { cat: 'Series', sub: 'Watchlist: Docuseries', emoji: getHeroIcon('tv'), label: 'Docuseries' },
+ { cat: 'Series', sub: 'Watchlist: Docuseries', emoji: getHeroIcon('docuseries'), label: 'Docuseries' },
  { cat: 'Musica', sub: 'To Listen', emoji: getHeroIcon('musical-note'), label: 'To Listen: Discos' },
  { cat: 'Musica', sub: 'To Listen: Artistas', emoji: getHeroIcon('microphone'), label: 'To Listen: Artistas' },
  { cat: 'Juegos', sub: 'To Play', emoji: getHeroIcon('gamepad'), label: 'To Play (Juegos)' },
@@ -36,6 +36,8 @@ const TODAS_LAS_WATCHLISTS = [
  { cat: 'Lecturas', sub: 'To Read: Cómics', emoji: getHeroIcon('book-open'), label: 'To Read: Cómics' },
  { cat: 'Lecturas', sub: 'To Read: Mangas', emoji: getHeroIcon('book-open'), label: 'To Read: Mangas' }
 ];
+window.WATCHLIST_ESTRUCTURA = WATCHLIST_ESTRUCTURA;
+window.TODAS_LAS_WATCHLISTS = TODAS_LAS_WATCHLISTS;
 const ANIO_MINIMO_SELECTOR = 2022;
 const KEY_ULTIMO_ANIO_SISTEMA = 'mediary_ultimo_anio_sistema';
 let _ultimoAnioRenderizadoSelector = null;

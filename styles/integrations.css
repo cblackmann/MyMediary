@@ -85,33 +85,59 @@
 .home-live-idle-text {font-size:0.76rem;font-weight:600;color:var(--muted);white-space:nowrap;}
 
 /* TARJETA DE ACTIVIDAD EN TIEMPO REAL (COMPACTA, DISCO) */
-.home-live-card-simple {display:flex;flex-direction:column;gap:0;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 10px;width:100%;max-width:380px;margin:0 auto;box-sizing:border-box;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:max-width 0.35s cubic-bezier(0.34,1.25,0.64,1),min-width 0.35s cubic-bezier(0.34,1.25,0.64,1),padding 0.3s ease,border-radius 0.3s ease,box-shadow 0.25s ease,border-color 0.2s ease;position:relative;overflow:hidden;}
+.home-live-card-simple {display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px 12px;width:100%;max-width:440px;margin:0 auto;box-sizing:border-box;box-shadow:0 2px 8px rgba(0,0,0,0.06);transition:max-width 0.35s cubic-bezier(0.34,1.25,0.64,1),min-width 0.35s cubic-bezier(0.34,1.25,0.64,1),padding 0.3s ease,border-radius 0.3s ease,box-shadow 0.25s ease,border-color 0.2s ease;position:relative;overflow:hidden;}
 .home-live-card-simple:hover {border-color:var(--border-hover, #64748b);box-shadow:0 4px 14px rgba(0,0,0,0.1);}
-.home-live-top-row {display:flex;align-items:center;gap:8px;width:100%;}
-.home-live-cover-box {width:38px;height:38px;min-width:38px;border-radius:4px;overflow:hidden;position:relative;background:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.12);flex-shrink:0;transition:all 0.3s cubic-bezier(0.34,1.25,0.64,1);}
+.home-live-top-row {display:flex;align-items:center;gap:10px;width:100%;}
+.home-live-cover-box {width:44px;height:44px;min-width:44px;border-radius:6px;overflow:hidden;position:relative;background:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,0.12);flex-shrink:0;transition:all 0.3s cubic-bezier(0.34,1.25,0.64,1);}
 .home-live-cover-box img {width:100%;height:100%;object-fit:cover;display:block;}
 .home-live-cover-avatar {position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;border:1.5px solid var(--card);overflow:hidden;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:9px;}
 .home-live-cover-avatar img {width:100%;height:100%;object-fit:cover;}
-.home-live-info-box {flex:1 1 0%;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:1px;overflow:hidden;}
-.home-live-title-row {font-size:0.83rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;}
-.home-live-subtitle-row {font-size:0.72rem;color:var(--text);opacity:0.88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px;line-height:1.15;}
-.home-live-album-row {font-size:0.67rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:3px;line-height:1.15;}
-.home-live-album-row svg {width:11px;height:11px;flex-shrink:0;}
+.home-live-info-box {flex:1 1 0%;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:1.5px;overflow:hidden;}
+.home-live-title-row {font-size:0.86rem;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.2;position:relative;}
+.home-live-title-scroll {display:inline-block;will-change:transform;max-width:100%;}
+.home-live-album-row {font-size:0.71rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:3px;line-height:1.15;margin:1px 0;}
+.home-live-album-row svg {width:12px;height:12px;flex-shrink:0;}
+.home-live-subtitle-row {font-size:0.73rem;color:var(--text);opacity:0.88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px;line-height:1.15;}
 .home-live-pulse-dot {width:5px;height:5px;min-width:5px;border-radius:50%;background:#10b981;animation:pulseDot 1.6s infinite;display:inline-block;}
 .home-live-action-box {display:flex;align-items:center;gap:5px;flex-shrink:0;}
-.home-live-platform-icon {display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0;cursor:pointer;transition:transform 0.2s ease;}
+.home-live-platform-icon {display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;flex-shrink:0;cursor:pointer;transition:transform 0.2s ease;}
 .home-live-platform-icon:hover {transform:scale(1.1);}
 .btn-live-toggle-expand {background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--muted);width:22px;height:22px;border-radius:4px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:all 0.2s ease;}
 .btn-live-toggle-expand:hover {background:rgba(255,255,255,0.12);color:var(--text);border-color:var(--text);}
 .btn-live-toggle-expand svg {width:11px;height:11px;transition:transform 0.3s ease;}
 
-/* VERSIÓN REDUCIDA / COLAPSADA (FORMATO MÁS CUADRADO Y HORIZONTALMENTE REDUCIDO) */
+/* CONTROLES MULTIMEDIA Y BARRA DE PROGRESO DE LA TARJETA EN VIVO */
+.home-live-bottom-row {display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding-top:4px;border-top:1px solid rgba(255,255,255,0.06);margin-top:2px;}
+.home-live-progress-container {flex:1;display:flex;align-items:center;gap:6px;min-width:0;}
+.home-live-time {font-size:0.65rem;color:var(--muted);font-variant-numeric:tabular-nums;flex-shrink:0;}
+.home-live-progress-bar {flex:1;height:3px;background:rgba(255,255,255,0.12);border-radius:9999px;overflow:hidden;position:relative;}
+.home-live-progress-fill {height:100%;background:#1DB954;border-radius:9999px;transition:width 0.3s ease;}
+.home-live-media-controls {display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.btn-live-media-ctrl {background:rgba(255,255,255,0.06);border:1px solid var(--border);color:var(--text);width:26px;height:26px;border-radius:6px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;transition:background 0.15s ease,transform 0.15s ease,border-color 0.15s ease;}
+.btn-live-media-ctrl:hover {background:rgba(255,255,255,0.15);border-color:var(--accent, #38bdf8);transform:scale(1.06);}
+.btn-live-media-ctrl:active {transform:scale(0.92);}
+.btn-live-media-ctrl svg {width:13px;height:13px;}
+.btn-live-media-play {background:rgba(29,185,84,0.18);border-color:rgba(29,185,84,0.45);color:#1DB954;width:28px;height:28px;}
+.btn-live-media-play:hover {background:#1DB954;color:#000;border-color:#1DB954;}
+
+/* VERSIÓN REDUCIDA / COLAPSADA (FORMATO MÁS CUADRADO, HORIZONTALMENTE REDUCIDO Y CON MARQUEE DE TÍTULO) */
 .home-live-card-simple.is-collapsed {padding:5px 8px !important;border-radius:6px !important;max-width:175px !important;min-width:150px !important;gap:0 !important;}
 .home-live-card-simple.is-collapsed .home-live-cover-box {width:26px !important;height:26px !important;min-width:26px !important;border-radius:3px !important;}
-.home-live-card-simple.is-collapsed .home-live-title-row {font-size:0.74rem;}
+.home-live-card-simple.is-collapsed .home-live-title-row {font-size:0.74rem;position:relative;overflow:hidden;white-space:nowrap;mask-image:linear-gradient(to right, black 82%, transparent 100%);-webkit-mask-image:linear-gradient(to right, black 82%, transparent 100%);text-overflow:clip;}
+.home-live-card-simple.is-collapsed .home-live-title-scroll.is-scrolling {max-width:none !important;animation:liveTitleMarquee 7s ease-in-out infinite alternate;}
 .home-live-card-simple.is-collapsed .home-live-subtitle-row {font-size:0.65rem;}
 .home-live-card-simple.is-collapsed .home-live-album-row {display:none !important;}
+.home-live-card-simple.is-collapsed .home-live-bottom-row {display:none !important;}
 .home-live-card-simple.is-collapsed .btn-live-toggle-expand svg {transform:rotate(180deg);}
+
+@keyframes liveTitleMarquee {
+  0%, 20% {
+    transform: translateX(0px);
+  }
+  80%, 100% {
+    transform: translateX(calc(-1 * var(--live-title-overflow, 35px)));
+  }
+}
 
 /* ESTILOS DE ÚLTIMAS CANCIONES ESCUCHADAS DE AMIGOS Y REPETICIONES */
 .home-friend-song-card {border-radius:4px !important;}

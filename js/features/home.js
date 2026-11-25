@@ -1498,10 +1498,10 @@ function renderizarOpcionesAgregadoRapido() {
   const catsVisibles = obtenerCategoriasOrdenadas(false);
 
   const opciones = [
-    { cat: 'Peliculas', sub: 'Películas', emoji: getHeroIcon('film'), label: (l === 'en' ? 'Movie' : 'Película') },
+    { cat: 'Peliculas', sub: 'Películas', emoji: getHeroIcon('clapperboard'), label: (l === 'en' ? 'Movie' : 'Película') },
     { cat: 'Peliculas', sub: 'Documentales', emoji: getHeroIcon('video-camera'), label: (l === 'en' ? 'Documentary' : 'Documental') },
-    { cat: 'Series', sub: 'Temporadas', emoji: getHeroIcon('tv'), label: (l === 'en' ? 'Series / Season' : 'Serie / Temp.') },
-    { cat: 'Series', sub: 'Series Documentales', emoji: getHeroIcon('video-camera'), label: (l === 'en' ? 'Docuseries' : 'Docuserie') },
+    { cat: 'Series', sub: 'Temporadas', emoji: getHeroIcon('rectangle-stack'), label: (l === 'en' ? 'Series / Season' : 'Serie / Temp.') },
+    { cat: 'Series', sub: 'Series Documentales', emoji: getHeroIcon('docuseries'), label: (l === 'en' ? 'Docuseries' : 'Docuserie') },
     { cat: 'Musica', sub: 'Discos', emoji: getHeroIcon('disc'), label: (l === 'en' ? 'Album' : 'Disco') },
     { cat: 'Musica', sub: 'Artistas/Grupos', emoji: getHeroIcon('microphone'), label: (l === 'en' ? 'Artist' : 'Artista') },
     { cat: 'Juegos', sub: 'Videojuegos', emoji: getHeroIcon('gamepad'), label: (l === 'en' ? 'Video Game' : 'Videojuego') },
@@ -1527,8 +1527,8 @@ function renderizarSubcategoriasResumenInicio() {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
   const catsVisibles = obtenerCategoriasOrdenadas(false);
   const listaSubcats = [
-    { cat: 'Peliculas', sub: 'Películas', emoji: getHeroIcon('film'), label: (l === 'en' ? 'Movies' : 'Películas') },
-    { cat: 'Series', sub: 'Temporadas', emoji: getHeroIcon('tv'), label: (l === 'en' ? 'Series' : 'Series') },
+    { cat: 'Peliculas', sub: 'Películas', emoji: getHeroIcon('clapperboard'), label: (l === 'en' ? 'Movies' : 'Películas') },
+    { cat: 'Series', sub: 'Temporadas', emoji: getHeroIcon('rectangle-stack'), label: (l === 'en' ? 'Series' : 'Series') },
     { cat: 'Musica', sub: 'Discos', emoji: getHeroIcon('musical-note'), label: (l === 'en' ? 'Music' : 'Música') },
     { cat: 'Juegos', sub: 'Videojuegos', emoji: getHeroIcon('gamepad'), label: (l === 'en' ? 'Games' : 'Juegos') },
     { cat: 'Lecturas', sub: 'Libros', emoji: getHeroIcon('book-open'), label: (l === 'en' ? 'Books' : 'Libros') },

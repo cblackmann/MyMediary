@@ -182,7 +182,11 @@ const HEROICONS = {
   'bookmark': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg>',
   'bookmark-square': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg>',
   'film': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>',
+  'clapperboard': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.25 4.5H3.75A2.25 2.25 0 0 0 1.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25h16.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25Z"/><path d="m3.75 4.5 4.5 4.5M10.5 4.5l4.5 4.5M17.25 4.5l4.5 4.5M1.5 9h21"/></svg>',
   'tv': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg>',
+  'docuseries': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/><path d="m12.5 8.25 3.5-2v7.5l-3.5-2M7.5 7.5h5v5h-5z"/></svg>',
+  'tv-check': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/><path d="m8.5 10.5 2.5 2.5 5-5"/></svg>',
+  'rectangle-stack': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6.878V6a2.25 2.25 0 0 1 2.25-2.25h7.5A2.25 2.25 0 0 1 18 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 0 0 4.5 9v.878m13.5-3A2.25 2.25 0 0 1 19.5 9v.878m-15 0a2.246 2.246 0 0 0 .75-.128m13.5 0c.235-.083.487-.128.75-.128m-15 0A2.25 2.25 0 0 0 3 12v6a2.25 2.25 0 0 0 2.25 2.25h13.5A2.25 2.25 0 0 0 21 18v-6a2.25 2.25 0 0 0-2.25-2.25m-15 0h15"/></svg>',
   'musical-note': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg>',
   'gamepad': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg>',
   'book-open': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>',
@@ -238,7 +242,7 @@ const HEROICONS = {
 };
 
 const EMOJI_TO_HEROICON = {
-  '🎬': 'film', '📺': 'tv', '🎵': 'musical-note', '🎮': 'gamepad',
+  '🎬': 'clapperboard', '📺': 'tv', '🎵': 'musical-note', '🎮': 'gamepad',
   '📚': 'book-open', '📖': 'book-open', '📹': 'video-camera', '📽️': 'video-camera', '📽': 'video-camera',
   '⏳': 'clock', '🕒': 'clock', '⏱️': 'clock', '⏱': 'clock',
   '🏆': 'trophy', '👑': 'trophy', '💿': 'disc', '🎙️': 'microphone', '🎙': 'microphone',
@@ -255,7 +259,7 @@ const EMOJI_TO_HEROICON = {
   '✕': 'x-mark', '✖': 'x-mark', '➕': 'plus', '＋': 'plus',
   '📊': 'chart-bar', '📈': 'arrow-trending-up', '📬': 'inbox', '📥': 'inbox',
   '🌐': 'globe-alt', '📁': 'folder', '➔': 'arrow-right', '→': 'arrow-right',
-  '🍿': 'film', '🎲': 'arrow-path-rounded-square', '🎰': 'arrow-path-rounded-square',
+  '🍿': 'clapperboard', '🎲': 'arrow-path-rounded-square', '🎰': 'arrow-path-rounded-square',
   '👁️': 'eye', '👁': 'eye', '🚫': 'eye-slash', '🙈': 'eye-slash',
   '🔒': 'lock-closed', '🔐': 'lock-closed', '🎨': 'paint-brush',
   '💬': 'chat-bubble-bottom-center-text', '📋': 'clipboard-document',
@@ -292,11 +296,11 @@ window.getHeroIcon = getHeroIcon;
 const CONFIG = {
   Peliculas: {
     nombre: 'Películas',
-    emoji: getHeroIcon('film'),
+    emoji: getHeroIcon('clapperboard'),
     colorKey: 'peliculas',
     colorVar: 'var(--cat-color-peliculas)',
     subs: [
-      { id: 'Películas', nombre: 'Películas', emoji: getHeroIcon('film'), colorKey: 'peliculas', rangoFechas: false, admiteRewatch: true },
+      { id: 'Películas', nombre: 'Películas', emoji: getHeroIcon('clapperboard'), colorKey: 'peliculas', rangoFechas: false, admiteRewatch: true },
       { id: 'Documentales', nombre: 'Documentales', emoji: getHeroIcon('video-camera'), colorKey: 'peliculas', rangoFechas: false, admiteRewatch: false },
       { id: 'Watchlist', nombre: 'Watchlist: Películas', emoji: getHeroIcon('bookmark'), colorKey: 'peliculas', esWatchlist: true, targetSub: 'Películas', rangoFechas: false },
       { id: 'Watchlist: Documentales', nombre: 'Watchlist: Documentales', emoji: getHeroIcon('bookmark'), colorKey: 'peliculas', esWatchlist: true, targetSub: 'Documentales', rangoFechas: false }
@@ -308,9 +312,9 @@ const CONFIG = {
     colorKey: 'series',
     colorVar: 'var(--cat-color-series)',
     subs: [
-      { id: 'Temporadas', nombre: 'Temporadas', emoji: getHeroIcon('clock'), colorKey: 'series', rangoFechas: true, admiteRewatch: true },
-      { id: 'Series Completas', nombre: 'Series Completas', emoji: getHeroIcon('trophy'), colorKey: 'series', rangoFechas: true, admiteRewatch: true },
-      { id: 'Series Documentales', nombre: 'Series Documentales', emoji: getHeroIcon('video-camera'), colorKey: 'series', rangoFechas: true, admiteRewatch: false },
+      { id: 'Temporadas', nombre: 'Temporadas', emoji: getHeroIcon('rectangle-stack'), colorKey: 'series', rangoFechas: true, admiteRewatch: true },
+      { id: 'Series Completas', nombre: 'Series Completas', emoji: getHeroIcon('tv-check'), colorKey: 'series', rangoFechas: true, admiteRewatch: true },
+      { id: 'Series Documentales', nombre: 'Series Documentales', emoji: getHeroIcon('docuseries'), colorKey: 'series', rangoFechas: true, admiteRewatch: false },
       { id: 'Watchlist', nombre: 'Watchlist: Series', emoji: getHeroIcon('bookmark'), colorKey: 'series', esWatchlist: true, targetSub: 'Series', rangoFechas: false },
       { id: 'Watchlist: Docuseries', nombre: 'Watchlist: Docuseries', emoji: getHeroIcon('bookmark'), colorKey: 'series', esWatchlist: true, targetSub: 'Series Documentales', rangoFechas: false }
     ]
@@ -353,6 +357,7 @@ const CONFIG = {
     ]
   }
 };
+window.CONFIG = CONFIG;
 
 function obtenerMetaColorCategoria(categoria, subcategoria) {
   const c = String(categoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
