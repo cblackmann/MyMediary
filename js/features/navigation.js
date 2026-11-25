@@ -1578,7 +1578,9 @@ if (box) {
 const enWl = esSubcategoriaWatchlist(estado.subcategoria); CONFIG[c].subs.filter(s => !s.esWatchlist).forEach(s => { const btn = document.createElement('button');
 const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c, s.id) : null;
 const subClass = metaSub ? `subtab-cat-${metaSub.key}` : '';
-btn.className = `subtab-btn ${!enWl && estado.subcategoria === s.id ? 'active' : ''} ${subClass}`; btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l]?.subs?.[s.id] || s.nombre}`;
+const subColor = metaSub ? metaSub.colorVar : 'currentColor';
+btn.className = `subtab-btn ${!enWl && estado.subcategoria === s.id ? 'active' : ''} ${subClass}`;
+btn.innerHTML = `<span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span>${I18N[l]?.subs?.[s.id] || s.nombre}</span>`;
 btn.onclick = () => {
   resetearBuscadoresYFormularios();
   estado.subcategoria = s.id;
@@ -1597,7 +1599,7 @@ const targetWl = obtenerSubWatchlistDeCategoria(c, estado.subcategoria); const w
 const btnBack = document.createElement('button'); btnBack.type = 'button'; btnBack.className = 'btn-watchlist-special active-wl';
 btnBack.innerHTML = `<span>⬅ ${I18N[l]?.btn_volver_historial || 'Volver al Historial'}</span>`;
 btnBack.onclick = () => volverAHistorialDesdeWatchlist(); wlBox.appendChild(btnBack); } else if (wlMeta) { const btnWl = document.createElement('button'); btnWl.type = 'button'; btnWl.className = 'btn-watchlist-special'; const labelWl = I18N[l]?.subs?.[wlMeta.id] || wlMeta.nombre;
-btnWl.innerHTML = `<span class="emoji-dyn">${wlMeta.emoji}</span><span>${labelWl}</span><span class="wl-count-badge">${countThisWl}</span>`;
+btnWl.innerHTML = `<span class="subtotal-pill-icon" style="color:#f59e0b;">${wlMeta.emoji}</span><span>${labelWl}</span><span class="wl-count-badge">${countThisWl}</span>`;
 btnWl.onclick = () => {
   if (typeof abrirMenuWatchlistGlobal === 'function') {
     abrirMenuWatchlistGlobal(true, c, targetWl);
@@ -1610,7 +1612,7 @@ wlBox.appendChild(btnWl); }
 aplicarEstilosGlobales(); }
 function renderizarBarraTodasWatchlists() { const panel = document.getElementById('all-watchlists-panel'); if (panel) panel.style.display = esSubcategoriaWatchlist(estado.subcategoria) ? 'block' : 'none'; const bar = document.getElementById('all-watchlists-bar'); if (!bar) return; bar.innerHTML = ''; const l = userPrefs.lang || 'es'; TODAS_LAS_WATCHLISTS.forEach(w => { const cant = contarItemsWatchlistDe(w.cat, w.sub);
 const activo = estado.categoria === w.cat && estado.subcategoria === w.sub; const btn = document.createElement('button'); btn.type = 'button'; btn.className = `all-wl-pill ${activo ? 'active' : ''}`; const nom = w.sub === 'Watchlist' ? `${w.label}` : (I18N[l].subs[w.sub] || w.label);
-btn.innerHTML = `<span class="emoji-dyn">${w.emoji}</span><span>${nom}</span><span class="wl-pill-count">${cant}</span>`; btn.onclick = () => { estado.ultimaWatchlist = { cat: w.cat, sub: w.sub }; cambiarCat(w.cat, w.sub); }; bar.appendChild(btn); }); }
+btn.innerHTML = `<span class="subtotal-pill-icon">${w.emoji}</span><span>${nom}</span><span class="wl-pill-count">${cant}</span>`; btn.onclick = () => { estado.ultimaWatchlist = { cat: w.cat, sub: w.sub }; cambiarCat(w.cat, w.sub); }; bar.appendChild(btn); }); }
 function actualizarVisibilidadCamposEspeciales() { const c = estado.categoria, s = estado.subcategoria; const esWl = esSubcategoriaWatchlist(s);
 const isCon = c === 'Musica' && (s === 'Conciertos' || s === 'Concierto'); document.getElementById('seccion-historial-contenido').style.display = esWl ? 'none' : 'block'; document.getElementById('seccion-watchlist-contenido').style.display = esWl ? 'block' : 'none';
 const bBusc = document.getElementById('box-buscador-general'); if (bBusc) bBusc.style.display = isCon ? 'none' : 'flex'; const mCon = document.getElementById('modulo-concierto-manual'); if (mCon) mCon.style.display = isCon ? 'block' : 'none'; if (isCon) limpiarModuloConcierto();

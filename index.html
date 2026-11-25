@@ -284,13 +284,13 @@
 
       <!-- 6. ACTIVIDAD RECIENTE DE TUS AMIGOS -->
       <div class="home-community-section" id="seccion-comunidad-resumida-inicio">
-        <div style="display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; gap:8px; margin-bottom:14px; text-align:left;">
-          <div class="home-clean-title">
+        <div style="display:flex; align-items:center; justify-content:space-between; width:100%; margin-bottom:12px; gap:8px;">
+          <div class="home-clean-title" style="margin-bottom:0;">
             <span data-i18n="home_friends_title">Actividad Reciente de tus Amigos</span>
-            <span style="font-size:0.75rem; background:rgba(56,189,248,0.15); color:var(--accent); border:1px solid rgba(56,189,248,0.3); border-radius:2px; padding:2px 8px; font-weight:700;" data-i18n="home_streaks_last_week">Última semana</span>
           </div>
-          <button type="button" class="btn-toggle-filter" onclick="abrirVistaAmigos()" style="font-size:0.8rem; margin:0;">
-            <span data-i18n="btn_view_all_community">Ver toda la comunidad <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-left:4px;"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></span>
+          <button type="button" class="btn-clean-link" onclick="abrirVistaAmigos()" style="background:transparent; border:none; color:var(--muted); font-size:0.78rem; font-weight:600; cursor:pointer; padding:0; display:inline-flex; align-items:center; gap:3px; transition:color 0.15s ease;">
+            <span data-i18n="btn_view_all_community">Ver comunidad</span>
+            <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
           </button>
         </div>
 
@@ -300,20 +300,13 @@
           <div id="home-friends-live-carousel-dots" class="home-live-carousel-dots" style="display:none;"></div>
         </div>
 
-        <!-- 1. Tarjetas de Últimos añadidos -->
-        <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
-          <span style="font-size:0.8rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;" data-i18n="friends_latest_added_label">Últimos añadidos</span>
-        </div>
+        <!-- Lista comunidad resumen inicio -->
         <div id="lista-comunidad-resumen-inicio">
           <div style="color:var(--muted); font-size:0.85rem; padding:18px 0; text-align:center;" data-i18n="friends_loading_recent">Cargando actividad reciente de amigos...</div>
         </div>
 
-        <!-- 2. Tarjetas de Últimas canciones escuchadas por amigos (DEBAJO de últimos añadidos) -->
+        <!-- Feed musica amigos -->
         <div id="seccion-amigos-ultimas-canciones" style="margin-top:16px;">
-          <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
-            <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:#10b981;"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span>
-            <span style="font-size:0.8rem; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px;" data-i18n="friends_latest_songs_title">Últimas canciones escuchadas</span>
-          </div>
           <div id="lista-amigos-ultimas-canciones">
             <div style="color:var(--muted); font-size:0.82rem; padding:12px 0; text-align:center;" data-i18n="friends_loading_songs">Cargando canciones de amigos...</div>
           </div>

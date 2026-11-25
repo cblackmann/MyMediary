@@ -2015,7 +2015,9 @@ function renderizarUltimasCancionesAmigosInicio() {
 
     html += `
       <div class="home-friend-repeat-banner">
-        <span style="font-size:1.15rem; line-height:1; flex-shrink:0;">🔂</span>
+        <span style="display:inline-flex; align-items:center; color:var(--accent); flex-shrink:0;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
+        </span>
         <div style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
           ${bannerMsg}
         </div>
@@ -2035,24 +2037,25 @@ function renderizarUltimasCancionesAmigosInicio() {
     const nick = it.amigoNickname || (it.userEmail ? it.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
     const isLastFm = it.source === 'lastfm';
 
-    // Badge de repetición si fue escuchada varias veces recientemente
+    // Badge de repetición si fue escuchada varias veces recientemente (estilo minimalista y cuadrado)
+    const repeatSvg = `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>`;
     let repeatBadgeHtml = '';
     if (it.repeatCount >= 4) {
       repeatBadgeHtml = `
         <span class="home-friend-song-repeat-badge is-heavy" title="${l === 'en' ? `Listened ${it.repeatCount} times recently` : `Escuchada ${it.repeatCount} veces recientemente`}">
-          🔥 <span>${l === 'en' ? `Heavy repeat · ${it.repeatCount}x` : `En bucle · ${it.repeatCount} veces`}</span>
+          ${repeatSvg} <span>${l === 'en' ? `Repeat · ${it.repeatCount}x` : `Bucle · ${it.repeatCount}x`}</span>
         </span>
       `;
     } else if (it.repeatCount === 3) {
       repeatBadgeHtml = `
         <span class="home-friend-song-repeat-badge is-loop" title="${l === 'en' ? `Listened 3 times recently` : `Escuchada ${it.repeatCount} veces recientemente`}">
-          🔂 <span>${l === 'en' ? 'On loop · 3x' : 'En bucle · 3 veces'}</span>
+          ${repeatSvg} <span>${l === 'en' ? 'Repeat · 3x' : 'Bucle · 3x'}</span>
         </span>
       `;
     } else if (it.repeatCount === 2) {
       repeatBadgeHtml = `
         <span class="home-friend-song-repeat-badge" title="${l === 'en' ? `Listened 2 times recently` : `Escuchada 2 veces recientemente`}">
-          🔂 <span>${l === 'en' ? 'Listened 2x' : 'Escuchada 2 veces'}</span>
+          ${repeatSvg} <span>${l === 'en' ? 'Repeat · 2x' : 'Repetida · 2x'}</span>
         </span>
       `;
     }
@@ -2080,7 +2083,7 @@ function renderizarUltimasCancionesAmigosInicio() {
     html += `
       <div class="home-friend-song-card ${isLastFm ? 'is-lastfm' : 'is-spotify'}" onclick="window.open('${escHtmlFeed_(serviceUrl)}', '_blank')" title="${escHtmlFeed_(title)} · ${escHtmlFeed_(artist)}">
         <!-- Portada con mini-avatar superpuesto del amigo -->
-        <div class="home-friend-song-cover-box" style="width:58px; height:58px; min-width:58px; max-width:58px; border-radius:8px; overflow:hidden; position:relative; background:var(--card); border:1px solid var(--border); box-shadow:0 2px 6px rgba(0,0,0,0.15); flex-shrink:0;">
+        <div class="home-friend-song-cover-box" style="width:58px; height:58px; min-width:58px; max-width:58px; border-radius:4px; overflow:hidden; position:relative; background:var(--card); border:1px solid var(--border); box-shadow:0 2px 6px rgba(0,0,0,0.15); flex-shrink:0;">
           ${coverHtml}
           <div class="home-np-friend-avatar-badge" style="position:absolute; bottom:2px; right:2px; width:20px; height:20px; border-radius:50%; border:1.5px solid var(--card); overflow:hidden; display:grid; place-items:center; background:var(--bg); box-shadow:0 1px 4px rgba(0,0,0,0.3); font-size:0.75rem; cursor:pointer;" onclick="event.stopPropagation(); ${perfilAccion}" title="${escHtmlFeed_(nick)}">
             ${avatarHtml}
