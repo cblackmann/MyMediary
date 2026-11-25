@@ -767,6 +767,14 @@ cambiarCat(destCat, destSub); setTimeout(() => { seleccionarItem({ tituloOrigina
 }); establecerFechaHoy(); }, 200); }
 function cerrarModalFelicitacionWatchlist() { document.getElementById('modal-felicitaciones-watchlist').style.display = 'none'; }
 function abrirMenuRuletaWl() {
+  const cat = (typeof estado !== 'undefined' && estado.wlCategoria) ? estado.wlCategoria : 'Peliculas';
+  const permiteAmigos = ['Peliculas', 'Series', 'Juegos'].includes(cat);
+
+  if (!permiteAmigos) {
+    iniciarRecomendacionAzar();
+    return;
+  }
+
   const m = document.getElementById('modal-menu-ruleta-wl');
   if (m) m.style.display = 'flex';
 }
