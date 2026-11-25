@@ -968,7 +968,7 @@
 .wl-floating-actions {
   position: fixed;
   right: 24px;
-  bottom: calc(36px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(48px + env(safe-area-inset-bottom, 0px));
   z-index: 1000;
   display: flex;
   flex-direction: column;
@@ -1007,7 +1007,7 @@
 @media (max-width: 768px) {
   .wl-floating-actions {
     right: 16px;
-    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(112px + env(safe-area-inset-bottom, 0px));
   }
   .wl-fab-btn {
     width: 54px;
@@ -1018,6 +1018,96 @@
     height: 26px;
   }
 }
+
+/* Modal Selector de Ruleta (Individual o con Amigos) */
+.wl-roulette-choice-box {
+  max-width: 320px;
+  width: 100%;
+  padding: 18px 18px 20px;
+  border-radius: 4px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+.wl-roulette-choice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.wl-roulette-choice-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.25;
+}
+.wl-roulette-choice-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.wl-roulette-opt-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-align: left;
+  outline: none;
+  box-sizing: border-box;
+}
+.wl-roulette-opt-btn:hover {
+  background: var(--card-hover);
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(var(--accent-rgb, 56, 189, 248), 0.22);
+}
+.wl-roulette-opt-btn:active {
+  transform: scale(0.97);
+}
+.wl-roulette-opt-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  display: grid;
+  place-items: center;
+  background: rgba(var(--accent-rgb, 56, 189, 248), 0.12);
+  color: var(--accent);
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
+}
+.wl-roulette-opt-icon svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.wl-roulette-opt-btn:hover .wl-roulette-opt-icon {
+  transform: scale(1.08);
+}
+.wl-roulette-opt-label {
+  flex: 1;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: inherit;
+}
+@media (max-width: 768px) {
+  .wl-roulette-choice-box {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    padding: 18px 18px calc(24px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
 
 #wl-subtabs-bar .subtab-btn {
   border-radius: 2px;

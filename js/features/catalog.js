@@ -766,6 +766,32 @@ if (destCat === 'Peliculas') {
 cambiarCat(destCat, destSub); setTimeout(() => { seleccionarItem({ tituloOriginal: item.titulo, tituloIngles: item.subtitulo, creador: item.creador, anio: item.anio, sinopsis: '', poster: item.poster
 }); establecerFechaHoy(); }, 200); }
 function cerrarModalFelicitacionWatchlist() { document.getElementById('modal-felicitaciones-watchlist').style.display = 'none'; }
+function abrirMenuRuletaWl() {
+  const m = document.getElementById('modal-menu-ruleta-wl');
+  if (m) m.style.display = 'flex';
+}
+function cerrarMenuRuletaWl() {
+  const m = document.getElementById('modal-menu-ruleta-wl');
+  if (m) m.style.display = 'none';
+}
+function ejecutarRuletaWl(tipo) {
+  cerrarMenuRuletaWl();
+  if (tipo === 'individual') {
+    iniciarRecomendacionAzar();
+  } else if (tipo === 'amigos') {
+    const cat = (typeof estado !== 'undefined' && estado.wlCategoria && ['Peliculas', 'Series', 'Juegos'].includes(estado.wlCategoria))
+      ? estado.wlCategoria
+      : 'Peliculas';
+    if (typeof abrirModalRuleta === 'function') {
+      abrirModalRuleta(cat);
+    } else if (typeof abrirModalRuletaPeliculas === 'function') {
+      abrirModalRuletaPeliculas();
+    }
+  }
+}
+window.abrirMenuRuletaWl = abrirMenuRuletaWl;
+window.cerrarMenuRuletaWl = cerrarMenuRuletaWl;
+window.ejecutarRuletaWl = ejecutarRuletaWl;
 function iniciarRecomendacionAzar() { const items = obtenerItemsWatchlistActuales(); if (!items.length) return alert(userPrefs.lang === 'en' ? 'You have no items in this list to recommend.' : 'No tienes elementos en esta lista para recomendar.'); document.getElementById('modal-shuffle-recomendar').style.display = 'flex'; ejecutarShuffleAnimado(); }
 function ejecutarShuffleAnimado() { const items = obtenerItemsWatchlistActuales(); const pImg = document.getElementById('shuffle-img');
 const pTit = document.getElementById('shuffle-title'); const pSub = document.getElementById('shuffle-sub'); const btnOtro = document.getElementById('btn-shuffle-otro');

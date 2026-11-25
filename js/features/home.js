@@ -617,6 +617,11 @@ window.addEventListener('keydown', (e) => {
     if (modal && modal.style.display !== 'none') {
       cerrarModalTiempoLectura();
     }
+    const modalRuletaMenu = document.getElementById('modal-menu-ruleta-wl');
+    if (modalRuletaMenu && modalRuletaMenu.style.display !== 'none') {
+      if (typeof cerrarMenuRuletaWl === 'function') cerrarMenuRuletaWl();
+      else modalRuletaMenu.style.display = 'none';
+    }
   }
 });
 
