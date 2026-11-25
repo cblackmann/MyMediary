@@ -746,38 +746,42 @@
    ESTILOS DEDICADOS WATCHLISTS (CUADRADOS, MINIMALISTAS, THEME)
    ============================================================ */
 .watchlists-header-bar {
+  position: relative;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-
-.watchlists-title-wrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  min-height: 44px;
+  margin-bottom: 16px;
+  width: 100%;
 }
 
 .btn-wl-volver {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
   background: var(--card);
   border: 1px solid var(--border);
   color: var(--text);
-  border-radius: 2px;
-  padding: 6px 12px;
-  font-size: 0.82rem;
-  font-weight: 700;
+  border-radius: 4px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
   transition: all 0.15s ease;
+  z-index: 2;
 }
 .btn-wl-volver:hover {
   border-color: var(--accent);
   color: var(--accent);
   background: var(--card-hover);
+  transform: translateY(-50%) scale(1.04);
+}
+.btn-wl-volver:active {
+  transform: translateY(-50%) scale(0.95);
 }
 
 .watchlists-header-title {
@@ -787,21 +791,44 @@
   color: var(--text);
   display: flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 8px;
 }
 
 .watchlists-actions-wrap {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   gap: 8px;
-  flex-wrap: wrap;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .watchlists-actions-wrap {
+    display: none !important;
+  }
+  .watchlists-header-bar {
+    min-height: 40px;
+    margin-bottom: 12px;
+  }
+  .btn-wl-volver {
+    width: 36px;
+    height: 36px;
+  }
+  .watchlists-header-title {
+    font-size: 1.15rem;
+  }
 }
 
 .btn-wl-action {
   background: var(--card);
   border: 1px solid var(--border);
   color: var(--text);
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 6px 12px;
   font-size: 0.82rem;
   font-weight: 700;
@@ -827,69 +854,169 @@
   color: var(--accent-contrast, #0f172a);
 }
 
-/* Categorías en Watchlists */
+/* Categorías en Watchlists (grandes, cuadradas, solo icono, con scroll horizontal) */
+.all-watchlists-bar {
+  display: flex !important;
+  gap: 12px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  padding: 4px 2px 12px !important;
+  scrollbar-width: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  flex-wrap: nowrap !important;
+  margin-bottom: 12px;
+}
+.all-watchlists-bar::-webkit-scrollbar {
+  display: none !important;
+}
+
 .all-watchlists-bar .wl-cat-pill {
-  border-radius: 2px;
+  flex: 0 0 62px;
+  min-width: 62px;
+  width: 62px;
+  height: 62px;
+  border-radius: 4px;
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 1.5px solid var(--border);
   color: var(--muted);
-  padding: 6px 12px;
-  font-size: 0.82rem;
-  font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  transition: all 0.15s ease;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.18s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  outline: none;
+}
+.all-watchlists-bar .wl-cat-pill svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  transition: transform 0.18s ease;
 }
 .all-watchlists-bar .wl-cat-pill:hover {
   border-color: var(--accent);
   color: var(--text);
   background: var(--card-hover);
-  transform: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.22);
+}
+.all-watchlists-bar .wl-cat-pill:hover svg {
+  transform: scale(1.08);
+}
+.all-watchlists-bar .wl-cat-pill:active {
+  transform: scale(0.96);
 }
 .all-watchlists-bar .wl-cat-pill.active {
   font-weight: 700;
-  box-shadow: none;
+  transform: translateY(-1px);
 }
 .all-watchlists-bar .wl-cat-pill.wl-pill-peliculas.active,
 .all-watchlists-bar .wl-cat-pill[data-cat="Peliculas"].active {
-  background: var(--cat-bg-peliculas);
-  border-color: var(--cat-border-peliculas);
-  color: var(--cat-color-peliculas);
+  background: var(--cat-bg-peliculas) !important;
+  border-color: var(--cat-border-peliculas) !important;
+  color: var(--cat-color-peliculas) !important;
+  box-shadow: 0 4px 14px rgba(192, 132, 252, 0.28) !important;
 }
 .all-watchlists-bar .wl-cat-pill.wl-pill-series.active,
 .all-watchlists-bar .wl-cat-pill[data-cat="Series"].active {
-  background: var(--cat-bg-series);
-  border-color: var(--cat-border-series);
-  color: var(--cat-color-series);
+  background: var(--cat-bg-series) !important;
+  border-color: var(--cat-border-series) !important;
+  color: var(--cat-color-series) !important;
+  box-shadow: 0 4px 14px rgba(56, 189, 248, 0.28) !important;
 }
 .all-watchlists-bar .wl-cat-pill.wl-pill-musica.active,
 .all-watchlists-bar .wl-cat-pill[data-cat="Musica"].active {
-  background: var(--cat-bg-musica);
-  border-color: var(--cat-border-musica);
-  color: var(--cat-color-musica);
+  background: var(--cat-bg-musica) !important;
+  border-color: var(--cat-border-musica) !important;
+  color: var(--cat-color-musica) !important;
+  box-shadow: 0 4px 14px rgba(244, 114, 182, 0.28) !important;
 }
 .all-watchlists-bar .wl-cat-pill.wl-pill-juegos.active,
 .all-watchlists-bar .wl-cat-pill[data-cat="Juegos"].active {
-  background: var(--cat-bg-juegos);
-  border-color: var(--cat-border-juegos);
-  color: var(--cat-color-juegos);
+  background: var(--cat-bg-juegos) !important;
+  border-color: var(--cat-border-juegos) !important;
+  color: var(--cat-color-juegos) !important;
+  box-shadow: 0 4px 14px rgba(96, 165, 250, 0.28) !important;
 }
 .all-watchlists-bar .wl-cat-pill.wl-pill-lecturas.active,
 .all-watchlists-bar .wl-cat-pill[data-cat="Lecturas"].active {
-  background: var(--cat-bg-lecturas);
-  border-color: var(--cat-border-lecturas);
-  color: var(--cat-color-lecturas);
+  background: var(--cat-bg-lecturas) !important;
+  border-color: var(--cat-border-lecturas) !important;
+  color: var(--cat-color-lecturas) !important;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.28) !important;
 }
 
-.all-watchlists-bar .wl-cat-pill .wl-pill-count {
-  background: rgba(255, 255, 255, 0.08);
-  border-radius: 2px;
-  padding: 1px 6px;
-  font-size: 0.72rem;
-  font-weight: 700;
+@media (max-width: 768px) {
+  .all-watchlists-bar {
+    gap: 10px !important;
+    padding: 2px 2px 10px !important;
+  }
+  .all-watchlists-bar .wl-cat-pill {
+    flex: 0 0 58px;
+    min-width: 58px;
+    width: 58px;
+    height: 58px;
+  }
+  .all-watchlists-bar .wl-cat-pill svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* Botón flotante de Ruleta en Mis Watchlists */
+.wl-floating-actions {
+  position: fixed;
+  right: 24px;
+  bottom: calc(36px + env(safe-area-inset-bottom, 0px));
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.wl-fab-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--accent-contrast, #091428);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 8px 26px rgba(var(--accent-rgb, 56, 189, 248), 0.46), 0 2px 6px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  transition: transform 0.2s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.2s ease, filter 0.2s ease;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.wl-fab-btn svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  transition: transform 0.2s ease;
+}
+.wl-fab-btn:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 32px rgba(var(--accent-rgb, 56, 189, 248), 0.58), 0 3px 8px rgba(0, 0, 0, 0.25);
+  filter: brightness(1.06);
+}
+.wl-fab-btn:active {
+  transform: scale(0.95);
+}
+@media (max-width: 768px) {
+  .wl-floating-actions {
+    right: 16px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  }
+  .wl-fab-btn {
+    width: 54px;
+    height: 54px;
+  }
+  .wl-fab-btn svg {
+    width: 26px;
+    height: 26px;
+  }
 }
 
 #wl-subtabs-bar .subtab-btn {

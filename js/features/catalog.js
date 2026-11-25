@@ -185,21 +185,33 @@ function renderizarVistaWatchlistsDedicada() {
   const catActual = estado.wlCategoria || 'Peliculas';
   const subActualId = estado.wlSubcategoria || 'Películas';
 
-  // 1. Renderizar Barra de Categorías con conteos totales de cada una
+  // 1. Renderizar Barra de Categorías (ordenadas similar al índice, cuadradas, solo icono, con scroll horizontal)
   catBar.innerHTML = '';
-  WATCHLIST_ESTRUCTURA.forEach(c => {
-    const totalCat = c.subs.reduce((acc, s) => acc + contarItemsWatchlistDe(c.cat, s.id), 0);
+  const ordenCats = (typeof obtenerCategoriasOrdenadas === 'function')
+    ? obtenerCategoriasOrdenadas(true)
+    : ['Peliculas', 'Series', 'Musica', 'Juegos', 'Lecturas'];
+
+  const listaCats = [...WATCHLIST_ESTRUCTURA].sort((a, b) => {
+    const idxA = ordenCats.indexOf(a.cat);
+    const idxB = ordenCats.indexOf(b.cat);
+    return (idxA === -1 ? 999 : idxA) - (idxB === -1 ? 999 : idxB);
+  });
+
+  listaCats.forEach(c => {
     const btn = document.createElement('button');
     btn.type = 'button';
     const catKey = c.cat.toLowerCase();
     btn.className = `wl-cat-pill wl-pill-${catKey} ${c.cat === catActual ? 'active' : ''}`;
     btn.dataset.cat = c.cat;
-    btn.innerHTML = `<span class="emoji-dyn">${c.emoji}</span><span>${I18N[l]?.cats?.[c.cat] || c.nombre}</span><span class="wl-pill-count">${totalCat}</span>`;
+    const catNom = I18N[l]?.cats?.[c.cat] || c.nombre;
+    btn.title = catNom;
+    btn.setAttribute('aria-label', catNom);
+    btn.innerHTML = `<span class="emoji-dyn">${c.emoji}</span>`;
     btn.onclick = () => seleccionarCategoriaWl(c.cat);
     catBar.appendChild(btn);
   });
 
-  // 2. Renderizar Subpestañas de la Categoría Activa
+  // 2. Renderizar Subpestañas de la Categoría Activa (debajo de las categorías, sin su icono, solo el título)
   subBar.innerHTML = '';
   const cfgCat = WATCHLIST_ESTRUCTURA.find(x => x.cat === catActual) || WATCHLIST_ESTRUCTURA[0];
   let subObjActual = cfgCat.subs.find(s => s.id === subActualId);
@@ -209,13 +221,13 @@ function renderizarVistaWatchlistsDedicada() {
   }
 
   cfgCat.subs.forEach(s => {
-    const cant = contarItemsWatchlistDe(catActual, s.id);
     const btn = document.createElement('button');
     btn.type = 'button';
     const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(catActual, s.id) : null;
     const subColClass = metaSub ? `subtab-cat-${metaSub.key}` : '';
     btn.className = `subtab-btn ${s.id === estado.wlSubcategoria ? 'active' : ''} ${subColClass}`;
-    btn.innerHTML = `<span class="emoji-dyn">${s.emoji} </span>${I18N[l]?.subs?.[s.id] || s.nombre} <span class="wl-count-badge" style="margin-left:5px;">${cant}</span>`;
+    const nomSub = I18N[l]?.subs?.[s.id] || s.nombre;
+    btn.innerHTML = `<span>${nomSub}</span>`;
     btn.onclick = () => seleccionarSubcategoriaWl(s.id);
     subBar.appendChild(btn);
   });

@@ -690,23 +690,17 @@
 <!-- VISTA DEDICADA DE WATCHLISTS -->
 <div id="vista-watchlists" style="display:none;">
   <div class="watchlists-header-bar">
-    <div class="watchlists-title-wrap">
-      <button type="button" class="btn-wl-volver" id="btn-wl-volver" onclick="volverDesdeWatchlists()" title="Volver" data-i18n-title="wl_btn_back">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
-          <path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
-        </svg>
-        <span data-i18n="wl_btn_back">Volver</span>
-      </button>
-      <h2 class="watchlists-header-title">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg><span data-i18n="wl_section_title">Mis Watchlists</span>
-      </h2>
-    </div>
+    <button type="button" class="btn-wl-volver" id="btn-wl-volver" onclick="volverDesdeWatchlists()" title="Volver" aria-label="Volver" data-i18n-title="wl_btn_back" data-i18n-aria-label="wl_btn_back">
+      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;">
+        <path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
+      </svg>
+    </button>
+    <h2 class="watchlists-header-title">
+      <span data-i18n="wl_section_title">Mis Watchlists</span>
+    </h2>
     <div class="watchlists-actions-wrap">
       <button type="button" class="btn-wl-action" id="btn-ruleta-amigo-wl" onclick="abrirModalRuletaPeliculas()">
         <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg><span data-i18n="btn_roulette_friend">Ruleta con Amigo</span>
-      </button>
-      <button type="button" class="btn-wl-action btn-wl-action-accent" id="btn-recomendar-azar-wl" onclick="iniciarRecomendacionAzar()">
-        <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"/></svg><span data-i18n="btn_recommend_shuffle">Recomiéndame</span>
       </button>
     </div>
   </div>
@@ -732,6 +726,15 @@
     <div class="history-title" id="titulo-wl-dedicada" data-i18n="wl_default_title">Watchlist (0)</div>
   </div>
   <div class="watchlist-grid" id="grid-watchlist-dedicada"></div>
+
+  <!-- BOTÓN FLOTANTE DE RULETA EN WATCHLISTS -->
+  <div class="wl-floating-actions" id="wl-floating-actions">
+    <button type="button" class="wl-fab-btn wl-fab-roulette" id="btn-recomendar-azar-wl" onclick="iniciarRecomendacionAzar()" title="Ruleta de Elección" aria-label="Ruleta de Elección" data-i18n-title="roulette_simple_title" data-i18n-aria-label="roulette_simple_title">
+      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:26px;height:26px;">
+        <path d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"/>
+      </svg>
+    </button>
+  </div>
 </div>
 
 <!-- VISTA CALENDARIO Y PRÓXIMOS ESTRENOS -->
