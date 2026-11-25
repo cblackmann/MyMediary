@@ -895,9 +895,9 @@ function renderizarStats() {
       if (s.admiteRewatch) {
         const countRewatches = regsSub.filter(r => r.esRewatch).length;
         const countNuevos = countTotal - countRewatches;
-        return `<div class="subtotal-pill subtotal-pill-${subKey}"><span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span class="subtotal-pill-title">${sNombre}</span><span class="subtotal-pill-count">${countTotal}</span><span class="subtotal-pill-rewatch">(${countNuevos} + ${countRewatches} ${getHeroIcon('arrow-path', '', 10)})</span></div>`;
+        return `<div class="subtotal-pill subtotal-pill-${subKey}" onclick="event.stopPropagation(); cambiarCat('${cat}', '${s.id}')" style="cursor:pointer;" title="${sNombre}"><span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span class="subtotal-pill-title">${sNombre}</span><span class="subtotal-pill-count">${countTotal}</span><span class="subtotal-pill-rewatch">(${countNuevos} + ${countRewatches} ${getHeroIcon('arrow-path', '', 10)})</span></div>`;
       }
-      return `<div class="subtotal-pill subtotal-pill-${subKey}"><span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span class="subtotal-pill-title">${sNombre}</span><span class="subtotal-pill-count">${countTotal}</span></div>`;
+      return `<div class="subtotal-pill subtotal-pill-${subKey}" onclick="event.stopPropagation(); cambiarCat('${cat}', '${s.id}')" style="cursor:pointer;" title="${sNombre}"><span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span class="subtotal-pill-title">${sNombre}</span><span class="subtotal-pill-count">${countTotal}</span></div>`;
     }).join('');
 
     let destacados = '';
@@ -922,7 +922,7 @@ function renderizarStats() {
         const subTitleColor = metaSub ? metaSub.colorVar : 'var(--accent)';
         return `
           <div class="stat-subcat-lecturas-card">
-            <div style="font-weight:700; color:${subTitleColor}; font-size:.88rem; margin-bottom:6px; display:inline-flex; align-items:center; gap:6px;"><span class="subtotal-pill-icon" style="color:${subTitleColor};">${s.emoji}</span><span>${sNombre}</span></div>
+            <div style="font-weight:700; color:${subTitleColor}; font-size:.88rem; margin-bottom:6px; display:inline-flex; align-items:center; gap:6px; cursor:pointer;" onclick="cambiarCat('Lecturas', '${s.id}')"><span class="subtotal-pill-icon" style="color:${subTitleColor};">${s.emoji}</span><span>${sNombre}</span></div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
               <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''}>
                 <div class="highlight-card-title">

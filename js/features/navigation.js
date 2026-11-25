@@ -1405,6 +1405,8 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
     if (estado.discoverData) renderizarDiscoverVista();
     else precargarDiscoverEnSegundoPlano(1);
   } else {
+    if (vIni) vIni.style.display = 'none';
+    if (vCat) vCat.style.display = 'block';
     if (cat === 'Lecturas' && typeof obtenerSubcategoriasLecturasOrdenadas === 'function') {
       const ordLecturas = obtenerSubcategoriasLecturasOrdenadas(false);
       if (!subDestino || (!esSubcategoriaWatchlist(subDestino) && !ordLecturas.includes(subDestino))) {
