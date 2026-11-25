@@ -877,7 +877,14 @@ function renderizarStats() {
     const promCat = itemsConCalif.length ? (itemsConCalif.reduce((acc, x) => acc + Number(x.calificacion), 0) / itemsConCalif.length).toFixed(1) : '0.0';
     const catNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].cats && I18N[l].cats[cat]) || cfg.nombre;
 
-    const pills = cfg.subs.filter(s => !s.esWatchlist).map(s => {
+    let subsParaRender = cfg.subs.filter(s => !s.esWatchlist);
+    if (cat === 'Lecturas' && typeof obtenerSubcategoriasLecturasOrdenadas === 'function') {
+      const ordenLecturas = obtenerSubcategoriasLecturasOrdenadas(false);
+      subsParaRender = subsParaRender.filter(s => ordenLecturas.includes(s.id));
+      subsParaRender.sort((a, b) => ordenLecturas.indexOf(a.id) - ordenLecturas.indexOf(b.id));
+    }
+
+    const pills = subsParaRender.map(s => {
       const sNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].subs && I18N[l].subs[s.id]) || s.nombre;
       const regsSub = obtenerRegistrosDeSubcategoria(cat, s.id);
       const countTotal = regsSub.length;
@@ -895,7 +902,7 @@ function renderizarStats() {
 
     let destacados = '';
     if (cat === 'Lecturas') {
-      destacados = `<div style="grid-column:span 2; display:flex; flex-direction:column; gap:12px;">` + cfg.subs.filter(s => !s.esWatchlist).map(s => {
+      destacados = `<div style="grid-column:span 2; display:flex; flex-direction:column; gap:12px;">` + subsParaRender.map(s => {
         const u = obtenerRegistrosDeSubcategoria('Lecturas', s.id);
         const uTerminados = u.filter(r => esObraTerminada(r));
         const ult = uTerminados.length ? [...uTerminados].sort((a,b) => (timestampDeFecha(b.fechaFin || b.fechaInicio) || 0) - (timestampDeFecha(a.fechaFin || a.fechaInicio) || 0))[0] : null;

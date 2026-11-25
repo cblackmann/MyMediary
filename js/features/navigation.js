@@ -1405,8 +1405,12 @@ function cambiarCat(cat, subDestino = null, pushNav = true) {
     if (estado.discoverData) renderizarDiscoverVista();
     else precargarDiscoverEnSegundoPlano(1);
   } else {
-    if (vIni) vIni.style.display = 'none';
-    if (vCat) vCat.style.display = 'block';
+    if (cat === 'Lecturas' && typeof obtenerSubcategoriasLecturasOrdenadas === 'function') {
+      const ordLecturas = obtenerSubcategoriasLecturasOrdenadas(false);
+      if (!subDestino || (!esSubcategoriaWatchlist(subDestino) && !ordLecturas.includes(subDestino))) {
+        subDestino = ordLecturas[0] || 'Libros';
+      }
+    }
     estado.subcategoria = subDestino || CONFIG[cat].subs[0].id;
     guardarEstadoNavegacionActual(cat, estado.subcategoria);
     if (esSubcategoriaWatchlist(estado.subcategoria)) {
@@ -1575,7 +1579,18 @@ if (box) {
   };
   box.appendChild(btnBackListas);
 }
-const enWl = esSubcategoriaWatchlist(estado.subcategoria); CONFIG[c].subs.filter(s => !s.esWatchlist).forEach(s => { const btn = document.createElement('button');
+const enWl = esSubcategoriaWatchlist(estado.subcategoria);
+let subItemsNav = CONFIG[c].subs.filter(s => !s.esWatchlist);
+if (c === 'Lecturas' && typeof obtenerSubcategoriasLecturasOrdenadas === 'function') {
+  const ordLecturas = obtenerSubcategoriasLecturasOrdenadas(false);
+  subItemsNav = subItemsNav.filter(s => ordLecturas.includes(s.id));
+  subItemsNav.sort((a, b) => ordLecturas.indexOf(a.id) - ordLecturas.indexOf(b.id));
+  if (!enWl && !ordLecturas.includes(estado.subcategoria) && subItemsNav.length > 0) {
+    estado.subcategoria = subItemsNav[0].id;
+    guardarEstadoNavegacionActual(c, estado.subcategoria);
+  }
+}
+subItemsNav.forEach(s => { const btn = document.createElement('button');
 const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c, s.id) : null;
 const subClass = metaSub ? `subtab-cat-${metaSub.key}` : '';
 const subColor = metaSub ? metaSub.colorVar : 'currentColor';

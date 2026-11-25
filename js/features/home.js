@@ -1218,6 +1218,29 @@ function obtenerCategoriasOrdenadas(incluirOcultas = false) {
 }
 window.obtenerCategoriasOrdenadas = obtenerCategoriasOrdenadas;
 
+const SUBS_LECTURAS_DEFECTO = ['Libros', 'Cómics', 'Mangas'];
+
+function obtenerSubcategoriasLecturasOrdenadas(incluirOcultas = false) {
+  let orden = (typeof userPrefs !== 'undefined' && userPrefs && Array.isArray(userPrefs.lecturasSubsOrden))
+    ? [...userPrefs.lecturasSubsOrden]
+    : [...SUBS_LECTURAS_DEFECTO];
+  SUBS_LECTURAS_DEFECTO.forEach(s => {
+    if (!orden.includes(s)) orden.push(s);
+  });
+  orden = orden.filter(s => SUBS_LECTURAS_DEFECTO.includes(s));
+  if (!orden.length) orden = [...SUBS_LECTURAS_DEFECTO];
+
+  const ocultas = (typeof userPrefs !== 'undefined' && userPrefs && Array.isArray(userPrefs.lecturasSubsOcultas))
+    ? userPrefs.lecturasSubsOcultas
+    : [];
+  if (incluirOcultas) {
+    return orden;
+  }
+  const filtradas = orden.filter(s => !ocultas.includes(s));
+  return filtradas.length > 0 ? filtradas : orden;
+}
+window.obtenerSubcategoriasLecturasOrdenadas = obtenerSubcategoriasLecturasOrdenadas;
+
 function esObraTerminada(r) {
   if (!r) return false;
   const fFin = r.fechaFin || r.fecha_fin;
@@ -1250,7 +1273,10 @@ function toggleModoReordenarListas() {
   const iconActive = document.getElementById('icon-reordenar-listas-active');
 
   if (modoReordenarListasActivo) {
-    if (btn) btn.classList.add('active');
+    if (btn) {
+      btn.classList.add('active');
+      btn.style.display = 'none';
+    }
     if (iconIdle) iconIdle.style.display = 'none';
     if (iconActive) iconActive.style.display = 'block';
     if (panel) {
@@ -1259,7 +1285,10 @@ function toggleModoReordenarListas() {
     }
     if (grid) grid.style.display = 'none';
   } else {
-    if (btn) btn.classList.remove('active');
+    if (btn) {
+      btn.classList.remove('active');
+      btn.style.display = 'inline-flex';
+    }
     if (iconIdle) iconIdle.style.display = 'block';
     if (iconActive) iconActive.style.display = 'none';
     if (panel) panel.style.display = 'none';
@@ -1268,6 +1297,9 @@ function toggleModoReordenarListas() {
     renderizarStats();
     renderizarSubcategoriasResumenInicio();
     renderizarOpcionesAgregadoRapido();
+    if (typeof estado !== 'undefined' && estado && estado.categoria === 'Lecturas' && typeof renderizarSubtabs === 'function') {
+      renderizarSubtabs();
+    }
   }
 }
 window.toggleModoReordenarListas = toggleModoReordenarListas;
@@ -1278,17 +1310,17 @@ function renderizarPanelReordenarListas() {
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
   const todasCats = obtenerCategoriasOrdenadas(true);
   const ocultas = new Set((typeof userPrefs !== 'undefined' && userPrefs && userPrefs.categoriasOcultas) || []);
+  const subsLecturas = (typeof obtenerSubcategoriasLecturasOrdenadas === 'function')
+    ? obtenerSubcategoriasLecturasOrdenadas(true)
+    : ['Libros', 'Cómics', 'Mangas'];
+  const subsLecturasOcultas = new Set((typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lecturasSubsOcultas) || []);
 
   panel.innerHTML = `
     <div class="reorder-panel-box">
       <div class="reorder-panel-header">
         <div class="reorder-panel-title">
-          <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg></span>
-          <span>${l === 'en' ? 'Organize Categories' : 'Organizar Categorías'}</span>
+          <span>${l === 'en' ? 'Reorder Categories' : 'Ordenar Categorías'}</span>
         </div>
-        <p class="reorder-panel-sub">
-          ${l === 'en' ? 'Drag categories to reorder them or tap the eye to show/hide. Changes apply to Lists, Home Index, and Quick Add.' : 'Arrastra para reordenar las categorías o toca el ojo para ocultar o mostrar. Se reflejará en Listas, Inicio y Agregado Rápido.'}
-        </p>
       </div>
       <div class="reorder-items-list" id="lista-reordenar-items">
         ${todasCats.map((cat, idx) => {
@@ -1316,9 +1348,6 @@ function renderizarPanelReordenarListas() {
                 <button type="button" class="btn-reorder-move" onclick="moverCategoriaPaso('${cat}', -1)" title="${l === 'en' ? 'Move up' : 'Subir'}" ${idx === 0 ? 'disabled' : ''}>
                   ${getHeroIcon('chevron-up', '', 14)}
                 </button>
-                <button type="button" class="btn-reorder-move" onclick="moverCategoriaPaso('${cat}', 1)" title="${l === 'en' ? 'Move down' : 'Bajar'}" ${idx === todasCats.length - 1 ? 'disabled' : ''}>
-                  ${getHeroIcon('chevron-down', '', 14)}
-                </button>
                 <button type="button" class="btn-reorder-eye ${esOculta ? 'hidden-state' : ''}" onclick="toggleVisibilidadCategoria('${cat}')" title="${esOculta ? (l === 'en' ? 'Show category' : 'Mostrar categoría') : (l === 'en' ? 'Hide category' : 'Ocultar categoría')}">
                   ${esOculta ? `
                     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1332,11 +1361,70 @@ function renderizarPanelReordenarListas() {
                     </svg>
                   `}
                 </button>
+                <button type="button" class="btn-reorder-move" onclick="moverCategoriaPaso('${cat}', 1)" title="${l === 'en' ? 'Move down' : 'Bajar'}" ${idx === todasCats.length - 1 ? 'disabled' : ''}>
+                  ${getHeroIcon('chevron-down', '', 14)}
+                </button>
               </div>
             </div>
           `;
         }).join('')}
       </div>
+
+      <!-- SECCIÓN REORDENAR SUBCATEGORÍAS DE LECTURAS -->
+      <div class="reorder-subcat-section">
+        <div class="reorder-subcat-title">
+          <span>${l === 'en' ? 'Reading Subcategories' : 'Subcategorías de Lecturas'}</span>
+        </div>
+        <div class="reorder-items-list" id="lista-reordenar-subitems-lecturas">
+          ${subsLecturas.map((subId, sIdx) => {
+            const subMeta = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria('Lecturas', subId) : null;
+            const subObj = CONFIG.Lecturas?.subs?.find(s => s.id === subId);
+            const subNombre = (typeof I18N !== 'undefined' && I18N[l]?.subs?.[subId]) || subObj?.nombre || subId;
+            const esOcultaSub = subsLecturasOcultas.has(subId);
+            return `
+              <div class="reorder-item-row ${esOcultaSub ? 'is-hidden' : ''}" draggable="true" data-sub="${subId}" data-idx="${sIdx}">
+                <div class="reorder-handle" title="${l === 'en' ? 'Drag to move' : 'Arrastra para mover'}">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="6" r="1.5"></circle>
+                    <circle cx="15" cy="6" r="1.5"></circle>
+                    <circle cx="9" cy="12" r="1.5"></circle>
+                    <circle cx="15" cy="12" r="1.5"></circle>
+                    <circle cx="9" cy="18" r="1.5"></circle>
+                    <circle cx="15" cy="18" r="1.5"></circle>
+                  </svg>
+                </div>
+                <div class="reorder-cat-info">
+                  <span class="reorder-cat-emoji emoji-dyn" style="color:${subMeta ? subMeta.colorVar : 'currentColor'};">${subObj?.emoji || getHeroIcon('book-open')}</span>
+                  <span class="reorder-cat-name">${subNombre}</span>
+                  ${esOcultaSub ? `<span class="reorder-badge-hidden">${l === 'en' ? 'Hidden' : 'Oculta'}</span>` : ''}
+                </div>
+                <div class="reorder-item-actions">
+                  <button type="button" class="btn-reorder-move" onclick="moverSubcategoriaLecturasPaso('${subId}', -1)" title="${l === 'en' ? 'Move up' : 'Subir'}" ${sIdx === 0 ? 'disabled' : ''}>
+                    ${getHeroIcon('chevron-up', '', 14)}
+                  </button>
+                  <button type="button" class="btn-reorder-eye ${esOcultaSub ? 'hidden-state' : ''}" onclick="toggleVisibilidadSubcategoriaLecturas('${subId}')" title="${esOcultaSub ? (l === 'en' ? 'Show subcategory' : 'Mostrar subcategoría') : (l === 'en' ? 'Hide subcategory' : 'Ocultar subcategoría')}">
+                    ${esOcultaSub ? `
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                      </svg>
+                    ` : `
+                      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                      </svg>
+                    `}
+                  </button>
+                  <button type="button" class="btn-reorder-move" onclick="moverSubcategoriaLecturasPaso('${subId}', 1)" title="${l === 'en' ? 'Move down' : 'Bajar'}" ${sIdx === subsLecturas.length - 1 ? 'disabled' : ''}>
+                    ${getHeroIcon('chevron-down', '', 14)}
+                  </button>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
       <div class="reorder-panel-footer">
         <button type="button" class="btn-reorder-done" onclick="toggleModoReordenarListas()">
           <span class="emoji-dyn">${getHeroIcon('check', '', 14)}</span>
@@ -1350,8 +1438,8 @@ function renderizarPanelReordenarListas() {
 }
 window.renderizarPanelReordenarListas = renderizarPanelReordenarListas;
 
-function iniciarEventosDragDropReordenar() {
-  const container = document.getElementById('lista-reordenar-items');
+function configurarDragDropContainerReordenar(containerId, dataAttr, onGuardar) {
+  const container = document.getElementById(containerId);
   if (!container) return;
   const items = container.querySelectorAll('.reorder-item-row');
   let draggedItem = null;
@@ -1362,14 +1450,14 @@ function iniciarEventosDragDropReordenar() {
       item.classList.add('is-dragging');
       if (e.dataTransfer) {
         e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/plain', item.dataset.cat || '');
+        e.dataTransfer.setData('text/plain', item.dataset[dataAttr] || '');
       }
     });
 
     item.addEventListener('dragend', () => {
       item.classList.remove('is-dragging');
       items.forEach(it => it.classList.remove('drag-over-top', 'drag-over-bottom'));
-      guardarNuevoOrdenDesdeDOM();
+      onGuardar();
     });
 
     item.addEventListener('dragover', e => {
@@ -1401,7 +1489,7 @@ function iniciarEventosDragDropReordenar() {
       } else {
         container.insertBefore(draggedItem, item.nextSibling);
       }
-      guardarNuevoOrdenDesdeDOM();
+      onGuardar();
       renderizarPanelReordenarListas();
     });
   });
@@ -1436,11 +1524,16 @@ function iniciarEventosDragDropReordenar() {
       if (touchDraggedItem) {
         touchDraggedItem.classList.remove('is-dragging');
         touchDraggedItem = null;
-        guardarNuevoOrdenDesdeDOM();
+        onGuardar();
         renderizarPanelReordenarListas();
       }
     });
   });
+}
+
+function iniciarEventosDragDropReordenar() {
+  configurarDragDropContainerReordenar('lista-reordenar-items', 'cat', guardarNuevoOrdenDesdeDOM);
+  configurarDragDropContainerReordenar('lista-reordenar-subitems-lecturas', 'sub', guardarNuevoOrdenSubcategoriasLecturasDesdeDOM);
 }
 
 function guardarNuevoOrdenDesdeDOM() {
@@ -1451,6 +1544,18 @@ function guardarNuevoOrdenDesdeDOM() {
   if (nuevoOrden.length) {
     if (typeof userPrefs === 'undefined' || !userPrefs) userPrefs = {};
     userPrefs.categoriasOrden = nuevoOrden;
+    guardarPreferenciasLocales();
+  }
+}
+
+function guardarNuevoOrdenSubcategoriasLecturasDesdeDOM() {
+  const container = document.getElementById('lista-reordenar-subitems-lecturas');
+  if (!container) return;
+  const rows = container.querySelectorAll('.reorder-item-row');
+  const nuevoOrden = Array.from(rows).map(r => r.dataset.sub).filter(Boolean);
+  if (nuevoOrden.length) {
+    if (typeof userPrefs === 'undefined' || !userPrefs) userPrefs = {};
+    userPrefs.lecturasSubsOrden = nuevoOrden;
     guardarPreferenciasLocales();
   }
 }
@@ -1491,11 +1596,54 @@ function toggleVisibilidadCategoria(cat) {
 }
 window.toggleVisibilidadCategoria = toggleVisibilidadCategoria;
 
+function moverSubcategoriaLecturasPaso(subId, paso) {
+  const todas = (typeof obtenerSubcategoriasLecturasOrdenadas === 'function')
+    ? obtenerSubcategoriasLecturasOrdenadas(true)
+    : ['Libros', 'Cómics', 'Mangas'];
+  const idx = todas.indexOf(subId);
+  if (idx === -1) return;
+  const nuevoIdx = idx + paso;
+  if (nuevoIdx < 0 || nuevoIdx >= todas.length) return;
+  todas.splice(idx, 1);
+  todas.splice(nuevoIdx, 0, subId);
+  if (typeof userPrefs === 'undefined' || !userPrefs) userPrefs = {};
+  userPrefs.lecturasSubsOrden = todas;
+  guardarPreferenciasLocales();
+  renderizarPanelReordenarListas();
+}
+window.moverSubcategoriaLecturasPaso = moverSubcategoriaLecturasPaso;
+
+function toggleVisibilidadSubcategoriaLecturas(subId) {
+  if (typeof userPrefs === 'undefined' || !userPrefs) userPrefs = {};
+  if (!Array.isArray(userPrefs.lecturasSubsOcultas)) userPrefs.lecturasSubsOcultas = [];
+  const idx = userPrefs.lecturasSubsOcultas.indexOf(subId);
+  if (idx !== -1) {
+    userPrefs.lecturasSubsOcultas.splice(idx, 1);
+  } else {
+    const todas = (typeof obtenerSubcategoriasLecturasOrdenadas === 'function')
+      ? obtenerSubcategoriasLecturasOrdenadas(true)
+      : ['Libros', 'Cómics', 'Mangas'];
+    if (userPrefs.lecturasSubsOcultas.length >= todas.length - 1) {
+      if (typeof mostrarToastPersonalizado === 'function') {
+        mostrarToastPersonalizado(userPrefs.lang === 'en' ? 'At least one reading subcategory must remain visible' : 'Al menos una subcategoría de lectura debe permanecer visible');
+      }
+      return;
+    }
+    userPrefs.lecturasSubsOcultas.push(subId);
+  }
+  guardarPreferenciasLocales();
+  renderizarPanelReordenarListas();
+}
+window.toggleVisibilidadSubcategoriaLecturas = toggleVisibilidadSubcategoriaLecturas;
+
 function renderizarOpcionesAgregadoRapido() {
   const grid = document.getElementById('modal-quick-add-grid');
   if (!grid) return;
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
   const catsVisibles = obtenerCategoriasOrdenadas(false);
+  const subsLecturasVisibles = (typeof obtenerSubcategoriasLecturasOrdenadas === 'function')
+    ? obtenerSubcategoriasLecturasOrdenadas(false)
+    : ['Libros', 'Cómics', 'Mangas'];
 
   const opciones = [
     { cat: 'Peliculas', sub: 'Películas', emoji: getHeroIcon('clapperboard'), label: (l === 'en' ? 'Movie' : 'Película') },
@@ -1510,8 +1658,20 @@ function renderizarOpcionesAgregadoRapido() {
     { cat: 'Lecturas', sub: 'Mangas', emoji: getHeroIcon('bookmark-square'), label: (l === 'en' ? 'Manga' : 'Manga') }
   ];
 
-  const opsFiltradas = opciones.filter(op => catsVisibles.includes(op.cat));
-  opsFiltradas.sort((a, b) => catsVisibles.indexOf(a.cat) - catsVisibles.indexOf(b.cat));
+  const opsFiltradas = opciones.filter(op => {
+    if (!catsVisibles.includes(op.cat)) return false;
+    if (op.cat === 'Lecturas' && !subsLecturasVisibles.includes(op.sub)) return false;
+    return true;
+  });
+
+  opsFiltradas.sort((a, b) => {
+    const catDiff = catsVisibles.indexOf(a.cat) - catsVisibles.indexOf(b.cat);
+    if (catDiff !== 0) return catDiff;
+    if (a.cat === 'Lecturas' && b.cat === 'Lecturas') {
+      return subsLecturasVisibles.indexOf(a.sub) - subsLecturasVisibles.indexOf(b.sub);
+    }
+    return 0;
+  });
 
   grid.innerHTML = opsFiltradas.map(op => {
     const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(op.cat, op.sub) : null;
@@ -1526,6 +1686,10 @@ function renderizarSubcategoriasResumenInicio() {
   if (!cont) return;
   const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang) || 'es';
   const catsVisibles = obtenerCategoriasOrdenadas(false);
+  const subsLecturasVisibles = (typeof obtenerSubcategoriasLecturasOrdenadas === 'function')
+    ? obtenerSubcategoriasLecturasOrdenadas(false)
+    : ['Libros', 'Cómics', 'Mangas'];
+
   const listaSubcats = [
     { cat: 'Peliculas', sub: 'Películas', emoji: getHeroIcon('clapperboard'), label: (l === 'en' ? 'Movies' : 'Películas') },
     { cat: 'Series', sub: 'Temporadas', emoji: getHeroIcon('rectangle-stack'), label: (l === 'en' ? 'Series' : 'Series') },
@@ -1536,8 +1700,20 @@ function renderizarSubcategoriasResumenInicio() {
     { cat: 'Lecturas', sub: 'Mangas', emoji: getHeroIcon('bookmark-square'), label: (l === 'en' ? 'Manga' : 'Mangas') }
   ];
 
-  const subcatsFiltradas = listaSubcats.filter(s => catsVisibles.includes(s.cat));
-  subcatsFiltradas.sort((a, b) => catsVisibles.indexOf(a.cat) - catsVisibles.indexOf(b.cat));
+  const subcatsFiltradas = listaSubcats.filter(s => {
+    if (!catsVisibles.includes(s.cat)) return false;
+    if (s.cat === 'Lecturas' && !subsLecturasVisibles.includes(s.sub)) return false;
+    return true;
+  });
+
+  subcatsFiltradas.sort((a, b) => {
+    const catDiff = catsVisibles.indexOf(a.cat) - catsVisibles.indexOf(b.cat);
+    if (catDiff !== 0) return catDiff;
+    if (a.cat === 'Lecturas' && b.cat === 'Lecturas') {
+      return subsLecturasVisibles.indexOf(a.sub) - subsLecturasVisibles.indexOf(b.sub);
+    }
+    return 0;
+  });
 
   cont.innerHTML = subcatsFiltradas.map(s => {
     const metaCol = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(s.cat, s.sub) : null;
