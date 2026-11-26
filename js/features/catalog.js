@@ -886,50 +886,32 @@ function renderizarStats() {
       subsParaRender.sort((a, b) => ordenLecturas.indexOf(a.id) - ordenLecturas.indexOf(b.id));
     }
 
-    const pills = subsParaRender.map(s => {
-      const sNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].subs && I18N[l].subs[s.id]) || s.nombre;
-      const regsSub = obtenerRegistrosDeSubcategoria(cat, s.id);
-      const countTotal = regsSub.length;
-      const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(cat, s.id) : null;
-      const subColor = metaSub ? metaSub.colorVar : 'var(--muted)';
-      const subKey = metaSub ? metaSub.key : '';
-
-      let rewatchHtml = '';
-      if (s.admiteRewatch) {
-        const countRewatches = regsSub.filter(r => r.esRewatch).length;
-        if (countRewatches > 0) {
-          rewatchHtml = `<span class="cat-subcat-row-rewatch">${countRewatches} ${getHeroIcon('arrow-path', '', 10)}</span>`;
-        }
-      }
-      return `
-        <div class="cat-subcat-row cat-subcat-row-${subKey}" onclick="event.stopPropagation(); cambiarCat('${cat}', '${s.id}')" title="${sNombre}">
-          <div class="cat-subcat-row-main">
-            <span class="cat-subcat-row-icon" style="color:${subColor};">${s.emoji}</span>
-            <span class="cat-subcat-row-name">${sNombre}</span>
-          </div>
-          <div class="cat-subcat-row-stats">
-            ${rewatchHtml}
-            <span class="cat-subcat-row-count">${countTotal}</span>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    let destacados = '';
+    let bodyContent = '';
     if (cat === 'Lecturas') {
-      destacados = `
-        <div class="cat-highlights-col">
-          <div class="cat-lecturas-structured-list">` + subsParaRender.map(s => {
-        const u = obtenerRegistrosDeSubcategoria('Lecturas', s.id);
-        const uTerminados = u.filter(r => esObraTerminada(r));
+      const lecturasBlocks = subsParaRender.map(s => {
+        const sNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].subs && I18N[l].subs[s.id]) || s.nombre;
+        const regsSub = obtenerRegistrosDeSubcategoria('Lecturas', s.id);
+        const countTotal = regsSub.length;
+        const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria('Lecturas', s.id) : null;
+        const subColor = metaSub ? metaSub.colorVar : 'var(--muted)';
+        const subKey = metaSub ? metaSub.key : '';
+
+        let rewatchHtml = '';
+        if (s.admiteRewatch) {
+          const countRewatches = regsSub.filter(r => r.esRewatch).length;
+          if (countRewatches > 0) {
+            rewatchHtml = `<span class="cat-subcat-row-rewatch">${countRewatches} ${getHeroIcon('arrow-path', '', 10)}</span>`;
+          }
+        }
+
+        const uTerminados = regsSub.filter(r => esObraTerminada(r));
         const ult = uTerminados.length ? [...uTerminados].sort((a,b) => (timestampDeFecha(b.fechaFin || b.fechaInicio) || 0) - (timestampDeFecha(a.fechaFin || a.fechaInicio) || 0))[0] : null;
-        let mejores = u.length ? u.filter(x => Number(x.calificacion) === Math.max(...u.map(y => Number(y.calificacion)))) : [];
+        let mejores = regsSub.length ? regsSub.filter(x => Number(x.calificacion) === Math.max(...regsSub.map(y => Number(y.calificacion)))) : [];
         const mej = mejores[0] || null, cId = `lectura-${s.id.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')}-mej`;
         const uF = ult ? ((ult.fechaFin && ult.fechaFin !== 'Sin fecha') ? ult.fechaFin : ult.fechaInicio) : '';
         const mF = mej ? ((mej.fechaFin && mej.fechaFin !== 'Sin fecha') ? mej.fechaFin : mej.fechaInicio) : '';
 
         if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, 'Lecturas', s.id), 50);
-        const sNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].subs && I18N[l].subs[s.id]) || s.nombre;
 
         const ultCalifHtml = (ult && Number(ult.calificacion) > 0) ? renderEstrellasVisuales(ult.calificacion) : '';
         const ultDateHtml = (uF && uF !== 'Sin fecha') ? `<span class="cat-hl-date">${uF}</span>` : '';
@@ -939,37 +921,78 @@ function renderizarStats() {
         const mejDateHtml = (mej && mF && mF !== 'Sin fecha') ? `<span class="cat-hl-date">${mF}</span>` : '';
         const mejSubTxt = (mejCalifHtml || mejDateHtml) ? `${mejCalifHtml}${mejDateHtml}` : (mej ? `<span class="cat-hl-date">${t('stat_sin_fecha')}</span>` : '');
 
-        const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria('Lecturas', s.id) : null;
-        const subTitleColor = metaSub ? metaSub.colorVar : 'var(--accent)';
         return `
-          <div class="cat-lectura-table-row">
-            <div class="cat-lectura-row-label" onclick="cambiarCat('Lecturas', '${s.id}')" title="${sNombre}">
-              <span class="cat-subcat-row-icon" style="color:${subTitleColor};">${s.emoji}</span>
-              <span class="cat-lectura-label-text">${sNombre}</span>
-            </div>
-            <div class="cat-lectura-row-cols">
-              <div class="cat-highlight-box ${ult ? 'is-clickable' : ''}" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''} style="${ult ? 'cursor:pointer;' : ''}">
-                <div class="cat-hl-tag">
-                  <span class="emoji-dyn">${getHeroIcon('clock', '', 12)}</span>
-                  <span>${t('stat_ultimo')}</span>
-                </div>
-                <div class="cat-hl-title ${!ult ? 'is-empty' : ''}" title="${ult ? ult.titulo : ''}">${ult ? ult.titulo : t('stat_sin_reg')}</div>
-                <div class="cat-hl-meta">${ultSubTxt}</div>
+          <div class="cat-lectura-subcat-block">
+            <div class="cat-subcat-row cat-subcat-row-${subKey}" onclick="event.stopPropagation(); cambiarCat('Lecturas', '${s.id}')" title="${sNombre}">
+              <div class="cat-subcat-row-main">
+                <span class="cat-subcat-row-icon" style="color:${subColor};">${s.emoji}</span>
+                <span class="cat-subcat-row-name" style="font-weight:700; color:var(--text);">${sNombre}</span>
               </div>
-              <div class="cat-highlight-box ${mej ? 'is-clickable' : ''}" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''} style="${mej ? 'cursor:pointer;' : ''}">
-                <div class="cat-hl-tag">
-                  <span class="emoji-dyn">${getHeroIcon('star', '', 12)}</span>
-                  <span>${t('stat_mejor')}</span>
-                  ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-ind">[1/${mejores.length}]</span>` : ''}
+              <div class="cat-subcat-row-stats">
+                ${rewatchHtml}
+                <span class="cat-subcat-row-count">${countTotal}</span>
+              </div>
+            </div>
+            <div class="cat-lectura-subcat-highlights">
+              <div class="cat-highlights-grid-two">
+                <div class="cat-highlight-box ${ult ? 'is-clickable' : ''}" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''} style="${ult ? 'cursor:pointer;' : ''}">
+                  <div class="cat-hl-tag">
+                    <span class="emoji-dyn">${getHeroIcon('clock', '', 12)}</span>
+                    <span>${t('stat_ultimo')}</span>
+                  </div>
+                  <div class="cat-hl-title ${!ult ? 'is-empty' : ''}" title="${ult ? ult.titulo : ''}">${ult ? ult.titulo : t('stat_sin_reg')}</div>
+                  <div class="cat-hl-meta">${ultSubTxt}</div>
                 </div>
-                <div class="cat-hl-title ${!mej ? 'is-empty' : ''}" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
-                <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
+                <div class="cat-highlight-box ${mej ? 'is-clickable' : ''}" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''} style="${mej ? 'cursor:pointer;' : ''}">
+                  <div class="cat-hl-tag">
+                    <span class="emoji-dyn">${getHeroIcon('star', '', 12)}</span>
+                    <span>${t('stat_mejor')}</span>
+                    ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-ind">[1/${mejores.length}]</span>` : ''}
+                  </div>
+                  <div class="cat-hl-title ${!mej ? 'is-empty' : ''}" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
+                  <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
+                </div>
               </div>
             </div>
           </div>
         `;
-      }).join('') + `</div></div>`;
+      }).join('');
+
+      bodyContent = `
+        <div class="cat-wide-body cat-wide-body-lecturas">
+          <div class="cat-lecturas-unified-list">${lecturasBlocks}</div>
+        </div>
+      `;
     } else {
+      const pills = subsParaRender.map(s => {
+        const sNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].subs && I18N[l].subs[s.id]) || s.nombre;
+        const regsSub = obtenerRegistrosDeSubcategoria(cat, s.id);
+        const countTotal = regsSub.length;
+        const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(cat, s.id) : null;
+        const subColor = metaSub ? metaSub.colorVar : 'var(--muted)';
+        const subKey = metaSub ? metaSub.key : '';
+
+        let rewatchHtml = '';
+        if (s.admiteRewatch) {
+          const countRewatches = regsSub.filter(r => r.esRewatch).length;
+          if (countRewatches > 0) {
+            rewatchHtml = `<span class="cat-subcat-row-rewatch">${countRewatches} ${getHeroIcon('arrow-path', '', 10)}</span>`;
+          }
+        }
+        return `
+          <div class="cat-subcat-row cat-subcat-row-${subKey}" onclick="event.stopPropagation(); cambiarCat('${cat}', '${s.id}')" title="${sNombre}">
+            <div class="cat-subcat-row-main">
+              <span class="cat-subcat-row-icon" style="color:${subColor};">${s.emoji}</span>
+              <span class="cat-subcat-row-name">${sNombre}</span>
+            </div>
+            <div class="cat-subcat-row-stats">
+              ${rewatchHtml}
+              <span class="cat-subcat-row-count">${countTotal}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
       let uUltimo = [], uMejores = [], subDestino = CONFIG[cat].subs[0].id;
       if (cat === 'Peliculas') {
         subDestino = 'Películas';
@@ -1005,7 +1028,7 @@ function renderizarStats() {
       const mejDateHtml = (mej && mF && mF !== 'Sin fecha') ? `<span class="cat-hl-date">${mF}</span>` : '';
       const mejSubTxt = (mejCalifHtml || mejDateHtml) ? `${mejCalifHtml}${mejDateHtml}` : (mej ? `<span class="cat-hl-date">${t('stat_sin_fecha')}</span>` : '');
 
-      destacados = `
+      const destacados = `
         <div class="cat-highlights-col">
           <div class="cat-highlights-grid-two">
             <div class="cat-highlight-box ${ult ? 'is-clickable' : ''}" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', '${cat}', '${subDestino}')"` : ''} style="${ult ? 'cursor:pointer;' : ''}">
@@ -1028,6 +1051,15 @@ function renderizarStats() {
           </div>
         </div>
       `;
+
+      bodyContent = `
+        <div class="cat-wide-body">
+          <div class="cat-subcats-col">
+            <div class="cat-subcat-list">${pills}</div>
+          </div>
+          ${destacados}
+        </div>
+      `;
     }
 
     const metaCat = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(cat, '') : null;
@@ -1043,12 +1075,7 @@ function renderizarStats() {
           <span class="cat-stat-total">${t('total_prefix')} ${tot}</span>
         </div>
       </div>
-      <div class="cat-wide-body">
-        <div class="cat-subcats-col">
-          <div class="cat-subcat-list">${pills}</div>
-        </div>
-        ${destacados}
-      </div>
+      ${bodyContent}
     `;
     box.appendChild(c);
   });
