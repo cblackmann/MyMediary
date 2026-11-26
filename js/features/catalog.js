@@ -2117,7 +2117,25 @@ l.forEach(reg => {
     fF = fUnica;
   }
   const enProg = r && (esEnProgresoTexto(fF) || (!fF || fF === 'Sin fecha' || fF === ''));
-  const sub = reg.subtitulo ? `<div style="font-size:.8rem; color:var(--muted); margin-top:2px;">(${reg.subtitulo})</div>` : ''; const meta = `(${reg.creador}${reg.anio ? ', ' + reg.anio : ''})`;
+  const titPrincipal = reg.tituloOriginal || reg.titulo || tLang('Sin título', 'Untitled');
+  let titEn = (reg.subtitulo || reg.tituloIngles || '').trim();
+  if (titEn.startsWith('(') && titEn.endsWith(')')) {
+    titEn = titEn.slice(1, -1).trim();
+  }
+  const tieneTitEn = titEn && (titEn.toLowerCase() !== titPrincipal.toLowerCase()) && (titEn.toLowerCase() !== (reg.titulo || '').trim().toLowerCase());
+  const titEnDesktopHtml = tieneTitEn ? `<div style="font-size:.8rem; color:var(--muted); margin-top:2px;">(${titEn})</div>` : '';
+  const titEnMobileHtml = tieneTitEn ? `<div class="m-card-title-en">(${titEn})</div>` : '';
+
+  const metaPartes = [];
+  if (reg.creador && reg.creador !== '—' && reg.creador.trim() !== '' && reg.creador.toLowerCase() !== 'desconocido') {
+    metaPartes.push(reg.creador.trim());
+  }
+  if (reg.anio && reg.anio !== '—' && String(reg.anio).trim() !== '') {
+    metaPartes.push(String(reg.anio).trim());
+  }
+  const metaTexto = metaPartes.length ? `(${metaPartes.join(', ')})` : '';
+  const meta = metaTexto || (reg.creador ? `(${reg.creador}${reg.anio ? ', ' + reg.anio : ''})` : '');
+
   const stars = enProg
     ? `<span style="color:var(--accent); font-size:0.8rem; font-weight:700; font-style:italic; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('clock', '', 12)} ${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>`
     : renderEstrellasVisuales(reg.calificacion);
@@ -2134,14 +2152,16 @@ l.forEach(reg => {
     : extraerMesClave(fechaParaMes);
   if (mesData.clave !== mesClaveActual) {
     mesClaveActual = mesData.clave; mesParidad = (mesParidad + 1) % 2; const count = conteosMes[mesData.clave] || 1;
-    const textoMesContador = enProg
-      ? `${mesData.mesNombre} (${count})`
-      : (mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`));
     const emojiSeparador = enProg ? `<span class="emoji-dyn">${getHeroIcon('clock', '', 13)} </span>` : '';
+    const textoMesSolo = enProg
+      ? mesData.mesNombre
+      : (mesData.clave === 'SIN_FECHA' ? t('stat_sin_fecha') : (estado.anioActivo === 'todos' && mesData.anio ? `${mesData.mesNombre} ${mesData.anio}` : mesData.mesNombre));
+    const textoConteo = (mesData.clave === 'SIN_FECHA' && !count) ? '' : `(${count})`;
+    const textoMesContador = `${textoMesSolo} ${textoConteo}`.trim();
     const sepTr = document.createElement('tr'); sepTr.className = 'month-separator-tr';
     sepTr.innerHTML = `<td colspan="${cols}" class="month-separator-td">${emojiSeparador}${textoMesContador}</td>`; tbFrag.appendChild(sepTr);
     const sepCard = document.createElement('div'); sepCard.className = 'month-separator-card';
-    sepCard.innerHTML = `${emojiSeparador}${textoMesContador}`; mBoxFrag.appendChild(sepCard);
+    sepCard.innerHTML = `<span class="m-sep-label">${emojiSeparador}${textoMesSolo}</span><span class="m-sep-count">${textoConteo}</span>`; mBoxFrag.appendChild(sepCard);
   }
   const infoI = desglosarFechaParaCuadro(fI);
   const infoF = desglosarFechaParaCuadro(fF);
@@ -2165,10 +2185,39 @@ l.forEach(reg => {
   const tEliminarReg = tLang('Eliminar registro', 'Delete record');
   const tEliminarShort = tLang('Eliminar', 'Delete');
   const badgeLikesHtml = generarBadgeLikesResenaHtml(reg.id);
-  tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')" title="${fI}">${cuadroI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')" title="${fF}">${enProg ? fFDisplay : cuadroF}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')" title="${fI}">${cuadroI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="${tVerFichaFull}" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" loading="lazy" decoding="async" src="${optimizarUrlPoster(reg.poster, 'thumb')||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${sub}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}${badgeLikesHtml}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:2px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> ${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="${tEditarFull}" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button><button type="button" class="btn-delete" title="${tEliminarReg}" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></td>`;
+  tr.innerHTML = ` ${r ? `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')" title="${fI}">${cuadroI}</div></td><td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')" title="${fF}">${enProg ? fFDisplay : cuadroF}</div></td>` : `<td><div class="editable-cell col-fecha" onclick="abrirEditorFecha('${reg.id}')" title="${fI}">${cuadroI}</div></td>`} ${isJ ? `<td><div class="editable-cell col-horas" onclick="abrirEditorHoras('${reg.id}')">${reg.horas || '—'}</div></td>` : ''} <td><div class="col-titulo-wrapper clickable-title" title="${tVerFichaFull}" onclick="abrirFichaTecnica('${reg.id}')"><img class="col-thumb" loading="lazy" decoding="async" src="${optimizarUrlPoster(reg.poster, 'thumb')||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'36\' height=\'50\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"><div><div class="col-main-title">${reg.titulo}${badgeRwHtml}</div>${titEnDesktopHtml}<div class="col-sub-meta">${meta}</div></div></div></td> <td><div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div></td> <td><div class="editable-cell col-comment" onclick="abrirEditorComentario('${reg.id}')">${com}${badgeLikesHtml}</div></td> <td style="text-align:center; white-space:nowrap;">${enProg ? `<button type="button" class="btn-terminar-badge" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" title="${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}" style="background:linear-gradient(135deg, #10b981, #059669); color:#fff; border:none; padding:4px 10px; border-radius:2px; font-size:0.75rem; font-weight:700; cursor:pointer; margin-right:6px; box-shadow:0 2px 6px rgba(16,185,129,0.3); display:inline-flex; align-items:center; gap:3px;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m4.5 12.75 6 6 9-13.5"/></svg> ${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</button>` : ''}<button type="button" class="btn-delete" title="${tEditarFull}" style="margin-right:6px; color:var(--accent);" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button><button type="button" class="btn-delete" title="${tEliminarReg}" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button></td>`;
   tbFrag.appendChild(tr);
+
   const m = document.createElement('div'); m.className = 'mobile-history-card'; m.id = `card-${reg.id}`;
-  m.innerHTML = ` <div class="m-card-actions-col"> <button type="button" class="m-card-btn-action btn-m-delete" title="${tEliminarShort}" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button> <button type="button" class="m-card-btn-action btn-m-edit" title="${tEditarFull}" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button> </div> <div class="m-card-top"> <img class="m-card-thumb" loading="lazy" decoding="async" style="cursor:pointer;" title="${tVerFicha}" onclick="abrirFichaTecnica('${reg.id}')" src="${optimizarUrlPoster(reg.poster, 'thumb')||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}"> <div class="m-card-info"> <div class="m-card-title" title="${tVerFicha}" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}</div> ${sub ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">${sub}</div>` : ''} <div class="m-card-meta">${meta}</div> <div class="m-card-date-row" style="display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-top:3px;"> <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')" title="${tituloFechaHover}">${fechasMobileHtml}</div> ${badgeRwHtml} ${isJ && reg.horas ? `<div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${reg.horas}</div>` : ''} </div> </div> </div> <div class="m-card-bottom"> <div class="editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div> <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}${badgeLikesHtml}</div> </div> ${enProg ? `<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:3px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>${getHeroIcon('check', '', 14)}</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span></button></div>` : ''}`;
+  const tieneHoras = (isJ || reg.categoria === 'Juegos' || reg.horas) && reg.horas && reg.horas !== '—' && reg.horas !== '0' && String(reg.horas).trim() !== '';
+  const horasHtml = tieneHoras
+    ? `<div class="m-card-horas editable-cell" onclick="abrirEditorHoras('${reg.id}')" title="${tLang('Editar horas', 'Edit hours')}"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${reg.horas}</div>`
+    : '';
+
+  m.innerHTML = `
+    <div class="m-card-actions-col">
+      <button type="button" class="m-card-btn-action btn-m-delete" title="${tEliminarShort}" onclick="confirmarEliminar('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button>
+      <button type="button" class="m-card-btn-action btn-m-edit" title="${tEditarFull}" onclick="abrirEditorRegistroCompleto('${reg.id}')"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></button>
+    </div>
+    <div class="m-card-top">
+      <img class="m-card-thumb" loading="lazy" decoding="async" style="cursor:pointer;" title="${tVerFicha}" onclick="abrirFichaTecnica('${reg.id}')" src="${optimizarUrlPoster(reg.poster, 'thumb')||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'72\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}">
+      <div class="m-card-info">
+        <div class="m-card-title" title="${tVerFicha}" onclick="abrirFichaTecnica('${reg.id}')">${reg.titulo}</div>
+        ${titEnMobileHtml}
+        ${meta ? `<div class="m-card-meta">${meta}</div>` : ''}
+        <div class="m-card-date-row">
+          <div class="m-card-dates editable-cell" onclick="abrirEditorFecha('${reg.id}')" title="${tituloFechaHover}">${fechasMobileHtml}</div>
+          ${horasHtml}
+          ${badgeRwHtml}
+        </div>
+      </div>
+    </div>
+    <div class="m-card-bottom">
+      <div class="m-card-rating editable-cell" onclick="abrirEditorCalificacion('${reg.id}')">${stars}</div>
+      <div class="m-card-comment editable-cell" onclick="abrirEditorComentario('${reg.id}')">${com}${badgeLikesHtml}</div>
+    </div>
+    ${enProg ? `<div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--border);"><button type="button" class="btn-terminar-card" onclick="event.stopPropagation(); abrirModalTerminarObra('${reg.id}')" style="width:100%; height:38px; border:none; border-radius:3px; background:linear-gradient(135deg, #10b981, #059669); color:#fff; font-weight:700; font-size:0.86rem; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(16,185,129,0.3); transition:all 0.15s ease;"><span>${getHeroIcon('check', '', 14)}</span><span>${userPrefs.lang === 'en' ? 'I finished it!' : '¡Ya lo terminé!'}</span></button></div>` : ''}
+  `;
   mBoxFrag.appendChild(m); }); tb.appendChild(tbFrag); mBox.appendChild(mBoxFrag); aplicarEstilosGlobales();
 if (estado.ultimoRegistroGuardadoId) {
   desplazarHaciaRegistroGuardado(estado.ultimoRegistroGuardadoId);

@@ -280,23 +280,30 @@ function filtrarYMostrarHistorialAmigo() {
       const cF = renderizarCuadroFecha(infoF, inicioMesDistinto, infoI ? infoI.anio : '');
       const fDisplay = r ? (enProg ? `${cI}<span class="m-date-arrow">➔</span><span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:6px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">${txtEnCurso}</span>` : `${cI}<span class="m-date-arrow">➔</span>${cF}`) : cI;
       const rwBadge = reg.esRewatch ? `<span class="badge-rewatch"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> ${t('badge_rewatch')}</span>` : '';
+      let titEnF = (reg.subtitulo || '').trim();
+      if (titEnF.startsWith('(') && titEnF.endsWith(')')) titEnF = titEnF.slice(1, -1).trim();
+      const tieneTitEnF = titEnF && (titEnF.toLowerCase() !== (reg.titulo || '').trim().toLowerCase());
+      const titEnHtmlF = tieneTitEnF ? `<div class="m-card-title-en">(${titEnF})</div>` : '';
+      const horasHtmlF = (c === 'Juegos' || reg.categoria === 'Juegos' || reg.horas) && reg.horas && reg.horas !== '—' && reg.horas !== '0'
+        ? `<div class="m-card-horas"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${reg.horas}</div>`
+        : '';
       return `
         <div class="mobile-history-card" style="margin-bottom:10px;">
           <div class="m-card-top">
             <img loading="lazy" decoding="async" class="m-card-thumb" src="${optimizarUrlPoster(reg.poster, 'thumb')||''}" style="cursor:pointer;" onclick="abrirFichaTecnicaDirecta(${JSON.stringify(reg).replace(/"/g, '&quot;')})">
             <div class="m-card-info" style="padding-right:0;">
               <div class="m-card-title">${reg.titulo}</div>
-              ${reg.subtitulo ? `<div style="font-size:.75rem; color:var(--muted); margin-bottom:2px;">(${reg.subtitulo})</div>` : ''}
+              ${titEnHtmlF}
               <div class="m-card-meta">(${reg.creador||''}${reg.anio ? ', ' + reg.anio : ''})</div>
               <div class="m-card-date-row" style="display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin-top:3px;">
                 <div class="m-card-dates" title="${r ? `${fI} ➔ ${fF}` : fI}">${fDisplay}</div>
+                ${horasHtmlF}
                 ${rwBadge}
-                ${c === 'Juegos' && reg.horas ? `<div class="m-card-horas"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${reg.horas}</div>` : ''}
               </div>
             </div>
           </div>
           <div class="m-card-bottom">
-            <div>${renderEstrellasVisuales(reg.calificacion)}</div>
+            <div class="m-card-rating">${renderEstrellasVisuales(reg.calificacion)}</div>
             <div class="m-card-comment">${reg.comentario ? `"${reg.comentario}"` : '<span style="color:var(--border)">—</span>'}</div>
           </div>
         </div>
@@ -3563,11 +3570,12 @@ function filtrarRegistrosAmigoModal() {
         if (mesData.clave !== mesClaveActual) {
           mesClaveActual = mesData.clave;
           const count = conteosMes[mesData.clave] || 1;
-          const textoMesContador = enProg
-            ? `${mesData.mesNombre} (${count})`
-            : (mesData.clave === 'SIN_FECHA' ? (l === 'en' ? 'No date' : 'Sin fecha') : (mesData.anio ? `${mesData.mesNombre} ${mesData.anio} (${count})` : `${mesData.mesNombre} (${count})`));
           const emojiSeparador = enProg ? `<span class="emoji-dyn">${getHeroIcon('clock', '', 13)} </span>` : '';
-          fullHtml += `<div class="month-separator-card" style="margin-top:6px; margin-bottom:2px;">${emojiSeparador}${textoMesContador}</div>`;
+          const textoMesSolo = enProg
+            ? mesData.mesNombre
+            : (mesData.clave === 'SIN_FECHA' ? (l === 'en' ? 'No date' : 'Sin fecha') : (mesData.anio ? `${mesData.mesNombre} ${mesData.anio}` : mesData.mesNombre));
+          const textoConteo = (mesData.clave === 'SIN_FECHA' && !count) ? '' : `(${count})`;
+          fullHtml += `<div class="month-separator-card" style="margin-top:6px; margin-bottom:2px;"><span class="m-sep-label">${emojiSeparador}${textoMesSolo}</span><span class="m-sep-count">${textoConteo}</span></div>`;
         }
 
         const rIdSafe = String(r.id || '').replace(/'/g, "\\'");
@@ -3578,12 +3586,12 @@ function filtrarRegistrosAmigoModal() {
               <img class="m-card-thumb" src="${poster}" loading="lazy" style="cursor:pointer;" onclick="abrirFichaTecnica('${rIdSafe}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}" alt="${escHtmlFeed_(r.titulo)}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'50\\' height=\\'72\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'">
               <div class="m-card-info" style="padding-right:0;">
                 <div class="m-card-title" style="cursor:pointer;" onclick="abrirFichaTecnica('${rIdSafe}')" title="${l === 'en' ? 'View details' : 'Ver ficha técnica'}">${r.titulo}</div>
-                ${r.subtitulo && r.subtitulo !== r.titulo ? `<div style="font-size:0.75rem; color:var(--muted); margin-bottom:2px;">(${r.subtitulo})</div>` : ''}
+                ${r.subtitulo && r.subtitulo !== r.titulo ? `<div class="m-card-title-en">(${r.subtitulo})</div>` : ''}
                 <div class="m-card-meta">${meta}</div>
                 <div class="m-card-date-row" style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:4px;">
                   ${fechaHtml}
-                  ${rwBadge}
                   ${horasHtml}
+                  ${rwBadge}
                 </div>
               </div>
             </div>
