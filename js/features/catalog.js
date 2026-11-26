@@ -895,14 +895,14 @@ function renderizarStats() {
       if (s.admiteRewatch) {
         const countRewatches = regsSub.filter(r => r.esRewatch).length;
         const countNuevos = countTotal - countRewatches;
-        return `<div class="subtotal-pill subtotal-pill-${subKey}" onclick="event.stopPropagation(); cambiarCat('${cat}', '${s.id}')" style="cursor:pointer;" title="${sNombre}"><span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span class="subtotal-pill-title">${sNombre}</span><span class="subtotal-pill-count">${countTotal}</span><span class="subtotal-pill-rewatch">(${countNuevos} + ${countRewatches} ${getHeroIcon('arrow-path', '', 10)})</span></div>`;
+        return `<div class="cat-subtotal-flat-item cat-subtotal-flat-${subKey}" onclick="event.stopPropagation(); cambiarCat('${cat}', '${s.id}')" style="cursor:pointer;" title="${sNombre}"><span class="cat-subtotal-flat-icon" style="color:${subColor};">${s.emoji}</span><span class="cat-subtotal-flat-name">${sNombre}</span><span class="cat-subtotal-flat-count">${countTotal}</span><span class="cat-subtotal-flat-rewatch">(${countNuevos} + ${countRewatches} ${getHeroIcon('arrow-path', '', 10)})</span></div>`;
       }
-      return `<div class="subtotal-pill subtotal-pill-${subKey}" onclick="event.stopPropagation(); cambiarCat('${cat}', '${s.id}')" style="cursor:pointer;" title="${sNombre}"><span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span class="subtotal-pill-title">${sNombre}</span><span class="subtotal-pill-count">${countTotal}</span></div>`;
+      return `<div class="cat-subtotal-flat-item cat-subtotal-flat-${subKey}" onclick="event.stopPropagation(); cambiarCat('${cat}', '${s.id}')" style="cursor:pointer;" title="${sNombre}"><span class="cat-subtotal-flat-icon" style="color:${subColor};">${s.emoji}</span><span class="cat-subtotal-flat-name">${sNombre}</span><span class="cat-subtotal-flat-count">${countTotal}</span></div>`;
     }).join('');
 
     let destacados = '';
     if (cat === 'Lecturas') {
-      destacados = `<div style="grid-column:span 2; display:flex; flex-direction:column; gap:12px;">` + subsParaRender.map(s => {
+      destacados = `<div class="cat-lecturas-flat-wrap">` + subsParaRender.map((s, idx) => {
         const u = obtenerRegistrosDeSubcategoria('Lecturas', s.id);
         const uTerminados = u.filter(r => esObraTerminada(r));
         const ult = uTerminados.length ? [...uTerminados].sort((a,b) => (timestampDeFecha(b.fechaFin || b.fechaInicio) || 0) - (timestampDeFecha(a.fechaFin || a.fechaInicio) || 0))[0] : null;
@@ -921,23 +921,29 @@ function renderizarStats() {
         const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria('Lecturas', s.id) : null;
         const subTitleColor = metaSub ? metaSub.colorVar : 'var(--accent)';
         return `
-          <div class="stat-subcat-lecturas-card">
-            <div style="font-weight:700; color:${subTitleColor}; font-size:.88rem; margin-bottom:6px; display:inline-flex; align-items:center; gap:6px; cursor:pointer;" onclick="cambiarCat('Lecturas', '${s.id}')"><span class="subtotal-pill-icon" style="color:${subTitleColor};">${s.emoji}</span><span>${sNombre}</span></div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-              <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''}>
-                <div class="highlight-card-title">
-                  <span style="display:inline-flex; align-items:center; gap:5px;"><span class="emoji-dyn"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span> ${t('stat_ultimo')}</span>
+          <div class="cat-lectura-subcat-section" style="${idx > 0 ? 'border-top: 1px solid var(--border); padding-top: 12px;' : ''}">
+            <div class="cat-lectura-subcat-header" onclick="cambiarCat('Lecturas', '${s.id}')" title="${sNombre}">
+              <span class="cat-subtotal-flat-icon" style="color:${subTitleColor};">${s.emoji}</span>
+              <span>${sNombre}</span>
+              <span class="subcat-count">(${u.length})</span>
+            </div>
+            <div class="cat-highlights-flat-row" style="border-top:none; padding-top:0; margin-top:2px;">
+              <div class="cat-highlight-flat-col ${ult ? 'is-clickable' : ''}" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', 'Lecturas', '${s.id}')"` : ''} style="${ult ? 'cursor:pointer;' : ''}">
+                <div class="cat-highlight-flat-label">
+                  <span class="emoji-dyn"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+                  <span>${t('stat_ultimo')}</span>
                 </div>
-                <div class="highlight-main-txt" style="font-size:.85rem;">${ult ? ult.titulo : '—'}</div>
-                <div class="highlight-sub-txt" style="font-size:.75rem;">${ultSubTxt}</div>
+                <div class="cat-highlight-flat-title" title="${ult ? ult.titulo : ''}">${ult ? ult.titulo : '—'}</div>
+                <div class="cat-highlight-flat-sub">${ultSubTxt}</div>
               </div>
-              <div class="highlight-card" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''}>
-                <div class="highlight-card-title">
-                  <span style="display:inline-flex; align-items:center; gap:5px;"><span class="emoji-dyn"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></span> ${t('stat_mejor')}</span>
-                  ${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator">[1/${mejores.length}]</span>` : ''}
+              <div class="cat-highlight-flat-col ${mej ? 'is-clickable' : ''}" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''} style="${mej ? 'cursor:pointer;' : ''}">
+                <div class="cat-highlight-flat-label">
+                  <span class="emoji-dyn"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></span>
+                  <span>${t('stat_mejor')}</span>
+                  ${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator-flat">[1/${mejores.length}]</span>` : ''}
                 </div>
-                <div class="highlight-main-txt" id="${cId}-title" style="font-size:.85rem;">${mej ? mej.titulo : '—'}</div>
-                <div class="highlight-sub-txt" id="${cId}-sub" style="font-size:.75rem;">${mejCalifHtml}</div>
+                <div class="cat-highlight-flat-title" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : '—'}</div>
+                <div class="cat-highlight-flat-sub" id="${cId}-sub">${mejCalifHtml}</div>
               </div>
             </div>
           </div>
@@ -976,20 +982,24 @@ function renderizarStats() {
       const mejCalifHtml = mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : '—';
 
       destacados = `
-        <div class="highlight-card" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', '${cat}', '${subDestino}')"` : ''}>
-          <div class="highlight-card-title">
-            <span style="display:inline-flex; align-items:center; gap:5px;"><span class="emoji-dyn"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span> ${t('stat_ultimo')}</span>
+        <div class="cat-highlights-flat-row">
+          <div class="cat-highlight-flat-col ${ult ? 'is-clickable' : ''}" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', '${cat}', '${subDestino}')"` : ''} style="${ult ? 'cursor:pointer;' : ''}">
+            <div class="cat-highlight-flat-label">
+              <span class="emoji-dyn"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
+              <span>${t('stat_ultimo')}</span>
+            </div>
+            <div class="cat-highlight-flat-title" title="${ult ? ult.titulo : ''}">${ult ? ult.titulo : t('stat_sin_reg')}</div>
+            <div class="cat-highlight-flat-sub">${ultSubTxt}</div>
           </div>
-          <div class="highlight-main-txt">${ult ? ult.titulo : t('stat_sin_reg')}</div>
-          <div class="highlight-sub-txt">${ultSubTxt}</div>
-        </div>
-        <div class="highlight-card" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', '${cat}', '${subDestino}')"` : ''}>
-          <div class="highlight-card-title">
-            <span style="display:inline-flex; align-items:center; gap:5px;"><span class="emoji-dyn"><svg style="width:15px;height:15px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></span> ${t('stat_mejor')}</span>
-            ${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator">[1/${mejores.length}]</span>` : ''}
+          <div class="cat-highlight-flat-col ${mej ? 'is-clickable' : ''}" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', '${cat}', '${subDestino}')"` : ''} style="${mej ? 'cursor:pointer;' : ''}">
+            <div class="cat-highlight-flat-label">
+              <span class="emoji-dyn"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></span>
+              <span>${t('stat_mejor')}</span>
+              ${mejores.length > 1 ? `<span id="${cId}-ind" class="carousel-indicator-flat">[1/${mejores.length}]</span>` : ''}
+            </div>
+            <div class="cat-highlight-flat-title" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
+            <div class="cat-highlight-flat-sub" id="${cId}-sub">${mejCalifHtml}</div>
           </div>
-          <div class="highlight-main-txt" id="${cId}-title">${mej ? mej.titulo : t('stat_sin_reg')}</div>
-          <div class="highlight-sub-txt" id="${cId}-sub">${mejCalifHtml}</div>
         </div>
       `;
     }
@@ -1008,7 +1018,7 @@ function renderizarStats() {
         </div>
       </div>
       <div class="cat-wide-body">
-        <div class="cat-subtotals-wrap">${pills}</div>
+        <div class="cat-subtotals-flat-wrap">${pills}</div>
         ${destacados}
       </div>
     `;
