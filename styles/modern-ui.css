@@ -130,14 +130,33 @@ html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-title {
   letter-spacing: -0.015em !important;
 }
 
-html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-total {
-  background: var(--bg) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: 2px !important;
-  padding: 4px 12px !important;
-  font-weight: 700 !important;
-  font-size: 0.92rem !important;
-  color: var(--accent) !important;
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-total,
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-stats-plain {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  font-weight: 600 !important;
+  font-size: 0.90rem !important;
+  color: var(--muted) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-body {
+  display: grid !important;
+  grid-template-columns: 280px 1fr !important;
+  gap: 24px !important;
+  align-items: start !important;
+}
+@media (max-width: 768px) {
+  html[data-ui-style="modern"] #vista-listas-extendida .cat-wide-body {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
 }
 
 html[data-ui-style="modern"] .cat-wide-header,

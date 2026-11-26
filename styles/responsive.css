@@ -240,9 +240,10 @@ screen and (min-width: 769px) and (orientation: landscape) {
 
   /* 10. VISTA DE CATEGORÍAS */
   .cat-wide-body {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 14px !important;
+    display: grid !important;
+    grid-template-columns: 280px 1fr !important;
+    gap: 24px !important;
+    align-items: start !important;
   }
   .table-container {
     display: block !important;
@@ -490,7 +491,6 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 .home-streak-cat-icon,
 .reading-tracker-icon,
 .home-indice-icon,
-.cat-wide-total,
 .subtotal-pill,
 .home-psn-live-pill,
 .home-np-live-status-pill,
@@ -540,10 +540,18 @@ html[data-ui-style="modern"] .btn-modal-cancel {
 .home-friend-media-box,
 .home-friend-review-box,
 html[data-ui-style="modern"] .subtotal-pill,
-html[data-ui-style="modern"] .cat-wide-total,
 html[data-ui-style="modern"] .home-subcat-pill .pill-count,
 html[data-ui-style="modern"] .home-en-progreso-card-badge {
   border-radius: 2px !important;
+}
+
+.cat-wide-total,
+.cat-wide-stats-plain {
+  border-radius: 0 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
 }
 
 /* 4. INPUTS, CONTROLES DE FORMULARIO Y SELECTORES - BORDER RADIUS: 3px */
