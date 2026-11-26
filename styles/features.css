@@ -1093,10 +1093,13 @@ html:not([data-theme*="-light"]) .feed-status-inprog {background:rgba(245,158,11
 .btn-read-today.done:hover {background:var(--cat-border-lecturas);border-color:var(--cat-color-lecturas);}
 
 /* BARRA EN PESTAÑA LIBROS */
-.books-reading-strip {display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--cat-bg-lecturas);border:1.5px solid var(--cat-border-lecturas);border-radius:4px;padding:10px 16px;margin-bottom:14px;box-sizing:border-box;}
-.books-reading-strip.active-read {background:var(--cat-bg-lecturas);border-color:var(--cat-color-lecturas);}
+.books-reading-strip {display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--cat-bg-lecturas);border:1px solid var(--cat-border-lecturas);border-radius:4px;padding:8px 14px;margin-bottom:14px;box-sizing:border-box;transition:all .18s ease;cursor:pointer;}
+.books-reading-strip:hover {border-color:var(--cat-color-lecturas);}
+.books-reading-strip.active-read {background:var(--cat-bg-lecturas);border-color:rgba(16,185,129,0.35);}
+.books-reading-strip.active-read:hover {border-color:#10b981;}
 [data-theme$="-light"] .home-reading-tracker-card,
 [data-theme$="-light"] .books-reading-strip {background:var(--cat-bg-lecturas);border-color:var(--cat-border-lecturas);}
+[data-theme$="-light"] .books-reading-strip.active-read {border-color:rgba(16,185,129,0.5);}
 
 /* MODAL SELECTOR HORIZONTAL DE TIEMPO DE LECTURA */
 .reading-time-modal-box {max-width:440px !important;width:100%;border-radius:4px !important;padding:20px 20px 18px !important;box-sizing:border-box;}

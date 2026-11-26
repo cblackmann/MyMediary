@@ -820,30 +820,24 @@ function actualizarBotonLecturaHoyLibros() {
 
   if (ya) {
     box.innerHTML = `
-      <div class="books-reading-strip active-read">
+      <div class="books-reading-strip active-read" onclick="toggleLecturaHoy(event)" style="cursor:pointer;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver o ajustar tiempo'}">
         <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
-          <span class="emoji-dyn" style="color:#10b981;">${getHeroIcon('check-circle', '', 24)}</span>
-          <div style="min-width:0; flex:1;">
-            <strong style="font-size:0.86rem; color:var(--text); display:block;">${l === 'en' ? 'You read today!' : '¡Ya leíste hoy!'}</strong>
-            <span style="font-size:0.75rem; color:var(--muted);">${tiempoHoyTxt ? (l === 'en' ? `Session time: ${tiempoHoyTxt}` : `Tiempo registrado: ${tiempoHoyTxt}`) : (l === 'en' ? 'Session logged into your streak.' : 'Tu sesión de hoy está sumada a tu racha.')}</span>
-          </div>
+          <span class="emoji-dyn" style="color:#10b981; display:flex; align-items:center;">${getHeroIcon('check-circle', '', 20)}</span>
+          <strong style="font-size:0.88rem; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${l === 'en' ? 'You read today!' : '¡Ya leíste hoy!'}</strong>
         </div>
-        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:8px 18px; font-size:0.84rem;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver/ajustar tiempo o desmarcar'}">
+        <button type="button" class="btn-read-today done" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:6px 14px; font-size:0.82rem;" title="${l === 'en' ? 'Click to adjust time or unmark' : 'Toca para ver o ajustar tiempo'}">
           <span>${getHeroIcon("check", "", 14)}</span> <span>${tiempoHoyTxt ? (typeof formatTiempoPill === 'function' ? formatTiempoPill(tiempoHoyTxt) : tiempoHoyTxt) : (l === 'en' ? 'Read today' : 'Ya leí hoy')}</span>
         </button>
       </div>
     `;
   } else {
     box.innerHTML = `
-      <div class="books-reading-strip">
+      <div class="books-reading-strip" onclick="toggleLecturaHoy(event)" style="cursor:pointer;" title="${l === 'en' ? 'Mark reading for today' : 'Registrar lectura de hoy'}">
         <div style="display:flex; align-items:center; gap:10px; min-width:0; flex:1;">
-          <span class="emoji-dyn">${getHeroIcon('book-open', '', 24)}</span>
-          <div style="min-width:0; flex:1;">
-            <strong style="font-size:0.86rem; color:var(--text); display:block;">${l === 'en' ? 'Did you read today?' : '¿Avanzaste en tu lectura hoy?'}</strong>
-            <span style="font-size:0.75rem; color:var(--muted);">${l === 'en' ? 'Keep your daily reading streak alive.' : 'Suma tu avance diario tocando el botón.'}</span>
-          </div>
+          <span class="emoji-dyn" style="color:var(--cat-color-lecturas); display:flex; align-items:center;">${getHeroIcon('book-open', '', 20)}</span>
+          <strong style="font-size:0.88rem; font-weight:700; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${l === 'en' ? 'Did you read today?' : '¿Ya leíste hoy?'}</strong>
         </div>
-        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:8px 18px; font-size:0.84rem;">
+        <button type="button" class="btn-read-today" onclick="event.stopPropagation(); toggleLecturaHoy(event)" style="padding:6px 14px; font-size:0.82rem;">
           <span>${getHeroIcon('plus', '', 14)}</span> <span>${l === 'en' ? 'I read today' : 'Ya leí hoy'}</span>
         </button>
       </div>
