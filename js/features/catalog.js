@@ -895,8 +895,9 @@ function renderizarStats() {
       let rewatchHtml = '';
       if (s.admiteRewatch) {
         const countRewatches = regsSub.filter(r => r.esRewatch).length;
-        const countNuevos = countTotal - countRewatches;
-        rewatchHtml = `<span class="cat-subcat-row-rewatch">(${countNuevos} + ${countRewatches} ${getHeroIcon('arrow-path', '', 10)})</span>`;
+        if (countRewatches > 0) {
+          rewatchHtml = `<span class="cat-subcat-row-rewatch">${countRewatches} ${getHeroIcon('arrow-path', '', 10)}</span>`;
+        }
       }
       return `
         <div class="cat-subcat-row cat-subcat-row-${subKey}" onclick="event.stopPropagation(); cambiarCat('${cat}', '${s.id}')" title="${sNombre}">
@@ -905,8 +906,8 @@ function renderizarStats() {
             <span class="cat-subcat-row-name">${sNombre}</span>
           </div>
           <div class="cat-subcat-row-stats">
-            <span class="cat-subcat-row-count">${countTotal}</span>
             ${rewatchHtml}
+            <span class="cat-subcat-row-count">${countTotal}</span>
           </div>
         </div>
       `;
