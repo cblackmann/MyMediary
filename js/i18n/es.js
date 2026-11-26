@@ -78,7 +78,7 @@ window.MEDIARY_I18N_ES = {
   "table_th_calif": "Calificación",
   "table_th_comentario": "Comentario",
   "stat_ultimo": "Último Agregado",
-  "stat_mejor": "Mejores Calificados",
+  "stat_mejor": "Mejor Calificado",
   "stat_sin_reg": "Sin registros aún",
   "stat_sin_fecha": "Sin fecha registrada",
   "total_prefix": "Total:",

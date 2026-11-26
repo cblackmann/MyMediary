@@ -838,7 +838,9 @@ function iniciarRotacionEmpates(elementId, items, catDestino, subDestino) { if (
 if (document.hidden) return;
 currentIndex = (currentIndex + 1) % items.length; const cur = items[currentIndex]; const cardEl = document.getElementById(elementId); const tEl = document.getElementById(`${elementId}-title`), sEl = document.getElementById(`${elementId}-sub`), indEl = document.getElementById(`${elementId}-ind`);
 if (tEl && sEl) { tEl.style.opacity = '0'; sEl.style.opacity = '0'; setTimeout(() => { const f = (cur.fechaFin && cur.fechaFin !== 'Sin fecha') ? cur.fechaFin : cur.fechaInicio; tEl.textContent = cur.titulo;
-sEl.innerHTML = `${renderEstrellasVisuales(cur.calificacion)} <span style="margin-left:4px;">(${f !== 'Sin fecha' ? f : t('stat_sin_fecha')})</span>`; if (indEl) indEl.textContent = `[${currentIndex + 1}/${items.length}]`;
+const rotCalifHtml = (Number(cur.calificacion) > 0) ? renderEstrellasVisuales(cur.calificacion) : '';
+const rotDateHtml = (f && f !== 'Sin fecha') ? `<span class="cat-hl-date">${f}</span>` : '';
+sEl.innerHTML = (rotCalifHtml || rotDateHtml) ? `${rotCalifHtml}${rotDateHtml}` : `<span class="cat-hl-date">${t('stat_sin_fecha')}</span>`; if (indEl) indEl.textContent = `[${currentIndex + 1}/${items.length}]`;
 if (cardEl) cardEl.setAttribute('onclick', `navegarARegistroDesdeInicio('${cur.id}', '${catDestino}', '${subDestino}')`); tEl.style.opacity = '1'; sEl.style.opacity = '1'; }, 200); }
 }, 3000); carruselIntervalos.push(timer); }
 function renderizarStats() {
@@ -917,7 +919,6 @@ function renderizarStats() {
     if (cat === 'Lecturas') {
       destacados = `
         <div class="cat-highlights-col">
-          <div class="cat-col-header">${tLang('Destacados por Subcategoría', 'Highlights by Subcategory')}</div>
           <div class="cat-lecturas-structured-list">` + subsParaRender.map(s => {
         const u = obtenerRegistrosDeSubcategoria('Lecturas', s.id);
         const uTerminados = u.filter(r => esObraTerminada(r));
@@ -930,9 +931,13 @@ function renderizarStats() {
         if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, 'Lecturas', s.id), 50);
         const sNombre = (typeof I18N !== 'undefined' && I18N[l] && I18N[l].subs && I18N[l].subs[s.id]) || s.nombre;
 
-        const ultCalifHtml = (ult && Number(ult.calificacion) > 0) ? `${renderEstrellasVisuales(ult.calificacion)} ` : '';
-        const ultSubTxt = ult ? `${ultCalifHtml}<span style="${ultCalifHtml ? 'margin-left:4px;' : ''}">(${uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')})</span>` : '—';
-        const mejCalifHtml = mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : '—';
+        const ultCalifHtml = (ult && Number(ult.calificacion) > 0) ? renderEstrellasVisuales(ult.calificacion) : '';
+        const ultDateHtml = (uF && uF !== 'Sin fecha') ? `<span class="cat-hl-date">${uF}</span>` : '';
+        const ultSubTxt = (ultCalifHtml || ultDateHtml) ? `${ultCalifHtml}${ultDateHtml}` : (ult ? `<span class="cat-hl-date">${t('stat_sin_fecha')}</span>` : '');
+
+        const mejCalifHtml = mej ? renderEstrellasVisuales(mej.calificacion) : '';
+        const mejDateHtml = (mej && mF && mF !== 'Sin fecha') ? `<span class="cat-hl-date">${mF}</span>` : '';
+        const mejSubTxt = (mejCalifHtml || mejDateHtml) ? `${mejCalifHtml}${mejDateHtml}` : (mej ? `<span class="cat-hl-date">${t('stat_sin_fecha')}</span>` : '');
 
         const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria('Lecturas', s.id) : null;
         const subTitleColor = metaSub ? metaSub.colorVar : 'var(--accent)';
@@ -948,7 +953,7 @@ function renderizarStats() {
                   <span class="emoji-dyn">${getHeroIcon('clock', '', 12)}</span>
                   <span>${t('stat_ultimo')}</span>
                 </div>
-                <div class="cat-hl-title" title="${ult ? ult.titulo : ''}">${ult ? ult.titulo : t('stat_sin_reg')}</div>
+                <div class="cat-hl-title ${!ult ? 'is-empty' : ''}" title="${ult ? ult.titulo : ''}">${ult ? ult.titulo : t('stat_sin_reg')}</div>
                 <div class="cat-hl-meta">${ultSubTxt}</div>
               </div>
               <div class="cat-highlight-box ${mej ? 'is-clickable' : ''}" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', 'Lecturas', '${s.id}')"` : ''} style="${mej ? 'cursor:pointer;' : ''}">
@@ -957,8 +962,8 @@ function renderizarStats() {
                   <span>${t('stat_mejor')}</span>
                   ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-ind">[1/${mejores.length}]</span>` : ''}
                 </div>
-                <div class="cat-hl-title" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
-                <div class="cat-hl-meta" id="${cId}-sub">${mejCalifHtml}</div>
+                <div class="cat-hl-title ${!mej ? 'is-empty' : ''}" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
+                <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
               </div>
             </div>
           </div>
@@ -992,20 +997,23 @@ function renderizarStats() {
 
       if (mejores.length > 1) setTimeout(() => iniciarRotacionEmpates(cId, mejores, cat, subDestino), 50);
 
-      const ultCalifHtml = (ult && Number(ult.calificacion) > 0) ? `${renderEstrellasVisuales(ult.calificacion)} ` : '';
-      const ultSubTxt = ult ? `${ultCalifHtml}<span style="${ultCalifHtml ? 'margin-left:4px;' : ''}">(${uF !== 'Sin fecha' ? uF : t('stat_sin_fecha')})</span>` : '—';
-      const mejCalifHtml = mej ? `${renderEstrellasVisuales(mej.calificacion)} <span style="margin-left:4px;">(${mF !== 'Sin fecha' ? mF : t('stat_sin_fecha')})</span>` : '—';
+      const ultCalifHtml = (ult && Number(ult.calificacion) > 0) ? renderEstrellasVisuales(ult.calificacion) : '';
+      const ultDateHtml = (uF && uF !== 'Sin fecha') ? `<span class="cat-hl-date">${uF}</span>` : '';
+      const ultSubTxt = (ultCalifHtml || ultDateHtml) ? `${ultCalifHtml}${ultDateHtml}` : (ult ? `<span class="cat-hl-date">${t('stat_sin_fecha')}</span>` : '');
+
+      const mejCalifHtml = mej ? renderEstrellasVisuales(mej.calificacion) : '';
+      const mejDateHtml = (mej && mF && mF !== 'Sin fecha') ? `<span class="cat-hl-date">${mF}</span>` : '';
+      const mejSubTxt = (mejCalifHtml || mejDateHtml) ? `${mejCalifHtml}${mejDateHtml}` : (mej ? `<span class="cat-hl-date">${t('stat_sin_fecha')}</span>` : '');
 
       destacados = `
         <div class="cat-highlights-col">
-          <div class="cat-col-header">${tLang('Destacados', 'Highlights')}</div>
           <div class="cat-highlights-grid-two">
             <div class="cat-highlight-box ${ult ? 'is-clickable' : ''}" ${ult ? `onclick="navegarARegistroDesdeInicio('${ult.id}', '${cat}', '${subDestino}')"` : ''} style="${ult ? 'cursor:pointer;' : ''}">
               <div class="cat-hl-tag">
                 <span class="emoji-dyn">${getHeroIcon('clock', '', 12)}</span>
                 <span>${t('stat_ultimo')}</span>
               </div>
-              <div class="cat-hl-title" title="${ult ? ult.titulo : ''}">${ult ? ult.titulo : t('stat_sin_reg')}</div>
+              <div class="cat-hl-title ${!ult ? 'is-empty' : ''}" title="${ult ? ult.titulo : ''}">${ult ? ult.titulo : t('stat_sin_reg')}</div>
               <div class="cat-hl-meta">${ultSubTxt}</div>
             </div>
             <div class="cat-highlight-box ${mej ? 'is-clickable' : ''}" id="${cId}" ${mej ? `onclick="navegarARegistroDesdeInicio('${mej.id}', '${cat}', '${subDestino}')"` : ''} style="${mej ? 'cursor:pointer;' : ''}">
@@ -1014,8 +1022,8 @@ function renderizarStats() {
                 <span>${t('stat_mejor')}</span>
                 ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-ind">[1/${mejores.length}]</span>` : ''}
               </div>
-              <div class="cat-hl-title" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
-              <div class="cat-hl-meta" id="${cId}-sub">${mejCalifHtml}</div>
+              <div class="cat-hl-title ${!mej ? 'is-empty' : ''}" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
+              <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
             </div>
           </div>
         </div>
@@ -1037,7 +1045,6 @@ function renderizarStats() {
       </div>
       <div class="cat-wide-body">
         <div class="cat-subcats-col">
-          <div class="cat-col-header">${tLang('Subcategorías', 'Subcategories')}</div>
           <div class="cat-subcat-list">${pills}</div>
         </div>
         ${destacados}
