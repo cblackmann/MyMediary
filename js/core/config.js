@@ -367,7 +367,7 @@ function obtenerMetaColorCategoria(categoria, subcategoria) {
   const c = String(categoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   const s = String(subcategoria || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
 
-  // 1. Cómics (Naranjo)
+  // 1. Cómics (Terracota / Óxido suave #c87d55)
   if (s.includes('comic') || c.includes('comic')) {
     return {
       key: 'comics',
@@ -375,11 +375,11 @@ function obtenerMetaColorCategoria(categoria, subcategoria) {
       colorVar: 'var(--cat-color-comics)',
       bgVar: 'var(--cat-bg-comics)',
       borderVar: 'var(--cat-border-comics)',
-      hexDark: '#fb923c',
-      hexLight: '#ea580c'
+      hexDark: '#c87d55',
+      hexLight: '#a3552a'
     };
   }
-  // 2. Mangas (Rojo)
+  // 2. Mangas (Carmesí apagado / Ladrillo #b85d65)
   if (s.includes('manga') || c.includes('manga')) {
     return {
       key: 'mangas',
@@ -387,11 +387,11 @@ function obtenerMetaColorCategoria(categoria, subcategoria) {
       colorVar: 'var(--cat-color-mangas)',
       bgVar: 'var(--cat-bg-mangas)',
       borderVar: 'var(--cat-border-mangas)',
-      hexDark: '#f87171',
-      hexLight: '#dc2626'
+      hexDark: '#b85d65',
+      hexLight: '#963f47'
     };
   }
-  // 3. Libros (Amarillo)
+  // 3. Libros (Ocre dorado / Arena #c7a26b)
   if (s.includes('libro') || s.includes('book')) {
     return {
       key: 'libros',
@@ -399,11 +399,11 @@ function obtenerMetaColorCategoria(categoria, subcategoria) {
       colorVar: 'var(--cat-color-libros)',
       bgVar: 'var(--cat-bg-libros)',
       borderVar: 'var(--cat-border-libros)',
-      hexDark: '#facc15',
-      hexLight: '#ca8a04'
+      hexDark: '#c7a26b',
+      hexLight: '#96723c'
     };
   }
-  // 4. Lecturas (Café)
+  // 4. Lecturas (Taupe / Piedra cálida #a89f91)
   if (c.includes('lectura') || c.includes('read')) {
     return {
       key: 'lecturas',
@@ -411,11 +411,11 @@ function obtenerMetaColorCategoria(categoria, subcategoria) {
       colorVar: 'var(--cat-color-lecturas)',
       bgVar: 'var(--cat-bg-lecturas)',
       borderVar: 'var(--cat-border-lecturas)',
-      hexDark: '#d97706',
-      hexLight: '#92400e'
+      hexDark: '#a89f91',
+      hexLight: '#7c7263'
     };
   }
-  // 5. Películas (Morado)
+  // 5. Películas (Ciruela suave / Malva #b8869b)
   if (c.includes('pelicula') || c.includes('movie') || c.includes('film')) {
     return {
       key: 'peliculas',
@@ -423,11 +423,11 @@ function obtenerMetaColorCategoria(categoria, subcategoria) {
       colorVar: 'var(--cat-color-peliculas)',
       bgVar: 'var(--cat-bg-peliculas)',
       borderVar: 'var(--cat-border-peliculas)',
-      hexDark: '#c084fc',
-      hexLight: '#9333ea'
+      hexDark: '#b8869b',
+      hexLight: '#945d73'
     };
   }
-  // 6. Series (Celeste)
+  // 6. Series (Celeste pizarra / Agua apagado #6ba3a8)
   if (c.includes('serie') || c.includes('show') || c.includes('tv')) {
     return {
       key: 'series',
@@ -435,11 +435,11 @@ function obtenerMetaColorCategoria(categoria, subcategoria) {
       colorVar: 'var(--cat-color-series)',
       bgVar: 'var(--cat-bg-series)',
       borderVar: 'var(--cat-border-series)',
-      hexDark: '#38bdf8',
-      hexLight: '#0284c7'
+      hexDark: '#6ba3a8',
+      hexLight: '#4a7e83'
     };
   }
-  // 7. Música (Rosado)
+  // 7. Música (Rosa antiguo / Palo de rosa #c97b84)
   if (c.includes('musica') || c.includes('music') || s.includes('disco') || s.includes('album') || s.includes('artista') || s.includes('concierto')) {
     return {
       key: 'musica',
@@ -447,11 +447,11 @@ function obtenerMetaColorCategoria(categoria, subcategoria) {
       colorVar: 'var(--cat-color-musica)',
       bgVar: 'var(--cat-bg-musica)',
       borderVar: 'var(--cat-border-musica)',
-      hexDark: '#f472b6',
-      hexLight: '#db2777'
+      hexDark: '#c97b84',
+      hexLight: '#a8525c'
     };
   }
-  // 8. Juegos (Azul)
+  // 8. Juegos (Azul acero / Cobalto suave #5b89b8)
   if (c.includes('juego') || c.includes('game')) {
     return {
       key: 'juegos',
@@ -459,8 +459,8 @@ function obtenerMetaColorCategoria(categoria, subcategoria) {
       colorVar: 'var(--cat-color-juegos)',
       bgVar: 'var(--cat-bg-juegos)',
       borderVar: 'var(--cat-border-juegos)',
-      hexDark: '#60a5fa',
-      hexLight: '#2563eb'
+      hexDark: '#5b89b8',
+      hexLight: '#3b6a99'
     };
   }
 
