@@ -1430,7 +1430,19 @@ function dibujarTarjetaAmigoMusicaSimple(data) {
   const nick = data.amigoNickname || (data.userEmail ? data.userEmail.split('@')[0] : (l === 'en' ? 'Friend' : 'Amigo'));
   const userEmail = data.userEmail || '';
   const coverUrl = data.image || '';
-  const searchUrl = data.url || `https://open.spotify.com/search/${encodeURIComponent((title + ' ' + artist).trim())}`;
+  const albumUrl = data.albumUrl || data.album_url || (data.album && typeof data.album === 'object' ? data.album?.external_urls?.spotify : '');
+  const albumId = data.albumId || data.album_id || '';
+  const trackId = data.trackId || data.id || (data.url && data.url.includes('/track/') ? data.url.split('/track/')[1].split('?')[0] : '');
+  let searchUrl = '';
+  if (albumUrl) {
+    searchUrl = trackId && !albumUrl.includes('highlight=') ? `${albumUrl}${albumUrl.includes('?') ? '&' : '?'}highlight=spotify:track:${encodeURIComponent(trackId)}` : albumUrl;
+  } else if (albumId) {
+    searchUrl = `https://open.spotify.com/album/${encodeURIComponent(albumId)}${trackId ? `?highlight=spotify:track:${encodeURIComponent(trackId)}` : ''}`;
+  } else if (data.album && data.album !== 'Desconocido' && data.album !== 'Sin título') {
+    searchUrl = `https://open.spotify.com/search/${encodeURIComponent(data.album + (artist ? ' ' + artist : ''))}`;
+  } else {
+    searchUrl = `https://open.spotify.com/search/${encodeURIComponent(title + (artist ? ' ' + artist : ''))}`;
+  }
 
   const coverHtml = coverUrl
     ? `<img src="${escHtmlFeed_(coverUrl)}" alt="${escHtmlFeed_(title)}" loading="lazy">`
@@ -1463,9 +1475,6 @@ function dibujarTarjetaAmigoMusicaSimple(data) {
         </div>
       </div>
       <div class="home-live-action-box" onclick="event.stopPropagation()">
-        <button type="button" class="btn-live-quick-add" onclick="registrarDiscoActualEnMediary(decodeURIComponent('${safeAlbum}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Add album in Mediary' : 'Registrar disco en Mediary'}">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
         <a href="${escHtmlFeed_(searchUrl)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="Spotify">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
         </a>
@@ -1868,6 +1877,9 @@ function obtenerUltimasCancionesAmigos(limite = 15) {
           track: m.title || m.track,
           artist: m.artist || '',
           album: m.album || '',
+          albumUrl: m.albumUrl || m.album_url || (m.album && typeof m.album === 'object' ? m.album?.external_urls?.spotify : ''),
+          albumId: m.albumId || m.album_id || (m.album && typeof m.album === 'object' ? m.album?.id : ''),
+          trackId: m.trackId || m.id || (m.url && m.url.includes('/track/') ? m.url.split('/track/')[1].split('?')[0] : ''),
           image: m.image || '',
           url: m.url || '',
           playedAt: m.updatedAt || Date.now(),
@@ -1904,6 +1916,9 @@ function obtenerUltimasCancionesAmigos(limite = 15) {
                 track: tTitle,
                 artist: tr.artist || (Array.isArray(tr.artists) ? tr.artists.map(x => x.name || x).join(', ') : '') || '',
                 album: tr.album || '',
+                albumUrl: tr.album_url || tr.albumUrl || (tr.album && typeof tr.album === 'object' ? tr.album?.external_urls?.spotify : ''),
+                albumId: tr.album_id || tr.albumId || (tr.album && typeof tr.album === 'object' ? tr.album?.id : ''),
+                trackId: tr.id || (tr.url && tr.url.includes('/track/') ? tr.url.split('/track/')[1].split('?')[0] : ''),
                 image: tr.image || tr.albumArt || tr.cover || '',
                 url: tr.url || '',
                 playedAt: tr.played_at || '',
@@ -2068,11 +2083,27 @@ function renderizarUltimasCancionesAmigosInicio() {
       ? `<img loading="lazy" decoding="async" src="${escHtmlFeed_(it.amigoAvatar)}" style="width:100%;height:100%;object-fit:cover;">`
       : `<span>${escHtmlFeed_(it.amigoAvatar || '🦊')}</span>`;
 
-    const safeTitle = encodeURIComponent(title);
-    const safeArtist = encodeURIComponent(artist);
-    const serviceUrl = it.url || (isLastFm
-      ? `https://www.last.fm/search?q=${encodeURIComponent(title + ' ' + artist)}`
-      : `https://open.spotify.com/search/${encodeURIComponent(title + ' ' + artist)}`);
+    const albumUrl = it.albumUrl || it.album_url || (it.album && typeof it.album === 'object' ? it.album?.external_urls?.spotify : '');
+    const albumId = it.albumId || it.album_id || (it.album && typeof it.album === 'object' ? it.album?.id : '');
+    const trackId = it.trackId || it.id || (it.url && it.url.includes('/track/') ? it.url.split('/track/')[1].split('?')[0] : '');
+
+    let serviceUrl = '';
+    if (isLastFm) {
+      serviceUrl = it.url || `https://www.last.fm/search?q=${encodeURIComponent(title + ' ' + artist)}`;
+    } else {
+      // Para Spotify: abrir el disco al que pertenece la canción resaltada, sin reproducir automáticamente
+      if (albumUrl) {
+        serviceUrl = trackId && !albumUrl.includes('highlight=')
+          ? `${albumUrl}${albumUrl.includes('?') ? '&' : '?'}highlight=spotify:track:${encodeURIComponent(trackId)}`
+          : albumUrl;
+      } else if (albumId) {
+        serviceUrl = `https://open.spotify.com/album/${encodeURIComponent(albumId)}${trackId ? `?highlight=spotify:track:${encodeURIComponent(trackId)}` : ''}`;
+      } else if (album && album !== 'Desconocido' && album !== 'Sin título') {
+        serviceUrl = `https://open.spotify.com/search/${encodeURIComponent(album + (artist ? ' ' + artist : ''))}`;
+      } else {
+        serviceUrl = `https://open.spotify.com/search/${encodeURIComponent(title + (artist ? ' ' + artist : ''))}`;
+      }
+    }
 
     const perfilAccion = `verPerfilDeAmigo('${escHtmlFeed_(it.userEmail)}')`;
 
@@ -2081,7 +2112,7 @@ function renderizarUltimasCancionesAmigosInicio() {
       : `<svg width="18" height="18" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>`;
 
     html += `
-      <div class="home-friend-song-card ${isLastFm ? 'is-lastfm' : 'is-spotify'}" onclick="window.open('${escHtmlFeed_(serviceUrl)}', '_blank')" title="${escHtmlFeed_(title)} · ${escHtmlFeed_(artist)}">
+      <div class="home-friend-song-card ${isLastFm ? 'is-lastfm' : 'is-spotify'}" onclick="window.open('${escHtmlFeed_(serviceUrl)}', '_blank')" title="${escHtmlFeed_(title)} · ${escHtmlFeed_(artist)}${album ? ' (' + escHtmlFeed_(album) + ')' : ''}">
         <!-- Portada con mini-avatar superpuesto del amigo -->
         <div class="home-friend-song-cover-box" style="width:58px; height:58px; min-width:58px; max-width:58px; border-radius:4px; overflow:hidden; position:relative; background:var(--card); border:1px solid var(--border); box-shadow:0 2px 6px rgba(0,0,0,0.15); flex-shrink:0;">
           ${coverHtml}
@@ -2120,14 +2151,11 @@ function renderizarUltimasCancionesAmigosInicio() {
           ${repeatBadgeHtml}
         </div>
 
-        <!-- Columna derecha: Servicio + botón rápido -->
-        <div style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; gap:6px; flex-shrink:0;">
-          <a href="${escHtmlFeed_(serviceUrl)}" target="_blank" rel="noopener noreferrer" style="display:grid; place-items:center; width:22px; height:22px; transition:var(--tr);" onclick="event.stopPropagation()" title="${isLastFm ? 'Ver en Last.fm' : 'Escuchar en Spotify'}">
+        <!-- Columna derecha: Servicio -->
+        <div style="display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+          <a href="${escHtmlFeed_(serviceUrl)}" target="_blank" rel="noopener noreferrer" style="display:grid; place-items:center; width:22px; height:22px; transition:var(--tr);" onclick="event.stopPropagation()" title="${isLastFm ? 'Ver en Last.fm' : 'Abrir álbum en Spotify'}">
             ${logoSvg}
           </a>
-          <button type="button" class="btn-live-quick-add" style="width:24px; height:24px; border-radius:4px; padding:0; display:grid; place-items:center;" onclick="event.stopPropagation(); registrarDiscoActualEnMediary(decodeURIComponent('${safeTitle}'), decodeURIComponent('${safeArtist}'))" title="${l === 'en' ? 'Log in Mediary' : 'Registrar en Mediary'}">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:block;margin:auto;"><path d="M12 5v14M5 12h14"/></svg>
-          </button>
         </div>
       </div>
     `;

@@ -812,6 +812,8 @@ async function actualizarDatosSpotify(notificar = false) {
           name: t.name,
           artist: t.artists?.map(x => x.name).join(', ') || '',
           album: t.album?.name || '',
+          album_url: t.album?.external_urls?.spotify || '',
+          album_id: t.album?.id || '',
           image: t.album?.images?.[0]?.url || '',
           url: t.external_urls?.spotify || '',
           duration_ms: t.duration_ms,
@@ -1894,7 +1896,7 @@ function dibujarTarjetaSpotifySimple(data) {
   }, 40);
 
   return `
-    <div class="home-live-card-simple ${isCollapsed ? 'is-collapsed' : 'is-expanded'}" onclick="window.open('${escHtmlSpotify_(trackUrl)}', '_blank')" style="cursor:pointer;" title="${l === 'en' ? 'Open in Spotify' : 'Abrir en Spotify'}">
+    <div class="home-live-card-simple ${isCollapsed ? 'is-collapsed' : 'is-expanded'}" onclick="window.open('https://open.spotify.com', '_blank')" style="cursor:pointer;" title="${l === 'en' ? 'Open Spotify' : 'Abrir Spotify'}">
       <div class="home-live-top-row">
         <div class="home-live-cover-box">
           ${coverHtml}
@@ -1915,7 +1917,7 @@ function dibujarTarjetaSpotifySimple(data) {
           </div>
         </div>
         <div class="home-live-action-box" onclick="event.stopPropagation()">
-          <a href="${escHtmlSpotify_(trackUrl)}" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="${l === 'en' ? 'Open in Spotify' : 'Abrir en Spotify'}" onclick="event.stopPropagation()">
+          <a href="https://open.spotify.com" target="_blank" rel="noopener noreferrer" class="home-live-platform-icon" title="${l === 'en' ? 'Open Spotify' : 'Abrir Spotify'}" onclick="event.stopPropagation()">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.503 17.308c-.218.358-.684.471-1.042.253-2.855-1.745-6.449-2.14-10.682-1.173-.41.094-.817-.162-.911-.572-.094-.41.162-.817.572-.911 4.636-1.059 8.608-.611 11.81 1.361.358.218.471.684.253 1.042zm1.469-3.264c-.275.447-.86.59-1.307.315-3.268-2.008-8.25-2.591-12.115-1.417-.5.152-1.031-.132-1.183-.632-.152-.5.132-1.031.632-1.183 4.414-1.34 9.907-.687 13.658 1.62.447.275.59.86.315 1.307zm.126-3.41c-3.918-2.327-10.377-2.541-14.116-1.405-.6.182-1.238-.16-1.42-.76-.182-.6.16-1.238.76-1.42 4.298-1.305 11.434-1.055 15.932 1.614.54.32.716 1.02.396 1.56-.32.54-1.02.716-1.56.396z"/></svg>
           </a>
           <button type="button" class="btn-live-toggle-expand" onclick="togglePersonalLiveCardCollapse(event)" title="${isCollapsed ? (l === 'en' ? 'Expand' : 'Expandir') : (l === 'en' ? 'Collapse' : 'Reducir')}">
