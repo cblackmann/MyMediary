@@ -89,10 +89,32 @@ function instalarAppMediary() {
 }
 if (!window.IS_APPS_SCRIPT && 'serviceWorker' in navigator && location.protocol.startsWith('http')) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').then(reg => {
+    navigator.serviceWorker.register('./sw.js', { updateViaCache: 'none' }).then(reg => {
       reg.update().catch(() => {});
+      if (reg.waiting) {
+        reg.waiting.postMessage({ action: 'skipWaiting' });
+      }
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            newWorker.postMessage({ action: 'skipWaiting' });
+          }
+        });
+      });
     }).catch(() => {});
   });
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && navigator.serviceWorker && navigator.serviceWorker.ready) {
+      navigator.serviceWorker.ready.then(reg => {
+        reg.update().catch(() => {});
+        if (reg.waiting) reg.waiting.postMessage({ action: 'skipWaiting' });
+      }).catch(() => {});
+    }
+  });
+
   let refreshing = false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
     if (!refreshing) {
@@ -101,6 +123,36 @@ if (!window.IS_APPS_SCRIPT && 'serviceWorker' in navigator && location.protocol.
     }
   });
 }
+
+async function forzarActualizacionApp() {
+  const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
+  if (typeof mostrarToastPersonalizado === 'function') {
+    mostrarToastPersonalizado(isEn ? 'Checking and downloading latest version...' : 'Descargando e instalando última versión...');
+  }
+  try {
+    if ('serviceWorker' in navigator) {
+      const regs = await navigator.serviceWorker.getRegistrations();
+      for (const r of regs) {
+        await r.update();
+        if (r.waiting) r.waiting.postMessage({ action: 'skipWaiting' });
+      }
+    }
+    if ('caches' in window) {
+      const keys = await caches.keys();
+      for (const k of keys) {
+        if (k !== 'mediary-images-v1') {
+          await caches.delete(k);
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Error en forzarActualizacionApp:', e);
+  }
+  setTimeout(() => {
+    window.location.reload();
+  }, 350);
+}
+window.forzarActualizacionApp = forzarActualizacionApp;
 async function limpiarCachePortadasApp() {
   try {
     if ('caches' in window) {

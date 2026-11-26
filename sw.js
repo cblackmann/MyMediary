@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mediary-pwa-v256';
+const CACHE_NAME = 'mediary-pwa-v257';
 const IMAGE_CACHE_NAME = 'mediary-images-v1';
 const MAX_IMAGE_ENTRIES = 120;
 
@@ -146,6 +146,9 @@ self.addEventListener('fetch', e => {
 
 // Recepción de órdenes desde la interfaz (ej. vaciar caché de portadas bajo demanda)
 self.addEventListener('message', e => {
+  if (e.data && e.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
   if (e.data && e.data.action === 'CLEAR_IMAGE_CACHE') {
     caches.delete(IMAGE_CACHE_NAME).then(() => {
       if (e.ports && e.ports[0]) e.ports[0].postMessage({ success: true });
