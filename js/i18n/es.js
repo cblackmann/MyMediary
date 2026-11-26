@@ -665,7 +665,7 @@ window.MEDIARY_I18N_ES = {
   "cfg_supabase_active": "Activo",
   "cfg_migrate_sheets_title": "Copia todos tus registros desde Google Sheets",
   "pwa_update_title": "Actualización de la App",
-  "pwa_update_sub": "Versión v257 • Forzar descarga de novedades",
+  "pwa_update_sub": "Versión v258 • Forzar descarga de novedades",
   "pwa_update_btn": "Actualizar",
   "pwa_install_title": "Instalar Mediary",
   "pwa_install_sub": "Acceso directo en tu pantalla de inicio",

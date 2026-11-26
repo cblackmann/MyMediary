@@ -665,7 +665,7 @@ window.MEDIARY_I18N_EN = {
   "cfg_supabase_active": "Active",
   "cfg_migrate_sheets_title": "Copy all your records from Google Sheets",
   "pwa_update_title": "App Update",
-  "pwa_update_sub": "Version v257 • Force download updates",
+  "pwa_update_sub": "Version v258 • Force download updates",
   "pwa_update_btn": "Update",
   "pwa_install_title": "Install Mediary",
   "pwa_install_sub": "Shortcut on your home screen",
