@@ -1,23 +1,90 @@
 /* Mediary — js/features/catalog.js */
 
 // [Unificado] obtenerFechaHoyStr() se encuentra disponible globalmente
+let regPrecisionInicio = 'dia';
+let regPrecisionFin = 'dia';
+let regPrecisionActual = 'dia';
+
+function toggleDropdownTipoFecha(seccion, e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById(`menu-tipo-fecha-${seccion}`);
+  const btn = document.getElementById(`btn-tipo-fecha-${seccion}`);
+  const isOpen = menu && menu.style.display === 'flex';
+  document.querySelectorAll('.date-type-dropdown-menu').forEach(m => m.style.display = 'none');
+  document.querySelectorAll('.btn-tipo-fecha-integrated').forEach(b => b.classList.remove('open'));
+  if (menu && !isOpen) {
+    menu.style.display = 'flex';
+    if (btn) btn.classList.add('open');
+  }
+}
+
+function seleccionarTipoFecha(seccion, modo, e) {
+  if (e) e.stopPropagation();
+  if (seccion === 'inicio') {
+    regPrecisionInicio = modo;
+    regPrecisionActual = modo;
+  } else {
+    regPrecisionFin = modo;
+  }
+
+  const txtEl = document.getElementById(`txt-tipo-fecha-${seccion}`);
+  const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
+  let lbl = (modo === 'dia') ? (l === 'en' ? 'Exact' : 'Exacta') : (modo === 'mes' ? (l === 'en' ? 'Month' : 'Mes') : (l === 'en' ? 'Year' : 'Año'));
+  if (txtEl) txtEl.textContent = lbl;
+
+  document.querySelectorAll(`#menu-tipo-fecha-${seccion} .date-type-item`).forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-modo') === modo);
+  });
+
+  const menu = document.getElementById(`menu-tipo-fecha-${seccion}`);
+  const btn = document.getElementById(`btn-tipo-fecha-${seccion}`);
+  if (menu) menu.style.display = 'none';
+  if (btn) btn.classList.remove('open');
+
+  ['dia', 'mes', 'anio'].forEach(w => {
+    const el = document.getElementById(`wrap-prec-${w}-${seccion}`);
+    if (el) el.style.display = (w === modo) ? 'block' : 'none';
+  });
+
+  if (seccion === 'inicio') {
+    if (modo === 'mes') actualizarFechaDesdeMes('inicio');
+    else if (modo === 'anio') actualizarFechaDesdeSoloAnio('inicio');
+    const chkNo = document.getElementById('chk-no-fecha');
+    if (chkNo && chkNo.checked) {
+      chkNo.checked = false;
+      toggleSinFechaInicio(false);
+    }
+  } else {
+    if (modo === 'mes') actualizarFechaDesdeMes('fin');
+    else if (modo === 'anio') actualizarFechaDesdeSoloAnio('fin');
+    const chkNo = document.getElementById('chk-no-fecha-fin');
+    if (chkNo && chkNo.checked) {
+      chkNo.checked = false;
+      toggleSinFechaFin(false);
+    }
+  }
+}
+window.toggleDropdownTipoFecha = toggleDropdownTipoFecha;
+window.seleccionarTipoFecha = seleccionarTipoFecha;
+
 function establecerFechaHoyInicio() {
   const fechaHoy = obtenerFechaHoyStr();
   const chkNo = document.getElementById('chk-no-fecha');
-  if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFecha(false); }
-  if (regPrecisionActual === 'mes') {
+  if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFechaInicio(false); }
+  const modo = regPrecisionInicio || 'dia';
+  if (modo === 'mes') {
     const hoy = new Date();
     const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const selMes = document.getElementById('sel-mes-nombre');
-    const selAnio = document.getElementById('sel-mes-anio');
+    const selMes = document.getElementById('sel-mes-nombre-inicio') || document.getElementById('sel-mes-nombre');
+    const selAnio = document.getElementById('sel-mes-anio-inicio') || document.getElementById('sel-mes-anio');
     if (selMes) selMes.value = meses[hoy.getMonth()];
     if (selAnio) selAnio.value = String(hoy.getFullYear());
-    actualizarFechaDesdeMes();
-  } else if (regPrecisionActual === 'anio') {
+    actualizarFechaDesdeMes('inicio');
+  } else if (modo === 'anio') {
     const hoy = new Date();
-    const selAnio = document.getElementById('sel-solo-anio');
+    const selAnio = document.getElementById('sel-solo-anio-inicio') || document.getElementById('sel-solo-anio');
     if (selAnio) selAnio.value = String(hoy.getFullYear());
-    actualizarFechaDesdeSoloAnio();
+    actualizarFechaDesdeSoloAnio('inicio');
   } else {
     if (fpInicio) fpInicio.setDate(fechaHoy);
     else {
@@ -36,15 +103,34 @@ function toggleRewatchFormulario() {
 window.toggleRewatchFormulario = toggleRewatchFormulario;
 function establecerFechaHoyFin() {
   const fechaHoy = obtenerFechaHoyStr();
-  const chkNo = document.getElementById('chk-no-fecha');
-  if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFecha(false); }
+  const chkNo = document.getElementById('chk-no-fecha-fin');
+  if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFechaFin(false); }
   const chkProg = document.getElementById('chk-en-progreso');
   if (chkProg && chkProg.checked) {
     chkProg.checked = false;
     toggleEnProgresoFormulario();
   }
-  if (fpFin) fpFin.setDate(fechaHoy);
-  else document.getElementById('input-fecha-fin').value = fechaHoy;
+  const modo = regPrecisionFin || 'dia';
+  if (modo === 'mes') {
+    const hoy = new Date();
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const selMes = document.getElementById('sel-mes-nombre-fin');
+    const selAnio = document.getElementById('sel-mes-anio-fin');
+    if (selMes) selMes.value = meses[hoy.getMonth()];
+    if (selAnio) selAnio.value = String(hoy.getFullYear());
+    actualizarFechaDesdeMes('fin');
+  } else if (modo === 'anio') {
+    const hoy = new Date();
+    const selAnio = document.getElementById('sel-solo-anio-fin');
+    if (selAnio) selAnio.value = String(hoy.getFullYear());
+    actualizarFechaDesdeSoloAnio('fin');
+  } else {
+    if (fpFin) fpFin.setDate(fechaHoy);
+    else {
+      const el = document.getElementById('input-fecha-fin');
+      if (el) el.value = fechaHoy;
+    }
+  }
 }
 function establecerFechaHoy() {
   establecerFechaHoyInicio();
@@ -57,11 +143,12 @@ function configurarFormularioFechas() {
   const rango = subTieneRango(estado.categoria, estado.subcategoria);
   const colFin = document.getElementById('col-fecha-fin');
   if (colFin) {
-    const modo = regPrecisionActual || 'dia';
-    colFin.style.display = (rango && modo === 'dia') ? 'grid' : 'none';
+    colFin.style.display = rango ? 'block' : 'none';
   }
   const lblIni = document.getElementById('lbl-fecha-ini');
-  if (lblIni) lblIni.textContent = rango ? t('lbl_fecha_ini') : t('lbl_fecha_vis');
+  if (lblIni) lblIni.textContent = rango ? (t('lbl_fecha_ini') || 'Fecha de inicio:') : (t('lbl_fecha_vis') || 'Fecha:');
+  const lblFin = document.getElementById('lbl-fecha-fin');
+  if (lblFin) lblFin.textContent = t('lbl_fecha_fin') || 'Fecha de término:';
 }
 function sanitizarRegistroFechasFrontend(r) {
   let fI = sanitizarFechaFrontend(r.fechaInicio || r.fecha_inicio);
@@ -1284,7 +1371,10 @@ function seleccionarItem(it) {
     if (formPost) formPost.src = it.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'110\' height=\'160\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>';
     const chkNoF = document.getElementById('chk-no-fecha');
     if (chkNoF) chkNoF.checked = false;
-    toggleSinFecha(false);
+    toggleSinFechaInicio(false);
+    const chkNoFFin = document.getElementById('chk-no-fecha-fin');
+    if (chkNoFFin) chkNoFFin.checked = false;
+    toggleSinFechaFin(false);
     if (fpInicio) fpInicio.clear();
     if (fpFin) fpFin.clear();
     ['input-comentario','input-temporada-num','input-arco','input-numeros-abarcados','input-horas-jugadas'].forEach(id => {
@@ -1303,7 +1393,8 @@ function seleccionarItem(it) {
     if (chkRw) chkRw.checked = false;
     const btnRw = document.getElementById('btn-toggle-rewatch-form');
     if (btnRw) btnRw.classList.remove('active');
-    cambiarPrecisionFechaFormulario('dia');
+    seleccionarTipoFecha('inicio', 'dia');
+    seleccionarTipoFecha('fin', 'dia');
     const chkProg = document.getElementById('chk-en-progreso');
     if (chkProg) {
       chkProg.checked = false;
@@ -1360,7 +1451,6 @@ function dibujarHoverEstrellas(val) {
   });
   document.getElementById('rating-label').textContent = `${num.toFixed(1)} / 5`;
 }
-let regPrecisionActual = 'dia';
 function inicializarSelectoresFechasAproximadas() {
   const l = userPrefs.lang || 'es';
   const anios = obtenerListaAniosFechaAproximada();
@@ -1378,25 +1468,27 @@ function inicializarSelectoresFechasAproximadas() {
     poblarSemanasDelMes();
     actualizarFechaDesdeSemana();
   }
-  const selMesNom = document.getElementById('sel-mes-nombre');
-  const selMesAnio = document.getElementById('sel-mes-anio');
-  if (selMesNom && selMesAnio) {
-    const curValMesNom = selMesNom.value;
-    const curValMesAnio = selMesAnio.value;
-    selMesNom.innerHTML = meses.map(m => `<option value="${m}">${m}</option>`).join('');
-    selMesAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
-    const hoy = new Date();
-    selMesNom.value = curValMesNom || meses[hoy.getMonth()];
-    if (curValMesAnio) selMesAnio.value = curValMesAnio;
-    actualizarFechaDesdeMes();
-  }
-  const selSoloAnio = document.getElementById('sel-solo-anio');
-  if (selSoloAnio) {
-    const curValSolo = selSoloAnio.value;
-    selSoloAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
-    if (curValSolo) selSoloAnio.value = curValSolo;
-    actualizarFechaDesdeSoloAnio();
-  }
+  ['inicio', 'fin'].forEach(pref => {
+    const selMesNom = document.getElementById(`sel-mes-nombre-${pref}`) || (pref === 'inicio' ? document.getElementById('sel-mes-nombre') : null);
+    const selMesAnio = document.getElementById(`sel-mes-anio-${pref}`) || (pref === 'inicio' ? document.getElementById('sel-mes-anio') : null);
+    if (selMesNom && selMesAnio) {
+      const curValMesNom = selMesNom.value;
+      const curValMesAnio = selMesAnio.value;
+      selMesNom.innerHTML = meses.map(m => `<option value="${m}">${m}</option>`).join('');
+      selMesAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
+      const hoy = new Date();
+      selMesNom.value = curValMesNom || meses[hoy.getMonth()];
+      if (curValMesAnio) selMesAnio.value = curValMesAnio;
+      actualizarFechaDesdeMes(pref);
+    }
+    const selSoloAnio = document.getElementById(`sel-solo-anio-${pref}`) || (pref === 'inicio' ? document.getElementById('sel-solo-anio') : null);
+    if (selSoloAnio) {
+      const curValSolo = selSoloAnio.value;
+      selSoloAnio.innerHTML = anios.map(a => `<option value="${a}">${a}</option>`).join('');
+      if (curValSolo) selSoloAnio.value = curValSolo;
+      actualizarFechaDesdeSoloAnio(pref);
+    }
+  });
 }
 function poblarSemanasDelMes() {
   const selAnio = document.getElementById('sel-semana-anio');
@@ -1428,27 +1520,7 @@ function poblarSemanasDelMes() {
   });
 }
 function cambiarPrecisionFechaFormulario(modo) {
-  regPrecisionActual = modo;
-  const selTipo = document.getElementById('sel-tipo-fecha');
-  if (selTipo && selTipo.value !== modo) {
-    selTipo.value = modo;
-  }
-  document.querySelectorAll('#reg-prec-tabs .date-prec-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.id === `btn-reg-prec-${modo}`);
-  });
-  ['dia', 'semana', 'mes', 'anio'].forEach(w => {
-    const el = document.getElementById(`wrap-prec-${w}`);
-    if (el) el.style.display = (w === modo) ? 'block' : 'none';
-  });
-  if (modo === 'semana') actualizarFechaDesdeSemana();
-  else if (modo === 'mes') actualizarFechaDesdeMes();
-  else if (modo === 'anio') actualizarFechaDesdeSoloAnio();
-
-  const colFin = document.getElementById('col-fecha-fin');
-  if (colFin) {
-    const rango = (typeof subTieneRango === 'function' && typeof estado !== 'undefined') ? subTieneRango(estado.categoria, estado.subcategoria) : false;
-    colFin.style.display = (rango && modo === 'dia') ? 'grid' : 'none';
-  }
+  seleccionarTipoFecha('inicio', modo);
 }
 window.cambiarPrecisionFechaFormulario = cambiarPrecisionFechaFormulario;
 function actualizarFechaDesdeSemana() {
@@ -1457,84 +1529,152 @@ function actualizarFechaDesdeSemana() {
   const l = userPrefs.lang || 'es';
   if (selNum && badge) badge.innerHTML = `${getHeroIcon("bookmark", "", 12)} ${l === 'en' ? 'Logging in:' : 'Registrando en:'} ${selNum.value}`;
 }
-function actualizarFechaDesdeMes() {
-  const selMes = document.getElementById('sel-mes-nombre');
-  const selAnio = document.getElementById('sel-mes-anio');
+function actualizarFechaDesdeMes(seccion = 'inicio') {
+  const selMes = document.getElementById(`sel-mes-nombre-${seccion}`) || document.getElementById('sel-mes-nombre');
+  const selAnio = document.getElementById(`sel-mes-anio-${seccion}`) || document.getElementById('sel-mes-anio');
   const badge = document.getElementById('mes-preview-badge');
   const l = userPrefs.lang || 'es';
   if (selMes && selAnio && badge) badge.innerHTML = `${getHeroIcon("bookmark", "", 12)} ${l === 'en' ? 'Logging in:' : 'Registrando en:'} ${selMes.value} ${selAnio.value}`;
 }
-function actualizarFechaDesdeSoloAnio() {
-  const selAnio = document.getElementById('sel-solo-anio');
+function actualizarFechaDesdeSoloAnio(seccion = 'inicio') {
+  const selAnio = document.getElementById(`sel-solo-anio-${seccion}`) || document.getElementById('sel-solo-anio');
   const badge = document.getElementById('anio-preview-badge');
   const l = userPrefs.lang || 'es';
   if (selAnio && badge) badge.innerHTML = `${getHeroIcon("bookmark", "", 12)} ${l === 'en' ? 'Logging in year:' : 'Registrando en el año:'} ${selAnio.value}`;
 }
 function obtenerFechasParaGuardarNuevo() {
-  const sinF = document.getElementById('chk-no-fecha')?.checked;
-  if (sinF) return { fI: 'Sin fecha', fF: 'Sin fecha' };
   const admiteRango = subTieneRango(estado.categoria, estado.subcategoria);
-  if (regPrecisionActual === 'semana') {
-    const val = document.getElementById('sel-semana-num')?.value || '';
-    return { fI: val || 'Sin fecha', fF: val || 'Sin fecha' };
-  } else if (regPrecisionActual === 'mes') {
-    const mes = document.getElementById('sel-mes-nombre')?.value || '';
-    const anio = document.getElementById('sel-mes-anio')?.value || String(obtenerAnioActualSistema());
-    const val = `${mes} ${anio}`.trim();
-    return { fI: val || 'Sin fecha', fF: val || 'Sin fecha' };
-  } else if (regPrecisionActual === 'anio') {
-    const anio = document.getElementById('sel-solo-anio')?.value || String(obtenerAnioActualSistema());
-    return { fI: anio, fF: anio };
-  } else {
-    const fI = sanitizarFechaFrontend(document.getElementById('input-fecha-inicio')?.value);
-    const inpFinVal = document.getElementById('input-fecha-fin')?.value?.trim();
-    const fF = (admiteRango && inpFinVal) ? sanitizarFechaFrontend(inpFinVal) : (admiteRango ? 'Sin fecha' : fI);
-    const finalI = fI || 'Sin fecha';
-    const finalF = fF || 'Sin fecha';
-    return { fI: finalI, fF: finalF };
+
+  // 1. Fecha Inicio:
+  let fI = 'Sin fecha';
+  const sinFIni = document.getElementById('chk-no-fecha')?.checked;
+  if (!sinFIni) {
+    const modoIni = regPrecisionInicio || 'dia';
+    if (modoIni === 'mes') {
+      const mes = document.getElementById('sel-mes-nombre-inicio')?.value || document.getElementById('sel-mes-nombre')?.value || '';
+      const anio = document.getElementById('sel-mes-anio-inicio')?.value || document.getElementById('sel-mes-anio')?.value || String(obtenerAnioActualSistema());
+      fI = `${mes} ${anio}`.trim() || 'Sin fecha';
+    } else if (modoIni === 'anio') {
+      fI = document.getElementById('sel-solo-anio-inicio')?.value || document.getElementById('sel-solo-anio')?.value || String(obtenerAnioActualSistema());
+    } else {
+      const v = document.getElementById('input-fecha-inicio')?.value;
+      fI = sanitizarFechaFrontend(v) || 'Sin fecha';
+    }
   }
-}
-const restaurarHoverEstrellas = () => actualizarDisplayEstrellas(estado.calificacion);
-function toggleSinFecha(sinF) {
-  [fpInicio, fpFin].forEach((fp, idx) => {
-    const inp = document.getElementById(idx === 0 ? 'input-fecha-inicio' : 'input-fecha-fin');
-    if (fp) {
-      if (sinF) {
-        try { fp.clear(); fp.destroy(); } catch (_) {}
-        if (inp) { inp.disabled = true; inp.value = 'Sin fecha'; }
+
+  // 2. Fecha Fin:
+  let fF = 'Sin fecha';
+  if (!admiteRango) {
+    fF = fI;
+  } else {
+    const sinFFin = document.getElementById('chk-no-fecha-fin')?.checked;
+    if (!sinFFin) {
+      const modoFin = regPrecisionFin || 'dia';
+      if (modoFin === 'mes') {
+        const mes = document.getElementById('sel-mes-nombre-fin')?.value || '';
+        const anio = document.getElementById('sel-mes-anio-fin')?.value || String(obtenerAnioActualSistema());
+        fF = `${mes} ${anio}`.trim() || 'Sin fecha';
+      } else if (modoFin === 'anio') {
+        fF = document.getElementById('sel-solo-anio-fin')?.value || String(obtenerAnioActualSistema());
       } else {
-        if (inp) inp.disabled = false;
-        const l = userPrefs.lang === 'en' ? 'default' : 'es';
-        if (typeof flatpickr !== 'undefined') {
-          try {
-            if (idx === 0) fpInicio = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
-            else fpFin = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
-          } catch (_) {}
-        }
-      }
-    } else if (inp) {
-      if (sinF) {
-        inp.disabled = true;
-        inp.value = 'Sin fecha';
-      } else {
-        inp.disabled = false;
-        if (inp.value === 'Sin fecha') inp.value = '';
-        const l = userPrefs.lang === 'en' ? 'default' : 'es';
-        if (typeof flatpickr !== 'undefined') {
-          try {
-            if (idx === 0) fpInicio = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
-            else fpFin = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
-          } catch (_) {}
+        const inpFin = document.getElementById('input-fecha-fin');
+        const v = inpFin?.value?.trim();
+        if (esEnProgresoTexto(v)) {
+          fF = v;
+        } else {
+          fF = sanitizarFechaFrontend(v) || 'Sin fecha';
         }
       }
     }
-  });
-const tabs = document.getElementById('reg-prec-tabs');
-if (tabs) {
-  tabs.style.opacity = sinF ? '0.35' : '1';
-  tabs.style.pointerEvents = sinF ? 'none' : 'auto';
+  }
+
+  return { fI, fF };
 }
+const restaurarHoverEstrellas = () => actualizarDisplayEstrellas(estado.calificacion);
+
+function toggleSinFechaInicio(sinF) {
+  const inp = document.getElementById('input-fecha-inicio');
+  const btnTipo = document.getElementById('btn-tipo-fecha-inicio');
+  const btnHoy = document.getElementById('btn-hoy-inicio');
+  const selMesNom = document.getElementById('sel-mes-nombre-inicio');
+  const selMesAnio = document.getElementById('sel-mes-anio-inicio');
+  const selSoloAnio = document.getElementById('sel-solo-anio-inicio');
+
+  if (sinF) {
+    if (fpInicio) {
+      try { fpInicio.clear(); fpInicio.destroy(); fpInicio = null; } catch (_) {}
+    }
+    if (inp) { inp.disabled = true; inp.value = 'Sin fecha'; }
+    if (btnTipo) { btnTipo.disabled = true; btnTipo.style.opacity = '0.5'; btnTipo.style.pointerEvents = 'none'; }
+    if (btnHoy) { btnHoy.disabled = true; btnHoy.style.opacity = '0.5'; btnHoy.style.pointerEvents = 'none'; }
+    if (selMesNom) selMesNom.disabled = true;
+    if (selMesAnio) selMesAnio.disabled = true;
+    if (selSoloAnio) selSoloAnio.disabled = true;
+  } else {
+    if (inp) {
+      inp.disabled = false;
+      if (inp.value === 'Sin fecha') inp.value = '';
+    }
+    if (btnTipo) { btnTipo.disabled = false; btnTipo.style.opacity = '1'; btnTipo.style.pointerEvents = 'auto'; }
+    if (btnHoy) { btnHoy.disabled = false; btnHoy.style.opacity = '1'; btnHoy.style.pointerEvents = 'auto'; }
+    if (selMesNom) selMesNom.disabled = false;
+    if (selMesAnio) selMesAnio.disabled = false;
+    if (selSoloAnio) selSoloAnio.disabled = false;
+    const l = userPrefs.lang === 'en' ? 'default' : 'es';
+    if (typeof flatpickr !== 'undefined' && inp) {
+      try {
+        fpInicio = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+      } catch (_) {}
+    }
+  }
 }
+
+function toggleSinFechaFin(sinF) {
+  const inp = document.getElementById('input-fecha-fin');
+  const btnTipo = document.getElementById('btn-tipo-fecha-fin');
+  const btnHoy = document.getElementById('btn-hoy-fin');
+  const selMesNom = document.getElementById('sel-mes-nombre-fin');
+  const selMesAnio = document.getElementById('sel-mes-anio-fin');
+  const selSoloAnio = document.getElementById('sel-solo-anio-fin');
+
+  if (sinF) {
+    if (fpFin) {
+      try { fpFin.clear(); fpFin.destroy(); fpFin = null; } catch (_) {}
+    }
+    if (inp) { inp.disabled = true; inp.value = 'Sin fecha'; }
+    if (btnTipo) { btnTipo.disabled = true; btnTipo.style.opacity = '0.5'; btnTipo.style.pointerEvents = 'none'; }
+    if (btnHoy) { btnHoy.disabled = true; btnHoy.style.opacity = '0.5'; btnHoy.style.pointerEvents = 'none'; }
+    if (selMesNom) selMesNom.disabled = true;
+    if (selMesAnio) selMesAnio.disabled = true;
+    if (selSoloAnio) selSoloAnio.disabled = true;
+  } else {
+    if (inp) {
+      inp.disabled = false;
+      if (inp.value === 'Sin fecha') inp.value = '';
+    }
+    if (btnTipo) { btnTipo.disabled = false; btnTipo.style.opacity = '1'; btnTipo.style.pointerEvents = 'auto'; }
+    if (btnHoy) { btnHoy.disabled = false; btnHoy.style.opacity = '1'; btnHoy.style.pointerEvents = 'auto'; }
+    if (selMesNom) selMesNom.disabled = false;
+    if (selMesAnio) selMesAnio.disabled = false;
+    if (selSoloAnio) selSoloAnio.disabled = false;
+    const l = userPrefs.lang === 'en' ? 'default' : 'es';
+    if (typeof flatpickr !== 'undefined' && inp) {
+      try {
+        fpFin = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
+      } catch (_) {}
+    }
+  }
+}
+
+function toggleSinFecha(sinF) {
+  const chkIni = document.getElementById('chk-no-fecha');
+  if (chkIni) chkIni.checked = sinF;
+  toggleSinFechaInicio(sinF);
+}
+
+window.toggleSinFechaInicio = toggleSinFechaInicio;
+window.toggleSinFechaFin = toggleSinFechaFin;
+window.toggleSinFecha = toggleSinFecha;
 async function recalcularYActualizarPromedioArtista(nombreArtista, nuevoDisco = null) {
   if (!nombreArtista || !estado.userEmail) return null;
   const nombreNorm = String(nombreArtista).trim().toLowerCase();
@@ -3024,6 +3164,11 @@ function inicializarEventosBuscadores() {
     const contYear = document.querySelector('.year-picker-container');
     if (contYear && !contYear.contains(e.target)) {
       cerrarMenuAniosApp();
+    }
+    // 5. Menús desplegables de tipo de fecha
+    if (!e.target.closest('.custom-date-type-dropdown')) {
+      document.querySelectorAll('.date-type-dropdown-menu').forEach(m => m.style.display = 'none');
+      document.querySelectorAll('.btn-tipo-fecha-integrated').forEach(b => b.classList.remove('open'));
     }
   };
   document.addEventListener('click', manejarCierreFuera);

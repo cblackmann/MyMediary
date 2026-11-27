@@ -915,6 +915,7 @@
 <div class="form-group" id="grupo-rewatch-checkbox" style="display:none; margin:6px 0 10px;">
   <input type="checkbox" id="chk-es-rewatch" style="display:none;">
   <button type="button" id="btn-toggle-rewatch-form" class="btn-rewatch-toggle" onclick="toggleRewatchFormulario()">
+    <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;flex-shrink:0;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>
     <span data-i18n="btn_rewatch">Rewatch</span>
   </button>
 </div>
@@ -925,62 +926,118 @@
   </div>
 </div>
 <div class="form-group" id="fechas-container" style="margin:10px 0 12px;">
-  <!-- Fila Fecha Inicio / Única (4 columnas) -->
-  <div class="fecha-row-4col" id="fila-fecha-inicio">
-    <!-- Col 1: Selector tipo de fecha -->
-    <div class="fecha-col-tipo">
-      <select id="sel-tipo-fecha" class="form-input fecha-select-tipo" onchange="cambiarPrecisionFechaFormulario(this.value)">
-        <option value="dia" data-i18n="date_opt_exact">Fecha Exacta</option>
-        <option value="mes" data-i18n="date_opt_month">Mes</option>
-        <option value="anio" data-i18n="date_opt_year">Año</option>
-      </select>
-    </div>
-    <!-- Col 2: Selector fecha dedicado -->
-    <div class="fecha-col-picker">
-      <div id="wrap-prec-dia" class="date-prec-wrap">
-        <input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly data-i18n-placeholder="ph_date_format">
-      </div>
-      <div id="wrap-prec-mes" class="date-prec-wrap" style="display:none;">
-        <div style="display:flex; gap:4px; align-items:center;">
-          <select id="sel-mes-nombre" class="form-input" style="height:36px; min-height:36px; padding:2px 4px; font-size:0.78rem; flex:1.2;" onchange="actualizarFechaDesdeMes()"></select>
-          <select id="sel-mes-anio" class="form-input" style="height:36px; min-height:36px; padding:2px 4px; font-size:0.78rem; flex:1;" onchange="actualizarFechaDesdeMes()"></select>
+  <!-- Sección Fecha Inicio / Única -->
+  <div id="seccion-fecha-inicio">
+    <label class="fecha-section-title" id="lbl-fecha-ini" data-i18n="lbl_fecha_ini">Fecha de inicio:</label>
+    <div class="fecha-row-4col" id="fila-fecha-inicio">
+      <!-- Col 1: Selector tipo de fecha integrado -->
+      <div class="fecha-col-tipo">
+        <div class="custom-date-type-dropdown" id="dropdown-tipo-fecha-inicio">
+          <button type="button" class="btn-tipo-fecha-integrated" id="btn-tipo-fecha-inicio" onclick="toggleDropdownTipoFecha('inicio', event)">
+            <span id="txt-tipo-fecha-inicio" data-i18n="date_opt_exact_short">Exacta</span>
+            <svg class="h-icon dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+          </button>
+          <div class="date-type-dropdown-menu" id="menu-tipo-fecha-inicio" style="display:none;" onclick="event.stopPropagation()">
+            <button type="button" class="date-type-item active" id="opt-tipo-inicio-dia" data-modo="dia" onclick="seleccionarTipoFecha('inicio', 'dia', event)">
+              <span data-i18n="date_opt_exact">Fecha Exacta</span>
+            </button>
+            <button type="button" class="date-type-item" id="opt-tipo-inicio-mes" data-modo="mes" onclick="seleccionarTipoFecha('inicio', 'mes', event)">
+              <span data-i18n="date_opt_month">Mes</span>
+            </button>
+            <button type="button" class="date-type-item" id="opt-tipo-inicio-anio" data-modo="anio" onclick="seleccionarTipoFecha('inicio', 'anio', event)">
+              <span data-i18n="date_opt_year">Año</span>
+            </button>
+          </div>
         </div>
       </div>
-      <div id="wrap-prec-anio" class="date-prec-wrap" style="display:none;">
-        <select id="sel-solo-anio" class="form-input" style="height:36px; min-height:36px; padding:2px 6px; font-size:0.82rem; width:100%;" onchange="actualizarFechaDesdeSoloAnio()"></select>
+      <!-- Col 2: Selector fecha dedicado -->
+      <div class="fecha-col-picker">
+        <div id="wrap-prec-dia-inicio" class="date-prec-wrap">
+          <input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly data-i18n-placeholder="ph_date_format">
+        </div>
+        <div id="wrap-prec-mes-inicio" class="date-prec-wrap" style="display:none;">
+          <div style="display:flex; gap:4px; align-items:center;">
+            <select id="sel-mes-nombre-inicio" class="form-input" style="height:36px; min-height:36px; padding:2px 4px; font-size:0.78rem; flex:1.2;" onchange="actualizarFechaDesdeMes('inicio')"></select>
+            <select id="sel-mes-anio-inicio" class="form-input" style="height:36px; min-height:36px; padding:2px 4px; font-size:0.78rem; flex:1;" onchange="actualizarFechaDesdeMes('inicio')"></select>
+          </div>
+        </div>
+        <div id="wrap-prec-anio-inicio" class="date-prec-wrap" style="display:none;">
+          <select id="sel-solo-anio-inicio" class="form-input" style="height:36px; min-height:36px; padding:2px 6px; font-size:0.82rem; width:100%;" onchange="actualizarFechaDesdeSoloAnio('inicio')"></select>
+        </div>
+      </div>
+      <!-- Col 3: Botón Hoy -->
+      <div class="fecha-col-hoy">
+        <button type="button" class="btn-today-pill btn-today-no-icon" id="btn-hoy-inicio" onclick="establecerFechaHoyInicio()" title="Hoy" data-i18n="btn_today">Hoy</button>
+      </div>
+      <!-- Col 4: Casilla No registrar -->
+      <div class="fecha-col-noreg">
+        <label for="chk-no-fecha" class="chk-no-reg-label">
+          <input type="checkbox" id="chk-no-fecha" onchange="toggleSinFechaInicio(this.checked)">
+          <span data-i18n="chk_no_fecha">No registrar</span>
+        </label>
       </div>
     </div>
-    <!-- Col 3: Botón Hoy (sin ícono) -->
-    <div class="fecha-col-hoy">
-      <button type="button" class="btn-today-pill btn-today-no-icon" onclick="establecerFechaHoyInicio()" title="Hoy" data-i18n="btn_today">Hoy</button>
-    </div>
-    <!-- Col 4: Casilla No registrar -->
-    <div class="fecha-col-noreg">
-      <label for="chk-no-fecha" class="chk-no-reg-label">
-        <input type="checkbox" id="chk-no-fecha" onchange="toggleSinFecha(this.checked)">
-        <span data-i18n="chk_no_fecha">No registrar</span>
-      </label>
+  </div>
+
+  <!-- Sección Fecha Término (cuando hay rango) -->
+  <div id="col-fecha-fin" style="display:none; margin-top:10px;">
+    <label class="fecha-section-title" id="lbl-fecha-fin" data-i18n="lbl_fecha_fin">Fecha de término:</label>
+    <div class="fecha-row-4col" id="fila-fecha-fin">
+      <!-- Col 1: Selector tipo de fecha integrado -->
+      <div class="fecha-col-tipo">
+        <div class="custom-date-type-dropdown" id="dropdown-tipo-fecha-fin">
+          <button type="button" class="btn-tipo-fecha-integrated" id="btn-tipo-fecha-fin" onclick="toggleDropdownTipoFecha('fin', event)">
+            <span id="txt-tipo-fecha-fin" data-i18n="date_opt_exact_short">Exacta</span>
+            <svg class="h-icon dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+          </button>
+          <div class="date-type-dropdown-menu" id="menu-tipo-fecha-fin" style="display:none;" onclick="event.stopPropagation()">
+            <button type="button" class="date-type-item active" id="opt-tipo-fin-dia" data-modo="dia" onclick="seleccionarTipoFecha('fin', 'dia', event)">
+              <span data-i18n="date_opt_exact">Fecha Exacta</span>
+            </button>
+            <button type="button" class="date-type-item" id="opt-tipo-fin-mes" data-modo="mes" onclick="seleccionarTipoFecha('fin', 'mes', event)">
+              <span data-i18n="date_opt_month">Mes</span>
+            </button>
+            <button type="button" class="date-type-item" id="opt-tipo-fin-anio" data-modo="anio" onclick="seleccionarTipoFecha('fin', 'anio', event)">
+              <span data-i18n="date_opt_year">Año</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- Col 2: Selector fecha dedicado -->
+      <div class="fecha-col-picker">
+        <div id="wrap-prec-dia-fin" class="date-prec-wrap">
+          <input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly data-i18n-placeholder="ph_date_format">
+        </div>
+        <div id="wrap-prec-mes-fin" class="date-prec-wrap" style="display:none;">
+          <div style="display:flex; gap:4px; align-items:center;">
+            <select id="sel-mes-nombre-fin" class="form-input" style="height:36px; min-height:36px; padding:2px 4px; font-size:0.78rem; flex:1.2;" onchange="actualizarFechaDesdeMes('fin')"></select>
+            <select id="sel-mes-anio-fin" class="form-input" style="height:36px; min-height:36px; padding:2px 4px; font-size:0.78rem; flex:1;" onchange="actualizarFechaDesdeMes('fin')"></select>
+          </div>
+        </div>
+        <div id="wrap-prec-anio-fin" class="date-prec-wrap" style="display:none;">
+          <select id="sel-solo-anio-fin" class="form-input" style="height:36px; min-height:36px; padding:2px 6px; font-size:0.82rem; width:100%;" onchange="actualizarFechaDesdeSoloAnio('fin')"></select>
+        </div>
+      </div>
+      <!-- Col 3: Botón Hoy -->
+      <div class="fecha-col-hoy">
+        <button type="button" class="btn-today-pill btn-today-no-icon" id="btn-hoy-fin" onclick="establecerFechaHoyFin()" title="Hoy" data-i18n="btn_today">Hoy</button>
+      </div>
+      <!-- Col 4: Casilla No registrar -->
+      <div class="fecha-col-noreg">
+        <label for="chk-no-fecha-fin" class="chk-no-reg-label">
+          <input type="checkbox" id="chk-no-fecha-fin" onchange="toggleSinFechaFin(this.checked)">
+          <span data-i18n="chk_no_fecha">No registrar</span>
+        </label>
+      </div>
     </div>
   </div>
 
-  <!-- Fila Fecha Término (cuando hay rango) -->
-  <div class="fecha-row-4col" id="col-fecha-fin" style="display:none; margin-top:8px;">
-    <div class="fecha-col-tipo">
-      <span class="fecha-tipo-fin-label" data-i18n="lbl_fecha_fin_badge">Fin</span>
-    </div>
-    <div class="fecha-col-picker">
-      <input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly data-i18n-placeholder="ph_date_format">
-    </div>
-    <div class="fecha-col-hoy">
-      <button type="button" class="btn-today-pill btn-today-no-icon" onclick="establecerFechaHoyFin()" title="Hoy" data-i18n="btn_today">Hoy</button>
-    </div>
-    <div class="fecha-col-noreg"></div>
-  </div>
-
-  <!-- Botón Aún viendo/jugando/leyendo/escuchando (simplificado debajo de fecha fin) -->
-  <div id="grupo-en-progreso" style="display:none; margin-top:8px;">
+  <!-- Botón Aún viendo/jugando/leyendo/escuchando (simplificado y estilizado debajo de fecha fin) -->
+  <div id="grupo-en-progreso" style="display:none; margin-top:10px;">
     <input type="checkbox" id="chk-en-progreso" style="display:none;">
     <button type="button" id="btn-quick-en-progreso" class="btn-aun-viendo-simple" onclick="quickGuardarEnProgreso()">
+      <span class="btn-aun-viendo-pulse"></span>
+      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;flex-shrink:0;"><path d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"/></svg>
       <span id="texto-en-progreso" data-i18n="lbl_still_watching">Aún viendo</span>
     </button>
   </div>
@@ -1816,7 +1873,7 @@
 <div id="cfg-update-pwa-wrap" style="margin:14px 0; padding:12px 14px; background:rgba(56,189,248,0.06); border:1px dashed rgba(56,189,248,0.3); border-radius:3px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
   <div style="min-width:0;">
     <strong style="font-size:0.86rem; color:var(--text); display:block;" data-i18n="pwa_update_title">Actualización de la App</strong>
-    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v259 • Forzar descarga de novedades</span>
+    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v260 • Forzar descarga de novedades</span>
   </div>
   <button type="button" class="cfg-link-toggle-btn" id="btn-update-pwa" onclick="forzarActualizacionApp()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;" data-i18n="pwa_update_btn">
     <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>Actualizar
