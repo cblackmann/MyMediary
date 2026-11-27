@@ -5,9 +5,35 @@ function establecerFechaHoyInicio() {
   const fechaHoy = obtenerFechaHoyStr();
   const chkNo = document.getElementById('chk-no-fecha');
   if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFecha(false); }
-  if (fpInicio) fpInicio.setDate(fechaHoy);
-  else document.getElementById('input-fecha-inicio').value = fechaHoy;
+  if (regPrecisionActual === 'mes') {
+    const hoy = new Date();
+    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    const selMes = document.getElementById('sel-mes-nombre');
+    const selAnio = document.getElementById('sel-mes-anio');
+    if (selMes) selMes.value = meses[hoy.getMonth()];
+    if (selAnio) selAnio.value = String(hoy.getFullYear());
+    actualizarFechaDesdeMes();
+  } else if (regPrecisionActual === 'anio') {
+    const hoy = new Date();
+    const selAnio = document.getElementById('sel-solo-anio');
+    if (selAnio) selAnio.value = String(hoy.getFullYear());
+    actualizarFechaDesdeSoloAnio();
+  } else {
+    if (fpInicio) fpInicio.setDate(fechaHoy);
+    else {
+      const el = document.getElementById('input-fecha-inicio');
+      if (el) el.value = fechaHoy;
+    }
+  }
 }
+function toggleRewatchFormulario() {
+  const chk = document.getElementById('chk-es-rewatch');
+  const btn = document.getElementById('btn-toggle-rewatch-form');
+  if (!chk) return;
+  chk.checked = !chk.checked;
+  if (btn) btn.classList.toggle('active', chk.checked);
+}
+window.toggleRewatchFormulario = toggleRewatchFormulario;
 function establecerFechaHoyFin() {
   const fechaHoy = obtenerFechaHoyStr();
   const chkNo = document.getElementById('chk-no-fecha');
@@ -27,7 +53,16 @@ function establecerFechaHoy() {
 }
 function manejarEnterComentario(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); guardarNuevoElemento(); }
 }
-function configurarFormularioFechas() { const rango = subTieneRango(estado.categoria, estado.subcategoria); document.getElementById('col-fecha-fin').style.display = rango ? 'block' : 'none'; document.getElementById('lbl-fecha-ini').textContent = rango ? t('lbl_fecha_ini') : t('lbl_fecha_vis'); }
+function configurarFormularioFechas() {
+  const rango = subTieneRango(estado.categoria, estado.subcategoria);
+  const colFin = document.getElementById('col-fecha-fin');
+  if (colFin) {
+    const modo = regPrecisionActual || 'dia';
+    colFin.style.display = (rango && modo === 'dia') ? 'grid' : 'none';
+  }
+  const lblIni = document.getElementById('lbl-fecha-ini');
+  if (lblIni) lblIni.textContent = rango ? t('lbl_fecha_ini') : t('lbl_fecha_vis');
+}
 function sanitizarRegistroFechasFrontend(r) {
   let fI = sanitizarFechaFrontend(r.fechaInicio || r.fecha_inicio);
   let fF = sanitizarFechaFrontend(r.fechaFin || r.fecha_fin);
@@ -1266,6 +1301,9 @@ function seleccionarItem(it) {
     }
     const chkRw = document.getElementById('chk-es-rewatch');
     if (chkRw) chkRw.checked = false;
+    const btnRw = document.getElementById('btn-toggle-rewatch-form');
+    if (btnRw) btnRw.classList.remove('active');
+    cambiarPrecisionFechaFormulario('dia');
     const chkProg = document.getElementById('chk-en-progreso');
     if (chkProg) {
       chkProg.checked = false;
@@ -1391,6 +1429,10 @@ function poblarSemanasDelMes() {
 }
 function cambiarPrecisionFechaFormulario(modo) {
   regPrecisionActual = modo;
+  const selTipo = document.getElementById('sel-tipo-fecha');
+  if (selTipo && selTipo.value !== modo) {
+    selTipo.value = modo;
+  }
   document.querySelectorAll('#reg-prec-tabs .date-prec-btn').forEach(btn => {
     btn.classList.toggle('active', btn.id === `btn-reg-prec-${modo}`);
   });
@@ -1401,7 +1443,14 @@ function cambiarPrecisionFechaFormulario(modo) {
   if (modo === 'semana') actualizarFechaDesdeSemana();
   else if (modo === 'mes') actualizarFechaDesdeMes();
   else if (modo === 'anio') actualizarFechaDesdeSoloAnio();
+
+  const colFin = document.getElementById('col-fecha-fin');
+  if (colFin) {
+    const rango = (typeof subTieneRango === 'function' && typeof estado !== 'undefined') ? subTieneRango(estado.categoria, estado.subcategoria) : false;
+    colFin.style.display = (rango && modo === 'dia') ? 'grid' : 'none';
+  }
 }
+window.cambiarPrecisionFechaFormulario = cambiarPrecisionFechaFormulario;
 function actualizarFechaDesdeSemana() {
   const selNum = document.getElementById('sel-semana-num');
   const badge = document.getElementById('semana-preview-badge');

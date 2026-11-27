@@ -899,102 +899,108 @@
 <button type="button" class="btn-toggle-tipo" id="btn-tipo-festival" onclick="seleccionarTipoEvento('Festival')"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"/></svg> </span><span data-i18n="concierto_btn_festival">Festival</span></button> </div> </div> <div class="form-group" style="position:relative;"> <label data-i18n="concierto_buscar_art">Buscar y agregar artistas que tocaron:</label> <input type="search" id="input-buscar-artista-concierto" class="form-input" placeholder="Escribe el nombre del artista..." oninput="buscarArtistaEnVivoConcierto(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_concert_artist">
 <div id="search-results-artistas" class="search-results"></div> </div> <div class="form-group"> <label data-i18n="concierto_agregados">Artistas agregados:</label> <div id="contenedor-artistas-etiquetas" class="artistas-seleccionados-wrap"><span style="color:var(--muted); font-size:.85rem; font-style:italic;" data-i18n="concierto_vacio">No has agregado artistas aún.</span></div>
 </div> <button type="button" class="btn-save" style="margin-top:10px;" onclick="prepararFormularioConcierto()"><span data-i18n="concierto_continuar">Continuar con calificación y fecha</span> <svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/></svg></button> </div> <div id="detail-form" class="detail-card"> <button type="button" class="btn-close-form" title="Cerrar registro" onclick="ocultarFormulario()" data-i18n-title="title_close_record"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button> <div class="media-info">
-<img id="form-poster" class="media-poster" src="" alt="Poster"> <div class="media-meta"> <h3 id="form-titulo" data-i18n="lbl_default_title">Título</h3> <div id="form-subtitulo" class="sub-title"></div> <div id="form-creador-anio" class="author-year"></div> <p id="form-sinopsis"></p> <div id="form-amigos-actividad" style="display:none;margin-top:8px;"></div> </div> </div> <div class="form-group" id="grupo-temporada" style="display:none;"> <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
-<div style="flex:1; min-width:140px;"> <label data-i18n="lbl_temporada_num">¿Qué número de temporada es?:</label> <input type="number" id="input-temporada-num" class="form-input" placeholder="Ej: 1" min="1" oninput="actualizarAnioTemporada(this.value)" data-i18n-placeholder="ph_season_num"> </div> <div class="checkbox-row" style="margin-top:18px;"> <input type="checkbox" id="chk-temporada-unica"> <label for="chk-temporada-unica" data-i18n="chk_temporada_unica">¿Es temporada única? (Guardar también en Series)</label>
-</div> </div> </div> <div class="form-group" id="grupo-comic-manga" style="display:none;"> <div class="date-row"> <div style="flex:1;"><label data-i18n="lbl_arco">Nombre del Arco:</label><input type="text" id="input-arco" class="form-input" placeholder="Ej: Batman: Año Uno / Marineford" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_arc"></div>
-<div style="flex:1;"><label data-i18n="lbl_numeros">Números que abarca:</label><input type="text" id="input-numeros-abarcados" class="form-input" placeholder="Ej: 404-407 / 550-580" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_issues_covered"></div> </div> </div> <div class="form-group" id="grupo-horas-juegos" style="display:none;"> <label data-i18n="lbl_horas">¿Cuántas horas te tomó jugar?:</label> <input type="number" id="input-horas-jugadas" class="form-input" placeholder="Ej: 30" min="1" style="max-width:160px;" data-i18n-placeholder="ph_hours_played">
-</div> <div class="form-group" id="fechas-container">
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
-    <span style="font-size:0.8rem;color:var(--muted);font-weight:600;" data-i18n="lbl_when_completed">¿Cuándo lo completaste?:</span>
-    <div class="date-precision-tabs" id="reg-prec-tabs">
-      <button type="button" class="date-prec-btn active" id="btn-reg-prec-dia" onclick="cambiarPrecisionFechaFormulario('dia')" data-i18n="date_prec_day"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>Día exacto</button>
-      <button type="button" class="date-prec-btn" id="btn-reg-prec-semana" onclick="cambiarPrecisionFechaFormulario('semana')" data-i18n="date_prec_week"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>Semana</button>
-      <button type="button" class="date-prec-btn" id="btn-reg-prec-mes" onclick="cambiarPrecisionFechaFormulario('mes')" data-i18n="date_prec_month"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;margin-right:4px;"><path d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg>Mes</button>
-      <button type="button" class="date-prec-btn" id="btn-reg-prec-anio" onclick="cambiarPrecisionFechaFormulario('anio')" data-i18n="date_prec_year"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;margin-right:4px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>Año</button>
+<img id="form-poster" class="media-poster" src="" alt="Poster"> <div class="media-meta"> <h3 id="form-titulo" data-i18n="lbl_default_title">Título</h3> <div id="form-subtitulo" class="sub-title"></div> <div id="form-creador-anio" class="author-year"></div> <p id="form-sinopsis"></p> <div id="form-amigos-actividad" style="display:none;margin-top:8px;"></div> </div> </div>
+<div class="form-group" id="grupo-temporada" style="display:none; margin:10px 0 12px;">
+  <div style="display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+    <div style="display:inline-flex; align-items:center; gap:8px;">
+      <label for="input-temporada-num" style="margin:0; font-size:0.86rem; font-weight:600; white-space:nowrap;" data-i18n="lbl_temporada_num">Número de Temporada</label>
+      <input type="number" id="input-temporada-num" class="form-input" placeholder="1" min="1" oninput="actualizarAnioTemporada(this.value)" style="width:64px; height:36px; min-height:36px; text-align:center; padding:4px 6px; font-weight:700;">
+    </div>
+    <div class="checkbox-row" style="margin:0; display:inline-flex; align-items:center; gap:6px;">
+      <input type="checkbox" id="chk-temporada-unica" style="width:17px; height:17px; cursor:pointer; accent-color:var(--accent);">
+      <label for="chk-temporada-unica" style="margin:0; font-size:0.86rem; font-weight:600; cursor:pointer; white-space:nowrap;" data-i18n="chk_temporada_unica">Serie Limitada</label>
     </div>
   </div>
-  <!-- Modo Día -->
-  <div id="wrap-prec-dia" class="date-prec-wrap">
-    <div class="date-row" style="align-items:flex-start;">
-      <div style="flex:1; min-width:140px;">
-        <label id="lbl-fecha-ini" data-i18n="lbl_fecha_ini" style="display:block; margin:0 0 5px 0; font-size:0.82rem; color:var(--muted); font-weight:600;">Fecha de inicio:</label>
-        <div class="date-input-group">
-          <input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly data-i18n-placeholder="ph_date_format">
-          <button type="button" class="btn-today-pill btn-today-input" onclick="establecerFechaHoyInicio()" title="Poner fecha de hoy en inicio" data-i18n="btn_today" data-i18n-title="title_today_start"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-right:3px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>Hoy</button>
-        </div>
-      </div>
-      <div style="flex:1; min-width:140px;" id="col-fecha-fin">
-        <label id="lbl-fecha-fin" data-i18n="lbl_fecha_fin" style="display:block; margin:0 0 5px 0; font-size:0.82rem; color:var(--muted); font-weight:600;">Fecha de término:</label>
-        <div class="date-input-group">
-          <input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly data-i18n-placeholder="ph_date_format">
-          <button type="button" class="btn-today-pill btn-today-input" onclick="establecerFechaHoyFin()" title="Poner fecha de hoy en término" data-i18n="btn_today" data-i18n-title="title_today_end"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-right:3px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5m-9-3h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z"/></svg>Hoy</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Modo Semana -->
-  <div id="wrap-prec-semana" class="date-prec-wrap" style="display:none;">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-      <div style="flex:1;min-width:105px;">
-        <label style="font-size:0.75rem;color:var(--muted);" data-i18n="lbl_approx_year">Año:</label>
-        <select id="sel-semana-anio" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeSemana()"></select>
-      </div>
-      <div style="flex:1.2;min-width:125px;">
-        <label style="font-size:0.75rem;color:var(--muted);" data-i18n="lbl_approx_month">Mes:</label>
-        <select id="sel-semana-mes" class="form-input" style="height:38px;padding:4px 8px;" onchange="poblarSemanasDelMes(); actualizarFechaDesdeSemana();"></select>
-      </div>
-      <div style="flex:1.8;min-width:180px;">
-        <label style="font-size:0.75rem;color:var(--muted);" data-i18n="lbl_approx_week">Semana del mes:</label>
-        <select id="sel-semana-num" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeSemana()"></select>
-      </div>
-    </div>
-    <div id="semana-preview-badge" style="font-size:0.78rem;color:var(--accent);margin-top:6px;font-weight:600;"></div>
-  </div>
-  <!-- Modo Mes -->
-  <div id="wrap-prec-mes" class="date-prec-wrap" style="display:none;">
-    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-      <div style="flex:1.2;min-width:140px;">
-        <label style="font-size:0.75rem;color:var(--muted);" data-i18n="lbl_approx_month">Mes:</label>
-        <select id="sel-mes-nombre" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeMes()"></select>
-      </div>
-      <div style="flex:1;min-width:110px;">
-        <label style="font-size:0.75rem;color:var(--muted);" data-i18n="lbl_approx_year">Año:</label>
-        <select id="sel-mes-anio" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeMes()"></select>
-      </div>
-    </div>
-    <div id="mes-preview-badge" style="font-size:0.78rem;color:var(--accent);margin-top:6px;font-weight:600;"></div>
-  </div>
-  <!-- Modo Año -->
-  <div id="wrap-prec-anio" class="date-prec-wrap" style="display:none;">
-    <div style="max-width:200px;">
-      <label style="font-size:0.75rem;color:var(--muted);" data-i18n="lbl_approx_year_only">Año aproximado:</label>
-      <select id="sel-solo-anio" class="form-input" style="height:38px;padding:4px 8px;" onchange="actualizarFechaDesdeSoloAnio()"></select>
-    </div>
-    <div id="anio-preview-badge" style="font-size:0.78rem;color:var(--accent);margin-top:6px;font-weight:600;"></div>
-  </div>
-  <div class="checkbox-row" style="margin-top:8px;"><input type="checkbox" id="chk-no-fecha" onchange="toggleSinFecha(this.checked)"><label for="chk-no-fecha" data-i18n="chk_no_fecha">No registrada / No recuerdo la fecha exacta</label></div>
 </div>
-<div class="form-group" id="grupo-en-progreso" style="display:none; margin:12px 0 16px;">
-  <div class="en-progreso-box" style="background:linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(99,102,241,0.08) 100%); border:1px solid rgba(56,189,248,0.3); border-radius:4px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:12px; cursor:pointer;" onclick="toggleEnProgresoFormulario(event)">
-    <div style="display:flex; align-items:center; gap:10px;">
-      <input type="checkbox" id="chk-en-progreso" style="width:19px; height:19px; cursor:pointer; accent-color:var(--accent);" onchange="toggleEnProgresoFormulario(event)">
-      <div>
-        <label for="chk-en-progreso" id="lbl-en-progreso" style="cursor:pointer; color:var(--text); font-weight:700; font-size:0.92rem; margin:0; display:flex; align-items:center; gap:6px;">
-          <span id="icono-en-progreso"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span> <span id="texto-en-progreso" data-i18n="lbl_still_watching">Aún viendo</span>
-        </label>
-        <div style="font-size:0.75rem; color:var(--muted); margin-top:2px;" id="desc-en-progreso" data-i18n="en_progreso_desc">
-          Guardar ahora en el historial con fecha de inicio, término en progreso y calificación/reseña pendientes
+<div class="form-group" id="grupo-rewatch-checkbox" style="display:none; margin:6px 0 10px;">
+  <input type="checkbox" id="chk-es-rewatch" style="display:none;">
+  <button type="button" id="btn-toggle-rewatch-form" class="btn-rewatch-toggle" onclick="toggleRewatchFormulario()">
+    <span data-i18n="btn_rewatch">Rewatch</span>
+  </button>
+</div>
+<div class="form-group" id="grupo-comic-manga" style="display:none;">
+  <div class="date-row">
+    <div style="flex:1;"><label data-i18n="lbl_arco">Nombre del Arco:</label><input type="text" id="input-arco" class="form-input" placeholder="Ej: Batman: Año Uno / Marineford" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_arc"></div>
+    <div style="flex:1;"><label data-i18n="lbl_numeros">Números que abarca:</label><input type="text" id="input-numeros-abarcados" class="form-input" placeholder="Ej: 404-407 / 550-580" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_issues_covered"></div>
+  </div>
+</div>
+<div class="form-group" id="fechas-container" style="margin:10px 0 12px;">
+  <!-- Fila Fecha Inicio / Única (4 columnas) -->
+  <div class="fecha-row-4col" id="fila-fecha-inicio">
+    <!-- Col 1: Selector tipo de fecha -->
+    <div class="fecha-col-tipo">
+      <select id="sel-tipo-fecha" class="form-input fecha-select-tipo" onchange="cambiarPrecisionFechaFormulario(this.value)">
+        <option value="dia" data-i18n="date_opt_exact">Fecha Exacta</option>
+        <option value="mes" data-i18n="date_opt_month">Mes</option>
+        <option value="anio" data-i18n="date_opt_year">Año</option>
+      </select>
+    </div>
+    <!-- Col 2: Selector fecha dedicado -->
+    <div class="fecha-col-picker">
+      <div id="wrap-prec-dia" class="date-prec-wrap">
+        <input type="text" id="input-fecha-inicio" class="form-input date-input" placeholder="dd/mm/aaaa" readonly data-i18n-placeholder="ph_date_format">
+      </div>
+      <div id="wrap-prec-mes" class="date-prec-wrap" style="display:none;">
+        <div style="display:flex; gap:4px; align-items:center;">
+          <select id="sel-mes-nombre" class="form-input" style="height:36px; min-height:36px; padding:2px 4px; font-size:0.78rem; flex:1.2;" onchange="actualizarFechaDesdeMes()"></select>
+          <select id="sel-mes-anio" class="form-input" style="height:36px; min-height:36px; padding:2px 4px; font-size:0.78rem; flex:1;" onchange="actualizarFechaDesdeMes()"></select>
         </div>
       </div>
+      <div id="wrap-prec-anio" class="date-prec-wrap" style="display:none;">
+        <select id="sel-solo-anio" class="form-input" style="height:36px; min-height:36px; padding:2px 6px; font-size:0.82rem; width:100%;" onchange="actualizarFechaDesdeSoloAnio()"></select>
+      </div>
     </div>
-    <button type="button" class="btn-ghost" style="flex-shrink:0; font-size:0.78rem; padding:6px 14px; border-radius:3px; background:rgba(56,189,248,0.15); color:var(--accent); font-weight:700; border:1px solid rgba(56,189,248,0.35); cursor:pointer;" onclick="event.stopPropagation(); quickGuardarEnProgreso();">
-      <svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> <span id="btn-txt-en-progreso" data-i18n="en_progreso_btn">Guardar</span>
+    <!-- Col 3: Botón Hoy (sin ícono) -->
+    <div class="fecha-col-hoy">
+      <button type="button" class="btn-today-pill btn-today-no-icon" onclick="establecerFechaHoyInicio()" title="Hoy" data-i18n="btn_today">Hoy</button>
+    </div>
+    <!-- Col 4: Casilla No registrar -->
+    <div class="fecha-col-noreg">
+      <label for="chk-no-fecha" class="chk-no-reg-label">
+        <input type="checkbox" id="chk-no-fecha" onchange="toggleSinFecha(this.checked)">
+        <span data-i18n="chk_no_fecha">No registrar</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Fila Fecha Término (cuando hay rango) -->
+  <div class="fecha-row-4col" id="col-fecha-fin" style="display:none; margin-top:8px;">
+    <div class="fecha-col-tipo">
+      <span class="fecha-tipo-fin-label" data-i18n="lbl_fecha_fin_badge">Fin</span>
+    </div>
+    <div class="fecha-col-picker">
+      <input type="text" id="input-fecha-fin" class="form-input date-input" placeholder="dd/mm/aaaa" readonly data-i18n-placeholder="ph_date_format">
+    </div>
+    <div class="fecha-col-hoy">
+      <button type="button" class="btn-today-pill btn-today-no-icon" onclick="establecerFechaHoyFin()" title="Hoy" data-i18n="btn_today">Hoy</button>
+    </div>
+    <div class="fecha-col-noreg"></div>
+  </div>
+
+  <!-- Botón Aún viendo/jugando/leyendo/escuchando (simplificado debajo de fecha fin) -->
+  <div id="grupo-en-progreso" style="display:none; margin-top:8px;">
+    <input type="checkbox" id="chk-en-progreso" style="display:none;">
+    <button type="button" id="btn-quick-en-progreso" class="btn-aun-viendo-simple" onclick="quickGuardarEnProgreso()">
+      <span id="texto-en-progreso" data-i18n="lbl_still_watching">Aún viendo</span>
     </button>
   </div>
 </div>
-<div class="form-group"> <label data-i18n="lbl_calificacion">Calificación:</label> <div class="stars-wrapper" id="rating-stars" onmouseleave="restaurarHoverEstrellas()"></div> <span id="rating-label" style="font-size:.85rem; color:var(--accent); margin-left:8px;">0.0 / 5</span> </div> <div class="form-group" id="grupo-rewatch-checkbox" style="display:none; margin:10px 0 16px;">
-<div class="checkbox-row" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.25); border-radius:4px; padding:10px 14px;"> <input type="checkbox" id="chk-es-rewatch" style="width:18px; height:18px; cursor:pointer;"> <label for="chk-es-rewatch" style="cursor:pointer; color:var(--text); font-weight:600; margin:0;" data-i18n="lbl_es_rewatch"><svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> Ya la he visto antes (Rewatch)</label> </div> </div>
-<div class="form-group"> <label data-i18n="lbl_comentario">Comentario / Reseña:</label> <textarea id="input-comentario" class="comment-box" placeholder="Escribe lo que te pareció (Enter para guardar)..." onkeydown="manejarEnterComentario(event)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_comment_box"></textarea> </div> <button class="btn-save" id="btn-guardar" onclick="guardarNuevoElemento()" data-i18n="btn_guardar">Guardar en Mediary</button> </div> <!-- VISTA NORMAL DE HISTORIAL -->
+<div class="form-group" id="grupo-horas-juegos" style="display:none; margin:10px 0 12px;">
+  <div style="display:inline-flex; align-items:center; gap:8px;">
+    <label for="input-horas-jugadas" style="margin:0; font-size:0.86rem; font-weight:600; white-space:nowrap;" data-i18n="lbl_horas">Horas Jugadas</label>
+    <input type="number" id="input-horas-jugadas" class="form-input" placeholder="0" min="1" style="width:70px; height:36px; min-height:36px; text-align:center; padding:4px 6px; font-weight:700;">
+  </div>
+</div>
+<div class="form-group" style="margin-bottom:12px;">
+  <div style="display:flex; align-items:center; gap:8px;">
+    <div class="stars-wrapper" id="rating-stars" onmouseleave="restaurarHoverEstrellas()"></div>
+    <span id="rating-label" style="font-size:.85rem; color:var(--accent); font-weight:700;">0.0 / 5</span>
+  </div>
+</div>
+<div class="form-group" style="margin-bottom:14px;">
+  <textarea id="input-comentario" class="comment-box" placeholder="Escribe lo que te pareció (Enter para guardar)..." onkeydown="manejarEnterComentario(event)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_comment_box"></textarea>
+</div>
+<button class="btn-save" id="btn-guardar" onclick="guardarNuevoElemento()" data-i18n="btn_guardar">Guardar en Mediary</button> </div> <!-- VISTA NORMAL DE HISTORIAL -->
 <div id="seccion-historial-contenido">
   <div id="box-lectura-hoy-libros" style="display:none; margin-bottom:14px;"></div>
   <div id="banner-racha-subcategoria" style="display:none; margin-bottom:14px;"></div> <div class="history-header"> <div class="history-title"><span data-i18n="historial_title">Historial</span> (<span id="total-filtro">0</span>)<span id="badge-racha-header" style="display:none; margin-left:8px;"></span></div> <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;"> <button type="button" class="btn-toggle-filter btn-filter-icon-only" id="btn-toggle-orden" onclick="toggleOrdenHistorial()" title="Cambiar orden" data-i18n-title="title_toggle_order"><span id="ico-orden-historial"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v10.5"/></svg></span><span id="txt-orden-historial" style="display:none;" data-i18n="order_oldest_first">Del primero al último</span></button> <button type="button" class="btn-toggle-filter btn-filter-icon-only" id="btn-filtro-rewatches" style="display:none;" onclick="toggleOcultarRewatches()"><span class="rw-btn-icons" style="display:inline-flex;align-items:center;gap:4px;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"/><path d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/></svg></span><span id="txt-filtro-rewatches" style="display:none;" data-i18n="btn_ocultar_rw">Ocultar Rewatches</span></button> </div> </div> <div class="table-container"> <table class="history-table"><thead id="thead-historial"></thead><tbody id="tbody-historial"></tbody></table> </div> <div class="mobile-history-list" id="mobile-history-cards"></div> </div> <!-- VISTA EXCLUSIVA DE WATCHLIST --> <div id="seccion-watchlist-contenido" style="display:none;"> <div class="history-header"> <div class="history-title" id="titulo-watchlist-nombre" data-i18n="wl_default_title">Watchlist (0)</div>
@@ -1810,7 +1816,7 @@
 <div id="cfg-update-pwa-wrap" style="margin:14px 0; padding:12px 14px; background:rgba(56,189,248,0.06); border:1px dashed rgba(56,189,248,0.3); border-radius:3px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
   <div style="min-width:0;">
     <strong style="font-size:0.86rem; color:var(--text); display:block;" data-i18n="pwa_update_title">Actualización de la App</strong>
-    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v258 • Forzar descarga de novedades</span>
+    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v259 • Forzar descarga de novedades</span>
   </div>
   <button type="button" class="cfg-link-toggle-btn" id="btn-update-pwa" onclick="forzarActualizacionApp()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;" data-i18n="pwa_update_btn">
     <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>Actualizar
