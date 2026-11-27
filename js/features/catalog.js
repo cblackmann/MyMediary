@@ -5,204 +5,354 @@ let regPrecisionInicio = 'dia';
 let regPrecisionFin = 'dia';
 let regPrecisionActual = 'dia';
 
-function abrirFlatpickrInicio(e) {
-  if (e && e.target && e.target.closest('#btn-hoy-inicio')) return;
-  const chkNo = document.getElementById('chk-no-fecha');
+// --- CALENDARIO INTERACTIVO MEDIARY ---
+let calSeccionActiva = 'inicio'; // 'inicio' | 'fin'
+let calModoActivo = 'dia'; // 'dia' | 'mes' | 'anio'
+let calAnioVisual = new Date().getFullYear();
+let calMesVisual = new Date().getMonth(); // 0-11
+let calDiaVisual = new Date().getDate();
+
+function abrirCalendarioMediary(seccion = 'inicio') {
+  calSeccionActiva = seccion;
+  const chkNo = document.getElementById(seccion === 'inicio' ? 'chk-no-fecha' : 'chk-no-fecha-fin');
   if (chkNo && chkNo.checked) return;
-  const inp = document.getElementById('input-fecha-inicio');
-  if (!inp || inp.disabled) return;
-  if (!fpInicio) {
-    inicializarFlatpickrsRegistro();
+
+  const inp = document.getElementById(`input-fecha-${seccion}`);
+  const valActual = (inp?.value || '').trim();
+  const hoy = new Date();
+
+  // Deducir modo y fecha visual a partir del valor actual
+  if (!valActual || valActual === 'Sin fecha' || esEnProgresoTexto(valActual)) {
+    calAnioVisual = hoy.getFullYear();
+    calMesVisual = hoy.getMonth();
+    calDiaVisual = hoy.getDate();
+    calModoActivo = 'dia';
+  } else if (/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(valActual)) {
+    const parts = valActual.split('/');
+    calDiaVisual = parseInt(parts[0], 10) || hoy.getDate();
+    calMesVisual = (parseInt(parts[1], 10) - 1);
+    if (isNaN(calMesVisual) || calMesVisual < 0 || calMesVisual > 11) calMesVisual = hoy.getMonth();
+    calAnioVisual = parseInt(parts[2], 10) || hoy.getFullYear();
+    calModoActivo = 'dia';
+  } else if (/^\d{4}$/.test(valActual)) {
+    calAnioVisual = parseInt(valActual, 10) || hoy.getFullYear();
+    calModoActivo = 'anio';
+  } else {
+    // Posible "Mes YYYY"
+    const mAnio = valActual.match(/\b(20\d{2}|19\d{2})\b/);
+    if (mAnio) calAnioVisual = parseInt(mAnio[1], 10);
+    const lLower = valActual.toLowerCase();
+    let mesDetectado = -1;
+    for (let i = 0; i < 12; i++) {
+      if (lLower.includes(NOMBRES_MESES_ES[i].toLowerCase()) || lLower.includes(NOMBRES_MESES_EN[i].toLowerCase())) {
+        mesDetectado = i;
+        break;
+      }
+    }
+    calMesVisual = mesDetectado !== -1 ? mesDetectado : hoy.getMonth();
+    calModoActivo = 'mes';
   }
-  if (fpInicio) {
-    fpInicio.open();
+
+  actualizarBotonModoCalendario();
+  ocultarDropdownModoCalendario();
+  renderizarCalendarioMediary();
+
+  const modal = document.getElementById('modal-calendario-mediary');
+  if (modal) modal.style.display = 'flex';
+}
+window.abrirCalendarioMediary = abrirCalendarioMediary;
+
+function cerrarCalendarioMediary() {
+  const modal = document.getElementById('modal-calendario-mediary');
+  if (modal) modal.style.display = 'none';
+  ocultarDropdownModoCalendario();
+}
+window.cerrarCalendarioMediary = cerrarCalendarioMediary;
+
+function toggleMenuModoCalendario(e) {
+  if (e) e.stopPropagation();
+  const drop = document.getElementById('cal-mode-dropdown');
+  if (drop) {
+    drop.style.display = (drop.style.display === 'none' || !drop.style.display) ? 'flex' : 'none';
   }
 }
-window.abrirFlatpickrInicio = abrirFlatpickrInicio;
+window.toggleMenuModoCalendario = toggleMenuModoCalendario;
 
-function abrirFlatpickrFin(e) {
-  if (e && e.target && e.target.closest('#btn-hoy-fin')) return;
-  const chkNo = document.getElementById('chk-no-fecha-fin');
-  if (chkNo && chkNo.checked) return;
-  const inp = document.getElementById('input-fecha-fin');
-  if (!inp || inp.disabled) return;
-  if (!fpFin) {
-    inicializarFlatpickrsRegistro();
-  }
-  if (fpFin) {
-    fpFin.open();
-  }
+function ocultarDropdownModoCalendario() {
+  const drop = document.getElementById('cal-mode-dropdown');
+  if (drop) drop.style.display = 'none';
 }
-window.abrirFlatpickrFin = abrirFlatpickrFin;
 
-function agregarToolbarIntegradoFlatpickr(instance, seccion) {
-  if (!instance || !instance.calendarContainer) return;
-  let toolbar = instance.calendarContainer.querySelector('.flatpickr-integrated-toolbar');
-  if (toolbar) return;
-
-  toolbar = document.createElement('div');
-  toolbar.className = 'flatpickr-integrated-toolbar';
-
+function actualizarBotonModoCalendario() {
+  const txt = document.getElementById('txt-cal-mode');
+  const ico = document.getElementById('ico-cal-mode');
   const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
-  const txtHoy = l === 'en' ? 'Today' : 'Hoy';
-  const txtMes = l === 'en' ? 'Month only' : 'Solo Mes';
-  const txtAnio = l === 'en' ? 'Year only' : 'Solo Año';
 
-  toolbar.innerHTML = `
-    <button type="button" class="fp-tool-btn fp-tool-hoy" title="${l === 'en' ? 'Set today' : 'Guardar hoy'}">
-      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg>
-      <span>${txtHoy}</span>
-    </button>
-    <button type="button" class="fp-tool-btn fp-tool-mes" title="${l === 'en' ? 'Save displayed month' : 'Guardar mes visible'}">
-      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-      <span class="fp-tool-mes-label">${txtMes}</span>
-    </button>
-    <button type="button" class="fp-tool-btn fp-tool-anio" title="${l === 'en' ? 'Save displayed year' : 'Guardar año visible'}">
-      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      <span class="fp-tool-anio-label">${txtAnio}</span>
-    </button>
-  `;
+  if (calModoActivo === 'dia') {
+    if (txt) txt.textContent = l === 'en' ? 'Date' : 'Fecha';
+    if (ico) ico.textContent = '📅';
+  } else if (calModoActivo === 'mes') {
+    if (txt) txt.textContent = l === 'en' ? 'Month' : 'Mes';
+    if (ico) ico.textContent = '🗓️';
+  } else if (calModoActivo === 'anio') {
+    if (txt) txt.textContent = l === 'en' ? 'Year' : 'Año';
+    if (ico) ico.textContent = '📆';
+  }
 
-  const btnHoy = toolbar.querySelector('.fp-tool-hoy');
-  btnHoy.addEventListener('click', (ev) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    if (seccion === 'inicio') {
-      establecerFechaHoyInicio(ev);
-    } else {
-      establecerFechaHoyFin(ev);
-    }
-    instance.close();
+  ['dia', 'mes', 'anio'].forEach(m => {
+    const opt = document.getElementById(`opt-mode-${m}`);
+    if (opt) opt.classList.toggle('active', calModoActivo === m);
   });
-
-  const btnMes = toolbar.querySelector('.fp-tool-mes');
-  btnMes.addEventListener('click', (ev) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    const curMonth = instance.currentMonth;
-    const curYear = instance.currentYear;
-    const meses = (typeof I18N !== 'undefined' && I18N[l]?.meses) || (l === 'en' ? NOMBRES_MESES_EN : NOMBRES_MESES_ES);
-    const nomMes = meses[curMonth] || meses[0];
-    const valMes = `${nomMes} ${curYear}`;
-
-    if (seccion === 'inicio') {
-      const chk = document.getElementById('chk-no-fecha');
-      if (chk && chk.checked) { chk.checked = false; toggleSinFechaInicio(false); }
-    } else {
-      const chk = document.getElementById('chk-no-fecha-fin');
-      if (chk && chk.checked) { chk.checked = false; toggleSinFechaFin(false); }
-    }
-
-    if (instance.input) {
-      instance.clear();
-      instance.input.value = valMes;
-      instance.input.dispatchEvent(new Event('change', { bubbles: true }));
-      instance.input.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-    instance.close();
-  });
-
-  const btnAnio = toolbar.querySelector('.fp-tool-anio');
-  btnAnio.addEventListener('click', (ev) => {
-    ev.preventDefault();
-    ev.stopPropagation();
-    const curYear = String(instance.currentYear);
-
-    if (seccion === 'inicio') {
-      const chk = document.getElementById('chk-no-fecha');
-      if (chk && chk.checked) { chk.checked = false; toggleSinFechaInicio(false); }
-    } else {
-      const chk = document.getElementById('chk-no-fecha-fin');
-      if (chk && chk.checked) { chk.checked = false; toggleSinFechaFin(false); }
-    }
-
-    if (instance.input) {
-      instance.clear();
-      instance.input.value = curYear;
-      instance.input.dispatchEvent(new Event('change', { bubbles: true }));
-      instance.input.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-    instance.close();
-  });
-
-  instance.calendarContainer.appendChild(toolbar);
 }
-window.agregarToolbarIntegradoFlatpickr = agregarToolbarIntegradoFlatpickr;
 
-function inicializarFlatpickrsRegistro() {
-  if (typeof flatpickr === 'undefined') return;
-  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'default' : 'es';
+function seleccionarModoCalendario(modo, e) {
+  if (e) e.stopPropagation();
+  calModoActivo = modo;
+  actualizarBotonModoCalendario();
+  ocultarDropdownModoCalendario();
+  renderizarCalendarioMediary();
+}
+window.seleccionarModoCalendario = seleccionarModoCalendario;
 
-  const inpIni = document.getElementById('input-fecha-inicio');
-  if (inpIni && !inpIni.disabled) {
-    if (fpInicio) {
-      try { fpInicio.destroy(); } catch (_) {}
-      fpInicio = null;
+function navegarCalendario(dir) {
+  if (calModoActivo === 'dia') {
+    calMesVisual += dir;
+    if (calMesVisual < 0) {
+      calMesVisual = 11;
+      calAnioVisual--;
+    } else if (calMesVisual > 11) {
+      calMesVisual = 0;
+      calAnioVisual++;
     }
-    try {
-      fpInicio = flatpickr(inpIni, {
-        locale: l,
-        dateFormat: 'd/m/Y',
-        allowInput: false,
-        disableMobile: true,
-        onReady: function(selectedDates, dateStr, instance) {
-          agregarToolbarIntegradoFlatpickr(instance, 'inicio');
-        },
-        onOpen: function(selectedDates, dateStr, instance) {
-          agregarToolbarIntegradoFlatpickr(instance, 'inicio');
+  } else if (calModoActivo === 'mes') {
+    calAnioVisual += dir;
+  } else if (calModoActivo === 'anio') {
+    calAnioVisual += (dir * 12);
+  }
+  renderizarCalendarioMediary();
+}
+window.navegarCalendario = navegarCalendario;
+
+function renderizarCalendarioMediary() {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
+  const meses = l === 'en' ? NOMBRES_MESES_EN : NOMBRES_MESES_ES;
+  const hoy = new Date();
+  const hoyDia = hoy.getDate(), hoyMes = hoy.getMonth(), hoyAnio = hoy.getFullYear();
+
+  const titleEl = document.getElementById('cal-nav-title');
+  const viewDia = document.getElementById('cal-view-dia');
+  const viewMes = document.getElementById('cal-view-mes');
+  const viewAnio = document.getElementById('cal-view-anio');
+
+  if (viewDia) viewDia.style.display = (calModoActivo === 'dia') ? 'block' : 'none';
+  if (viewMes) viewMes.style.display = (calModoActivo === 'mes') ? 'block' : 'none';
+  if (viewAnio) viewAnio.style.display = (calModoActivo === 'anio') ? 'block' : 'none';
+
+  const inpVal = (document.getElementById(`input-fecha-${calSeccionActiva}`)?.value || '').trim();
+
+  if (calModoActivo === 'dia') {
+    if (titleEl) titleEl.textContent = `${meses[calMesVisual]} ${calAnioVisual}`;
+
+    const wkRow = document.getElementById('cal-weekdays-row');
+    if (wkRow) {
+      const diasSemana = (l === 'en') ? ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'] : ['Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá', 'Do'];
+      wkRow.innerHTML = diasSemana.map(d => `<div>${d}</div>`).join('');
+    }
+
+    const daysGrid = document.getElementById('cal-days-grid');
+    if (daysGrid) {
+      daysGrid.innerHTML = '';
+      let primerDiaSemana = new Date(calAnioVisual, calMesVisual, 1).getDay();
+      primerDiaSemana = (primerDiaSemana === 0) ? 6 : primerDiaSemana - 1;
+
+      const totalDiasMes = new Date(calAnioVisual, calMesVisual + 1, 0).getDate();
+
+      for (let b = 0; b < primerDiaSemana; b++) {
+        const blank = document.createElement('div');
+        blank.className = 'cal-day-cell is-empty';
+        daysGrid.appendChild(blank);
+      }
+
+      for (let d = 1; d <= totalDiasMes; d++) {
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'cal-day-cell';
+        cell.textContent = d;
+
+        const isToday = (calAnioVisual === hoyAnio && calMesVisual === hoyMes && d === hoyDia);
+        if (isToday) cell.classList.add('is-today');
+
+        const dStr = `${String(d).padStart(2, '0')}/${String(calMesVisual + 1).padStart(2, '0')}/${calAnioVisual}`;
+        if (inpVal === dStr) {
+          cell.classList.add('is-selected');
         }
-      });
-    } catch (e) {
-      console.warn('Error inicializando fpInicio:', e);
+
+        cell.onclick = () => seleccionarDiaCalendario(d);
+        daysGrid.appendChild(cell);
+      }
+    }
+  } else if (calModoActivo === 'mes') {
+    if (titleEl) titleEl.textContent = `${calAnioVisual}`;
+
+    const mesesGrid = document.getElementById('cal-months-grid');
+    if (mesesGrid) {
+      mesesGrid.innerHTML = '';
+      const mesesAbrev = (l === 'en')
+        ? ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+        : ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+      for (let m = 0; m < 12; m++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cal-month-cell';
+        btn.textContent = mesesAbrev[m];
+
+        const isCurrent = (calAnioVisual === hoyAnio && m === hoyMes);
+        if (isCurrent) btn.classList.add('is-current');
+
+        const valMesFull = `${meses[m]} ${calAnioVisual}`;
+        if (inpVal.toLowerCase() === valMesFull.toLowerCase()) {
+          btn.classList.add('is-selected');
+        }
+
+        btn.onclick = () => seleccionarMesCalendario(m);
+        mesesGrid.appendChild(btn);
+      }
+    }
+  } else if (calModoActivo === 'anio') {
+    const baseYear = Math.floor(calAnioVisual / 12) * 12;
+    if (titleEl) titleEl.textContent = `${baseYear} - ${baseYear + 11}`;
+
+    const yearsGrid = document.getElementById('cal-years-grid');
+    if (yearsGrid) {
+      yearsGrid.innerHTML = '';
+      for (let y = baseYear; y < baseYear + 12; y++) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'cal-year-cell';
+        btn.textContent = y;
+
+        if (y === hoyAnio) btn.classList.add('is-current');
+        if (inpVal === String(y)) btn.classList.add('is-selected');
+
+        btn.onclick = () => seleccionarAnioCalendario(y);
+        yearsGrid.appendChild(btn);
+      }
+    }
+  }
+}
+window.renderizarCalendarioMediary = renderizarCalendarioMediary;
+
+function seleccionarDiaCalendario(dia) {
+  const dStr = `${String(dia).padStart(2, '0')}/${String(calMesVisual + 1).padStart(2, '0')}/${calAnioVisual}`;
+  aplicarFechaCalendario(calSeccionActiva, dStr);
+}
+window.seleccionarDiaCalendario = seleccionarDiaCalendario;
+
+function seleccionarMesCalendario(mesIdx) {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
+  const meses = l === 'en' ? NOMBRES_MESES_EN : NOMBRES_MESES_ES;
+  const mStr = `${meses[mesIdx]} ${calAnioVisual}`;
+  aplicarFechaCalendario(calSeccionActiva, mStr);
+}
+window.seleccionarMesCalendario = seleccionarMesCalendario;
+
+function seleccionarAnioCalendario(anio) {
+  aplicarFechaCalendario(calSeccionActiva, String(anio));
+}
+window.seleccionarAnioCalendario = seleccionarAnioCalendario;
+
+function seleccionarHoyCalendario(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  const hoy = new Date();
+  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
+  const meses = l === 'en' ? NOMBRES_MESES_EN : NOMBRES_MESES_ES;
+
+  let valorFinal = '';
+  if (calModoActivo === 'dia') {
+    valorFinal = `${String(hoy.getDate()).padStart(2, '0')}/${String(hoy.getMonth() + 1).padStart(2, '0')}/${hoy.getFullYear()}`;
+  } else if (calModoActivo === 'mes') {
+    valorFinal = `${meses[hoy.getMonth()]} ${hoy.getFullYear()}`;
+  } else if (calModoActivo === 'anio') {
+    valorFinal = String(hoy.getFullYear());
+  } else {
+    valorFinal = `${String(hoy.getDate()).padStart(2, '0')}/${String(hoy.getMonth() + 1).padStart(2, '0')}/${hoy.getFullYear()}`;
+  }
+
+  aplicarFechaCalendario(calSeccionActiva, valorFinal);
+}
+window.seleccionarHoyCalendario = seleccionarHoyCalendario;
+
+function aplicarFechaCalendario(seccion, valor) {
+  const inp = document.getElementById(`input-fecha-${seccion}`);
+  if (inp) inp.value = valor;
+
+  const txt = document.getElementById(`txt-fecha-${seccion}`);
+  if (txt) {
+    txt.textContent = valor;
+    txt.classList.remove('is-placeholder');
+  }
+
+  if (seccion === 'inicio') {
+    const chkNo = document.getElementById('chk-no-fecha');
+    if (chkNo && chkNo.checked) {
+      chkNo.checked = false;
+    }
+    const btn = document.getElementById('btn-trigger-fecha-inicio');
+    if (btn) btn.classList.remove('disabled');
+  } else {
+    const chkNo = document.getElementById('chk-no-fecha-fin');
+    if (chkNo && chkNo.checked) {
+      chkNo.checked = false;
+    }
+    const btn = document.getElementById('btn-trigger-fecha-fin');
+    if (btn) btn.classList.remove('disabled');
+
+    const chkProg = document.getElementById('chk-en-progreso');
+    if (chkProg && chkProg.checked) {
+      chkProg.checked = false;
     }
   }
 
-  const inpFin = document.getElementById('input-fecha-fin');
-  if (inpFin && !inpFin.disabled) {
-    if (fpFin) {
-      try { fpFin.destroy(); } catch (_) {}
-      fpFin = null;
-    }
-    try {
-      fpFin = flatpickr(inpFin, {
-        locale: l,
-        dateFormat: 'd/m/Y',
-        allowInput: false,
-        disableMobile: true,
-        onReady: function(selectedDates, dateStr, instance) {
-          agregarToolbarIntegradoFlatpickr(instance, 'fin');
-        },
-        onOpen: function(selectedDates, dateStr, instance) {
-          agregarToolbarIntegradoFlatpickr(instance, 'fin');
-        }
-      });
-    } catch (e) {
-      console.warn('Error inicializando fpFin:', e);
-    }
+  cerrarCalendarioMediary();
+}
+window.aplicarFechaCalendario = aplicarFechaCalendario;
+
+function limpiarFechaCalendario(seccion) {
+  const inp = document.getElementById(`input-fecha-${seccion}`);
+  if (inp) inp.value = '';
+
+  const txt = document.getElementById(`txt-fecha-${seccion}`);
+  if (txt) {
+    const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
+    txt.textContent = l === 'en' ? 'Select date...' : 'Seleccionar fecha...';
+    txt.classList.add('is-placeholder');
   }
 }
-window.inicializarFlatpickrsRegistro = inicializarFlatpickrsRegistro;
-
-function toggleDropdownTipoFecha() {}
-function seleccionarTipoFecha() {}
-window.toggleDropdownTipoFecha = toggleDropdownTipoFecha;
-window.seleccionarTipoFecha = seleccionarTipoFecha;
+window.limpiarFechaCalendario = limpiarFechaCalendario;
 
 function establecerFechaHoyInicio(e) {
   if (e) { e.preventDefault(); e.stopPropagation(); }
-  const fechaHoy = obtenerFechaHoyStr();
-  const chkNo = document.getElementById('chk-no-fecha');
-  if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFechaInicio(false); }
-  const inp = document.getElementById('input-fecha-inicio');
-  if (inp) inp.value = fechaHoy;
-  if (fpInicio) {
-    try {
-      fpInicio.setDate(fechaHoy, true);
-      if (fpInicio.isOpen) fpInicio.close();
-    } catch (_) {}
-  }
+  const hoy = new Date();
+  const dStr = `${String(hoy.getDate()).padStart(2, '0')}/${String(hoy.getMonth() + 1).padStart(2, '0')}/${hoy.getFullYear()}`;
+  aplicarFechaCalendario('inicio', dStr);
 }
 window.establecerFechaHoyInicio = establecerFechaHoyInicio;
+
+function establecerFechaHoyFin(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  const hoy = new Date();
+  const dStr = `${String(hoy.getDate()).padStart(2, '0')}/${String(hoy.getMonth() + 1).padStart(2, '0')}/${hoy.getFullYear()}`;
+  aplicarFechaCalendario('fin', dStr);
+}
+window.establecerFechaHoyFin = establecerFechaHoyFin;
+
+function establecerFechaHoy() {
+  establecerFechaHoyInicio();
+  const rango = subTieneRango(estado.categoria, estado.subcategoria);
+  if (rango) establecerFechaHoyFin();
+}
+window.establecerFechaHoy = establecerFechaHoy;
 
 function toggleRewatchFormulario() {
   const chk = document.getElementById('chk-es-rewatch');
@@ -213,34 +363,6 @@ function toggleRewatchFormulario() {
   });
 }
 window.toggleRewatchFormulario = toggleRewatchFormulario;
-
-function establecerFechaHoyFin(e) {
-  if (e) { e.preventDefault(); e.stopPropagation(); }
-  const fechaHoy = obtenerFechaHoyStr();
-  const chkNo = document.getElementById('chk-no-fecha-fin');
-  if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFechaFin(false); }
-  const chkProg = document.getElementById('chk-en-progreso');
-  if (chkProg && chkProg.checked) {
-    chkProg.checked = false;
-    toggleEnProgresoFormulario();
-  }
-  const inp = document.getElementById('input-fecha-fin');
-  if (inp) inp.value = fechaHoy;
-  if (fpFin) {
-    try {
-      fpFin.setDate(fechaHoy, true);
-      if (fpFin.isOpen) fpFin.close();
-    } catch (_) {}
-  }
-}
-window.establecerFechaHoyFin = establecerFechaHoyFin;
-
-function establecerFechaHoy() {
-  establecerFechaHoyInicio();
-  const rango = subTieneRango(estado.categoria, estado.subcategoria);
-  if (rango) establecerFechaHoyFin();
-}
-window.establecerFechaHoy = establecerFechaHoy;
 function manejarEnterComentario(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); guardarNuevoElemento(); }
 }
 function configurarFormularioFechas() {
@@ -1479,8 +1601,8 @@ function seleccionarItem(it) {
     const chkNoFFin = document.getElementById('chk-no-fecha-fin');
     if (chkNoFFin) chkNoFFin.checked = false;
     toggleSinFechaFin(false);
-    if (fpInicio) fpInicio.clear();
-    if (fpFin) fpFin.clear();
+    limpiarFechaCalendario('inicio');
+    limpiarFechaCalendario('fin');
     ['input-comentario','input-temporada-num','input-arco','input-numeros-abarcados','input-horas-jugadas'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.value = '';
@@ -1527,7 +1649,7 @@ function actualizarDisplayEstrellas(val) {
     const isHalf = !isFull && (rounded >= i - 0.5);
     const s = document.createElement('span');
     s.className = `star-box ${isFull ? 'full' : (isHalf ? 'half' : '')}`;
-    s.innerHTML = isHalf ? getHeroIcon('star-half', '', 16) : getHeroIcon('star', '', 16);
+    s.innerHTML = isHalf ? getHeroIcon('star-half', '', 22) : getHeroIcon('star', '', 22);
     s.onmousemove = e => {
       const isH = (e.clientX - s.getBoundingClientRect().left < s.getBoundingClientRect().width / 2);
       dibujarHoverEstrellas(isH ? i - 0.5 : i);
@@ -1548,7 +1670,7 @@ function dibujarHoverEstrellas(val) {
     const isFull = rounded >= idx + 1;
     const isHalf = !isFull && (rounded >= idx + 0.5);
     s.className = `star-box ${isFull ? 'full' : (isHalf ? 'half' : '')}`;
-    s.innerHTML = isHalf ? getHeroIcon('star-half', '', 16) : getHeroIcon('star', '', 16);
+    s.innerHTML = isHalf ? getHeroIcon('star-half', '', 22) : getHeroIcon('star', '', 22);
   });
   document.getElementById('rating-label').textContent = `${num.toFixed(1)} / 5`;
 }
@@ -1677,50 +1799,42 @@ const restaurarHoverEstrellas = () => actualizarDisplayEstrellas(estado.califica
 
 function toggleSinFechaInicio(sinF) {
   const inp = document.getElementById('input-fecha-inicio');
-  const box = document.getElementById('box-picker-inicio');
-  const btnHoy = document.getElementById('btn-hoy-inicio');
+  const txt = document.getElementById('txt-fecha-inicio');
+  const btn = document.getElementById('btn-trigger-fecha-inicio');
 
   if (sinF) {
-    if (fpInicio) {
-      try { fpInicio.clear(); fpInicio.close(); } catch (_) {}
+    if (inp) inp.value = 'Sin fecha';
+    if (txt) {
+      const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
+      txt.textContent = l === 'en' ? 'No date' : 'Sin fecha';
+      txt.classList.add('is-placeholder');
     }
-    if (inp) { inp.disabled = true; inp.value = 'Sin fecha'; }
-    if (box) box.classList.add('disabled');
-    if (btnHoy) { btnHoy.disabled = true; }
+    if (btn) btn.classList.add('disabled');
   } else {
-    if (inp) {
-      inp.disabled = false;
-      if (inp.value === 'Sin fecha') inp.value = '';
-    }
-    if (box) box.classList.remove('disabled');
-    if (btnHoy) { btnHoy.disabled = false; }
-    if (!fpInicio && typeof flatpickr !== 'undefined' && inp) {
-      inicializarFlatpickrsRegistro();
+    if (btn) btn.classList.remove('disabled');
+    if (inp && inp.value === 'Sin fecha') {
+      limpiarFechaCalendario('inicio');
     }
   }
 }
 
 function toggleSinFechaFin(sinF) {
   const inp = document.getElementById('input-fecha-fin');
-  const box = document.getElementById('box-picker-fin');
-  const btnHoy = document.getElementById('btn-hoy-fin');
+  const txt = document.getElementById('txt-fecha-fin');
+  const btn = document.getElementById('btn-trigger-fecha-fin');
 
   if (sinF) {
-    if (fpFin) {
-      try { fpFin.clear(); fpFin.close(); } catch (_) {}
+    if (inp) inp.value = 'Sin fecha';
+    if (txt) {
+      const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
+      txt.textContent = l === 'en' ? 'No date' : 'Sin fecha';
+      txt.classList.add('is-placeholder');
     }
-    if (inp) { inp.disabled = true; inp.value = 'Sin fecha'; }
-    if (box) box.classList.add('disabled');
-    if (btnHoy) { btnHoy.disabled = true; }
+    if (btn) btn.classList.add('disabled');
   } else {
-    if (inp) {
-      inp.disabled = false;
-      if (inp.value === 'Sin fecha') inp.value = '';
-    }
-    if (box) box.classList.remove('disabled');
-    if (btnHoy) { btnHoy.disabled = false; }
-    if (!fpFin && typeof flatpickr !== 'undefined' && inp) {
-      inicializarFlatpickrsRegistro();
+    if (btn) btn.classList.remove('disabled');
+    if (inp && inp.value === 'Sin fecha') {
+      limpiarFechaCalendario('fin');
     }
   }
 }
@@ -1994,9 +2108,14 @@ function toggleEnProgresoFormulario(e) {
     }
     if (inpFin) {
       inpFin.value = textoProg;
-      inpFin.disabled = true;
-      inpFin.style.opacity = '0.7';
     }
+    const txtFin = document.getElementById('txt-fecha-fin');
+    if (txtFin) {
+      txtFin.textContent = textoProg;
+      txtFin.classList.remove('is-placeholder');
+    }
+    const btnFin = document.getElementById('btn-trigger-fecha-fin');
+    if (btnFin) btnFin.classList.add('disabled');
     if (box) {
       box.style.borderColor = 'var(--accent)';
       box.style.background = 'rgba(56,189,248,0.16)';
@@ -2007,9 +2126,13 @@ function toggleEnProgresoFormulario(e) {
       if (esEnProgresoTexto(inpFin.value)) {
         inpFin.value = '';
       }
-      inpFin.disabled = false;
-      inpFin.style.opacity = '1';
     }
+    const txtFin = document.getElementById('txt-fecha-fin');
+    if (txtFin && esEnProgresoTexto(txtFin.textContent)) {
+      limpiarFechaCalendario('fin');
+    }
+    const btnFin = document.getElementById('btn-trigger-fecha-fin');
+    if (btnFin) btnFin.classList.remove('disabled');
     if (box) {
       box.style.borderColor = 'rgba(56,189,248,0.3)';
       box.style.background = 'linear-gradient(135deg, rgba(56,189,248,0.08) 0%, rgba(99,102,241,0.08) 100%)';

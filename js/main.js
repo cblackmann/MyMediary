@@ -2,13 +2,7 @@
 window.onload = () => {
   const pAuthInit = document.getElementById('auth-input-pass');
   if (pAuthInit) pAuthInit.value = '';
-  if (typeof flatpickr !== 'undefined') {
-    const opts = { locale: (userPrefs.lang === 'en' ? 'default' : 'es'), dateFormat: 'd/m/Y', allowInput: false, disableMobile: true };
-    try {
-      fpInicio = flatpickr('#input-fecha-inicio', opts);
-      fpFin = flatpickr('#input-fecha-fin', opts);
-    } catch (_) {}
-  }
+
   if (typeof reposicionarIndicadorNavMovil === 'function') {
     reposicionarIndicadorNavMovil(null, false);
   }
