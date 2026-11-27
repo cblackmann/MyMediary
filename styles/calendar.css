@@ -1322,31 +1322,73 @@ html[data-app-theme="minimalist"] .btn-cal-volver {
   flex-shrink: 0;
 }
 
-.cat-subtabs-bar-wrap {
-  width: 100%;
+#vista-categoria #cat-subtabs-bar-wrap {
+  width: 100% !important;
   border-bottom: 1px solid var(--border);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
 }
 
-.cat-subtabs-wl-fixed {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  padding-bottom: 4px;
+#vista-categoria #cat-subtabs-bar-wrap #watchlist-dedicated-box.cat-subtabs-wl-fixed {
+  flex-shrink: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#vista-categoria #cat-subtabs-bar-wrap .btn-watchlist-special,
+#vista-categoria #cat-subtabs-bar-wrap .btn-watchlist-special.btn-watchlist-icon-only,
+html[data-ui-style="modern"] #vista-categoria #cat-subtabs-bar-wrap .btn-watchlist-special,
+html[data-app-theme="minimalist"] #vista-categoria #cat-subtabs-bar-wrap .btn-watchlist-special {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  width: auto !important;
+  min-width: 34px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 9px 10px !important;
+  margin-bottom: -1px !important;
+  color: #f59e0b !important;
+}
+
+#vista-categoria #cat-subtabs-bar-wrap .btn-watchlist-special:hover,
+html[data-ui-style="modern"] #vista-categoria #cat-subtabs-bar-wrap .btn-watchlist-special:hover {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid rgba(245, 158, 11, 0.55) !important;
+  box-shadow: none !important;
+  transform: none !important;
+  color: #fbbf24 !important;
+}
+
+#vista-categoria #cat-subtabs-bar-wrap .btn-watchlist-special.active-wl {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid #f59e0b !important;
+  box-shadow: none !important;
 }
 
 #vista-categoria #subtabs-bar.subtabs-flat-bar {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  min-width: 0;
-  gap: 6px;
-  overflow-x: auto;
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  gap: 6px !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
   scroll-behavior: smooth;
+  touch-action: pan-x !important;
   padding-bottom: 0 !important;
   margin-bottom: 0 !important;
   scrollbar-width: none;

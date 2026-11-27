@@ -1649,16 +1649,22 @@ if (box) {
   }
 }
 
-const secHistSwipe = document.getElementById('seccion-historial-contenido');
-if (secHistSwipe && !secHistSwipe.dataset.swipeSubInit) {
-  secHistSwipe.dataset.swipeSubInit = '1';
+const vCatSwipe = document.getElementById('vista-categoria');
+if (vCatSwipe && !vCatSwipe.dataset.swipeSubInit) {
+  vCatSwipe.dataset.swipeSubInit = '1';
   let touchStartX = 0;
   let touchStartY = 0;
   let touchIgnored = false;
-  secHistSwipe.addEventListener('touchstart', (e) => {
+  let lastSubWheel = 0;
+  vCatSwipe.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1) { touchIgnored = true; return; }
     const tgt = e.target;
-    if (tgt && tgt.closest && tgt.closest('input, textarea, select, button, .carousel, .subtabs, .year-dropdown-menu')) {
+    if (tgt && tgt.closest && tgt.closest('input, textarea, select, .carousel, .year-dropdown-menu, .detail-card, .modal-overlay')) {
+      touchIgnored = true;
+      return;
+    }
+    const subBarEl = tgt && tgt.closest ? tgt.closest('.subtabs') : null;
+    if (subBarEl && subBarEl.scrollWidth > subBarEl.clientWidth + 4) {
       touchIgnored = true;
       return;
     }
@@ -1666,11 +1672,13 @@ if (secHistSwipe && !secHistSwipe.dataset.swipeSubInit) {
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
   }, { passive: true });
-  secHistSwipe.addEventListener('touchend', (e) => {
+  vCatSwipe.addEventListener('touchend', (e) => {
     if (touchIgnored || !e.changedTouches || !e.changedTouches.length) return;
+    const modalAbierto = document.querySelector('.modal-overlay[style*="display: flex"], .modal-overlay[style*="display:flex"]');
+    if (modalAbierto) return;
     const dx = e.changedTouches[0].clientX - touchStartX;
     const dy = e.changedTouches[0].clientY - touchStartY;
-    if (Math.abs(dx) > 58 && Math.abs(dx) > Math.abs(dy) * 1.6) {
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.25) {
       const lista = Array.isArray(window._subItemsNavActivos) ? window._subItemsNavActivos : [];
       if (lista.length <= 1 || esSubcategoriaWatchlist(estado.subcategoria)) return;
       const idx = lista.indexOf(estado.subcategoria);
@@ -1678,6 +1686,24 @@ if (secHistSwipe && !secHistSwipe.dataset.swipeSubInit) {
       if (dx < 0 && idx < lista.length - 1) {
         cambiarSubcategoriaLista(lista[idx + 1], 'next');
       } else if (dx > 0 && idx > 0) {
+        cambiarSubcategoriaLista(lista[idx - 1], 'prev');
+      }
+    }
+  }, { passive: true });
+  vCatSwipe.addEventListener('wheel', (e) => {
+    const tgt = e.target;
+    if (tgt && tgt.closest && tgt.closest('input, textarea, select, .carousel, .subtabs, .year-dropdown-menu, .detail-card, .modal-overlay')) return;
+    if (Math.abs(e.deltaX) > 40 && Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.3) {
+      if (Date.now() - lastSubWheel < 380) return;
+      const lista = Array.isArray(window._subItemsNavActivos) ? window._subItemsNavActivos : [];
+      if (lista.length <= 1 || esSubcategoriaWatchlist(estado.subcategoria)) return;
+      const idx = lista.indexOf(estado.subcategoria);
+      if (idx < 0) return;
+      if (e.deltaX > 0 && idx < lista.length - 1) {
+        lastSubWheel = Date.now();
+        cambiarSubcategoriaLista(lista[idx + 1], 'next');
+      } else if (e.deltaX < 0 && idx > 0) {
+        lastSubWheel = Date.now();
         cambiarSubcategoriaLista(lista[idx - 1], 'prev');
       }
     }
