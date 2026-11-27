@@ -12,6 +12,12 @@ let calAnioVisual = new Date().getFullYear();
 let calMesVisual = new Date().getMonth(); // 0-11
 let calDiaVisual = new Date().getDate();
 
+const ICONS_CAL_MODO = {
+  dia: `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5"/></svg>`,
+  mes: `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5M8.25 12h1.5m3 0h1.5m3 0h1.5m-9 3.75h1.5m3 0h1.5m3 0h1.5"/></svg>`,
+  anio: `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>`
+};
+
 function abrirCalendarioMediary(seccion = 'inicio') {
   calSeccionActiva = seccion;
   const chkNo = document.getElementById(seccion === 'inicio' ? 'chk-no-fecha' : 'chk-no-fecha-fin');
@@ -22,6 +28,9 @@ function abrirCalendarioMediary(seccion = 'inicio') {
   const hoy = new Date();
 
   // Deducir modo y fecha visual a partir del valor actual
+  const mesesEsList = (typeof NOMBRES_MESES_ES !== 'undefined') ? NOMBRES_MESES_ES : ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  const mesesEnList = (typeof NOMBRES_MESES_EN !== 'undefined') ? NOMBRES_MESES_EN : ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
   if (!valActual || valActual === 'Sin fecha' || esEnProgresoTexto(valActual)) {
     calAnioVisual = hoy.getFullYear();
     calMesVisual = hoy.getMonth();
@@ -44,7 +53,7 @@ function abrirCalendarioMediary(seccion = 'inicio') {
     const lLower = valActual.toLowerCase();
     let mesDetectado = -1;
     for (let i = 0; i < 12; i++) {
-      if (lLower.includes(NOMBRES_MESES_ES[i].toLowerCase()) || lLower.includes(NOMBRES_MESES_EN[i].toLowerCase())) {
+      if (lLower.includes(mesesEsList[i].toLowerCase()) || lLower.includes(mesesEnList[i].toLowerCase())) {
         mesDetectado = i;
         break;
       }
@@ -54,7 +63,7 @@ function abrirCalendarioMediary(seccion = 'inicio') {
   }
 
   actualizarBotonModoCalendario();
-  ocultarDropdownModoCalendario();
+  cerrarMenuModoCalendario();
   renderizarCalendarioMediary();
 
   const modal = document.getElementById('modal-calendario-mediary');
@@ -65,38 +74,42 @@ window.abrirCalendarioMediary = abrirCalendarioMediary;
 function cerrarCalendarioMediary() {
   const modal = document.getElementById('modal-calendario-mediary');
   if (modal) modal.style.display = 'none';
-  ocultarDropdownModoCalendario();
+  cerrarMenuModoCalendario();
 }
 window.cerrarCalendarioMediary = cerrarCalendarioMediary;
 
-function toggleMenuModoCalendario(e) {
-  if (e) e.stopPropagation();
-  const drop = document.getElementById('cal-mode-dropdown');
-  if (drop) {
-    drop.style.display = (drop.style.display === 'none' || !drop.style.display) ? 'flex' : 'none';
-  }
+function abrirMenuModoCalendario(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  actualizarBotonModoCalendario();
+  const pop = document.getElementById('cal-mode-popup-overlay');
+  if (pop) pop.style.display = 'flex';
 }
-window.toggleMenuModoCalendario = toggleMenuModoCalendario;
+window.abrirMenuModoCalendario = abrirMenuModoCalendario;
+window.toggleMenuModoCalendario = abrirMenuModoCalendario;
 
-function ocultarDropdownModoCalendario() {
-  const drop = document.getElementById('cal-mode-dropdown');
-  if (drop) drop.style.display = 'none';
+function cerrarMenuModoCalendario(e) {
+  if (e) e.stopPropagation();
+  const pop = document.getElementById('cal-mode-popup-overlay');
+  if (pop) pop.style.display = 'none';
 }
+window.cerrarMenuModoCalendario = cerrarMenuModoCalendario;
+window.ocultarDropdownModoCalendario = cerrarMenuModoCalendario;
 
 function actualizarBotonModoCalendario() {
   const txt = document.getElementById('txt-cal-mode');
   const ico = document.getElementById('ico-cal-mode');
   const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
 
+  if (ico) {
+    ico.innerHTML = ICONS_CAL_MODO[calModoActivo] || ICONS_CAL_MODO.dia;
+  }
+
   if (calModoActivo === 'dia') {
     if (txt) txt.textContent = l === 'en' ? 'Date' : 'Fecha';
-    if (ico) ico.textContent = '📅';
   } else if (calModoActivo === 'mes') {
     if (txt) txt.textContent = l === 'en' ? 'Month' : 'Mes';
-    if (ico) ico.textContent = '🗓️';
   } else if (calModoActivo === 'anio') {
     if (txt) txt.textContent = l === 'en' ? 'Year' : 'Año';
-    if (ico) ico.textContent = '📆';
   }
 
   ['dia', 'mes', 'anio'].forEach(m => {
@@ -106,10 +119,10 @@ function actualizarBotonModoCalendario() {
 }
 
 function seleccionarModoCalendario(modo, e) {
-  if (e) e.stopPropagation();
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   calModoActivo = modo;
   actualizarBotonModoCalendario();
-  ocultarDropdownModoCalendario();
+  cerrarMenuModoCalendario();
   renderizarCalendarioMediary();
 }
 window.seleccionarModoCalendario = seleccionarModoCalendario;
@@ -133,9 +146,21 @@ function navegarCalendario(dir) {
 }
 window.navegarCalendario = navegarCalendario;
 
+function getMesesCalendario() {
+  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
+  if (l === 'en') {
+    return (typeof NOMBRES_MESES_EN !== 'undefined' && Array.isArray(NOMBRES_MESES_EN))
+      ? NOMBRES_MESES_EN
+      : ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  }
+  return (typeof NOMBRES_MESES_ES !== 'undefined' && Array.isArray(NOMBRES_MESES_ES))
+    ? NOMBRES_MESES_ES
+    : ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+}
+
 function renderizarCalendarioMediary() {
   const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
-  const meses = l === 'en' ? NOMBRES_MESES_EN : NOMBRES_MESES_ES;
+  const meses = getMesesCalendario();
   const hoy = new Date();
   const hoyDia = hoy.getDate(), hoyMes = hoy.getMonth(), hoyAnio = hoy.getFullYear();
 
@@ -187,7 +212,10 @@ function renderizarCalendarioMediary() {
           cell.classList.add('is-selected');
         }
 
-        cell.onclick = () => seleccionarDiaCalendario(d);
+        cell.onclick = (e) => {
+          if (e) e.stopPropagation();
+          seleccionarDiaCalendario(d);
+        };
         daysGrid.appendChild(cell);
       }
     }
@@ -215,7 +243,10 @@ function renderizarCalendarioMediary() {
           btn.classList.add('is-selected');
         }
 
-        btn.onclick = () => seleccionarMesCalendario(m);
+        btn.onclick = (e) => {
+          if (e) e.stopPropagation();
+          seleccionarMesCalendario(m);
+        };
         mesesGrid.appendChild(btn);
       }
     }
@@ -235,7 +266,10 @@ function renderizarCalendarioMediary() {
         if (y === hoyAnio) btn.classList.add('is-current');
         if (inpVal === String(y)) btn.classList.add('is-selected');
 
-        btn.onclick = () => seleccionarAnioCalendario(y);
+        btn.onclick = (e) => {
+          if (e) e.stopPropagation();
+          seleccionarAnioCalendario(y);
+        };
         yearsGrid.appendChild(btn);
       }
     }
@@ -250,8 +284,7 @@ function seleccionarDiaCalendario(dia) {
 window.seleccionarDiaCalendario = seleccionarDiaCalendario;
 
 function seleccionarMesCalendario(mesIdx) {
-  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
-  const meses = l === 'en' ? NOMBRES_MESES_EN : NOMBRES_MESES_ES;
+  const meses = getMesesCalendario();
   const mStr = `${meses[mesIdx]} ${calAnioVisual}`;
   aplicarFechaCalendario(calSeccionActiva, mStr);
 }
@@ -265,8 +298,7 @@ window.seleccionarAnioCalendario = seleccionarAnioCalendario;
 function seleccionarHoyCalendario(e) {
   if (e) { e.preventDefault(); e.stopPropagation(); }
   const hoy = new Date();
-  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
-  const meses = l === 'en' ? NOMBRES_MESES_EN : NOMBRES_MESES_ES;
+  const meses = getMesesCalendario();
 
   let valorFinal = '';
   if (calModoActivo === 'dia') {
@@ -289,6 +321,7 @@ function aplicarFechaCalendario(seccion, valor) {
 
   const txt = document.getElementById(`txt-fecha-${seccion}`);
   if (txt) {
+    txt.removeAttribute('data-i18n');
     txt.textContent = valor;
     txt.classList.remove('is-placeholder');
   }
@@ -324,6 +357,7 @@ function limpiarFechaCalendario(seccion) {
 
   const txt = document.getElementById(`txt-fecha-${seccion}`);
   if (txt) {
+    txt.setAttribute('data-i18n', 'ph_select_date');
     const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
     txt.textContent = l === 'en' ? 'Select date...' : 'Seleccionar fecha...';
     txt.classList.add('is-placeholder');
