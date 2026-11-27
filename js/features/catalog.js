@@ -93,7 +93,7 @@ function cerrarCalendarioMediary(e) {
 }
 window.cerrarCalendarioMediary = cerrarCalendarioMediary;
 
-function toggleMenuModoCalendario(e) {
+function toggleMenuModoPickerCalendario(e) {
   if (e) {
     if (e.preventDefault) e.preventDefault();
     if (e.stopPropagation) e.stopPropagation();
@@ -105,17 +105,18 @@ function toggleMenuModoCalendario(e) {
 
   const isOpen = (dd.style.display === 'flex');
   if (isOpen) {
-    cerrarMenuModoCalendario();
+    cerrarMenuModoPickerCalendario();
   } else {
     dd.style.display = 'flex';
     if (btn) btn.setAttribute('aria-expanded', 'true');
     if (chev) chev.style.transform = 'rotate(180deg)';
   }
 }
-window.toggleMenuModoCalendario = toggleMenuModoCalendario;
-window.abrirMenuModoCalendario = toggleMenuModoCalendario;
+window.toggleMenuModoPickerCalendario = toggleMenuModoPickerCalendario;
+window.toggleMenuModoCalendario = toggleMenuModoPickerCalendario;
+window.abrirMenuModoCalendario = toggleMenuModoPickerCalendario;
 
-function cerrarMenuModoCalendario() {
+function cerrarMenuModoPickerCalendario() {
   const dd = document.getElementById('cal-mode-dropdown');
   const btn = document.getElementById('btn-cal-mode');
   const chev = document.getElementById('cal-mode-chevron');
@@ -123,23 +124,25 @@ function cerrarMenuModoCalendario() {
   if (btn) btn.setAttribute('aria-expanded', 'false');
   if (chev) chev.style.transform = 'rotate(0deg)';
 }
-window.cerrarMenuModoCalendario = cerrarMenuModoCalendario;
-window.ocultarDropdownModoCalendario = cerrarMenuModoCalendario;
+window.cerrarMenuModoPickerCalendario = cerrarMenuModoPickerCalendario;
+window.cerrarMenuModoCalendario = cerrarMenuModoPickerCalendario;
+window.ocultarDropdownModoCalendario = cerrarMenuModoPickerCalendario;
 
-function seleccionarModoCalendario(modo, e) {
+function seleccionarModoPickerCalendario(modo, e) {
   if (e) {
     if (e.preventDefault) e.preventDefault();
     if (e.stopPropagation) e.stopPropagation();
   }
   calModoActivo = modo;
-  cerrarMenuModoCalendario();
+  cerrarMenuModoPickerCalendario();
   actualizarBotonModoCalendario();
   renderizarCalendarioMediary();
 }
-window.seleccionarModoCalendario = seleccionarModoCalendario;
+window.seleccionarModoPickerCalendario = seleccionarModoPickerCalendario;
+window.seleccionarModoCalendario = seleccionarModoPickerCalendario;
 
 function alternarModoCalendario(e) {
-  toggleMenuModoCalendario(e);
+  toggleMenuModoPickerCalendario(e);
 }
 window.alternarModoCalendario = alternarModoCalendario;
 
@@ -170,7 +173,7 @@ function actualizarBotonModoCalendario() {
   });
 }
 
-function navegarCalendario(dir) {
+function navegarPickerCalendario(dir) {
   if (calModoActivo === 'dia') {
     calMesVisual += dir;
     if (calMesVisual < 0) {
@@ -187,7 +190,8 @@ function navegarCalendario(dir) {
   }
   renderizarCalendarioMediary();
 }
-window.navegarCalendario = navegarCalendario;
+window.navegarPickerCalendario = navegarPickerCalendario;
+window.navegarCalendario = navegarPickerCalendario;
 
 function getMesesCalendario() {
   const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
@@ -260,7 +264,7 @@ function renderizarCalendarioMediary() {
             if (e.stopPropagation) e.stopPropagation();
             if (e.preventDefault) e.preventDefault();
           }
-          seleccionarDiaCalendario(d);
+          seleccionarDiaPickerCalendario(d);
         };
         daysGrid.appendChild(cell);
       }
@@ -294,7 +298,7 @@ function renderizarCalendarioMediary() {
             if (e.stopPropagation) e.stopPropagation();
             if (e.preventDefault) e.preventDefault();
           }
-          seleccionarMesCalendario(m);
+          seleccionarMesPickerCalendario(m);
         };
         mesesGrid.appendChild(btn);
       }
@@ -320,7 +324,7 @@ function renderizarCalendarioMediary() {
             if (e.stopPropagation) e.stopPropagation();
             if (e.preventDefault) e.preventDefault();
           }
-          seleccionarAnioCalendario(y);
+          seleccionarAnioPickerCalendario(y);
         };
         yearsGrid.appendChild(btn);
       }
@@ -329,25 +333,25 @@ function renderizarCalendarioMediary() {
 }
 window.renderizarCalendarioMediary = renderizarCalendarioMediary;
 
-function seleccionarDiaCalendario(dia) {
+function seleccionarDiaPickerCalendario(dia) {
   const dStr = `${String(dia).padStart(2, '0')}/${String(calMesVisual + 1).padStart(2, '0')}/${calAnioVisual}`;
   aplicarFechaCalendario(calSeccionActiva, dStr);
 }
-window.seleccionarDiaCalendario = seleccionarDiaCalendario;
+window.seleccionarDiaPickerCalendario = seleccionarDiaPickerCalendario;
 
-function seleccionarMesCalendario(mesIdx) {
+function seleccionarMesPickerCalendario(mesIdx) {
   const meses = getMesesCalendario();
   const mStr = `${meses[mesIdx]} ${calAnioVisual}`;
   aplicarFechaCalendario(calSeccionActiva, mStr);
 }
-window.seleccionarMesCalendario = seleccionarMesCalendario;
+window.seleccionarMesPickerCalendario = seleccionarMesPickerCalendario;
 
-function seleccionarAnioCalendario(anio) {
+function seleccionarAnioPickerCalendario(anio) {
   aplicarFechaCalendario(calSeccionActiva, String(anio));
 }
-window.seleccionarAnioCalendario = seleccionarAnioCalendario;
+window.seleccionarAnioPickerCalendario = seleccionarAnioPickerCalendario;
 
-function seleccionarHoyCalendario(e) {
+function seleccionarHoyPickerCalendario(e) {
   if (e) {
     if (e.preventDefault) e.preventDefault();
     if (e.stopPropagation) e.stopPropagation();
@@ -368,7 +372,8 @@ function seleccionarHoyCalendario(e) {
 
   aplicarFechaCalendario(calSeccionActiva, valorFinal);
 }
-window.seleccionarHoyCalendario = seleccionarHoyCalendario;
+window.seleccionarHoyPickerCalendario = seleccionarHoyPickerCalendario;
+window.seleccionarHoyCalendario = seleccionarHoyPickerCalendario;
 
 function aplicarFechaCalendario(seccion, valor) {
   const targetSeccion = seccion || calSeccionActiva || 'inicio';

@@ -152,13 +152,13 @@
 </script>
   <link rel="stylesheet" href="./vendor/flatpickr/flatpickr.min.css">
   <link rel="stylesheet" href="./vendor/flatpickr/flatpickr.dark.min.css">
-  <link rel="stylesheet" href="./styles/base.css?v=266">
+  <link rel="stylesheet" href="./styles/base.css?v=267">
   <link rel="stylesheet" href="./styles/integrations.css">
   <link rel="stylesheet" href="./styles/features.css">
   <link rel="stylesheet" href="./styles/modern-ui.css">
   <link rel="stylesheet" href="./styles/minimalist.css">
-  <link rel="stylesheet" href="./styles/responsive.css?v=266">
-  <link rel="stylesheet" href="./styles/themes.css?v=266">
+  <link rel="stylesheet" href="./styles/responsive.css?v=267">
+  <link rel="stylesheet" href="./styles/themes.css?v=267">
   <link rel="stylesheet" href="./styles/profile-stats.css">
   <link rel="stylesheet" href="./styles/calendar.css">
 </head>
@@ -2974,12 +2974,12 @@
 
 <!-- MODAL CALENDARIO INTERACTIVO MEDIARY (CENTRADO) -->
 <div id="modal-calendario-mediary" class="modal-overlay" style="display:none;" onclick="if(event.target===this) cerrarCalendarioMediary(event)">
-  <div class="cal-modal-card" onclick="cerrarMenuModoCalendario()">
+  <div class="cal-modal-card" onclick="cerrarMenuModoPickerCalendario()">
     <!-- Header: Esq sup izq (Selector desplegable de tipo de fecha) y Esq sup der (Hoy + Cerrar) -->
     <div class="cal-modal-header">
       <!-- Esq sup izq: Selector desplegable integrado de tipo de fecha -->
       <div class="cal-mode-selector-wrap" id="cal-mode-selector-wrap" onclick="event.stopPropagation()">
-        <button type="button" class="btn-cal-mode" id="btn-cal-mode" onclick="toggleMenuModoCalendario(event)" aria-haspopup="true" aria-expanded="false" title="Seleccionar tipo de fecha">
+        <button type="button" class="btn-cal-mode" id="btn-cal-mode" onclick="toggleMenuModoPickerCalendario(event)" aria-haspopup="true" aria-expanded="false" title="Seleccionar tipo de fecha">
           <span id="ico-cal-mode" style="display:inline-flex;align-items:center;">
             <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5"/></svg>
           </span>
@@ -2989,17 +2989,17 @@
 
         <!-- Dropdown con opciones de tipo de fecha -->
         <div class="cal-mode-dropdown" id="cal-mode-dropdown" style="display:none;" onclick="event.stopPropagation()">
-          <button type="button" class="cal-mode-opt active" id="opt-cal-dia" onclick="seleccionarModoCalendario('dia', event)">
+          <button type="button" class="cal-mode-opt active" id="opt-cal-dia" onclick="seleccionarModoPickerCalendario('dia', event)">
             <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5"/></svg>
             <span class="cal-mode-opt-txt" data-i18n="cal_mode_exact">Fecha específica</span>
             <svg class="h-icon cal-mode-opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-left:auto;"><path d="m4.5 12.75 6 6 9-13.5"/></svg>
           </button>
-          <button type="button" class="cal-mode-opt" id="opt-cal-mes" onclick="seleccionarModoCalendario('mes', event)">
+          <button type="button" class="cal-mode-opt" id="opt-cal-mes" onclick="seleccionarModoPickerCalendario('mes', event)">
             <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5M8.25 12h1.5m3 0h1.5m3 0h1.5m-9 3.75h1.5m3 0h1.5m3 0h1.5"/></svg>
             <span class="cal-mode-opt-txt" data-i18n="cal_mode_month">Mes y año</span>
             <svg class="h-icon cal-mode-opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-left:auto;"><path d="m4.5 12.75 6 6 9-13.5"/></svg>
           </button>
-          <button type="button" class="cal-mode-opt" id="opt-cal-anio" onclick="seleccionarModoCalendario('anio', event)">
+          <button type="button" class="cal-mode-opt" id="opt-cal-anio" onclick="seleccionarModoPickerCalendario('anio', event)">
             <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><path d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
             <span class="cal-mode-opt-txt" data-i18n="cal_mode_year">Solo año</span>
             <svg class="h-icon cal-mode-opt-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-left:auto;"><path d="m4.5 12.75 6 6 9-13.5"/></svg>
@@ -3009,7 +3009,7 @@
 
       <!-- Esq sup der: Botón Hoy + Cerrar -->
       <div class="cal-header-right">
-        <button type="button" class="btn-cal-hoy" id="btn-cal-hoy" onclick="seleccionarHoyCalendario(event)">
+        <button type="button" class="btn-cal-hoy" id="btn-cal-hoy" onclick="seleccionarHoyPickerCalendario(event)">
           <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg>
           <span data-i18n="btn_today">Hoy</span>
         </button>
@@ -3021,11 +3021,11 @@
 
     <!-- Barra de navegación de mes / año -->
     <div class="cal-nav-bar">
-      <button type="button" class="cal-nav-btn" onclick="navegarCalendario(-1)" title="Anterior">
+      <button type="button" class="cal-nav-btn" onclick="navegarPickerCalendario(-1)" title="Anterior">
         <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M15.75 19.5 8.25 12l7.5-7.5"/></svg>
       </button>
-      <div class="cal-nav-title" id="cal-nav-title" onclick="toggleMenuModoCalendario(event)" title="Seleccionar tipo de fecha (Fecha / Mes / Año)">Noviembre 2026</div>
-      <button type="button" class="cal-nav-btn" onclick="navegarCalendario(1)" title="Siguiente">
+      <div class="cal-nav-title" id="cal-nav-title" onclick="toggleMenuModoPickerCalendario(event)" title="Seleccionar tipo de fecha (Fecha / Mes / Año)">Noviembre 2026</div>
+      <button type="button" class="cal-nav-btn" onclick="navegarPickerCalendario(1)" title="Siguiente">
         <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="m8.25 4.5 7.5 7.5-7.5 7.5"/></svg>
       </button>
     </div>
@@ -3073,8 +3073,8 @@
   <script defer src="./js/integrations/lastfm.js"></script>
   <script defer src="./js/integrations/playstation.js"></script>
   <script defer src="./js/features/navigation.js"></script>
-  <script defer src="./js/features/catalog.js?v=266"></script>
-  <script defer src="./js/features/calendar.js"></script>
+  <script defer src="./js/features/catalog.js?v=267"></script>
+  <script defer src="./js/features/calendar.js?v=267"></script>
   <script defer src="./js/main.js"></script>
 </body>
 </html>

@@ -608,6 +608,7 @@ function renderizarGridMesCalendario() {
 window.renderizarGridMesCalendario = renderizarGridMesCalendario;
 
 function seleccionarDiaCalendario(diaKey) {
+  if (!diaKey || typeof diaKey !== 'string') return;
   calDiaSeleccionadoKey = diaKey;
   renderizarGridMesCalendario();
   renderizarDetalleDiaSeleccionado();
