@@ -886,9 +886,14 @@
 </div>
 
 <!-- VISTA CATEGORÍA / WATCHLIST --> <div id="vista-categoria" style="display:none;">
-<div class="cat-top-bar" id="cat-top-bar-row">
-  <div class="subtabs" id="subtabs-bar"></div>
-  <div class="watchlist-dedicated-wrap" id="watchlist-dedicated-box"></div>
+<div class="cat-top-bars-wrap" id="cat-top-bars-wrap">
+  <div class="cat-top-bar cat-top-bar-nav" id="cat-top-bar-row">
+    <div class="cat-back-wrap" id="cat-back-wrap"></div>
+    <div class="watchlist-dedicated-wrap" id="watchlist-dedicated-box"></div>
+  </div>
+  <div class="cat-subtabs-bar-wrap" id="cat-subtabs-bar-wrap">
+    <div class="subtabs subtabs-flat-bar" id="subtabs-bar"></div>
+  </div>
 </div>
 <div class="search-row" id="box-buscador-general"> <div class="search-box"> <input type="search" id="input-search" class="search-input" placeholder="Buscar título en tiempo real..." oninput="buscarEnVivo(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-i18n-placeholder="ph_search_realtime"> <div id="search-results" class="search-results"></div> </div> </div>
 <div id="modulo-concierto-manual" class="concierto-box" style="display:none;"> <button type="button" class="btn-close-concierto" title="Cerrar módulo" onclick="cerrarModuloConcierto()" data-i18n-title="title_close_module"><svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18 18 6M6 6l12 12"/></svg></button> <h3 style="color:var(--accent); margin-bottom:12px; font-size:1.1rem;"><span class="emoji-dyn"><svg style="width:18px;height:18px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z"/></svg> </span><span data-i18n="concierto_title">Registrar Concierto / Festival</span></h3>
@@ -1825,7 +1830,7 @@
 <div id="cfg-update-pwa-wrap" style="margin:14px 0; padding:12px 14px; background:rgba(56,189,248,0.06); border:1px dashed rgba(56,189,248,0.3); border-radius:3px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
   <div style="min-width:0;">
     <strong style="font-size:0.86rem; color:var(--text); display:block;" data-i18n="pwa_update_title">Actualización de la App</strong>
-    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v268 • Forzar descarga de novedades</span>
+    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v269 • Forzar descarga de novedades</span>
   </div>
   <button type="button" class="cfg-link-toggle-btn" id="btn-update-pwa" onclick="forzarActualizacionApp()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;" data-i18n="pwa_update_btn">
     <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>Actualizar

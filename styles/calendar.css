@@ -1262,3 +1262,113 @@ html[data-app-theme="minimalist"] .btn-cal-volver {
   animation: viewEnterSlideFromLeft 0.24s cubic-bezier(0.16, 1, 0.3, 1) both !important;
   will-change: transform, opacity;
 }
+
+/* ============================================================
+   BARRAS SUPERIORES DE LISTAS / CATEGORÍAS (2 BARRAS SIN TARJETAS)
+   ============================================================ */
+.cat-top-bars-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+  width: 100%;
+}
+
+.cat-top-bar.cat-top-bar-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.cat-back-wrap {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cat-subtabs-bar-wrap {
+  width: 100%;
+  border-bottom: 1px solid var(--border);
+}
+
+#vista-categoria #subtabs-bar.subtabs-flat-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+#vista-categoria #subtabs-bar.subtabs-flat-bar::-webkit-scrollbar {
+  display: none;
+}
+
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  padding: 9px 14px !important;
+  margin-bottom: -1px !important;
+  color: var(--muted) !important;
+  font-weight: 500 !important;
+  transition: color 0.16s ease, border-color 0.16s ease !important;
+}
+
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn:hover {
+  background: transparent !important;
+  color: var(--text) !important;
+  border-bottom-color: rgba(148, 163, 184, 0.35) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid var(--accent) !important;
+  color: var(--text) !important;
+  font-weight: 700 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active svg {
+  stroke: currentColor !important;
+}
+
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active.subtab-cat-peliculas {
+  border-bottom-color: var(--cat-color-peliculas) !important;
+}
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active.subtab-cat-series {
+  border-bottom-color: var(--cat-color-series) !important;
+}
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active.subtab-cat-musica {
+  border-bottom-color: var(--cat-color-musica) !important;
+}
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active.subtab-cat-juegos {
+  border-bottom-color: var(--cat-color-juegos) !important;
+}
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active.subtab-cat-lecturas {
+  border-bottom-color: var(--cat-color-lecturas) !important;
+}
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active.subtab-cat-libros {
+  border-bottom-color: var(--cat-color-libros) !important;
+}
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active.subtab-cat-comics {
+  border-bottom-color: var(--cat-color-comics) !important;
+}
+#vista-categoria #subtabs-bar.subtabs-flat-bar .subtab-btn.active.subtab-cat-mangas {
+  border-bottom-color: var(--cat-color-mangas) !important;
+}
+

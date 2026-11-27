@@ -1562,11 +1562,12 @@ function volverAHistorialDesdeWatchlist() {
     cambiarCat(c, subHist);
   }
 }
-function renderizarSubtabs() { const box = document.getElementById('subtabs-bar'); const wlBox = document.getElementById('watchlist-dedicated-box'); if (box) box.innerHTML = ''; if (wlBox) wlBox.innerHTML = ''; const l = userPrefs.lang || 'es'; const c = estado.categoria; if (!CONFIG[c]) return;
-if (box) {
+function renderizarSubtabs() { const box = document.getElementById('subtabs-bar'); const wlBox = document.getElementById('watchlist-dedicated-box'); const backWrap = document.getElementById('cat-back-wrap'); if (box) box.innerHTML = ''; if (wlBox) wlBox.innerHTML = ''; if (backWrap) backWrap.innerHTML = ''; const l = userPrefs.lang || 'es'; const c = estado.categoria; if (!CONFIG[c]) return;
+const targetBack = backWrap || box;
+if (targetBack) {
   const btnBackListas = document.createElement('button');
   btnBackListas.type = 'button';
-  btnBackListas.className = 'subtab-btn btn-subtabs-back-listas btn-mediary-back';
+  btnBackListas.className = 'btn-subtabs-back-listas btn-mediary-back';
   btnBackListas.title = l === 'en' ? 'Back' : 'Volver';
   btnBackListas.setAttribute('aria-label', l === 'en' ? 'Back' : 'Volver');
   btnBackListas.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/></svg>`;
@@ -1579,7 +1580,7 @@ if (box) {
       abrirVistaDashboardListas();
     }
   };
-  box.appendChild(btnBackListas);
+  targetBack.appendChild(btnBackListas);
 }
 const enWl = esSubcategoriaWatchlist(estado.subcategoria);
 let subItemsNav = CONFIG[c].subs.filter(s => !s.esWatchlist);
