@@ -1,4 +1,4 @@
-const CACHE_NAME = 'mediary-pwa-v265';
+const CACHE_NAME = 'mediary-pwa-v266';
 const IMAGE_CACHE_NAME = 'mediary-images-v1';
 const MAX_IMAGE_ENTRIES = 120;
 
@@ -117,6 +117,21 @@ self.addEventListener('fetch', e => {
           return cached || new Response('', { status: 408 });
         }
       })
+    );
+    return;
+  }
+
+  // Navegación (HTML de inicio): Network-First con fallback a caché para recibir actualizaciones de inmediato
+  const esNavegacion = e.request.mode === 'navigate' || url.endsWith('/index.html') || url === self.location.origin + '/' || url === self.location.origin;
+  if (esNavegacion) {
+    e.respondWith(
+      fetch(e.request).then(res => {
+        if (res && res.status === 200) {
+          const resClone = res.clone();
+          caches.open(CACHE_NAME).then(c => c.put(e.request, resClone));
+        }
+        return res;
+      }).catch(() => caches.match(e.request).then(c => c || caches.match('./index.html')))
     );
     return;
   }
