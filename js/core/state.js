@@ -20,8 +20,8 @@ const WATCHLIST_ESTRUCTURA = [
  ] },
  { cat: 'Lecturas', nombre: 'Lecturas', emoji: getHeroIcon('book-open'), subs: [
  { id: 'Libros', subWl: 'To Read: Libros', nombre: 'Libros', emoji: getHeroIcon('book-open') },
- { id: 'Cómics', subWl: 'To Read: Cómics', nombre: 'Cómics', emoji: getHeroIcon('book-open') },
- { id: 'Mangas', subWl: 'To Read: Mangas', nombre: 'Mangas', emoji: getHeroIcon('book-open') }
+ { id: 'Cómics', subWl: 'To Read: Cómics', nombre: 'Cómics', emoji: getHeroIcon('bolt') },
+ { id: 'Mangas', subWl: 'To Read: Mangas', nombre: 'Mangas', emoji: getHeroIcon('manga') }
  ] }
 ];
 const TODAS_LAS_WATCHLISTS = [
@@ -33,8 +33,8 @@ const TODAS_LAS_WATCHLISTS = [
  { cat: 'Musica', sub: 'To Listen: Artistas', emoji: getHeroIcon('microphone'), label: 'To Listen: Artistas' },
  { cat: 'Juegos', sub: 'To Play', emoji: getHeroIcon('gamepad'), label: 'To Play (Juegos)' },
  { cat: 'Lecturas', sub: 'To Read: Libros', emoji: getHeroIcon('book-open'), label: 'To Read: Libros' },
- { cat: 'Lecturas', sub: 'To Read: Cómics', emoji: getHeroIcon('book-open'), label: 'To Read: Cómics' },
- { cat: 'Lecturas', sub: 'To Read: Mangas', emoji: getHeroIcon('book-open'), label: 'To Read: Mangas' }
+ { cat: 'Lecturas', sub: 'To Read: Cómics', emoji: getHeroIcon('bolt'), label: 'To Read: Cómics' },
+ { cat: 'Lecturas', sub: 'To Read: Mangas', emoji: getHeroIcon('manga'), label: 'To Read: Mangas' }
 ];
 window.WATCHLIST_ESTRUCTURA = WATCHLIST_ESTRUCTURA;
 window.TODAS_LAS_WATCHLISTS = TODAS_LAS_WATCHLISTS;

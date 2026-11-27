@@ -1649,7 +1649,7 @@ function renderizarOpcionesAgregadoRapido() {
     { cat: 'Juegos', sub: 'Videojuegos', emoji: getHeroIcon('gamepad'), label: (l === 'en' ? 'Video Game' : 'Videojuego') },
     { cat: 'Lecturas', sub: 'Libros', emoji: getHeroIcon('book-open'), label: (l === 'en' ? 'Book' : 'Libro') },
     { cat: 'Lecturas', sub: 'Cómics', emoji: getHeroIcon('bolt'), label: (l === 'en' ? 'Comic' : 'Cómic') },
-    { cat: 'Lecturas', sub: 'Mangas', emoji: getHeroIcon('bookmark-square'), label: (l === 'en' ? 'Manga' : 'Manga') }
+    { cat: 'Lecturas', sub: 'Mangas', emoji: getHeroIcon('manga'), label: (l === 'en' ? 'Manga' : 'Manga') }
   ];
 
   const opsFiltradas = opciones.filter(op => {
@@ -1691,7 +1691,7 @@ function renderizarSubcategoriasResumenInicio() {
     { cat: 'Juegos', sub: 'Videojuegos', emoji: getHeroIcon('gamepad'), label: (l === 'en' ? 'Games' : 'Juegos') },
     { cat: 'Lecturas', sub: 'Libros', emoji: getHeroIcon('book-open'), label: (l === 'en' ? 'Books' : 'Libros') },
     { cat: 'Lecturas', sub: 'Cómics', emoji: getHeroIcon('bolt'), label: (l === 'en' ? 'Comics' : 'Cómics') },
-    { cat: 'Lecturas', sub: 'Mangas', emoji: getHeroIcon('bookmark-square'), label: (l === 'en' ? 'Manga' : 'Mangas') }
+    { cat: 'Lecturas', sub: 'Mangas', emoji: getHeroIcon('manga'), label: (l === 'en' ? 'Manga' : 'Mangas') }
   ];
 
   const subcatsFiltradas = listaSubcats.filter(s => {

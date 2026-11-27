@@ -181,6 +181,8 @@ const HEROICONS = {
   'user': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/></svg>',
   'bookmark': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg>',
   'bookmark-square': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg>',
+  'manga': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.25 5.5c4.75-.85 14.75-.85 19.5 0M4.5 8.5h15M7.5 8.5v12M16.5 8.5v12M12 5.1v3.4M6 20.5h3M15 20.5h3"/></svg>',
+  'torii': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.25 5.5c4.75-.85 14.75-.85 19.5 0M4.5 8.5h15M7.5 8.5v12M16.5 8.5v12M12 5.1v3.4M6 20.5h3M15 20.5h3"/></svg>',
   'film': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>',
   'clapperboard': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.25 4.5H3.75A2.25 2.25 0 0 0 1.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25h16.5a2.25 2.25 0 0 0 2.25-2.25V6.75a2.25 2.25 0 0 0-2.25-2.25Z"/><path d="m3.75 4.5 4.5 4.5M10.5 4.5l4.5 4.5M17.25 4.5l4.5 4.5M1.5 9h21"/></svg>',
   'tv': '<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h17.25c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125Z"/></svg>',
@@ -250,7 +252,7 @@ const EMOJI_TO_HEROICON = {
   '⏳': 'clock', '🕒': 'clock', '⏱️': 'clock', '⏱': 'clock',
   '🏆': 'trophy', '👑': 'trophy', '💿': 'disc', '🎙️': 'microphone', '🎙': 'microphone',
   '🎤': 'microphone', '🎸': 'ticket', '🎪': 'ticket', '🎧': 'musical-note', '🕹️': 'gamepad', '🕹': 'gamepad',
-  '💥': 'bolt', '⚡': 'bolt', '⛩️': 'bookmark-square', '⛩': 'bookmark-square',
+  '💥': 'bolt', '⚡': 'bolt', '⛩️': 'manga', '⛩': 'manga',
   '🏠': 'home', '⭐': 'star', '★': 'star', '☆': 'star', '🌟': 'star',
   '👥': 'users', '👤': 'user', '🤝': 'users',
   '📌': 'bookmark', '✨': 'sparkles', '🎉': 'sparkles', '🎯': 'sparkles',
@@ -354,7 +356,7 @@ const CONFIG = {
     subs: [
       { id: 'Libros', nombre: 'Libros', emoji: getHeroIcon('book-open'), colorKey: 'libros', rangoFechas: true, admiteRewatch: true },
       { id: 'Cómics', nombre: 'Cómics', emoji: getHeroIcon('bolt'), colorKey: 'comics', rangoFechas: true, admiteRewatch: true },
-      { id: 'Mangas', nombre: 'Mangas', emoji: getHeroIcon('bookmark-square'), colorKey: 'mangas', rangoFechas: true, admiteRewatch: true },
+      { id: 'Mangas', nombre: 'Mangas', emoji: getHeroIcon('manga'), colorKey: 'mangas', rangoFechas: true, admiteRewatch: true },
       { id: 'To Read: Libros', nombre: 'To Read: Libros', emoji: getHeroIcon('bookmark'), colorKey: 'libros', esWatchlist: true, targetSub: 'Libros', rangoFechas: false },
       { id: 'To Read: Cómics', nombre: 'To Read: Cómics', emoji: getHeroIcon('bookmark'), colorKey: 'comics', esWatchlist: true, targetSub: 'Cómics', rangoFechas: false },
       { id: 'To Read: Mangas', nombre: 'To Read: Mangas', emoji: getHeroIcon('bookmark'), colorKey: 'mangas', esWatchlist: true, targetSub: 'Mangas', rangoFechas: false }
@@ -479,4 +481,58 @@ function obtenerColorCategoria(categoria, subcategoria) {
 }
 window.obtenerMetaColorCategoria = obtenerMetaColorCategoria;
 window.obtenerColorCategoria = obtenerColorCategoria;
+
+function esCreadorValido(creador, cat = '', sub = '') {
+  if (!creador || typeof creador !== 'string') return false;
+  const s = creador.trim();
+  if (!s || s === '—' || s === '-' || s === 'N/D' || s === 'N/A' || s === 'null' || s === 'undefined') return false;
+  const low = s.toLowerCase();
+  if (low === 'desconocido' || low === 'unknown' || low === 'desconocida' || low === 'sin especificar' || low === 'no especificado') return false;
+
+  // Formatos genéricos que no son creadores (personas o estudios)
+  const formatosGenericos = [
+    'cine', 'cinema', 'pelicula', 'película', 'peliculas', 'películas', 'movie', 'movies', 'film', 'films',
+    'serie', 'series', 'serie tv', 'tv serie', 'tv series', 'tv show', 'tv shows', 'television', 'televisión',
+    'documental', 'documentales', 'documentary', 'documentaries', 'docuserie', 'docuseries',
+    'videojuego', 'videojuegos', 'video game', 'video games', 'game', 'games', 'juego', 'juegos',
+    'disco', 'discos', 'album', 'álbum', 'albums', 'álbumes', 'musica', 'música', 'music',
+    'libro', 'libros', 'book', 'books', 'literatura', 'literature',
+    'comic', 'cómic', 'comics', 'cómics', 'novela grafica', 'novela gráfica', 'graphic novel', 'graphic novels',
+    'manga', 'mangas', 'manga en emision', 'manga en emisión', 'ongoing manga', 'manga popular', 'popular manga', 'manga top', 'top manga',
+    'autor', 'author', 'creador', 'creator', 'artista', 'artist', 'director', 'mangaka', 'desarrolladora', 'developer',
+    'editorial', 'publisher', 'distribuidor', 'distribuidora', 'distributor', 'plataforma', 'platform'
+  ];
+  if (formatosGenericos.includes(low)) return false;
+
+  // Tiendas / Distribuidores / Cadenas de TV / Plataformas que no son creadores
+  const distribuidorasYTiendas = [
+    'steam', 'steam store', 'epic games', 'epic games store', 'gog', 'gog.com', 'playstation store', 'psn', 'xbox store',
+    'igdb', 'rawg', 'tvmaze', 'tmdb', 'kitsu', 'openlibrary', 'google books',
+    'hbo', 'hbo max', 'max', 'netflix', 'amazon prime', 'amazon prime video', 'disney+', 'disney plus', 'apple tv+', 'apple tv',
+    'cbs', 'nbc', 'abc', 'fox', 'the cw', 'amc', 'showtime', 'fx', 'hulu', 'bbc', 'bbc one', 'bbc two', 'paramount+'
+  ];
+  if (distribuidorasYTiendas.includes(low)) return false;
+
+  // En Cómics, editoriales / publishers solas (cuando no hay escritor)
+  const cLow = String(cat).toLowerCase();
+  const subLow = String(sub).toLowerCase();
+  if ((cLow.includes('lectura') || cLow.includes('comic')) && (subLow.includes('comic') || subLow.includes('cómic'))) {
+    if (low === 'marvel' || low === 'marvel comics' || low === 'dc' || low === 'dc comics' || low === 'dark horse' || low === 'image comics' || low === 'idw') {
+      return false;
+    }
+  }
+
+  // En Juegos, géneros comunes (ej: "Action / Adventure", "RPG", "Shooter")
+  if (cLow.includes('juego') || subLow.includes('juego') || subLow.includes('game')) {
+    const generosJuegos = ['action', 'adventure', 'rpg', 'shooter', 'strategy', 'simulation', 'puzzle', 'racing', 'sports', 'fighting', 'indie', 'platformer', 'massively multiplayer'];
+    if (generosJuegos.includes(low)) return false;
+    if (s.includes(' / ') || s.includes(', ')) {
+      const parts = s.split(/[\/,]/).map(p => p.trim().toLowerCase());
+      if (parts.length > 0 && parts.every(p => generosJuegos.includes(p))) return false;
+    }
+  }
+
+  return true;
+}
+window.esCreadorValido = esCreadorValido;
 

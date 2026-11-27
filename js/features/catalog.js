@@ -802,8 +802,9 @@ function mostrarResultadosBuscadorWl(items) {
     const itemConCat = { ...it, categoria: cat, subcategoria: sub };
     const d = document.createElement('div');
     d.className = 'result-item';
-    d.setAttribute('role', 'button');
-    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${it.creador || ''} ${it.anio ? '('+it.anio+')' : ''}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, cat)}</div><button type="button" class="btn-wl-play btn-item-add-wl" style="max-width:90px;">${tLang('+ Lista', '+ List')}</button>`;
+    const crValWl = (typeof esCreadorValido === 'function' ? esCreadorValido(it.creador, cat, sub) : it.creador) ? String(it.creador).trim() : '';
+    const metaCrWl = [crValWl, it.anio ? '(' + it.anio + ')' : ''].filter(Boolean).join(' ');
+    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${metaCrWl}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, cat)}</div><button type="button" class="btn-wl-play btn-item-add-wl" style="max-width:90px;">${tLang('+ Lista', '+ List')}</button>`;
     const btn = d.querySelector('.btn-item-add-wl');
     if (btn) {
       btn.onclick = e => {
@@ -847,16 +848,19 @@ function obtenerResumenGustosUsuario() {
 }
 
 function formatearCreadorConRol(cat, sub, creador) {
-  if (!creador || creador === 'Desconocido') return '';
+  if (typeof esCreadorValido === 'function') {
+    if (!esCreadorValido(creador, cat, sub)) return '';
+  } else if (!creador || creador === 'Desconocido') {
+    return '';
+  }
   const cLow = String(cat).toLowerCase();
   const sLow = String(sub).toLowerCase();
   if (cLow === 'peliculas') {
-    if (sLow.includes('docu')) return `${getHeroIcon('film', '', 12)} Dir: ${creador}`;
     return `${getHeroIcon('film', '', 12)} Dir: ${creador}`;
   }
   if (cLow === 'series') {
     if (sLow.includes('docu')) return `${getHeroIcon('video-camera', '', 12)} ${tLang('Docuserie:', 'Docuseries:')} ${creador}`;
-    return `${getHeroIcon('tv', '', 12)} ${tLang('Creador:', 'Creator:')} ${creador}`;
+    return `${getHeroIcon('tv', '', 12)} ${tLang('Showrunner:', 'Showrunner:')} ${creador}`;
   }
   if (cLow === 'juegos') {
     return `${getHeroIcon('gamepad', '', 12)} Dev: ${creador}`;
@@ -866,7 +870,7 @@ function formatearCreadorConRol(cat, sub, creador) {
   }
   if (cLow === 'lecturas') {
     if (sLow.includes('comic') || sLow.includes('cómic')) return `${getHeroIcon('bolt', '', 12)} ${creador}`;
-    if (sLow.includes('manga')) return `${getHeroIcon('bookmark-square', '', 12)} ${creador}`;
+    if (sLow.includes('manga')) return `${getHeroIcon('manga', '', 12)} Mangaka: ${creador}`;
     return `${getHeroIcon('book-open', '', 12)} ${tLang('Autor:', 'Author:')} ${creador}`;
   }
   return creador;
@@ -1009,7 +1013,7 @@ function formatearMotivoHeroicon(motivo) {
   else if (mLower.includes('álbum') || mLower.includes('disco')) iconName = 'disc';
   else if (mLower.includes('artista')) iconName = 'microphone';
   else if (mLower.includes('comic') || mLower.includes('cómic')) iconName = 'bolt';
-  else if (mLower.includes('manga')) iconName = 'bookmark-square';
+  else if (mLower.includes('manga')) iconName = 'manga';
   else if (mLower.includes('libro')) iconName = 'book-open';
   else if (mLower.includes('juego')) iconName = 'gamepad';
   const iconSvg = (typeof getHeroIcon === 'function') ? getHeroIcon(iconName, '', 12) : '';
@@ -1029,7 +1033,7 @@ function renderizarDiscoverVista() {
     juegos: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Trending & Acclaimed Games' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="6"/><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01"/></svg> Juegos en Tendencia y Aclamados',
     libros: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg> Bestsellers & Featured Books' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg> Libros Más Leídos y Novedades',
     comics: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> Graphic Novels & Comics (Marvel & DC)' : '<svg style="width:14px;height:14px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg> Cómics y Novelas Gráficas (Marvel & DC)',
-    mangas: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg> Popular & Trending Manga' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 3.75V16.5L12 14.25 7.5 16.5V3.75m9 0H7.5A2.25 2.25 0 0 0 5.25 6v12a2.25 2.25 0 0 0 2.25 2.25h9A2.25 2.25 0 0 0 18.75 18V6a2.25 2.25 0 0 0-2.25-2.25Z"/></svg> Mangas Más Leídos y Populares'
+    mangas: l === 'en' ? '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.25h18M4.5 8.25h15M7.5 5.25v14.25M16.5 5.25v14.25M5.25 5.25c4.5-1.5 9-1.5 13.5 0"/></svg> Popular & Trending Manga' : '<svg style="width:16px;height:16px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5.25h18M4.5 8.25h15M7.5 5.25v14.25M16.5 5.25v14.25M5.25 5.25c4.5-1.5 9-1.5 13.5 0"/></svg> Mangas Más Leídos y Populares'
   };
   const secciones = [
     { key: 'peliculas', titulo: secTitulos.peliculas, cat: 'Peliculas', sub: 'Películas' },
@@ -1637,8 +1641,9 @@ function mostrarResultadosBuscador(items) {
   items.forEach(it => {
     const d = document.createElement('div');
     d.className = 'result-item';
-    d.setAttribute('role', 'button');
-    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${it.creador || ''} ${it.anio ? '('+it.anio+')' : ''}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, estado.categoria)}</div>${esWl ? `<button type="button" class="btn-wl-play btn-item-add-wl" style="max-width:90px;">${tLang('+ Lista', '+ List')}</button>` : ''}`;
+    const crValGen = (typeof esCreadorValido === 'function' ? esCreadorValido(it.creador, estado.categoria, estado.subcategoria) : it.creador) ? String(it.creador).trim() : '';
+    const metaCrGen = [crValGen, it.anio ? '(' + it.anio + ')' : ''].filter(Boolean).join(' ');
+    d.innerHTML = `<img class="result-thumb" loading="lazy" src="${it.poster||'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>'}" onerror="this.onerror=null;this.src='data:image/svg+xml,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'45\\' height=\\'65\\' fill=\\'%23334155\\'><rect width=\\'100%\\' height=\\'100%\\'/></svg>'"><div style="flex:1;"><div style="font-weight:600;">${it.tituloOriginal || it.titulo || ''}</div>${it.tituloIngles ? `<div style="font-size:.78rem; color:var(--muted); font-style:italic;">(${it.tituloIngles})</div>` : ''}<div style="font-size:.8rem; color:var(--muted);">${metaCrGen}</div>${obtenerBadgeAmigoActividad(it.tituloOriginal || it.titulo, estado.categoria)}</div>${esWl ? `<button type="button" class="btn-wl-play btn-item-add-wl" style="max-width:90px;">${tLang('+ Lista', '+ List')}</button>` : ''}`;
     const btn = d.querySelector('.btn-item-add-wl');
     if (btn) {
       btn.onclick = e => {
@@ -1683,7 +1688,11 @@ function seleccionarItem(it) {
       sEl.style.display = sEl.textContent ? 'block' : 'none';
     }
     const crAnio = document.getElementById('form-creador-anio');
-    if (crAnio) crAnio.textContent = `(${it.creador || ''}${it.anio ? ', ' + it.anio : ''})`;
+    if (crAnio) {
+      const crValSel = (typeof esCreadorValido === 'function' ? esCreadorValido(it.creador, estado.categoria, estado.subcategoria) : it.creador) ? String(it.creador).trim() : '';
+      const partes = [crValSel, it.anio ? String(it.anio).trim() : ''].filter(Boolean);
+      crAnio.textContent = partes.length ? `(${partes.join(', ')})` : '';
+    }
     const sinEl = document.getElementById('form-sinopsis');
     if (sinEl) sinEl.textContent = it.sinopsis || '';
     const fAmAct = document.getElementById('form-amigos-actividad');
@@ -2597,14 +2606,14 @@ l.forEach(reg => {
   const titEnMobileHtml = tieneTitEn ? `<div class="m-card-title-en">(${titEn})</div>` : '';
 
   const metaPartes = [];
-  if (reg.creador && reg.creador !== '—' && reg.creador.trim() !== '' && reg.creador.toLowerCase() !== 'desconocido') {
+  if (typeof esCreadorValido === 'function' ? esCreadorValido(reg.creador, reg.categoria, reg.subcategoria) : (reg.creador && reg.creador !== '—' && reg.creador.trim() !== '' && reg.creador.toLowerCase() !== 'desconocido')) {
     metaPartes.push(reg.creador.trim());
   }
   if (reg.anio && reg.anio !== '—' && String(reg.anio).trim() !== '') {
     metaPartes.push(String(reg.anio).trim());
   }
   const metaTexto = metaPartes.length ? `(${metaPartes.join(', ')})` : '';
-  const meta = metaTexto || (reg.creador ? `(${reg.creador}${reg.anio ? ', ' + reg.anio : ''})` : '');
+  const meta = metaTexto;
 
   const stars = enProg
     ? `<span style="color:var(--accent); font-size:0.8rem; font-weight:700; font-style:italic; display:inline-flex; align-items:center; gap:3px;">${getHeroIcon('clock', '', 12)} ${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>`
@@ -3038,7 +3047,9 @@ function abrirEditorRegistroCompleto(id) {
   let html = '<div style="display:flex;gap:12px;align-items:center;margin-bottom:14px;background:var(--bg);padding:10px;border-radius:4px;border:1px solid var(--border);">';
   html += '<img loading="lazy" decoding="async" src="' + (reg.poster || 'data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'45\' height=\'65\' fill=\'%23334155\'><rect width=\'100%\' height=\'100%\'/></svg>') + '" style="width:45px;height:65px;object-fit:cover;border-radius:4px;background:#334155;flex-shrink:0;">';
   html += '<div><strong style="font-size:0.95rem;color:var(--text);display:block;">' + reg.titulo + '</strong>';
-  html += '<span style="font-size:0.78rem;color:var(--muted);">' + (reg.creador || '') + (reg.anio ? ' (' + reg.anio + ')' : '') + '</span>';
+  const crValEdit = (typeof esCreadorValido === 'function' ? esCreadorValido(reg.creador, c, s) : reg.creador) ? String(reg.creador).trim() : '';
+  const crMetaEdit = [crValEdit, reg.anio ? '(' + reg.anio + ')' : ''].filter(Boolean).join(' ');
+  html += '<span style="font-size:0.78rem;color:var(--muted);">' + crMetaEdit + '</span>';
   html += '<div style="font-size:0.72rem;color:var(--accent);font-weight:700;margin-top:2px;">' + c + ' → ' + s + '</div></div></div>';
   html += '<div class="form-group"><label style="font-size:.82rem;color:var(--muted);">' + (l === 'en' ? 'Rating:' : 'Calificación:') + '</label>';
   html += '<div class="stars-wrapper" id="edit-stars-completo" style="font-size:1.8rem;margin:4px 0;"></div>';

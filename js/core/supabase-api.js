@@ -608,7 +608,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
     `https://openlibrary.org/search.json?q=bestseller+fiction&sort=editions&limit=24&offset=${offOl}`,
     `https://openlibrary.org/search.json?publisher=Marvel+Comics&sort=new&limit=35&offset=${offOl}`,
     `https://openlibrary.org/search.json?publisher=DC+Comics&sort=new&limit=35&offset=${offOl}`,
-    `https://kitsu.io/api/edge/manga?sort=-user_count&page[limit]=20&page[offset]=${offK1}`
+    `https://kitsu.io/api/edge/manga?sort=-user_count&page[limit]=20&page[offset]=${offK1}&include=staff.person`
   ];
 
   try {
@@ -646,7 +646,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         titulo: tits.titulo,
         tituloOriginal: tits.tituloOriginal,
         tituloIngles: tits.tituloIngles,
-        creador: tLang('Cine', 'Cinema'),
+        creador: '',
         anio: m.release_date ? m.release_date.substring(0, 4) : '2026',
         sinopsis: m.overview || '',
         poster: `https://image.tmdb.org/t/p/w185${m.poster_path}`,
@@ -671,7 +671,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         titulo: tits.titulo,
         tituloOriginal: tits.tituloOriginal,
         tituloIngles: tits.tituloIngles,
-        creador: tLang('Documental', 'Documentary'),
+        creador: '',
         anio: m.release_date ? m.release_date.substring(0, 4) : '2025',
         sinopsis: m.overview || '',
         poster: `https://image.tmdb.org/t/p/w185${m.poster_path}`,
@@ -694,7 +694,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         titulo: tits.titulo,
         tituloOriginal: tits.tituloOriginal,
         tituloIngles: tits.tituloIngles,
-        creador: tLang('Serie TV', 'TV Series'),
+        creador: '',
         anio: s.first_air_date ? s.first_air_date.substring(0, 4) : '2026',
         sinopsis: s.overview || '',
         poster: `https://image.tmdb.org/t/p/w185${s.poster_path}`,
@@ -719,7 +719,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         titulo: tits.titulo,
         tituloOriginal: tits.tituloOriginal,
         tituloIngles: tits.tituloIngles,
-        creador: tLang('Docuserie', 'Docuseries'),
+        creador: '',
         anio: s.first_air_date ? s.first_air_date.substring(0, 4) : '2025',
         sinopsis: s.overview || '',
         poster: `https://image.tmdb.org/t/p/w185${s.poster_path}`,
@@ -729,10 +729,10 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
 
     // --- ENRIQUECER CREADORES EN PELÍCULAS, DOCUMENTALES Y SERIES EN PARALELO ---
     try {
-      const topPelis = datos.peliculas.slice(0, 10);
-      const topDocs = datos.documentales.slice(0, 6);
-      const topTvSeries = datos.series.slice(0, 10);
-      const topDocSeries = datos.docuseries.slice(0, 6);
+      const topPelis = datos.peliculas.slice(0, 16);
+      const topDocs = datos.documentales.slice(0, 10);
+      const topTvSeries = datos.series.slice(0, 16);
+      const topDocSeries = datos.docuseries.slice(0, 10);
 
       const [peliCredits, docCredits, tvDetails, docTvDetails] = await Promise.all([
         Promise.all(topPelis.map(m => getJson_(`https://api.themoviedb.org/3/movie/${m.idRef}/credits?api_key=${TMDB_K}`).catch(() => null))),
@@ -751,15 +751,11 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       });
       tvDetails.forEach((det, idx) => {
         const crs = (det?.created_by || []).map(x => x.name);
-        const net = (det?.networks || []).map(x => x.name).join(', ');
         if (crs.length) topTvSeries[idx].creador = crs.slice(0, 2).join(', ');
-        else if (net) topTvSeries[idx].creador = net;
       });
       docTvDetails.forEach((det, idx) => {
         const crs = (det?.created_by || []).map(x => x.name);
-        const net = (det?.networks || []).map(x => x.name).join(', ');
         if (crs.length) topDocSeries[idx].creador = crs.slice(0, 2).join(', ');
-        else if (net) topDocSeries[idx].creador = net;
       });
     } catch(e) {}
 
@@ -798,7 +794,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
           titulo: a.name,
           tituloOriginal: a.name,
           tituloIngles: '',
-          creador: tLang('Artista / Grupo', 'Artist / Band'),
+          creador: a.name || '',
           anio: '',
           poster: a.picture_big || a.picture_medium || '',
           motivo: tLang('Artista Top', 'Top Artist')
@@ -828,7 +824,7 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       titulo: g.name,
       tituloOriginal: g.name,
       tituloIngles: '',
-      creador: (g.genres || []).map(x => x.name).slice(0, 2).join(', ') || tLang('Videojuego', 'Video Game'),
+      creador: '',
       anio: g.released ? g.released.substring(0, 4) : '2025',
       poster: optimizarUrlPoster(g.background_image, "thumb") || '',
       motivo: (g.rating && g.rating >= 4.2) || (g.added && g.added > 8000) ? tLang('Popular / Aclamado', 'Popular / Acclaimed') : tLang('Tendencia', 'Trending')
@@ -836,13 +832,11 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
 
     // Obtener estudio desarrollador para los mejores juegos en paralelo
     try {
-      const topGames = datos.juegos.slice(0, 8);
+      const topGames = datos.juegos.slice(0, 16);
       const gameDets = await Promise.all(topGames.map(g => getJson_(`https://api.rawg.io/api/games/${g.idRef}?key=${RAWG_K}`).catch(() => null)));
       gameDets.forEach((det, idx) => {
-        const devs = (det?.developers || []).map(d => d.name);
-        const pubs = (det?.publishers || []).map(p => p.name);
+        const devs = (det?.developers || []).map(d => d.name).filter(Boolean);
         if (devs.length) topGames[idx].creador = devs.slice(0, 2).join(', ');
-        else if (pubs.length) topGames[idx].creador = pubs.slice(0, 2).join(', ');
       });
     } catch(e) {}
 
@@ -903,10 +897,8 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
         creador = b.author_name.slice(0, 2).join(', ');
       } else if (b.authors?.[0]?.name) {
         creador = b.authors[0].name;
-      } else {
-        creador = defCr;
       }
-      if (!creador || creador.length > 50) creador = defCr;
+      if (creador && creador.length > 50) creador = '';
 
       return {
         categoria: 'Lecturas',
@@ -921,8 +913,8 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       };
     };
 
-    const comicsMarvel = (olMarvel || []).map(b => mapearDocComic(b, 'Marvel', 'Marvel Comics')).filter(Boolean);
-    const comicsDc = (olDc || []).map(b => mapearDocComic(b, 'DC', 'DC Comics')).filter(Boolean);
+    const comicsMarvel = (olMarvel || []).map(b => mapearDocComic(b, 'Marvel', '')).filter(Boolean);
+    const comicsDc = (olDc || []).map(b => mapearDocComic(b, 'DC', '')).filter(Boolean);
 
     // Intercalar Marvel y DC
     const maxComics = Math.max(comicsMarvel.length, comicsDc.length);
@@ -950,19 +942,39 @@ return { exito: true }; } catch (e) { return { exito: false, error: e.toString()
       datos.comics = [...COMICS_FALLBACK];
     }
 
-    // --- 9. MANGAS ---
+    // --- 9. MANGAS (Con Mangaka Real extraído de Kitsu Staff) ---
+    const peopleMap = new Map();
+    const mediaStaffMap = new Map();
+    (resps[16]?.included || []).forEach(inc => {
+      if (inc.type === 'people' && inc.attributes?.name) {
+        peopleMap.set(inc.id, inc.attributes.name);
+      } else if (inc.type === 'mediaStaff') {
+        const pId = inc.relationships?.person?.data?.id;
+        if (pId) mediaStaffMap.set(inc.id, pId);
+      }
+    });
+
     const mIds = new Set();
     kitsuManga.forEach(it => {
       if (!it || mIds.has(it.id) || datos.mangas.length >= 24) return;
       mIds.add(it.id);
       const a = it.attributes || {}, tOrig = a.titles?.en_jp || a.canonicalTitle || a.titles?.ja_jp || 'Manga', tEng = a.titles?.en || '';
+      const staffRefs = it.relationships?.staff?.data || [];
+      const mangakas = [];
+      staffRefs.forEach(ref => {
+        const pId = mediaStaffMap.get(ref.id);
+        if (pId && peopleMap.has(pId)) {
+          const nom = peopleMap.get(pId);
+          if (!mangakas.includes(nom)) mangakas.push(nom);
+        }
+      });
       datos.mangas.push({
         categoria: 'Lecturas',
         subcategoria: 'Mangas',
         titulo: tOrig,
         tituloOriginal: tOrig,
         tituloIngles: (tEng && tEng.toLowerCase() !== tOrig.toLowerCase()) ? tEng : '',
-        creador: a.status === 'current' ? tLang('Manga en emisión', 'Ongoing Manga') : tLang('Manga popular', 'Popular Manga'),
+        creador: mangakas.slice(0, 2).join(', '),
         anio: a.startDate ? a.startDate.substring(0, 4) : '2025',
         sinopsis: a.synopsis || '',
         poster: a.posterImage?.medium || a.posterImage?.small || '',
@@ -1073,8 +1085,8 @@ return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) {
         ]);
         const showrunners = Array.from(new Set((crew || []).filter(x => x.type === 'Creator' || x.type === 'Showrunner').map(x => x.person?.name).filter(Boolean)));
         const writers = Array.from(new Set((crew || []).filter(x => /writer|story|screenplay/i.test(x.type || '')).map(x => x.person?.name).filter(Boolean)));
-        const actors = (cast || []).slice(0, 5).map(x => x.person?.name).filter(Boolean);
-        res.showrunner = showrunners.length ? showrunners.join(', ') : (creador || s.network?.name || noEsp);
+        const crVal = (typeof esCreadorValido === 'function' ? esCreadorValido(creador, 'Series', normSub) : creador) ? creador : '';
+        res.showrunner = showrunners.length ? showrunners.join(', ') : (crVal || noEsp);
         res.escritores = writers.length ? writers.slice(0, 4).join(', ') : noEsps;
         res.protagonistas = actors.length ? actors.join(', ') : noEsps;
 
@@ -1284,23 +1296,33 @@ return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) {
         res.sinopsis = b.description || (d?.subject ? d.subject.slice(0, 4).join(', ') : tLang('Cómic / Novela gráfica.', 'Comic / Graphic novel.'));
       }
     } else if (tipoFicha === 'manga') {
-      const kRes = await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&include=genres,categories&page[limit]=1`);
+      const kRes = await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&include=genres,categories,staff.person&page[limit]=1`);
       const mItem = kRes?.data?.[0];
       const a = mItem?.attributes || {};
       let mangakas = [];
-      if (mItem?.id) {
-        const st = await getJson_(`https://kitsu.io/api/edge/manga/${mItem.id}/staff`);
-        const targets = (st?.data || []).slice(0, 2);
-        for (const t of targets) {
-          if (t.relationships?.person?.links?.related) {
-            const p = await getJson_(t.relationships.person.links.related);
-            if (p?.data?.attributes?.name) mangakas.push(p.data.attributes.name);
+      if (kRes?.included?.length) {
+        const peopleMap = new Map();
+        const mediaStaffMap = new Map();
+        kRes.included.forEach(inc => {
+          if (inc.type === 'people' && inc.attributes?.name) peopleMap.set(inc.id, inc.attributes.name);
+          else if (inc.type === 'mediaStaff') {
+            const pId = inc.relationships?.person?.data?.id;
+            if (pId) mediaStaffMap.set(inc.id, pId);
           }
-        }
+        });
+        const staffRefs = mItem?.relationships?.staff?.data || [];
+        staffRefs.forEach(ref => {
+          const pId = mediaStaffMap.get(ref.id);
+          if (pId && peopleMap.has(pId)) {
+            const nom = peopleMap.get(pId);
+            if (!mangakas.includes(nom)) mangakas.push(nom);
+          }
+        });
       }
       res.poster = a.posterImage?.original || a.posterImage?.medium || '';
       res.fechaSalida = a.startDate ? fmtFecha_(a.startDate) : noReg;
-      res.mangaka = mangakas.length ? mangakas.join(', ') : (creador || tLang('Mangaka desconocido', 'Unknown mangaka'));
+      const crValM = (typeof esCreadorValido === 'function' ? esCreadorValido(creador, 'Lecturas', 'Mangas') : creador) ? creador : '';
+      res.mangaka = mangakas.length ? mangakas.join(', ') : (crValM || noEsp);
       const genres = (kRes?.included || []).filter(x => x.type === 'genres' || x.type === 'categories').map(x => x.attributes?.title || x.attributes?.name).slice(0, 4).join(', ');
       res.genero = genres || 'Manga, Shonen / Seinen';
       res.sinopsis = a.synopsis || res.sinopsis;
@@ -1309,11 +1331,24 @@ return ''; }, async obtenerDetalleTecnicoModal(titulo, creador, cat, sub) {
   return res; }, async buscarEnServidor(qRaw, cat, sub) { if (!qRaw || qRaw.trim().length < 2) return []; const qTrim = qRaw.trim(); const curLang = (typeof getLang_ === 'function' ? getLang_() : 'es'); const tmdbLang = curLang === 'en' ? 'en-US' : 'es-ES'; const steamLang = curLang === 'en' ? 'english' : 'spanish'; const sinSinopsis = tLang('Sin sinopsis disponible.', 'No synopsis available.'); const videojuegoLbl = tLang('Videojuego', 'Video Game'); const cacheKey = `${curLang}_${cat}_${sub || ''}_${qTrim.toLowerCase()}`; if (!SERVER_API._searchMemCache) SERVER_API._searchMemCache = new Map(); if (SERVER_API._searchMemCache.has(cacheKey)) return SERVER_API._searchMemCache.get(cacheKey); const q = encodeURIComponent(qTrim); const _exec = async () => { if (cat === 'Peliculas') {
 const list = ((await getJson_(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_K}&query=${q}&language=${tmdbLang}`))?.results || []).slice(0, 6); return await Promise.all(list.map(async m => { let dirs = [], durHoras = null; try { const [cr, det] = await Promise.all([Promise.race([getJson_(`https://api.themoviedb.org/3/movie/${m.id}/credits?api_key=${TMDB_K}`), new Promise(r => setTimeout(() => r(null), 850))]), Promise.race([getJson_(`https://api.themoviedb.org/3/movie/${m.id}?api_key=${TMDB_K}&language=${tmdbLang}`), new Promise(r => setTimeout(() => r(null), 850))])]); dirs = (cr?.crew || []).filter(x => x.job === "Director").map(x => x.name); if (det?.runtime) durHoras = (det.runtime / 60).toFixed(1); } catch(e){}
 const noEs = m.original_language !== 'es' && m.original_language !== 'en';
-return { idRef: m.id, tituloOriginal: m.original_title || m.title || '', tituloIngles: (noEs && m.title && m.title !== m.original_title) ? m.title : '', creador: dirs.length ? dirs.join(', ') : tLang('Director desconocido', 'Unknown director'), anio: m.release_date?.substring(0, 4) || '', sinopsis: m.overview || sinSinopsis, poster: m.poster_path ? `https://image.tmdb.org/t/p/w185${m.poster_path}` : '', duracionHoras: durHoras };
+return { idRef: m.id, tituloOriginal: m.original_title || m.title || '', tituloIngles: (noEs && m.title && m.title !== m.original_title) ? m.title : '', creador: dirs.length ? dirs.join(', ') : '', anio: m.release_date?.substring(0, 4) || '', sinopsis: m.overview || sinSinopsis, poster: m.poster_path ? `https://image.tmdb.org/t/p/w185${m.poster_path}` : '', duracionHoras: durHoras };
 })); }
 if (cat === 'Series') { const list = ((await getJson_(`https://api.tvmaze.com/search/shows?q=${q}`)) || []).slice(0, 6); return await Promise.all(list.map(async it => { const s = it.show;
 let crew = null, sList = null; try { [crew, sList] = await Promise.all([Promise.race([getJson_(`https://api.tvmaze.com/shows/${s.id}/crew`), new Promise(r => setTimeout(() => r(null), 850))]), Promise.race([getJson_(`https://api.tvmaze.com/shows/${s.id}/seasons`), new Promise(r => setTimeout(() => r(null), 850))])]); } catch(e){}
-const crs = Array.from(new Set((crew || []).filter(x => x.type === 'Creator' || x.type === 'Showrunner').map(x => x.person?.name).filter(Boolean))); const aIni = s.premiered ? s.premiered.substring(0, 4) : '', aFin = s.ended ? s.ended.substring(0, 4) : (s.status === 'Running' ? tLang('presente', 'present') : '');
+const crs = Array.from(new Set((crew || []).filter(x => x.type === 'Creator' || x.type === 'Showrunner').map(x => x.person?.name).filter(Boolean)));
+let creadorSerie = crs.length ? crs.join(', ') : '';
+if (!creadorSerie && s.name) {
+  try {
+    const tmdbSearch = await Promise.race([getJson_(`https://api.themoviedb.org/3/search/tv?api_key=${TMDB_K}&query=${encodeURIComponent(s.name)}&language=${tmdbLang}`), new Promise(r => setTimeout(() => r(null), 600))]);
+    const firstTv = tmdbSearch?.results?.[0];
+    if (firstTv?.id) {
+      const tmdbDet = await Promise.race([getJson_(`https://api.themoviedb.org/3/tv/${firstTv.id}?api_key=${TMDB_K}`), new Promise(r => setTimeout(() => r(null), 600))]);
+      const tmdbCrs = (tmdbDet?.created_by || []).map(x => x.name).filter(Boolean);
+      if (tmdbCrs.length) creadorSerie = tmdbCrs.slice(0, 2).join(', ');
+    }
+  } catch(e) {}
+}
+const aIni = s.premiered ? s.premiered.substring(0, 4) : '', aFin = s.ended ? s.ended.substring(0, 4) : (s.status === 'Running' ? tLang('presente', 'present') : '');
 const avgRun = s.averageRuntime || s.runtime || 45;
 let durHoras = null;
 if (sList && sList.length && sList[0].episodeOrder) {
@@ -1321,7 +1356,7 @@ if (sList && sList.length && sList[0].episodeOrder) {
 } else {
   durHoras = ((8 * avgRun) / 60).toFixed(1);
 }
-return { idRef: s.id, tituloOriginal: s.name || '', tituloIngles: '', creador: crs.length ? crs.join(', ') : (s.network?.name || tLang('Showrunner desconocido', 'Unknown showrunner')), anio: (aIni && aFin && aIni !== aFin) ? `${aIni}-${aFin}` : aIni, totalSeasons: sList?.length || 0, estadoSerie: s.status || '', sinopsis: s.summary ? s.summary.replace(/<[^>]*>?/gm, '') : sinSinopsis, poster: s.image?.medium || s.image?.original || '', duracionHoras: durHoras, seasonsList: sList || [], avgRuntime: avgRun };
+return { idRef: s.id, tituloOriginal: s.name || '', tituloIngles: '', creador: creadorSerie, anio: (aIni && aFin && aIni !== aFin) ? `${aIni}-${aFin}` : aIni, totalSeasons: sList?.length || 0, estadoSerie: s.status || '', sinopsis: s.summary ? s.summary.replace(/<[^>]*>?/gm, '') : sinSinopsis, poster: s.image?.medium || s.image?.original || '', duracionHoras: durHoras, seasonsList: sList || [], avgRuntime: avgRun };
 })); }
 if (cat === 'Musica') {
   const isDiscoSub = sub === 'Discos' || sub === 'Disco' || sub === 'To Listen' || sub === 'To Listen: Discos';
@@ -1445,7 +1480,7 @@ if (cat === 'Juegos') {
           idRef: g.id,
           tituloOriginal: tit,
           tituloIngles: '',
-          creador: genres || videojuegoLbl,
+          creador: '',
           anio: g.released?.substring(0, 4) || '',
           sinopsis: sin,
           poster: optimizarUrlPoster(g.background_image, "thumb") || ''
@@ -1468,7 +1503,7 @@ if (cat === 'Juegos') {
           idRef: `steam_${it.id}`,
           tituloOriginal: tit,
           tituloIngles: '',
-          creador: 'Steam',
+          creador: '',
           anio: '',
           sinopsis: `${tLang('Disponible en Steam Store', 'Available on Steam Store')}${meta}`,
           poster: poster
@@ -1487,8 +1522,7 @@ if (cat === 'Juegos') {
       if (!tit) return;
       const k = tit.toLowerCase().trim();
       const devs = (g.involved_companies || []).filter(c => c.developer).map(c => c.company?.name).filter(Boolean);
-      const pubs = (g.involved_companies || []).filter(c => c.publisher).map(c => c.company?.name).filter(Boolean);
-      const cr = devs.length ? devs.join(', ') : (pubs.length ? pubs.join(', ') : 'IGDB');
+      const cr = devs.length ? devs.slice(0, 2).join(', ') : '';
       let yr = '';
       if (g.first_release_date) {
         try { yr = String(new Date(g.first_release_date * 1000).getFullYear()); } catch(e){}
@@ -1513,7 +1547,7 @@ if (cat === 'Juegos') {
       } else {
         const exist = resultadosJuegos.find(x => x.tituloOriginal.toLowerCase().trim() === k);
         if (exist) {
-          if ((!exist.creador || exist.creador === videojuegoLbl || exist.creador === 'Videojuego' || exist.creador === 'Steam') && cr !== 'IGDB') exist.creador = cr;
+          if (!exist.creador && cr) exist.creador = cr;
           if (!exist.anio && yr) exist.anio = yr;
           if (!exist.poster && cov) exist.poster = cov;
         }
@@ -1521,15 +1555,56 @@ if (cat === 'Juegos') {
     });
   }
 
+  // Obtener desarrolladores para juegos de RAWG
+  try {
+    const rawgItems = resultadosJuegos.filter(x => typeof x.idRef === 'number').slice(0, 6);
+    await Promise.all(rawgItems.map(async r => {
+      try {
+        const det = await Promise.race([
+          getJson_(`https://api.rawg.io/api/games/${r.idRef}?key=${RAWG_K}`),
+          new Promise(res => setTimeout(() => res(null), 700))
+        ]);
+        const devs = (det?.developers || []).map(d => d.name).filter(Boolean);
+        if (devs.length) r.creador = devs.slice(0, 2).join(', ');
+      } catch(e) {}
+    }));
+  } catch(e) {}
+
   return resultadosJuegos.slice(0, 10);
 }
-if (cat === 'Lecturas') { if (sub === 'Mangas' || sub === 'Manga' || sub === 'To Read: Mangas') { const list = ((await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&page[limit]=6`))?.data || []); return await Promise.all(list.map(async it => {
-const a = it.attributes || {}, titles = a.titles || {}, tRom = titles.en_jp || a.canonicalTitle || '', tEng = titles.en || '', mangakas = []; try { const st = await getJson_(`https://kitsu.io/api/edge/manga/${it.id}/staff`);
-const rel = (st?.data || []).filter(s => /story|art|original|author/i.test(s.attributes?.role || '')); const targets = (rel.length ? rel : (st?.data || [])).slice(0, 2); const pList = await Promise.all(targets.map(x => x.relationships?.person?.links?.related ? Promise.race([getJson_(x.relationships.person.links.related), new Promise(r => setTimeout(() => r(null), 600))]) : Promise.resolve(null))); for (const p of pList) {
-if (p?.data?.attributes?.name && !mangakas.includes(p.data.attributes.name)) mangakas.push(p.data.attributes.name); }
-} catch (e) {}
-return { tituloOriginal: tRom || 'Manga', tituloIngles: (tEng && tEng.toLowerCase() !== tRom.toLowerCase()) ? tEng : '', creador: mangakas.length ? mangakas.join(', ') : 'Mangaka', anio: a.startDate?.substring(0, 4) || '', sinopsis: a.synopsis ? a.synopsis.substring(0, 160) + '...' : tLang('Manga japonés.', 'Japanese manga.'), poster: a.posterImage?.medium || a.posterImage?.small || '' };
-})); }
+if (cat === 'Lecturas') { if (sub === 'Mangas' || sub === 'Manga' || sub === 'To Read: Mangas') {
+  const kData = await getJson_(`https://kitsu.io/api/edge/manga?filter[text]=${q}&include=staff.person&page[limit]=6`);
+  const list = kData?.data || [];
+  const peopleMap = new Map();
+  const mediaStaffMap = new Map();
+  (kData?.included || []).forEach(inc => {
+    if (inc.type === 'people' && inc.attributes?.name) peopleMap.set(inc.id, inc.attributes.name);
+    else if (inc.type === 'mediaStaff') {
+      const pId = inc.relationships?.person?.data?.id;
+      if (pId) mediaStaffMap.set(inc.id, pId);
+    }
+  });
+  return list.map(it => {
+    const a = it.attributes || {}, titles = a.titles || {}, tRom = titles.en_jp || a.canonicalTitle || a.titles?.ja_jp || '', tEng = titles.en || '';
+    const staffRefs = it.relationships?.staff?.data || [];
+    const mangakas = [];
+    staffRefs.forEach(ref => {
+      const pId = mediaStaffMap.get(ref.id);
+      if (pId && peopleMap.has(pId)) {
+        const nom = peopleMap.get(pId);
+        if (!mangakas.includes(nom)) mangakas.push(nom);
+      }
+    });
+    return {
+      tituloOriginal: tRom || 'Manga',
+      tituloIngles: (tEng && tEng.toLowerCase() !== tRom.toLowerCase()) ? tEng : '',
+      creador: mangakas.slice(0, 2).join(', '),
+      anio: a.startDate?.substring(0, 4) || '',
+      sinopsis: a.synopsis ? a.synopsis.substring(0, 160) + '...' : tLang('Manga japonés.', 'Japanese manga.'),
+      poster: a.posterImage?.medium || a.posterImage?.small || ''
+    };
+  });
+}
 const isC = sub === 'Cómics' || sub === 'Cómic' || sub === 'To Read: Cómics';
 if (isC) {
   const comicVinePromise = COMICVINE_K
@@ -1552,10 +1627,10 @@ if (isC) {
     cvRes.results.forEach(it => {
       const tit = it.name || it.volume?.name || '';
       if (!tit) return;
-      const pub = it.publisher?.name || tLang('Cómic', 'Comic');
+      const pub = it.publisher?.name || '';
       const anio = it.start_year || (it.cover_date ? it.cover_date.substring(0, 4) : '');
       const poster = it.image?.medium_url || it.image?.small_url || it.image?.original_url || '';
-      const sin = it.deck || (it.description ? it.description.replace(/<[^>]*>?/gm, '').substring(0, 220) : `${tLang('Editorial', 'Publisher')}: ${pub}`);
+      const sin = it.deck || (it.description ? it.description.replace(/<[^>]*>?/gm, '').substring(0, 220) : (pub ? `${tLang('Editorial', 'Publisher')}: ${pub}` : tLang('Cómic / Novela gráfica', 'Comic / Graphic novel')));
       const k = tit.toLowerCase().trim();
       if (!vistos.has(k)) {
         vistos.add(k);
@@ -1563,7 +1638,7 @@ if (isC) {
           idRef: it.id,
           tituloOriginal: tit,
           tituloIngles: '',
-          creador: pub,
+          creador: '',
           anio: anio ? String(anio) : '',
           sinopsis: sin,
           poster: poster
@@ -1577,7 +1652,7 @@ if (isC) {
       const tit = it.title || '';
       if (!tit) return;
       const creators = (it.creators?.items || []).filter(c => ['writer', 'penciler', 'penciller', 'artist'].includes(c.role)).map(c => c.name);
-      const cr = creators.length ? creators.join(', ') : 'Marvel Comics';
+      const cr = creators.length ? creators.join(', ') : '';
       const onSale = (it.dates || []).find(d => d.type === 'onsaleDate')?.date;
       const anio = onSale ? onSale.substring(0, 4) : '';
       const poster = (it.thumbnail?.path && it.thumbnail?.extension) ? `${it.thumbnail.path}/portrait_incredible.${it.thumbnail.extension}`.replace('http://', 'https://') : '';
@@ -1607,7 +1682,7 @@ if (isC) {
         resultadosComics.push({
           tituloOriginal: tit,
           tituloIngles: '',
-          creador: d.author_name?.length ? d.author_name.join(', ') : tLang('Escritor / Dibujante', 'Writer / Artist'),
+          creador: d.author_name?.length ? d.author_name.join(', ') : '',
           anio: d.first_publish_year ? String(d.first_publish_year) : '',
           sinopsis: d.publisher ? `${tLang('Editorial', 'Publisher')}: ${d.publisher[0]}` : tLang('Cómic / Novela gráfica', 'Comic / Graphic novel'),
           poster: d.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg` : ''
@@ -1626,7 +1701,7 @@ if (isC) {
         resultadosComics.push({
           tituloOriginal: tit,
           tituloIngles: '',
-          creador: inf.authors?.length ? inf.authors.join(', ') : tLang('Autor de cómic', 'Comic author'),
+          creador: inf.authors?.length ? inf.authors.join(', ') : '',
           anio: inf.publishedDate?.substring(0, 4) || '',
           sinopsis: inf.description ? inf.description.substring(0, 220) : tLang('Cómic / Novela gráfica', 'Comic / Graphic novel'),
           poster: (inf.imageLinks?.thumbnail || inf.imageLinks?.smallThumbnail || '').replace('http://', 'https://')
@@ -1638,11 +1713,11 @@ if (isC) {
   return resultadosComics.slice(0, 8);
 }
 const ol = await getJson_(`https://openlibrary.org/search.json?q=${q}&limit=6`); if (ol?.docs?.length) { return ol.docs.slice(0, 6).map(d => ({
-tituloOriginal: d.title || tLang('Sin título', 'Untitled'), tituloIngles: '', creador: d.author_name?.length ? d.author_name.join(', ') : tLang('Autor desconocido', 'Unknown author'),
+tituloOriginal: d.title || tLang('Sin título', 'Untitled'), tituloIngles: '', creador: d.author_name?.length ? d.author_name.join(', ') : '',
 anio: d.first_publish_year ? String(d.first_publish_year) : '', sinopsis: d.publisher ? `${tLang('Editorial', 'Publisher')}: ${d.publisher[0]}` : tLang('Libro literario', 'Literary book'), poster: d.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg` : ''
 })); }
 const gb = (await getJson_(`https://www.googleapis.com/books/v1/volumes?q=${q}&maxResults=6`))?.items || []; return gb.map(b => { const inf = b.volumeInfo || {};
-return { tituloOriginal: inf.title || tLang('Sin título', 'Untitled'), tituloIngles: '', creador: inf.authors?.length ? inf.authors.join(', ') : tLang('Autor desconocido', 'Unknown author'), anio: inf.publishedDate?.substring(0, 4) || '', sinopsis: inf.description || sinSinopsis, poster: (inf.imageLinks?.thumbnail || inf.imageLinks?.smallThumbnail || '').replace('http://', 'https://') };
+return { tituloOriginal: inf.title || tLang('Sin título', 'Untitled'), tituloIngles: '', creador: inf.authors?.length ? inf.authors.join(', ') : '', anio: inf.publishedDate?.substring(0, 4) || '', sinopsis: inf.description || sinSinopsis, poster: (inf.imageLinks?.thumbnail || inf.imageLinks?.smallThumbnail || '').replace('http://', 'https://') };
 }); }
 return []; }; const searchRes = await _exec(); if (searchRes && searchRes.length && SERVER_API._searchMemCache.size < 350) SERVER_API._searchMemCache.set(cacheKey, searchRes); return searchRes || []; }, async migrarDatosSheetsASupabase() { return { exito: false, error: tLang('Para migrar desde Google Sheets por única vez, haz clic en este botón desde tu enlace de Google Apps Script o usa "Importar (.txt)" en Configuración.', 'To perform a one-time migration from Google Sheets, click this button from your Google Apps Script link or use "Import (.txt)" in Settings.') }; }
 , async guardarPrivacidadUsuario(userEmail, priv) {
