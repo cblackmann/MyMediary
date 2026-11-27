@@ -1659,7 +1659,18 @@ const isCon = c === 'Musica' && (s === 'Conciertos' || s === 'Concierto'); docum
 const bBusc = document.getElementById('box-buscador-general'); if (bBusc) bBusc.style.display = isCon ? 'none' : 'flex'; const mCon = document.getElementById('modulo-concierto-manual'); if (mCon) mCon.style.display = isCon ? 'block' : 'none'; if (isCon) limpiarModuloConcierto();
 const esTemp = c === 'Series' && (s === 'Temporadas' || s.includes('Temporada')); document.getElementById('grupo-temporada').style.display = esTemp ? 'block' : 'none';
 if (!esTemp) { document.getElementById('input-temporada-num').value = ''; document.getElementById('chk-temporada-unica').checked = false; }
-const admiteRw = subAdmiteRewatch(c, s); const boxRw = document.getElementById('grupo-rewatch-checkbox'); if (boxRw) { boxRw.style.display = admiteRw ? 'block' : 'none'; const chkRw = document.getElementById('chk-es-rewatch'); if (chkRw) chkRw.checked = false; const btnRw = document.getElementById('btn-toggle-rewatch-form'); if (btnRw) btnRw.classList.remove('active'); }
+const admiteRw = subAdmiteRewatch(c, s);
+const boxRw = document.getElementById('grupo-rewatch-checkbox');
+if (boxRw) {
+  boxRw.style.display = (admiteRw && !esTemp) ? 'block' : 'none';
+  const chkRw = document.getElementById('chk-es-rewatch');
+  if (chkRw) chkRw.checked = false;
+  document.querySelectorAll('.btn-rewatch-toggle').forEach(btn => btn.classList.remove('active'));
+}
+const boxRwSeries = document.getElementById('box-rewatch-series');
+if (boxRwSeries) {
+  boxRwSeries.style.display = (admiteRw && esTemp) ? 'inline-flex' : 'none';
+}
 const btnFiltroRw = document.getElementById('btn-filtro-rewatches');
 if (btnFiltroRw) {
   btnFiltroRw.style.display = (admiteRw && !esWl) ? 'inline-flex' : 'none';

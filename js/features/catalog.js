@@ -5,103 +5,217 @@ let regPrecisionInicio = 'dia';
 let regPrecisionFin = 'dia';
 let regPrecisionActual = 'dia';
 
-function toggleDropdownTipoFecha(seccion, e) {
-  if (e) e.stopPropagation();
-  const menu = document.getElementById(`menu-tipo-fecha-${seccion}`);
-  const btn = document.getElementById(`btn-tipo-fecha-${seccion}`);
-  const isOpen = menu && menu.style.display === 'flex';
-  document.querySelectorAll('.date-type-dropdown-menu').forEach(m => m.style.display = 'none');
-  document.querySelectorAll('.btn-tipo-fecha-integrated').forEach(b => b.classList.remove('open'));
-  if (menu && !isOpen) {
-    menu.style.display = 'flex';
-    if (btn) btn.classList.add('open');
+function abrirFlatpickrInicio(e) {
+  if (e && e.target && e.target.closest('#btn-hoy-inicio')) return;
+  const chkNo = document.getElementById('chk-no-fecha');
+  if (chkNo && chkNo.checked) return;
+  const inp = document.getElementById('input-fecha-inicio');
+  if (!inp || inp.disabled) return;
+  if (!fpInicio) {
+    inicializarFlatpickrsRegistro();
+  }
+  if (fpInicio) {
+    fpInicio.open();
   }
 }
+window.abrirFlatpickrInicio = abrirFlatpickrInicio;
 
-function seleccionarTipoFecha(seccion, modo, e) {
-  if (e) e.stopPropagation();
-  if (seccion === 'inicio') {
-    regPrecisionInicio = modo;
-    regPrecisionActual = modo;
-  } else {
-    regPrecisionFin = modo;
+function abrirFlatpickrFin(e) {
+  if (e && e.target && e.target.closest('#btn-hoy-fin')) return;
+  const chkNo = document.getElementById('chk-no-fecha-fin');
+  if (chkNo && chkNo.checked) return;
+  const inp = document.getElementById('input-fecha-fin');
+  if (!inp || inp.disabled) return;
+  if (!fpFin) {
+    inicializarFlatpickrsRegistro();
+  }
+  if (fpFin) {
+    fpFin.open();
+  }
+}
+window.abrirFlatpickrFin = abrirFlatpickrFin;
+
+function agregarToolbarIntegradoFlatpickr(instance, seccion) {
+  if (!instance || !instance.calendarContainer) return;
+  let toolbar = instance.calendarContainer.querySelector('.flatpickr-integrated-toolbar');
+  if (toolbar) return;
+
+  toolbar = document.createElement('div');
+  toolbar.className = 'flatpickr-integrated-toolbar';
+
+  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
+  const txtHoy = l === 'en' ? 'Today' : 'Hoy';
+  const txtMes = l === 'en' ? 'Month only' : 'Solo Mes';
+  const txtAnio = l === 'en' ? 'Year only' : 'Solo Año';
+
+  toolbar.innerHTML = `
+    <button type="button" class="fp-tool-btn fp-tool-hoy" title="${l === 'en' ? 'Set today' : 'Guardar hoy'}">
+      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><path d="m3.75 13.5 10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75Z"/></svg>
+      <span>${txtHoy}</span>
+    </button>
+    <button type="button" class="fp-tool-btn fp-tool-mes" title="${l === 'en' ? 'Save displayed month' : 'Guardar mes visible'}">
+      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+      <span class="fp-tool-mes-label">${txtMes}</span>
+    </button>
+    <button type="button" class="fp-tool-btn fp-tool-anio" title="${l === 'en' ? 'Save displayed year' : 'Guardar año visible'}">
+      <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span class="fp-tool-anio-label">${txtAnio}</span>
+    </button>
+  `;
+
+  const btnHoy = toolbar.querySelector('.fp-tool-hoy');
+  btnHoy.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    if (seccion === 'inicio') {
+      establecerFechaHoyInicio(ev);
+    } else {
+      establecerFechaHoyFin(ev);
+    }
+    instance.close();
+  });
+
+  const btnMes = toolbar.querySelector('.fp-tool-mes');
+  btnMes.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    const curMonth = instance.currentMonth;
+    const curYear = instance.currentYear;
+    const meses = (typeof I18N !== 'undefined' && I18N[l]?.meses) || (l === 'en' ? NOMBRES_MESES_EN : NOMBRES_MESES_ES);
+    const nomMes = meses[curMonth] || meses[0];
+    const valMes = `${nomMes} ${curYear}`;
+
+    if (seccion === 'inicio') {
+      const chk = document.getElementById('chk-no-fecha');
+      if (chk && chk.checked) { chk.checked = false; toggleSinFechaInicio(false); }
+    } else {
+      const chk = document.getElementById('chk-no-fecha-fin');
+      if (chk && chk.checked) { chk.checked = false; toggleSinFechaFin(false); }
+    }
+
+    if (instance.input) {
+      instance.clear();
+      instance.input.value = valMes;
+      instance.input.dispatchEvent(new Event('change', { bubbles: true }));
+      instance.input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    instance.close();
+  });
+
+  const btnAnio = toolbar.querySelector('.fp-tool-anio');
+  btnAnio.addEventListener('click', (ev) => {
+    ev.preventDefault();
+    ev.stopPropagation();
+    const curYear = String(instance.currentYear);
+
+    if (seccion === 'inicio') {
+      const chk = document.getElementById('chk-no-fecha');
+      if (chk && chk.checked) { chk.checked = false; toggleSinFechaInicio(false); }
+    } else {
+      const chk = document.getElementById('chk-no-fecha-fin');
+      if (chk && chk.checked) { chk.checked = false; toggleSinFechaFin(false); }
+    }
+
+    if (instance.input) {
+      instance.clear();
+      instance.input.value = curYear;
+      instance.input.dispatchEvent(new Event('change', { bubbles: true }));
+      instance.input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    instance.close();
+  });
+
+  instance.calendarContainer.appendChild(toolbar);
+}
+window.agregarToolbarIntegradoFlatpickr = agregarToolbarIntegradoFlatpickr;
+
+function inicializarFlatpickrsRegistro() {
+  if (typeof flatpickr === 'undefined') return;
+  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'default' : 'es';
+
+  const inpIni = document.getElementById('input-fecha-inicio');
+  if (inpIni && !inpIni.disabled) {
+    if (fpInicio) {
+      try { fpInicio.destroy(); } catch (_) {}
+      fpInicio = null;
+    }
+    try {
+      fpInicio = flatpickr(inpIni, {
+        locale: l,
+        dateFormat: 'd/m/Y',
+        allowInput: false,
+        disableMobile: true,
+        onReady: function(selectedDates, dateStr, instance) {
+          agregarToolbarIntegradoFlatpickr(instance, 'inicio');
+        },
+        onOpen: function(selectedDates, dateStr, instance) {
+          agregarToolbarIntegradoFlatpickr(instance, 'inicio');
+        }
+      });
+    } catch (e) {
+      console.warn('Error inicializando fpInicio:', e);
+    }
   }
 
-  const txtEl = document.getElementById(`txt-tipo-fecha-${seccion}`);
-  const l = (typeof userPrefs !== 'undefined' && userPrefs?.lang) || 'es';
-  let lbl = (modo === 'dia') ? (l === 'en' ? 'Exact' : 'Exacta') : (modo === 'mes' ? (l === 'en' ? 'Month' : 'Mes') : (l === 'en' ? 'Year' : 'Año'));
-  if (txtEl) txtEl.textContent = lbl;
-
-  document.querySelectorAll(`#menu-tipo-fecha-${seccion} .date-type-item`).forEach(b => {
-    b.classList.toggle('active', b.getAttribute('data-modo') === modo);
-  });
-
-  const menu = document.getElementById(`menu-tipo-fecha-${seccion}`);
-  const btn = document.getElementById(`btn-tipo-fecha-${seccion}`);
-  if (menu) menu.style.display = 'none';
-  if (btn) btn.classList.remove('open');
-
-  ['dia', 'mes', 'anio'].forEach(w => {
-    const el = document.getElementById(`wrap-prec-${w}-${seccion}`);
-    if (el) el.style.display = (w === modo) ? 'block' : 'none';
-  });
-
-  if (seccion === 'inicio') {
-    if (modo === 'mes') actualizarFechaDesdeMes('inicio');
-    else if (modo === 'anio') actualizarFechaDesdeSoloAnio('inicio');
-    const chkNo = document.getElementById('chk-no-fecha');
-    if (chkNo && chkNo.checked) {
-      chkNo.checked = false;
-      toggleSinFechaInicio(false);
+  const inpFin = document.getElementById('input-fecha-fin');
+  if (inpFin && !inpFin.disabled) {
+    if (fpFin) {
+      try { fpFin.destroy(); } catch (_) {}
+      fpFin = null;
     }
-  } else {
-    if (modo === 'mes') actualizarFechaDesdeMes('fin');
-    else if (modo === 'anio') actualizarFechaDesdeSoloAnio('fin');
-    const chkNo = document.getElementById('chk-no-fecha-fin');
-    if (chkNo && chkNo.checked) {
-      chkNo.checked = false;
-      toggleSinFechaFin(false);
+    try {
+      fpFin = flatpickr(inpFin, {
+        locale: l,
+        dateFormat: 'd/m/Y',
+        allowInput: false,
+        disableMobile: true,
+        onReady: function(selectedDates, dateStr, instance) {
+          agregarToolbarIntegradoFlatpickr(instance, 'fin');
+        },
+        onOpen: function(selectedDates, dateStr, instance) {
+          agregarToolbarIntegradoFlatpickr(instance, 'fin');
+        }
+      });
+    } catch (e) {
+      console.warn('Error inicializando fpFin:', e);
     }
   }
 }
+window.inicializarFlatpickrsRegistro = inicializarFlatpickrsRegistro;
+
+function toggleDropdownTipoFecha() {}
+function seleccionarTipoFecha() {}
 window.toggleDropdownTipoFecha = toggleDropdownTipoFecha;
 window.seleccionarTipoFecha = seleccionarTipoFecha;
 
-function establecerFechaHoyInicio() {
+function establecerFechaHoyInicio(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   const fechaHoy = obtenerFechaHoyStr();
   const chkNo = document.getElementById('chk-no-fecha');
   if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFechaInicio(false); }
-  const modo = regPrecisionInicio || 'dia';
-  if (modo === 'mes') {
-    const hoy = new Date();
-    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const selMes = document.getElementById('sel-mes-nombre-inicio') || document.getElementById('sel-mes-nombre');
-    const selAnio = document.getElementById('sel-mes-anio-inicio') || document.getElementById('sel-mes-anio');
-    if (selMes) selMes.value = meses[hoy.getMonth()];
-    if (selAnio) selAnio.value = String(hoy.getFullYear());
-    actualizarFechaDesdeMes('inicio');
-  } else if (modo === 'anio') {
-    const hoy = new Date();
-    const selAnio = document.getElementById('sel-solo-anio-inicio') || document.getElementById('sel-solo-anio');
-    if (selAnio) selAnio.value = String(hoy.getFullYear());
-    actualizarFechaDesdeSoloAnio('inicio');
-  } else {
-    if (fpInicio) fpInicio.setDate(fechaHoy);
-    else {
-      const el = document.getElementById('input-fecha-inicio');
-      if (el) el.value = fechaHoy;
-    }
+  const inp = document.getElementById('input-fecha-inicio');
+  if (inp) inp.value = fechaHoy;
+  if (fpInicio) {
+    try {
+      fpInicio.setDate(fechaHoy, true);
+      if (fpInicio.isOpen) fpInicio.close();
+    } catch (_) {}
   }
 }
+window.establecerFechaHoyInicio = establecerFechaHoyInicio;
+
 function toggleRewatchFormulario() {
   const chk = document.getElementById('chk-es-rewatch');
-  const btn = document.getElementById('btn-toggle-rewatch-form');
   if (!chk) return;
   chk.checked = !chk.checked;
-  if (btn) btn.classList.toggle('active', chk.checked);
+  document.querySelectorAll('.btn-rewatch-toggle').forEach(btn => {
+    btn.classList.toggle('active', chk.checked);
+  });
 }
 window.toggleRewatchFormulario = toggleRewatchFormulario;
-function establecerFechaHoyFin() {
+
+function establecerFechaHoyFin(e) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
   const fechaHoy = obtenerFechaHoyStr();
   const chkNo = document.getElementById('chk-no-fecha-fin');
   if (chkNo && chkNo.checked) { chkNo.checked = false; toggleSinFechaFin(false); }
@@ -110,33 +224,23 @@ function establecerFechaHoyFin() {
     chkProg.checked = false;
     toggleEnProgresoFormulario();
   }
-  const modo = regPrecisionFin || 'dia';
-  if (modo === 'mes') {
-    const hoy = new Date();
-    const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const selMes = document.getElementById('sel-mes-nombre-fin');
-    const selAnio = document.getElementById('sel-mes-anio-fin');
-    if (selMes) selMes.value = meses[hoy.getMonth()];
-    if (selAnio) selAnio.value = String(hoy.getFullYear());
-    actualizarFechaDesdeMes('fin');
-  } else if (modo === 'anio') {
-    const hoy = new Date();
-    const selAnio = document.getElementById('sel-solo-anio-fin');
-    if (selAnio) selAnio.value = String(hoy.getFullYear());
-    actualizarFechaDesdeSoloAnio('fin');
-  } else {
-    if (fpFin) fpFin.setDate(fechaHoy);
-    else {
-      const el = document.getElementById('input-fecha-fin');
-      if (el) el.value = fechaHoy;
-    }
+  const inp = document.getElementById('input-fecha-fin');
+  if (inp) inp.value = fechaHoy;
+  if (fpFin) {
+    try {
+      fpFin.setDate(fechaHoy, true);
+      if (fpFin.isOpen) fpFin.close();
+    } catch (_) {}
   }
 }
+window.establecerFechaHoyFin = establecerFechaHoyFin;
+
 function establecerFechaHoy() {
   establecerFechaHoyInicio();
   const rango = subTieneRango(estado.categoria, estado.subcategoria);
   if (rango) establecerFechaHoyFin();
 }
+window.establecerFechaHoy = establecerFechaHoy;
 function manejarEnterComentario(e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); guardarNuevoElemento(); }
 }
 function configurarFormularioFechas() {
@@ -1391,10 +1495,7 @@ function seleccionarItem(it) {
     }
     const chkRw = document.getElementById('chk-es-rewatch');
     if (chkRw) chkRw.checked = false;
-    const btnRw = document.getElementById('btn-toggle-rewatch-form');
-    if (btnRw) btnRw.classList.remove('active');
-    seleccionarTipoFecha('inicio', 'dia');
-    seleccionarTipoFecha('fin', 'dia');
+    document.querySelectorAll('.btn-rewatch-toggle').forEach(btn => btn.classList.remove('active'));
     const chkProg = document.getElementById('chk-en-progreso');
     if (chkProg) {
       chkProg.checked = false;
@@ -1549,17 +1650,8 @@ function obtenerFechasParaGuardarNuevo() {
   let fI = 'Sin fecha';
   const sinFIni = document.getElementById('chk-no-fecha')?.checked;
   if (!sinFIni) {
-    const modoIni = regPrecisionInicio || 'dia';
-    if (modoIni === 'mes') {
-      const mes = document.getElementById('sel-mes-nombre-inicio')?.value || document.getElementById('sel-mes-nombre')?.value || '';
-      const anio = document.getElementById('sel-mes-anio-inicio')?.value || document.getElementById('sel-mes-anio')?.value || String(obtenerAnioActualSistema());
-      fI = `${mes} ${anio}`.trim() || 'Sin fecha';
-    } else if (modoIni === 'anio') {
-      fI = document.getElementById('sel-solo-anio-inicio')?.value || document.getElementById('sel-solo-anio')?.value || String(obtenerAnioActualSistema());
-    } else {
-      const v = document.getElementById('input-fecha-inicio')?.value;
-      fI = sanitizarFechaFrontend(v) || 'Sin fecha';
-    }
+    const v = document.getElementById('input-fecha-inicio')?.value;
+    fI = sanitizarFechaFrontend(v) || 'Sin fecha';
   }
 
   // 2. Fecha Fin:
@@ -1569,21 +1661,12 @@ function obtenerFechasParaGuardarNuevo() {
   } else {
     const sinFFin = document.getElementById('chk-no-fecha-fin')?.checked;
     if (!sinFFin) {
-      const modoFin = regPrecisionFin || 'dia';
-      if (modoFin === 'mes') {
-        const mes = document.getElementById('sel-mes-nombre-fin')?.value || '';
-        const anio = document.getElementById('sel-mes-anio-fin')?.value || String(obtenerAnioActualSistema());
-        fF = `${mes} ${anio}`.trim() || 'Sin fecha';
-      } else if (modoFin === 'anio') {
-        fF = document.getElementById('sel-solo-anio-fin')?.value || String(obtenerAnioActualSistema());
+      const inpFin = document.getElementById('input-fecha-fin');
+      const v = inpFin?.value?.trim();
+      if (esEnProgresoTexto(v)) {
+        fF = v;
       } else {
-        const inpFin = document.getElementById('input-fecha-fin');
-        const v = inpFin?.value?.trim();
-        if (esEnProgresoTexto(v)) {
-          fF = v;
-        } else {
-          fF = sanitizarFechaFrontend(v) || 'Sin fecha';
-        }
+        fF = sanitizarFechaFrontend(v) || 'Sin fecha';
       }
     }
   }
@@ -1594,74 +1677,50 @@ const restaurarHoverEstrellas = () => actualizarDisplayEstrellas(estado.califica
 
 function toggleSinFechaInicio(sinF) {
   const inp = document.getElementById('input-fecha-inicio');
-  const btnTipo = document.getElementById('btn-tipo-fecha-inicio');
+  const box = document.getElementById('box-picker-inicio');
   const btnHoy = document.getElementById('btn-hoy-inicio');
-  const selMesNom = document.getElementById('sel-mes-nombre-inicio');
-  const selMesAnio = document.getElementById('sel-mes-anio-inicio');
-  const selSoloAnio = document.getElementById('sel-solo-anio-inicio');
 
   if (sinF) {
     if (fpInicio) {
-      try { fpInicio.clear(); fpInicio.destroy(); fpInicio = null; } catch (_) {}
+      try { fpInicio.clear(); fpInicio.close(); } catch (_) {}
     }
     if (inp) { inp.disabled = true; inp.value = 'Sin fecha'; }
-    if (btnTipo) { btnTipo.disabled = true; btnTipo.style.opacity = '0.5'; btnTipo.style.pointerEvents = 'none'; }
-    if (btnHoy) { btnHoy.disabled = true; btnHoy.style.opacity = '0.5'; btnHoy.style.pointerEvents = 'none'; }
-    if (selMesNom) selMesNom.disabled = true;
-    if (selMesAnio) selMesAnio.disabled = true;
-    if (selSoloAnio) selSoloAnio.disabled = true;
+    if (box) box.classList.add('disabled');
+    if (btnHoy) { btnHoy.disabled = true; }
   } else {
     if (inp) {
       inp.disabled = false;
       if (inp.value === 'Sin fecha') inp.value = '';
     }
-    if (btnTipo) { btnTipo.disabled = false; btnTipo.style.opacity = '1'; btnTipo.style.pointerEvents = 'auto'; }
-    if (btnHoy) { btnHoy.disabled = false; btnHoy.style.opacity = '1'; btnHoy.style.pointerEvents = 'auto'; }
-    if (selMesNom) selMesNom.disabled = false;
-    if (selMesAnio) selMesAnio.disabled = false;
-    if (selSoloAnio) selSoloAnio.disabled = false;
-    const l = userPrefs.lang === 'en' ? 'default' : 'es';
-    if (typeof flatpickr !== 'undefined' && inp) {
-      try {
-        fpInicio = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
-      } catch (_) {}
+    if (box) box.classList.remove('disabled');
+    if (btnHoy) { btnHoy.disabled = false; }
+    if (!fpInicio && typeof flatpickr !== 'undefined' && inp) {
+      inicializarFlatpickrsRegistro();
     }
   }
 }
 
 function toggleSinFechaFin(sinF) {
   const inp = document.getElementById('input-fecha-fin');
-  const btnTipo = document.getElementById('btn-tipo-fecha-fin');
+  const box = document.getElementById('box-picker-fin');
   const btnHoy = document.getElementById('btn-hoy-fin');
-  const selMesNom = document.getElementById('sel-mes-nombre-fin');
-  const selMesAnio = document.getElementById('sel-mes-anio-fin');
-  const selSoloAnio = document.getElementById('sel-solo-anio-fin');
 
   if (sinF) {
     if (fpFin) {
-      try { fpFin.clear(); fpFin.destroy(); fpFin = null; } catch (_) {}
+      try { fpFin.clear(); fpFin.close(); } catch (_) {}
     }
     if (inp) { inp.disabled = true; inp.value = 'Sin fecha'; }
-    if (btnTipo) { btnTipo.disabled = true; btnTipo.style.opacity = '0.5'; btnTipo.style.pointerEvents = 'none'; }
-    if (btnHoy) { btnHoy.disabled = true; btnHoy.style.opacity = '0.5'; btnHoy.style.pointerEvents = 'none'; }
-    if (selMesNom) selMesNom.disabled = true;
-    if (selMesAnio) selMesAnio.disabled = true;
-    if (selSoloAnio) selSoloAnio.disabled = true;
+    if (box) box.classList.add('disabled');
+    if (btnHoy) { btnHoy.disabled = true; }
   } else {
     if (inp) {
       inp.disabled = false;
       if (inp.value === 'Sin fecha') inp.value = '';
     }
-    if (btnTipo) { btnTipo.disabled = false; btnTipo.style.opacity = '1'; btnTipo.style.pointerEvents = 'auto'; }
-    if (btnHoy) { btnHoy.disabled = false; btnHoy.style.opacity = '1'; btnHoy.style.pointerEvents = 'auto'; }
-    if (selMesNom) selMesNom.disabled = false;
-    if (selMesAnio) selMesAnio.disabled = false;
-    if (selSoloAnio) selSoloAnio.disabled = false;
-    const l = userPrefs.lang === 'en' ? 'default' : 'es';
-    if (typeof flatpickr !== 'undefined' && inp) {
-      try {
-        fpFin = flatpickr(inp, { locale: l, dateFormat: 'd/m/Y', allowInput: false, disableMobile: true });
-      } catch (_) {}
+    if (box) box.classList.remove('disabled');
+    if (btnHoy) { btnHoy.disabled = false; }
+    if (!fpFin && typeof flatpickr !== 'undefined' && inp) {
+      inicializarFlatpickrsRegistro();
     }
   }
 }
