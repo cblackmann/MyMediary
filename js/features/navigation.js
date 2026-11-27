@@ -726,14 +726,16 @@ function inicializarNavegacionHorizontalTabs() {
   }
   window.animarSalidaVistaAtras = animarSalidaVistaAtras;
 
-  function animarEntradaSubtab(el) {
+  function animarEntradaSubtab(el, dir) {
     if (!el) return;
-    el.classList.remove('anim-subtab-transition');
+    const classes = ['anim-subtab-transition', 'anim-subtab-slide-next', 'anim-subtab-slide-prev'];
+    el.classList.remove(...classes);
     void el.offsetWidth;
-    el.classList.add('anim-subtab-transition');
+    const cls = dir === 'next' ? 'anim-subtab-slide-next' : (dir === 'prev' ? 'anim-subtab-slide-prev' : 'anim-subtab-transition');
+    el.classList.add(cls);
     setTimeout(() => {
-      try { el.classList.remove('anim-subtab-transition'); } catch (e) {}
-    }, 260);
+      try { el.classList.remove(cls); } catch (e) {}
+    }, 280);
   }
   window.animarEntradaSubtab = animarEntradaSubtab;
 
@@ -1593,26 +1595,96 @@ if (c === 'Lecturas' && typeof obtenerSubcategoriasLecturasOrdenadas === 'functi
     guardarEstadoNavegacionActual(c, estado.subcategoria);
   }
 }
-subItemsNav.forEach(s => { const btn = document.createElement('button');
-const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c, s.id) : null;
-const subClass = metaSub ? `subtab-cat-${metaSub.key}` : '';
-const subColor = metaSub ? metaSub.colorVar : 'currentColor';
-btn.className = `subtab-btn ${!enWl && estado.subcategoria === s.id ? 'active' : ''} ${subClass}`;
-btn.innerHTML = `<span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span>${I18N[l]?.subs?.[s.id] || s.nombre}</span>`;
-btn.onclick = () => {
+function cambiarSubcategoriaLista(subId, dirHint) {
+  const prevSub = estado.subcategoria;
+  if (prevSub === subId) return;
+  const lista = Array.isArray(window._subItemsNavActivos) ? window._subItemsNavActivos : [];
+  let dir = dirHint;
+  if (!dir && lista.length) {
+    const idxOld = lista.indexOf(prevSub);
+    const idxNew = lista.indexOf(subId);
+    if (idxOld >= 0 && idxNew >= 0 && idxOld !== idxNew) {
+      dir = idxNew > idxOld ? 'next' : 'prev';
+    }
+  }
   resetearBuscadoresYFormularios();
-  estado.subcategoria = s.id;
-  guardarEstadoNavegacionActual(estado.categoria, s.id);
+  estado.subcategoria = subId;
+  guardarEstadoNavegacionActual(estado.categoria, subId);
   actualizarNavWebActiva();
   renderizarSubtabs();
   actualizarVisibilidadCamposEspeciales();
   configurarFormularioFechas();
   filtrarYMostrarHistorial();
   if (typeof animarEntradaSubtab === 'function') {
-    animarEntradaSubtab(document.getElementById('seccion-historial-contenido') || document.getElementById('historial-cards'));
+    animarEntradaSubtab(document.getElementById('seccion-historial-contenido') || document.getElementById('historial-cards'), dir);
   }
-};
-if (box) box.appendChild(btn); }); if (wlBox) {
+}
+
+window._subItemsNavActivos = subItemsNav.map(x => x.id);
+subItemsNav.forEach(s => { const btn = document.createElement('button');
+const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaColorCategoria(c, s.id) : null;
+const subClass = metaSub ? `subtab-cat-${metaSub.key}` : '';
+const subColor = metaSub ? metaSub.colorVar : 'currentColor';
+const esActivo = !enWl && estado.subcategoria === s.id;
+btn.className = `subtab-btn ${esActivo ? 'active' : ''} ${subClass}`;
+btn.innerHTML = `<span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span>${I18N[l]?.subs?.[s.id] || s.nombre}</span>`;
+btn.onclick = () => cambiarSubcategoriaLista(s.id);
+if (box) box.appendChild(btn); });
+
+if (box) {
+  const activeBtn = box.querySelector('.subtab-btn.active');
+  if (activeBtn) {
+    requestAnimationFrame(() => {
+      try { activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' }); } catch (e) {}
+    });
+  }
+  if (!box.dataset.hScrollInit) {
+    box.dataset.hScrollInit = '1';
+    box.addEventListener('wheel', (e) => {
+      if (box.scrollWidth > box.clientWidth && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        box.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    }, { passive: false });
+  }
+}
+
+const secHistSwipe = document.getElementById('seccion-historial-contenido');
+if (secHistSwipe && !secHistSwipe.dataset.swipeSubInit) {
+  secHistSwipe.dataset.swipeSubInit = '1';
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchIgnored = false;
+  secHistSwipe.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) { touchIgnored = true; return; }
+    const tgt = e.target;
+    if (tgt && tgt.closest && tgt.closest('input, textarea, select, button, .carousel, .subtabs, .year-dropdown-menu')) {
+      touchIgnored = true;
+      return;
+    }
+    touchIgnored = false;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  secHistSwipe.addEventListener('touchend', (e) => {
+    if (touchIgnored || !e.changedTouches || !e.changedTouches.length) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > 58 && Math.abs(dx) > Math.abs(dy) * 1.6) {
+      const lista = Array.isArray(window._subItemsNavActivos) ? window._subItemsNavActivos : [];
+      if (lista.length <= 1 || esSubcategoriaWatchlist(estado.subcategoria)) return;
+      const idx = lista.indexOf(estado.subcategoria);
+      if (idx < 0) return;
+      if (dx < 0 && idx < lista.length - 1) {
+        cambiarSubcategoriaLista(lista[idx + 1], 'next');
+      } else if (dx > 0 && idx > 0) {
+        cambiarSubcategoriaLista(lista[idx - 1], 'prev');
+      }
+    }
+  }, { passive: true });
+}
+
+if (wlBox) {
 const targetWl = obtenerSubWatchlistDeCategoria(c, estado.subcategoria); const wlMeta = CONFIG[c].subs.find(x => x.id === targetWl) || CONFIG[c].subs.find(x => x.esWatchlist); const countThisWl = contarItemsWatchlistDe(c, targetWl); if (enWl) {
 const btnBack = document.createElement('button'); btnBack.type = 'button'; btnBack.className = 'btn-watchlist-special active-wl btn-watchlist-icon-only';
 const labelWl = I18N[l]?.subs?.[wlMeta?.id] || wlMeta?.nombre || 'Watchlist';

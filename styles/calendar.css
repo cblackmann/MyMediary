@@ -1086,6 +1086,38 @@ html[data-app-theme="minimalist"] .btn-cal-volver {
   animation: mediarySubtabFade 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
 }
 
+@keyframes mediarySubtabSlideNext {
+  0% {
+    opacity: 0.25;
+    transform: translate3d(18px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes mediarySubtabSlidePrev {
+  0% {
+    opacity: 0.25;
+    transform: translate3d(-18px, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.anim-subtab-slide-next {
+  animation: mediarySubtabSlideNext 0.24s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+  will-change: transform, opacity;
+}
+
+.anim-subtab-slide-prev {
+  animation: mediarySubtabSlidePrev 0.24s cubic-bezier(0.22, 1, 0.36, 1) forwards !important;
+  will-change: transform, opacity;
+}
+
 /* Modal Selector de Ruleta (Individual o con Amigos) */
 .wl-roulette-choice-box {
   max-width: 320px;
@@ -1293,18 +1325,32 @@ html[data-app-theme="minimalist"] .btn-cal-volver {
 .cat-subtabs-bar-wrap {
   width: 100%;
   border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.cat-subtabs-wl-fixed {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  padding-bottom: 4px;
 }
 
 #vista-categoria #subtabs-bar.subtabs-flat-bar {
   display: flex;
   align-items: center;
+  flex: 1;
+  min-width: 0;
   gap: 6px;
   overflow-x: auto;
+  scroll-behavior: smooth;
   padding-bottom: 0 !important;
   margin-bottom: 0 !important;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
-  width: 100%;
 }
 
 #vista-categoria #subtabs-bar.subtabs-flat-bar::-webkit-scrollbar {
