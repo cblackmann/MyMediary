@@ -67,13 +67,19 @@ function abrirCalendarioMediary(seccion = 'inicio') {
   renderizarCalendarioMediary();
 
   const modal = document.getElementById('modal-calendario-mediary');
-  if (modal) modal.style.display = 'flex';
+  if (modal) {
+    modal.classList.add('is-open');
+    modal.style.display = 'flex';
+  }
 }
 window.abrirCalendarioMediary = abrirCalendarioMediary;
 
 function cerrarCalendarioMediary() {
   const modal = document.getElementById('modal-calendario-mediary');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('is-open');
+    modal.style.display = 'none';
+  }
   cerrarMenuModoCalendario();
 }
 window.cerrarCalendarioMediary = cerrarCalendarioMediary;
@@ -82,7 +88,10 @@ function abrirMenuModoCalendario(e) {
   if (e) { e.preventDefault(); e.stopPropagation(); }
   actualizarBotonModoCalendario();
   const pop = document.getElementById('cal-mode-popup-overlay');
-  if (pop) pop.style.display = 'flex';
+  if (pop) {
+    pop.classList.add('is-open');
+    pop.style.display = 'flex';
+  }
 }
 window.abrirMenuModoCalendario = abrirMenuModoCalendario;
 window.toggleMenuModoCalendario = abrirMenuModoCalendario;
@@ -90,7 +99,10 @@ window.toggleMenuModoCalendario = abrirMenuModoCalendario;
 function cerrarMenuModoCalendario(e) {
   if (e) e.stopPropagation();
   const pop = document.getElementById('cal-mode-popup-overlay');
-  if (pop) pop.style.display = 'none';
+  if (pop) {
+    pop.classList.remove('is-open');
+    pop.style.display = 'none';
+  }
 }
 window.cerrarMenuModoCalendario = cerrarMenuModoCalendario;
 window.ocultarDropdownModoCalendario = cerrarMenuModoCalendario;

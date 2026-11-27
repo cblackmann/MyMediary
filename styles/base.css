@@ -702,7 +702,9 @@ html[data-app-theme="minimalist"] .form-group label.chk-no-reg-label {display:in
 .star-box.half {color:var(--star-active,#f59e0b)}
 #rating-label {font-size:0.95rem;color:var(--accent);font-weight:700;line-height:1;display:inline-flex;align-items:center;margin:0;padding:0}
 /* MODAL CALENDARIO INTERACTIVO MEDIARY (CENTRADO) */
-#modal-calendario-mediary.modal-overlay {position:fixed !important;inset:0 !important;background:rgba(0,0,0,0.75) !important;backdrop-filter:blur(5px) !important;-webkit-backdrop-filter:blur(5px) !important;display:flex !important;align-items:center !important;justify-content:center !important;z-index:99999 !important;padding:16px !important}
+#modal-calendario-mediary.modal-overlay {position:fixed;inset:0;background:rgba(0,0,0,0.75);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);align-items:center !important;justify-content:center !important;z-index:99999;padding:16px}
+#modal-calendario-mediary.is-open {display:flex !important}
+#modal-calendario-mediary:not(.is-open) {display:none !important}
 #modal-calendario-mediary .cal-modal-card {background:var(--card,#1e293b);border:1px solid var(--border,#334155);border-radius:14px;width:92%;max-width:325px;box-shadow:0 24px 48px rgba(0,0,0,0.65),0 0 0 1px rgba(255,255,255,0.06);padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px;animation:calModalFadeIn 0.2s cubic-bezier(0.16,1,0.3,1);position:relative;user-select:none;margin:auto !important;align-self:center !important;overflow:visible !important}
 @keyframes calModalFadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
 .cal-modal-header {display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;border-bottom:1px solid var(--border,#334155);padding-bottom:10px;position:relative}
@@ -735,7 +737,9 @@ html[data-app-theme="minimalist"] .form-group label.chk-no-reg-label {display:in
 .cal-month-cell.is-current,.cal-year-cell.is-current {border-color:var(--accent);color:var(--accent)}
 
 /* POPUP SELECTOR DE MODO DE FECHA (CENTRADO) */
-.cal-mode-popup-overlay {position:fixed !important;inset:0 !important;background:rgba(0,0,0,0.72) !important;backdrop-filter:blur(5px) !important;-webkit-backdrop-filter:blur(5px) !important;display:flex !important;align-items:center !important;justify-content:center !important;z-index:100000 !important;padding:16px !important;animation:fadeInModal 0.18s ease-out}
+.cal-mode-popup-overlay {position:fixed;inset:0;background:rgba(0,0,0,0.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);align-items:center !important;justify-content:center !important;z-index:100000;padding:16px;animation:fadeInModal 0.18s ease-out}
+.cal-mode-popup-overlay.is-open {display:flex !important}
+.cal-mode-popup-overlay:not(.is-open) {display:none !important}
 .cal-mode-popup-card {background:var(--card,#1e293b);border:1px solid var(--border,#334155);border-radius:14px;width:92%;max-width:320px;box-shadow:0 24px 48px rgba(0,0,0,0.65),0 0 0 1px rgba(255,255,255,0.06);padding:16px;box-sizing:border-box;display:flex;flex-direction:column;gap:12px;animation:calModalFadeIn 0.2s cubic-bezier(0.16,1,0.3,1);position:relative;user-select:none;margin:auto !important;}
 .cal-mode-popup-header {display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border,#334155);padding-bottom:10px}
 .cal-mode-popup-title {font-size:0.92rem;font-weight:700;color:var(--text);letter-spacing:0.02em}
