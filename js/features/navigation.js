@@ -1654,8 +1654,31 @@ if (vCatSwipe && !vCatSwipe.dataset.swipeSubInit) {
   vCatSwipe.dataset.swipeSubInit = '1';
   let touchStartX = 0;
   let touchStartY = 0;
+  let touchLastX = 0;
+  let touchLastY = 0;
+  let touchStartTime = 0;
   let touchIgnored = false;
   let lastSubWheel = 0;
+  const procesarFinSwipeSub = (endX, endY) => {
+    if (touchIgnored) return;
+    touchIgnored = true;
+    if (Date.now() - touchStartTime > 750) return;
+    const modalAbierto = document.querySelector('.modal-overlay[style*="display: flex"], .modal-overlay[style*="display:flex"]');
+    if (modalAbierto) return;
+    const dx = endX - touchStartX;
+    const dy = endY - touchStartY;
+    if (Math.abs(dx) > 38 && Math.abs(dx) > Math.abs(dy) * 1.15) {
+      const lista = Array.isArray(window._subItemsNavActivos) ? window._subItemsNavActivos : [];
+      if (lista.length <= 1 || esSubcategoriaWatchlist(estado.subcategoria)) return;
+      const idx = lista.indexOf(estado.subcategoria);
+      if (idx < 0) return;
+      if (dx < 0 && idx < lista.length - 1) {
+        cambiarSubcategoriaLista(lista[idx + 1], 'next');
+      } else if (dx > 0 && idx > 0) {
+        cambiarSubcategoriaLista(lista[idx - 1], 'prev');
+      }
+    }
+  };
   vCatSwipe.addEventListener('touchstart', (e) => {
     if (e.touches.length !== 1) { touchIgnored = true; return; }
     const tgt = e.target;
@@ -1671,24 +1694,21 @@ if (vCatSwipe && !vCatSwipe.dataset.swipeSubInit) {
     touchIgnored = false;
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
+    touchLastX = touchStartX;
+    touchLastY = touchStartY;
+    touchStartTime = Date.now();
+  }, { passive: true });
+  vCatSwipe.addEventListener('touchmove', (e) => {
+    if (touchIgnored || !e.touches || !e.touches.length) return;
+    touchLastX = e.touches[0].clientX;
+    touchLastY = e.touches[0].clientY;
   }, { passive: true });
   vCatSwipe.addEventListener('touchend', (e) => {
-    if (touchIgnored || !e.changedTouches || !e.changedTouches.length) return;
-    const modalAbierto = document.querySelector('.modal-overlay[style*="display: flex"], .modal-overlay[style*="display:flex"]');
-    if (modalAbierto) return;
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    const dy = e.changedTouches[0].clientY - touchStartY;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.25) {
-      const lista = Array.isArray(window._subItemsNavActivos) ? window._subItemsNavActivos : [];
-      if (lista.length <= 1 || esSubcategoriaWatchlist(estado.subcategoria)) return;
-      const idx = lista.indexOf(estado.subcategoria);
-      if (idx < 0) return;
-      if (dx < 0 && idx < lista.length - 1) {
-        cambiarSubcategoriaLista(lista[idx + 1], 'next');
-      } else if (dx > 0 && idx > 0) {
-        cambiarSubcategoriaLista(lista[idx - 1], 'prev');
-      }
-    }
+    const t = e.changedTouches && e.changedTouches[0];
+    procesarFinSwipeSub(t ? t.clientX : touchLastX, t ? t.clientY : touchLastY);
+  }, { passive: true });
+  vCatSwipe.addEventListener('touchcancel', () => {
+    procesarFinSwipeSub(touchLastX, touchLastY);
   }, { passive: true });
   vCatSwipe.addEventListener('wheel', (e) => {
     const tgt = e.target;
