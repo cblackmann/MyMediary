@@ -63,7 +63,6 @@ function abrirCalendarioMediary(seccion = 'inicio') {
   }
 
   actualizarBotonModoCalendario();
-  cerrarMenuModoCalendario();
   renderizarCalendarioMediary();
 
   const modal = document.getElementById('modal-calendario-mediary');
@@ -74,43 +73,43 @@ function abrirCalendarioMediary(seccion = 'inicio') {
 }
 window.abrirCalendarioMediary = abrirCalendarioMediary;
 
-function cerrarCalendarioMediary() {
+function cerrarCalendarioMediary(e) {
+  if (e && e.stopPropagation) e.stopPropagation();
   const modal = document.getElementById('modal-calendario-mediary');
   if (modal) {
     modal.classList.remove('is-open');
     modal.style.display = 'none';
   }
-  cerrarMenuModoCalendario();
 }
 window.cerrarCalendarioMediary = cerrarCalendarioMediary;
 
-function abrirMenuModoCalendario(e) {
-  if (e) { e.preventDefault(); e.stopPropagation(); }
+function alternarModoCalendario(e) {
+  if (e) {
+    if (e.preventDefault) e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
+  }
+  if (calModoActivo === 'dia') {
+    calModoActivo = 'mes';
+  } else if (calModoActivo === 'mes') {
+    calModoActivo = 'anio';
+  } else {
+    calModoActivo = 'dia';
+  }
   actualizarBotonModoCalendario();
-  const pop = document.getElementById('cal-mode-popup-overlay');
-  if (pop) {
-    pop.classList.add('is-open');
-    pop.style.display = 'flex';
-  }
+  renderizarCalendarioMediary();
 }
-window.abrirMenuModoCalendario = abrirMenuModoCalendario;
-window.toggleMenuModoCalendario = abrirMenuModoCalendario;
+window.alternarModoCalendario = alternarModoCalendario;
+window.abrirMenuModoCalendario = alternarModoCalendario;
+window.toggleMenuModoCalendario = alternarModoCalendario;
 
-function cerrarMenuModoCalendario(e) {
-  if (e) e.stopPropagation();
-  const pop = document.getElementById('cal-mode-popup-overlay');
-  if (pop) {
-    pop.classList.remove('is-open');
-    pop.style.display = 'none';
-  }
-}
+function cerrarMenuModoCalendario() {}
 window.cerrarMenuModoCalendario = cerrarMenuModoCalendario;
 window.ocultarDropdownModoCalendario = cerrarMenuModoCalendario;
 
 function actualizarBotonModoCalendario() {
   const txt = document.getElementById('txt-cal-mode');
   const ico = document.getElementById('ico-cal-mode');
-  const l = (typeof userPrefs !== 'undefined' && userPrefs.lang === 'en') ? 'en' : 'es';
+  const l = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en') ? 'en' : 'es';
 
   if (ico) {
     ico.innerHTML = ICONS_CAL_MODO[calModoActivo] || ICONS_CAL_MODO.dia;
@@ -123,18 +122,15 @@ function actualizarBotonModoCalendario() {
   } else if (calModoActivo === 'anio') {
     if (txt) txt.textContent = l === 'en' ? 'Year' : 'Año';
   }
-
-  ['dia', 'mes', 'anio'].forEach(m => {
-    const opt = document.getElementById(`opt-mode-${m}`);
-    if (opt) opt.classList.toggle('active', calModoActivo === m);
-  });
 }
 
 function seleccionarModoCalendario(modo, e) {
-  if (e) { e.preventDefault(); e.stopPropagation(); }
+  if (e) {
+    if (e.preventDefault) e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
+  }
   calModoActivo = modo;
   actualizarBotonModoCalendario();
-  cerrarMenuModoCalendario();
   renderizarCalendarioMediary();
 }
 window.seleccionarModoCalendario = seleccionarModoCalendario;
