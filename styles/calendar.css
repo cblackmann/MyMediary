@@ -1682,3 +1682,340 @@ html[data-app-theme="minimalist"] #btn-listas-watchlists-corner.btn-listas-wl-fl
   right: auto;
 }
 
+/* ============================================================
+   REWORK VISTA CALENDARIO (BARRA SUPERIOR PLANA Y SIN TARJETAS)
+   ============================================================ */
+#vista-calendario .calendario-header-bar {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+  width: 100% !important;
+  margin-bottom: 14px !important;
+  box-shadow: inset 0 -1px 0 var(--border);
+}
+
+#vista-calendario .btn-cal-volver-inicio,
+html[data-ui-style="modern"] #vista-calendario .btn-cal-volver-inicio,
+html[data-app-theme="minimalist"] #vista-calendario .btn-cal-volver-inicio {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  width: auto !important;
+  min-width: 34px !important;
+  max-width: none !important;
+  height: auto !important;
+  min-height: 0 !important;
+  padding: 9px 10px 9px 4px !important;
+  margin: 0 !important;
+  color: var(--muted) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+}
+
+#vista-calendario .btn-cal-volver-inicio:hover,
+html[data-ui-style="modern"] #vista-calendario .btn-cal-volver-inicio:hover {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid rgba(148, 163, 184, 0.35) !important;
+  color: var(--text) !important;
+  box-shadow: none !important;
+}
+
+#vista-calendario .calendario-view-toggle {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: stretch !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  gap: 6px !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+#vista-calendario .calendario-view-toggle::-webkit-scrollbar {
+  display: none;
+}
+
+#vista-calendario .btn-cal-tab {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 9px 10px !important;
+  margin: 0 !important;
+  font-size: 0.88rem !important;
+  font-weight: 700 !important;
+  color: var(--muted) !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  transition: color 0.16s ease, border-color 0.16s ease !important;
+}
+
+#vista-calendario .btn-cal-tab:hover {
+  color: var(--text) !important;
+}
+
+#vista-calendario .btn-cal-tab.active {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid var(--accent) !important;
+  color: var(--accent) !important;
+  font-weight: 800 !important;
+}
+
+#vista-calendario .cal-tab-count {
+  font-size: 0.78rem;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+#vista-calendario .cal-tab-count::before {
+  content: "(";
+}
+
+#vista-calendario .cal-tab-count::after {
+  content: ")";
+}
+
+#vista-calendario .btn-cal-add-flat {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 9px 4px 9px 10px !important;
+  margin: 0 !important;
+  min-width: 34px !important;
+  color: var(--accent) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0 !important;
+  cursor: pointer !important;
+  transition: opacity 0.16s ease, transform 0.16s ease !important;
+}
+
+#vista-calendario .btn-cal-add-flat:hover {
+  opacity: 0.78;
+}
+
+#vista-calendario .btn-cal-add-flat:active {
+  transform: scale(0.92);
+}
+
+/* Barra de navegación del mes: sin tarjeta, flotando en el fondo */
+#vista-calendario .calendario-nav-bar {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 2px 0 8px 0 !important;
+  margin-bottom: 6px !important;
+}
+
+#vista-calendario .cal-nav-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 4px !important;
+  width: 32px !important;
+  height: 32px !important;
+  color: var(--muted) !important;
+  font-size: 1.25rem !important;
+}
+
+#vista-calendario .cal-nav-btn:hover {
+  background: transparent !important;
+  border: none !important;
+  color: var(--accent) !important;
+}
+
+#vista-calendario .cal-dd-trigger {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 4px 6px !important;
+  font-size: 0.94rem !important;
+  font-weight: 800 !important;
+}
+
+#vista-calendario .cal-dd-trigger:hover,
+#vista-calendario .cal-dd-trigger.active {
+  background: transparent !important;
+  border: none !important;
+  color: var(--accent) !important;
+}
+
+#vista-calendario .btn-cal-hoy {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 4px 8px !important;
+  color: var(--accent) !important;
+  font-size: 0.8rem !important;
+  font-weight: 800 !important;
+}
+
+#vista-calendario .btn-cal-hoy:hover {
+  opacity: 0.75;
+}
+
+/* Grilla del calendario: sin tarjetas envolventes ni celdas enmarcadas */
+#vista-calendario .cal-grid-wrapper {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin-bottom: 14px !important;
+}
+
+#vista-calendario .cal-day-cell {
+  background: transparent !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  min-height: 48px;
+  padding: 5px 2px;
+}
+
+#vista-calendario .cal-day-cell:hover {
+  background: rgba(148, 163, 184, 0.08) !important;
+  border-color: transparent !important;
+}
+
+#vista-calendario .cal-day-cell.cal-dia-hoy {
+  border-color: rgba(var(--accent-rgb, 56, 189, 248), 0.45) !important;
+}
+
+#vista-calendario .cal-day-cell.cal-dia-seleccionado {
+  background: rgba(var(--accent-rgb, 56, 189, 248), 0.14) !important;
+  border-color: var(--accent) !important;
+  box-shadow: none !important;
+}
+
+/* Inspector del día seleccionado: flotando en el fondo sin tarjeta */
+#vista-calendario .cal-day-detail-box {
+  background: transparent !important;
+  border: none !important;
+  border-top: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 14px 0 0 0 !important;
+  margin-bottom: 20px !important;
+}
+
+#vista-calendario .cal-detail-header {
+  border-bottom: none !important;
+  padding-bottom: 2px !important;
+  margin-bottom: 10px !important;
+}
+
+/* Filas de obras y estrenos: flotando en el fondo con separador sutil */
+#vista-calendario .cal-cards-list {
+  gap: 0 !important;
+}
+
+#vista-calendario .cal-work-card {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 10px 2px !important;
+}
+
+#vista-calendario .cal-work-card:last-child {
+  border-bottom: none !important;
+}
+
+#vista-calendario .cal-work-card:hover {
+  background: rgba(148, 163, 184, 0.04) !important;
+}
+
+#vista-calendario .btn-agregar-estreno {
+  background: transparent !important;
+  border: 1px dashed var(--border) !important;
+  color: var(--accent) !important;
+  border-radius: 4px !important;
+}
+
+#vista-calendario .btn-agregar-estreno:hover {
+  border-color: var(--accent) !important;
+  background: rgba(var(--accent-rgb, 56, 189, 248), 0.08) !important;
+}
+
+/* Subvista Próximos Estrenos: barra de filtros plana y buscador limpio */
+#vista-calendario .cal-estrenos-header-bar {
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 10px !important;
+  margin-bottom: 12px !important;
+}
+
+#vista-calendario .cal-estrenos-filters {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  gap: 4px !important;
+  border-bottom: 1px solid var(--border) !important;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+#vista-calendario .cal-estrenos-filters::-webkit-scrollbar {
+  display: none;
+}
+
+#vista-calendario .cal-estreno-filter-btn {
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 2px solid transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 7px 10px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
+#vista-calendario .cal-estreno-filter-btn:hover {
+  color: var(--text) !important;
+}
+
+#vista-calendario .cal-estreno-filter-btn.active {
+  background: transparent !important;
+  border-bottom: 2px solid var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+#vista-calendario .cal-estrenos-search-wrap {
+  width: 100%;
+}
+
+#vista-calendario #cal-input-search-estrenos {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
