@@ -1414,10 +1414,12 @@ function renderizarStats() {
                   <div class="cat-hl-tag">
                     <span class="emoji-dyn">${getHeroIcon('star', '', 12)}</span>
                     <span>${t('stat_mejor')}</span>
-                    ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-dots">${renderCarruselDotsHtml(mejores.length, 0)}</span>` : ''}
                   </div>
                   <div class="cat-hl-title ${!mej ? 'is-empty' : ''}" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
-                  <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
+                  <div class="cat-hl-footer">
+                    <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
+                    ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-dots">${renderCarruselDotsHtml(mejores.length, 0)}</span>` : ''}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1510,10 +1512,12 @@ function renderizarStats() {
               <div class="cat-hl-tag">
                 <span class="emoji-dyn">${getHeroIcon('star', '', 12)}</span>
                 <span>${t('stat_mejor')}</span>
-                ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-dots">${renderCarruselDotsHtml(mejores.length, 0)}</span>` : ''}
               </div>
               <div class="cat-hl-title ${!mej ? 'is-empty' : ''}" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
-              <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
+              <div class="cat-hl-footer">
+                <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
+                ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-dots">${renderCarruselDotsHtml(mejores.length, 0)}</span>` : ''}
+              </div>
             </div>
           </div>
         </div>

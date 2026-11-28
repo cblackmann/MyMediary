@@ -1612,30 +1612,73 @@ html[data-app-theme="minimalist"] #btn-listas-watchlists-corner.btn-listas-wl-fl
 /* ============================================================
    CARRUSEL DE PUNTOS EN MEJORES CALIFICADOS
    ============================================================ */
+.cat-hl-footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  margin-top: auto;
+}
+
+.cat-hl-footer .cat-hl-meta {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
 .cat-hl-dots {
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
   gap: 4px;
   margin-left: auto;
-  padding-left: 6px;
+  padding-bottom: 2px;
+  flex-shrink: 0;
 }
 
 .cat-hl-dot {
-  width: 5px;
-  height: 5px;
+  display: inline-block !important;
+  width: 6px;
+  height: 6px;
   border-radius: 99px;
-  background: rgba(148, 163, 184, 0.4);
+  background: rgba(148, 163, 184, 0.48);
   transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.28s ease, transform 0.28s ease, opacity 0.28s ease;
   flex-shrink: 0;
 }
 
 .cat-hl-dot.is-active {
-  width: 13px;
+  width: 14px;
   background: var(--accent);
 }
 
 .cat-hl-dot.is-edge {
   transform: scale(0.72);
   opacity: 0.6;
+}
+
+/* ============================================================
+   SELECTOR DE AÑO INTEGRADO EN PESTAÑA DE LISTAS
+   ============================================================ */
+#vista-listas-extendida #btn-selector-anio.btn-year-picker,
+#vista-listas-extendida #btn-selector-anio.btn-year-picker-compact {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  padding: 4px 2px !important;
+  min-height: 0 !important;
+  height: auto !important;
+  gap: 5px !important;
+}
+
+#vista-listas-extendida #btn-selector-anio.btn-year-picker:hover {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  opacity: 0.8;
+}
+
+#vista-listas-extendida .year-picker-container .year-dropdown-menu {
+  left: 0;
+  right: auto;
 }
 
