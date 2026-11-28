@@ -1626,8 +1626,16 @@ const metaSub = (typeof obtenerMetaColorCategoria === 'function') ? obtenerMetaC
 const subClass = metaSub ? `subtab-cat-${metaSub.key}` : '';
 const subColor = metaSub ? metaSub.colorVar : 'currentColor';
 const esActivo = !enWl && estado.subcategoria === s.id;
+let countHtml = '';
+if (esActivo && typeof obtenerRegistrosDeSubcategoria === 'function') {
+  let regList = obtenerRegistrosDeSubcategoria(c, s.id);
+  if (estado.ocultarRewatches && subAdmiteRewatch(c, s.id)) {
+    regList = regList.filter(x => !x.esRewatch && !(x.subcategoria || '').includes('Rewatch'));
+  }
+  countHtml = ` <span class="subtab-count-paren" id="subtab-active-count">(${regList.length})</span>`;
+}
 btn.className = `subtab-btn ${esActivo ? 'active' : ''} ${subClass}`;
-btn.innerHTML = `<span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span>${I18N[l]?.subs?.[s.id] || s.nombre}</span>`;
+btn.innerHTML = `<span class="subtotal-pill-icon" style="color:${subColor};">${s.emoji}</span><span>${I18N[l]?.subs?.[s.id] || s.nombre}${countHtml}</span>`;
 btn.onclick = () => cambiarSubcategoriaLista(s.id);
 if (box) box.appendChild(btn); });
 
@@ -1765,9 +1773,9 @@ function actualizarBotonFiltroRewatches() {
     : (l === 'en' ? 'Hide rewatches' : 'Ocultar Rewatches');
   btn.title = label;
   btn.setAttribute('aria-label', label);
-  const rwIconHtml = ocultar
-    ? `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/><path d="M4 20L20 4" stroke-width="2"/></svg>`
-    : `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>`;
+  const rwIconHtml = (typeof getHeroIcon === 'function')
+    ? getHeroIcon(ocultar ? 'rewatch-slash' : 'rewatch', '', 17)
+    : '';
   btn.innerHTML = `<span class="rw-btn-icons">${rwIconHtml}</span><span id="txt-filtro-rewatches" style="display:none;">${label}</span>`;
 }
 window.actualizarBotonFiltroRewatches = actualizarBotonFiltroRewatches;

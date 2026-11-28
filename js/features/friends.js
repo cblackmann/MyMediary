@@ -279,7 +279,7 @@ function filtrarYMostrarHistorialAmigo() {
       const cI = renderizarCuadroFecha(infoI, inicioMesDistinto, infoF ? infoF.anio : '');
       const cF = renderizarCuadroFecha(infoF, inicioMesDistinto, infoI ? infoI.anio : '');
       const fDisplay = r ? (enProg ? `${cI}<span class="m-date-arrow">➔</span><span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:6px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;">${txtEnCurso}</span>` : `${cI}<span class="m-date-arrow">➔</span>${cF}`) : cI;
-      const rwBadge = reg.esRewatch ? `<span class="badge-rewatch"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> ${t('badge_rewatch')}</span>` : '';
+      const rwBadge = reg.esRewatch ? `<span class="badge-rewatch">${getHeroIcon('rewatch', '', 13)} ${t('badge_rewatch')}</span>` : '';
       let titEnF = (reg.subtitulo || '').trim();
       if (titEnF.startsWith('(') && titEnF.endsWith(')')) titEnF = titEnF.slice(1, -1).trim();
       const tieneTitEnF = titEnF && (titEnF.toLowerCase() !== (reg.titulo || '').trim().toLowerCase());
@@ -3104,10 +3104,10 @@ function actualizarBotonOrdenHistorialAmigo() {
     txt.style.display = 'none';
   }
   if (amigoRegsOrden === 'desc') {
-    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25 4.5L17.25 21m0 0L21 17.25M17.25 21V10.5"/></svg>`;
+    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v10.5"/></svg>`;
     btn.classList.remove('active');
   } else {
-    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v10.5"/></svg>`;
+    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v10.5m0 0L13.5 15m3.75 4.5 3.75-4.5"/></svg>`;
     btn.classList.remove('active');
   }
 }
@@ -3493,13 +3493,17 @@ function filtrarRegistrosAmigoModal() {
 
     const esDescAmigo = amigoRegsOrden === 'desc';
     subGroups.forEach(subG => {
+      const subTieneR = (typeof subTieneRango === 'function') ? subTieneRango(catGroup.key, subG.id) : false;
       subG.items.sort((a, b) => {
-        const tsA = timestampDeFecha(a.fechaFin !== 'Sin fecha' ? a.fechaFin : a.fechaInicio);
-        const tsB = timestampDeFecha(b.fechaFin !== 'Sin fecha' ? b.fechaFin : b.fechaInicio);
+        const enProgA = subTieneR && (esEnProgresoTexto(a.fechaFin) || (!a.fechaFin || a.fechaFin === 'Sin fecha' || a.fechaFin === ''));
+        const enProgB = subTieneR && (esEnProgresoTexto(b.fechaFin) || (!b.fechaFin || b.fechaFin === 'Sin fecha' || b.fechaFin === ''));
+        if (enProgA && !enProgB) return esDescAmigo ? -1 : 1;
+        if (!enProgA && enProgB) return esDescAmigo ? 1 : -1;
+        const tsA = timestampDeFecha(a.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(a.fechaFin) ? a.fechaFin : a.fechaInicio);
+        const tsB = timestampDeFecha(b.fechaFin !== 'Sin fecha' && !esEnProgresoTexto(b.fechaFin) ? b.fechaFin : b.fechaInicio);
         const diff = tsB - tsA;
         return esDescAmigo ? diff : -diff;
       });
-      const subTieneR = (typeof subTieneRango === 'function') ? subTieneRango(catGroup.key, subG.id) : false;
       const conteosMes = {};
       subG.items.forEach(r => {
         const fI = sanitizarFechaFrontend(r.fechaInicio), fF = sanitizarFechaFrontend(r.fechaFin);
@@ -3543,7 +3547,7 @@ function filtrarRegistrosAmigoModal() {
           : `<div class="m-card-dates" title="${fI_am}">${cI_am}</div>`;
         const hRegLimpia = (typeof limpiarTextoHoras === 'function') ? limpiarTextoHoras(r.horas) : '';
         const horasHtml = hRegLimpia ? `<div class="m-card-horas"><span class="emoji-dyn">${getHeroIcon('clock', '', 12)} </span>${hRegLimpia}</div>` : '';
-        const rwBadge = r.esRewatch ? `<span class="badge-rewatch"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> ${l === 'en' ? 'Rewatch' : 'Revisita'}</span>` : '';
+        const rwBadge = r.esRewatch ? `<span class="badge-rewatch">${getHeroIcon('rewatch', '', 13)} ${l === 'en' ? 'Rewatch' : 'Revisita'}</span>` : '';
         const isLiked = (typeof esResenaLikeada === 'function') ? esResenaLikeada(r.id) : false;
         const likeCount = (typeof obtenerConteoLikesResena === 'function') ? obtenerConteoLikesResena(r.id, amigoRegsEmailActual, r.likes) : 0;
         const likeBtnHtml = `

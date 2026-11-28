@@ -2505,9 +2505,9 @@ function actualizarBotonOrdenHistorial() {
     txt.style.display = 'none';
   }
   if (ord === 'desc') {
-    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v10.5m0 0L13.5 15m3.75 4.5 3.75-4.5"/></svg>`;
-  } else {
     if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h5.25m5.25-.75L17.25 9m0 0L21 12.75M17.25 9v10.5"/></svg>`;
+  } else {
+    if (ico) ico.innerHTML = `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M3 4.5h14.25M3 9h9.75M3 13.5h9.75m4.5-4.5v10.5m0 0L13.5 15m3.75 4.5 3.75-4.5"/></svg>`;
   }
   btn.classList.remove('active');
 }
@@ -2553,7 +2553,6 @@ window.generarBadgeLikesResenaHtml = generarBadgeLikesResenaHtml;
 
 function filtrarYMostrarHistorial() { const th = document.getElementById('thead-historial'), tb = document.getElementById('tbody-historial'), mBox = document.getElementById('mobile-history-cards');
 tb.innerHTML = ''; mBox.innerHTML = ''; const c = estado.categoria, s = estado.subcategoria, r = subTieneRango(c, s), isJ = c === 'Juegos';
-renderizarBannerRachaSubcategoria(c, s);
 th.innerHTML = `<tr>${r ? `<th style="width:110px;">${t('table_th_fecha_ini')}</th><th style="width:110px;">${t('table_th_fecha_fin')}</th>` : `<th style="width:110px;">${t('table_th_fecha')}</th>`}${isJ ? `<th style="width:80px; text-align:center;">${t('table_th_horas')}</th>` : ''}<th>${obtenerNombreColumnaTitulo(c, s)}</th><th style="width:150px;">${t('table_th_calif')}</th><th>${t('table_th_comentario')}</th><th style="width:40px; text-align:center;"></th></tr>`;
 let l = obtenerRegistrosDeSubcategoria(c, s); if (estado.ocultarRewatches && subAdmiteRewatch(c, s)) { l = l.filter(x => !x.esRewatch && !x.subcategoria.includes('Rewatch')); }
 actualizarBotonOrdenHistorial();
@@ -2562,8 +2561,8 @@ const esDesc = obtenerOrdenHistorialActual() === 'desc';
 l.sort((a, b) => {
   const enProgA = r && (esEnProgresoTexto(a.fechaFin) || (!a.fechaFin || a.fechaFin === 'Sin fecha' || a.fechaFin === ''));
   const enProgB = r && (esEnProgresoTexto(b.fechaFin) || (!b.fechaFin || b.fechaFin === 'Sin fecha' || b.fechaFin === ''));
-  if (!enProgA && enProgB) return -1;
-  if (enProgA && !enProgB) return 1;
+  if (enProgA && !enProgB) return esDesc ? -1 : 1;
+  if (!enProgA && enProgB) return esDesc ? 1 : -1;
   if (enProgA && enProgB) {
     const tsA = timestampDeFecha(a.fechaInicio);
     const tsB = timestampDeFecha(b.fechaInicio);
@@ -2577,7 +2576,9 @@ l.sort((a, b) => {
   const diff = esDesc ? (timestampDeFecha(fB) - timestampDeFecha(fA)) : (timestampDeFecha(fA) - timestampDeFecha(fB));
   return diff !== 0 ? diff : (a.titulo || '').localeCompare(b.titulo || '');
 });
-document.getElementById('total-filtro').textContent = l.length; const cols = (r ? 2 : 1) + (isJ ? 1 : 0) + 4; if (!l.length) { tb.innerHTML = `<tr><td colspan="${cols}" style="text-align:center; padding:24px; color:var(--muted);">${t('stat_sin_reg')}</td></tr>`;
+const totEl = document.getElementById('total-filtro'); if (totEl) totEl.textContent = l.length;
+const subCountEl = document.getElementById('subtab-active-count'); if (subCountEl) subCountEl.textContent = `(${l.length})`;
+const cols = (r ? 2 : 1) + (isJ ? 1 : 0) + 4; if (!l.length) { tb.innerHTML = `<tr><td colspan="${cols}" style="text-align:center; padding:24px; color:var(--muted);">${t('stat_sin_reg')}</td></tr>`;
 mBox.innerHTML = `<div style="text-align:center; padding:24px; color:var(--muted); background:var(--card); border-radius:4px; border:1px solid var(--border);">${t('stat_sin_reg')}</div>`; return; }
 const conteosMes = {}; l.forEach(reg => {
   const fI = sanitizarFechaFrontend(reg.fechaInicio), fF = sanitizarFechaFrontend(reg.fechaFin);
@@ -2620,7 +2621,7 @@ l.forEach(reg => {
   const com = enProg
     ? `<span style="color:var(--muted); font-size:0.8rem; font-style:italic; display:inline-flex; align-items:center; gap:4px;">${getHeroIcon('clock', '', 12)} ${userPrefs.lang === 'en' ? 'Pending' : 'Pendiente'}</span>`
     : (reg.comentario ? `"${reg.comentario}"` : '<span style="color:var(--border)">—</span>');
-  const badgeRwHtml = reg.esRewatch ? `<span class="badge-rewatch"><svg style="width:13px;height:13px;" class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg> ${t('badge_rewatch')}</span>` : '';
+  const badgeRwHtml = reg.esRewatch ? `<span class="badge-rewatch">${getHeroIcon('rewatch', '', 13)} ${t('badge_rewatch')}</span>` : '';
   const fFDisplay = enProg
     ? `<span class="badge-en-progreso" style="background:rgba(56,189,248,0.12); color:var(--accent); font-weight:700; padding:2px 8px; border-radius:2px; font-size:0.75rem; border:1px solid rgba(56,189,248,0.3); white-space:nowrap;display:inline-flex;align-items:center;gap:3px;">${getHeroIcon('clock', '', 12)} ${obtenerTextoEnProgreso(c, s) || tLang('Aún viendo', 'Still watching')}</span>`
     : fF;
@@ -3076,7 +3077,7 @@ function abrirEditorRegistroCompleto(id) {
   if (subAdmiteRewatch(c, s)) {
     html += '<div class="checkbox-row" style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:4px;padding:8px 12px;margin-bottom:12px;">';
     html += '<input type="checkbox" id="edit-compl-rewatch" ' + (reg.esRewatch ? 'checked' : '') + '>';
-    html += '<label for="edit-compl-rewatch" style="color:var(--text);font-weight:600;font-size:0.85rem;margin:0;display:inline-flex;align-items:center;gap:4px;">' + getHeroIcon('arrow-path', '', 13) + ' ' + (l === 'en' ? 'Rewatch / Reread' : 'Ya la he visto antes (Rewatch)') + '</label></div>';
+    html += '<label for="edit-compl-rewatch" style="color:var(--text);font-weight:600;font-size:0.85rem;margin:0;display:inline-flex;align-items:center;gap:4px;">' + getHeroIcon('rewatch', '', 13) + ' ' + (l === 'en' ? 'Rewatch / Reread' : 'Ya la he visto antes (Rewatch)') + '</label></div>';
   }
   html += '<div class="form-group"><label style="font-size:.82rem;color:var(--muted);">' + (l === 'en' ? 'Review / Thoughts:' : 'Comentario / Reseña:') + '</label>';
   html += '<textarea id="edit-compl-comentario" class="comment-box" style="min-height:80px;" placeholder="' + (l === 'en' ? 'Write your review...' : 'Escribe tu reseña...') + '">' + (reg.comentario || '') + '</textarea></div>';
