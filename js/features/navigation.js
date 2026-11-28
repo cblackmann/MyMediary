@@ -1851,3 +1851,26 @@ document.getElementById('form-creador-anio').textContent = `(${estado.selecciona
 if (info.totalTemporadas) estado.seleccionado.totalSeasons = info.totalTemporadas; }
 }).obtenerDatosSerieInfo(estado.seleccionado.idRef, num); }
 }
+
+(function syncHomeFloatingActionsWithInicio() {
+  function actualizarFabInicio() {
+    const vIni = document.getElementById('vista-inicio');
+    const fab = document.getElementById('home-floating-actions');
+    if (!vIni || !fab) return;
+    const visible = vIni.style.display !== 'none';
+    fab.style.display = visible ? 'flex' : 'none';
+  }
+  function initSync() {
+    const vIni = document.getElementById('vista-inicio');
+    if (!vIni) return;
+    actualizarFabInicio();
+    const obs = new MutationObserver(actualizarFabInicio);
+    obs.observe(vIni, { attributes: true, attributeFilter: ['style'] });
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSync);
+  } else {
+    initSync();
+  }
+})();
+

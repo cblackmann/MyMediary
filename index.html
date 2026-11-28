@@ -160,7 +160,7 @@
   <link rel="stylesheet" href="./styles/responsive.css?v=267">
   <link rel="stylesheet" href="./styles/themes.css?v=267">
   <link rel="stylesheet" href="./styles/profile-stats.css">
-  <link rel="stylesheet" href="./styles/calendar.css?v=281">
+  <link rel="stylesheet" href="./styles/calendar.css?v=282">
 </head>
 <body>
 <header class="app-header-integrated">
@@ -215,13 +215,6 @@
       </div>
 
       <hr class="home-section-divider">
-
-      <!-- BOTÓN FLOTANTE DE INICIO: AGREGADO RÁPIDO -->
-      <div class="home-floating-actions" id="home-floating-actions">
-        <button type="button" class="home-fab-btn home-fab-quick-add" id="home-fab-quick-add" onclick="abrirModalAgregadoRapido()" title="Agregado Rápido" aria-label="Agregado Rápido" data-i18n-title="btn_quick_add_hero" data-i18n-aria-label="btn_quick_add_hero">
-          <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
-        </button>
-      </div>
 
       <!-- 4. ÍNDICE (SUBCATEGORÍAS) -->
       <div class="home-clean-section" id="home-sec-subcats">
@@ -993,7 +986,13 @@
  <!-- VISTA NORMAL DE HISTORIAL -->
 <div id="seccion-historial-contenido">
   <div class="table-container"> <table class="history-table"><thead id="thead-historial"></thead><tbody id="tbody-historial"></tbody></table> </div> <div class="mobile-history-list" id="mobile-history-cards"></div> </div> <!-- VISTA EXCLUSIVA DE WATCHLIST --> <div id="seccion-watchlist-contenido" style="display:none;"> <div class="history-header"> <div class="history-title" id="titulo-watchlist-nombre" data-i18n="wl_default_title">Watchlist (0)</div>
-<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;"> <button type="button" class="btn-recommend" id="btn-ruleta-amigo-seccion" onclick="abrirModalRuletaPeliculas()" style="background:var(--accent-warm-subtle); border:1.5px solid var(--accent-warm-border); color:var(--accent-warm); font-weight:700;"> <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg><span data-i18n="btn_roulette_friend">Ruleta con Amigo</span> </button> <button type="button" class="btn-recommend" id="btn-recomendar-azar" onclick="iniciarRecomendacionAzar()"> <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"/></svg><span data-i18n="btn_recommend_shuffle">Recomiéndame</span> </button> </div> </div> <div class="watchlist-grid" id="grid-watchlist-items"></div> </div> </div> </div> <!-- MENÚ FLOTANTE MÓVIL CON 4 BOTONES -->
+<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;"> <button type="button" class="btn-recommend" id="btn-ruleta-amigo-seccion" onclick="abrirModalRuletaPeliculas()" style="background:var(--accent-warm-subtle); border:1.5px solid var(--accent-warm-border); color:var(--accent-warm); font-weight:700;"> <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg><span data-i18n="btn_roulette_friend">Ruleta con Amigo</span> </button> <button type="button" class="btn-recommend" id="btn-recomendar-azar" onclick="iniciarRecomendacionAzar()"> <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 0 0-3.7-3.7 48.678 48.678 0 0 0-7.324 0 4.006 4.006 0 0 0-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 0 0 3.7 3.7 48.656 48.656 0 0 0 7.324 0 4.006 4.006 0 0 0 3.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3-3 3"/></svg><span data-i18n="btn_recommend_shuffle">Recomiéndame</span> </button> </div> </div> <div class="watchlist-grid" id="grid-watchlist-items"></div> </div> </div> </div> <!-- BOTÓN FLOTANTE DE INICIO: AGREGADO RÁPIDO (FUERA DE #vista-inicio PARA POSITION FIXED INSTANTÁNEO) -->
+<div class="home-floating-actions" id="home-floating-actions">
+  <button type="button" class="home-fab-btn home-fab-quick-add" id="home-fab-quick-add" onclick="abrirModalAgregadoRapido()" title="Agregado Rápido" aria-label="Agregado Rápido" data-i18n-title="btn_quick_add_hero" data-i18n-aria-label="btn_quick_add_hero">
+    <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5v15m7.5-7.5h-15"/></svg>
+  </button>
+</div>
+<!-- MENÚ FLOTANTE MÓVIL CON 4 BOTONES -->
 <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
   <div class="mobile-nav-indicator" id="mobile-nav-indicator"></div>
   <button type="button" class="mobile-nav-btn active" id="m-btn-inicio" onclick="irInicio()">
@@ -1805,7 +1804,7 @@
 <div id="cfg-update-pwa-wrap" style="margin:14px 0; padding:12px 14px; background:rgba(56,189,248,0.06); border:1px dashed rgba(56,189,248,0.3); border-radius:3px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
   <div style="min-width:0;">
     <strong style="font-size:0.86rem; color:var(--text); display:block;" data-i18n="pwa_update_title">Actualización de la App</strong>
-    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v281 • Forzar descarga de novedades</span>
+    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v282 • Forzar descarga de novedades</span>
   </div>
   <button type="button" class="cfg-link-toggle-btn" id="btn-update-pwa" onclick="forzarActualizacionApp()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;" data-i18n="pwa_update_btn">
     <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>Actualizar
@@ -3049,7 +3048,7 @@
   <script defer src="./js/integrations/steam.js"></script>
   <script defer src="./js/integrations/lastfm.js"></script>
   <script defer src="./js/integrations/playstation.js"></script>
-  <script defer src="./js/features/navigation.js?v=281"></script>
+  <script defer src="./js/features/navigation.js?v=282"></script>
   <script defer src="./js/features/catalog.js?v=278"></script>
   <script defer src="./js/features/calendar.js?v=267"></script>
   <script defer src="./js/main.js"></script>
