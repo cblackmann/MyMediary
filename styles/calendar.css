@@ -1578,3 +1578,64 @@ html[data-app-theme="minimalist"] #btn-filtro-rewatches.btn-header-icon-flat {
   margin: 0 !important;
 }
 
+/* ============================================================
+   BOTÓN WATCHLISTS SIN TARJETA EN PESTAÑA LISTAS
+   ============================================================ */
+#btn-listas-watchlists-corner.btn-listas-wl-flat,
+html[data-ui-style="modern"] #btn-listas-watchlists-corner.btn-listas-wl-flat,
+html[data-app-theme="minimalist"] #btn-listas-watchlists-corner.btn-listas-wl-flat {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 34px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  min-height: 34px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: #f59e0b !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+}
+
+#btn-listas-watchlists-corner.btn-listas-wl-flat:hover {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #fbbf24 !important;
+  transform: scale(1.08) !important;
+}
+
+/* ============================================================
+   CARRUSEL DE PUNTOS EN MEJORES CALIFICADOS
+   ============================================================ */
+.cat-hl-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  padding-left: 6px;
+}
+
+.cat-hl-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 99px;
+  background: rgba(148, 163, 184, 0.4);
+  transition: width 0.28s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.28s ease, transform 0.28s ease, opacity 0.28s ease;
+  flex-shrink: 0;
+}
+
+.cat-hl-dot.is-active {
+  width: 13px;
+  background: var(--accent);
+}
+
+.cat-hl-dot.is-edge {
+  transform: scale(0.72);
+  opacity: 0.6;
+}
+

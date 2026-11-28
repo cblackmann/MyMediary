@@ -160,7 +160,7 @@
   <link rel="stylesheet" href="./styles/responsive.css?v=267">
   <link rel="stylesheet" href="./styles/themes.css?v=267">
   <link rel="stylesheet" href="./styles/profile-stats.css">
-  <link rel="stylesheet" href="./styles/calendar.css?v=275">
+  <link rel="stylesheet" href="./styles/calendar.css?v=277">
 </head>
 <body>
 <header class="app-header-integrated">
@@ -345,15 +345,9 @@
       </div>
     </div> <!-- VISTA EXTENDIDA DE LISTAS (SEGUNDA PESTAÑA) -->
     <div id="vista-listas-extendida" style="display:none;">
-      <div class="listas-top-bar">
-        <!-- Esquina superior izquierda de listas: Acceso a Watchlists -->
-        <button type="button" id="btn-listas-watchlists-corner" class="btn-watchlist-special btn-listas-wl-corner" onclick="abrirMenuWatchlistGlobal()" style="cursor:pointer; display:inline-flex; align-items:center; gap:8px; padding:7px 14px; font-size:0.82rem; font-weight:700; border-radius:3px; margin:0;" title="Ver mis watchlists y pendientes" data-i18n-title="lists_wl_btn_title">
-          <span class="emoji-dyn"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg></span>
-          <span data-i18n="wl_global_btn">Ver mis Watchlists y Pendientes</span>
-        </button>
-
+      <div class="listas-top-bar" style="justify-content:flex-end;">
         <!-- Acciones derechas de listas -->
-        <div style="display:inline-flex; align-items:center; gap:8px;">
+        <div style="display:inline-flex; align-items:center; gap:6px;">
           <button type="button" class="btn-listas-reorder" id="btn-toggle-reordenar-listas" onclick="toggleModoReordenarListas()" title="Organizar y reordenar categorías" aria-label="Organizar y reordenar categorías" data-i18n-title="lists_reorder_title" data-i18n-aria-label="lists_reorder_title">
             <svg id="icon-reordenar-listas-idle" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="4" y1="6" x2="20" y2="6"></line>
@@ -363,6 +357,9 @@
             <svg id="icon-reordenar-listas-active" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
               <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
+          </button>
+          <button type="button" id="btn-listas-watchlists-corner" class="btn-watchlist-special btn-watchlist-icon-only btn-listas-wl-flat" onclick="abrirMenuWatchlistGlobal()" title="Ver mis watchlists y pendientes" aria-label="Ver mis watchlists y pendientes" data-i18n-title="lists_wl_btn_title" data-i18n-aria-label="lists_wl_btn_title">
+            <span class="subtotal-pill-icon" style="color:#f59e0b;"><svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/></svg></span>
           </button>
         </div>
       </div>
@@ -1827,7 +1824,7 @@
 <div id="cfg-update-pwa-wrap" style="margin:14px 0; padding:12px 14px; background:rgba(56,189,248,0.06); border:1px dashed rgba(56,189,248,0.3); border-radius:3px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
   <div style="min-width:0;">
     <strong style="font-size:0.86rem; color:var(--text); display:block;" data-i18n="pwa_update_title">Actualización de la App</strong>
-    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v276 • Forzar descarga de novedades</span>
+    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v277 • Forzar descarga de novedades</span>
   </div>
   <button type="button" class="cfg-link-toggle-btn" id="btn-update-pwa" onclick="forzarActualizacionApp()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;" data-i18n="pwa_update_btn">
     <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>Actualizar
@@ -3072,7 +3069,7 @@
   <script defer src="./js/integrations/lastfm.js"></script>
   <script defer src="./js/integrations/playstation.js"></script>
   <script defer src="./js/features/navigation.js?v=275"></script>
-  <script defer src="./js/features/catalog.js?v=275"></script>
+  <script defer src="./js/features/catalog.js?v=277"></script>
   <script defer src="./js/features/calendar.js?v=267"></script>
   <script defer src="./js/main.js"></script>
 </body>

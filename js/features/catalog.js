@@ -1285,13 +1285,29 @@ pTit.innerHTML = `${getHeroIcon('sparkles', '', 16)} <strong>${winner.titulo}</s
 }
 step(); }
 function cerrarModalShuffle() { document.getElementById('modal-shuffle-recomendar').style.display = 'none'; }
+function renderCarruselDotsHtml(total, activeIdx = 0) {
+  if (!total || total <= 1) return '';
+  const maxDots = Math.min(total, 5);
+  let start = 0;
+  if (total > maxDots) {
+    start = Math.max(0, Math.min(activeIdx - Math.floor(maxDots / 2), total - maxDots));
+  }
+  let dots = '';
+  for (let i = start; i < start + maxDots; i++) {
+    const isAct = i === activeIdx;
+    const isEdge = total > maxDots && ((i === start && start > 0) || (i === start + maxDots - 1 && start + maxDots < total));
+    dots += `<span class="cat-hl-dot${isAct ? ' is-active' : ''}${isEdge ? ' is-edge' : ''}"></span>`;
+  }
+  return dots;
+}
+
 function iniciarRotacionEmpates(elementId, items, catDestino, subDestino) { if (!items || items.length <= 1) return; let currentIndex = 0; const timer = setInterval(() => {
 if (document.hidden) return;
 currentIndex = (currentIndex + 1) % items.length; const cur = items[currentIndex]; const cardEl = document.getElementById(elementId); const tEl = document.getElementById(`${elementId}-title`), sEl = document.getElementById(`${elementId}-sub`), indEl = document.getElementById(`${elementId}-ind`);
 if (tEl && sEl) { tEl.style.opacity = '0'; sEl.style.opacity = '0'; setTimeout(() => { const f = (cur.fechaFin && cur.fechaFin !== 'Sin fecha') ? cur.fechaFin : cur.fechaInicio; tEl.textContent = cur.titulo;
 const rotCalifHtml = (Number(cur.calificacion) > 0) ? renderEstrellasVisuales(cur.calificacion) : '';
 const rotDateHtml = (f && f !== 'Sin fecha') ? `<span class="cat-hl-date">${f}</span>` : '';
-sEl.innerHTML = (rotCalifHtml || rotDateHtml) ? `${rotCalifHtml}${rotDateHtml}` : `<span class="cat-hl-date">${t('stat_sin_fecha')}</span>`; if (indEl) indEl.textContent = `[${currentIndex + 1}/${items.length}]`;
+sEl.innerHTML = (rotCalifHtml || rotDateHtml) ? `${rotCalifHtml}${rotDateHtml}` : `<span class="cat-hl-date">${t('stat_sin_fecha')}</span>`; if (indEl) indEl.innerHTML = renderCarruselDotsHtml(items.length, currentIndex);
 if (cardEl) cardEl.setAttribute('onclick', `navegarARegistroDesdeInicio('${cur.id}', '${catDestino}', '${subDestino}')`); tEl.style.opacity = '1'; sEl.style.opacity = '1'; }, 200); }
 }, 3000); carruselIntervalos.push(timer); }
 function renderizarStats() {
@@ -1351,7 +1367,7 @@ function renderizarStats() {
         if (s.admiteRewatch) {
           const countRewatches = regsSub.filter(r => r.esRewatch).length;
           if (countRewatches > 0) {
-            rewatchHtml = `<span class="cat-subcat-row-rewatch">${countRewatches} ${getHeroIcon('arrow-path', '', 10)}</span>`;
+            rewatchHtml = `<span class="cat-subcat-row-rewatch">${countRewatches} ${getHeroIcon('rewatch', '', 10)}</span>`;
           }
         }
 
@@ -1377,7 +1393,7 @@ function renderizarStats() {
             <div class="cat-subcat-row cat-subcat-row-${subKey}" onclick="event.stopPropagation(); cambiarCat('Lecturas', '${s.id}')" title="${sNombre}">
               <div class="cat-subcat-row-main">
                 <span class="cat-subcat-row-icon" style="color:${subColor};">${s.emoji}</span>
-                <span class="cat-subcat-row-name" style="font-weight:700; color:var(--text);">${sNombre}</span>
+                <span class="cat-subcat-row-name">${sNombre}</span>
               </div>
               <div class="cat-subcat-row-stats">
                 ${rewatchHtml}
@@ -1398,7 +1414,7 @@ function renderizarStats() {
                   <div class="cat-hl-tag">
                     <span class="emoji-dyn">${getHeroIcon('star', '', 12)}</span>
                     <span>${t('stat_mejor')}</span>
-                    ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-ind">[1/${mejores.length}]</span>` : ''}
+                    ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-dots">${renderCarruselDotsHtml(mejores.length, 0)}</span>` : ''}
                   </div>
                   <div class="cat-hl-title ${!mej ? 'is-empty' : ''}" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
                   <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
@@ -1427,7 +1443,7 @@ function renderizarStats() {
         if (s.admiteRewatch) {
           const countRewatches = regsSub.filter(r => r.esRewatch).length;
           if (countRewatches > 0) {
-            rewatchHtml = `<span class="cat-subcat-row-rewatch">${countRewatches} ${getHeroIcon('arrow-path', '', 10)}</span>`;
+            rewatchHtml = `<span class="cat-subcat-row-rewatch">${countRewatches} ${getHeroIcon('rewatch', '', 10)}</span>`;
           }
         }
         return `
@@ -1494,7 +1510,7 @@ function renderizarStats() {
               <div class="cat-hl-tag">
                 <span class="emoji-dyn">${getHeroIcon('star', '', 12)}</span>
                 <span>${t('stat_mejor')}</span>
-                ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-ind">[1/${mejores.length}]</span>` : ''}
+                ${mejores.length > 1 ? `<span id="${cId}-ind" class="cat-hl-dots">${renderCarruselDotsHtml(mejores.length, 0)}</span>` : ''}
               </div>
               <div class="cat-hl-title ${!mej ? 'is-empty' : ''}" id="${cId}-title" title="${mej ? mej.titulo : ''}">${mej ? mej.titulo : t('stat_sin_reg')}</div>
               <div class="cat-hl-meta" id="${cId}-sub">${mejSubTxt}</div>
@@ -2408,7 +2424,7 @@ function renderEstrellasVisuales(val) {
     const icon = isHalf ? getHeroIcon('star-half', '', 13) : getHeroIcon('star', '', 13);
     h += `<span class="h-star ${cls}">${icon}</span>`;
   }
-  return `${h} <span style="font-size:.78rem; color:var(--muted); margin-left:3px;">(${num.toFixed(1)})</span></div>`;
+  return `${h}</div>`;
 }
 
 function desplazarHaciaRegistroGuardado(id) {
