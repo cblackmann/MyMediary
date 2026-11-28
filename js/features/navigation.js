@@ -1765,11 +1765,10 @@ function actualizarBotonFiltroRewatches() {
     : (l === 'en' ? 'Hide rewatches' : 'Ocultar Rewatches');
   btn.title = label;
   btn.setAttribute('aria-label', label);
-  const eyeIcon = ocultar
-    ? (typeof getHeroIcon === 'function' ? getHeroIcon('eye-slash', '', 15) : '')
-    : (typeof getHeroIcon === 'function' ? getHeroIcon('eye', '', 15) : '');
-  const rwIcon = (typeof getHeroIcon === 'function') ? getHeroIcon('arrow-path', '', 15) : '';
-  btn.innerHTML = `<span class="rw-btn-icons" style="display:inline-flex;align-items:center;gap:4px;">${rwIcon}${eyeIcon}</span><span id="txt-filtro-rewatches" style="display:none;">${label}</span>`;
+  const rwIconHtml = ocultar
+    ? `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/><path d="M4 20L20 4" stroke-width="2"/></svg>`
+    : `<svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:17px;height:17px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>`;
+  btn.innerHTML = `<span class="rw-btn-icons">${rwIconHtml}</span><span id="txt-filtro-rewatches" style="display:none;">${label}</span>`;
 }
 window.actualizarBotonFiltroRewatches = actualizarBotonFiltroRewatches;
 
