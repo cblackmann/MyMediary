@@ -281,19 +281,10 @@ function actualizarTarjetasVisualesConfig() {
   if (btnLight) btnLight.classList.toggle('active', mode === 'light');
   if (btnDark) btnDark.classList.toggle('active', mode === 'dark');
 
-  // Los 6 Themes (Cinéfilo, Melómano, Gamer, Lector, Nerd, Otaku)
-  const curPersona = userPrefs.personaTheme || 'none';
-  const usingPersonaColors = (curPersona !== 'none' && userPrefs.personaThemeColors !== false);
-  document.querySelectorAll('#cfg-persona-theme-cards .persona-theme-card').forEach(card => {
-    card.classList.toggle('active', card.dataset.persona === curPersona);
-  });
-  const btnResetPersona = document.getElementById('btn-reset-persona-theme');
-  if (btnResetPersona) btnResetPersona.style.display = curPersona !== 'none' ? 'inline-flex' : 'none';
-
   // Los 4 Colores en círculos horizontales
   const curFamily = userPrefs.themeFamily || 'slate';
   document.querySelectorAll('#cfg-theme-cards .theme-family-card').forEach(card => {
-    card.classList.toggle('active', !usingPersonaColors && card.dataset.family === curFamily);
+    card.classList.toggle('active', card.dataset.family === curFamily);
   });
 
   // Tarjeta de aplicaciones y cuentas vinculadas
@@ -353,25 +344,9 @@ function seleccionarAppThemeVisual(themeKey) {
   guardarPreferenciasLocales();
 }
 
-function seleccionarPersonaTheme(themeId) {
-  migrarTemaLegadoSiEsNecesario();
-  if (!themeId || themeId === 'none') {
-    userPrefs.personaTheme = 'none';
-    userPrefs.personaThemeColors = false;
-  } else {
-    userPrefs.personaTheme = themeId;
-    userPrefs.personaThemeColors = true;
-  }
-  aplicarEstilosGlobales();
-  actualizarTarjetasVisualesConfig();
-  guardarPreferenciasLocales();
-}
-window.seleccionarPersonaTheme = seleccionarPersonaTheme;
-
 function seleccionarThemeFamily(family) {
   migrarTemaLegadoSiEsNecesario();
   userPrefs.themeFamily = family;
-  userPrefs.personaThemeColors = false;
   if (document.getElementById('cfg-theme')) document.getElementById('cfg-theme').value = family;
   aplicarConfiguracionEnVivo();
   actualizarTarjetasVisualesConfig();
@@ -562,7 +537,7 @@ function guardarYCerrarConfiguracion() {
 function restablecerConfiguracionPorDefecto() {
   try { localStorage.removeItem('mediary_user_custom_font'); } catch (e) {}
   try { localStorage.removeItem('mediary_user_custom_font_size'); } catch (e) {}
-  userPrefs = Object.assign(userPrefs || {}, { font: "'Lexend', sans-serif", fontSize: "75%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", appTheme: "default", personaTheme: "none", personaThemeColors: false, uiStyle: "modern", lang: "es" });
+  userPrefs = Object.assign(userPrefs || {}, { font: "'Lexend', sans-serif", fontSize: "75%", theme: "slate-dark", themeFamily: "slate", themeMode: "system", appTheme: "default", uiStyle: "modern", lang: "es" });
   guardarPreferenciasLocales();
   abrirModalConfiguracion();
   aplicarEstilosGlobales();
