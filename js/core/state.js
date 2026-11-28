@@ -1044,13 +1044,24 @@ function cargarTodasFuentesMediary() {
 window.cargarFuenteMediary = cargarFuenteMediary;
 window.cargarTodasFuentesMediary = cargarTodasFuentesMediary;
 
+const PERSONA_THEME_FONTS = {
+  cinefilo: ['Fraunces', 'Plus Jakarta Sans'],
+  melomano: ['Syne', 'DM Sans'],
+  gamer: ['Space Grotesk', 'Inter'],
+  lector: ['Newsreader', 'Source Sans 3'],
+  nerd: ['Bricolage Grotesque', 'Plus Jakarta Sans'],
+  otaku: ['Zen Kaku Gothic New', 'DM Sans']
+};
+
 let _ultimoEstiloAplicadoSig = '';
 function aplicarEstilosGlobales() {
  migrarTemaLegadoSiEsNecesario();
  const temaEfectivo = obtenerTemaEfectivo();
  userPrefs.theme = temaEfectivo;
  const appTheme = userPrefs.appTheme || 'default';
- const sig = `${userPrefs.font}|${userPrefs.fontSize}|${temaEfectivo}|${appTheme}|${userPrefs.showEmojis ? 1 : 0}`;
+ const personaTheme = userPrefs.personaTheme || 'none';
+ const personaColors = (personaTheme !== 'none' && userPrefs.personaThemeColors !== false) ? 'true' : 'false';
+ const sig = `${userPrefs.font}|${userPrefs.fontSize}|${temaEfectivo}|${appTheme}|${personaTheme}|${personaColors}|${userPrefs.showEmojis ? 1 : 0}`;
  if (sig === _ultimoEstiloAplicadoSig) return;
  _ultimoEstiloAplicadoSig = sig;
 
@@ -1058,12 +1069,18 @@ function aplicarEstilosGlobales() {
  r.style.setProperty('--font-family', userPrefs.font);
  r.style.setProperty('--font-scale', userPrefs.fontSize);
  cargarFuenteMediary(userPrefs.font, appTheme);
+ if (personaTheme !== 'none' && PERSONA_THEME_FONTS[personaTheme]) {
+  PERSONA_THEME_FONTS[personaTheme].forEach(fn => cargarFuenteMediary(fn, 'default'));
+ }
 
  r.setAttribute('data-app-theme', appTheme);
  r.setAttribute('data-theme', temaEfectivo);
+ r.setAttribute('data-persona-theme', personaTheme);
+ r.setAttribute('data-persona-colors', personaColors);
+ const esTemaClaro = temaEfectivo.endsWith('-light');
+ r.setAttribute('data-color-mode', esTemaClaro ? 'light' : 'dark');
  r.setAttribute('data-ui-style', 'modern');
  r.setAttribute('data-show-emojis', userPrefs.showEmojis ? 'true' : 'false');
- const esTemaClaro = temaEfectivo.endsWith('-light');
  r.style.setProperty('color-scheme', esTemaClaro ? 'only light' : 'dark', 'important');
  const metaCs = document.getElementById('meta-color-scheme') || document.querySelector('meta[name="color-scheme"]');
  if (metaCs) metaCs.setAttribute('content', esTemaClaro ? 'only light' : 'dark');

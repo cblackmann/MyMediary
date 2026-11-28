@@ -2120,5 +2120,252 @@ html[data-app-theme="minimalist"] #mobile-bottom-nav.mobile-bottom-nav {
   box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.24), 0 4px 12px rgba(0, 0, 0, 0.14) !important;
 }
 
+/* ============================================================
+   6 THEMES PERSONALIZADOS (TIPOGRAFÍA + PALETA CLARO / OSCURO)
+   ============================================================ */
+.persona-themes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.persona-theme-card {
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  padding: 9px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--text);
+  transition: border-color 0.16s ease, background-color 0.16s ease, transform 0.14s ease, box-shadow 0.16s ease;
+  text-align: left;
+}
+
+.persona-theme-card:hover {
+  border-color: var(--accent);
+  background: var(--card-hover);
+}
+
+.persona-theme-card:active {
+  transform: scale(0.97);
+}
+
+.persona-theme-card.active {
+  border-color: var(--accent);
+  background: var(--accent-subtle, rgba(var(--accent-rgb, 56, 189, 248), 0.12));
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.persona-theme-head {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.persona-theme-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.persona-theme-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.persona-theme-name {
+  font-size: 0.86rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.persona-theme-swatches {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.pt-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  display: inline-block;
+}
+
+.btn-reset-persona-theme {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-reset-persona-theme:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Tipografías por Theme */
+html[data-persona-theme="cinefilo"] {
+  --font-title: 'Fraunces', serif;
+  --font-family: 'Plus Jakarta Sans', sans-serif;
+}
+html[data-persona-theme="melomano"] {
+  --font-title: 'Syne', sans-serif;
+  --font-family: 'DM Sans', sans-serif;
+}
+html[data-persona-theme="gamer"] {
+  --font-title: 'Space Grotesk', sans-serif;
+  --font-family: 'Inter', sans-serif;
+}
+html[data-persona-theme="lector"] {
+  --font-title: 'Newsreader', serif;
+  --font-family: 'Source Sans 3', sans-serif;
+}
+html[data-persona-theme="nerd"] {
+  --font-title: 'Bricolage Grotesque', sans-serif;
+  --font-family: 'Plus Jakarta Sans', sans-serif;
+}
+html[data-persona-theme="otaku"] {
+  --font-title: 'Zen Kaku Gothic New', sans-serif;
+  --font-family: 'DM Sans', sans-serif;
+}
+
+html[data-persona-theme]:not([data-persona-theme="none"]) body {
+  font-family: var(--font-family) !important;
+}
+
+html[data-persona-theme]:not([data-persona-theme="none"]) :is(
+  h1, h2, h3, .header-brand-text, .logo,
+  .cat-wide-title, .home-clean-title, .cat-hl-title,
+  .profile-nick-display, .modal-title, .modal-header h3,
+  .cal-detail-date-title, .history-title
+) {
+  font-family: var(--font-title) !important;
+}
+
+/* 1. Cinéfilo — Claro / Oscuro */
+html[data-persona-theme="cinefilo"][data-persona-colors="true"][data-color-mode="light"] {
+  --bg: #F7F5F0; --card: #EFECE4; --card-hover: #E7E2D6; --header-bg: #F7F5F0; --separator-bg: #E2DDD0; --border: #DDD6C7;
+  --text: #1E1D1B; --muted: #6E685F;
+  --accent: #8C3B3B; --accent-hover: #753030; --accent-rgb: 140, 59, 59; --accent-contrast: #F7F5F0;
+  --accent-subtle: rgba(140, 59, 59, 0.12); --accent-border: rgba(140, 59, 59, 0.34);
+  --t-bg: #F7F5F0; --t-surface: #EFECE4; --t-border: #DDD6C7; --t-text: #1E1D1B; --t-muted: #6E685F;
+  --t-primary: #8C3B3B; --t-primary-fg: #F7F5F0; --t-sec-accent: #8C3B3B; --t-np-accent: #8C3B3B;
+}
+html[data-persona-theme="cinefilo"][data-persona-colors="true"][data-color-mode="dark"] {
+  --bg: #141312; --card: #1F1D1B; --card-hover: #292623; --header-bg: #141312; --separator-bg: #2A2724; --border: #312D29;
+  --text: #EAE6DF; --muted: #9C958B;
+  --accent: #C96A6A; --accent-hover: #B85A5A; --accent-rgb: 201, 106, 106; --accent-contrast: #141312;
+  --accent-subtle: rgba(201, 106, 106, 0.16); --accent-border: rgba(201, 106, 106, 0.36);
+  --t-bg: #141312; --t-surface: #1F1D1B; --t-border: #312D29; --t-text: #EAE6DF; --t-muted: #9C958B;
+  --t-primary: #C96A6A; --t-primary-fg: #141312; --t-sec-accent: #C96A6A; --t-np-accent: #C96A6A;
+}
+
+/* 2. Melómano — Claro / Oscuro */
+html[data-persona-theme="melomano"][data-persona-colors="true"][data-color-mode="light"] {
+  --bg: #F4F3F0; --card: #E8E6E0; --card-hover: #DFDCD3; --header-bg: #F4F3F0; --separator-bg: #DCD9D0; --border: #D5D1C7;
+  --text: #18191A; --muted: #636566;
+  --accent: #B87333; --accent-hover: #9E6129; --accent-rgb: 184, 115, 51; --accent-contrast: #F4F3F0;
+  --accent-subtle: rgba(184, 115, 51, 0.13); --accent-border: rgba(184, 115, 51, 0.35);
+  --t-bg: #F4F3F0; --t-surface: #E8E6E0; --t-border: #D5D1C7; --t-text: #18191A; --t-muted: #636566;
+  --t-primary: #B87333; --t-primary-fg: #F4F3F0; --t-sec-accent: #B87333; --t-np-accent: #B87333;
+}
+html[data-persona-theme="melomano"][data-persona-colors="true"][data-color-mode="dark"] {
+  --bg: #121314; --card: #1C1E20; --card-hover: #25282B; --header-bg: #121314; --separator-bg: #26292C; --border: #2D3034;
+  --text: #E4E5E7; --muted: #92969B;
+  --accent: #D99B52; --accent-hover: #C68941; --accent-rgb: 217, 155, 82; --accent-contrast: #121314;
+  --accent-subtle: rgba(217, 155, 82, 0.16); --accent-border: rgba(217, 155, 82, 0.36);
+  --t-bg: #121314; --t-surface: #1C1E20; --t-border: #2D3034; --t-text: #E4E5E7; --t-muted: #92969B;
+  --t-primary: #D99B52; --t-primary-fg: #121314; --t-sec-accent: #D99B52; --t-np-accent: #D99B52;
+}
+
+/* 3. Gamer — Claro / Oscuro */
+html[data-persona-theme="gamer"][data-persona-colors="true"][data-color-mode="light"] {
+  --bg: #F2F4F7; --card: #E5E9F0; --card-hover: #DCE1EA; --header-bg: #F2F4F7; --separator-bg: #D6DCE6; --border: #CFD6E1;
+  --text: #171C26; --muted: #5A6475;
+  --accent: #2F5D8C; --accent-hover: #254B73; --accent-rgb: 47, 93, 140; --accent-contrast: #F2F4F7;
+  --accent-subtle: rgba(47, 93, 140, 0.12); --accent-border: rgba(47, 93, 140, 0.34);
+  --t-bg: #F2F4F7; --t-surface: #E5E9F0; --t-border: #CFD6E1; --t-text: #171C26; --t-muted: #5A6475;
+  --t-primary: #2F5D8C; --t-primary-fg: #F2F4F7; --t-sec-accent: #2F5D8C; --t-np-accent: #2F5D8C;
+}
+html[data-persona-theme="gamer"][data-persona-colors="true"][data-color-mode="dark"] {
+  --bg: #11141A; --card: #1A1F29; --card-hover: #222835; --header-bg: #11141A; --separator-bg: #232A37; --border: #2A3242;
+  --text: #E2E7F0; --muted: #8C97AB;
+  --accent: #5B8EC9; --accent-hover: #4A7CB8; --accent-rgb: 91, 142, 201; --accent-contrast: #11141A;
+  --accent-subtle: rgba(91, 142, 201, 0.16); --accent-border: rgba(91, 142, 201, 0.36);
+  --t-bg: #11141A; --t-surface: #1A1F29; --t-border: #2A3242; --t-text: #E2E7F0; --t-muted: #8C97AB;
+  --t-primary: #5B8EC9; --t-primary-fg: #11141A; --t-sec-accent: #5B8EC9; --t-np-accent: #5B8EC9;
+}
+
+/* 4. Lector — Claro / Oscuro */
+html[data-persona-theme="lector"][data-persona-colors="true"][data-color-mode="light"] {
+  --bg: #F6F2E9; --card: #ECE5D8; --card-hover: #E3DAC9; --header-bg: #F6F2E9; --separator-bg: #DFD6C5; --border: #D7CDBA;
+  --text: #231F1A; --muted: #6C6459;
+  --accent: #4A6B53; --accent-hover: #3C5844; --accent-rgb: 74, 107, 83; --accent-contrast: #F6F2E9;
+  --accent-subtle: rgba(74, 107, 83, 0.12); --accent-border: rgba(74, 107, 83, 0.34);
+  --t-bg: #F6F2E9; --t-surface: #ECE5D8; --t-border: #D7CDBA; --t-text: #231F1A; --t-muted: #6C6459;
+  --t-primary: #4A6B53; --t-primary-fg: #F6F2E9; --t-sec-accent: #4A6B53; --t-np-accent: #4A6B53;
+}
+html[data-persona-theme="lector"][data-persona-colors="true"][data-color-mode="dark"] {
+  --bg: #161512; --card: #211F1B; --card-hover: #2B2823; --header-bg: #161512; --separator-bg: #2C2924; --border: #332F29;
+  --text: #E6E0D4; --muted: #9B9386;
+  --accent: #7DA387; --accent-hover: #6C9176; --accent-rgb: 125, 163, 135; --accent-contrast: #161512;
+  --accent-subtle: rgba(125, 163, 135, 0.16); --accent-border: rgba(125, 163, 135, 0.36);
+  --t-bg: #161512; --t-surface: #211F1B; --t-border: #332F29; --t-text: #E6E0D4; --t-muted: #9B9386;
+  --t-primary: #7DA387; --t-primary-fg: #161512; --t-sec-accent: #7DA387; --t-np-accent: #7DA387;
+}
+
+/* 5. Nerd — Claro / Oscuro */
+html[data-persona-theme="nerd"][data-persona-colors="true"][data-color-mode="light"] {
+  --bg: #F5F3EE; --card: #EAE6DC; --card-hover: #E1DCD0; --header-bg: #F5F3EE; --separator-bg: #DDD7C9; --border: #D4CEBE;
+  --text: #1C1B18; --muted: #67635B;
+  --accent: #C45B33; --accent-hover: #AA4C28; --accent-rgb: 196, 91, 51; --accent-contrast: #F5F3EE;
+  --accent-subtle: rgba(196, 91, 51, 0.12); --accent-border: rgba(196, 91, 51, 0.34);
+  --t-bg: #F5F3EE; --t-surface: #EAE6DC; --t-border: #D4CEBE; --t-text: #1C1B18; --t-muted: #67635B;
+  --t-primary: #C45B33; --t-primary-fg: #F5F3EE; --t-sec-accent: #C45B33; --t-np-accent: #C45B33;
+}
+html[data-persona-theme="nerd"][data-persona-colors="true"][data-color-mode="dark"] {
+  --bg: #151412; --card: #201E1B; --card-hover: #2A2723; --header-bg: #151412; --separator-bg: #2B2824; --border: #322E29;
+  --text: #EBE8E1; --muted: #9B968D;
+  --accent: #E07A52; --accent-hover: #CC6942; --accent-rgb: 224, 122, 82; --accent-contrast: #151412;
+  --accent-subtle: rgba(224, 122, 82, 0.16); --accent-border: rgba(224, 122, 82, 0.36);
+  --t-bg: #151412; --t-surface: #201E1B; --t-border: #322E29; --t-text: #EBE8E1; --t-muted: #9B968D;
+  --t-primary: #E07A52; --t-primary-fg: #151412; --t-sec-accent: #E07A52; --t-np-accent: #E07A52;
+}
+
+/* 6. Otaku — Claro / Oscuro */
+html[data-persona-theme="otaku"][data-persona-colors="true"][data-color-mode="light"] {
+  --bg: #F6F4F3; --card: #EBE7E5; --card-hover: #E2DDDA; --header-bg: #F6F4F3; --separator-bg: #DDD7D4; --border: #D4CDCA;
+  --text: #1D1B1C; --muted: #696366;
+  --accent: #A65E6E; --accent-hover: #8F4E5C; --accent-rgb: 166, 94, 110; --accent-contrast: #F6F4F3;
+  --accent-subtle: rgba(166, 94, 110, 0.12); --accent-border: rgba(166, 94, 110, 0.34);
+  --t-bg: #F6F4F3; --t-surface: #EBE7E5; --t-border: #D4CDCA; --t-text: #1D1B1C; --t-muted: #696366;
+  --t-primary: #A65E6E; --t-primary-fg: #F6F4F3; --t-sec-accent: #A65E6E; --t-np-accent: #A65E6E;
+}
+html[data-persona-theme="otaku"][data-persona-colors="true"][data-color-mode="dark"] {
+  --bg: #141314; --card: #1E1C1E; --card-hover: #282528; --header-bg: #141314; --separator-bg: #292629; --border: #302C30;
+  --text: #EAE6E8; --muted: #9B9498;
+  --accent: #CF8494; --accent-hover: #BC7282; --accent-rgb: 207, 132, 148; --accent-contrast: #141314;
+  --accent-subtle: rgba(207, 132, 148, 0.16); --accent-border: rgba(207, 132, 148, 0.36);
+  --t-bg: #141314; --t-surface: #1E1C1E; --t-border: #302C30; --t-text: #EAE6E8; --t-muted: #9B9498;
+  --t-primary: #CF8494; --t-primary-fg: #141314; --t-sec-accent: #CF8494; --t-np-accent: #CF8494;
+}
+
+
 
 
