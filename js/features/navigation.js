@@ -1460,7 +1460,6 @@ function abrirVistaDashboardListas(pushNav = true) {
   const vList = document.getElementById('vista-listas-extendida');
   if (vList) {
     vList.style.display = 'block';
-    if (typeof animarEntradaSubtab === 'function') animarEntradaSubtab(vList);
   }
   if (typeof animarCambioTabVista === 'function') animarCambioTabVista('listas');
   if (modoReordenarListasActivo && typeof toggleModoReordenarListas === 'function') {
