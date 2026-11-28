@@ -962,13 +962,84 @@ function formatearFechaEstrenoHumana(fechaStr) {
   return isEn ? `${meses[m - 1]} ${d}, ${y}` : `${d} ${meses[m - 1]} ${y}`;
 }
 
+function cerrarDropdownCatEstreno() {
+  const menu = document.getElementById('menu-estreno-cat');
+  const btn = document.getElementById('btn-estreno-cat-dropdown');
+  if (menu) menu.style.display = 'none';
+  if (btn) {
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
+}
+
+function toggleDropdownCatEstreno(e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById('menu-estreno-cat');
+  const btn = document.getElementById('btn-estreno-cat-dropdown');
+  if (!menu || !btn) return;
+  const open = menu.style.display !== 'none';
+  if (open) {
+    cerrarDropdownCatEstreno();
+  } else {
+    menu.style.display = 'block';
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded', 'true');
+  }
+}
+window.toggleDropdownCatEstreno = toggleDropdownCatEstreno;
+
+function seleccionarCatEstreno(cat, btnEl) {
+  const hidden = document.getElementById('estreno-select-cat');
+  if (hidden) hidden.value = cat;
+  const menu = document.getElementById('menu-estreno-cat');
+  let targetBtn = btnEl;
+  if (menu) {
+    menu.querySelectorAll('.cfg-dropdown-item').forEach(it => {
+      const match = it.dataset.cat === cat;
+      it.classList.toggle('active', match);
+      if (match && !targetBtn) targetBtn = it;
+    });
+  }
+  const lbl = document.getElementById('estreno-cat-selected-label');
+  if (lbl && targetBtn) {
+    const spanTxt = targetBtn.querySelector('span:first-child');
+    lbl.textContent = spanTxt ? spanTxt.textContent : cat;
+  }
+  cerrarDropdownCatEstreno();
+}
+window.seleccionarCatEstreno = seleccionarCatEstreno;
+
+document.addEventListener('click', (e) => {
+  const wrap = document.getElementById('estreno-cat-dd-wrap');
+  if (wrap && !wrap.contains(e.target)) cerrarDropdownCatEstreno();
+});
+
+function formatearKeyADmy(keyStr) {
+  const key = normalizarFechaAKeyYYYYMMDD(keyStr);
+  if (!key) return '';
+  const [y, m, d] = key.split('-');
+  return `${d}/${m}/${y}`;
+}
+
 function abrirModalAgregarEstreno(fechaPrefill = null) {
   const form = document.getElementById('form-agregar-estreno');
   if (form) form.reset();
-  const inpFecha = document.getElementById('estreno-input-fecha');
-  if (inpFecha) {
-    inpFecha.value = fechaPrefill || obtenerFechaHoyKey();
+  seleccionarCatEstreno('Peliculas');
+
+  const dmy = formatearKeyADmy(fechaPrefill || obtenerFechaHoyKey());
+  const inpFecha = document.getElementById('input-fecha-estreno');
+  const txtFecha = document.getElementById('txt-fecha-estreno');
+  if (inpFecha) inpFecha.value = dmy;
+  if (txtFecha) {
+    if (dmy) {
+      txtFecha.removeAttribute('data-i18n');
+      txtFecha.textContent = dmy;
+      txtFecha.classList.remove('is-placeholder');
+    } else {
+      txtFecha.classList.add('is-placeholder');
+    }
   }
+
   const modal = document.getElementById('modal-agregar-estreno');
   if (modal) modal.style.display = 'flex';
   const inpTit = document.getElementById('estreno-input-titulo');
@@ -982,6 +1053,7 @@ function abrirModalAgregarEstrenoConFecha(diaKey) {
 window.abrirModalAgregarEstrenoConFecha = abrirModalAgregarEstrenoConFecha;
 
 function cerrarModalAgregarEstreno() {
+  cerrarDropdownCatEstreno();
   const modal = document.getElementById('modal-agregar-estreno');
   if (modal) modal.style.display = 'none';
 }
@@ -990,17 +1062,12 @@ window.cerrarModalAgregarEstreno = cerrarModalAgregarEstreno;
 function guardarEstrenoDesdeModal() {
   const titEl = document.getElementById('estreno-input-titulo');
   const catEl = document.getElementById('estreno-select-cat');
-  const fecEl = document.getElementById('estreno-input-fecha');
-  const creEl = document.getElementById('estreno-input-creador');
-  const posEl = document.getElementById('estreno-input-poster');
-  const notEl = document.getElementById('estreno-input-notas');
+  const fecEl = document.getElementById('input-fecha-estreno');
 
   const titulo = titEl ? titEl.value.trim() : '';
   const categoria = catEl ? catEl.value : 'Peliculas';
-  const fechaEstreno = fecEl ? fecEl.value.trim() : '';
-  const creador = creEl ? creEl.value.trim() : '';
-  const poster = posEl ? posEl.value.trim() : '';
-  const notas = notEl ? notEl.value.trim() : '';
+  const fechaRaw = fecEl ? fecEl.value.trim() : '';
+  const fechaEstreno = normalizarFechaAKeyYYYYMMDD(fechaRaw) || fechaRaw;
 
   const isEn = (typeof userPrefs !== 'undefined' && userPrefs && userPrefs.lang === 'en');
   if (!titulo) {
@@ -1017,9 +1084,9 @@ function guardarEstrenoDesdeModal() {
     titulo,
     categoria,
     fechaEstreno,
-    creador,
-    poster,
-    notas,
+    creador: '',
+    poster: '',
+    notas: '',
     creadoEl: new Date().toISOString()
   };
 

@@ -398,7 +398,7 @@ function aplicarFechaCalendario(seccion, valor) {
     }
     const btn = document.getElementById('btn-trigger-fecha-inicio');
     if (btn) btn.classList.remove('disabled');
-  } else {
+  } else if (targetSeccion === 'fin') {
     const chkNo = document.getElementById('chk-no-fecha-fin');
     if (chkNo && chkNo.checked) {
       chkNo.checked = false;

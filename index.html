@@ -1035,39 +1035,33 @@
       </div>
 
       <div class="form-group">
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <div style="flex:1; min-width:140px;">
-            <label for="estreno-select-cat" data-i18n="estreno_lbl_cat">Categoría: *</label>
-            <select id="estreno-select-cat" class="form-input" required>
-              <option value="Peliculas" data-i18n="nav_peliculas">Películas</option>
-              <option value="Series" data-i18n="cal_opt_series_temporadas">Series (Temporadas)</option>
-              <option value="Musica" data-i18n="nav_musica">Música</option>
-              <option value="Juegos" data-i18n="nav_juegos">Juegos</option>
-              <option value="Libros" data-i18n="cal_legend_books">Libros</option>
-              <option value="Comics" data-i18n="cal_legend_comics">Cómics</option>
-              <option value="Mangas" data-i18n="cal_legend_mangas">Mangas</option>
-            </select>
-          </div>
-          <div style="flex:1; min-width:140px;">
-            <label for="estreno-input-fecha" data-i18n="estreno_lbl_date">Fecha de Estreno: *</label>
-            <input type="date" id="estreno-input-fecha" class="form-input" required>
+        <label data-i18n="estreno_lbl_cat">Categoría: *</label>
+        <input type="hidden" id="estreno-select-cat" value="Peliculas">
+        <div class="cfg-dropdown-wrap" id="estreno-cat-dd-wrap" style="width:100%;">
+          <button type="button" class="cfg-dropdown-btn" id="btn-estreno-cat-dropdown" onclick="toggleDropdownCatEstreno(event)" aria-haspopup="listbox" aria-expanded="false">
+            <span id="estreno-cat-selected-label" data-i18n="nav_peliculas">Películas</span>
+            <svg class="h-icon cfg-dd-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+          </button>
+          <div class="cfg-dropdown-menu" id="menu-estreno-cat" role="listbox" style="display:none;" onclick="event.stopPropagation()">
+            <button type="button" class="cfg-dropdown-item active" data-cat="Peliculas" onclick="seleccionarCatEstreno('Peliculas', this)"><span data-i18n="nav_peliculas">Películas</span><span class="cfg-dd-check">✓</span></button>
+            <button type="button" class="cfg-dropdown-item" data-cat="Series" onclick="seleccionarCatEstreno('Series', this)"><span data-i18n="nav_series">Series</span><span class="cfg-dd-check">✓</span></button>
+            <button type="button" class="cfg-dropdown-item" data-cat="Musica" onclick="seleccionarCatEstreno('Musica', this)"><span data-i18n="nav_musica">Música</span><span class="cfg-dd-check">✓</span></button>
+            <button type="button" class="cfg-dropdown-item" data-cat="Juegos" onclick="seleccionarCatEstreno('Juegos', this)"><span data-i18n="nav_juegos">Juegos</span><span class="cfg-dd-check">✓</span></button>
+            <button type="button" class="cfg-dropdown-item" data-cat="Libros" onclick="seleccionarCatEstreno('Libros', this)"><span data-i18n="cal_legend_books">Libros</span><span class="cfg-dd-check">✓</span></button>
+            <button type="button" class="cfg-dropdown-item" data-cat="Comics" onclick="seleccionarCatEstreno('Comics', this)"><span data-i18n="cal_legend_comics">Cómics</span><span class="cfg-dd-check">✓</span></button>
+            <button type="button" class="cfg-dropdown-item" data-cat="Mangas" onclick="seleccionarCatEstreno('Mangas', this)"><span data-i18n="cal_legend_mangas">Mangas</span><span class="cfg-dd-check">✓</span></button>
           </div>
         </div>
       </div>
 
       <div class="form-group">
-        <label for="estreno-input-creador" data-i18n="estreno_lbl_creator">Director / Creador / Artista / Autor:</label>
-        <input type="text" id="estreno-input-creador" class="form-input" placeholder="Ej: Christopher Nolan / Taylor Swift / Brandon Sanderson" autocomplete="off" data-i18n-placeholder="estreno_ph_creator">
-      </div>
-
-      <div class="form-group">
-        <label for="estreno-input-poster" data-i18n="estreno_lbl_poster">URL de Portada / Poster (opcional):</label>
-        <input type="url" id="estreno-input-poster" class="form-input" placeholder="https://..." autocomplete="off" data-i18n-placeholder="ph_url_placeholder">
-      </div>
-
-      <div class="form-group">
-        <label for="estreno-input-notas" data-i18n="estreno_lbl_notes">Notas o Expectativas (opcional):</label>
-        <textarea id="estreno-input-notas" class="comment-box" style="min-height:65px;" placeholder="¿Por qué lo esperas? ¿En qué cine / plataforma se estrena?" data-i18n-placeholder="estreno_ph_notes"></textarea>
+        <label data-i18n="estreno_lbl_date">Fecha de Estreno: *</label>
+        <button type="button" class="btn-fecha-custom" id="btn-trigger-fecha-estreno" onclick="abrirCalendarioMediary('estreno')">
+          <svg class="h-icon icon-calendar-btn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5"/></svg>
+          <span class="btn-fecha-txt is-placeholder" id="txt-fecha-estreno" data-i18n="ph_select_date">Seleccionar fecha...</span>
+          <svg class="h-icon icon-chevron-btn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19.5 8.25-7.5 7.5-7.5-7.5"/></svg>
+        </button>
+        <input type="hidden" id="input-fecha-estreno" value="">
       </div>
 
       <div class="modal-actions" style="margin-top:16px; justify-content:flex-end; gap:10px;">
@@ -1808,7 +1802,7 @@
 <div id="cfg-update-pwa-wrap" style="margin:14px 0; padding:12px 14px; background:rgba(56,189,248,0.06); border:1px dashed rgba(56,189,248,0.3); border-radius:3px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
   <div style="min-width:0;">
     <strong style="font-size:0.86rem; color:var(--text); display:block;" data-i18n="pwa_update_title">Actualización de la App</strong>
-    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v284 • Forzar descarga de novedades</span>
+    <span style="font-size:0.74rem; color:var(--muted); display:block; margin-top:1px;" data-i18n="pwa_update_sub">Versión v285 • Forzar descarga de novedades</span>
   </div>
   <button type="button" class="cfg-link-toggle-btn" id="btn-update-pwa" onclick="forzarActualizacionApp()" style="height:auto; padding:6px 14px; background:var(--accent); color:var(--accent-contrast); font-weight:700;" data-i18n="pwa_update_btn">
     <svg class="h-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;margin-right:4px;"><path d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"/></svg>Actualizar
@@ -3053,8 +3047,8 @@
   <script defer src="./js/integrations/lastfm.js"></script>
   <script defer src="./js/integrations/playstation.js"></script>
   <script defer src="./js/features/navigation.js?v=282"></script>
-  <script defer src="./js/features/catalog.js?v=278"></script>
-  <script defer src="./js/features/calendar.js?v=267"></script>
+  <script defer src="./js/features/catalog.js?v=285"></script>
+  <script defer src="./js/features/calendar.js?v=285"></script>
   <script defer src="./js/main.js"></script>
 </body>
 </html>
